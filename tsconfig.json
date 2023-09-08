@@ -8,5 +8,5 @@
       "@/*": ["src/*"]
     }
   },
-  "include": [".eslintrc.cjs"]
+  "include": ["src", ".eslintrc.cjs", "**/*.js", "**/*.mjs", "**/*.cjs"]
 }
