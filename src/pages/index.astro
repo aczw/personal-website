@@ -11,24 +11,20 @@ import Layout from "@/layouts/layout.astro";
     <div
       class="grid grid-flow-row grid-cols-4 auto-cols-fr auto-rows-fr grid-rows-4 gap-5 xl:grid-cols-[11] xl:grid-flow-col my-14"
     >
-      <div class="bg-sweater-9 row-span-4 col-span-4 h-80 w-80 sm:h-96 sm:w-96">
-        test
+      <!-- this is the shape that dictates the size of the other divs, because it's the largest -->
+      <div class="bg-sweater-9 rounded-xl row-span-4 col-span-4 h-80 w-80 sm:h-96 sm:w-96 md:h-[500px] md:w-[500px] xl:h-96 xl:w-96">
       </div>
-      <div class="bg-sweater-9">test</div>
 
-      <div class="bg-sweater-9">test</div>
+      <div class="bg-sweater-8 rounded-xl hover:bg-sweater-4 transition-all hover:rounded-[50px]" />
+      <div class="bg-sweater-7 rounded-xl hover:bg-sweater-3 transition-all hover:rounded-[50px]" />
+      <div class="bg-sweater-6 rounded-xl hover:bg-sweater-2 transition-all hover:rounded-[50px]" />
+      <div class="bg-sweater-5 rounded-xl hover:bg-sweater-1 transition-all hover:rounded-[50px]" />
 
-      <div class="bg-sweater-9">test</div>
+      <div class="row-span-2 col-span-2 bg-sweater-8 rounded-xl"></div>
+      <div class="row-span-2 col-span-2 bg-sweater-8 rounded-xl"></div>
 
-      <div class="bg-sweater-9">test</div>
-
-      <div class="row-span-2 col-span-2 bg-red-100">test</div>
-
-      <div class="row-span-2 col-span-2 bg-red-100">test</div>
-
-      <div class="row-span-2 col-span-4 bg-blue-100">test</div>
-
-      <div class="row-span-2 col-span-4 bg-blue-100">test</div>
+      <div class="row-span-2 col-span-4 bg-sweater-9 rounded-xl"></div>
+      <div class="row-span-2 col-span-4 bg-sweater-9 rounded-xl"></div>
     </div>
   </main>
 </Layout>
