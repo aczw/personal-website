@@ -8,5 +8,12 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src", ".eslintrc.cjs", "**/*.js", "**/*.mjs", "**/*.cjs"]
+  "include": [
+    "src/**/*",
+    "**/*.js",
+    "**/*.mjs",
+    "**/*.cjs",
+    ".eslintrc.cjs",
+    "tailwind.config.ts"
+  ]
 }
