@@ -5,9 +5,9 @@ const config = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   theme: {
     extend: {
+      ...defaultTheme.fontFamily,
       fontFamily: {
-        // we'll overwrite this eventually
-        ...defaultTheme.fontFamily,
+        sans: ["Atkinson Hyperlegible", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         sweater: {
