@@ -1,0 +1,21 @@
+---
+import Logo from "@/assets/logo.astro";
+---
+
+<header class="bg-sweater-10 w-full p-3">
+  <nav class="text-sweater-1 flex justify-between items-center">
+    <a href="/">
+      <Logo
+        width={35}
+        height={35}
+        alt="Go to home"
+        className="fill-sweater-4 hover:rotate-[-10deg] hover:fill-sweater-1 transition"
+      />
+    </a>
+    <div class="flex space-x-5">
+      <a href="/projects">Projects</a>
+      <a href="/art">Art</a>
+      <a href="/resume.pdf">Resume</a>
+    </div>
+  </nav>
+</header>
