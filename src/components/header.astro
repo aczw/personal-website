@@ -1,21 +1,29 @@
 ---
 import Logo from "@/assets/logo.astro";
+import Button from "@/components/button.astro";
+import Link from "@/components/link.astro";
 ---
 
 <header class="bg-sweater-10 w-full p-3">
-  <nav class="text-sweater-1 flex justify-between items-center">
+  <nav class="flex justify-between items-center">
     <a href="/">
       <Logo
-        width={35}
-        height={35}
+        width={30}
+        height={30}
         alt="Go to home"
         className="fill-sweater-4 hover:rotate-[-10deg] hover:fill-sweater-1 transition"
       />
     </a>
-    <div class="flex space-x-5">
-      <a href="/projects">Projects</a>
-      <a href="/art">Art</a>
-      <a href="/resume.pdf">Resume</a>
+    <div class="flex space-x-6 items-center">
+      <Link href="/projects">Projects</Link>
+      <Link href="/design">Design</Link>
+      <Button className="hover:underline">
+        <a
+          href="/resume.pdf"
+          target="_blank"
+          class="text-sweater-9"
+          >Resume</a>
+      </Button>
     </div>
   </nav>
 </header>
