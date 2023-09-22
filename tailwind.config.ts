@@ -8,6 +8,7 @@ const config = {
       ...defaultTheme.fontFamily,
       fontFamily: {
         sans: ["Atkinson Hyperlegible", ...defaultTheme.fontFamily.sans],
+        mono: ["Maple Mono", ...defaultTheme.fontFamily.mono],
       },
       colors: {
         sweater: {
