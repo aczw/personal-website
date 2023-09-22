@@ -4,11 +4,12 @@ import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 
-// https://astro.build/config
-export default defineConfig({
+const config = defineConfig({
   integrations: [react(), tailwind()],
   output: "hybrid",
   adapter: vercel({
     imageService: true,
   }),
 });
+
+export default config;
