@@ -9,10 +9,15 @@ import Layout from "@/layouts/layout.astro";
   <!-- 56px for the header, 49px for the footer -->
   <main class="min-h-[calc(100vh-105px)] flex items-center justify-center">
     <div
-      class="grid grid-flow-row grid-cols-4 auto-cols-fr auto-rows-fr grid-rows-4 gap-5 xl:grid-cols-[11] xl:grid-flow-col my-14"
+      class="grid grid-flow-row grid-cols-4 auto-cols-fr auto-rows-fr grid-rows-4 gap-5 xl:grid-cols-[11] xl:grid-flow-col my-10 mx-3"
     >
       <!-- this is the shape that dictates the size of the other divs, because it's the largest -->
-      <div class="bg-sweater-9 rounded-xl row-span-4 col-span-4 h-80 w-80 sm:h-96 sm:w-96 md:h-[500px] md:w-[500px] xl:h-96 xl:w-96">
+      <div class="bg-sweater-9 rounded-xl row-span-4 col-span-4 w-full sm:h-96 sm:w-96 flex flex-col justify-between text-sweater-1 p-8 space-y-5">
+        <p class="text-sweater-2"><b>About</b></p>
+        <p>Hi, I&apos;m Charles. I&apos;m a student at the University of Pennsylvania currently studying computer graphics and design.</p>
+        <p>Check out stuff I&apos;ve done through the links at the top, including my resume. My contact info and other accounts are below.</p>
+        <p>Thanks for stopping by!!</p>
+        <p>(〜￣▽￣)〜</p>
       </div>
 
       <div class="bg-sweater-8 rounded-xl hover:bg-sweater-4 transition-all hover:rounded-[50px]" />
