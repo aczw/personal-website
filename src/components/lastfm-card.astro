@@ -80,20 +80,22 @@ const nowPlaying = firstTrack["@attr"]
 ---
 
 <div
-  class="row-span-2 col-span-4 bg-sweater-9 rounded-xl p-5 flex flex-col justify-between text-sweater-1 sm:w-[384px] sm:h-[182px]"
+  class="col-span-4 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-9 p-5 text-sweater-1 xl:h-[194px] xl:max-w-[400px] 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
 >
-  <h4 class="text-sweater-2 font-bold">Last.fm profile</h4>
+  <h4 class="font-bold text-sweater-2">My Last.fm profile</h4>
   <p>
-    <span class="text-sweater-3">{profile.playcount}</span> total scrobbles
-    across <span class="text-sweater-3">{profile.artist_count}</span>
+    Apparently I have <span class="text-sweater-3">{profile.playcount}</span>
+    total scrobbles across <span class="text-sweater-3"
+      >{profile.artist_count}</span
+    >
      artists, <span class="text-sweater-3">{profile.album_count}</span>
      albums, and <span class="text-sweater-3">{profile.track_count}</span>
-     songs
+     songs. Neat.
   </p>
-  <h4 class="text-sweater-2 font-bold">
-    {nowPlaying ? "Currently listening to" : "Last listened to"}
+  <h4 class="font-bold text-sweater-2">
+    Status: {nowPlaying ? "currenly playing music!!" : "last listened to"}
   </h4>
-  <p class="line-clamp-1">
+  <p class="xl:line-clamp-1 2xl:line-clamp-2">
     <span class="text-sweater-3">{firstTrack.name}</span> by <span
       class="text-sweater-3">{firstTrack.artist["#text"]}</span
     > from <span class="text-sweater-3">{firstTrack.album["#text"]}</span>

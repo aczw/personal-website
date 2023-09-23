@@ -8,47 +8,47 @@ import Layout from "@/layouts/layout.astro";
   description="My own little corner on the internet. Welcome!!"
 >
   <!-- 56px for the header, 49px for the footer -->
-  <main class="min-h-[calc(100vh-105px)] flex items-center justify-center">
+  <main class="flex min-h-[calc(100vh-105px)] items-center justify-center">
     <div
-      class="grid grid-flow-row grid-cols-4 auto-cols-fr auto-rows-fr grid-rows-4 gap-5 xl:grid-cols-[11] xl:grid-flow-col my-10 mx-3"
+      class="mx-3 my-10 grid auto-cols-fr grid-flow-row auto-rows-fr grid-cols-4 grid-rows-4 gap-3 xl:grid-flow-col xl:grid-cols-[11]"
     >
       <!-- this is the shape that dictates the size of the other divs, because it's the largest -->
       <div
-        class="bg-sweater-9 rounded-xl row-span-4 col-span-4 w-full sm:h-96 sm:w-96 flex flex-col justify-between text-sweater-1 p-8 space-y-5"
+        class="col-span-4 row-span-4 flex flex-col justify-between space-y-7 rounded-xl bg-sweater-9 p-8 text-sweater-1 xl:h-[400px] xl:w-[400px] 2xl:h-[500px] 2xl:w-[500px] 2xl:justify-normal 2xl:p-12"
       >
-        <h4 class="text-sweater-2 font-bold">About</h4>
+        <h4 class="font-bold text-sweater-2">About</h4>
         <p>
           Hi, I&apos;m Charles. I&apos;m a student at the University of
           Pennsylvania currently studying computer graphics and design.
         </p>
         <p>
-          Check out stuff I&apos;ve done through the links at the top, including
-          my resume. My contact info and other accounts are below.
+          Check out my resume and stuff I&apos;ve done through the links at the
+          top. My email and other accounts are below.
         </p>
         <p>Thanks for stopping by!!</p>
         <p>(〜￣▽￣)〜</p>
       </div>
 
       <div
-        class="bg-sweater-8 rounded-xl hover:bg-sweater-4 transition-all hover:rounded-[50px]"
+        class="rounded-xl bg-sweater-8 transition-all hover:rounded-[60px] hover:bg-sweater-4"
       >
       </div>
       <div
-        class="bg-sweater-7 rounded-xl hover:bg-sweater-3 transition-all hover:rounded-[50px]"
+        class="rounded-xl bg-sweater-7 transition-all hover:rounded-[60px] hover:bg-sweater-3"
       >
       </div>
       <div
-        class="bg-sweater-6 rounded-xl hover:bg-sweater-2 transition-all hover:rounded-[50px]"
+        class="rounded-xl bg-sweater-6 transition-all hover:rounded-[60px] hover:bg-sweater-2"
       >
       </div>
       <div
-        class="bg-sweater-5 rounded-xl hover:bg-sweater-1 transition-all hover:rounded-[50px]"
+        class="rounded-xl bg-sweater-5 transition-all hover:rounded-[60px] hover:bg-sweater-1"
       >
       </div>
 
       <a
         href="/projects"
-        class="row-span-2 col-span-2 p-5 bg-sweater-8 rounded-xl flex flex-col justify-between sm:w-[182px] sm:h-[182px] hover:bg-sweater-7 transition-colors"
+        class="col-span-2 row-span-2 flex flex-col justify-between rounded-xl border-4 border-sweater-7 bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xl:h-[194px] xl:w-[194px] 2xl:h-[244px] 2xl:w-[244px] 2xl:p-8"
       >
         <div class="flex space-x-1">
           <svg
@@ -94,14 +94,14 @@ import Layout from "@/layouts/layout.astro";
             ></path></svg
           >
         </div>
-
-        <p class="text-sweater-1 leading-tight">
-          <b>Coding stuff.</b> Projects about my random interests.
+        <p class="leading-tight text-sweater-1">
+          <b>Coding stuff.</b> Projects that span across all my random
+          interests.
         </p>
       </a>
       <a
         href="/design"
-        class="row-span-2 col-span-2 p-5 bg-sweater-8 rounded-xl flex flex-col justify-between sm:w-[182px] sm:h-[182px] hover:bg-sweater-7 transition-colors"
+        class="col-span-2 row-span-2 flex flex-col justify-between rounded-xl border-4 border-sweater-7 bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xl:h-[194px] xl:w-[194px] 2xl:h-[244px] 2xl:w-[244px] 2xl:p-8"
       >
         <div class="flex space-x-1">
           <svg
@@ -154,14 +154,14 @@ import Layout from "@/layouts/layout.astro";
           >
         </div>
 
-        <p class="text-sweater-1 leading-tight">
-          <b>Visual stuff.</b> Design and artwork for myself and others.
+        <p class="leading-tight text-sweater-1">
+          <b>Visual stuff.</b> Design and artwork created for myself and others.
         </p>
       </a>
 
       <LastFmCard />
       <div
-        class="row-span-2 col-span-4 bg-sweater-9 rounded-xl p-8 flex items-center justify-center"
+        class="col-span-4 row-span-2 flex items-center justify-center rounded-xl bg-sweater-9 p-5 xl:h-[194px] xl:max-w-[400px] 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
       >
         <p class="text-sweater-7">Under construction</p>
       </div>
