@@ -80,12 +80,12 @@ const nowPlaying = firstTrack["@attr"]
 ---
 
 <div
-  class="col-span-4 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-9 p-5 text-sweater-1 xl:h-[194px] xl:max-w-[400px] 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
+  class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] flex-col justify-between rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
 >
   <h4 class="font-bold text-sweater-2">My Last.fm profile</h4>
   <p>
     Apparently I have <span class="text-sweater-3">{profile.playcount}</span>
-    total scrobbles across <span class="text-sweater-3"
+     total scrobbles across <span class="text-sweater-3"
       >{profile.artist_count}</span
     >
      artists, <span class="text-sweater-3">{profile.album_count}</span>
@@ -93,7 +93,7 @@ const nowPlaying = firstTrack["@attr"]
      songs. Neat.
   </p>
   <h4 class="font-bold text-sweater-2">
-    Status: {nowPlaying ? "currenly playing music!!" : "last listened to"}
+    Status: {nowPlaying ? "currently listening to" : "most recently scrobbled"}
   </h4>
   <p class="xl:line-clamp-1 2xl:line-clamp-2">
     <span class="text-sweater-3">{firstTrack.name}</span> by <span

@@ -7,14 +7,13 @@ import Layout from "@/layouts/layout.astro";
   title="Charles Wang"
   description="My own little corner on the internet. Welcome!!"
 >
-  <!-- 56px for the header, 49px for the footer -->
-  <main class="flex min-h-[calc(100vh-105px)] items-center justify-center">
+  <!-- we subtract the heights of the header and footer -->
+  <main class="flex min-h-[calc(100vh-88px-81px)] items-center justify-center">
     <div
-      class="mx-3 my-10 grid auto-cols-fr grid-flow-row auto-rows-fr grid-cols-4 grid-rows-4 gap-3 xl:grid-flow-col xl:grid-cols-[11]"
+      class="mx-3 grid auto-cols-fr grid-flow-row auto-rows-fr grid-rows-4 gap-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-flow-col xl:grid-cols-[11]"
     >
-      <!-- this is the shape that dictates the size of the other divs, because it's the largest -->
       <div
-        class="col-span-4 row-span-4 flex flex-col justify-between space-y-7 rounded-xl bg-sweater-9 p-8 text-sweater-1 xl:h-[400px] xl:w-[400px] 2xl:h-[500px] 2xl:w-[500px] 2xl:justify-normal 2xl:p-12"
+        class="col-span-4 row-span-4 flex h-[400px] max-w-[400px] flex-col justify-between space-y-7 rounded-xl bg-sweater-9 p-8 text-sweater-1 2xl:h-[500px] 2xl:max-w-[500px] 2xl:justify-normal 2xl:p-16"
       >
         <h4 class="font-bold text-sweater-2">About</h4>
         <p>
@@ -23,32 +22,15 @@ import Layout from "@/layouts/layout.astro";
         </p>
         <p>
           Check out my resume and stuff I&apos;ve done through the links at the
-          top. My email and other accounts are below.
+          top/right. My email and other accounts are below.
         </p>
         <p>Thanks for stopping by!!</p>
         <p>(〜￣▽￣)〜</p>
       </div>
 
-      <div
-        class="rounded-xl bg-sweater-8 transition-all hover:rounded-[60px] hover:bg-sweater-4"
-      >
-      </div>
-      <div
-        class="rounded-xl bg-sweater-7 transition-all hover:rounded-[60px] hover:bg-sweater-3"
-      >
-      </div>
-      <div
-        class="rounded-xl bg-sweater-6 transition-all hover:rounded-[60px] hover:bg-sweater-2"
-      >
-      </div>
-      <div
-        class="rounded-xl bg-sweater-5 transition-all hover:rounded-[60px] hover:bg-sweater-1"
-      >
-      </div>
-
       <a
         href="/projects"
-        class="col-span-2 row-span-2 flex flex-col justify-between rounded-xl border-4 border-sweater-7 bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xl:h-[194px] xl:w-[194px] 2xl:h-[244px] 2xl:w-[244px] 2xl:p-8"
+        class="col-span-2 row-span-2 flex h-[194px] max-w-[194px] flex-col justify-between rounded-xl border-4 border-sweater-7 bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
       >
         <div class="flex space-x-1">
           <svg
@@ -101,7 +83,7 @@ import Layout from "@/layouts/layout.astro";
       </a>
       <a
         href="/design"
-        class="col-span-2 row-span-2 flex flex-col justify-between rounded-xl border-4 border-sweater-7 bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xl:h-[194px] xl:w-[194px] 2xl:h-[244px] 2xl:w-[244px] 2xl:p-8"
+        class="col-span-2 row-span-2 flex h-[194px] max-w-[194px] flex-col justify-between rounded-xl border-4 border-sweater-7 bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
       >
         <div class="flex space-x-1">
           <svg
@@ -159,9 +141,26 @@ import Layout from "@/layouts/layout.astro";
         </p>
       </a>
 
+      <div
+        class="rounded-xl bg-sweater-8 transition-all hover:rounded-[60px] hover:bg-sweater-4"
+      >
+      </div>
+      <div
+        class="rounded-xl bg-sweater-7 transition-all hover:rounded-[60px] hover:bg-sweater-3"
+      >
+      </div>
+      <div
+        class="rounded-xl bg-sweater-6 transition-all hover:rounded-[60px] hover:bg-sweater-2"
+      >
+      </div>
+      <div
+        class="rounded-xl bg-sweater-5 transition-all hover:rounded-[60px] hover:bg-sweater-1"
+      >
+      </div>
+
       <LastFmCard />
       <div
-        class="col-span-4 row-span-2 flex items-center justify-center rounded-xl bg-sweater-9 p-5 xl:h-[194px] xl:max-w-[400px] 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
+        class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] items-center justify-center rounded-xl bg-sweater-9 p-5 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
       >
         <p class="text-sweater-7">Under construction</p>
       </div>
