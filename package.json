@@ -7,7 +7,7 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "format": "prettier --write . --plugin=prettier-plugin-astro"
+    "format": "prettier --write . --plugin=prettier-plugin-astro --plugin=prettier-plugin-tailwindcss"
   },
   "dependencies": {
     "@astrojs/react": "^3.0.1",
