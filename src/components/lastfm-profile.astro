@@ -65,7 +65,7 @@ const topThree = tracks.track.slice(0, 3);
 ---
 
 <div
-  class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] flex-col justify-between space-y-6 rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:justify-start 2xl:p-8"
+  class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] flex-col justify-between space-y-6 rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8 overflow-y-auto"
 >
   <p>
     I really like music and <a
@@ -74,9 +74,7 @@ const topThree = tracks.track.slice(0, 3);
       class="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
       >I really like tracking it.</a
     > I currently have {profile.playcount}
-     total scrobbles across {profile.artist_count} artists, {
-      profile.album_count
-    } albums, and {profile.track_count} songs.
+     total scrobbles.
   </p>
   <p class="line-clamp-3">
     My top tracks this week are
@@ -85,21 +83,18 @@ const topThree = tracks.track.slice(0, 3);
         target="_blank"
         class="text-sweater-3 hover:text-sweater-1 hover:underline"
         >{topThree[0].name}</a
-      > ({topThree[0].playcount} times)
-      ,
+      > ({topThree[0].playcount} times),
     <a
         href={topThree[1].url}
         target="_blank"
         class="text-sweater-3 hover:text-sweater-1 hover:underline"
         >{topThree[1].name}</a
-      > ({topThree[1].playcount} times)
-      , and
+      > ({topThree[1].playcount} times), and
     <a
         href={topThree[2].url}
         target="_blank"
         class="text-sweater-3 hover:text-sweater-1 hover:underline"
         >{topThree[2].name}</a
-      > ({topThree[2].playcount} times)
-      .
+      > ({topThree[2].playcount} times).
   </p>
 </div>
