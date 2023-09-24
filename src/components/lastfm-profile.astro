@@ -65,8 +65,11 @@ const topThree = tracks.track.slice(0, 3);
 ---
 
 <div
-  class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] flex-col justify-between space-y-6 rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8 overflow-y-auto"
+  class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] flex-col justify-between space-y-3 rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
 >
+<h4 class="w-fit font-bold text-sweater-2">
+      Last.fm profile
+    </h4>
   <p>
     I really like music and <a
       href={profile.url}
@@ -76,24 +79,24 @@ const topThree = tracks.track.slice(0, 3);
     > I currently have {profile.playcount}
      total scrobbles.
   </p>
-  <p class="line-clamp-3">
+  <p class="line-clamp-2">
     My top tracks this week are
     <a
         href={topThree[0].url}
         target="_blank"
-        class="text-sweater-3 hover:text-sweater-1 hover:underline"
+        class="text-sweater-3 hover:text-sweater-1 hover:underline transition-colors"
         >{topThree[0].name}</a
       > ({topThree[0].playcount} times),
     <a
         href={topThree[1].url}
         target="_blank"
-        class="text-sweater-3 hover:text-sweater-1 hover:underline"
+        class="text-sweater-3 hover:text-sweater-1 hover:underline transition-colors"
         >{topThree[1].name}</a
       > ({topThree[1].playcount} times), and
     <a
         href={topThree[2].url}
         target="_blank"
-        class="text-sweater-3 hover:text-sweater-1 hover:underline"
+        class="text-sweater-3 hover:text-sweater-1 hover:underline transition-colors"
         >{topThree[2].name}</a
       > ({topThree[2].playcount} times).
   </p>
