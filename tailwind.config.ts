@@ -24,6 +24,10 @@ const config = {
           10: "#0A0919",
         },
       },
+      screens: {
+        ...defaultTheme.screens,
+        xs: "475px",
+      },
     },
   },
   plugins: [],

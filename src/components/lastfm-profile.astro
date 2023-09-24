@@ -65,7 +65,7 @@ const topThree = tracks.track.slice(0, 3);
 ---
 
 <div
-  class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] flex-col justify-between space-y-3 rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
+  class="col-span-4 row-span-2 flex xs:h-[194px] xs:max-w-[400px] flex-col justify-between space-y-3 rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
 >
 <h4 class="w-fit font-bold text-sweater-2">
       Last.fm profile
@@ -79,7 +79,7 @@ const topThree = tracks.track.slice(0, 3);
     > I currently have {profile.playcount}
      total scrobbles.
   </p>
-  <p class="line-clamp-2">
+  <p class="xs:line-clamp-2">
     My top tracks this week are
     <a
         href={topThree[0].url}
