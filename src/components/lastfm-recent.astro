@@ -1,0 +1,61 @@
+---
+import api from "@/utils/api";
+
+interface LastFmRecentTracks {
+  recenttracks: {
+    track: {
+      artist: {
+        mbid: string;
+        "#text": string;
+      };
+      streamable: string;
+      image: {
+        size: "small" | "medium" | "large" | "extralarge";
+        "#text": string;
+      }[];
+      mbid: string;
+      album: {
+        mbid: string;
+        "#text": string;
+      };
+      name: string;
+      "@attr"?: {
+        nowplaying: "true" | "false";
+      };
+      url: string;
+    }[];
+    "@attr": {
+      user: string;
+      totalPages: string;
+      page: string;
+      perPage: string;
+      total: string;
+    };
+  };
+}
+
+const { recenttracks: recent } = await api<LastFmRecentTracks>(
+  `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${
+    import.meta.env.LASTFM_API_KEY
+  }&limit=1&format=json`,
+);
+
+const firstTrack = recent.track[0];
+const nowPlaying = firstTrack["@attr"]
+  ? firstTrack["@attr"].nowplaying === "true"
+  : false;
+---
+
+<h4 class="w-fit font-bold text-sweater-2">
+  <a
+    href={firstTrack.url}
+    target="_blank"
+    class="transition-colors hover:text-sweater-1 hover:underline"
+    >{nowPlaying ? "Currently playing" : "Last listened to"}</a
+  >
+</h4>
+<p class="line-clamp-1 2xl:line-clamp-2">
+  <span class="text-sweater-3">{firstTrack.name}</span> by <span
+    class="text-sweater-3">{firstTrack.artist["#text"]}</span
+  > from <span class="text-sweater-3">{firstTrack.album["#text"]}</span>
+</p>

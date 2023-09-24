@@ -13,6 +13,7 @@
     "**/*.js",
     "**/*.mjs",
     "**/*.cjs",
+    "**/*.astro",
     ".eslintrc.cjs",
     "tailwind.config.ts"
   ]
