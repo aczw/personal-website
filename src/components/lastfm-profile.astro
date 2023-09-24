@@ -65,7 +65,7 @@ const topThree = tracks.track.slice(0, 3);
 ---
 
 <div
-  class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] flex-col justify-between rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8 2xl:justify-start space-y-6"
+  class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] flex-col justify-between space-y-6 rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:justify-start 2xl:p-8"
 >
   <p>
     I really like music and <a
@@ -82,23 +82,27 @@ const topThree = tracks.track.slice(0, 3);
   <p class="line-clamp-3">
     My current top tracks this week are <span class="text-sweater-2"
       ><a
-        href={topThree[0].url} target="_blank"
+        href={topThree[0].url}
+        target="_blank"
         class="hover:text-sweater-1 hover:underline"
         >{topThree[0].name}</a
       > ({topThree[0].playcount} times)</span
     >,
     <span class="text-sweater-2"
       ><a
-        href={topThree[1].url} target="_blank"
+        href={topThree[1].url}
+        target="_blank"
         class="hover:text-sweater-1 hover:underline"
         >{topThree[1].name}</a
       > ({topThree[1].playcount} times)</span
     >, and
     <span class="text-sweater-2"
       ><a
-        href={topThree[2].url} target="_blank"
+        href={topThree[2].url}
+        target="_blank"
         class="hover:text-sweater-1 hover:underline"
         >{topThree[2].name}</a
-      > ({topThree[2].playcount} times)</span>.
+      > ({topThree[2].playcount} times)</span
+    >.
   </p>
 </div>

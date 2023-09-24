@@ -44,24 +44,46 @@ const firstTrack = recent.track[0];
 const nowPlaying = firstTrack["@attr"]
   ? firstTrack["@attr"].nowplaying === "true"
   : false;
-
-console.log(firstTrack.image[3]["#text"]);
 ---
 
 <div
-  class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] flex-col justify-between rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
+  class="col-span-4 row-span-2 flex h-[194px] max-w-[400px] flex-col justify-between space-y-5 rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
 >
-  <h4 class="w-fit font-bold text-sweater-2">
-    <a
-      href={firstTrack.url}
-      target="_blank"
-      class="transition-colors hover:text-sweater-1 hover:underline"
-      >{nowPlaying ? "Currently playing" : "Last listened to"}</a
-    >
-  </h4>
-  <p class="line-clamp-1 2xl:line-clamp-2">
-    <span class="text-sweater-3">{firstTrack.name}</span> by <span
-      class="text-sweater-3">{firstTrack.artist["#text"]}</span
-    > from <span class="text-sweater-3">{firstTrack.album["#text"]}</span>
-  </p>
+  <div class="flex flex-col">
+    <h4 class="w-fit font-bold text-sweater-2">
+      <a
+        href={firstTrack.url}
+        target="_blank"
+        class="transition-colors hover:text-sweater-1 hover:underline"
+        >{nowPlaying ? "Currently playing" : "Last listened to"}</a
+      >
+    </h4><p>
+      {
+        nowPlaying
+          ? "I'm currently listening to music!!"
+          : "This is the last song I played."
+      }
+    </p>
+  </div>
+
+  <div class="flex grow items-center space-x-5">
+    <img
+      src={firstTrack.image[2]["#text"]}
+      alt={`Song cover for ${firstTrack.name}`}
+      class="h-[80px] w-[80px] rounded bg-sweater-8 2xl:h-[110px] 2xl:w-[110px]"
+    /><div class="flex flex-col">
+      <a
+        href={firstTrack.url}
+        target="_blank"
+        class="line-clamp-1 w-fit text-sweater-2 transition-colors hover:text-sweater-1 hover:underline"
+        >{firstTrack.name}</a
+      >
+      <p class="line-clamp-1">
+        by <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>
+      </p>
+      <p class="line-clamp-1">
+        from <span class="text-sweater-2">{firstTrack.album["#text"]}</span>
+      </p>
+    </div>
+  </div>
 </div>
