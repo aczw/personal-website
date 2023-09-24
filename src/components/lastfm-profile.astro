@@ -71,38 +71,35 @@ const topThree = tracks.track.slice(0, 3);
     I really like music and <a
       href={profile.url}
       target="_blank"
-      class="font-bold text-sweater-2 transition-colors hover:text-sweater-1 hover:underline"
+      class="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
       >I really like tracking it.</a
-    > I currently have <span class="text-sweater-2">{profile.playcount}</span>
-     total scrobbles across <span class="text-sweater-2"
-      >{profile.artist_count}</span
-    > artists, <span class="text-sweater-2">{profile.album_count}</span> albums,
-    and <span class="text-sweater-2">{profile.track_count}</span> songs.
+    > I currently have {profile.playcount}
+     total scrobbles across {profile.artist_count} artists, {
+      profile.album_count
+    } albums, and {profile.track_count} songs.
   </p>
   <p class="line-clamp-3">
-    My current top tracks this week are <span class="text-sweater-2"
-      ><a
+    My top tracks this week are
+    <a
         href={topThree[0].url}
         target="_blank"
-        class="hover:text-sweater-1 hover:underline"
+        class="text-sweater-3 hover:text-sweater-1 hover:underline"
         >{topThree[0].name}</a
-      > ({topThree[0].playcount} times)</span
-    >,
-    <span class="text-sweater-2"
-      ><a
+      > ({topThree[0].playcount} times)
+      ,
+    <a
         href={topThree[1].url}
         target="_blank"
-        class="hover:text-sweater-1 hover:underline"
+        class="text-sweater-3 hover:text-sweater-1 hover:underline"
         >{topThree[1].name}</a
-      > ({topThree[1].playcount} times)</span
-    >, and
-    <span class="text-sweater-2"
-      ><a
+      > ({topThree[1].playcount} times)
+      , and
+    <a
         href={topThree[2].url}
         target="_blank"
-        class="hover:text-sweater-1 hover:underline"
+        class="text-sweater-3 hover:text-sweater-1 hover:underline"
         >{topThree[2].name}</a
-      > ({topThree[2].playcount} times)</span
-    >.
+      > ({topThree[2].playcount} times)
+      .
   </p>
 </div>
