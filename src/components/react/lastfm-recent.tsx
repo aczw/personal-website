@@ -59,7 +59,15 @@ const LastFmRecent = ({ apiKey }: { apiKey: string }) => {
   const firstTrack = recent?.recenttracks.track[0];
 
   if (!firstTrack) {
-    return <p>Sex</p>;
+    return (
+      <div className="flex flex-col">
+        <h4 className="w-fit font-bold text-sweater-2">Most recent track</h4>
+        <p>
+          I can't seem to load my most recently listened to song. Refresh and
+          see if it fixes itself? 🥲
+        </p>
+      </div>
+    );
   }
 
   const nowPlaying = firstTrack["@attr"]
