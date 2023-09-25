@@ -42,7 +42,19 @@ const LastFmRecents = ({ apiKey }: { apiKey: string }) => {
   const topThree = tracks?.weeklytrackchart.track.slice(0, 3);
 
   if (!topThree) {
-    return <p>{"No tracks found :("}</p>;
+    return (
+      <p>
+        My top tracks couldn't be fetched for some reason... you can find what
+        I've been listening to{" "}
+        <a
+          href="https://www.last.fm/user/ashzw/library/tracks?date_preset=LAST_7_DAYS"
+          target="_blank"
+          className="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
+        >
+          here.
+        </a>
+      </p>
+    );
   }
 
   return (

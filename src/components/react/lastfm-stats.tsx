@@ -42,17 +42,33 @@ const LastFmStats = ({ apiKey }: { apiKey: string }) => {
     );
   }
 
+  if (!profile) {
+    return (
+      <p>
+        I really like music and{" "}
+        <a
+          href="https://www.last.fm/user/ashzw/"
+          target="_blank"
+          className="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
+        >
+          I really like tracking it.
+        </a>{" "}
+        According to Last.fm, I listen to an average of ~55 tracks daily.
+      </p>
+    );
+  }
+
   return (
     <p>
       I really like music and{" "}
       <a
-        href={profile?.user.url}
+        href={profile.user.url}
         target="_blank"
         className="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
       >
         I really like tracking it.
       </a>{" "}
-      I currently have {profile?.user.playcount} total scrobbles.
+      I currently have {profile.user.playcount} total scrobbles.
     </p>
   );
 };
