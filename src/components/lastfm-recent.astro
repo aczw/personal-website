@@ -47,7 +47,7 @@ const nowPlaying = firstTrack["@attr"]
 ---
 
 <div
-  class="col-span-4 row-span-2 flex xs:h-[194px] xs:max-w-[400px] flex-col justify-between space-y-5 rounded-xl bg-sweater-9 p-5 text-sweater-1 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
+  class="col-span-4 row-span-2 flex flex-col justify-between space-y-5 rounded-xl bg-sweater-9 p-5 text-sweater-1 xs:h-[194px] xs:max-w-[400px] 2xl:h-[244px] 2xl:max-w-[500px] 2xl:p-8"
 >
   <div class="flex flex-col">
     <h4 class="w-fit font-bold text-sweater-2">
@@ -70,7 +70,7 @@ const nowPlaying = firstTrack["@attr"]
       <a
         href={firstTrack.url}
         target="_blank"
-        class="xs:line-clamp-1 w-fit text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
+        class="w-fit text-sweater-3 transition-colors hover:text-sweater-1 hover:underline xs:line-clamp-1"
         >{firstTrack.name}</a
       >
       <p class="xs:line-clamp-1">

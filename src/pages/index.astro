@@ -1,8 +1,10 @@
 ---
 export const prerender = false;
 
-import LastFmProfile from "@/components/lastfm-profile.astro";
+import CardMd from "@/components/card-md.astro";
 import LastFmRecent from "@/components/lastfm-recent.astro";
+import LastFmRecents from "@/components/react/lastfm-recents";
+import LastFmStats from "@/components/react/lastfm-stats";
 import Layout from "@/layouts/layout.astro";
 ---
 
@@ -16,7 +18,7 @@ import Layout from "@/layouts/layout.astro";
       class="mx-3 grid auto-cols-fr grid-flow-row auto-rows-fr grid-rows-4 gap-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-flow-col xl:grid-cols-[11]"
     >
       <div
-        class="col-span-4 row-span-4 flex xs:h-[400px] xs:max-w-[400px] flex-col justify-between space-y-5 rounded-xl bg-sweater-9 p-8 text-sweater-1 2xl:h-[500px] 2xl:max-w-[500px] 2xl:justify-normal 2xl:p-16 2xl:space-y-7"
+        class="col-span-4 row-span-4 flex flex-col justify-between space-y-5 rounded-xl bg-sweater-9 p-8 text-sweater-1 xs:h-[400px] xs:max-w-[400px] 2xl:h-[500px] 2xl:max-w-[500px] 2xl:justify-normal 2xl:space-y-7 2xl:p-16"
       >
         <h4 class="font-bold text-sweater-2">About</h4>
         <p>
@@ -33,7 +35,7 @@ import Layout from "@/layouts/layout.astro";
 
       <a
         href="/projects"
-        class="col-span-2 row-span-2 flex xs:h-[194px] xs:max-w-[194px] flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
+        class="col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
       >
         <div class="flex space-x-1">
           <svg
@@ -86,7 +88,7 @@ import Layout from "@/layouts/layout.astro";
       </a>
       <a
         href="/design"
-        class="col-span-2 row-span-2 flex xs:h-[194px] xs:max-w-[194px] flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
+        class="col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
       >
         <div class="flex space-x-1">
           <svg
@@ -162,7 +164,13 @@ import Layout from "@/layouts/layout.astro";
       </div>
 
       <LastFmRecent />
-      <LastFmProfile />
+
+      <CardMd>
+        <h4 class="w-fit font-bold text-sweater-2">Last.fm profile</h4>
+        <LastFmStats apiKey={import.meta.env.LASTFM_API_KEY} client:load />
+        <LastFmRecents apiKey={import.meta.env.LASTFM_API_KEY} client:load />
+      </CardMd>
+      
     </div>
   </main>
 </Layout>
