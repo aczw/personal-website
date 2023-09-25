@@ -3,8 +3,8 @@ export const prerender = false;
 
 import CardMd from "@/components/card-md.astro";
 import LastFmRecent from "@/components/lastfm-recent.astro";
-import LastFmRecents from "@/components/react/lastfm-recents";
 import LastFmStats from "@/components/react/lastfm-stats";
+import LastFmWeekly from "@/components/react/lastfm-weekly";
 import Layout from "@/layouts/layout.astro";
 ---
 
@@ -168,9 +168,10 @@ import Layout from "@/layouts/layout.astro";
       <CardMd>
         <h4 class="w-fit font-bold text-sweater-2">Last.fm profile</h4>
         <LastFmStats apiKey={import.meta.env.LASTFM_API_KEY} client:load />
-        <LastFmRecents apiKey={import.meta.env.LASTFM_API_KEY} client:load />
+        <LastFmWeekly apiKey={import.meta.env.LASTFM_API_KEY} client:load />
       </CardMd>
       
     </div>
   </main>
 </Layout>
+@/components/react/lastfm-weekly

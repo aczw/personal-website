@@ -23,7 +23,7 @@ interface LastFmRecents {
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
-const LastFmRecents = ({ apiKey }: { apiKey: string }) => {
+const LastFmWeekly = ({ apiKey }: { apiKey: string }) => {
   const key = `https://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=ashzw&api_key=${apiKey}&format=json`;
 
   const { data: tracks, isLoading } = useSWR<LastFmRecents, Error>(
@@ -88,4 +88,4 @@ const LastFmRecents = ({ apiKey }: { apiKey: string }) => {
   );
 };
 
-export default LastFmRecents;
+export default LastFmWeekly;
