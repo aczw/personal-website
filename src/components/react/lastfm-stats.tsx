@@ -32,7 +32,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const LastFmStats = ({ apiKey }: { apiKey: string }) => {
   const key = `http://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=ashzw&api_key=${apiKey}&format=json`;
 
-  const { data: profile, isLoading } = useSWR<LastFmStats, Error>(key, fetcher);
+  const { data: profile, isLoading } = useSWR<LastFmStats>(key, fetcher);
 
   if (isLoading) {
     return (

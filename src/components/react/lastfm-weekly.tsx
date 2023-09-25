@@ -26,10 +26,7 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json());
 const LastFmWeekly = ({ apiKey }: { apiKey: string }) => {
   const key = `https://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=ashzw&api_key=${apiKey}&format=json`;
 
-  const { data: tracks, isLoading } = useSWR<LastFmRecents, Error>(
-    key,
-    fetcher,
-  );
+  const { data: tracks, isLoading } = useSWR<LastFmRecents>(key, fetcher);
 
   if (isLoading) {
     return (
