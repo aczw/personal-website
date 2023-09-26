@@ -106,9 +106,13 @@ const LastFmRecent = ({ apiKey }: { apiKey: string }) => {
             target="_blank"
             className="line-clamp-1 w-fit text-sweater-3 transition-colors hover:text-sweater-1 hover:underline 2xl:line-clamp-2"
           ></a>
-          <p className="line-clamp-1">by {firstTrack.artist["#text"]}</p>
+          <p className="line-clamp-1">
+            by{" "}
+            <span className="text-sweater-2">{firstTrack.artist["#text"]}</span>
+          </p>
           <p className="line-clamp-1 2xl:line-clamp-2">
-            from {firstTrack.album["#text"]}
+            from{" "}
+            <span className="text-sweater-2">{firstTrack.album["#text"]}</span>
           </p>
         </div>
       </div>
