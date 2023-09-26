@@ -5,6 +5,7 @@ import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 
 const config = defineConfig({
+  site: "https://charl.sh",
   integrations: [
     react(),
     tailwind({
@@ -15,6 +16,8 @@ const config = defineConfig({
   adapter: vercel({
     imageService: true,
   }),
+  // see https://noahflk.com/blog/trailing-slashes-astro
+  trailingSlash: "never",
 });
 
 export default config;
