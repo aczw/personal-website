@@ -6,6 +6,7 @@ import LastFmRecent from "@/components/react/lastfm-recent";
 import LastFmStats from "@/components/react/lastfm-stats";
 import LastFmWeekly from "@/components/react/lastfm-weekly";
 import Layout from "@/layouts/layout.astro";
+import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
 ---
 
 <Layout
@@ -13,7 +14,7 @@ import Layout from "@/layouts/layout.astro";
   description="My own little corner on the internet. Welcome!!"
 >
   <!-- we subtract the heights of the header and footer -->
-  <main class="flex min-h-[calc(100vh-88px-81px)] items-center justify-center">
+  <main class="flex min-h-[calc(100vh-88px-80px)] items-center justify-center">
     <div
       class="mx-3 grid auto-cols-fr grid-flow-row auto-rows-fr grid-rows-4 gap-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-flow-col xl:grid-cols-[11]"
     >
@@ -35,52 +36,19 @@ import Layout from "@/layouts/layout.astro";
 
       <a
         href="/projects"
-        class="col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
+        class="group col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
       >
         <div class="flex space-x-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={28}
-            height={28}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-sweater-5"
-            ><rect
-              x="4"
-              y="4"
-              width="16"
-              height="16"
-              rx="2"
-            ></rect><rect
-              x="9"
-              y="9"
-              width="6"
-              height="6"
-            ></rect><path d="M15 2v2"></path><path d="M15 20v2"></path><path
-              d="M2 15h2"></path><path d="M2 9h2"></path><path d="M20 15h2"
-            ></path><path d="M20 9h2"></path><path d="M9 2v2"></path><path
-              d="M9 20v2"></path></svg
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={28}
-            height={28}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-sweater-5"
-            ><circle
-              cx="12"
-              cy="12"
-              r="10"
-            ></circle><path d="M8 12h8"></path><path d="m12 16 4-4-4-4"
-            ></path></svg
-          >
+          <ArrowRightCircle
+            size={28}
+            class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
+          />
+          <Bug
+            size={28}
+            class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
+          />
         </div>
+
         <p class="leading-tight text-sweater-1">
           <b>Coding stuff.</b> Projects that span across all my random
           interests.
@@ -88,57 +56,17 @@ import Layout from "@/layouts/layout.astro";
       </a>
       <a
         href="/design"
-        class="col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
+        class="group col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
       >
         <div class="flex space-x-1">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={28}
-            height={28}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-sweater-5"
-            ><line
-              x1="22"
-              x2="2"
-              y1="6"
-              y2="6"
-            ></line><line
-              x1="22"
-              x2="2"
-              y1="18"
-              y2="18"
-            ></line><line
-              x1="6"
-              x2="6"
-              y1="2"
-              y2="22"
-            ></line><line
-              x1="18"
-              x2="18"
-              y1="2"
-              y2="22"
-            ></line></svg
-          ><svg
-            xmlns="http://www.w3.org/2000/svg"
-            width={28}
-            height={28}
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-sweater-5"
-            ><circle
-              cx="12"
-              cy="12"
-              r="10"
-            ></circle><path d="M8 12h8"></path><path d="m12 16 4-4-4-4"
-            ></path></svg
-          >
+          <ArrowRightCircle
+            size={28}
+            class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
+          />
+          <PaintBucket
+            size={28}
+            class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
+          />
         </div>
 
         <p class="leading-tight text-sweater-1">

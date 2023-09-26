@@ -29,6 +29,9 @@ dependencies:
   clsx:
     specifier: ^2.0.0
     version: 2.0.0
+  lucide-astro:
+    specifier: ^0.279.0
+    version: 0.279.0(astro@3.0.10)
   react:
     specifier: ^18.0.0
     version: 18.2.0
@@ -2930,6 +2933,14 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
+
+  /lucide-astro@0.279.0(astro@3.0.10):
+    resolution: {integrity: sha512-iZAlGlE26UYuFYOFKdS8hmVvTjFI0DsiLKuStpQx/XqtOrIOqVirgokkmWeaWw4w/VrII3+wnzMYvh1NEweWvg==}
+    peerDependencies:
+      astro: ^2.7.1 || ^3.0.0
+    dependencies:
+      astro: 3.0.10
+    dev: false
 
   /magic-string@0.30.3:
     resolution: {integrity: sha512-B7xGbll2fG/VjP+SWg4sX3JynwIU0mjoTc6MPpKNuIvftk6u6vqhDnk1R80b8C2GBR6ywqy+1DcKBrevBg+bmw==}

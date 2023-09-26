@@ -1,21 +1,31 @@
 ---
-import Button from "@/components/button.astro";
 import Logo from "@/components/logo.astro";
+import { Button } from "@/components/react/button";
 import { Link } from "@/components/react/link";
+import { FileText } from "lucide-astro";
 
 const { pathname } = Astro.url;
 ---
 
 <header class="w-full bg-sweater-10 p-7">
   <nav class="flex items-center justify-between">
-    <a href="/" class="flex space-x-3 items-center group">
+    <a
+      href="/"
+      class="group flex items-center space-x-3"
+    >
       <Logo
         width={30}
         height={30}
         alt="Go to home"
         className="fill-sweater-4 group-hover:rotate-[-10deg] group-hover:fill-sweater-1 transition"
       />
-      {pathname !== "/" ? <p class="text-sweater-4 group-hover:text-sweater-1 font-bold">Home</p> : null}
+      {
+        pathname !== "/" ? (
+          <p class="invisible font-bold text-sweater-4 transition group-hover:translate-x-1 group-hover:text-sweater-1 xs:visible">
+            Home
+          </p>
+        ) : null
+      }
     </a>
     <div class="flex items-center space-x-6">
       <Link
@@ -34,14 +44,16 @@ const { pathname } = Astro.url;
       >
         Design
       </Link>
-      <Button>
-        <a
-          href="/resume.pdf"
-          target="_blank"
-          class="text-sweater-9"
-          >Resume</a
-        >
-      </Button>
+      <a
+        href="/resume.pdf"
+        target="_blank"
+        ><Button>
+          <FileText
+            size={16}
+            class="mr-1"
+          />Resume
+        </Button></a
+      >
     </div>
   </nav>
 </header>
