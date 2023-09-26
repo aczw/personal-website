@@ -48,9 +48,9 @@ const LastFmRecent = ({ apiKey }: { apiKey: string }) => {
           <p>Loading my most recent song...</p>
         </div>
 
-        <div className="flex grow items-center space-x-5">
-          <div className="h-[80px] w-[80px] shrink-0 animate-pulse rounded bg-sweater-8 2xl:h-[110px] 2xl:w-[110px]"></div>
-          <div className="h-[72px] w-full animate-pulse rounded bg-sweater-8"></div>
+        <div className="flex items-center space-x-5">
+          <div className="h-[80px] w-[80px] shrink-0 animate-pulse rounded bg-sweater-8 xs:h-[85px] xs:w-[85px] 2xl:h-[110px] 2xl:w-[110px]"></div>
+          <div className="h-[72px] w-full animate-pulse rounded bg-sweater-8 2xl:h-[96px]"></div>
         </div>
       </>
     );
@@ -63,8 +63,8 @@ const LastFmRecent = ({ apiKey }: { apiKey: string }) => {
       <div className="flex flex-col">
         <h4 className="w-fit font-bold text-sweater-2">Most recent track</h4>
         <p>
-          I can't seem to load my most recently listened to song. Refresh and
-          see if it fixes itself? 🥲
+          I can&apos;t seem to load my most recently listened to song. Refresh
+          and see if it fixes itself? 🥲🫠
         </p>
       </div>
     );
@@ -87,22 +87,24 @@ const LastFmRecent = ({ apiKey }: { apiKey: string }) => {
         </p>
       </div>
 
-      <div className="flex grow items-center space-x-5">
+      <div className="flex items-center space-x-5">
         <img
-          src={firstTrack.image[2]["#text"]}
+          src={firstTrack.image[3]["#text"]}
           alt={`Song cover for ${firstTrack.name}`}
-          className="h-[80px] w-[80px] rounded bg-sweater-8 2xl:h-[110px] 2xl:w-[110px]"
+          className="h-[80px] w-[80px] rounded bg-sweater-8 xs:h-[85px] xs:w-[85px] 2xl:h-[110px] 2xl:w-[110px]"
         />
         <div className="flex flex-col">
           <a
             href={firstTrack.url}
             target="_blank"
-            className="w-fit text-sweater-3 transition-colors hover:text-sweater-1 hover:underline xs:line-clamp-1"
+            className="line-clamp-1 w-fit text-sweater-3 transition-colors hover:text-sweater-1 hover:underline 2xl:line-clamp-2"
           >
             {firstTrack.name}
           </a>
-          <p className="xs:line-clamp-1">by {firstTrack.artist["#text"]}</p>
-          <p className="xs:line-clamp-1">from {firstTrack.album["#text"]}</p>
+          <p className="line-clamp-1">by {firstTrack.artist["#text"]}</p>
+          <p className="line-clamp-1 2xl:line-clamp-2">
+            from {firstTrack.album["#text"]}
+          </p>
         </div>
       </div>
     </>

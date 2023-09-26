@@ -55,7 +55,7 @@ const LastFmWeekly = ({ apiKey }: { apiKey: string }) => {
   }
 
   return (
-    <p className="xs:line-clamp-2">
+    <p className="line-clamp-2 2xl:line-clamp-3">
       My top tracks this week are{" "}
       <a
         href={topThree[0].url}
