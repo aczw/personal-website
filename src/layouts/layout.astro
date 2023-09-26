@@ -4,6 +4,7 @@ import Header from "@/components/header.astro";
 import "@/styles/base.css";
 import "@fontsource/atkinson-hyperlegible/400.css";
 import "@fontsource/atkinson-hyperlegible/700.css";
+import { ViewTransitions, fade } from "astro:transitions";
 
 interface Props {
   title: string;
@@ -14,7 +15,7 @@ const { title, description } = Astro.props;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="en" transition:animate={fade({duration: "0.3s"})}>
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -42,6 +43,7 @@ const { title, description } = Astro.props;
       content={Astro.generator}
     />
     <title>{title}</title>
+    <ViewTransitions fallback="animate" />
   </head>
   <body class="bg-sweater-10">
     <Header />
