@@ -4,6 +4,7 @@ import { Button } from "@/components/react/button";
 import { Link } from "@/components/react/link";
 import { FileText } from "lucide-astro";
 
+// see https://github.com/withastro/astro/issues/5248
 const { pathname } = Astro.url;
 const path = pathname.replace(/\/$/, "");
 ---
