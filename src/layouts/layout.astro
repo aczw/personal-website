@@ -2,6 +2,7 @@
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
 import "@/styles/base.css";
+import { removeTrailingSlash } from "@/utils/remove-trailing-slash";
 import "@fontsource/atkinson-hyperlegible/400.css";
 import "@fontsource/atkinson-hyperlegible/700.css";
 import { ViewTransitions, fade } from "astro:transitions";
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site).toString());
 ---
 
 <!doctype html>
@@ -26,6 +28,12 @@ const { title, description } = Astro.props;
       name="viewport"
       content="width=device-width"
     />
+    <meta
+      name="generator"
+      content={Astro.generator}
+    />
+
+    <link rel="canonical" href={canonicalUrl} />
     <link
       rel="icon"
       sizes="any"
@@ -38,10 +46,7 @@ const { title, description } = Astro.props;
       sizes="48x48"
       href="/favicon.png"
     />
-    <meta
-      name="generator"
-      content={Astro.generator}
-    />
+
     <title>{title}</title>
     <ViewTransitions fallback="animate" />
   </head>

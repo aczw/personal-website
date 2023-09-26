@@ -2,11 +2,12 @@
 import Logo from "@/components/logo.astro";
 import { Button } from "@/components/react/button";
 import { Link } from "@/components/react/link";
+import { removeTrailingSlash } from "@/utils/remove-trailing-slash";
 import { FileText } from "lucide-astro";
 
 // see https://github.com/withastro/astro/issues/5248
 const { pathname } = Astro.url;
-const path = pathname.replace(/\/$/, "");
+const path = removeTrailingSlash(pathname);
 ---
 
 <header class="w-full bg-sweater-10 p-7">
@@ -22,7 +23,7 @@ const path = pathname.replace(/\/$/, "");
         className="fill-sweater-4 group-hover:rotate-[-10deg] group-hover:fill-sweater-1 transition"
       />
       {
-        path !== "/" ? (
+        (path !== "") ? (
           <p class="invisible font-bold text-sweater-4 transition group-hover:translate-x-1 group-hover:text-sweater-1 xs:visible">
             Home
           </p>
