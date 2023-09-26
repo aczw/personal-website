@@ -1,3 +1,4 @@
+import { Link } from "@/components/react/link";
 import useSWR from "swr";
 
 interface LastFmRecent {
@@ -94,13 +95,17 @@ const LastFmRecent = ({ apiKey }: { apiKey: string }) => {
           className="h-[80px] w-[80px] rounded bg-sweater-8 xs:h-[85px] xs:w-[85px] 2xl:h-[110px] 2xl:w-[110px]"
         />
         <div className="flex flex-col">
+          <Link
+            href={firstTrack.url}
+            newTab
+          >
+            {firstTrack.name}
+          </Link>
           <a
             href={firstTrack.url}
             target="_blank"
             className="line-clamp-1 w-fit text-sweater-3 transition-colors hover:text-sweater-1 hover:underline 2xl:line-clamp-2"
-          >
-            {firstTrack.name}
-          </a>
+          ></a>
           <p className="line-clamp-1">by {firstTrack.artist["#text"]}</p>
           <p className="line-clamp-1 2xl:line-clamp-2">
             from {firstTrack.album["#text"]}

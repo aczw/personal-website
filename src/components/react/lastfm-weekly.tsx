@@ -1,3 +1,4 @@
+import { Link } from "@/components/react/link";
 import useSWR from "swr";
 
 interface LastFmRecents {
@@ -57,29 +58,26 @@ const LastFmWeekly = ({ apiKey }: { apiKey: string }) => {
   return (
     <p className="line-clamp-2 2xl:line-clamp-3">
       My top tracks this week are{" "}
-      <a
+      <Link
         href={topThree[0].url}
-        target="_blank"
-        className="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
+        newTab
       >
         {topThree[0].name}
-      </a>{" "}
+      </Link>{" "}
       ({topThree[0].playcount} times),{" "}
-      <a
+      <Link
         href={topThree[1].url}
-        target="_blank"
-        className="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
+        newTab
       >
         {topThree[1].name}
-      </a>{" "}
+      </Link>{" "}
       ({topThree[1].playcount} times), and{" "}
-      <a
+      <Link
         href={topThree[2].url}
-        target="_blank"
-        className="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
+        newTab
       >
         {topThree[2].name}
-      </a>{" "}
+      </Link>{" "}
       ({topThree[2].playcount} times).
     </p>
   );

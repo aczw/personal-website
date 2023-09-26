@@ -1,7 +1,7 @@
 ---
 import Button from "@/components/button.astro";
-import Link from "@/components/link.astro";
 import Logo from "@/components/logo.astro";
+import { Link } from "@/components/react/link";
 ---
 
 <header class="w-full bg-sweater-10 p-7">
@@ -17,7 +17,7 @@ import Logo from "@/components/logo.astro";
     <div class="flex items-center space-x-6">
       <Link href="/projects">Projects</Link>
       <Link href="/design">Design</Link>
-      <Button className="hover:underline">
+      <Button>
         <a
           href="/resume.pdf"
           target="_blank"

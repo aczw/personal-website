@@ -1,3 +1,4 @@
+import { Link } from "@/components/react/link";
 import useSWR from "swr";
 
 interface LastFmStats {
@@ -46,13 +47,12 @@ const LastFmStats = ({ apiKey }: { apiKey: string }) => {
     return (
       <p>
         I really like music and{" "}
-        <a
+        <Link
           href="https://www.last.fm/user/ashzw/"
-          target="_blank"
-          className="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
+          newTab
         >
           I really like tracking it.
-        </a>{" "}
+        </Link>{" "}
         According to Last.fm, I listen to an average of ~55 tracks daily.
       </p>
     );
@@ -61,13 +61,12 @@ const LastFmStats = ({ apiKey }: { apiKey: string }) => {
   return (
     <p>
       I really like music and{" "}
-      <a
+      <Link
         href={profile.user.url}
-        target="_blank"
-        className="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
+        newTab
       >
         I really like tracking it.
-      </a>{" "}
+      </Link>{" "}
       I currently have {profile.user.playcount} total scrobbles.
     </p>
   );
