@@ -2,6 +2,8 @@
 import Button from "@/components/button.astro";
 import Logo from "@/components/logo.astro";
 import { Link } from "@/components/react/link";
+
+const { pathname } = Astro.url;
 ---
 
 <header class="w-full bg-sweater-10 p-7">
@@ -15,8 +17,22 @@ import { Link } from "@/components/react/link";
       />
     </a>
     <div class="flex items-center space-x-6">
-      <Link href="/projects">Projects</Link>
-      <Link href="/design">Design</Link>
+      <Link
+        href="/projects"
+        className={pathname === "/projects"
+          ? "text-sweater-1 decoration-sweater-1/50 hover:text-sweater-4 hover:decoration-sweater-4"
+          : ""}
+      >
+        Projects
+      </Link>
+      <Link
+        href="/design"
+        className={pathname === "/design"
+          ? "text-sweater-1 decoration-sweater-1/50 hover:text-sweater-4 hover:decoration-sweater-4"
+          : ""}
+      >
+        Design
+      </Link>
       <Button>
         <a
           href="/resume.pdf"

@@ -16,7 +16,7 @@ const Link = ({
       href={href}
       target={newTab ? "_blank" : "_self"}
       className={cn(
-        "w-fit text-sweater-3 underline decoration-sweater-3/50 underline-offset-2 transition-colors hover:text-sweater-1 hover:decoration-sweater-3",
+        "w-fit text-sweater-3 underline decoration-sweater-3/50 underline-offset-2 transition-all hover:text-sweater-1 hover:decoration-sweater-1",
         className,
       )}
     >
