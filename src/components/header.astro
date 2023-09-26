@@ -4,7 +4,9 @@ import { Button } from "@/components/react/button";
 import { Link } from "@/components/react/link";
 import { FileText } from "lucide-astro";
 
+// see https://github.com/withastro/astro/issues/5248
 const { pathname } = Astro.url;
+const path = pathname.replace(/\/$/, "");
 ---
 
 <header class="w-full bg-sweater-10 p-7">
@@ -20,7 +22,7 @@ const { pathname } = Astro.url;
         className="fill-sweater-4 group-hover:rotate-[-10deg] group-hover:fill-sweater-1 transition"
       />
       {
-        pathname !== "/" ? (
+        path !== "/" ? (
           <p class="invisible font-bold text-sweater-4 transition group-hover:translate-x-1 group-hover:text-sweater-1 xs:visible">
             Home
           </p>
@@ -30,7 +32,7 @@ const { pathname } = Astro.url;
     <div class="flex items-center space-x-6">
       <Link
         href="/projects"
-        className={pathname === "/projects"
+        className={path === "/projects"
           ? "text-sweater-1 decoration-sweater-1/50 hover:text-sweater-4 hover:decoration-sweater-4"
           : ""}
       >
@@ -38,7 +40,7 @@ const { pathname } = Astro.url;
       </Link>
       <Link
         href="/design"
-        className={pathname === "/design"
+        className={path === "/design"
           ? "text-sweater-1 decoration-sweater-1/50 hover:text-sweater-4 hover:decoration-sweater-4"
           : ""}
       >
