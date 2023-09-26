@@ -8,13 +8,14 @@ const { pathname } = Astro.url;
 
 <header class="w-full bg-sweater-10 p-7">
   <nav class="flex items-center justify-between">
-    <a href="/">
+    <a href="/" class="flex space-x-3 items-center group">
       <Logo
         width={30}
         height={30}
         alt="Go to home"
-        className="fill-sweater-4 hover:rotate-[-10deg] hover:fill-sweater-1 transition"
+        className="fill-sweater-4 group-hover:rotate-[-10deg] group-hover:fill-sweater-1 transition"
       />
+      {pathname !== "/" ? <p class="text-sweater-4 group-hover:text-sweater-1 font-bold">Home</p> : null}
     </a>
     <div class="flex items-center space-x-6">
       <Link
