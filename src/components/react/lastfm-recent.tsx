@@ -90,7 +90,7 @@ const LastFmRecent = ({ apiKey }: { apiKey: string }) => {
 
       <div className="flex items-center space-x-5">
         <img
-          src={firstTrack.image[3]["#text"]}
+          src={firstTrack.image[2]["#text"]}
           alt={`Song cover for ${firstTrack.name}`}
           className="h-[80px] w-[80px] rounded bg-sweater-8 xs:h-[85px] xs:w-[85px] 2xl:h-[110px] 2xl:w-[110px]"
         />

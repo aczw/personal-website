@@ -1,0 +1,38 @@
+---
+import { Link } from "@/components/react/link";
+import { type Project } from "@/utils/types";
+import { Image } from "astro:assets";
+import Badge from "./badge.astro";
+
+interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+---
+
+<div class="grid gap-5 rounded-lg bg-sweater-9 p-5 sm:grid-cols-6">
+  <Image
+    class="h-auto w-full rounded-md border-4 border-sweater-8 bg-sweater-8 sm:col-span-2 sm:block"
+    src={import(`../assets/projects/${project.imgSrc}`)}
+    alt={project.alt}
+  />
+  <div class="space-y-3 sm:col-span-4">
+    <div class="flex items-end justify-between">
+      <Link
+        href={project.href}
+        newTab
+        className="text-2xl font-mono"
+      >
+        <h3>{project.name}</h3>
+      </Link>
+      <p class="font-bold text-sweater-2">{project.date}</p>
+    </div>
+    <p class="p-0">
+      {project.desc}
+    </p>
+    <div class="flex space-x-2 pt-1">
+      {project.tags.map((tag) => <Badge>{tag}</Badge>)}
+    </div>
+  </div>
+</div>

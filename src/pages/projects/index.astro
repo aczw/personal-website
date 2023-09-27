@@ -1,4 +1,6 @@
 ---
+import projects from "@/assets/projects/projects.json";
+import ProjectCard from "@/components/project-card.astro";
 import Layout from "@/layouts/layout.astro";
 ---
 
@@ -6,9 +8,14 @@ import Layout from "@/layouts/layout.astro";
   title="Projects"
   description="Projects from my classes and my random interests. Coding stuff."
 >
-  <main class="flex min-h-[calc(100vh-105px)] items-center justify-center">
-    <p class="text-sweater-7">
-      <code class="text-sm">/projects</code> is under construction 🚧
-    </p>
+  <main
+    class="flex min-h-[calc(100vh-105px)] flex-col items-center px-7 text-sweater-1"
+  >
+    <div class="flex max-w-[800px] flex-col space-y-4">
+      <h2 class="text-3xl font-bold text-sweater-2">Projects</h2>
+      <div class="flex flex-col space-y-5">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </div>
   </main>
 </Layout>

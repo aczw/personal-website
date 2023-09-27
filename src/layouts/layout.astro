@@ -13,11 +13,16 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
-const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site).toString());
+const canonicalUrl = removeTrailingSlash(
+  new URL(Astro.url.pathname, Astro.site).toString(),
+);
 ---
 
 <!doctype html>
-<html lang="en" transition:animate={fade({duration: "0.3s"})}>
+<html
+  lang="en"
+  transition:animate={fade({ duration: "0.3s" })}
+>
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -33,7 +38,10 @@ const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site)
       content={Astro.generator}
     />
 
-    <link rel="canonical" href={canonicalUrl} />
+    <link
+      rel="canonical"
+      href={canonicalUrl}
+    />
     <link
       rel="icon"
       sizes="any"
