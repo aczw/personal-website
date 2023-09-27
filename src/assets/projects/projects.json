@@ -3,7 +3,7 @@
     "name": "RCW",
     "href": "https://aczw.itch.io/rcw",
     "date": "April 2023",
-    "imgSrc": "rcw.png",
+    "imgSrc": "rcw",
     "alt": "Screenshot of my game's main menu",
     "desc": "Minigame made in Unity. Endlessly match colors and text together, but be quick about it! Based on the Stroop effect. Made everything myself except for the music... first foray into game dev.",
     "tags": ["Unity", "C#", "Figma"]
