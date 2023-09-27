@@ -2,7 +2,7 @@ interface Project {
   name: string;
   href: string;
   date: string;
-  imgSrc: string;
+  imgName: string;
   alt: string;
   desc: string;
   tags: string[];
