@@ -1,7 +1,6 @@
 ---
 import projects from "@/assets/projects/projects.json";
 import ProjectCard from "@/components/project-card.astro";
-import { Link } from "@/components/react/link";
 import Layout from "@/layouts/layout.astro";
 ---
 
@@ -14,7 +13,6 @@ import Layout from "@/layouts/layout.astro";
   >
     <section class="flex max-w-[800px] flex-col space-y-4">
       <h2 class="text-3xl font-bold text-sweater-2">Projects</h2>
-      <p>You know what I&apos;ve noticed? All of these projects were started in 2023. I think the main reason is that before then, I was doing a lot more <Link href="/design">design</Link> than anything else. Just interesting to see the progression.</p>
       <ul class="flex flex-col space-y-5">
         {projects.map((project) => <ProjectCard project={project} />)}
       </ul>

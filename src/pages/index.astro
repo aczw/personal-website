@@ -16,7 +16,7 @@ import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
 >
   <!-- we subtract the heights of the header and footer -->
   <main class="flex min-h-[calc(100vh-88px-80px)] items-center justify-center">
-    <div
+    <section
       class="mx-3 grid auto-cols-fr grid-flow-row auto-rows-fr grid-rows-4 gap-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-flow-col xl:grid-cols-[11]"
     >
       <div
@@ -40,7 +40,7 @@ import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
         href="/projects"
         class="group col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
       >
-        <div class="flex space-x-1">
+        <span class="flex space-x-1">
           <ArrowRightCircle
             size={28}
             class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
@@ -49,7 +49,7 @@ import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
             size={28}
             class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
           />
-        </div>
+        </span>
 
         <p class="leading-tight text-sweater-1">
           <b>Coding stuff.</b> Projects from my classes and my random interests.
@@ -59,7 +59,7 @@ import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
         href="/design"
         class="group col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
       >
-        <div class="flex space-x-1">
+        <span class="flex space-x-1">
           <ArrowRightCircle
             size={28}
             class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
@@ -68,7 +68,7 @@ import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
             size={28}
             class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
           />
-        </div>
+        </span>
 
         <p class="leading-tight text-sweater-1">
           <b>Visual stuff.</b> Design and artwork made for myself and others.
@@ -110,6 +110,6 @@ import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
           client:load
         />
       </CardMd>
-    </div>
+    </section>
   </main>
 </Layout>
