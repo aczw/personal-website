@@ -1,11 +1,76 @@
 [
   {
+    "name": "Scallop Playground",
+    "href": "https://play.scallop-lang.org",
+    "date": "ongoing!",
+    "imgName": "scallop-playground",
+    "alt": "Screenshot depicting the playground editor",
+    "desc": "Scallop is a neurosymbolic programming language currently in development at Penn. Me and two friends are building an online playground to run Scallop code, create projects, and share them with others. Uses a Next.js frontend, Flask backend to run Scallop, and PlanetScale for storing user and project data.",
+    "tags": [
+      "Next.js",
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "MySQL",
+      "tRPC",
+      "Prisma",
+      "Auth.js",
+      "Flask",
+      "Figma"
+    ]
+  },
+  {
+    "name": "charl.sh",
+    "href": "https://github.com/aczw/personal-website",
+    "date": "Sept 2023",
+    "imgName": "personal-website",
+    "alt": "Screenshot of my website's homepage",
+    "desc": "How meta! This site was built with Astro, React, and Tailwind, and is deployed on Vercel. The source code is on GitHub.",
+    "tags": ["Astro", "TypeScript", "React", "Tailwind CSS", "Figma"]
+  },
+  {
+    "name": "aczw.dev",
+    "href": "https://old.charl.sh/",
+    "date": "July 2023",
+    "imgName": "aczw-dev",
+    "alt": "Screenshot of my old website's homepage",
+    "desc": "v1 of my website. I had no idea what I was doing, Next.js was overkill for my purposes. It's still up, go visit the link.",
+    "tags": ["Next.js", "React", "Tailwind CSS", "Figma"]
+  },
+  {
     "name": "RCW",
     "href": "https://aczw.itch.io/rcw",
-    "date": "April 2023",
+    "date": "June 2023",
     "imgName": "rcw",
     "alt": "Screenshot of my game's main menu",
     "desc": "Minigame made in Unity. Endlessly match colors and text together, but be quick about it! Based on the Stroop effect. Made everything myself except for the music... first foray into game dev.",
     "tags": ["Unity", "C#", "Figma"]
+  },
+  {
+    "name": "ttt",
+    "href": "https://ttt.charl.sh/",
+    "date": "June 2023",
+    "imgName": "tic-tac-toe",
+    "alt": "Screenshot showing a tic-tac-toe game in progress",
+    "desc": "It's tic-tac-toe... small little project that finally made React click for me.",
+    "tags": ["Next.js", "React", "Tailwind CSS"]
+  },
+  {
+    "name": "wikiRank",
+    "href": "https://wikirank.vercel.app/",
+    "date": "May 2023",
+    "imgName": "wikirank",
+    "alt": "Screenshot of wikiRank's main interface",
+    "desc": "Originally made for a class, with friends. Enter some text (think journal articles, research papers) and have the vector space model analyze it, along with your keywords, to find the most relevant Wikipedia articles.",
+    "tags": ["Next.js", "React", "JavaScript", "Tailwind CSS"]
+  },
+  {
+    "name": "sddm-theme-corners",
+    "href": "https://github.com/aczw/sddm-theme-corners",
+    "date": "Jan 2023",
+    "imgName": "sddm-theme-corners",
+    "alt": "Screenshot of my theme setup",
+    "desc": "An extremely customizable theme for SDDM, a login manager for Linux. Written in QML and uses the Qt Quick framework. Has 60+ stars if that counts for anything.",
+    "tags": ["Qt", "QML"]
   }
 ]

@@ -11,14 +11,14 @@ interface Props {
 const { project } = Astro.props;
 ---
 
-<div class="grid gap-5 rounded-lg bg-sweater-9 p-5 sm:grid-cols-6">
+<li class="grid gap-5 rounded-lg bg-sweater-9 p-5 sm:grid-cols-6">
   <Image
     class="h-auto w-full rounded-md border-4 border-sweater-8 bg-sweater-8 sm:col-span-2 sm:block"
     src={import(`../assets/projects/${project.imgName}.png`)}
     alt={project.alt}
   />
   <div class="space-y-3 sm:col-span-4">
-    <div class="flex items-end justify-between">
+    <span class="flex flex-col justify-between sm:flex-row sm:items-end">
       <Link
         href={project.href}
         newTab
@@ -27,12 +27,12 @@ const { project } = Astro.props;
         <h3>{project.name}</h3>
       </Link>
       <p class="font-bold text-sweater-2">{project.date}</p>
-    </div>
+    </span>
     <p class="p-0">
       {project.desc}
     </p>
-    <div class="flex space-x-2 pt-1">
+    <div class="flex flex-wrap gap-2 pt-1">
       {project.tags.map((tag) => <Badge>{tag}</Badge>)}
     </div>
   </div>
-</div>
+</li>

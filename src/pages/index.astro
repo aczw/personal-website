@@ -5,6 +5,7 @@ import CardMd from "@/components/card-md.astro";
 import LastFmRecent from "@/components/react/lastfm-recent";
 import LastFmStats from "@/components/react/lastfm-stats";
 import LastFmWeekly from "@/components/react/lastfm-weekly";
+import { Link } from "@/components/react/link";
 import Layout from "@/layouts/layout.astro";
 import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
 ---
@@ -28,10 +29,10 @@ import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
         </p>
         <p>
           I&apos;m probably doing homework, sleeping, reading manga, or learning
-          to play the bass. I love running and designing album covers. Right now
-          I&apos;m really interested in game and web dev.
+          the bass. I love running and designing album covers. Right now
+          I&apos;m really interested in game dev and web dev.
         </p>
-        <p class="text-sweater-2">Thanks for stopping by!!</p>
+        <p class="text-sweater-2">My resume is <Link href="/resume.pdf" newTab data-astro-reload>here.</Link> Contact info is below. Thanks for stopping by!!</p>
         <p>(〜￣▽￣)〜</p>
       </div>
 
