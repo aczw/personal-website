@@ -7,6 +7,7 @@
   src: url("/fonts/MapleMono-Regular.woff2") format("woff2");
   font-style: normal;
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
@@ -14,6 +15,7 @@
   src: url("/fonts/MapleMono-Italic.woff2") format("woff2");
   font-style: italic;
   font-weight: 400;
+  font-display: swap;
 }
 
 @font-face {
@@ -21,6 +23,7 @@
   src: url("/fonts/MapleMono-Bold.woff2") format("woff2");
   font-style: normal;
   font-weight: 700;
+  font-display: swap;
 }
 
 @font-face {
@@ -28,4 +31,5 @@
   src: url("/fonts/MapleMono-BoldItalic.woff2") format("woff2");
   font-style: italic;
   font-weight: 700;
+  font-display: swap;
 }
