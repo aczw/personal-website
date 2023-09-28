@@ -4,23 +4,25 @@ import { Github, Linkedin, Mail } from "lucide-astro";
 ---
 
 <footer class="flex w-full items-center justify-between bg-sweater-10 p-7">
-  <div class="flex items-center space-x-5">
+  <span class="flex items-center space-x-5">
     <Link
       href="https://www.github.com/aczw"
+      title="GitHub"
       newTab
     >
       <Github />
     </Link>
     <Link
       href="https://www.linkedin.com/in/zwcharl/"
+      title="LinkedIn"
       newTab
     >
       <Linkedin />
     </Link>
-    <Link href="mailto:zwcharl@gmail.com">
+    <Link href="mailto:zwcharl@gmail.com" title="Email">
       <Mail />
     </Link>
-  </div><p class="font-mono text-sm text-sweater-3">
-    <i>updated 9/27/23</i> 👾
+  </span><p class="font-mono text-sm text-sweater-3">
+    <i>updated 9/28/23</i> 👾
   </p>
 </footer>
