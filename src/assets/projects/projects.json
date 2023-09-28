@@ -6,18 +6,7 @@
     "imgName": "scallop-playground",
     "alt": "Screenshot depicting the playground editor",
     "desc": "Scallop is a neurosymbolic programming language currently in development at Penn. Me and two friends are building an online playground to run Scallop code, create projects, and share them with others. Uses a Next.js frontend, Flask backend to run Scallop, and PlanetScale for storing user and project data.",
-    "tags": [
-      "Next.js",
-      "React",
-      "TypeScript",
-      "Tailwind CSS",
-      "MySQL",
-      "tRPC",
-      "Prisma",
-      "Auth.js",
-      "Flask",
-      "Figma"
-    ]
+    "tags": ["Next.js", "React", "TypeScript", "Tailwind CSS", "MySQL", "Flask"]
   },
   {
     "name": "charl.sh",
