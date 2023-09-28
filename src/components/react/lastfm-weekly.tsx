@@ -1,7 +1,7 @@
 import { Link } from "@/components/react/link";
 import useSWR from "swr";
 
-interface LastFmRecents {
+interface LastFmWeekly {
   weeklytrackchart: {
     track: {
       artist: { mbid: string; "#text": string };
@@ -25,14 +25,23 @@ interface LastFmRecents {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const LastFmWeekly = ({ apiKey }: { apiKey: string }) => {
-  const key = `https://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=ashzw&api_key=${apiKey}&format=json`;
+  const now = new Date();
+  const lastSeven = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate() - 7,
+  );
 
-  const { data: tracks, isLoading } = useSWR<LastFmRecents>(key, fetcher);
+  const key = `https://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=ashzw&limit=3&api_key=${apiKey}&from=${Math.floor(
+    lastSeven.getTime() / 1000,
+  )}&to=${Math.floor(now.getTime() / 1000)}&format=json`;
+
+  const { data: tracks, isLoading } = useSWR<LastFmWeekly>(key, fetcher);
 
   if (isLoading) {
     return (
       <div className="flex h-12 animate-pulse items-center justify-center rounded-md bg-sweater-8 text-sweater-6">
-        Fetching most listened to tracks...
+        Fetching recent tracks...
       </div>
     );
   }
@@ -44,20 +53,19 @@ const LastFmWeekly = ({ apiKey }: { apiKey: string }) => {
       <p>
         My top tracks couldn't be fetched for some reason... you can find what
         I've been listening to{" "}
-        <a
+        <Link
           href="https://www.last.fm/user/ashzw/library/tracks?date_preset=LAST_7_DAYS"
-          target="_blank"
-          className="text-sweater-3 transition-colors hover:text-sweater-1 hover:underline"
+          newTab
         >
           here.
-        </a>
+        </Link>
       </p>
     );
   }
 
   return (
     <p className="line-clamp-2 2xl:line-clamp-3">
-      My top tracks this week are{" "}
+      My top tracks in the last 7 days are{" "}
       <Link
         href={topThree[0].url}
         newTab
