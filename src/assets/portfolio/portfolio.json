@@ -21,7 +21,7 @@
   },
   {
     "name": "Texas Watchin' Me by Kevin Abstract",
-    "imgName": "bankroll-og"
+    "imgName": "texas-watchin-me"
   },
   {
     "name": "Start A Revolution by Mac Miller",
@@ -40,6 +40,18 @@
     "imgName": "hop"
   },
   {
+    "name": "Ashcrel Airlines",
+    "imgName": "ashcrel-airlines"
+  },
+  {
+    "name": "TEDxYouth@WJHS proposed logo",
+    "imgName": "tedxwjhs-logo"
+  },
+  {
+    "name": "TEDxYouth@WJHS final poster",
+    "imgName": "tedxwjhs-poster"
+  },
+  {
     "name": "Sinking Feeling by Waterflame",
     "imgName": "sinking-feeling"
   },
@@ -54,5 +66,29 @@
   {
     "name": "Within the Sadness Remix by Onefin",
     "imgName": "within-the-sadness-remix"
+  },
+  {
+    "name": "Mass Extinctions",
+    "imgName": "mass-extinctions"
+  },
+  {
+    "name": "College Admissions Scandal",
+    "imgName": "college-admissions-scandal"
+  },
+  {
+    "name": "ACT Testing",
+    "imgName": "act-testing"
+  },
+  {
+    "name": "DNA Editing & Babies",
+    "imgName": "dna-editing-babies"
+  },
+  {
+    "name": "Music, Personality, & Influences",
+    "imgName": "music-personality-influences"
+  },
+  {
+    "name": "Wonder Island",
+    "imgName": "wonder-island"
   }
 ]
