@@ -1,7 +1,7 @@
 /// <reference types="astro/client" />
 
 interface ImportMetaEnv {
-  readonly LASTFM_API_KEY: string;
+  readonly PUBLIC_LASTFM_KEY: string;
 }
 
 interface ImportMeta {

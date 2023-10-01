@@ -1,4 +1,5 @@
 import { Link } from "@/components/react/link";
+import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
 
 interface LastFmRecent {
@@ -34,18 +35,22 @@ interface LastFmRecent {
   };
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const key = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${
+  import.meta.env.PUBLIC_LASTFM_KEY
+}&limit=1&format=json`;
 
-const LastFmRecent = ({ apiKey }: { apiKey: string }) => {
-  const key = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${apiKey}&limit=1&format=json`;
-
+const LastFmRecent = () => {
   const { data: recent, isLoading } = useSWR<LastFmRecent>(key, fetcher);
+
+  const header = (
+    <h4 className="w-fit font-bold text-sweater-2">Most recent track</h4>
+  );
 
   if (isLoading) {
     return (
       <>
         <div className="flex flex-col">
-          <h4 className="w-fit font-bold text-sweater-2">Most recent track</h4>
+          {header}
           <p>Loading my most recent song...</p>
         </div>
 
@@ -62,7 +67,7 @@ const LastFmRecent = ({ apiKey }: { apiKey: string }) => {
   if (!firstTrack) {
     return (
       <div className="flex flex-col">
-        <h4 className="w-fit font-bold text-sweater-2">Most recent track</h4>
+        {header}
         <p>
           I can&apos;t seem to load my most recently listened to song. Refresh
           and see if it fixes itself? 🥲🫠
@@ -91,21 +96,17 @@ const LastFmRecent = ({ apiKey }: { apiKey: string }) => {
       <div className="flex items-center space-x-5">
         <img
           src={firstTrack.image[2]["#text"]}
-          alt={`Song cover for ${firstTrack.name}`}
+          alt={`Album art for ${firstTrack.name}`}
           className="h-[80px] w-[80px] rounded bg-sweater-8 xs:h-[85px] xs:w-[85px] 2xl:h-[110px] 2xl:w-[110px]"
         />
         <div className="flex flex-col">
           <Link
             href={firstTrack.url}
+            title={firstTrack.name}
             newTab
           >
             {firstTrack.name}
           </Link>
-          <a
-            href={firstTrack.url}
-            target="_blank"
-            className="line-clamp-1 w-fit text-sweater-3 transition-colors hover:text-sweater-1 hover:underline 2xl:line-clamp-2"
-          ></a>
           <p className="line-clamp-1">
             by{" "}
             <span className="text-sweater-2">{firstTrack.artist["#text"]}</span>

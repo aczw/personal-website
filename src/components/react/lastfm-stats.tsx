@@ -1,4 +1,5 @@
 import { Link } from "@/components/react/link";
+import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
 
 interface LastFmStats {
@@ -28,11 +29,11 @@ interface LastFmStats {
   };
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const key = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=ashzw&api_key=${
+  import.meta.env.PUBLIC_LASTFM_KEY
+}&format=json`;
 
-const LastFmStats = ({ apiKey }: { apiKey: string }) => {
-  const key = `https://ws.audioscrobbler.com/2.0/?method=user.getinfo&user=ashzw&api_key=${apiKey}&format=json`;
-
+const LastFmStats = () => {
   const { data: profile, isLoading } = useSWR<LastFmStats>(key, fetcher);
 
   if (isLoading) {
@@ -43,31 +44,33 @@ const LastFmStats = ({ apiKey }: { apiKey: string }) => {
     );
   }
 
+  const blurb = (
+    <>
+      I really like music and{" "}
+      <Link
+        href="https://www.last.fm/user/ashzw/"
+        title="My Last.fm account"
+        newTab
+      >
+        I really like tracking it.
+      </Link>
+    </>
+  );
+
   if (!profile) {
     return (
       <p>
-        I really like music and{" "}
-        <Link
-          href="https://www.last.fm/user/ashzw/"
-          newTab
-        >
-          I really like tracking it.
-        </Link>{" "}
-        According to Last.fm, I listen to an average of ~55 tracks daily.
+        {blurb} According to Last.fm, I listen to an average of{" "}
+        <span className="text-sweater-2">~55</span> tracks daily.
       </p>
     );
   }
 
   return (
     <p>
-      I really like music and{" "}
-      <Link
-        href={profile.user.url}
-        newTab
-      >
-        I really like tracking it.
-      </Link>{" "}
-      I currently have {profile.user.playcount} total scrobbles.
+      {blurb} I currently have{" "}
+      <span className="text-sweater-2">{profile.user.playcount}</span> total
+      scrobbles.
     </p>
   );
 };

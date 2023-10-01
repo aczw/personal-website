@@ -84,7 +84,6 @@ import { PaintBucket, TerminalSquare } from "lucide-astro";
 
       <CardMd>
         <LastFmRecent
-          apiKey={import.meta.env.LASTFM_API_KEY}
           client:load
         />
       </CardMd>
@@ -92,11 +91,9 @@ import { PaintBucket, TerminalSquare } from "lucide-astro";
       <CardMd>
         <h4 class="w-fit font-bold text-sweater-2">Last.fm profile</h4>
         <LastFmStats
-          apiKey={import.meta.env.LASTFM_API_KEY}
           client:load
         />
         <LastFmWeekly
-          apiKey={import.meta.env.LASTFM_API_KEY}
           client:load
         />
       </CardMd>

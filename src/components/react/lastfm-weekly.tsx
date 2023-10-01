@@ -1,4 +1,5 @@
 import { Link } from "@/components/react/link";
+import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
 
 interface LastFmWeekly {
@@ -22,21 +23,23 @@ interface LastFmWeekly {
   };
 }
 
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
-
-const LastFmWeekly = ({ apiKey }: { apiKey: string }) => {
+const calculateKey = () => {
   const now = new Date();
-  const lastSeven = new Date(
-    now.getFullYear(),
-    now.getMonth(),
-    now.getDate() - 7,
+  const lastSeven = Math.floor(
+    new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7).getTime() /
+      1000,
   );
 
-  const key = `https://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=ashzw&limit=3&api_key=${apiKey}&from=${Math.floor(
-    lastSeven.getTime() / 1000,
-  )}&to=${Math.floor(now.getTime() / 1000)}&format=json`;
+  return `https://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=ashzw&limit=3&api_key=${
+    import.meta.env.PUBLIC_LASTFM_KEY
+  }&from=${lastSeven}&to=${Math.floor(now.getTime() / 1000)}&format=json`;
+};
 
-  const { data: tracks, isLoading } = useSWR<LastFmWeekly>(key, fetcher);
+const LastFmWeekly = () => {
+  const { data: tracks, isLoading } = useSWR<LastFmWeekly>(
+    calculateKey(),
+    fetcher,
+  );
 
   if (isLoading) {
     return (
@@ -68,6 +71,7 @@ const LastFmWeekly = ({ apiKey }: { apiKey: string }) => {
       My top tracks in the last 7 days are{" "}
       <Link
         href={topThree[0].url}
+        title={topThree[0].name}
         newTab
       >
         {topThree[0].name}
@@ -75,6 +79,7 @@ const LastFmWeekly = ({ apiKey }: { apiKey: string }) => {
       ({topThree[0].playcount} times),{" "}
       <Link
         href={topThree[1].url}
+        title={topThree[1].name}
         newTab
       >
         {topThree[1].name}
@@ -82,6 +87,7 @@ const LastFmWeekly = ({ apiKey }: { apiKey: string }) => {
       ({topThree[1].playcount} times), and{" "}
       <Link
         href={topThree[2].url}
+        title={topThree[2].name}
         newTab
       >
         {topThree[2].name}
