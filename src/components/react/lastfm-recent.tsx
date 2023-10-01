@@ -43,7 +43,9 @@ const LastFmRecent = () => {
   const { data: recent, isLoading } = useSWR<LastFmRecent>(key, fetcher);
 
   const header = (
-    <h4 className="w-fit font-bold text-sweater-2">Most recent track</h4>
+    <h4 className="w-fit font-mono text-sm font-bold text-sweater-2">
+      Most recent track
+    </h4>
   );
 
   if (isLoading) {
@@ -83,7 +85,7 @@ const LastFmRecent = () => {
   return (
     <>
       <div className="flex flex-col">
-        <h4 className="w-fit font-bold text-sweater-2">
+        <h4 className="w-fit font-mono text-sm font-bold text-sweater-2">
           {nowPlaying ? "Currently playing" : "Last listened to"}
         </h4>
         <p>

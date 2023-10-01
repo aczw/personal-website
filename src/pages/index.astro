@@ -20,7 +20,7 @@ import Layout from "@/layouts/layout.astro";
       class="mx-3 grid auto-cols-fr grid-flow-row auto-rows-fr grid-rows-4 gap-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-flow-col xl:grid-cols-[11]"
     >
       <CardLg>
-        <h4 class="font-bold text-sweater-2">About</h4>
+        <h4 class="font-bold text-sweater-2 font-mono text-sm">About</h4>
         <p>
           Hi there, I&apos;m Charles. I&apos;m a student at the University of
           Pennsylvania currently majoring in computer graphics, with a minor in
@@ -45,7 +45,7 @@ import Layout from "@/layouts/layout.astro";
       </CardMd>
 
       <CardMd>
-        <h4 class="w-fit font-bold text-sweater-2">Last.fm profile</h4>
+        <h4 class="w-fit font-bold text-sweater-2 font-mono text-sm">Last.fm profile</h4>
         <LastFmStats client:load />
         <LastFmWeekly client:load />
       </CardMd>
