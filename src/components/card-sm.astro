@@ -1,0 +1,13 @@
+---
+import { cn } from "@/utils/cn";
+
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<div class={cn("rounded-xl transition-all hover:rounded-[60px]", className)}>
+  <slot />
+</div>

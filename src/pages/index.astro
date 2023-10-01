@@ -1,12 +1,13 @@
 ---
 export const prerender = false;
 
+import CardLg from "@/components/card-lg.astro";
 import CardMd from "@/components/card-md.astro";
+import CardSm from "@/components/card-sm.astro";
 import LastFmRecent from "@/components/react/lastfm-recent";
 import LastFmStats from "@/components/react/lastfm-stats";
 import LastFmWeekly from "@/components/react/lastfm-weekly";
 import Layout from "@/layouts/layout.astro";
-import { PaintBucket, TerminalSquare } from "lucide-astro";
 ---
 
 <Layout
@@ -18,9 +19,7 @@ import { PaintBucket, TerminalSquare } from "lucide-astro";
     <section
       class="mx-3 grid auto-cols-fr grid-flow-row auto-rows-fr grid-rows-4 gap-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-flow-col xl:grid-cols-[11]"
     >
-      <div
-        class="col-span-4 row-span-4 flex flex-col justify-between space-y-5 rounded-xl bg-sweater-9 p-8 text-sweater-1 xs:h-[400px] xs:max-w-[400px] 2xl:h-[500px] 2xl:max-w-[500px] 2xl:p-16"
-      >
+      <CardLg>
         <h4 class="font-bold text-sweater-2">About</h4>
         <p>
           Hi there, I&apos;m Charles. I&apos;m a student at the University of
@@ -34,53 +33,12 @@ import { PaintBucket, TerminalSquare } from "lucide-astro";
         </p>
         <p class="text-sweater-2">Thanks for stopping by!!</p>
         <p>(〜￣▽￣)〜</p>
-      </div>
+      </CardLg>
 
-      <a
-        href="/projects"
-        class="group col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
-      >
-        <TerminalSquare
-          size={28}
-          class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
-        />
-        <p
-          class="font-bold leading-tight text-sweater-3 transition-colors group-hover:text-sweater-2"
-        >
-          Programming projects
-        </p>
-      </a>
-      <a
-        href="/design"
-        class="group col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
-      >
-        <PaintBucket
-          size={28}
-          class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
-        />
-        <p
-          class="font-bold leading-tight text-sweater-3 transition-colors group-hover:text-sweater-2"
-        >
-          Design and artwork
-        </p>
-      </a>
-
-      <div
-        class="rounded-xl bg-sweater-8 transition-all hover:rounded-[60px] hover:bg-sweater-4"
-      >
-      </div>
-      <div
-        class="rounded-xl bg-sweater-7 transition-all hover:rounded-[60px] hover:bg-sweater-3"
-      >
-      </div>
-      <div
-        class="rounded-xl bg-sweater-6 transition-all hover:rounded-[60px] hover:bg-sweater-2"
-      >
-      </div>
-      <div
-        class="rounded-xl bg-sweater-5 transition-all hover:rounded-[60px] hover:bg-sweater-1"
-      >
-      </div>
+      <CardSm className="bg-sweater-8  hover:bg-sweater-4" />
+      <CardSm className="bg-sweater-7  hover:bg-sweater-3" />
+      <CardSm className="bg-sweater-6  hover:bg-sweater-2" />
+      <CardSm className="bg-sweater-5  hover:bg-sweater-1" />
 
       <CardMd>
         <LastFmRecent client:load />
