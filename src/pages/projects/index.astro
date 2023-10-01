@@ -11,8 +11,15 @@ import Layout from "@/layouts/layout.astro";
   <main
     class="flex min-h-[calc(100vh-105px)] flex-col items-center px-7 text-sweater-1"
   >
-    <section class="flex max-w-[800px] flex-col space-y-4">
+    <section class="flex max-w-[900px] flex-col space-y-5">
       <h2 class="text-3xl font-bold text-sweater-2">Projects</h2>
+      <p>
+        I&apos;ve loved tinkering with computers ever since I was young. My last
+        phone was jailbroken. I run a dualboot setup with Windows and Arch. I
+        had my own Plex server during quarantine. Growing up, this meant my
+        dad's computer was often filled to the brim with malware... now, I know
+        a little better. Thanks for bearing with me, dad.
+      </p>
       <ul class="flex flex-col space-y-5">
         {projects.map((project) => <ProjectCard project={project} />)}
       </ul>

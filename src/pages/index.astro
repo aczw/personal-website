@@ -6,7 +6,7 @@ import LastFmRecent from "@/components/react/lastfm-recent";
 import LastFmStats from "@/components/react/lastfm-stats";
 import LastFmWeekly from "@/components/react/lastfm-weekly";
 import Layout from "@/layouts/layout.astro";
-import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
+import { PaintBucket, TerminalSquare } from "lucide-astro";
 ---
 
 <Layout
@@ -23,18 +23,16 @@ import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
       >
         <h4 class="font-bold text-sweater-2">About</h4>
         <p>
-          Hi, I&apos;m Charles. I&apos;m a student at the University of
-          Pennsylvania currently studying computer graphics and design.
+          Hi there, I&apos;m Charles. I&apos;m a student at the University of
+          Pennsylvania currently majoring in computer graphics, with a minor in
+          design.
         </p>
         <p>
-          I&apos;m probably doing homework, sleeping, reading manga, or learning
-          the bass. I love running and designing album covers. Right now
-          I&apos;m really interested in game dev and web dev.
+          I&apos;m interested in making games and websites. In my free time I
+          like running, designing album covers, reading manga, and learning the
+          bass.
         </p>
-        <p class="text-sweater-2">
-          Links can be found above. Contact info is below. Thanks for stopping
-          by!!
-        </p>
+        <p class="text-sweater-2">Thanks for stopping by!!</p>
         <p>(〜￣▽￣)〜</p>
       </div>
 
@@ -42,38 +40,28 @@ import { ArrowRightCircle, Bug, PaintBucket } from "lucide-astro";
         href="/projects"
         class="group col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
       >
-        <span class="flex space-x-1">
-          <ArrowRightCircle
-            size={28}
-            class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
-          />
-          <Bug
-            size={28}
-            class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
-          />
-        </span>
-
-        <p class="leading-tight text-sweater-1">
-          <b>Coding stuff.</b> Projects from my classes and my random interests.
+        <TerminalSquare
+          size={28}
+          class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
+        />
+        <p
+          class="font-bold leading-tight text-sweater-3 transition-colors group-hover:text-sweater-2"
+        >
+          Programming projects
         </p>
       </a>
       <a
         href="/design"
         class="group col-span-2 row-span-2 flex flex-col justify-between rounded-xl bg-sweater-8 p-5 transition-colors hover:bg-sweater-7 xs:h-[194px] xs:max-w-[194px] 2xl:h-[244px] 2xl:max-w-[244px] 2xl:p-8"
       >
-        <span class="flex space-x-1">
-          <ArrowRightCircle
-            size={28}
-            class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
-          />
-          <PaintBucket
-            size={28}
-            class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
-          />
-        </span>
-
-        <p class="leading-tight text-sweater-1">
-          <b>Visual stuff.</b> Design and artwork made for myself and others.
+        <PaintBucket
+          size={28}
+          class="stroke-sweater-5 transition-colors group-hover:stroke-sweater-2"
+        />
+        <p
+          class="font-bold leading-tight text-sweater-3 transition-colors group-hover:text-sweater-2"
+        >
+          Design and artwork
         </p>
       </a>
 
