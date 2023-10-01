@@ -11,8 +11,8 @@ import Layout from "@/layouts/layout.astro";
   <main
     class="flex min-h-[calc(100vh-105px)] flex-col items-center px-7 text-sweater-1"
   >
-    <section class="flex max-w-[900px] w-full flex-col space-y-5">
-      <div class="columns-2xs gap-5">
+    <section class="flex max-w-[1100px] w-full flex-col space-y-5">
+      <div class="columns-xs gap-5">
         {portfolioJson.map((item) => <PortfolioCard portfolio={item} />)}
       </div>
     </section>
