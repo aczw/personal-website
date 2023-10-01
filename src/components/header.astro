@@ -3,7 +3,7 @@ import Logo from "@/components/logo.astro";
 import { Button } from "@/components/react/button";
 import { Link } from "@/components/react/link";
 import { removeTrailingSlash } from "@/utils/remove-trailing-slash";
-import { FileText } from "lucide-astro";
+import { FileText, PaintBucket, TerminalSquare } from "lucide-astro";
 
 // see https://github.com/withastro/astro/issues/5248
 const { pathname } = Astro.url;
@@ -33,27 +33,39 @@ const path = removeTrailingSlash(pathname);
     <div class="flex items-center space-x-6">
       <Link
         href="/projects"
-        className={path === "/projects"
-          ? "text-sweater-1 decoration-sweater-1/50 hover:text-sweater-4 hover:decoration-sweater-4"
-          : ""}
+        className={`flex items-center ${
+          path === "/projects"
+            ? "text-sweater-1 decoration-sweater-1/50 hover:text-sweater-4 hover:decoration-sweater-4"
+            : ""
+        }`}
       >
-        Projects
+        <TerminalSquare
+          size={16}
+          class="mr-1 hidden xs:block"
+        /> Projects
       </Link>
+
       <Link
-        href="/design"
-        className={path === "/design"
-          ? "text-sweater-1 decoration-sweater-1/50 hover:text-sweater-4 hover:decoration-sweater-4"
-          : ""}
+        href="/portfolio"
+        className={`flex items-center ${
+          path === "/design"
+            ? "text-sweater-1 decoration-sweater-1/50 hover:text-sweater-4 hover:decoration-sweater-4"
+            : ""
+        }`}
       >
-        Design
+        <PaintBucket
+          size={16}
+          class="mr-1 hidden xs:block"
+        /> Portfolio
       </Link>
+
       <a
         href="/resume.pdf"
         target="_blank"
         ><Button>
           <FileText
             size={16}
-            class="mr-1"
+            class="mr-1 hidden xs:block"
           />Resume
         </Button></a
       >

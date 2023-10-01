@@ -5,19 +5,13 @@ import Layout from "@/layouts/layout.astro";
 ---
 
 <Layout
-  title="Projects"
+  title="Projects • Charles Wang"
   description="Coding stuff. Projects from my classes and random interests."
 >
   <main
     class="flex min-h-[calc(100vh-105px)] flex-col items-center px-7 text-sweater-1"
   >
     <section class="flex max-w-[900px] flex-col space-y-5">
-      <h2 class="text-3xl font-bold text-sweater-2">Projects</h2>
-      <p>
-        I&apos;ve loved tinkering with computers ever since I was young. Growing
-        up, this meant I often accidentally infected my dad&apos;s computer with
-        malware... I now a little better now.
-      </p>
       <ul class="flex flex-col space-y-5">
         {projectsJson.map((project) => <ProjectCard project={project} />)}
       </ul>

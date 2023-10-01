@@ -8,6 +8,6 @@ interface Props {
 const { className } = Astro.props;
 ---
 
-<div class={cn("rounded-xl transition-all hover:rounded-[60px]", className)}>
+<div class={cn("col-span-1 row-span-1 rounded-xl transition-all hover:rounded-[60px]", className)}>
   <slot />
 </div>
