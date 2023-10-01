@@ -6,7 +6,7 @@ import Layout from "@/layouts/layout.astro";
 
 <Layout
   title="Projects"
-  description="Projects from my classes and my random interests. Coding stuff."
+  description="Coding stuff. Projects from my classes and random interests."
 >
   <main
     class="flex min-h-[calc(100vh-105px)] flex-col items-center px-7 text-sweater-1"
@@ -14,11 +14,9 @@ import Layout from "@/layouts/layout.astro";
     <section class="flex max-w-[900px] flex-col space-y-5">
       <h2 class="text-3xl font-bold text-sweater-2">Projects</h2>
       <p>
-        I&apos;ve loved tinkering with computers ever since I was young. My last
-        phone was jailbroken. I run a dualboot setup with Windows and Arch. I
-        had my own Plex server during quarantine. Growing up, this meant my
-        dad's computer was often filled to the brim with malware... now, I know
-        a little better. Thanks for bearing with me, dad.
+        I&apos;ve loved tinkering with computers ever since I was young. Growing
+        up, this meant I often accidentally infected my dad&apos;s computer with
+        malware... I now a little better now.
       </p>
       <ul class="flex flex-col space-y-5">
         {projects.map((project) => <ProjectCard project={project} />)}
