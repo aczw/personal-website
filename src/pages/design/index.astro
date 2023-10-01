@@ -1,4 +1,6 @@
 ---
+import designJson from "@/assets/design/design.json";
+import DesignCard from "@/components/design-card.astro";
 import Layout from "@/layouts/layout.astro";
 ---
 
@@ -16,6 +18,9 @@ import Layout from "@/layouts/layout.astro";
         artwork, and I didn&apos;t like that. This was a few years back.
         I&apos;ve been hooked ever since.
       </p>
+      <div class="columns-2xs gap-10">
+        {designJson.map((item) => <DesignCard design={item} />)}
+      </div>
     </section>
   </main>
 </Layout>

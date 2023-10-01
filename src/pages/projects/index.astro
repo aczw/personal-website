@@ -1,5 +1,5 @@
 ---
-import projects from "@/assets/projects/projects.json";
+import projectsJson from "@/assets/projects/projects.json";
 import ProjectCard from "@/components/project-card.astro";
 import Layout from "@/layouts/layout.astro";
 ---
@@ -19,7 +19,7 @@ import Layout from "@/layouts/layout.astro";
         malware... I now a little better now.
       </p>
       <ul class="flex flex-col space-y-5">
-        {projects.map((project) => <ProjectCard project={project} />)}
+        {projectsJson.map((project) => <ProjectCard project={project} />)}
       </ul>
     </section>
   </main>

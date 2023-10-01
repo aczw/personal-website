@@ -1,11 +1,7 @@
-interface Project {
-  name: string;
-  href: string;
-  date: string;
-  imgName: string;
-  alt: string;
-  desc: string;
-  tags: string[];
-}
+import type designJson from "@/assets/design/design.json";
+import type projectsJson from "@/assets/projects/projects.json";
 
-export { type Project };
+type Project = (typeof projectsJson)[0];
+type Design = (typeof designJson)[0];
+
+export type { Design, Project };

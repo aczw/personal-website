@@ -1,0 +1,19 @@
+---
+import type { Design } from "@/utils/types";
+import { Image } from "astro:assets";
+
+interface Props {
+  design: Design;
+}
+
+const { design } = Astro.props;
+---
+
+<div class="mb-10 break-inside-avoid">
+  <Image
+    class="border-0 border-sweater-8 rounded-md"
+    src={import(`../assets/design/${design.imgName}.png`)}
+    alt="art"
+  />
+  <p>{design.name}</p>
+</div>
