@@ -19,13 +19,19 @@ const { project } = Astro.props;
   />
   <div class="space-y-3 sm:col-span-4">
     <span class="flex flex-col justify-between sm:flex-row sm:items-end">
-      <Link
-        href={project.href}
-        newTab
-        className="text-2xl font-mono"
-      >
-        <h3>{project.name}</h3>
-      </Link>
+      {
+        project.href ? (
+          <Link
+            href={project.href}
+            newTab
+            className="text-2xl font-mono"
+          >
+            <h3>{project.name}</h3>
+          </Link>
+        ) : (
+          <h3 class="font-mono text-2xl text-sweater-3">{project.name}</h3>
+        )
+      }
       <p class="font-bold text-sweater-2">{project.date}</p>
     </span>
     <p class="p-0">

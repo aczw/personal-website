@@ -9,11 +9,8 @@ interface Props {
 const { portfolio } = Astro.props;
 ---
 
-<div class="mb-5 break-inside-avoid">
-  <Image
-    class="rounded-lg border-sweater-8"
-    src={import(`../assets/portfolio/${portfolio.imgName}.png`)}
-    alt="art"
-  />
-  <p>{portfolio.name}</p>
-</div>
+<Image
+  class="mb-5 break-inside-avoid rounded-lg border-sweater-8"
+  src={import(`../assets/portfolio/${portfolio.imgName}.png`)}
+  alt={portfolio.name}
+/>

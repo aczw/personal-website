@@ -1,5 +1,14 @@
 [
   {
+    "name": "3D Rasterizer",
+    "href": null,
+    "date": "Sept 2023",
+    "imgName": "3d-rasterizer",
+    "alt": "Screenshot depicting the playground editor",
+    "desc": "Made for a class. A complete 3D rasterizer that renders to a 512x512 image. Supports .OBJ imports, antialiasing (up to 16x), and Lambertian and Blinn-Phong reflection. We used Qt for the UI and it utilizes OpenGL under the hood.",
+    "tags": ["C++", "Qt", "OpenGL"]
+  },
+  {
     "name": "Scallop Playground",
     "href": "https://play.scallop-lang.org",
     "date": "ongoing!",

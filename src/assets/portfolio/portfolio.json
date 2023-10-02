@@ -1,94 +1,107 @@
 [
   {
-    "name": "Community Favorites by Waterflame",
-    "imgName": "community-favorites"
-  },
-  {
-    "name": "Dark Seaside by Waterflame",
-    "imgName": "dark-seaside"
-  },
-  {
-    "name": "Flock by Kawmmander",
-    "imgName": "flock"
-  },
-  {
-    "name": "Back n' Forth by BROCKHAMPTON",
-    "imgName": "back-n-forth"
-  },
-  {
-    "name": "Bankroll (OG) by BROCKHAMPTON",
-    "imgName": "bankroll-og"
-  },
-  {
-    "name": "Texas Watchin' Me by Kevin Abstract",
-    "imgName": "texas-watchin-me"
-  },
-  {
-    "name": "Start A Revolution by Mac Miller",
-    "imgName": "start-a-revolution"
-  },
-  {
-    "name": "Ground Rules by Mac Miller",
-    "imgName": "ground-rules"
-  },
-  {
-    "name": "Ghost House by Schtiffles",
-    "imgName": "ghost-house"
+    "name": "Within the Sadness Remix by Onefin",
+    "imgName": "within-the-sadness-remix",
+    "date": "July 2021"
   },
   {
     "name": "Hop by Schtiffles",
-    "imgName": "hop"
+    "imgName": "hop",
+    "date": "June 2021"
   },
   {
-    "name": "Ashcrel Airlines",
-    "imgName": "ashcrel-airlines"
-  },
-  {
-    "name": "TEDxYouth@WJHS proposed logo",
-    "imgName": "tedxwjhs-logo"
-  },
-  {
-    "name": "TEDxYouth@WJHS final poster",
-    "imgName": "tedxwjhs-poster"
-  },
-  {
-    "name": "Sinking Feeling by Waterflame",
-    "imgName": "sinking-feeling"
-  },
-  {
-    "name": "Minecraft Nether Update by Lena Raine",
-    "imgName": "nether-update"
+    "name": "Ghost House by Schtiffles",
+    "imgName": "ghost-house",
+    "date": "June 2021"
   },
   {
     "name": "Team A by Kawmmander",
-    "imgName": "team-a"
+    "imgName": "team-a",
+    "date": "June 2021"
   },
   {
-    "name": "Within the Sadness Remix by Onefin",
-    "imgName": "within-the-sadness-remix"
+    "name": "Dark Seaside by Waterflame",
+    "imgName": "dark-seaside",
+    "date": "April 2021"
+  },
+  {
+    "name": "Community Favorites by Waterflame",
+    "imgName": "community-favorites",
+    "date": "Feb 2021"
+  },
+  {
+    "name": "Sinking Feeling by Waterflame",
+    "imgName": "sinking-feeling",
+    "date": "December 2020"
+  },
+  {
+    "name": "Holidays Over Quarantine",
+    "imgName": "holidays-over-quarantine",
+    "date": "December 2020"
+  },
+  {
+    "name": "Texas Watchin' Me by Kevin Abstract",
+    "imgName": "texas-watchin-me",
+    "date": "Nov 2020"
+  },
+  {
+    "name": "Ashcrel Airlines",
+    "imgName": "ashcrel-airlines",
+    "date": "Nov 2020"
+  },
+  {
+    "name": "Back n' Forth by BROCKHAMPTON",
+    "imgName": "back-n-forth",
+    "date": "Nov 2020"
+  },
+  {
+    "name": "Bankroll (OG) by BROCKHAMPTON",
+    "imgName": "bankroll-og",
+    "date": "Nov 2020"
+  },
+  {
+    "name": "Minecraft Nether Update OST by Lena Raine",
+    "imgName": "nether-update",
+    "date": "Sept 2020"
+  },
+  {
+    "name": "Start A Revolution by Mac Miller",
+    "imgName": "start-a-revolution",
+    "date": "Sept 2020"
+  },
+  {
+    "name": "TEDxYouth@WJHS Final Poster",
+    "imgName": "tedxwjhs-poster",
+    "date": "Oct 2020"
   },
   {
     "name": "Mass Extinctions",
-    "imgName": "mass-extinctions"
+    "imgName": "mass-extinctions",
+    "date": "Oct 2020"
   },
   {
-    "name": "College Admissions Scandal",
-    "imgName": "college-admissions-scandal"
+    "name": "TEDxYouth@WJHS Proposed Logo",
+    "imgName": "tedxwjhs-logo-idea",
+    "date": "Oct 2020"
   },
   {
-    "name": "ACT Testing",
-    "imgName": "act-testing"
-  },
-  {
-    "name": "DNA Editing & Babies",
-    "imgName": "dna-editing-babies"
-  },
-  {
-    "name": "Music, Personality, & Influences",
-    "imgName": "music-personality-influences"
+    "name": "Came Alone by Mac Miller",
+    "imgName": "came-alone",
+    "date": "July 2020"
   },
   {
     "name": "Wonder Island",
-    "imgName": "wonder-island"
+    "imgName": "wonder-island",
+    "date": "June 2020"
+  },
+  {
+    "name": "DNA Editing & Babies",
+    "imgName": "dna-editing-babies",
+    "date": "Jan 2020"
+  },
+  {
+    "name": "ACT Testing",
+    "imgName": "act-testing",
+    "date": "Nov 2019"
   }
 ]
