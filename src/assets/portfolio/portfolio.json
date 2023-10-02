@@ -1,5 +1,35 @@
 [
   {
+    "name": "Penn UPGRADE Brand Refresh",
+    "imgName": "upgrade",
+    "date": "Sept 2023"
+  },
+  {
+    "name": "TEDxPenn 2023",
+    "imgName": "tedxpenn-2023",
+    "date": "April 2023"
+  },
+  {
+    "name": "Penn SIGGRAPH's Valentine Event",
+    "imgName": "siggraph-valentine",
+    "date": "Feb 2023"
+  },
+  {
+    "name": "HOMAGE",
+    "imgName": "homage",
+    "date": "Dec 2022"
+  },
+  {
+    "name": "NEGATIVE POSITIVE 1",
+    "imgName": "negative-positive-1",
+    "date": "Dec 2022"
+  },
+  {
+    "name": "NEGATIVE POSITIVE 2",
+    "imgName": "negative-positive-2",
+    "date": "Dec 2022"
+  },
+  {
     "name": "Within the Sadness Remix by Onefin",
     "imgName": "within-the-sadness-remix",
     "date": "July 2021"
@@ -68,11 +98,6 @@
     "name": "Start A Revolution by Mac Miller",
     "imgName": "start-a-revolution",
     "date": "Sept 2020"
-  },
-  {
-    "name": "TEDxYouth@WJHS Final Poster",
-    "imgName": "tedxwjhs-poster",
-    "date": "Oct 2020"
   },
   {
     "name": "Mass Extinctions",
