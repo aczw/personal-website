@@ -13,15 +13,15 @@ import Layout from "@/layouts/layout.astro";
     class="flex min-h-[calc(100vh-105px)] flex-col items-center px-7 text-sweater-1"
   >
     <section class="flex w-full max-w-[1400px] flex-col items-center space-y-5">
-      <p class="w-full max-w-[900px]">
-        This contains a selection of work that I really liked making over the
+      <p class="w-full max-w-[850px] mb-5">
+        This page contains a selection of work that I&apos;ve loved making over the
         years, mostly in chronological order. To see case studies and more
         examples, please visit my <Link
           href="https://www.behance.net/charleszw"
           newTab
         >
-          Behance!
-        </Link>
+          Behance
+        </Link> profile!
       </p>
       <div class="w-full columns-xs gap-5">
         {portfolioJson.map((item) => <PortfolioCard portfolio={item} />)}

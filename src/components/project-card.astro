@@ -11,13 +11,13 @@ interface Props {
 const { project } = Astro.props;
 ---
 
-<li class="grid gap-5 rounded-lg bg-sweater-9 p-5 sm:grid-cols-6">
+<li class="grid gap-5 rounded-lg bg-sweater-9 p-5 sm:grid-cols-7">
   <Image
     class="rounded-md border-4 border-sweater-8 bg-sweater-8 sm:col-span-2 sm:block"
     src={import(`../assets/projects/${project.imgName}.png`)}
     alt={project.alt}
   />
-  <div class="space-y-3 sm:col-span-4">
+  <div class="space-y-3 sm:col-span-5">
     <span class="flex flex-col justify-between sm:flex-row sm:items-end">
       {
         project.href ? (

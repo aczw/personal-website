@@ -20,11 +20,6 @@
     "date": "Dec 2022"
   },
   {
-    "name": "NEGATIVE POSITIVE 1",
-    "imgName": "negative-positive-1",
-    "date": "Dec 2022"
-  },
-  {
     "name": "NEGATIVE POSITIVE 2",
     "imgName": "negative-positive-2",
     "date": "Dec 2022"
@@ -33,11 +28,6 @@
     "name": "Within the Sadness Remix by Onefin",
     "imgName": "within-the-sadness-remix",
     "date": "July 2021"
-  },
-  {
-    "name": "Hop by Schtiffles",
-    "imgName": "hop",
-    "date": "June 2021"
   },
   {
     "name": "Ghost House by Schtiffles",
@@ -85,11 +75,6 @@
     "date": "Nov 2020"
   },
   {
-    "name": "Bankroll (OG) by BROCKHAMPTON",
-    "imgName": "bankroll-og",
-    "date": "Nov 2020"
-  },
-  {
     "name": "Minecraft Nether Update OST by Lena Raine",
     "imgName": "nether-update",
     "date": "Sept 2020"
@@ -123,10 +108,5 @@
     "name": "DNA Editing & Babies",
     "imgName": "dna-editing-babies",
     "date": "Jan 2020"
-  },
-  {
-    "name": "ACT Testing",
-    "imgName": "act-testing",
-    "date": "Nov 2019"
   }
 ]
