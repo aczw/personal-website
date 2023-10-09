@@ -31,7 +31,7 @@ const config = {
       keyframes: {
         ...defaultTheme.keyframes,
         slide: {
-          "0%": { transform: "translateY(15px)" },
+          "0%": { transform: "translateY(25px)" },
           "100%": { transform: "translateY(0px)" },
         },
         fade: {
@@ -42,7 +42,7 @@ const config = {
       animation: {
         ...defaultTheme.animation,
         appear:
-          "slide 0.25s ease-out var(--animation-delay) backwards, fade 0.2s ease-out var(--animation-delay) backwards",
+          "slide 0.3s ease-out var(--animation-delay) backwards, fade 0.25s ease-out var(--animation-delay) backwards",
         "fade-in": "fade 0.25s ease-out backwards",
       },
     },

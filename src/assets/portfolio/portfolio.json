@@ -1,13 +1,18 @@
 [
   {
-    "name": "Penn UPGRADE Brand Refresh",
+    "name": "Penn UPGRADE Design Refresh",
     "imgName": "upgrade",
     "date": "Sept 2023"
   },
   {
-    "name": "TEDxPenn 2023",
+    "name": "TEDxPenn 2023 Conference Theme",
     "imgName": "tedxpenn-2023",
     "date": "April 2023"
+  },
+  {
+    "name": "Electric Field Day, DELUSION",
+    "imgName": "efd-delusion",
+    "date": "March 2023"
   },
   {
     "name": "Penn SIGGRAPH's Valentine Event",
@@ -25,42 +30,42 @@
     "date": "Dec 2022"
   },
   {
-    "name": "Within the Sadness Remix by Onefin",
+    "name": "Within the Sadness Remix",
     "imgName": "within-the-sadness-remix",
     "date": "July 2021"
   },
   {
-    "name": "Ghost House by Schtiffles",
+    "name": "Ghost House",
     "imgName": "ghost-house",
     "date": "June 2021"
   },
   {
-    "name": "Team A by Kawmmander",
+    "name": "Team A",
     "imgName": "team-a",
     "date": "June 2021"
   },
   {
-    "name": "Dark Seaside by Waterflame",
+    "name": "Dark Seaside",
     "imgName": "dark-seaside",
     "date": "April 2021"
   },
   {
-    "name": "Community Favorites by Waterflame",
+    "name": "Community Favorites",
     "imgName": "community-favorites",
     "date": "Feb 2021"
   },
   {
-    "name": "Sinking Feeling by Waterflame",
+    "name": "Sinking Feeling",
     "imgName": "sinking-feeling",
-    "date": "December 2020"
+    "date": "Dec 2020"
   },
   {
     "name": "Holidays Over Quarantine",
     "imgName": "holidays-over-quarantine",
-    "date": "December 2020"
+    "date": "Dec 2020"
   },
   {
-    "name": "Texas Watchin' Me by Kevin Abstract",
+    "name": "Texas Watchin' Me",
     "imgName": "texas-watchin-me",
     "date": "Nov 2020"
   },
@@ -70,17 +75,17 @@
     "date": "Nov 2020"
   },
   {
-    "name": "Back n' Forth by BROCKHAMPTON",
+    "name": "Back n' Forth",
     "imgName": "back-n-forth",
     "date": "Nov 2020"
   },
   {
-    "name": "Minecraft Nether Update OST by Lena Raine",
+    "name": "Minecraft Nether Update OST",
     "imgName": "nether-update",
     "date": "Sept 2020"
   },
   {
-    "name": "Start A Revolution by Mac Miller",
+    "name": "Start A Revolution",
     "imgName": "start-a-revolution",
     "date": "Sept 2020"
   },
@@ -90,12 +95,12 @@
     "date": "Oct 2020"
   },
   {
-    "name": "TEDxYouth@WJHS Proposed Logo",
+    "name": "TEDxYouth@WJHS Logo Idea",
     "imgName": "tedxwjhs-logo-idea",
     "date": "Oct 2020"
   },
   {
-    "name": "Came Alone by Mac Miller",
+    "name": "Came Alone",
     "imgName": "came-alone",
     "date": "July 2020"
   },
