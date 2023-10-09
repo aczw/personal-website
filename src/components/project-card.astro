@@ -11,34 +11,35 @@ interface Props {
 const { project } = Astro.props;
 ---
 
-<li class="grid gap-5 rounded-lg bg-sweater-9 p-5 sm:grid-cols-7">
+<li
+  class="grid gap-3 rounded-lg bg-sweater-9 p-4 sm:grid-cols-7 sm:gap-4 sm:bg-transparent sm:p-0"
+>
   <Image
-    class="rounded-md border-4 border-sweater-8 bg-sweater-8 sm:col-span-2 sm:block"
+    class="max-h-72 rounded-lg border-4 border-sweater-8 bg-sweater-8 object-cover object-top sm:col-span-2 sm:max-h-48"
     src={import(`../assets/projects/${project.imgName}.png`)}
     alt={project.alt}
   />
-  <div class="space-y-3 sm:col-span-5">
-    <span class="flex flex-col justify-between sm:flex-row sm:items-end">
-      {
-        project.href ? (
-          <Link
-            href={project.href}
-            newTab
-            className="text-2xl font-mono"
-          >
-            <h3>{project.name}</h3>
-          </Link>
-        ) : (
-          <h3 class="font-mono text-2xl text-sweater-3">{project.name}</h3>
-        )
-      }
-      <p class="font-bold text-sweater-2">{project.date}</p>
-    </span>
-    <p class="p-0">
-      {project.desc}
-    </p>
-    <div class="flex flex-wrap gap-2 pt-1">
+  <div class="flex flex-col space-y-3 sm:col-span-5">
+    {
+      project.href ? (
+        <Link
+          href={project.href}
+          newTab
+          className="text-xl font-mono"
+        >
+          <h3 class="sm:leading-none">{project.name}</h3>
+        </Link>
+      ) : (
+        <h3 class="font-mono text-xl text-sweater-3 sm:leading-none">
+          {project.name}
+        </h3>
+      )
+    }
+    <div class="flex flex-wrap gap-2.5">
       {project.tags.map((tag) => <Badge>{tag}</Badge>)}
     </div>
+    <p class="rounded-lg bg-sweater-9 sm:p-4">
+      {project.desc}
+    </p>
   </div>
 </li>
