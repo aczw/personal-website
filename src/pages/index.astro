@@ -11,10 +11,11 @@ import Layout from "@/layouts/layout.astro";
 
 <Layout
   title="Charles Wang"
-  description="My own little corner on the internet. Welcome!!"
+  description="My own little corner on the internet"
 >
-  <!-- we subtract the heights of the header and footer -->
-  <main class="flex min-h-[calc(100vh-88px-80px)] items-center justify-center">
+  <main
+    class="flex min-h-[calc(100vh-theme(spacing.header))] items-center justify-center pt-header"
+  >
     <section
       class="mx-3 grid auto-cols-fr grid-flow-row auto-rows-fr grid-rows-4 gap-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-flow-col xl:grid-cols-9"
     >
