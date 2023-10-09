@@ -13,7 +13,14 @@ import Layout from "@/layouts/layout.astro";
   >
     <section class="flex max-w-[1100px] flex-col">
       <ul class="flex flex-col space-y-6">
-        {projectsJson.map((project) => <ProjectCard project={project} />)}
+        {
+          projectsJson.map((project, index) => (
+            <ProjectCard
+              project={project}
+              index={index}
+            />
+          ))
+        }
       </ul>
     </section>
   </main>

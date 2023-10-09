@@ -6,13 +6,15 @@ import Badge from "./badge.astro";
 
 interface Props {
   project: Project;
+  index: number;
 }
 
-const { project } = Astro.props;
+const { project, index } = Astro.props;
 ---
 
 <li
-  class="grid gap-3 rounded-lg bg-sweater-9 p-4 sm:grid-cols-7 sm:gap-4 sm:bg-transparent sm:p-0 animate-[appear_.4s_ease-out_.85s_1_normal_backwards]"
+  class="grid animate-[slide_200ms_ease-out_var(--animation-delay)_1_backwards] gap-3 rounded-lg bg-sweater-9 p-4 sm:grid-cols-7 sm:gap-4 sm:bg-transparent sm:p-0"
+  style={{ "--animation-delay": `${(index + 1) * 30}ms` }}
 >
   <Image
     class="max-h-72 rounded-lg border-4 border-sweater-8 bg-sweater-8 object-cover object-top sm:col-span-2 sm:max-h-48"
