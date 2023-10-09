@@ -43,9 +43,7 @@ const LastFmWeekly = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-12 animate-pulse items-center justify-center rounded-md bg-sweater-8 text-sweater-6">
-        Fetching recent tracks...
-      </div>
+      <div className="flex h-12 animate-pulse items-center justify-center rounded-md bg-sweater-8 text-sweater-6 2xl:h-[72px]" />
     );
   }
 
@@ -67,7 +65,7 @@ const LastFmWeekly = () => {
   }
 
   return (
-    <p className="line-clamp-2 2xl:line-clamp-3">
+    <p className="line-clamp-2 animate-fade-in 2xl:line-clamp-3">
       My top tracks in the last 7 days are{" "}
       <Link
         href={topThree[0].url}
