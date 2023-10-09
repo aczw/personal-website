@@ -1,7 +1,6 @@
 ---
 export const prerender = false;
 
-import CardLg from "@/components/card-lg.astro";
 import CardMd from "@/components/card-md.astro";
 import CardSm from "@/components/card-sm.astro";
 import LastFmRecent from "@/components/react/lastfm-recent";
@@ -19,7 +18,9 @@ import Layout from "@/layouts/layout.astro";
     <section
       class="mx-3 grid auto-cols-fr grid-flow-row auto-rows-fr grid-rows-4 gap-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-flow-col xl:grid-cols-9"
     >
-      <CardLg>
+      <div
+        class="col-span-4 row-span-4 flex flex-col justify-between space-y-5 rounded-xl bg-sweater-9 p-8 text-sweater-1 xs:h-[400px] xs:max-w-[400px] 2xl:h-[500px] 2xl:max-w-[500px] 2xl:p-16 animate-[fade_.25s_ease-out_75ms_backwards]"
+      >
         <h4 class="font-mono text-sm font-bold text-sweater-2">About</h4>
         <p>
           Hi there, I&apos;m Charles. I&apos;m a student at the University of
@@ -33,18 +34,18 @@ import Layout from "@/layouts/layout.astro";
         </p>
         <p class="text-sweater-2">Thanks for stopping by!!</p>
         <p>(〜￣▽￣)〜</p>
-      </CardLg>
+      </div>
 
       <CardSm className="bg-sweater-8  hover:bg-sweater-4" />
       <CardSm className="bg-sweater-7  hover:bg-sweater-3" />
       <CardSm className="bg-sweater-6  hover:bg-sweater-2" />
       <CardSm className="bg-sweater-5  hover:bg-sweater-1" />
 
-      <CardMd>
+      <CardMd className="animate-[fade_.25s_ease-out_225ms_backwards]">
         <LastFmRecent client:load />
       </CardMd>
 
-      <CardMd>
+      <CardMd className="animate-[fade_.25s_ease-out_300ms_backwards]">
         <h4 class="w-fit font-mono text-sm font-bold text-sweater-2">
           Last.fm profile
         </h4>

@@ -2,7 +2,7 @@
 import { cn } from "@/utils/cn";
 
 interface Props {
-  className?: string;
+  className: string;
 }
 
 const { className } = Astro.props;
@@ -10,7 +10,7 @@ const { className } = Astro.props;
 
 <div
   class={cn(
-    "col-span-1 row-span-1 rounded-xl transition-all hover:rounded-[60px]",
+    "col-span-1 row-span-1 rounded-xl transition-all hover:rounded-[60px] animate-[fade_.25s_ease-out_150ms_backwards]",
     className,
   )}
 >

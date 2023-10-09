@@ -42,7 +42,7 @@ const config = {
       animation: {
         ...defaultTheme.animation,
         appear:
-          "slide 0.2s ease-out var(--animation-delay) backwards, fade 0.2s ease-out var(--animation-delay) backwards",
+          "slide 0.25s ease-out var(--animation-delay) backwards, fade 0.2s ease-out var(--animation-delay) backwards",
         "fade-in": "fade 0.25s ease-out backwards",
       },
     },

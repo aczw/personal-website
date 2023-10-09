@@ -47,7 +47,7 @@ const LastFmStats = () => {
       I really like music and{" "}
       <Link
         href="https://www.last.fm/user/ashzw/"
-        title="My Last.fm account"
+        title="I really like tracking it."
         newTab
       >
         I really like tracking it.
