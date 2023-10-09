@@ -11,10 +11,20 @@ import Layout from "@/layouts/layout.astro";
   <main
     class="flex min-h-[calc(100vh-105px)] flex-col items-center px-7 text-sweater-1"
   >
-    <section class="flex max-w-[1100px] flex-col">
-      <ul class="flex flex-col space-y-6">
-        {projectsJson.map((project) => <ProjectCard project={project} />)}
-      </ul>
-    </section>
+    <p class="mb-7 w-full max-w-[850px]">
+      I try to make all my projects open source. Stuff that doesn&apos;t have a
+      link is probably from a class and I don&apos;t have permission to share
+      it. Everything else is public and can be found on my GitHub.
+    </p>
+    <ul class="flex max-w-[1100px] flex-col space-y-7">
+      {
+        projectsJson.map((project, index) => (
+          <ProjectCard
+            project={project}
+            index={index}
+          />
+        ))
+      }
+    </ul>
   </main>
 </Layout>

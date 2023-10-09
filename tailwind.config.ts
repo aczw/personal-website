@@ -28,6 +28,23 @@ const config = {
         ...defaultTheme.screens,
         xs: "475px",
       },
+      keyframes: {
+        ...defaultTheme.keyframes,
+        slide: {
+          "0%": { transform: "translateY(15px)" },
+          "100%": { transform: "translateY(0px)" },
+        },
+        fade: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+      },
+      animation: {
+        ...defaultTheme.animation,
+        appear:
+          "slide 0.2s ease-out var(--animation-delay) backwards, fade 0.2s ease-out var(--animation-delay) backwards",
+        "fade-in": "fade 0.25s ease-out backwards",
+      },
     },
   },
   plugins: [],

@@ -4,13 +4,15 @@ import { Image } from "astro:assets";
 
 interface Props {
   portfolio: Portfolio;
+  index: number;
 }
 
-const { portfolio } = Astro.props;
+const { portfolio, index } = Astro.props;
 ---
 
 <Image
-  class="mb-5 break-inside-avoid rounded-lg border-sweater-8 bg-sweater-9"
+  class="mb-5 animate-appear break-inside-avoid rounded-lg border-sweater-8 bg-sweater-9"
+  style={{ "--animation-delay": `${(index + 1) * 10}ms` }}
   src={import(`../assets/portfolio/${portfolio.imgName}.png`)}
   alt={portfolio.name}
 />

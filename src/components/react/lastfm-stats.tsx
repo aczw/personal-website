@@ -38,9 +38,7 @@ const LastFmStats = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-12 animate-pulse items-center justify-center rounded-md bg-sweater-8 text-sweater-6">
-        Getting profile stats...
-      </div>
+      <div className="flex h-12 animate-pulse items-center justify-center rounded-md bg-sweater-8 text-sweater-6" />
     );
   }
 
@@ -67,7 +65,7 @@ const LastFmStats = () => {
   }
 
   return (
-    <p>
+    <p className="animate-fade-in">
       {blurb} I currently have{" "}
       <span className="text-sweater-2">{profile.user.playcount}</span> total
       scrobbles.
