@@ -10,9 +10,17 @@ interface Props {
 const { portfolio, index } = Astro.props;
 ---
 
-<Image
-  class="mb-5 animate-appear break-inside-avoid rounded-lg border-sweater-8 bg-sweater-9"
-  style={{ "--animation-delay": `${(index + 1) * 10}ms` }}
-  src={import(`../assets/portfolio/${portfolio.imgName}.png`)}
-  alt={portfolio.name}
-/>
+<li class="group relative break-inside-avoid">
+  <Image
+    class="mb-5 animate-appear rounded-lg border-sweater-8 bg-sweater-9 transition-opacity group-hover:opacity-10"
+    style={{ "--animation-delay": `${(index + 1) * 10}ms` }}
+    src={import(`../assets/portfolio/${portfolio.imgName}.png`)}
+    alt={portfolio.name}
+  />
+  <span
+    class="absolute inset-0 flex flex-col items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
+  >
+    <h4 class="font-bold text-sweater-2">{portfolio.name}</h4>
+    <p class="text-sweater-1">{portfolio.date}</p>
+  </span>
+</li>

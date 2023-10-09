@@ -13,9 +13,9 @@ import Layout from "@/layouts/layout.astro";
     class="flex min-h-[calc(100vh-105px)] flex-col items-center px-7 text-sweater-1"
   >
     <p class="mb-7 w-full max-w-[850px]">
-      This page contains a selection of work that I&apos;ve had fun making over
-      the years, from newest to oldest. To see case studies, sketches, and more
-      examples, visit my
+      This page contains some work that I&apos;ve had fun making over the years,
+      from newest to oldest. To see case studies, sketches, and more examples,
+      visit my
       <Link
         href="https://www.behance.net/charleszw"
         newTab
@@ -23,7 +23,7 @@ import Layout from "@/layouts/layout.astro";
         Behance!
       </Link>
     </p>
-    <div class="w-full max-w-[1400px] columns-sm items-center gap-5">
+    <ul class="w-full max-w-[1400px] columns-sm items-center gap-5">
       {
         portfolioJson.map((item, index) => (
           <PortfolioCard
@@ -32,6 +32,6 @@ import Layout from "@/layouts/layout.astro";
           />
         ))
       }
-    </div>
+    </ul>
   </main>
 </Layout>
