@@ -1,12 +1,14 @@
-import { defineConfig } from "astro/config";
-
 import react from "@astrojs/react";
+import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
+import { defineConfig } from "astro/config";
 
+// see https://astro.build/config
 const config = defineConfig({
   site: "https://charl.sh",
   integrations: [
+    sitemap(),
     react(),
     tailwind({
       applyBaseStyles: false,
@@ -20,4 +22,4 @@ const config = defineConfig({
   trailingSlash: "never",
 });
 
-export default config;
+export default defineConfig(config);
