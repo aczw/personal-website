@@ -13,8 +13,8 @@ const { project, index } = Astro.props;
 ---
 
 <li
-  class="grid animate-appear gap-3 rounded-lg bg-sweater-9 p-4 sm:grid-cols-7 sm:gap-4 sm:bg-transparent sm:p-0"
-  style={{ "--animation-delay": `${(index + 1) * 40}ms` }}
+  class="grid animate-fade gap-3 rounded-lg bg-sweater-9 p-4 sm:grid-cols-7 sm:gap-4 sm:bg-transparent sm:p-0"
+  style={{ "--delay": `${(index + 1) * 60}ms` }}
 >
   <Image
     class="max-h-72 rounded-lg border-4 border-sweater-8 bg-sweater-8 object-cover object-top sm:col-span-2 sm:max-h-48"

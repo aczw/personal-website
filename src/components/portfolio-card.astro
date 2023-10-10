@@ -11,8 +11,8 @@ const { portfolio, index } = Astro.props;
 ---
 
 <li
-  class="group relative animate-appear"
-  style={{ "--animation-delay": `${(index + 1) * 15}ms` }}
+  class="group relative animate-fade"
+  style={{ "--delay": `${(index + 1) * 15}ms` }}
 >
   <Image
     class="mb-5 rounded-lg border-sweater-8 bg-sweater-9 transition-opacity group-hover:opacity-80"

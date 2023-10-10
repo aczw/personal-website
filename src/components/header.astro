@@ -10,27 +10,25 @@ const { pathname } = Astro.url;
 const path = removeTrailingSlash(pathname);
 ---
 
-<header class="fixed z-10 w-full bg-sweater-10 p-4">
-  <nav class="flex items-center justify-between space-x-6">
+<header class="fixed z-10 w-full bg-sweater-10">
+  <div
+    aria-hidden="true"
+    class="absolute inset-x-0 top-0 h-header glass-3xl"
+  >
+  </div>
+  <nav class="relative flex items-center justify-between">
     <a
       href="/"
-      class="group flex items-center space-x-3"
+      class="group p-[calc((theme(spacing.header)-25px)/2)]"
     >
       <Logo
-        width={30}
-        height={30}
+        width={25}
+        height={25}
         alt="Go to home"
-        className="fill-sweater-4 group-hover:rotate-[-10deg] group-hover:fill-sweater-1 transition"
+        className="fill-sweater-4 group-hover:rotate-[-15deg] group-hover:fill-sweater-1 transition"
       />
-      {
-        path !== "" ? (
-          <p class="hidden font-bold text-sweater-4 transition group-hover:translate-x-1 group-hover:text-sweater-1 xs:block">
-            Home
-          </p>
-        ) : null
-      }
     </a>
-    <div class="flex items-center space-x-6">
+    <div class="flex items-center space-x-6 py-4 pl-2 pr-4">
       <Link
         href="/projects"
         className={`flex items-center ${
