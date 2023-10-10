@@ -44,13 +44,13 @@ const LastFmStats = () => {
 
   const blurb = (
     <>
-      I really like music and{" "}
+      I really like music and I really like{" "}
       <Link
         href="https://www.last.fm/user/ashzw/"
-        title="I really like tracking it."
+        title="tracking it."
         newTab
       >
-        I really like tracking it.
+        tracking it.
       </Link>
     </>
   );

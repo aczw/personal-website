@@ -67,30 +67,12 @@ const LastFmWeekly = () => {
   return (
     <p className="line-clamp-2 animate-fade [--delay:0s] 2xl:line-clamp-3">
       My top tracks in the last 7 days are{" "}
-      <Link
-        href={topThree[0].url}
-        title={topThree[0].name}
-        newTab
-      >
-        {topThree[0].name}
-      </Link>{" "}
-      ({topThree[0].playcount} times),{" "}
-      <Link
-        href={topThree[1].url}
-        title={topThree[1].name}
-        newTab
-      >
-        {topThree[1].name}
-      </Link>{" "}
-      ({topThree[1].playcount} times), and{" "}
-      <Link
-        href={topThree[2].url}
-        title={topThree[2].name}
-        newTab
-      >
-        {topThree[2].name}
-      </Link>{" "}
-      ({topThree[2].playcount} times).
+      <span className="text-sweater-2">{topThree[0].name}</span> (
+      {topThree[0].playcount} times),{" "}
+      <span className="text-sweater-2">{topThree[1].name}</span> (
+      {topThree[1].playcount} times), and{" "}
+      <span className="text-sweater-2">{topThree[2].name}</span> (
+      {topThree[2].playcount} times).
     </p>
   );
 };
