@@ -22,7 +22,9 @@ const { portfolio, index } = Astro.props;
   <span
     class="absolute inset-0 flex flex-col items-center justify-end bg-gradient-to-t from-sweater-10 p-5 opacity-0 transition-opacity group-hover:opacity-100"
   >
-    <h4 class="text-center font-bold text-sweater-2">{portfolio.name}</h4>
+    <h4 class="text-center font-mono text-sm font-bold text-sweater-2">
+      {portfolio.name}
+    </h4>
     <p class="text-sweater-1">{portfolio.date}</p>
   </span>
 </li>

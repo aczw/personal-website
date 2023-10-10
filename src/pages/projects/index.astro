@@ -1,7 +1,6 @@
 ---
 import projectsJson from "@/assets/projects/projects.json";
 import ProjectCard from "@/components/project-card.astro";
-import { Link } from "@/components/react/link";
 import Layout from "@/layouts/layout.astro";
 ---
 
@@ -9,19 +8,8 @@ import Layout from "@/layouts/layout.astro";
   title="Projects • Charles Wang"
   description="Coding stuff. Projects from my classes and random interests."
 >
-  <main class="flex flex-col items-center px-7 pt-header text-sweater-1">
-    <p class="my-7 w-full max-w-[850px]">
-      Stuff that doesn&apos;t have a link is probably from a class and I
-      don&apos;t have permission to share it, sorry. I try to make all my
-      projects open source and publicly available on my
-      <Link
-        href="https://github.com/aczw"
-        newTab
-      >
-        GitHub.
-      </Link>
-    </p>
-    <ul class="flex max-w-[1100px] flex-col space-y-7">
+  <main class="flex flex-col items-center p-3 pt-header text-sweater-1">
+    <ul class="flex max-w-[1100px] flex-col space-y-3 sm:space-y-7">
       {
         projectsJson.map((project, index) => (
           <ProjectCard
