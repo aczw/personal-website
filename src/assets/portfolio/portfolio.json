@@ -1,117 +1,140 @@
 [
   {
-    "name": "Penn UPGRADE Design Refresh",
-    "imgName": "upgrade",
-    "date": "Sept 2023"
-  },
-  {
-    "name": "TEDxPenn 2023 Conference Theme",
+    "name": "TEDxPenn 2023: \"(R)EVOLUTION\"",
     "imgName": "tedxpenn-2023",
-    "date": "April 2023"
-  },
-  {
-    "name": "Electric Field Day, DELUSION",
-    "imgName": "efd-delusion",
-    "date": "March 2023"
+    "date": "April 2023",
+    "href": {
+      "url": "https://www.behance.net/gallery/165471343/TEDxPenn-2023",
+      "newTab": true,
+      "name": "View case study on Behance"
+    }
   },
   {
     "name": "Penn SIGGRAPH's Valentine Event",
     "imgName": "siggraph-valentine",
-    "date": "Feb 2023"
+    "date": "Feb 2023",
+    "href": null
   },
   {
     "name": "HOMAGE",
     "imgName": "homage",
-    "date": "Dec 2022"
+    "date": "Dec 2022",
+    "href": {
+      "url": "https://vimeo.com/872788475",
+      "newTab": true,
+      "name": "View animation on Vimeo"
+    }
   },
   {
     "name": "NEGATIVE POSITIVE 2",
     "imgName": "negative-positive-2",
-    "date": "Dec 2022"
+    "date": "Dec 2022",
+    "href": {
+      "url": "https://www.behance.net/gallery/165469523/NEGATIVE-POSITIVE",
+      "newTab": true,
+      "name": "View other two from trilogy"
+    }
   },
   {
-    "name": "Within the Sadness Remix",
-    "imgName": "within-the-sadness-remix",
-    "date": "July 2021"
-  },
-  {
-    "name": "Ghost House",
-    "imgName": "ghost-house",
-    "date": "June 2021"
+    "name": "Recap infographic from 9/9 BoE meeting",
+    "imgName": "smob-9-9-boe",
+    "date": "Sept 2021",
+    "href": {
+      "url": "https://www.behance.net/gallery/165459007/Student-Member-of-the-Board-(SMOB)",
+      "newTab": true,
+      "name": "View case study on Behance"
+    }
   },
   {
     "name": "Team A",
     "imgName": "team-a",
-    "date": "June 2021"
+    "date": "June 2021",
+    "href": {
+      "url": "https://www.behance.net/gallery/165451341/cover-art-1-electronic",
+      "newTab": true,
+      "name": "Part of Cover Art, Vol. 1"
+    }
   },
   {
-    "name": "Dark Seaside",
-    "imgName": "dark-seaside",
-    "date": "April 2021"
+    "name": "Ghost House",
+    "imgName": "ghost-house",
+    "date": "June 2021",
+    "href": {
+      "url": "https://www.behance.net/gallery/165451341/cover-art-1-electronic",
+      "newTab": true,
+      "name": "Part of Cover Art, Vol. 1"
+    }
   },
   {
     "name": "Community Favorites",
     "imgName": "community-favorites",
-    "date": "Feb 2021"
-  },
-  {
-    "name": "Sinking Feeling",
-    "imgName": "sinking-feeling",
-    "date": "Dec 2020"
+    "date": "Feb 2021",
+    "href": {
+      "url": "https://www.behance.net/gallery/165451341/cover-art-1-electronic",
+      "newTab": true,
+      "name": "Part of Cover Art, Vol. 1"
+    }
   },
   {
     "name": "Holidays Over Quarantine",
     "imgName": "holidays-over-quarantine",
-    "date": "Dec 2020"
+    "date": "Dec 2020",
+    "href": {
+      "url": "https://www.behance.net/gallery/165463897/MoCo-Student",
+      "newTab": true,
+      "name": "View case study on Behance"
+    }
   },
   {
     "name": "Texas Watchin' Me",
     "imgName": "texas-watchin-me",
-    "date": "Nov 2020"
+    "date": "Nov 2020",
+    "href": {
+      "url": "https://www.behance.net/gallery/165455347/cover-art-2-hip-hop",
+      "newTab": true,
+      "name": "Part of Cover Art, Vol. 2"
+    }
   },
   {
     "name": "Ashcrel Airlines",
     "imgName": "ashcrel-airlines",
-    "date": "Nov 2020"
+    "date": "Nov 2020",
+    "href": null
   },
   {
     "name": "Back n' Forth",
     "imgName": "back-n-forth",
-    "date": "Nov 2020"
-  },
-  {
-    "name": "Minecraft Nether Update OST",
-    "imgName": "nether-update",
-    "date": "Sept 2020"
+    "date": "Nov 2020",
+    "href": {
+      "url": "https://www.behance.net/gallery/165455347/cover-art-2-hip-hop",
+      "newTab": true,
+      "name": "Part of Cover Art, Vol. 2"
+    }
   },
   {
     "name": "Start A Revolution",
     "imgName": "start-a-revolution",
-    "date": "Sept 2020"
-  },
-  {
-    "name": "Mass Extinctions",
-    "imgName": "mass-extinctions",
-    "date": "Oct 2020"
+    "date": "Sept 2020",
+    "href": {
+      "url": "https://www.behance.net/gallery/165455347/cover-art-2-hip-hop",
+      "newTab": true,
+      "name": "Part of Cover Art, Vol. 2"
+    }
   },
   {
     "name": "TEDxYouth@WJHS Logo Idea",
     "imgName": "tedxwjhs-logo-idea",
-    "date": "Oct 2020"
-  },
-  {
-    "name": "Came Alone",
-    "imgName": "came-alone",
-    "date": "July 2020"
-  },
-  {
-    "name": "Wonder Island",
-    "imgName": "wonder-island",
-    "date": "June 2020"
+    "date": "Oct 2020",
+    "href": null
   },
   {
     "name": "DNA Editing & Babies",
     "imgName": "dna-editing-babies",
-    "date": "Jan 2020"
+    "date": "Jan 2020",
+    "href": {
+      "url": "https://www.behance.net/gallery/165463897/MoCo-Student",
+      "newTab": true,
+      "name": "View case study on Behance"
+    }
   }
 ]

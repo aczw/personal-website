@@ -1,4 +1,5 @@
 ---
+import { Link } from "@/components/react/link";
 import type { Portfolio } from "@/utils/types";
 import { Image } from "astro:assets";
 
@@ -8,6 +9,8 @@ interface Props {
 }
 
 const { portfolio, index } = Astro.props;
+
+const href = portfolio.href ? portfolio.href : null;
 ---
 
 <li
@@ -20,11 +23,24 @@ const { portfolio, index } = Astro.props;
     alt={portfolio.name}
   />
   <span
-    class="absolute inset-0 flex flex-col items-center justify-end bg-gradient-to-t from-sweater-10 p-5 opacity-0 transition-opacity group-hover:opacity-100"
+    class="absolute inset-0 flex flex-col items-center justify-end bg-gradient-to-t from-sweater-10 p-5 text-center opacity-0 transition-opacity group-hover:opacity-100"
   >
-    <h4 class="text-center font-mono text-sm font-bold text-sweater-2">
+    <h4 class="font-mono text-sm font-bold text-sweater-2">
       {portfolio.name}
     </h4>
-    <p class="text-sweater-1">{portfolio.date}</p>
+    <p class="text-sweater-1">
+      {portfolio.date}
+    </p>
+    {
+      href ? (
+        <Link
+          href={href.url}
+          newTab={href.newTab}
+          className="leading-tight"
+        >
+          {href.name}
+        </Link>
+      ) : null
+    }
   </span>
 </li>
