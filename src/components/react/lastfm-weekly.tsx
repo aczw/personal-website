@@ -65,7 +65,7 @@ const LastFmWeekly = () => {
   }
 
   return (
-    <p className="animate-fade-in line-clamp-2 2xl:line-clamp-3">
+    <p className="line-clamp-2 animate-fade [--delay:0s] 2xl:line-clamp-3">
       My top tracks in the last 7 days are{" "}
       <Link
         href={topThree[0].url}

@@ -95,7 +95,7 @@ const LastFmRecent = () => {
         </p>
       </div>
 
-      <div className="animate-fade-in flex items-center space-x-5">
+      <div className="flex animate-fade items-center space-x-5 [--delay:0s]">
         <img
           src={firstTrack.image[2]["#text"]}
           alt={`Album art for ${firstTrack.name}`}

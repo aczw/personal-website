@@ -65,7 +65,7 @@ const LastFmStats = () => {
   }
 
   return (
-    <p className="animate-fade-in">
+    <p className="animate-fade [--delay:0s]">
       {blurb} I currently have{" "}
       <span className="text-sweater-2">{profile.user.playcount}</span> total
       scrobbles.
