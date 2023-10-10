@@ -10,10 +10,10 @@ const { pathname } = Astro.url;
 const path = removeTrailingSlash(pathname);
 ---
 
-<header class="fixed z-10 w-full bg-sweater-10">
+<header class="fixed z-10 w-full bg-sweater-10/[.85]">
   <div
     aria-hidden="true"
-    class="absolute inset-x-0 top-0 h-header glass-3xl"
+    class="absolute inset-x-0 top-0 h-header backdrop-blur-3xl"
   >
   </div>
   <nav class="relative flex items-center justify-between">
