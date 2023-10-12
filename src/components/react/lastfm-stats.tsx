@@ -1,4 +1,3 @@
-import { Link } from "@/components/react/link";
 import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
 
@@ -38,35 +37,22 @@ const LastFmStats = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-12 animate-pulse items-center justify-center rounded-md bg-sweater-8 text-sweater-6" />
+      <div className="flex h-full max-h-6 animate-pulse rounded-md bg-sweater-8" />
     );
   }
-
-  const blurb = (
-    <>
-      I really like music and I really like{" "}
-      <Link
-        href="https://www.last.fm/user/ashzw/"
-        title="tracking it."
-        newTab
-      >
-        tracking it.
-      </Link>
-    </>
-  );
 
   if (!profile) {
     return (
       <p>
-        {blurb} According to Last.fm, I listen to an average of{" "}
-        <span className="text-sweater-2">~55</span> tracks daily.
+        I listen to an average of <span className="text-sweater-2">55</span>{" "}
+        tracks per day.
       </p>
     );
   }
 
   return (
     <p className="animate-fade [--delay:0s]">
-      {blurb} I currently have{" "}
+      So far, I have{" "}
       <span className="text-sweater-2">{profile.user.playcount}</span> total
       scrobbles.
     </p>

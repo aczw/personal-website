@@ -6,6 +6,7 @@ import CardSm from "@/components/card-sm.astro";
 import LastFmRecent from "@/components/react/lastfm-recent";
 import LastFmStats from "@/components/react/lastfm-stats";
 import LastFmWeekly from "@/components/react/lastfm-weekly";
+import { Link } from "@/components/react/link";
 import Layout from "@/layouts/layout.astro";
 ---
 
@@ -20,17 +21,23 @@ import Layout from "@/layouts/layout.astro";
       class="m-3 grid auto-cols-fr grid-flow-row auto-rows-fr grid-rows-4 gap-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-flow-col xl:grid-cols-9"
     >
       <div
-        class="col-span-4 row-span-4 flex animate-fade flex-col justify-between space-y-5 rounded-xl bg-sweater-9 p-8 text-sweater-1 [--delay:75ms] xs:h-[400px] xs:max-w-[400px] 2xl:h-[500px] 2xl:max-w-[500px] 2xl:p-16"
+        class="col-span-4 row-span-4 flex animate-fade flex-col justify-between space-y-5 rounded-xl bg-sweater-9 p-8 text-sweater-1 [--delay:100ms] xs:h-[400px] xs:max-w-[400px] 2xl:h-[500px] 2xl:max-w-[500px] 2xl:p-16"
       >
         <h4 class="font-mono text-sm font-bold text-sweater-2">About</h4>
         <p>
-          Hi there, I&apos;m Charles. I&apos;m a student at the University of
+          Hi, I&apos;m Charles. I&apos;m a student at the University of
           Pennsylvania currently majoring in computer graphics, with a minor in
           design.
         </p>
         <p>
-          I&apos;m interested in making games and websites. In my free time I
-          like running, designing album covers, and ricing my Arch setup.
+          I&apos;m interested in making games and building websites. I also like
+          going running, bass guitar, designing album covers, obsessing about
+          metro systems, and <Link
+            href="https://github.com/aczw/dotfiles"
+            newTab
+          >
+            ricing
+          </Link> my Arch setup.
         </p>
         <p class="text-sweater-2">Thanks for stopping by!</p>
         <p>(〜￣▽￣)〜</p>
@@ -41,14 +48,20 @@ import Layout from "@/layouts/layout.astro";
       <CardSm className="bg-sweater-6  hover:bg-sweater-2" />
       <CardSm className="bg-sweater-5  hover:bg-sweater-1" />
 
-      <CardMd className="animate-fade [--delay:225ms]">
+      <CardMd className="animate-fade [--delay:300ms]">
         <LastFmRecent client:load />
       </CardMd>
 
-      <CardMd className="animate-fade [--delay:300ms]">
-        <h4 class="w-fit font-mono text-sm font-bold text-sweater-2">
-          My Last.fm
-        </h4>
+      <CardMd className="animate-fade [--delay:400ms]">
+        <div>
+          <h4 class="w-fit font-mono text-sm font-bold text-sweater-2">
+            My Last.fm
+          </h4><p>
+            <span class="hidden 2xl:inline"
+              >For fun and out of curiosity,{" "}</span
+            >I started tracking my music habits a few years ago.
+          </p>
+        </div>
         <LastFmStats client:load />
         <LastFmWeekly client:load />
       </CardMd>

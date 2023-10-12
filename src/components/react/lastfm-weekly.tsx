@@ -1,4 +1,3 @@
-import { Link } from "@/components/react/link";
 import { fetcher } from "@/utils/fetcher";
 import useSWR from "swr";
 
@@ -30,7 +29,7 @@ const calculateKey = () => {
       1000,
   );
 
-  return `https://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=ashzw&limit=3&api_key=${
+  return `https://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=ashzw&limit=2&api_key=${
     import.meta.env.PUBLIC_LASTFM_KEY
   }&from=${lastSeven}&to=${Math.floor(now.getTime() / 1000)}&format=json`;
 };
@@ -43,7 +42,7 @@ const LastFmWeekly = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-12 animate-pulse items-center justify-center rounded-md bg-sweater-8 text-sweater-6 2xl:h-[72px]" />
+      <div className="flex h-full max-h-12 animate-pulse rounded-md bg-sweater-8 text-sweater-6 2xl:h-[72px]" />
     );
   }
 
@@ -52,27 +51,20 @@ const LastFmWeekly = () => {
   if (!topThree) {
     return (
       <p>
-        My top tracks couldn't be fetched for some reason... you can find what
-        I've been listening to{" "}
-        <Link
-          href="https://www.last.fm/user/ashzw/library/tracks?date_preset=LAST_7_DAYS"
-          newTab
-        >
-          here.
-        </Link>
+        My most listened to album is{" "}
+        <span className="text-sweater-2">Nurture</span> by{" "}
+        <span className="text-sweater-2">Porter Robinson.</span> But my favorite
+        is <span className="text-sweater-2">Faces</span> by{" "}
+        <span className="text-sweater-2">Mac Miller.</span>
       </p>
     );
   }
 
   return (
-    <p className="line-clamp-2 animate-fade [--delay:0s] 2xl:line-clamp-3">
-      My top tracks in the last 7 days are{" "}
-      <span className="text-sweater-2">{topThree[0].name}</span> (
-      {topThree[0].playcount} times),{" "}
-      <span className="text-sweater-2">{topThree[1].name}</span> (
-      {topThree[1].playcount} times), and{" "}
-      <span className="text-sweater-2">{topThree[2].name}</span> (
-      {topThree[2].playcount} times).
+    <p className="line-clamp-2 animate-fade [--delay:0s]">
+      My top track of the last 7 days is{" "}
+      <span className="text-sweater-2">{topThree[0].name}</span>, played{" "}
+      {topThree[0].playcount} times.
     </p>
   );
 };
