@@ -1,6 +1,10 @@
 ---
 import { Link } from "@/components/react/link";
 import { Github, Linkedin, Mail } from "lucide-astro";
+
+let phrase = "soitgoes";
+const offset = Math.floor(Math.random() * phrase.length);
+phrase = phrase.slice(offset) + phrase.slice(0, offset);
 ---
 
 <footer class="flex w-full items-center justify-between bg-sweater-10 p-4">
@@ -27,7 +31,7 @@ import { Github, Linkedin, Mail } from "lucide-astro";
     </Link>
   </span>
   <p class="font-mono text-sm text-sweater-3">
-    <i id="scroll">soitgoes</i> 👾
+    <i id="scroll">{phrase}</i> 👾
   </p>
 </footer>
 
