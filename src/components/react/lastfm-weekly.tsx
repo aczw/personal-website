@@ -62,7 +62,7 @@ const LastFmWeekly = () => {
 
   return (
     <p className="line-clamp-2 animate-fade [--delay:0s]">
-      My top track of the last 7 days is{" "}
+      My current top track is{" "}
       <span className="text-sweater-2">{topThree[0].name}</span>, played{" "}
       {topThree[0].playcount} times.
     </p>
