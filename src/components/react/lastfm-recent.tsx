@@ -43,7 +43,7 @@ const LastFmRecent = () => {
   const { data: recent, isLoading } = useSWR<LastFmRecent>(key, fetcher);
 
   const header = (
-    <h3 className="w-fit font-mono text-sm font-bold text-sweater-2">
+    <h3 className="mb-5 font-mono text-sm font-bold text-sweater-2 xl:mb-0">
       Current status
     </h3>
   );
@@ -52,7 +52,8 @@ const LastFmRecent = () => {
     return (
       <>
         {header}
-        <div className="h-full w-full animate-pulse rounded-md bg-sweater-8" />
+        {/* 110px (image) + 24px (text) + 20px (padding) */}
+        <div className="h-[calc(110px+24px+theme(spacing.5))] w-full animate-pulse rounded-md bg-sweater-9 xl:h-full xl:bg-sweater-8" />
       </>
     );
   }
@@ -62,26 +63,27 @@ const LastFmRecent = () => {
   if (!firstTrack) {
     return (
       <>
-        <div>
+        {/* this makes sure the height remains 154px */}
+        <div className="mb-[calc(theme(spacing.6)+5px)] xl:mb-0">
           {header}
           <p className="animate-fade [--delay:0s]">
-            I can&apos;t seem to load my most recent song.
+            I can't seem to load my most recent song.
           </p>
         </div>
-        <p className="flex animate-fade justify-between text-sweater-2 [--delay:0s]">
+        <p className="mb-[calc(theme(spacing.6)+5px)] flex animate-fade justify-between text-sweater-2 [--delay:0s] xl:mb-0">
           <span>(；´д｀)</span>
           <span>щ(゜ロ゜щ)</span>
           <span>(っ °Д °;)っ</span>
         </p>
         <p className="animate-fade [--delay:0s]">
-          This might be because Last.fm is down. You can find{" "}
+          This might be because Last.fm is down. You can instead check out{" "}
           <Link
             href="https://www.last.fm/user/ashzw"
             newTab
           >
             my profile here!
           </Link>{" "}
-          But given the situation...
+          But, given the situation...
         </p>
       </>
     );
@@ -93,12 +95,12 @@ const LastFmRecent = () => {
 
   return (
     <>
-      <div>
+      <div className="mb-5 xl:mb-0">
         {header}
         <p className="animate-fade [--delay:0s]">
           {nowPlaying
             ? "I'm currently listening to this song."
-            : "This is the last song I listened to."}{" "}
+            : "This is the last song I was listening to."}{" "}
           <Link
             href="https://www.last.fm/user/ashzw"
             newTab
@@ -107,11 +109,11 @@ const LastFmRecent = () => {
           </Link>
         </p>
       </div>
-      <div className="flex animate-fade items-center space-x-5 [--delay:0s]">
+      <div className="flex animate-fade items-center space-x-6 [--delay:0s]">
         <img
           src={firstTrack.image[2]["#text"]}
           alt={`Album art for ${firstTrack.name}`}
-          className="h-[80px] w-[80px] rounded bg-sweater-8 xs:h-[85px] xs:w-[85px] 2xl:h-[110px] 2xl:w-[110px]"
+          className="h-[110px] w-[110px] shrink-0 rounded bg-sweater-9 xl:bg-sweater-8"
         />
         <div className="flex flex-col">
           <h4 className="text-sweater-2">{firstTrack.name}</h4>

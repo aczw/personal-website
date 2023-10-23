@@ -1,8 +1,6 @@
 ---
 export const prerender = false;
 
-import CardMd from "@/components/card-md.astro";
-import CardSm from "@/components/card-sm.astro";
 import LastFmRecent from "@/components/react/lastfm-recent";
 import LastFmStats from "@/components/react/lastfm-stats";
 import LastFmWeekly from "@/components/react/lastfm-weekly";
@@ -12,59 +10,59 @@ import Layout from "@/layouts/layout.astro";
 
 <Layout
   title="Charles Wang"
-  description="My own little corner on the internet"
+  description="Computer graphics student at the University of Pennsylvania."
 >
   <main
     class="flex min-h-[calc(100vh-theme(spacing.footer))] items-center justify-center pt-header"
   >
     <section
-      class="m-3 grid auto-cols-fr grid-flow-row auto-rows-fr grid-rows-4 gap-3 md:grid-cols-6 lg:grid-cols-8 xl:grid-flow-col xl:grid-cols-9"
+      class="mx-4 my-8 max-w-[650px] space-y-16 xl:mx-0 xl:my-0 xl:grid xl:max-w-fit xl:grid-flow-col xl:auto-rows-fr xl:grid-cols-8 xl:grid-rows-4 xl:gap-3 xl:space-y-0"
     >
       <div
-        class="col-span-4 row-span-4 flex animate-fade flex-col justify-between space-y-5 rounded-xl bg-sweater-9 p-8 text-sweater-1 [--delay:100ms] xs:h-[400px] xs:max-w-[400px] 2xl:h-[500px] 2xl:max-w-[500px] 2xl:p-16"
+        class="animate-fade space-y-5 rounded-xl bg-sweater-10 text-sweater-1 [--delay:100ms] xl:col-span-4 xl:row-span-4 xl:flex xl:h-[500px] xl:w-[500px] xl:flex-col xl:justify-between xl:bg-sweater-9 xl:p-16"
       >
         <h4 class="font-mono text-sm font-bold text-sweater-2">About</h4>
         <p>
-          Hi, I&apos;m Charles. I&apos;m a student at the University of
-          Pennsylvania currently majoring in computer graphics, with a minor in
-          design.
-        </p>
-        <p>
-          I&apos;m interested in making games and building websites. I also like
-          going running, bass guitar, designing album covers, obsessing about
-          metro systems, and <Link
-            href="https://github.com/aczw/dotfiles"
+          Hi, I'm Charles. I'm a student at the University of Pennsylvania
+          majoring in
+          <Link
+            href="http://cg.cis.upenn.edu/dmd.html"
             newTab
           >
-            <>ricing</>
-          </Link> my Arch setup.
+            <>Digital Media Design</>
+          </Link>, an interdisciplinary program that combines computer science,
+          graphics, and design.
+        </p>
+        <p>
+          Lately I've been running, learning bass guitar, designing album
+          covers, obsessing over metro systems, and ricing my Arch setup.
         </p>
         <p class="text-sweater-2">Thanks for stopping by!</p>
         <p>(〜￣▽￣)〜</p>
       </div>
 
-      <CardSm className="bg-sweater-8  hover:bg-sweater-4" />
-      <CardSm className="bg-sweater-7  hover:bg-sweater-3" />
-      <CardSm className="bg-sweater-6  hover:bg-sweater-2" />
-      <CardSm className="bg-sweater-5  hover:bg-sweater-1" />
-
-      <CardMd className="animate-fade [--delay:300ms]">
+      <div
+        class="animate-fade rounded-xl bg-sweater-10 text-sweater-1 [--delay:200ms] xl:col-span-4 xl:row-span-2 xl:flex xl:h-[244px] xl:w-[500px] xl:flex-col xl:justify-between xl:gap-3 xl:bg-sweater-9 xl:p-8"
+      >
         <LastFmRecent client:load />
-      </CardMd>
+      </div>
 
-      <CardMd className="animate-fade [--delay:400ms]">
-        <div>
-          <h4 class="w-fit font-mono text-sm font-bold text-sweater-2">
+      <div
+        class="animate-fade rounded-xl bg-sweater-10 text-sweater-1 [--delay:300ms] xl:col-span-4 xl:row-span-2 xl:flex xl:h-[244px] xl:w-[500px] xl:flex-col xl:justify-between xl:gap-3 xl:bg-sweater-9 xl:p-8"
+      >
+        <div class="mb-5 xl:mb-0">
+          <h4
+            class="mb-5 w-fit font-mono text-sm font-bold text-sweater-2 xl:mb-0"
+          >
             My Last.fm
           </h4><p>
-            <span class="xs:hidden 2xl:inline"
-              >For fun and out of curiosity,{" "}</span
-            >I started tracking my music habits a few years ago.
+            For fun and out of curiosity, I started tracking my music habits a
+            few years ago.
           </p>
         </div>
         <LastFmStats client:load />
         <LastFmWeekly client:load />
-      </CardMd>
+      </div>
     </section>
   </main>
 </Layout>

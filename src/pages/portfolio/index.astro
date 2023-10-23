@@ -9,18 +9,17 @@ import Layout from "@/layouts/layout.astro";
   title="Portfolio • Charles Wang"
   description="Visual stuff. Design and artwork made for myself and others."
 >
-  <main class="flex flex-col items-center p-3 pt-header text-sweater-1">
-    <p class="my-3 w-full max-w-[850px]">
+  <main class="flex flex-col items-center p-4 pt-header text-sweater-1">
+    <p class="mb-8 w-full max-w-[650px]">
       I&apos;ve combined together both my traditional art and design work here.
-      To see case studies, sketches, and more projects, visit my
-      <Link
+      Visit my <Link
         href="https://www.behance.net/charleszw"
         newTab
       >
-        <>Behance.</>
-      </Link>
+        <>Behance</>
+      </Link> to see case studies, sketches, and more projects!
     </p>
-    <ul class="w-full max-w-[1400px] columns-sm items-center gap-3">
+    <ul class="w-full max-w-[1100px] columns-xs items-center gap-4">
       {
         portfolioJson.map((item, index) => (
           <PortfolioCard

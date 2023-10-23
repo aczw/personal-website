@@ -42,7 +42,7 @@ const LastFmWeekly = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-full max-h-12 animate-pulse rounded-md bg-sweater-8 text-sweater-6 2xl:h-[72px]" />
+      <div className="flex h-12 max-h-12 animate-pulse rounded-md bg-sweater-9 xl:h-full xl:bg-sweater-8" />
     );
   }
 
@@ -53,8 +53,8 @@ const LastFmWeekly = () => {
       <p>
         My most listened to album is{" "}
         <span className="text-sweater-2">Nurture</span> by{" "}
-        <span className="text-sweater-2">Porter Robinson.</span> But my favorite
-        is <span className="text-sweater-2">Faces</span> by{" "}
+        <span className="text-sweater-2">Porter Robinson,</span> but my favorite
+        one is probably <span className="text-sweater-2">Faces</span> by{" "}
         <span className="text-sweater-2">Mac Miller.</span>
       </p>
     );

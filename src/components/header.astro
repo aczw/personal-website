@@ -19,22 +19,20 @@ const path = removeTrailingSlash(pathname);
   <nav class="relative flex items-center justify-between">
     <a
       href="/"
-      class="group p-[calc((theme(spacing.header)-25px)/2)]"
+      class="group p-[calc((theme(spacing.header)-26px)/2)]"
     >
       <Logo
-        width={25}
-        height={25}
+        width={26}
+        height={26}
         alt="Go to home"
-        className="fill-sweater-4 group-hover:rotate-[-15deg] group-hover:fill-sweater-1 transition"
+        className="fill-sweater-4 transition group-hover:rotate-[-15deg] group-hover:fill-sweater-1"
       />
     </a>
     <div class="flex items-center space-x-6 py-4 pl-2 pr-4">
       <Link
         href="/projects"
         className={`flex items-center ${
-          path === "/projects"
-            ? "text-sweater-1 decoration-sweater-1/50 hover:text-sweater-4 hover:decoration-sweater-4"
-            : ""
+          path === "/projects" ? "text-sweater-1 decoration-sweater-1/50" : ""
         }`}
       >
         <TerminalSquare
@@ -46,9 +44,7 @@ const path = removeTrailingSlash(pathname);
       <Link
         href="/portfolio"
         className={`flex items-center ${
-          path === "/portfolio"
-            ? "text-sweater-1 decoration-sweater-1/50 hover:text-sweater-4 hover:decoration-sweater-4"
-            : ""
+          path === "/portfolio" ? "text-sweater-1 decoration-sweater-1/50" : ""
         }`}
       >
         <PaintBucket
@@ -60,13 +56,14 @@ const path = removeTrailingSlash(pathname);
       <a
         href="/resume.pdf"
         target="_blank"
-        ><Button>
+      >
+        <Button>
           <FileText
             size={16}
             class="mr-1 hidden xs:block"
           />Resume
-        </Button></a
-      >
+        </Button>
+      </a>
     </div>
   </nav>
 </header>
