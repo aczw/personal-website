@@ -5,17 +5,8 @@
     "date": "Sept 2023",
     "imgName": "3d-rasterizer",
     "alt": "Screenshot depicting the playground editor",
-    "desc": "512x512 image renderer written in C++. Supports antialiasing (up to 16x), importing .OBJ files, and Lambertian and Blinn-Phong shading. Uses Qt for the UI and OpenGL under the hood.",
+    "desc": "512x512 image renderer written in C++. Supports antialiasing up to 16x, importing .OBJ files, and Lambertian and Blinn-Phong shading. Uses Qt for everything else.",
     "tags": ["C++", "Qt", "OpenGL"]
-  },
-  {
-    "name": "Scallop Playground",
-    "href": "https://play.scallop-lang.org",
-    "date": "ongoing!",
-    "imgName": "scallop-playground",
-    "alt": "Screenshot depicting the playground editor",
-    "desc": "Scallop is a neurosymbolic language optimized for deep learning and LLMs. I'm currently helping to build a web platform to create, save, and publish custom Scallop user projects. Employs a Next.js frontend, Flask backend, and PlanetScale for storing data.",
-    "tags": ["Next.js", "React", "TypeScript", "Tailwind CSS", "MySQL", "Flask"]
   },
   {
     "name": "RCW",
@@ -23,8 +14,36 @@
     "date": "June 2023",
     "imgName": "rcw",
     "alt": "Screenshot of my game's main menu",
-    "desc": "Endless Unity minigame written in C#. UI was prototyped and exported from Figma. Color-based gameplay inspired by the Stroop effect. Playable directly from the browser!",
+    "desc": "Endless Unity minigame written in C#. UI was prototyped and exported from Figma. Color-based gameplay inspired by the Stroop effect. Play from your browser now!",
     "tags": ["Unity", "C#", "Figma"]
+  },
+  {
+    "name": "wikiRank",
+    "href": "https://wikirank.vercel.app/",
+    "date": "May 2023",
+    "imgName": "wikirank",
+    "alt": "Screenshot of wikiRank's main interface",
+    "desc": "Made with friends. Enter text (think journal articles, research papers) and let the vector space model analyze your keywords to find and rank the most relevant Wikipedia articles.",
+    "tags": ["Next.js", "React", "JavaScript", "Tailwind CSS"]
+  },
+  {
+    "name": "aczw.dev",
+    "href": "https://old.charl.sh/",
+    "date": "July 2023",
+    "imgName": "aczw-dev",
+    "alt": "Screenshot of my old website's homepage",
+    "desc": "v1 of my site. Next.js was overkill for my purposes, and everything was too big, but many ideas have carried over. Kept alive for sentimental value :)",
+    "tags": ["Next.js", "React", "Tailwind CSS", "Figma"]
+  },
+
+  {
+    "name": "Scallop Playground",
+    "href": "https://play.scallop-lang.org",
+    "date": "ongoing!",
+    "imgName": "scallop-playground",
+    "alt": "Screenshot depicting the playground editor",
+    "desc": "Scallop is a neurosymbolic language for deep learning and LLMs. I'm currently helping to build a web platform to create, save, and publish custom Scallop user projects. Employs a Next.js frontend, Flask backend, and PlanetScale for storing data.",
+    "tags": ["Next.js", "React", "TypeScript", "Tailwind CSS", "MySQL", "Flask"]
   },
   {
     "name": "sddm-theme-corners",
@@ -43,24 +62,6 @@
     "alt": "Screenshot of my website's homepage",
     "desc": "How meta! This site was built with Astro, a little React, and Tailwind. Display font is Atkinson Hyperlegible, monospace is Maple Mono. Icons from Lucide.",
     "tags": ["Astro", "TypeScript", "React", "Tailwind CSS", "Figma"]
-  },
-  {
-    "name": "aczw.dev",
-    "href": "https://old.charl.sh/",
-    "date": "July 2023",
-    "imgName": "aczw-dev",
-    "alt": "Screenshot of my old website's homepage",
-    "desc": "v1 of my site. Next.js was overkill for my purposes, and everything was too big, but many ideas have carried over. Kept alive for sentimental value :)",
-    "tags": ["Next.js", "React", "Tailwind CSS", "Figma"]
-  },
-  {
-    "name": "wikiRank",
-    "href": "https://wikirank.vercel.app/",
-    "date": "May 2023",
-    "imgName": "wikirank",
-    "alt": "Screenshot of wikiRank's main interface",
-    "desc": "Made with friends. Enter text (think journal articles, research papers) and let the vector space model analyze your keywords to find and rank the most relevant Wikipedia articles.",
-    "tags": ["Next.js", "React", "JavaScript", "Tailwind CSS"]
   },
   {
     "name": "ttt",

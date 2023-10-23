@@ -12,36 +12,34 @@ interface Props {
 const { project, index } = Astro.props;
 ---
 
-<li
-  class="grid animate-fade gap-3 rounded-lg bg-sweater-9 p-4 sm:grid-cols-7 sm:gap-4 sm:bg-transparent sm:p-0"
-  style={{ "--delay": `${(index + 1) * 100}ms` }}
+<div
+  class="col-span-1 mb-12 animate-fade break-inside-avoid space-y-3 rounded-lg sm:mb-8 lg:mb-16"
+  style={{ "--delay": `${(index + 1) * 80}ms` }}
 >
   <Image
-    class="max-h-72 rounded-lg border-4 border-sweater-8 bg-sweater-8 object-cover object-top sm:col-span-2 sm:max-h-48"
+    class="max-h-64 rounded-lg bg-sweater-9 object-cover object-top xs:max-h-96 md:max-h-80 lg:max-h-96"
     src={import(`../assets/projects/${project.imgName}.png`)}
     alt={project.alt}
   />
-  <div class="flex flex-col space-y-3 sm:col-span-5">
-    {
-      project.href ? (
-        <Link
-          href={project.href}
-          newTab
-          className="text-xl font-mono"
-        >
-          <h3 class="sm:leading-none">{project.name}</h3>
-        </Link>
-      ) : (
-        <h3 class="font-mono text-xl text-sweater-2 sm:leading-none">
-          {project.name}
-        </h3>
-      )
-    }
-    <div class="flex flex-wrap gap-2.5">
-      {project.tags.map((tag) => <Badge>{tag}</Badge>)}
-    </div>
-    <p class="rounded-lg bg-sweater-9 sm:p-4">
-      {project.desc}
-    </p>
-  </div>
-</li>
+  {
+    project.href ? (
+      <Link
+        href={project.href}
+        newTab
+        className="text-xl font-mono"
+      >
+        <h3 class="pb-1 pt-3 leading-none">{project.name}</h3>
+      </Link>
+    ) : (
+      <h3 class="font-mono text-xl leading-none text-sweater-2">
+        {project.name}
+      </h3>
+    )
+  }
+  <span class="flex flex-wrap gap-2.5">
+    {project.tags.map((tag) => <Badge>{tag}</Badge>)}
+  </span>
+  <p>
+    {project.desc}
+  </p>
+</div>
