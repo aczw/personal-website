@@ -1,0 +1,18 @@
+---
+import { cn } from "@/utils/cn";
+
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<main
+  class={cn(
+    "mx-auto w-full max-w-[1300px] px-4 pb-8 pt-[calc(theme(spacing.header)+theme(spacing.8))] text-sweater-1",
+    className,
+  )}
+>
+  <slot />
+</main>

@@ -2,17 +2,16 @@
 import portfolioJson from "@/assets/portfolio/portfolio.json";
 import PortfolioCard from "@/components/portfolio-card.astro";
 import { Link } from "@/components/react/link";
-import Layout from "@/layouts/layout.astro";
+import HtmlLayout from "@/layouts/html-layout.astro";
+import MainLayout from "@/layouts/main-layout.astro";
 ---
 
-<Layout
+<HtmlLayout
   title="Portfolio • Charles Wang"
   description="Visual stuff. Design and artwork made for myself and others."
 >
-  <main
-    class="flex flex-col items-center px-4 pb-8 pt-[calc(theme(spacing.header)+theme(spacing.8))] text-sweater-1"
-  >
-    <p class="mb-8 w-full max-w-[650px]">
+  <MainLayout>
+    <p class="mx-auto mb-8 w-full max-w-[650px]">
       I&apos;ve combined together both my traditional art and design work here.
       Visit my <Link
         href="https://www.behance.net/charleszw"
@@ -21,7 +20,7 @@ import Layout from "@/layouts/layout.astro";
         <>Behance</>
       </Link> to see case studies, sketches, and more projects!
     </p>
-    <ul class="w-full max-w-[1100px] columns-xs gap-4">
+    <ul class="w-full columns-xs gap-4">
       {
         portfolioJson.map((item, index) => (
           <PortfolioCard
@@ -31,5 +30,5 @@ import Layout from "@/layouts/layout.astro";
         ))
       }
     </ul>
-  </main>
-</Layout>
+  </MainLayout>
+</HtmlLayout>

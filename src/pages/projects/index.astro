@@ -1,15 +1,16 @@
 ---
 import projectsJson from "@/assets/projects/projects.json";
 import ProjectCard from "@/components/project-card.astro";
-import Layout from "@/layouts/layout.astro";
+import HtmlLayout from "@/layouts/html-layout.astro";
+import MainLayout from "@/layouts/main-layout.astro";
 ---
 
-<Layout
+<HtmlLayout
   title="Projects • Charles Wang"
   description="Coding stuff. Projects from my classes and random interests."
 >
-  <main
-    class="mx-auto grid w-full max-w-[1300px] grid-flow-row grid-cols-1 gap-8 px-4 pb-8 pt-[calc(theme(spacing.header)+theme(spacing.8))] text-sweater-1 sm:grid-cols-2 xl:gap-16"
+  <MainLayout
+    className="grid grid-flow-row grid-cols-1 gap-8 sm:grid-cols-2 xl:gap-16"
   >
     {
       projectsJson.map((project, index) => (
@@ -19,5 +20,5 @@ import Layout from "@/layouts/layout.astro";
         />
       ))
     }
-  </main>
-</Layout>
+  </MainLayout>
+</HtmlLayout>
