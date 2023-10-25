@@ -13,7 +13,7 @@ const { project, index } = Astro.props;
 ---
 
 <div
-  class="col-span-1 mb-12 animate-fade break-inside-avoid space-y-3 rounded-lg sm:mb-8 lg:mb-16"
+  class="col-span-1 mb-6 animate-fade break-inside-avoid space-y-2.5 rounded-lg md:mb-10 lg:mb-16"
   style={{ "--delay": `${(index + 1) * 80}ms` }}
 >
   <Image
@@ -23,22 +23,23 @@ const { project, index } = Astro.props;
   />
   {
     project.href ? (
-      <Link
-        href={project.href}
-        newTab
-        className="text-xl font-mono"
-      >
-        <h3 class="pb-1 pt-3 leading-none">{project.name}</h3>
-      </Link>
+      <h3 class="pb-1.5 pt-1 font-mono text-xl leading-none">
+        <Link
+          href={project.href}
+          newTab
+        >
+          {project.name}
+        </Link>
+      </h3>
     ) : (
-      <h3 class="font-mono text-xl leading-none text-sweater-2">
+      <h3 class="pt-1 font-mono text-xl leading-none text-sweater-2">
         {project.name}
       </h3>
     )
   }
-  <span class="flex flex-wrap gap-2.5">
+  <div class="flex flex-wrap gap-2.5">
     {project.tags.map((tag) => <Badge>{tag}</Badge>)}
-  </span>
+  </div>
   <p>
     {project.desc}
   </p>
