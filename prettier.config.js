@@ -1,15 +1,8 @@
-/** @type {import("prettier").Config} */
+/** @type {import("prettier").Config & import("prettier-plugin-tailwindcss").PluginOptions} */
 const config = {
   plugins: ["prettier-plugin-tailwindcss"],
   singleAttributePerLine: true,
-  overrides: [
-    {
-      files: ["pnpm-lock.yaml", "package.json"],
-      options: {
-        rangeEnd: 0,
-      },
-    },
-  ],
+  tailwindFunctions: ["cn", "clsx", "twMerge"],
 };
 
 export default config;
