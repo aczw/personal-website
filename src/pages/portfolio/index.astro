@@ -11,26 +11,30 @@ import MainLayout from "@/layouts/main-layout.astro";
   description="A collection of pieces that I've enjoyed working on, from design to traditional art."
 >
   <MainLayout>
-    <h3 class="font-mono text-sweater-2">Design</h3>
-    <p class="mx-auto mb-8 w-full max-w-prose">
-      I've combined together both my traditional art and design work here. Visit
-      my <Link
-        href="https://www.behance.net/charleszw"
-        newTab
-      >
-        <>Behance</>
-      </Link> to see case studies, sketches, and more projects!
-    </p>
-    <ul class="w-full columns-xs gap-4">
-      {
-        portfolioJson.map((item, index) => (
-          <PortfolioCard
-            portfolio={item}
-            index={index}
-          />
-        ))
-      }
-    </ul>
-    <h3 class="font-mono text-sweater-2">Art</h3>
+    <section class="w-full">
+      <div class="mx-auto w-full max-w-prose">
+        <h3 class="font-bold text-sweater-2">Design</h3>
+        <p class="mb-6">
+          I started doing design when certain songs in my music library did not
+          have album art, and I wanted to fix that. Since then I've done design
+          work for others as well. My <Link
+            href="https://www.behance.net/charleszw"
+            newTab
+          >
+            <>Behance</>
+          </Link> has more projects and in-depth case studies.
+        </p>
+      </div>
+      <ul class="w-full columns-xs gap-6">
+        {
+          portfolioJson.map((item, index) => (
+            <PortfolioCard
+              portfolio={item}
+              index={index}
+            />
+          ))
+        }
+      </ul>
+    </section>
   </MainLayout>
 </HtmlLayout>

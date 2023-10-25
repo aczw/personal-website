@@ -43,7 +43,7 @@ const LastFmRecent = () => {
   const { data: recent, isLoading } = useSWR<LastFmRecent>(key, fetcher);
 
   const header = (
-    <h3 className="mb-4 font-mono text-sm font-bold text-sweater-2 xl:mb-0">
+    <h3 className="mb-4 font-bold text-sweater-2 xl:mb-0 xl:text-sm">
       Current status
     </h3>
   );
@@ -116,7 +116,7 @@ const LastFmRecent = () => {
           className="h-[110px] w-[110px] shrink-0 rounded bg-sweater-9 xl:bg-sweater-8"
         />
         <div className="flex flex-col">
-          <h4 className="line-clamp-2 text-sweater-2">{firstTrack.name}</h4>
+          <p className="line-clamp-2 text-sweater-2">{firstTrack.name}</p>
           <p className="line-clamp-1">
             by{" "}
             <span className="text-sweater-2">{firstTrack.artist["#text"]}</span>
