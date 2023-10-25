@@ -37,13 +37,13 @@ const LastFmStats = () => {
 
   if (isLoading) {
     return (
-      <div className="mb-5 flex h-6 max-h-6 animate-pulse rounded-md bg-sweater-9 xl:mb-0 xl:h-full xl:bg-sweater-8" />
+      <div className="mb-4 flex h-6 max-h-6 animate-pulse rounded-md bg-sweater-9 xl:mb-0 xl:h-full xl:bg-sweater-8" />
     );
   }
 
   if (!profile) {
     return (
-      <p className="mb-5 xl:mb-0">
+      <p className="mb-4 xl:mb-0">
         I listen to an average of <span className="text-sweater-2">55</span>{" "}
         tracks per day.
       </p>
@@ -51,7 +51,7 @@ const LastFmStats = () => {
   }
 
   return (
-    <p className="mb-5 animate-fade [--delay:0s] xl:mb-0">
+    <p className="mb-4 animate-fade [--delay:0s] xl:mb-0">
       So far, I have{" "}
       <span className="text-sweater-2">{profile.user.playcount}</span> total
       scrobbles.

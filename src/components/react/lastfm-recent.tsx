@@ -43,7 +43,7 @@ const LastFmRecent = () => {
   const { data: recent, isLoading } = useSWR<LastFmRecent>(key, fetcher);
 
   const header = (
-    <h3 className="mb-5 font-mono text-sm font-bold text-sweater-2 xl:mb-0">
+    <h3 className="mb-4 font-mono text-sm font-bold text-sweater-2 xl:mb-0">
       Current status
     </h3>
   );
@@ -52,8 +52,8 @@ const LastFmRecent = () => {
     return (
       <>
         {header}
-        {/* 110px (image) + 24px (text) + 20px (padding) */}
-        <div className="h-[calc(110px+24px+theme(spacing.5))] w-full animate-pulse rounded-md bg-sweater-9 xl:h-full xl:bg-sweater-8" />
+        {/* 110px (image) + 24px (text) + 16px (padding) */}
+        <div className="h-[calc(110px+24px+theme(spacing.4))] w-full animate-pulse rounded-md bg-sweater-9 xl:h-full xl:bg-sweater-8" />
       </>
     );
   }
@@ -95,7 +95,7 @@ const LastFmRecent = () => {
 
   return (
     <>
-      <div className="mb-5 xl:mb-0">
+      <div className="mb-4 xl:mb-0">
         {header}
         <p className="animate-fade [--delay:0s]">
           {nowPlaying
@@ -116,12 +116,12 @@ const LastFmRecent = () => {
           className="h-[110px] w-[110px] shrink-0 rounded bg-sweater-9 xl:bg-sweater-8"
         />
         <div className="flex flex-col">
-          <h4 className="text-sweater-2">{firstTrack.name}</h4>
+          <h4 className="line-clamp-2 text-sweater-2">{firstTrack.name}</h4>
           <p className="line-clamp-1">
             by{" "}
             <span className="text-sweater-2">{firstTrack.artist["#text"]}</span>
           </p>
-          <p className="line-clamp-1 2xl:line-clamp-2">
+          <p className="line-clamp-1">
             from{" "}
             <span className="text-sweater-2">{firstTrack.album["#text"]}</span>
           </p>
