@@ -23,7 +23,7 @@ const { project, index } = Astro.props;
   />
   {
     project.href ? (
-      <h3 class="pb-1.5 pt-1 font-mono text-xl leading-none">
+      <h3 class="pb-1 pt-1 font-mono text-lg leading-none">
         <Link
           href={project.href}
           newTab
@@ -32,7 +32,7 @@ const { project, index } = Astro.props;
         </Link>
       </h3>
     ) : (
-      <h3 class="pt-1 font-mono text-xl leading-none text-sweater-2">
+      <h3 class="pt-1 font-mono text-lg leading-none text-sweater-2">
         {project.name}
       </h3>
     )
