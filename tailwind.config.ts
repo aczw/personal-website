@@ -13,6 +13,7 @@ const config = {
       spacing: {
         header: "64px",
         footer: "56px",
+        prose: "670px",
       },
       colors: {
         sweater: {
