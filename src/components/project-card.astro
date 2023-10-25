@@ -13,11 +13,11 @@ const { project, index } = Astro.props;
 ---
 
 <div
-  class="col-span-1 mb-6 animate-fade break-inside-avoid space-y-2.5 rounded-lg md:mb-10 lg:mb-16"
+  class="col-span-1 mb-10 animate-fade break-inside-avoid space-y-2.5 rounded-lg sm:mb-6 xl:mb-16"
   style={{ "--delay": `${(index + 1) * 80}ms` }}
 >
   <Image
-    class="max-h-64 rounded-lg bg-sweater-9 object-cover object-top xs:max-h-96 md:max-h-80 lg:max-h-96"
+    class="max-h-52 rounded-lg bg-sweater-9 object-cover object-top xs:max-h-64 sm:max-h-72 lg:max-h-[345px]"
     src={import(`../assets/projects/${project.imgName}.png`)}
     alt={project.alt}
   />

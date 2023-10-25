@@ -5,7 +5,7 @@
     "date": "Sept 2023",
     "imgName": "3d-rasterizer",
     "alt": "Screenshot depicting the playground editor",
-    "desc": "512x512 image renderer written in C++. Supports antialiasing up to 16x, importing .OBJ files, and Lambertian and Blinn-Phong shading. Uses Qt for everything else.",
+    "desc": "512x512 image renderer written in C++. Supports antialiasing up to 16x, importing .OBJ files, and Lambertian and Blinn-Phong shading. UI is built with Qt.",
     "tags": ["C++", "Qt", "OpenGL"]
   },
   {
