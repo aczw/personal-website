@@ -18,10 +18,7 @@ const canonicalUrl = removeTrailingSlash(
 ---
 
 <!doctype html>
-<html
-  lang="en"
-  data-theme="sweater"
->
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta
@@ -88,11 +85,11 @@ const getTheme = () => {
     return localTheme;
   }
 
-  return document.documentElement.dataset.theme;
+  return "sweater";
 };
 
 const theme = getTheme();
 
 document.documentElement.dataset.theme = theme;
-  localStorage.setItem("theme", theme);
+localStorage.setItem("theme", theme);
 </script>
