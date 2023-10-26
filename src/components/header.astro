@@ -10,7 +10,7 @@ const { pathname } = Astro.url;
 const path = removeTrailingSlash(pathname);
 ---
 
-<header class="fixed z-10 w-full bg-sweater-10/90">
+<header class="bg-ash-10/90 fixed z-10 w-full">
   <div
     aria-hidden="true"
     class="absolute inset-x-0 top-0 h-header backdrop-blur-3xl"
@@ -25,14 +25,14 @@ const path = removeTrailingSlash(pathname);
         width={26}
         height={26}
         alt="Go to home"
-        className="fill-sweater-4 transition group-hover:rotate-[-15deg] group-hover:fill-sweater-1"
+        className="fill-ash-4 group-hover:fill-ash-1 transition group-hover:rotate-[-15deg]"
       />
     </a>
     <div class="flex items-center space-x-6 py-4 pl-2 pr-4">
       <Link
         href="/projects"
         className={`flex items-center ${
-          path === "/projects" ? "text-sweater-1 decoration-sweater-1/50" : ""
+          path === "/projects" ? "text-ash-1 decoration-ash-1/50" : ""
         }`}
       >
         <TerminalSquare
@@ -44,7 +44,7 @@ const path = removeTrailingSlash(pathname);
       <Link
         href="/portfolio"
         className={`flex items-center ${
-          path === "/portfolio" ? "text-sweater-1 decoration-sweater-1/50" : ""
+          path === "/portfolio" ? "text-ash-1 decoration-ash-1/50" : ""
         }`}
       >
         <PaintBucket

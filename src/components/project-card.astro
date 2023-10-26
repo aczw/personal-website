@@ -17,7 +17,7 @@ const { project, index } = Astro.props;
   style={{ "--delay": `${(index + 1) * 100}ms` }}
 >
   <Image
-    class="max-h-52 rounded-lg bg-sweater-9 object-cover object-top xs:max-h-64 sm:max-h-72 lg:max-h-[345px]"
+    class="bg-ash-9 max-h-52 rounded-lg object-cover object-top xs:max-h-64 sm:max-h-72 lg:max-h-[345px]"
     src={import(`../assets/projects/${project.imgName}.png`)}
     alt={project.alt}
   />
@@ -32,7 +32,7 @@ const { project, index } = Astro.props;
         </Link>
       </h3>
     ) : (
-      <h3 class="font-bold text-sweater-2">{project.name}</h3>
+      <h3 class="text-ash-2 font-bold">{project.name}</h3>
     )
   }
   <div class="flex flex-wrap gap-2.5">

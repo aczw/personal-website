@@ -42,7 +42,7 @@ const LastFmWeekly = () => {
 
   if (isLoading) {
     return (
-      <div className="flex h-6 max-h-6 animate-pulse rounded-md bg-sweater-9 xl:h-full xl:bg-sweater-8" />
+      <div className="bg-ash-9 xl:bg-ash-8 flex h-6 max-h-6 animate-pulse rounded-md xl:h-full" />
     );
   }
 
@@ -51,11 +51,10 @@ const LastFmWeekly = () => {
   if (!topThree) {
     return (
       <p>
-        My most listened to album is{" "}
-        <span className="text-sweater-2">Nurture</span> by{" "}
-        <span className="text-sweater-2">Porter Robinson,</span> but my favorite
-        one is probably <span className="text-sweater-2">Faces</span> by{" "}
-        <span className="text-sweater-2">Mac Miller.</span>
+        My most listened to album is <span className="text-ash-2">Nurture</span>{" "}
+        by <span className="text-ash-2">Porter Robinson,</span> but my favorite
+        one is probably <span className="text-ash-2">Faces</span> by{" "}
+        <span className="text-ash-2">Mac Miller.</span>
       </p>
     );
   }
@@ -63,7 +62,7 @@ const LastFmWeekly = () => {
   return (
     <p className="line-clamp-2 animate-fade [--delay:0s]">
       My current top track is{" "}
-      <span className="text-sweater-2">{topThree[0].name}</span>, played{" "}
+      <span className="text-ash-2">{topThree[0].name}</span>, played{" "}
       {topThree[0].playcount} times.
     </p>
   );

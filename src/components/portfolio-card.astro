@@ -18,14 +18,14 @@ const href = portfolio.href ? portfolio.href : null;
   style={{ "--delay": `${(index + 1) * 50}ms` }}
 >
   <Image
-    class="mb-6 rounded-lg border-sweater-8 bg-sweater-9 transition-opacity group-hover:opacity-80"
+    class="border-ash-8 bg-ash-9 mb-6 rounded-lg transition-opacity group-hover:opacity-80"
     src={import(`../assets/portfolio/${portfolio.imgName}.png`)}
     alt={portfolio.name}
   />
   <span
-    class="absolute inset-0 flex flex-col items-center justify-end bg-gradient-to-t from-sweater-10 p-5 text-center opacity-0 transition-opacity group-hover:opacity-100"
+    class="from-ash-10 absolute inset-0 flex flex-col items-center justify-end bg-gradient-to-t p-5 text-center opacity-0 transition-opacity group-hover:opacity-100"
   >
-    <h4 class="font-bold text-sweater-2">
+    <h4 class="text-ash-2 font-bold">
       {portfolio.name}
     </h4>
     <p>
