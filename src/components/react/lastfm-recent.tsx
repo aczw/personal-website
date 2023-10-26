@@ -43,7 +43,7 @@ const LastFmRecent = () => {
   const { data: recent, isLoading } = useSWR<LastFmRecent>(key, fetcher);
 
   const header = (
-    <h3 className="text-ash-2 mb-4 font-bold xl:mb-0 xl:text-sm">
+    <h3 className="mb-4 font-bold text-ash-2 xl:mb-0 xl:text-sm">
       Current status
     </h3>
   );
@@ -53,7 +53,7 @@ const LastFmRecent = () => {
       <>
         {header}
         {/* 110px (image) + 24px (text) + 16px (padding) */}
-        <div className="bg-ash-9 xl:bg-ash-8 h-[calc(110px+24px+theme(spacing.4))] w-full animate-pulse rounded-md xl:h-full" />
+        <div className="h-[calc(110px+24px+theme(spacing.4))] w-full animate-pulse rounded-md bg-ash-9 xl:h-full xl:bg-ash-8" />
       </>
     );
   }
@@ -70,7 +70,7 @@ const LastFmRecent = () => {
             I can't seem to load my most recent song.
           </p>
         </div>
-        <p className="text-ash-2 mb-[calc(theme(spacing.6)+5px)] flex animate-fade justify-between [--delay:0s] xl:mb-0">
+        <p className="mb-[calc(theme(spacing.6)+5px)] flex animate-fade justify-between text-ash-2 [--delay:0s] xl:mb-0">
           <span>(；´д｀)</span>
           <span>щ(゜ロ゜щ)</span>
           <span>(っ °Д °;)っ</span>
@@ -113,10 +113,10 @@ const LastFmRecent = () => {
         <img
           src={firstTrack.image[2]["#text"]}
           alt={`Album art for ${firstTrack.name}`}
-          className="bg-ash-9 xl:bg-ash-8 h-[110px] w-[110px] shrink-0 rounded"
+          className="h-[110px] w-[110px] shrink-0 rounded bg-ash-9 xl:bg-ash-8"
         />
         <div className="flex flex-col">
-          <p className="text-ash-2 line-clamp-2">{firstTrack.name}</p>
+          <p className="line-clamp-2 text-ash-2">{firstTrack.name}</p>
           <p className="line-clamp-1">
             by <span className="text-ash-2">{firstTrack.artist["#text"]}</span>
           </p>

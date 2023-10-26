@@ -42,7 +42,7 @@ const LastFmWeekly = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-ash-9 xl:bg-ash-8 flex h-6 max-h-6 animate-pulse rounded-md xl:h-full" />
+      <div className="flex h-6 max-h-6 animate-pulse rounded-md bg-ash-9 xl:h-full xl:bg-ash-8" />
     );
   }
 

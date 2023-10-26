@@ -76,3 +76,23 @@ const canonicalUrl = removeTrailingSlash(
     <Footer />
   </body>
 </html>
+
+{
+  /* see https://docs.astro.build/en/tutorial/6-islands/2/#add-client-side-interactivity */
+}
+<script is:inline>
+const getTheme = () => {
+  const localTheme = localStorage.getItem("theme");
+
+  if (typeof localStorage !== "undefined" && localTheme) {
+    return localTheme;
+  }
+
+  return document.documentElement.dataset.theme;
+};
+
+const theme = getTheme();
+
+document.documentElement.dataset.theme = theme;
+  localStorage.setItem("theme", theme);
+</script>

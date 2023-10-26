@@ -37,7 +37,7 @@ const LastFmStats = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-ash-9 xl:bg-ash-8 mb-4 flex h-6 max-h-6 animate-pulse rounded-md xl:mb-0 xl:h-full" />
+      <div className="mb-4 flex h-6 max-h-6 animate-pulse rounded-md bg-ash-9 xl:mb-0 xl:h-full xl:bg-ash-8" />
     );
   }
 

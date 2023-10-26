@@ -31,9 +31,26 @@ phrase = phrase.slice(offset) + phrase.slice(0, offset);
     </Link>
   </span>
   <p class="text-ash-3 font-mono text-sm">
-    <i id="scroll">{phrase}</i> 👾
+    <i id="scroll">{phrase}</i>{" "}
+    <button id="theme-sweater">👾</button>
+    <button id="theme-dash">🐉</button>
   </p>
 </footer>
+
+<script>
+  const setTheme = (theme: "sweater" | "dash") => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem("theme", theme);
+  };
+
+  document
+    .getElementById("theme-sweater")!
+    .addEventListener("click", () => setTheme("sweater"));
+
+  document
+    .getElementById("theme-dash")!
+    .addEventListener("click", () => setTheme("dash"));
+</script>
 
 <script>
   setInterval(() => {

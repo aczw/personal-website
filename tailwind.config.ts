@@ -46,6 +46,20 @@ const config = {
             10: "#0A0919",
           },
         },
+        dash: {
+          ash: {
+            1: "#E1FFF9",
+            2: "#CEFFF6",
+            3: "#B4FFF1",
+            4: "#8AEBDA",
+            5: "#75CFBF",
+            6: "#3F9686",
+            7: "#195B4F",
+            8: "#0A322B",
+            9: "#031915",
+            10: "#020C0A",
+          },
+        },
       },
       {
         defaultTheme: "sweater",

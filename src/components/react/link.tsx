@@ -20,7 +20,7 @@ const Link = ({
       title={title}
       aria-label={title}
       className={cn(
-        "text-ash-3 decoration-ash-3/50 hover:text-ash-1 hover:decoration-ash-1 w-fit underline decoration-1 underline-offset-2 transition",
+        "w-fit text-ash-3 underline decoration-ash-3/50 decoration-1 underline-offset-2 transition hover:text-ash-1 hover:decoration-ash-1",
         className,
       )}
     >
