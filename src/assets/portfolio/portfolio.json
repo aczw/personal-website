@@ -1,6 +1,14 @@
 [
   {
+    "name": "Penn UPGRADE brand refresh",
+    "type": "design",
+    "imgName": "upgrade",
+    "date": "Oct 2023",
+    "href": null
+  },
+  {
     "name": "TEDxPenn 2023: \"(R)EVOLUTION\"",
+    "type": "design",
     "imgName": "tedxpenn-2023",
     "date": "April 2023",
     "href": {
@@ -11,32 +19,32 @@
   },
   {
     "name": "Penn SIGGRAPH's Valentine Event",
+    "type": "design",
     "imgName": "siggraph-valentine",
     "date": "Feb 2023",
     "href": null
   },
   {
-    "name": "HOMAGE",
-    "imgName": "homage",
-    "date": "Dec 2022",
-    "href": {
-      "url": "https://vimeo.com/872788475",
-      "newTab": true,
-      "name": "View animation on Vimeo"
-    }
+    "name": "Penn SIGGRAPH Study Session Night",
+    "type": "design",
+    "imgName": "siggraph-study-session",
+    "date": "Oct 2022",
+    "href": null
   },
   {
-    "name": "NEGATIVE POSITIVE 2",
-    "imgName": "negative-positive-2",
-    "date": "Dec 2022",
+    "name": "Rising Ticket Prices",
+    "type": "design",
+    "imgName": "rising-ticket-prices",
+    "date": "Dec 2021",
     "href": {
-      "url": "https://www.behance.net/gallery/165469523/NEGATIVE-POSITIVE",
+      "url": "https://www.behance.net/gallery/165463897/MoCo-Student",
       "newTab": true,
-      "name": "View other two from trilogy"
+      "name": "View case study on Behance"
     }
   },
   {
     "name": "Recap infographic from 9/9 BoE meeting",
+    "type": "design",
     "imgName": "smob-9-9-boe",
     "date": "Sept 2021",
     "href": {
@@ -46,8 +54,101 @@
     }
   },
   {
-    "name": "Team A",
-    "imgName": "team-a",
+    "name": "Holidays Over Quarantine",
+    "type": "design",
+    "imgName": "holidays-over-quarantine",
+    "date": "Dec 2020",
+    "href": {
+      "url": "https://www.behance.net/gallery/165463897/MoCo-Student",
+      "newTab": true,
+      "name": "View case study on Behance"
+    }
+  },
+  {
+    "name": "Mass Extinctions",
+    "type": "design",
+    "imgName": "mass-extinctions",
+    "date": "Oct 2020",
+    "href": {
+      "url": "https://www.behance.net/gallery/165463897/MoCo-Student",
+      "newTab": true,
+      "name": "View case study on Behance"
+    }
+  },
+  {
+    "name": "TEDxYouth@WJHS Logo Idea",
+    "type": "design",
+    "imgName": "tedxwjhs-logo-idea",
+    "date": "Oct 2020",
+    "href": null
+  },
+
+  {
+    "name": "Sound Analysis",
+    "type": "art",
+    "imgName": "sound-analysis-final",
+    "date": "Sept 2023",
+    "href": null
+  },
+  {
+    "name": "HOMAGE",
+    "type": "art",
+    "imgName": "homage",
+    "date": "Dec 2022",
+    "href": {
+      "url": "https://vimeo.com/872788475",
+      "newTab": true,
+      "name": "View animation on Vimeo"
+    }
+  },
+  {
+    "name": "The End of Evangelion study",
+    "type": "art",
+    "imgName": "evangelion-sketch",
+    "date": "Sept 2022",
+    "href": null
+  },
+  {
+    "name": "NEGATIVE POSITIVE 2",
+    "type": "art",
+    "imgName": "negative-positive-2",
+    "date": "Sept 2022",
+    "href": {
+      "url": "https://www.behance.net/gallery/165469523/NEGATIVE-POSITIVE",
+      "newTab": true,
+      "name": "View other two from trilogy"
+    }
+  },
+  {
+    "name": "Ashcrel Airlines",
+    "type": "art",
+    "imgName": "ashcrel-airlines",
+    "date": "Nov 2020",
+    "href": null
+  },
+  {
+    "name": "DNA Editing & Babies",
+    "type": "art",
+    "imgName": "dna-editing-babies",
+    "date": "Jan 2020",
+    "href": {
+      "url": "https://www.behance.net/gallery/165463897/MoCo-Student",
+      "newTab": true,
+      "name": "View case study on Behance"
+    }
+  },
+
+  {
+    "name": "Electric Field Day: \"Delusion\"",
+    "type": "music",
+    "imgName": "efd-delusion",
+    "date": "Mar 2023",
+    "href": null
+  },
+  {
+    "name": "Flock",
+    "type": "music",
+    "imgName": "flock",
     "date": "June 2021",
     "href": {
       "url": "https://www.behance.net/gallery/165451341/cover-art-1-electronic",
@@ -57,6 +158,7 @@
   },
   {
     "name": "Ghost House",
+    "type": "music",
     "imgName": "ghost-house",
     "date": "June 2021",
     "href": {
@@ -67,6 +169,7 @@
   },
   {
     "name": "Community Favorites",
+    "type": "music",
     "imgName": "community-favorites",
     "date": "Feb 2021",
     "href": {
@@ -76,17 +179,19 @@
     }
   },
   {
-    "name": "Holidays Over Quarantine",
-    "imgName": "holidays-over-quarantine",
+    "name": "Sinking Feeling",
+    "type": "music",
+    "imgName": "sinking-feeling",
     "date": "Dec 2020",
     "href": {
-      "url": "https://www.behance.net/gallery/165463897/MoCo-Student",
+      "url": "https://www.behance.net/gallery/165451341/cover-art-1-electronic",
       "newTab": true,
-      "name": "View case study on Behance"
+      "name": "Part of Cover Art, Vol. 1"
     }
   },
   {
     "name": "Texas Watchin' Me",
+    "type": "music",
     "imgName": "texas-watchin-me",
     "date": "Nov 2020",
     "href": {
@@ -96,13 +201,8 @@
     }
   },
   {
-    "name": "Ashcrel Airlines",
-    "imgName": "ashcrel-airlines",
-    "date": "Nov 2020",
-    "href": null
-  },
-  {
     "name": "Back n' Forth",
+    "type": "music",
     "imgName": "back-n-forth",
     "date": "Nov 2020",
     "href": {
@@ -112,29 +212,25 @@
     }
   },
   {
+    "name": "Within the Sadness Remix",
+    "type": "music",
+    "imgName": "within-the-sadness",
+    "date": "Oct 2020",
+    "href": {
+      "url": "https://www.behance.net/gallery/165451341/cover-art-1-electronic",
+      "newTab": true,
+      "name": "Part of Cover Art, Vol. 1"
+    }
+  },
+  {
     "name": "Start A Revolution",
+    "type": "music",
     "imgName": "start-a-revolution",
     "date": "Sept 2020",
     "href": {
       "url": "https://www.behance.net/gallery/165455347/cover-art-2-hip-hop",
       "newTab": true,
       "name": "Part of Cover Art, Vol. 2"
-    }
-  },
-  {
-    "name": "TEDxYouth@WJHS Logo Idea",
-    "imgName": "tedxwjhs-logo-idea",
-    "date": "Oct 2020",
-    "href": null
-  },
-  {
-    "name": "DNA Editing & Babies",
-    "imgName": "dna-editing-babies",
-    "date": "Jan 2020",
-    "href": {
-      "url": "https://www.behance.net/gallery/165463897/MoCo-Student",
-      "newTab": true,
-      "name": "View case study on Behance"
     }
   }
 ]

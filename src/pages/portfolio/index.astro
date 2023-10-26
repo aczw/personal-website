@@ -1,19 +1,27 @@
 ---
-import portfolioJson from "@/assets/portfolio/portfolio.json";
+import json from "@/assets/portfolio/portfolio.json";
 import PortfolioCard from "@/components/portfolio-card.astro";
 import { Link } from "@/components/react/link";
 import HtmlLayout from "@/layouts/html-layout.astro";
 import MainLayout from "@/layouts/main-layout.astro";
+import type { Portfolio } from "@/utils/types";
+
+// eslint-disable-next-line
+const portfolio = json as Portfolio[];
+
+const design = portfolio.filter((item) => item.type === "design");
+const art = portfolio.filter((item) => item.type === "art");
+const music = portfolio.filter((item) => item.type === "music");
 ---
 
 <HtmlLayout
   title="Portfolio • Charles Wang"
   description="A collection of pieces that I've enjoyed working on, from design to traditional art."
 >
-  <MainLayout>
-    <section class="w-full">
-      <div class="mx-auto w-full max-w-prose">
-        <h3 class="font-bold text-sweater-2">Design</h3>
+  <MainLayout className="space-y-24">
+    <section>
+      <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
+        <h3 class="mb-0.5 font-bold text-sweater-2">Design</h3>
         <p class="mb-6">
           I started doing design when certain songs in my music library did not
           have album art, and I wanted to fix that. Since then I've done design
@@ -27,7 +35,45 @@ import MainLayout from "@/layouts/main-layout.astro";
       </div>
       <ul class="w-full columns-xs gap-6">
         {
-          portfolioJson.map((item, index) => (
+          design.map((item, index) => (
+            <PortfolioCard
+              portfolio={item}
+              index={index}
+            />
+          ))
+        }
+      </ul>
+    </section>
+    <section>
+      <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
+        <h3 class="mb-0.5 font-bold text-sweater-2">Art</h3>
+        <p class="mb-6">
+          I also enjoy drawing! Some of these were made for class. Lately I've
+          been doing more digital art with Procreate and Adobe Illustrator.
+        </p>
+      </div>
+      <ul class="w-full columns-xs gap-6">
+        {
+          art.map((item, index) => (
+            <PortfolioCard
+              portfolio={item}
+              index={index}
+            />
+          ))
+        }
+      </ul>
+    </section>
+    <section>
+      <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
+        <h3 class="mb-0.5 font-bold text-sweater-2">Music related</h3>
+        <p class="mb-6">
+          I've made a ton of designs for music and inspired by music. Here are
+          some of my favorites!
+        </p>
+      </div>
+      <ul class="w-full columns-xs gap-6">
+        {
+          music.map((item, index) => (
             <PortfolioCard
               portfolio={item}
               index={index}
