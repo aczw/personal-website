@@ -62,6 +62,7 @@ const config = {
         },
       },
       {
+        defaultTheme: "sweater",
         strict: true,
         produceThemeClass: (themeName) => `theme-${themeName}`,
       },
