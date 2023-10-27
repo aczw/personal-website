@@ -13,6 +13,12 @@
   }
 }
 
+@layer base {
+  img {
+    @apply italic;
+  }
+}
+
 @font-face {
   font-family: "Maple Mono";
   src: url("/fonts/MapleMono-Regular.woff2") format("woff2");
