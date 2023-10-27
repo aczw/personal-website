@@ -13,7 +13,7 @@ const Button = ({
     <button
       onClick={onClick}
       className={cn(
-        "flex items-center rounded-full bg-ash-4 px-3 py-1 text-ash-9 transition-colors hover:bg-ash-3",
+        "bg-sweater-4 text-sweater-9 hover:bg-sweater-3 flex items-center rounded-full px-3 py-1 transition-colors",
         className,
       )}
     >

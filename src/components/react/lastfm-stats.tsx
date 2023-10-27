@@ -37,15 +37,15 @@ const LastFmStats = () => {
 
   if (isLoading) {
     return (
-      <div className="mb-4 flex h-6 max-h-6 animate-pulse rounded-md bg-ash-9 xl:mb-0 xl:h-full xl:bg-ash-8" />
+      <div className="bg-sweater-9 xl:bg-sweater-8 mb-4 flex h-6 max-h-6 animate-pulse rounded-md xl:mb-0 xl:h-full" />
     );
   }
 
   if (!profile) {
     return (
       <p className="mb-4 xl:mb-0">
-        I listen to an average of <span className="text-ash-2">55</span> tracks
-        per day.
+        I listen to an average of <span className="text-sweater-2">55</span>{" "}
+        tracks per day.
       </p>
     );
   }
@@ -53,7 +53,7 @@ const LastFmStats = () => {
   return (
     <p className="mb-4 animate-fade [--delay:0s] xl:mb-0">
       So far, I have{" "}
-      <span className="text-ash-2">{profile.user.playcount}</span> total
+      <span className="text-sweater-2">{profile.user.playcount}</span> total
       scrobbles.
     </p>
   );
