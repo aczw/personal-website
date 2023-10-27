@@ -33,7 +33,7 @@ const music = portfolio.filter((item) => item.type === "music");
           </Link> has more projects and in-depth case studies.
         </p>
       </div>
-      <ul class="w-full columns-xs gap-6">
+      <div class="w-full columns-xs gap-6">
         {
           design.map((item, index) => (
             <PortfolioCard
@@ -42,7 +42,7 @@ const music = portfolio.filter((item) => item.type === "music");
             />
           ))
         }
-      </ul>
+      </div>
     </section>
     <section>
       <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
@@ -52,7 +52,7 @@ const music = portfolio.filter((item) => item.type === "music");
           been doing more digital art with Procreate and Adobe Illustrator.
         </p>
       </div>
-      <ul class="w-full columns-xs gap-6">
+      <div class="w-full columns-xs gap-6">
         {
           art.map((item, index) => (
             <PortfolioCard
@@ -61,7 +61,7 @@ const music = portfolio.filter((item) => item.type === "music");
             />
           ))
         }
-      </ul>
+      </div>
     </section>
     <section>
       <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
@@ -71,7 +71,7 @@ const music = portfolio.filter((item) => item.type === "music");
           some of my favorites!
         </p>
       </div>
-      <ul class="w-full columns-xs gap-6">
+      <div class="w-full columns-xs gap-6">
         {
           music.map((item, index) => (
             <PortfolioCard
@@ -80,7 +80,7 @@ const music = portfolio.filter((item) => item.type === "music");
             />
           ))
         }
-      </ul>
+      </div>
     </section>
   </MainLayout>
 </HtmlLayout>

@@ -1,5 +1,4 @@
 ---
-import { Link } from "@/components/react/link";
 import type { Portfolio } from "@/utils/types";
 import { Image } from "astro:assets";
 
@@ -9,38 +8,11 @@ interface Props {
 }
 
 const { portfolio, index } = Astro.props;
-
-const href = portfolio.href ? portfolio.href : null;
 ---
 
-<li
-  class="group relative animate-fade"
+<Image
+  class="mb-6 animate-fade rounded-lg border-sweater-8 bg-sweater-9"
   style={{ "--delay": `${(index + 1) * 50}ms` }}
->
-  <Image
-    class="mb-6 rounded-lg border-sweater-8 bg-sweater-9 transition-opacity group-hover:opacity-80"
-    src={import(`../assets/portfolio/${portfolio.imgName}.png`)}
-    alt={portfolio.name}
-  />
-  <span
-    class="absolute inset-0 flex flex-col items-center justify-end bg-gradient-to-t from-sweater-10 p-5 text-center opacity-0 transition-opacity group-hover:opacity-100"
-  >
-    <h4 class="font-bold text-sweater-2">
-      {portfolio.name}
-    </h4>
-    <p>
-      {portfolio.date}
-    </p>
-    {
-      href ? (
-        <Link
-          href={href.url}
-          newTab={href.newTab}
-          className="leading-tight"
-        >
-          {href.name}
-        </Link>
-      ) : null
-    }
-  </span>
-</li>
+  src={import(`../assets/portfolio/${portfolio.imgName}.png`)}
+  alt={portfolio.name}
+/>
