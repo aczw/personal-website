@@ -36,15 +36,6 @@
     "tags": ["Qt", "QML"]
   },
   {
-    "name": "wikiRank",
-    "href": "https://wikirank.vercel.app/",
-    "date": "May 2023",
-    "imgName": "wikirank",
-    "alt": "Screenshot of wikiRank's main interface",
-    "desc": "Made with friends. Enter text (think journal articles, research papers) and let the vector space model analyze your keywords to find and rank the most relevant Wikipedia articles.",
-    "tags": ["Next.js", "React", "JavaScript", "Tailwind CSS"]
-  },
-  {
     "name": "charl.sh",
     "href": "https://github.com/aczw/personal-website",
     "date": "Sept 2023",
@@ -52,6 +43,15 @@
     "alt": "Screenshot of my website's homepage",
     "desc": "How meta! This site was built with Astro, a little React, and Tailwind. Display font is Atkinson Hyperlegible, monospace is Maple Mono. Icons from Lucide.",
     "tags": ["Astro", "TypeScript", "React", "Tailwind CSS", "Figma"]
+  },
+  {
+    "name": "wikiRank",
+    "href": "https://wikirank.vercel.app/",
+    "date": "May 2023",
+    "imgName": "wikirank",
+    "alt": "Screenshot of wikiRank's main interface",
+    "desc": "Made with friends. Enter text (think journal articles, research papers) and let the vector space model analyze your keywords to find and rank the most relevant Wikipedia articles.",
+    "tags": ["Next.js", "React", "JavaScript", "Tailwind CSS"]
   },
   {
     "name": "aczw.dev",

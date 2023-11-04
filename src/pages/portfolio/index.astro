@@ -1,13 +1,12 @@
 ---
-import json from "@/assets/portfolio/portfolio.json";
+import portfolioJson from "@/assets/portfolio/portfolio.json";
 import PortfolioCard from "@/components/portfolio-card.astro";
 import { Link } from "@/components/react/link";
 import HtmlLayout from "@/layouts/html-layout.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import type { Portfolio } from "@/utils/types";
 
-// eslint-disable-next-line
-const portfolio = json as Portfolio[];
+const portfolio = portfolioJson as Portfolio[];
 
 const design = portfolio.filter((item) => item.type === "design");
 const art = portfolio.filter((item) => item.type === "art");
@@ -16,7 +15,7 @@ const music = portfolio.filter((item) => item.type === "music");
 
 <HtmlLayout
   title="Portfolio • Charles Wang"
-  description="A collection of pieces that I've enjoyed working on, from design to traditional art."
+  description="A collection of pieces that I've had fun working on, from design to traditional art."
 >
   <MainLayout className="space-y-24">
     <section>
@@ -44,6 +43,7 @@ const music = portfolio.filter((item) => item.type === "music");
         }
       </div>
     </section>
+
     <section>
       <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
         <h3 class="mb-0.5 font-bold text-sweater-2">Art</h3>
@@ -63,6 +63,7 @@ const music = portfolio.filter((item) => item.type === "music");
         }
       </div>
     </section>
+
     <section>
       <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
         <h3 class="mb-0.5 font-bold text-sweater-2">Music related</h3>

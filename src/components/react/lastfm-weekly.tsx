@@ -24,14 +24,15 @@ interface LastFmWeekly {
 
 const calculateKey = () => {
   const now = new Date();
-  const lastSeven = Math.floor(
+
+  const lastSevenDays = Math.floor(
     new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7).getTime() /
       1000,
   );
 
   return `https://ws.audioscrobbler.com/2.0/?method=user.getweeklytrackchart&user=ashzw&limit=2&api_key=${
     import.meta.env.PUBLIC_LASTFM_KEY
-  }&from=${lastSeven}&to=${Math.floor(now.getTime() / 1000)}&format=json`;
+  }&from=${lastSevenDays}&to=${Math.floor(now.getTime() / 1000)}&format=json`;
 };
 
 const LastFmWeekly = () => {
@@ -42,7 +43,7 @@ const LastFmWeekly = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-sweater-9 xl:bg-sweater-8 flex h-6 max-h-6 animate-pulse rounded-md xl:h-full" />
+      <div className="flex h-6 max-h-6 animate-pulse rounded-md bg-sweater-9 xl:h-full xl:bg-sweater-8" />
     );
   }
 
@@ -69,4 +70,4 @@ const LastFmWeekly = () => {
   );
 };
 
-export default LastFmWeekly;
+export { LastFmWeekly };

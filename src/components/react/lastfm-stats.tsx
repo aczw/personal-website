@@ -37,7 +37,7 @@ const LastFmStats = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-sweater-9 xl:bg-sweater-8 mb-4 flex h-6 max-h-6 animate-pulse rounded-md xl:mb-0 xl:h-full" />
+      <div className="mb-4 flex h-6 max-h-6 animate-pulse rounded-md bg-sweater-9 xl:mb-0 xl:h-full xl:bg-sweater-8" />
     );
   }
 
@@ -59,4 +59,4 @@ const LastFmStats = () => {
   );
 };
 
-export default LastFmStats;
+export { LastFmStats };

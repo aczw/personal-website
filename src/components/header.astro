@@ -1,6 +1,5 @@
 ---
 import Logo from "@/components/logo.astro";
-import { Button } from "@/components/react/button";
 import { Link } from "@/components/react/link";
 import { removeTrailingSlash } from "@/utils/remove-trailing-slash";
 import { FileText, PaintBucket, TerminalSquare } from "lucide-astro";
@@ -28,7 +27,7 @@ const path = removeTrailingSlash(pathname);
         className="fill-sweater-4 transition group-hover:rotate-[-15deg] group-hover:fill-sweater-1"
       />
     </a>
-    <div class="flex items-center space-x-6 py-4 pl-2 pr-4">
+    <div class="flex items-center space-x-5 py-4 pl-1 pr-4">
       <Link
         href="/projects"
         className={`flex items-center ${
@@ -56,13 +55,12 @@ const path = removeTrailingSlash(pathname);
       <a
         href="/resume.pdf"
         target="_blank"
+        class="flex items-center rounded-full bg-sweater-4 px-2.5 py-1 text-sweater-9 transition-colors hover:bg-sweater-2"
       >
-        <Button>
-          <FileText
-            size={16}
-            class="mr-1 hidden xs:block"
-          />Resume
-        </Button>
+        <FileText
+          size={16}
+          class="mr-1 hidden xs:block"
+        /> Resume
       </a>
     </div>
   </nav>

@@ -1,5 +1,5 @@
 ---
-import projects from "@/assets/projects/projects.json";
+import projectsJson from "@/assets/projects/projects.json";
 import ProjectCard from "@/components/project-card.astro";
 import HtmlLayout from "@/layouts/html-layout.astro";
 import MainLayout from "@/layouts/main-layout.astro";
@@ -7,13 +7,13 @@ import MainLayout from "@/layouts/main-layout.astro";
 
 <HtmlLayout
   title="Projects • Charles Wang"
-  description="Here you'll find my favorite coding projects, from my classes and random interests."
+  description="Here you'll find coding projects I've done, from my classes and random interests."
 >
   <MainLayout
     className="grid grid-flow-row grid-cols-1 gap-8 sm:grid-cols-2 xl:gap-16"
   >
     {
-      projects.map((project, index) => (
+      projectsJson.map((project, index) => (
         <ProjectCard
           project={project}
           index={index}
