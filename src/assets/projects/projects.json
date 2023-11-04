@@ -26,7 +26,7 @@
     "date": "June 2023",
     "imgName": "rcw",
     "alt": "Screenshot of my game's main menu",
-    "desc": "Endless Unity minigame written in C#. UI was prototyped and exported from Figma. Color-based gameplay inspired by the Stroop effect. Play from your browser now!",
+    "desc": "Endless Unity minigame written in C#. UI was prototyped and exported from Figma. Color-based gameplay inspired by the Stroop effect. Playable from your browser!",
     "tags": ["Unity", "C#", "Figma"]
   },
   {
@@ -56,9 +56,10 @@
     "date": "May 2023",
     "imgName": "wikirank",
     "alt": "Screenshot of wikiRank's main interface",
-    "desc": "Made with friends. Enter text (think journal articles, research papers) and let the vector space model analyze your keywords to find and rank the most relevant Wikipedia articles.",
+    "desc": "Made with some friends. Enter text (think journal articles, research papers) and let the vector space model analyze your keywords to find and rank the most relevant Wikipedia articles.",
     "tags": ["Next.js", "React", "JavaScript", "Tailwind CSS"]
   },
+
   {
     "name": "aczw.dev",
     "prominent": false,
@@ -66,7 +67,7 @@
     "date": "July 2023",
     "imgName": "aczw-dev",
     "alt": "Screenshot of my old website's homepage",
-    "desc": "v1 of my site. Next.js was overkill for my purposes, and everything was too big, but many ideas have carried over. Kept alive for sentimental value :)",
+    "desc": "v1 of my site. Many ideas have carried over to this current one. Kept alive for the feels :)",
     "tags": ["Next.js", "React", "Tailwind CSS", "Figma"]
   },
   {
@@ -76,7 +77,7 @@
     "date": "June 2023",
     "imgName": "tic-tac-toe",
     "alt": "Screenshot showing a tic-tac-toe game in progress",
-    "desc": "It's just tic-tac-toe. Small little project that finally made React click for me.",
+    "desc": "It's just tic-tac-toe... small little game that finally made React click for me.",
     "tags": ["Next.js", "React", "Tailwind CSS"]
   }
 ]
