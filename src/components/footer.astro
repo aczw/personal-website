@@ -2,9 +2,21 @@
 import { Link } from "@/components/react/link";
 import { Github, Linkedin, Mail } from "lucide-astro";
 
-let phrase = "soitgoes";
-const offset = Math.floor(Math.random() * phrase.length);
-phrase = phrase.slice(offset) + phrase.slice(0, offset);
+const fun = [
+  "soitgoes",
+  "aczw",
+  "newfaces",
+  "doitagain",
+  "tilinfinity",
+  "suboptimal",
+  "theendisnever",
+  "promiseme",
+  "allitcosts",
+];
+
+const pick = fun[Math.floor(Math.random() * fun.length)];
+const offset = Math.floor(Math.random() * pick.length);
+const scrambled = pick.slice(offset) + pick.slice(0, offset);
 ---
 
 <footer class="flex w-full items-center justify-between bg-sweater-10 p-4">
@@ -31,14 +43,14 @@ phrase = phrase.slice(offset) + phrase.slice(0, offset);
     </Link>
   </span>
   <p class="font-mono text-sm text-sweater-3">
-    <i id="scroll">{phrase}</i> 👾
+    <i id="scroll">{scrambled}</i> 👾
   </p>
 </footer>
 
 <script>
   setInterval(() => {
-    const scroll = document.getElementById("scroll");
-    const text = scroll!.textContent;
+    let scroll = document.getElementById("scroll");
+    let text = scroll!.textContent;
     scroll!.textContent = text!.slice(1) + text![0];
   }, 400);
 </script>
