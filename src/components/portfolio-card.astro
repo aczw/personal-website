@@ -14,5 +14,7 @@ const { portfolio, index } = Astro.props;
   class="mb-6 animate-fade rounded-lg border-sweater-8 bg-sweater-9"
   style={{ "--delay": `${(index + 1) * 50}ms` }}
   src={import(`../assets/portfolio/${portfolio.imgName}.png`)}
+  loading="eager"
+  densities={[0.1, 0.25, 0.5, 1, 1.5, 2]}
   alt={portfolio.name}
 />

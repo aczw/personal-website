@@ -19,6 +19,8 @@ const { project, index } = Astro.props;
   <Image
     class="max-h-52 rounded-lg bg-sweater-9 object-cover object-top xs:max-h-64 sm:max-h-72 lg:max-h-[345px]"
     src={import(`../assets/projects/${project.imgName}.png`)}
+    loading="eager"
+    densities={[0.1, 0.25, 0.5, 1, 1.5, 2]}
     alt={project.alt}
   />
   {
