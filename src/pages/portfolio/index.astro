@@ -18,70 +18,34 @@ const music = portfolio.filter((item) => item.type === "music");
   description="A collection of pieces that I've had fun working on, from design to traditional art."
 >
   <MainLayout className="space-y-24">
-    <section>
-      <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
-        <h3 class="mb-0.5 font-bold text-sweater-2">Design</h3>
-        <p class="mb-6">
-          I started doing design when certain songs in my music library did not
-          have album art, and I wanted to fix that. Since then I've done design
-          work for others as well. My <Link
-            href="https://www.behance.net/charleszw"
-            newTab
-          >
-            <>Behance</>
-          </Link> has more projects and in-depth case studies.
-        </p>
-      </div>
-      <div class="w-full columns-xs gap-6">
-        {
-          design.map((item, index) => (
-            <PortfolioSection
-              portfolio={item}
-              index={index}
-            />
-          ))
-        }
-      </div>
-    </section>
+    <PortfolioSection section={design}>
+      <Fragment slot="title">Design</Fragment>
+      <Fragment slot="description">
+        I started doing design when certain songs in my music library did not
+        have album art, and I wanted to fix that. Since then I've done design
+        work for others as well. My <Link
+          href="https://www.behance.net/charleszw"
+          newTab
+        >
+          <>Behance</>
+        </Link> has more projects and in-depth case studies.
+      </Fragment>
+    </PortfolioSection>
 
-    <section>
-      <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
-        <h3 class="mb-0.5 font-bold text-sweater-2">Art</h3>
-        <p class="mb-6">
-          I also enjoy drawing! Some of these were made for class. Lately I've
-          been doing more digital art with Procreate and Adobe Illustrator.
-        </p>
-      </div>
-      <div class="w-full columns-xs gap-6">
-        {
-          art.map((item, index) => (
-            <PortfolioSection
-              portfolio={item}
-              index={index}
-            />
-          ))
-        }
-      </div>
-    </section>
+    <PortfolioSection section={art}>
+      <Fragment slot="title">Art</Fragment>
+      <Fragment slot="description">
+        I also enjoy drawing! Some of these were made for class. Lately I've
+        been doing more digital art with Procreate and Adobe Illustrator.
+      </Fragment>
+    </PortfolioSection>
 
-    <section>
-      <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
-        <h3 class="mb-0.5 font-bold text-sweater-2">Music related</h3>
-        <p class="mb-6">
-          I've made a ton of designs for music and inspired by music. Here are
-          some of my favorites.
-        </p>
-      </div>
-      <div class="w-full columns-xs gap-6">
-        {
-          music.map((item, index) => (
-            <PortfolioSection
-              portfolio={item}
-              index={index}
-            />
-          ))
-        }
-      </div>
-    </section>
+    <PortfolioSection section={music}>
+      <Fragment slot="title">Music related</Fragment>
+      <Fragment slot="description">
+        I've made a ton of designs for music and inspired by music. Here are
+        some of my favorites.
+      </Fragment>
+    </PortfolioSection>
   </MainLayout>
 </HtmlLayout>

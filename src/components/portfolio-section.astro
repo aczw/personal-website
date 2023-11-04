@@ -3,17 +3,30 @@ import type { Portfolio } from "@/utils/types";
 import { Image } from "astro:assets";
 
 interface Props {
-  portfolio: Portfolio;
-  index: number;
+  section: Portfolio[];
 }
 
-const { portfolio, index } = Astro.props;
+const { section } = Astro.props;
 ---
 
-<Image
-  class="mb-6 animate-fade rounded-lg border-sweater-8 bg-sweater-9"
-  style={{ "--delay": `${(index + 1) * 50}ms` }}
-  src={import(`../assets/portfolio/${portfolio.imgName}.png`)}
-  loading="eager"
-  alt={portfolio.name}
-/>
+<section>
+  <div class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
+    <h3 class="mb-0.5 font-bold text-sweater-2"><slot name="title" /></h3>
+    <p class="mb-6">
+      <slot name="description" />
+    </p>
+  </div>
+  <div class="w-full columns-xs gap-6">
+    {
+      section.map((item, index) => (
+        <Image
+          class="mb-6 animate-fade rounded-lg border-sweater-8 bg-sweater-9"
+          style={{ "--delay": `${(index + 1) * 50}ms` }}
+          src={import(`../assets/portfolio/${item.imgName}.png`)}
+          loading="eager"
+          alt={item.name}
+        />
+      ))
+    }
+  </div>
+</section>
