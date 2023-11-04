@@ -1,6 +1,6 @@
 ---
 import portfolioJson from "@/assets/portfolio/portfolio.json";
-import PortfolioCard from "@/components/portfolio-card.astro";
+import PortfolioSection from "@/components/portfolio-section.astro";
 import { Link } from "@/components/react/link";
 import HtmlLayout from "@/layouts/html-layout.astro";
 import MainLayout from "@/layouts/main-layout.astro";
@@ -35,7 +35,7 @@ const music = portfolio.filter((item) => item.type === "music");
       <div class="w-full columns-xs gap-6">
         {
           design.map((item, index) => (
-            <PortfolioCard
+            <PortfolioSection
               portfolio={item}
               index={index}
             />
@@ -55,7 +55,7 @@ const music = portfolio.filter((item) => item.type === "music");
       <div class="w-full columns-xs gap-6">
         {
           art.map((item, index) => (
-            <PortfolioCard
+            <PortfolioSection
               portfolio={item}
               index={index}
             />
@@ -69,13 +69,13 @@ const music = portfolio.filter((item) => item.type === "music");
         <h3 class="mb-0.5 font-bold text-sweater-2">Music related</h3>
         <p class="mb-6">
           I've made a ton of designs for music and inspired by music. Here are
-          some of my favorites!
+          some of my favorites.
         </p>
       </div>
       <div class="w-full columns-xs gap-6">
         {
           music.map((item, index) => (
-            <PortfolioCard
+            <PortfolioSection
               portfolio={item}
               index={index}
             />

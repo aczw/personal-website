@@ -1,6 +1,7 @@
 [
   {
     "name": "3D Rasterizer",
+    "prominent": true,
     "href": null,
     "date": "Sept 2023",
     "imgName": "3d-rasterizer",
@@ -10,6 +11,7 @@
   },
   {
     "name": "Scallop",
+    "prominent": true,
     "href": "https://play.scallop-lang.org",
     "date": "ongoing!",
     "imgName": "scallop-playground",
@@ -19,6 +21,7 @@
   },
   {
     "name": "RCW",
+    "prominent": true,
     "href": "https://aczw.itch.io/rcw",
     "date": "June 2023",
     "imgName": "rcw",
@@ -28,6 +31,7 @@
   },
   {
     "name": "sddm-theme-corners",
+    "prominent": true,
     "href": "https://github.com/aczw/sddm-theme-corners",
     "date": "Jan 2023",
     "imgName": "sddm-theme-corners",
@@ -37,6 +41,7 @@
   },
   {
     "name": "charl.sh",
+    "prominent": true,
     "href": "https://github.com/aczw/personal-website",
     "date": "Sept 2023",
     "imgName": "personal-website",
@@ -46,6 +51,7 @@
   },
   {
     "name": "wikiRank",
+    "prominent": true,
     "href": "https://wikirank.vercel.app/",
     "date": "May 2023",
     "imgName": "wikirank",
@@ -55,6 +61,7 @@
   },
   {
     "name": "aczw.dev",
+    "prominent": false,
     "href": "https://old.charl.sh/",
     "date": "July 2023",
     "imgName": "aczw-dev",
@@ -64,6 +71,7 @@
   },
   {
     "name": "ttt",
+    "prominent": false,
     "href": "https://ttt.charl.sh/",
     "date": "June 2023",
     "imgName": "tic-tac-toe",
