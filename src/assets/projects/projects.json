@@ -1,11 +1,21 @@
 [
   {
+    "name": "Mini Maya",
+    "prominent": true,
+    "href": null,
+    "date": "November 2023",
+    "imgName": "mini-maya",
+    "alt": "Image depicts a cow OBJ manipulated at the joint near its head.",
+    "desc": "Mesh editing tool that internally uses a half-edge data structure. Supports face triangulation, edge splitting, Catmull-Clark subdivision, and mesh skinning via a skeleton. Uses a vertex shader for mesh deformation.",
+    "tags": ["C++", "Qt", "OpenGL", "GLSL"]
+  },
+  {
     "name": "3D Rasterizer",
     "prominent": true,
     "href": null,
     "date": "Sept 2023",
     "imgName": "3d-rasterizer",
-    "alt": "Screenshot depicting the playground editor",
+    "alt": "Image depicts Mario rendered at 9x antialiasing with Blinn-Phong shading applied.",
     "desc": "512x512 image renderer written in C++. Supports antialiasing up to 16x, importing .OBJ files, and Lambertian and Blinn-Phong shading. UI is built with Qt.",
     "tags": ["C++", "Qt", "OpenGL"]
   },
@@ -15,7 +25,7 @@
     "href": "https://play.scallop-lang.org",
     "date": "ongoing!",
     "imgName": "scallop-playground",
-    "alt": "Screenshot depicting the playground editor",
+    "alt": "Image depicts the project editor, with code and relations already filled in.",
     "desc": "Scallop is a neurosymbolic language for deep learning and LLMs. I'm currently helping to build a web platform to create, save, and publish custom Scallop user projects. Employs a Next.js frontend, Flask backend, and PlanetScale for storing data.",
     "tags": ["Next.js", "React", "TypeScript", "Tailwind CSS", "MySQL", "Flask"]
   },
@@ -25,7 +35,7 @@
     "href": "https://aczw.itch.io/rcw",
     "date": "June 2023",
     "imgName": "rcw",
-    "alt": "Screenshot of my game's main menu",
+    "alt": "Image depicts a game round in session, with the timer running down and the player already having lost one life.",
     "desc": "Endless Unity minigame written in C#. UI was prototyped and exported from Figma. Color-based gameplay inspired by the Stroop effect. Playable from your browser!",
     "tags": ["Unity", "C#", "Figma"]
   },
@@ -35,7 +45,7 @@
     "href": "https://github.com/aczw/sddm-theme-corners",
     "date": "Jan 2023",
     "imgName": "sddm-theme-corners",
-    "alt": "Screenshot of my theme setup",
+    "alt": "Image depicts my customized login theme, featuring Hanako-kun and using an orange color scheme.",
     "desc": "Extremely customizable login theme for SDDM, a Linux session manager. Written in QML and uses Qt Quick. Has 60+ stars on GitHub if that counts for anything.",
     "tags": ["Qt", "QML"]
   },
@@ -45,39 +55,49 @@
     "href": "https://github.com/aczw/personal-website",
     "date": "Sept 2023",
     "imgName": "personal-website",
-    "alt": "Screenshot of my website's homepage",
+    "alt": "Image depicts my website's homepage.",
     "desc": "How meta! This site was built with Astro, a little React, and Tailwind. Display font is Atkinson Hyperlegible, monospace is Maple Mono. Icons from Lucide.",
     "tags": ["Astro", "TypeScript", "React", "Tailwind CSS", "Figma"]
   },
+
   {
     "name": "wikiRank",
-    "prominent": true,
+    "prominent": false,
     "href": "https://wikirank.vercel.app/",
     "date": "May 2023",
-    "imgName": "wikirank",
-    "alt": "Screenshot of wikiRank's main interface",
-    "desc": "Made with some friends. Enter text (think journal articles, research papers) and let the vector space model analyze your keywords to find and rank the most relevant Wikipedia articles.",
-    "tags": ["Next.js", "React", "JavaScript", "Tailwind CSS"]
+    "imgName": null,
+    "alt": null,
+    "desc": "Better understand research papers! Uses a vector space model to analyze and return the most relevant Wikipedia articles.",
+    "tags": null
   },
-
   {
     "name": "aczw.dev",
     "prominent": false,
     "href": "https://old.charl.sh/",
-    "date": "July 2023",
+    "date": null,
     "imgName": "aczw-dev",
-    "alt": "Screenshot of my old website's homepage",
+    "alt": null,
     "desc": "v1 of my site. Many ideas have carried over to this current one. Kept alive for the feels :)",
-    "tags": ["Next.js", "React", "Tailwind CSS", "Figma"]
+    "tags": null
   },
   {
     "name": "ttt",
     "prominent": false,
     "href": "https://ttt.charl.sh/",
     "date": "June 2023",
-    "imgName": "tic-tac-toe",
-    "alt": "Screenshot showing a tic-tac-toe game in progress",
+    "imgName": null,
+    "alt": null,
     "desc": "It's just tic-tac-toe... small little game that finally made React click for me.",
-    "tags": ["Next.js", "React", "Tailwind CSS"]
+    "tags": null
+  },
+  {
+    "name": "dotfiles",
+    "prominent": false,
+    "href": "https://github.com/aczw/dotfiles",
+    "date": "May 2023",
+    "imgName": null,
+    "alt": null,
+    "desc": "I once accidentally deleted my entire ~/. I now backup my configs to GitHub.",
+    "tags": null
   }
 ]
