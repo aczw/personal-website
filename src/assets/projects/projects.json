@@ -22,7 +22,7 @@
   {
     "name": "Scallop",
     "prominent": true,
-    "href": "https://play.scallop-lang.org",
+    "href": "https://scallop.build",
     "date": "ongoing!",
     "imgName": "scallop-playground",
     "alt": "Image depicts the project editor, with code and relations already filled in.",
@@ -63,7 +63,7 @@
   {
     "name": "wikiRank",
     "prominent": false,
-    "href": "https://wikirank.vercel.app/",
+    "href": "https://wikirank.vercel.app",
     "date": "May 2023",
     "imgName": null,
     "alt": null,
@@ -73,7 +73,7 @@
   {
     "name": "aczw.dev",
     "prominent": false,
-    "href": "https://old.charl.sh/",
+    "href": "https://old.charl.sh",
     "date": null,
     "imgName": "aczw-dev",
     "alt": null,
@@ -83,7 +83,7 @@
   {
     "name": "ttt",
     "prominent": false,
-    "href": "https://ttt.charl.sh/",
+    "href": "https://ttt.charl.sh",
     "date": "June 2023",
     "imgName": null,
     "alt": null,
