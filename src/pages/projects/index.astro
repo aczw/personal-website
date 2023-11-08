@@ -1,12 +1,10 @@
 ---
-import projectsJson from "@/assets/projects/projects.json";
+import lowkeyJson from "@/assets/projects/lowkey.json";
+import prominentJson from "@/assets/projects/prominent.json";
 import { Link } from "@/components/react/link";
 import HtmlLayout from "@/layouts/html-layout.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import { Image } from "astro:assets";
-
-const prominent = projectsJson.filter((project) => project.prominent);
-const lowkey = projectsJson.filter((project) => !project.prominent);
 ---
 
 <HtmlLayout
@@ -18,37 +16,37 @@ const lowkey = projectsJson.filter((project) => !project.prominent);
       class="grid grid-flow-row grid-cols-1 gap-8 sm:grid-cols-2 xl:gap-16"
     >
       {
-        prominent.map((item, index) => (
+        prominentJson.map((proj, idx) => (
           <div
             class="col-span-1 animate-fade space-y-2.5"
-            style={{ "--delay": `${(index + 1) * 100}ms` }}
+            style={{ "--delay": `${(idx + 1) * 100}ms` }}
           >
             <Image
               class="max-h-52 rounded-lg bg-sweater-9 object-cover object-top xs:max-h-64 sm:max-h-72 lg:max-h-[345px]"
-              src={import(`../../assets/projects/${item.imgName}.png`)}
+              src={import(`../../assets/projects/${proj.imgName}.png`)}
               loading="eager"
-              alt={item.alt}
+              alt={proj.imgAlt}
             />
-            {item.href ? (
+            {proj.href ? (
               <h3 class="pb-0.5 font-bold">
                 <Link
-                  href={item.href}
+                  href={proj.href}
                   newTab
                 >
-                  {item.name}
+                  {proj.name}
                 </Link>
               </h3>
             ) : (
-              <h3 class="font-bold text-sweater-2">{item.name}</h3>
+              <h3 class="font-bold text-sweater-2">{proj.name}</h3>
             )}
             <div class="flex flex-wrap gap-2.5">
-              {item.tags.map((tag) => (
+              {proj.tags.map((tag) => (
                 <span class="h-min rounded-full bg-sweater-7 px-2.5 py-1 text-sm text-sweater-3">
                   {tag}
                 </span>
               ))}
             </div>
-            <p>{item.desc}</p>
+            <p>{proj.desc}</p>
           </div>
         ))
       }
@@ -58,24 +56,24 @@ const lowkey = projectsJson.filter((project) => !project.prominent);
       <h3 class="mb-6 font-bold text-sweater-2">Other things I've made</h3>
       <div class="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-2">
         {
-          lowkey.map((item, index) => (
+          lowkeyJson.map((proj, idx) => (
             <div
               class="col-span-1 animate-fade"
-              style={{ "--delay": `${(index + 1) * 100}ms` }}
+              style={{ "--delay": `${(idx + 1) * 100}ms` }}
             >
-              {item.href ? (
+              {proj.href ? (
                 <h4>
                   <Link
-                    href={item.href}
+                    href={proj.href}
                     newTab
                   >
-                    {item.name}
+                    {proj.name}
                   </Link>
                 </h4>
               ) : (
-                <h4 class="text-sm font-bold text-sweater-2">{item.name}</h4>
+                <h4 class="text-sm font-bold text-sweater-2">{proj.name}</h4>
               )}
-              <p>{item.desc}</p>
+              <p>{proj.desc}</p>
             </div>
           ))
         }

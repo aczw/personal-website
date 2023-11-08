@@ -4,7 +4,12 @@ import PortfolioSection from "@/components/portfolio-section.astro";
 import { Link } from "@/components/react/link";
 import HtmlLayout from "@/layouts/html-layout.astro";
 import MainLayout from "@/layouts/main-layout.astro";
-import type { Portfolio } from "@/utils/types";
+
+// TS interprets enums as just strings, so we manually override it
+// see https://github.com/microsoft/TypeScript/issues/32063
+type Portfolio = Omit<(typeof portfolioJson)[0], "type"> & {
+  type: "design" | "art" | "music";
+};
 
 const portfolio = portfolioJson as Portfolio[];
 

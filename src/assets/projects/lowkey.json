@@ -1,0 +1,26 @@
+[
+  {
+    "name": "wikiRank",
+    "href": "https://wikirank.vercel.app",
+    "date": "May 2023",
+    "desc": "Better understand research papers! Uses a vector space model to analyze and return the most relevant Wikipedia articles."
+  },
+  {
+    "name": "aczw.dev",
+    "href": "https://old.charl.sh",
+    "date": "July 2023",
+    "desc": "v1 of my site. Many ideas have carried over to this current one. Kept alive for the feels :)"
+  },
+  {
+    "name": "ttt",
+    "href": "https://ttt.charl.sh",
+    "date": "June 2023",
+    "desc": "It's just tic-tac-toe... small little game that finally made React click for me."
+  },
+  {
+    "name": "dotfiles",
+    "href": "https://github.com/aczw/dotfiles",
+    "date": "May 2023",
+    "desc": "I once accidentally deleted my entire ~/. I now backup my configs to GitHub."
+  }
+]
