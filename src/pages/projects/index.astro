@@ -39,13 +39,13 @@ import { Image } from "astro:assets";
             ) : (
               <h3 class="font-bold text-sweater-2">{proj.name}</h3>
             )}
-            <div class="flex flex-wrap gap-2.5">
+            <ul class="flex flex-wrap gap-2.5">
               {proj.tags.map((tag) => (
-                <span class="h-min rounded-full bg-sweater-7 px-2.5 py-1 text-sm text-sweater-3">
+                <li class="h-min rounded-full bg-sweater-7 px-2.5 py-1 text-sm text-sweater-3">
                   {tag}
-                </span>
+                </li>
               ))}
-            </div>
+            </ul>
             <p>{proj.desc}</p>
           </div>
         ))
@@ -54,10 +54,10 @@ import { Image } from "astro:assets";
 
     <section class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
       <h3 class="mb-6 font-bold text-sweater-2">Other things I've made</h3>
-      <div class="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-2">
+      <ul class="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-2">
         {
           lowkeyJson.map((proj, idx) => (
-            <div
+            <li
               class="col-span-1 animate-fade"
               style={{ "--delay": `${(idx + 1) * 100}ms` }}
             >
@@ -74,10 +74,10 @@ import { Image } from "astro:assets";
                 <h4 class="text-sm font-bold text-sweater-2">{proj.name}</h4>
               )}
               <p>{proj.desc}</p>
-            </div>
+            </li>
           ))
         }
-      </div>
+      </ul>
     </section>
   </MainLayout>
 </HtmlLayout>
