@@ -54,10 +54,10 @@ import { Image } from "astro:assets";
 
     <section class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
       <h3 class="mb-6 font-bold text-sweater-2">Other things I've made</h3>
-      <ul class="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-2">
         {
           lowkeyJson.map((proj, idx) => (
-            <li
+            <div
               class="col-span-1 animate-fade"
               style={{ "--delay": `${(idx + 1) * 100}ms` }}
             >
@@ -74,10 +74,10 @@ import { Image } from "astro:assets";
                 <h4 class="text-sm font-bold text-sweater-2">{proj.name}</h4>
               )}
               <p>{proj.desc}</p>
-            </li>
+            </div>
           ))
         }
-      </ul>
+      </div>
     </section>
   </MainLayout>
 </HtmlLayout>
