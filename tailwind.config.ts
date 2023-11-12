@@ -37,7 +37,7 @@ const config = {
         },
       },
       animation: {
-        fade: "fade 0.25s ease-out var(--delay) backwards",
+        fade: "fade 0.4s ease-out var(--delay) backwards",
       },
     },
   },
