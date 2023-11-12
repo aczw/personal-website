@@ -5,6 +5,7 @@ import LastFm from "@/components/lastfm.astro";
 import Link from "@/components/link.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
+import { ArrowRight } from "lucide-astro";
 ---
 
 <PrimitiveLayout
@@ -48,6 +49,38 @@ import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 
     <section class="animate-fade space-y-[1rem] [--delay:150ms]">
       <h3 class="mb-[1rem] font-bold text-sweater-2">Projects</h3>
+      <ul class="space-y-[1rem]">
+        <li
+          class="h-24 rounded-md bg-sweater-9 transition-colors hover:bg-sweater-8"
+        >
+        </li>
+        <li
+          class="h-24 rounded-md bg-sweater-9 transition-colors hover:bg-sweater-8"
+        >
+        </li>
+      </ul>
+
+      <a
+        href="/projects"
+        class="group"
+        ><div
+          class="relative z-[-2] mt-[1rem] flex h-12 items-end justify-center rounded-t-md bg-gradient-to-b from-sweater-9"
+        >
+          <div
+            class="absolute inset-0 z-[-1] rounded-t-md bg-gradient-to-b from-sweater-8 opacity-0 transition-opacity group-hover:opacity-100"
+            aria-hidden="true"
+          >
+          </div>
+          <span
+            class="flex items-center text-sweater-3 underline decoration-sweater-3/50 decoration-1 underline-offset-2 transition group-hover:text-sweater-1 group-hover:decoration-sweater-1"
+          >
+            See more <ArrowRight
+              class="ml-1"
+              size="16"
+            />
+          </span>
+        </div></a
+      >
     </section>
 
     <section class="animate-fade space-y-[1rem] [--delay:300ms]">
