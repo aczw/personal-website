@@ -10,9 +10,10 @@ const config = {
     },
     extend: {
       spacing: {
-        header: "64px",
-        footer: "56px",
-        prose: "670px",
+        header: "54px",
+      },
+      maxWidth: {
+        content: "774px",
       },
       colors: {
         sweater: {

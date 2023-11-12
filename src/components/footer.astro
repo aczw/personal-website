@@ -1,34 +1,42 @@
 ---
 import { Link } from "@/components/react/link";
 import { Github, Linkedin, Mail } from "lucide-astro";
+
+const iconSize = 22;
 ---
 
-<footer class="flex w-full items-center justify-between bg-sweater-10 p-4">
-  <span class="flex items-center space-x-4">
-    <Link
-      href="https://www.linkedin.com/in/zwcharl/"
-      title="LinkedIn"
-      newTab
+<footer class="w-full bg-sweater-10 p-3">
+  <span class="max-w-content mx-auto flex items-center justify-between"
+    ><div class="flex items-center space-x-4">
+      <Link
+        href="https://www.linkedin.com/in/zwcharl/"
+        title="LinkedIn"
+        newTab
+      >
+        <Linkedin size={iconSize} />
+      </Link>
+
+      <Link
+        href="https://www.github.com/aczw"
+        title="GitHub"
+        newTab
+      >
+        <Github size={iconSize} />
+      </Link>
+
+      <Link
+        href="mailto:zwcharl@gmail.com"
+        title="Email"
+      >
+        <Mail size={iconSize} />
+      </Link>
+    </div>
+    <p
+      id="scroll"
+      class="font-mono text-sm italic text-sweater-4"
     >
-      <Linkedin />
-    </Link>
-    <Link
-      href="https://www.github.com/aczw"
-      title="GitHub"
-      newTab
-    >
-      <Github />
-    </Link>
-    <Link
-      href="mailto:zwcharl@gmail.com"
-      title="Email"
-    >
-      <Mail />
-    </Link>
-  </span>
-  <p class="font-mono text-sm text-sweater-3">
-    <i id="scroll"></i> 👾
-  </p>
+    </p></span
+  >
 </footer>
 
 <script>
@@ -54,5 +62,5 @@ import { Github, Linkedin, Mail } from "lucide-astro";
     let scroll = document.getElementById("scroll");
     let text = scroll!.textContent;
     scroll!.textContent = text!.slice(1) + text![0];
-  }, 400);
+  }, 500);
 </script>
