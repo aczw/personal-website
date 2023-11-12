@@ -8,11 +8,6 @@ interface Props {
 const { className } = Astro.props;
 ---
 
-<main
-  class={cn(
-    "px-3 pb-12 pt-[calc(theme(spacing.header)+theme(spacing.10))]",
-    className,
-  )}
->
+<main class={cn("mx-auto max-w-content px-4 py-10", className)}>
   <slot />
 </main>

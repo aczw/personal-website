@@ -11,10 +11,8 @@ import PrimitiveLayout from "@/layouts/primitive-layout.astro";
   title="Charles Wang"
   description="Computer graphics student at the University of Pennsylvania."
 >
-  <MainLayout className="space-y-12">
-    <section
-      class="mx-auto max-w-content animate-fade space-y-[1.15rem] [--delay:100ms]"
-    >
+  <MainLayout className="space-y-10">
+    <section class="animate-fade space-y-[1rem] [--delay:100ms]">
       <h3 class="font-bold text-sweater-2">About</h3>
       <p>
         Hi, my name is Charles. I'm a student at the University of Pennsylvania
@@ -48,17 +46,13 @@ import PrimitiveLayout from "@/layouts/primitive-layout.astro";
       <p>Thanks for stopping by. (〜￣▽￣)〜</p>
     </section>
 
-    <section
-      class="mx-auto max-w-content animate-fade space-y-[1.15rem] [--delay:300ms]"
-    >
-      <h3 class="mb-[1.15rem] font-bold text-sweater-2">Current status</h3>
-      <LastFm />
+    <section class="animate-fade space-y-[1rem] [--delay:500ms]">
+      <h3 class="mb-[1rem] font-bold text-sweater-2">Projects</h3>
     </section>
 
-    <section
-      class="mx-auto max-w-content animate-fade space-y-[1.15rem] [--delay:500ms]"
-    >
-      <h3 class="mb-[1.15rem] font-bold text-sweater-2">Projects</h3>
+    <section class="animate-fade space-y-[1rem] [--delay:300ms]">
+      <h3 class="mb-[1rem] font-bold text-sweater-2">Status</h3>
+      <LastFm />
     </section>
   </MainLayout>
 </PrimitiveLayout>

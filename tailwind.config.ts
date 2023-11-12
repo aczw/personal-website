@@ -9,11 +9,8 @@ const config = {
       mono: ["Maple Mono", ...defaultTheme.fontFamily.mono],
     },
     extend: {
-      spacing: {
-        header: "52px",
-      },
       maxWidth: {
-        content: "774px",
+        content: "782px",
       },
       colors: {
         sweater: {
@@ -31,6 +28,7 @@ const config = {
       },
       screens: {
         xs: "475px",
+        content: "782px",
       },
       keyframes: {
         fade: {

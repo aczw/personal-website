@@ -15,8 +15,8 @@ const nowPlaying = firstTrack["@attr"]
       <>
         {nowPlaying ? (
           <>
-            I am listening to {firstTrack.name} by {firstTrack.artist["#text"]}{" "}
-            at this very moment.
+            I am currently listening to {firstTrack.name} by{" "}
+            {firstTrack.artist["#text"]}.
           </>
         ) : (
           <>
