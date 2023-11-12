@@ -1,7 +1,7 @@
 ---
 export const prerender = false;
 
-import { LastFmReact } from "@/components/react/lastfm-react";
+import LastFm from "@/components/lastfm.astro";
 import { Link } from "@/components/react/link";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
@@ -13,7 +13,7 @@ import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 >
   <MainLayout className="space-y-12">
     <section
-      class="max-w-content mx-auto animate-fade space-y-[1.15rem] [--delay:100ms]"
+      class="mx-auto max-w-content animate-fade space-y-[1.15rem] [--delay:100ms]"
     >
       <h3 class="font-bold text-sweater-2">About</h3>
       <p>
@@ -49,14 +49,14 @@ import PrimitiveLayout from "@/layouts/primitive-layout.astro";
     </section>
 
     <section
-      class="max-w-content mx-auto animate-fade space-y-[1.15rem] [--delay:300ms]"
+      class="mx-auto max-w-content animate-fade space-y-[1.15rem] [--delay:300ms]"
     >
       <h3 class="mb-[1.15rem] font-bold text-sweater-2">Current status</h3>
-      <LastFmReact client:load />
+      <LastFm />
     </section>
 
     <section
-      class="max-w-content mx-auto animate-fade space-y-[1.15rem] [--delay:500ms]"
+      class="mx-auto max-w-content animate-fade space-y-[1.15rem] [--delay:500ms]"
     >
       <h3 class="mb-[1.15rem] font-bold text-sweater-2">Projects</h3>
     </section>

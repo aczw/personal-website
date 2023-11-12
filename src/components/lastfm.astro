@@ -1,0 +1,50 @@
+---
+import { Link } from "@/components/react/link";
+import { getRecentTracks } from "@/utils/lastfm";
+
+const recentTracks = await getRecentTracks();
+const firstTrack = recentTracks.track[0];
+const nowPlaying = firstTrack["@attr"]
+  ? firstTrack["@attr"].nowplaying === "true"
+  : false;
+---
+
+<p class="animate-fade [--delay:0ms]">
+  {
+    firstTrack ? (
+      <>
+        {nowPlaying ? (
+          <>
+            I am listening to{" "}
+            <span class="text-sweater-2">{firstTrack.name}</span> by{" "}
+            <span class="text-sweater-2">{firstTrack.artist["#text"]}</span> at
+            this very moment.
+          </>
+        ) : (
+          <>
+            The last song I listened to was{" "}
+            <span class="text-sweater-2">{firstTrack.name}</span> by{" "}
+            <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
+          </>
+        )}{" "}
+        <Link
+          href="https://www.last.fm/user/ashzw"
+          newTab
+        >
+          Seriously!
+        </Link>
+      </>
+    ) : (
+      <>
+        Tracking my music listening habits is pretty neat. You can find my{" "}
+        <Link
+          href="https://www.last.fm/user/ashzw"
+          newTab
+        >
+          Last.fm profile here
+        </Link>
+        .
+      </>
+    )
+  }
+</p>
