@@ -10,7 +10,7 @@ const config = {
     },
     extend: {
       spacing: {
-        header: "54px",
+        header: "52px",
       },
       maxWidth: {
         content: "774px",

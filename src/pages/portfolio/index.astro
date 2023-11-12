@@ -2,8 +2,8 @@
 import portfolioJson from "@/assets/portfolio/portfolio.json";
 import PortfolioSection from "@/components/portfolio-section.astro";
 import { Link } from "@/components/react/link";
-import HtmlLayout from "@/layouts/html-layout.astro";
 import MainLayout from "@/layouts/main-layout.astro";
+import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 
 // TS interprets enums as just strings, so we manually override it
 // see https://github.com/microsoft/TypeScript/issues/32063
@@ -18,7 +18,7 @@ const art = portfolio.filter((item) => item.type === "art");
 const music = portfolio.filter((item) => item.type === "music");
 ---
 
-<HtmlLayout
+<PrimitiveLayout
   title="Portfolio • Charles Wang"
   description="A collection of pieces that I've had fun working on, from design to traditional art."
 >
@@ -53,4 +53,4 @@ const music = portfolio.filter((item) => item.type === "music");
       </Fragment>
     </PortfolioSection>
   </MainLayout>
-</HtmlLayout>
+</PrimitiveLayout>

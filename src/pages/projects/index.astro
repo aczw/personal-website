@@ -2,18 +2,18 @@
 import lowkeyJson from "@/assets/projects/lowkey.json";
 import prominentJson from "@/assets/projects/prominent.json";
 import { Link } from "@/components/react/link";
-import HtmlLayout from "@/layouts/html-layout.astro";
 import MainLayout from "@/layouts/main-layout.astro";
+import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 import { Image } from "astro:assets";
 ---
 
-<HtmlLayout
+<PrimitiveLayout
   title="Projects • Charles Wang"
   description="Here you'll find coding projects I've done, from my classes and random interests."
 >
-  <MainLayout className="space-y-12 lg:space-y-24">
+  <MainLayout className="space-y-12">
     <section
-      class="grid grid-flow-row grid-cols-1 gap-8 sm:grid-cols-2 xl:gap-16"
+      class="max-w-content mx-auto grid grid-flow-row grid-cols-1 gap-8 sm:grid-cols-2 xl:gap-16"
     >
       {
         prominentJson.map((proj, idx) => (
@@ -52,7 +52,7 @@ import { Image } from "astro:assets";
       }
     </section>
 
-    <section class="mx-auto w-full max-w-prose animate-fade [--delay:100ms]">
+    <section class="max-w-content mx-auto w-full animate-fade [--delay:100ms]">
       <h3 class="mb-6 font-bold text-sweater-2">Other things I've made</h3>
       <div class="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-2">
         {
@@ -80,4 +80,4 @@ import { Image } from "astro:assets";
       </div>
     </section>
   </MainLayout>
-</HtmlLayout>
+</PrimitiveLayout>
