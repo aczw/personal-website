@@ -12,9 +12,9 @@ import PrimitiveLayout from "@/layouts/primitive-layout.astro";
   description="Computer graphics student at the University of Pennsylvania."
 >
   <MainLayout className="space-y-10">
-    <section class="space-y-[1rem]">
-      <h3 class="animate-fade font-bold text-sweater-2 [--delay:0ms]">About</h3>
-      <p class="animate-fade [--delay:50ms]">
+    <section class="animate-fade space-y-[1rem] [--delay:0ms]">
+      <h3 class="font-bold text-sweater-2">About</h3>
+      <p>
         Hi, my name is Charles. I'm a student at the University of Pennsylvania
         majoring in
         <Link
@@ -25,7 +25,7 @@ import PrimitiveLayout from "@/layouts/primitive-layout.astro";
         </Link>, an interdisciplinary program that combines computer science and
         fine arts.
       </p>
-      <p class="animate-fade [--delay:100ms]">
+      <p>
         I want to make games and build websites. To that end, I help run <Link
           href="https://pennupgrade.com"
           newTab
@@ -36,32 +36,22 @@ import PrimitiveLayout from "@/layouts/primitive-layout.astro";
           href="http://cg.cis.upenn.edu/siggraph/"
           newTab
         >
-          <>Penn's SIGGRAPH chapter</>
+          <>our SIGGRAPH chapter</>
         </Link>.
       </p>
-      <p class="animate-fade [--delay:150ms]">
+      <p>
         In my free time I like running, designing album covers, obsessing over
         rail systems, practicing bass guitar, and ricing my Arch setup.
       </p>
-      <p class="animate-fade [--delay:200ms]">
-        Thanks for stopping by. (〜￣▽￣)〜
-      </p>
+      <p>Thanks for stopping by. (〜￣▽￣)〜</p>
     </section>
 
-    <section class="space-y-[1rem]">
-      <h3
-        class="mb-[1rem] animate-fade font-bold text-sweater-2 [--delay:150ms]"
-      >
-        Projects
-      </h3>
+    <section class="animate-fade space-y-[1rem] [--delay:150ms]">
+      <h3 class="mb-[1rem] font-bold text-sweater-2">Projects</h3>
     </section>
 
-    <section class="space-y-[1rem]">
-      <h3
-        class="mb-[1rem] animate-fade font-bold text-sweater-2 [--delay:300ms]"
-      >
-        Status
-      </h3>
+    <section class="animate-fade space-y-[1rem] [--delay:300ms]">
+      <h3 class="mb-[1rem] font-bold text-sweater-2">Status</h3>
       <LastFm />
     </section>
   </MainLayout>
