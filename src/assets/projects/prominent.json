@@ -50,7 +50,7 @@
     "date": "Sept 2023",
     "imgName": "personal-website",
     "imgAlt": "Image depicts my website's homepage.",
-    "tags": ["Astro", "TypeScript", "React", "Tailwind CSS", "Figma"],
-    "desc": "How meta! This site was built with Astro, a little React, and Tailwind. Display font is Atkinson Hyperlegible, monospace is Maple Mono. Icons from Lucide."
+    "tags": ["Astro", "TypeScript", "Tailwind CSS", "Figma"],
+    "desc": "How meta! This site was completely built using Astro components and styled with Tailwind. Display font is Atkinson Hyperlegible, monospace is Maple Mono. Icons from Lucide."
   }
 ]

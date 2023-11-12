@@ -1,7 +1,7 @@
 ---
 import lowkeyJson from "@/assets/projects/lowkey.json";
 import prominentJson from "@/assets/projects/prominent.json";
-import { Link } from "@/components/react/link";
+import Link from "@/components/link.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 import { Image } from "astro:assets";
@@ -13,7 +13,7 @@ import { Image } from "astro:assets";
 >
   <MainLayout className="space-y-12">
     <section
-      class="max-w-content mx-auto grid grid-flow-row grid-cols-1 gap-8 sm:grid-cols-2 xl:gap-16"
+      class="mx-auto grid max-w-content grid-flow-row grid-cols-1 gap-8 sm:grid-cols-2 xl:gap-16"
     >
       {
         prominentJson.map((proj, idx) => (
@@ -52,7 +52,7 @@ import { Image } from "astro:assets";
       }
     </section>
 
-    <section class="max-w-content mx-auto w-full animate-fade [--delay:100ms]">
+    <section class="mx-auto w-full max-w-content animate-fade [--delay:100ms]">
       <h3 class="mb-6 font-bold text-sweater-2">Other things I've made</h3>
       <div class="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-2">
         {

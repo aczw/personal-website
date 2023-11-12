@@ -1,6 +1,6 @@
 ---
+import Link from "@/components/link.astro";
 import Logo from "@/components/logo.astro";
-import { Link } from "@/components/react/link";
 import { cn } from "@/utils/cn";
 import { removeTrailingSlash } from "@/utils/remove-trailing-slash";
 import { FileText, TerminalSquare } from "lucide-astro";
@@ -13,7 +13,7 @@ const path = removeTrailingSlash(pathname);
 ---
 
 <header class="fixed z-10 w-full bg-sweater-10 p-3">
-  <nav class="max-w-content mx-auto flex items-center justify-between">
+  <nav class="mx-auto flex max-w-content items-center justify-between">
     <a
       href="/"
       class="group"
