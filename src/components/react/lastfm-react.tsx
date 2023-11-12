@@ -39,7 +39,7 @@ const key = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user
   import.meta.env.PUBLIC_LASTFM_KEY
 }&limit=1&format=json`;
 
-const LastFm = () => {
+const LastFmReact = () => {
   const { data: recent, isLoading } = useSWR<LastFmRecent>(key, fetcher);
 
   if (isLoading) {
@@ -96,4 +96,4 @@ const LastFm = () => {
   );
 };
 
-export { LastFm };
+export { LastFmReact };

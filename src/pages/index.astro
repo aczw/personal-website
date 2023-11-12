@@ -1,5 +1,7 @@
 ---
-import { LastFm } from "@/components/react/lastfm";
+export const prerender = false;
+
+import { LastFmReact } from "@/components/react/lastfm-react";
 import { Link } from "@/components/react/link";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
@@ -50,11 +52,11 @@ import PrimitiveLayout from "@/layouts/primitive-layout.astro";
       class="max-w-content mx-auto animate-fade space-y-[1.15rem] [--delay:300ms]"
     >
       <h3 class="mb-[1.15rem] font-bold text-sweater-2">Current status</h3>
-      <LastFm client:load />
+      <LastFmReact client:load />
     </section>
 
     <section
-      class="max-w-content mx-auto animate-fade space-y-[1.15rem] [--delay:5s00ms]"
+      class="max-w-content mx-auto animate-fade space-y-[1.15rem] [--delay:500ms]"
     >
       <h3 class="mb-[1.15rem] font-bold text-sweater-2">Projects</h3>
     </section>
