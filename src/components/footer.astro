@@ -5,10 +5,8 @@ import { Github, Linkedin, Mail } from "lucide-astro";
 const iconSize = 22;
 ---
 
-<footer class="content:pb-10 mx-auto max-w-content bg-sweater-10 px-4 pb-4">
-  <span
-    class="flex items-center justify-between border-t-2 border-sweater-9 pt-4"
-  >
+<footer class="mx-auto max-w-content bg-sweater-10 px-4 pb-4 content:pb-10">
+  <span class="flex items-center justify-between border-t-2 border-sweater-9 pt-4">
     <div class="flex items-center space-x-4">
       <Link
         href="https://www.linkedin.com/in/zwcharl/"
@@ -38,7 +36,7 @@ const iconSize = 22;
     </div>
     <p
       id="scroll"
-      class="font-mono text-sm italic text-sweater-7"
+      class="font-mono text-sm italic text-sweater-8 transition-colors hover:cursor-default hover:text-sweater-4"
       aria-hidden="true"
     >
     </p>
@@ -61,8 +59,7 @@ const iconSize = 22;
   let pick = fun[Math.floor(Math.random() * fun.length)];
   let offset = Math.floor(Math.random() * pick.length);
 
-  document.getElementById("scroll")!.textContent =
-    pick.slice(offset) + pick.slice(0, offset);
+  document.getElementById("scroll")!.textContent = pick.slice(offset) + pick.slice(0, offset);
 
   setInterval(() => {
     let scroll = document.getElementById("scroll");

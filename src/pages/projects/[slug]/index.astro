@@ -1,6 +1,8 @@
 ---
+import Link from "@/components/link.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -13,11 +15,41 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
+const { data } = entry;
 ---
 
 <PrimitiveLayout
-  title="test"
-  description="wow"
+  title={data.title + " • Charles Wang"}
+  description={data.blurb}
 >
-  <MainLayout><Content /></MainLayout>
+  <MainLayout className="space-y-10">
+    <Image
+      src={data.cover.img}
+      alt={data.cover.alt}
+      class="animate-fade rounded-lg border-2 border-sweater-9 bg-sweater-9 object-cover object-top [--delay:75ms]"
+    />
+
+    <section class="animate-fade [--delay:150ms]">
+      <div class="flex gap-2.5">
+        <h3 class="font-bold text-sweater-2">{data.title}</h3>
+        <span>•</span>
+        {
+          data.link ? (
+            <Link
+              href={data.link.url}
+              newTab
+            >
+              {data.link.text}
+            </Link>
+          ) : null
+        }
+      </div>
+      <p>{data.blurb}</p>
+      <p class="text-sweater-6">{data.tags.map((tag) => tag).join(", ")}</p>
+    </section>
+
+    <section class="animate-fade space-y-[1rem] [--delay:225ms]">
+      <Content />
+    </section>
+  </MainLayout>
 </PrimitiveLayout>

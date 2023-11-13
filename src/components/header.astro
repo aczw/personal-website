@@ -12,10 +12,8 @@ const { pathname } = Astro.url;
 const path = removeTrailingSlash(pathname);
 ---
 
-<header class="content:pt-10 mx-auto max-w-content bg-sweater-10 px-4 pt-4">
-  <nav
-    class="flex items-center justify-between border-b-2 border-sweater-9 pb-4"
-  >
+<header class="mx-auto max-w-content bg-sweater-10 px-4 pt-4 content:pt-10">
+  <nav class="flex items-center justify-between border-b-2 border-sweater-9 pb-4">
     <a
       href="/"
       class="group"
@@ -33,9 +31,7 @@ const path = removeTrailingSlash(pathname);
         href="/projects"
         className={cn(
           "flex items-center",
-          `${
-            path === "/projects" ? "text-sweater-1 decoration-sweater-1/50" : ""
-          }`,
+          `${path === "/projects" ? "text-sweater-1 decoration-sweater-1/50" : ""}`,
         )}
       >
         <TerminalSquare
