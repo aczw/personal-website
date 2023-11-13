@@ -15,8 +15,73 @@ tags:
 slug: www
 ---
 
-How meta! This site was completely built using Astro components and styled with Tailwind. Display font is Atkinson Hyperlegible, monospace is Maple Mono. Icons from Lucide.
+I've always wanted a personal website for many reasons. For one, it felt cool to own a website that _belongs_ to you and points back at you. It makes me feel like I own a part of the internet (and according to ICANN, I do[^1])! I also recently began learning web dev, and there was no better way to put my skills to the test than to make my own site.
 
-More text on a different line.
+A more pragmatic reason is that I can showcase and talk about the projects (like this one!) and portfolio work I've done. As a college student looking for internships, it's nice to be able to point people to a centralized location containing all the stuff I want to show off.
 
-This is actually insanely good. I love this.
+Obviously it all worked out, because you're here now. Welcome! ♪(´▽｀)
+
+I want to use this write-up to explain a bit of my thought process behind the design, colors, and layout of this site, as well as why I picked the tools that I did to help build it.
+
+## aczw.dev
+
+Fun fact: what you're looking at is the second version of my site.
+
+## v2
+
+doing some _extremely_ insecure things. publicly exposing my Last.fm API key, anyone on the client could have CTRL+F'd the fetch URL and would've immediately gotten it. More of a principle thing than anything else. There is no reason for anyone to target me, but it was the wrong thing to do.
+
+Related to this is SWR and the usage of React in this project. I wished that I could use pure Astro components, but in order to fetch data on the client, React libraries like SWR were still superior in terms of the out of the box defaults and features they provide.
+
+## Now
+
+The website is now 100% written using Astro components. This was possible because I updated the way I fetched data, which is now handled in a much more secure way.
+
+### Constraining the width
+
+noticing how all websites with paragraphs keep the width at a fixed size so your eyes don’t have to scan across a large horizontal distance
+
+## Semantic HTML for project tags
+
+While writing this I realized I could make one semantic change to how I wrote the HTML for project tags. Before, each tag was contained within its own `<div>` like this.
+
+```html
+<div>
+  <div>Tag1</div>
+  <div>Tag2</div>
+  <div>Tag3</div>
+  <!-- ...and so on -->
+</div>
+```
+
+This was fine and all and visually looked the way I wanted, but out of curiosity I checked how Firefox rendered this page using its Reader View:
+
+IMAGE HERE
+
+Well, that's not good. Firefox is (rightly) parsing my `<div>` tags and displaying no spaces between them. That kinda sucks, I mean, after all, these tags are just a _list_ of technologies associated with each project, it would be nice if they were comma-separated or bullet pointed...
+
+Wait. Hold on. I can fix this.
+
+```html
+<!-- this makes more sense! -->
+<ul>
+  <li>Tag1</li>
+  <li>Tag2</li>
+  <li>Tag3</li>
+  <!-- ...and so on -->
+</ul>
+```
+
+Firefox now shows this:
+
+IMAGE HERE
+
+I'm still getting used to the idea that most HTML elements don't inherently _mean_ anything. They are, however, significant to the browser, to screen readers, and to other users. It doesn't help that most browsers add their own custom styling, because now I associate `<li>` tags with visual bullet points. This doesn't have to be the case though. My badges still look like badges, but now they're in a list.
+
+> Side note: this is also why I like Tailwind's [Preflight](https://tailwindcss.com/docs/preflight) base styling. For example, they remove all default margins, and unstyle headings and lists.
+
+## Portfolio
+
+I had a great deal of trouble with this page.
+
+[^1]: My site uses the .sh TLD, which doesn't seem to have a [RDAP server](https://deployment.rdap.org/#:~:text=.sh) configured. You could do a WHOIS lookup from the [official registry website](https://www.nic.sh/whois-search.htm?domain_name=charl.sh), but I'm hiding my information anyway :)
