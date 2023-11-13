@@ -27,8 +27,14 @@ const nowPlaying = firstTrack["@attr"]
           </>
         ) : (
           <>
-            The last song I listened to was{" "}
-            <span class="text-sweater-2">{firstTrack.name}</span> by{" "}
+            The last song I{" "}
+            <Link
+              href="https://www.last.fm/user/ashzw"
+              newTab
+            >
+              <>listened to</>
+            </Link>{" "}
+            was <span class="text-sweater-2">{firstTrack.name}</span> by{" "}
             <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
           </>
         )}
