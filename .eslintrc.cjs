@@ -24,6 +24,7 @@ const config = {
   ],
   rules: {
     "@typescript-eslint/consistent-type-imports": "error",
+    "@typescript-eslint/triple-slash-reference": "off",
   },
 };
 

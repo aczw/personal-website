@@ -1,0 +1,23 @@
+---
+import MainLayout from "@/layouts/main-layout.astro";
+import PrimitiveLayout from "@/layouts/primitive-layout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const projectEntries = await getCollection("projects");
+  return projectEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<PrimitiveLayout
+  title="test"
+  description="wow"
+>
+  <MainLayout><Content /></MainLayout>
+</PrimitiveLayout>
