@@ -1,0 +1,16 @@
+---
+title: sddm-theme-corners
+link:
+  url: https://github.com/aczw/sddm-theme-corners
+  text: Source on GitHub
+blurb: Flexible theme for SDDM, a Linux session manager
+cover:
+  img: ./cover.png
+  alt: Image depicts my customized login theme, featuring Hanako-kun and using an orange color scheme.
+tags:
+  - QML
+  - Qt Quick
+slug: sddm-theme-corners
+---
+
+Extremely customizable login theme for SDDM, a Linux session manager. Written in QML and uses Qt Quick. Has 60+ stars on GitHub if that counts for anything.
