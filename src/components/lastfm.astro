@@ -15,26 +15,27 @@ const nowPlaying = firstTrack["@attr"]
       <>
         {nowPlaying ? (
           <>
-            I am currently listening to {firstTrack.name} by{" "}
-            {firstTrack.artist["#text"]}.
+            I am{" "}
+            <Link
+              href="https://www.last.fm/user/ashzw"
+              newTab
+            >
+              <>currently</>
+            </Link>{" "}
+            listening to <span class="text-sweater-2">{firstTrack.name}</span>{" "}
+            by <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
           </>
         ) : (
           <>
-            The last song I listened to was {firstTrack.name} by{" "}
-            {firstTrack.artist["#text"]}.
+            The last song I listened to was{" "}
+            <span class="text-sweater-2">{firstTrack.name}</span> by{" "}
+            <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
           </>
-        )}{" "}
-        <Link
-          href="https://www.last.fm/user/ashzw"
-          newTab
-        >
-          <>Check</>
-        </Link>{" "}
-        it out.
+        )}
       </>
     ) : (
       <>
-        Tracking my music listening habits is pretty neat. Visit my{" "}
+        I like tracking my music listening habits. Visit my{" "}
         <Link
           href="https://www.last.fm/user/ashzw"
           newTab
