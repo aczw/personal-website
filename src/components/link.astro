@@ -1,14 +1,16 @@
 ---
 import { cn } from "@/utils/cn";
+import { ArrowUpRight } from "lucide-astro";
 
 interface Props {
   href: string;
   title?: string;
   newTab?: boolean;
+  icon?: boolean;
   className?: string;
 }
 
-const { href, title, newTab, className } = Astro.props;
+const { href, title, newTab, icon, className } = Astro.props;
 ---
 
 <a
@@ -22,4 +24,15 @@ const { href, title, newTab, className } = Astro.props;
   )}
 >
   <slot />
+  {
+    /** partially copied from https://github.com/bdsqqq/igorbedesqui.com/blob/1aaf4c14f1de110ff00cf4a0db1a1f3d13d18193/components/ui/StyledLink.tsx#L49 */
+    newTab && (icon ?? true) ? (
+      <span class="whitespace-nowrap">
+        <ArrowUpRight
+          size={14}
+          class="inline align-baseline"
+        />
+      </span>
+    ) : null
+  }
 </a>

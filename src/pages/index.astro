@@ -27,18 +27,18 @@ import { ArrowRight } from "lucide-astro";
         fine arts.
       </p>
       <p>
-        I want to make games and build websites. To that end, I help run <Link
+        I want to make games and build websites. To that end, I help run Penn's
+        game development club <Link
           href="https://pennupgrade.com"
           newTab
         >
           <>UPGRADE</>
-        </Link>, Penn's game development club. I'm also a board member and
-        webmaster for <Link
+        </Link> and also maintain <Link
           href="http://cg.cis.upenn.edu/siggraph/"
           newTab
         >
-          <>our SIGGRAPH chapter</>
-        </Link>.
+          <>the website</>
+        </Link> for our SIGGRAPH chapter.
       </p>
       <p>
         In my free time I like running, designing album covers, obsessing over
@@ -60,10 +60,11 @@ import { ArrowRight } from "lucide-astro";
         </li>
       </ul>
 
-      <a
+      <Link
         href="/projects"
-        class="group"
-        ><div
+        className="group"
+      >
+        <div
           class="relative z-[-2] mt-[1rem] flex h-12 items-end justify-center rounded-t-md bg-gradient-to-b from-sweater-9"
         >
           <div
@@ -71,16 +72,14 @@ import { ArrowRight } from "lucide-astro";
             aria-hidden="true"
           >
           </div>
-          <span
-            class="flex items-center text-sweater-3 underline decoration-sweater-3/50 decoration-1 underline-offset-2 transition group-hover:text-sweater-1 group-hover:decoration-sweater-1"
-          >
+          <span class="flex items-center">
             See more <ArrowRight
               class="ml-1"
-              size="16"
+              size={16}
             />
           </span>
-        </div></a
-      >
+        </div>
+      </Link>
     </section>
 
     <section class="animate-fade space-y-[1rem] [--delay:300ms]">
