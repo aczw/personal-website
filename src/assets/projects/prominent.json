@@ -8,6 +8,13 @@
     "tags": ["C++", "Qt", "OpenGL", "GLSL"],
     "desc": "Mesh editing tool that internally uses a half-edge data structure. Supports face triangulation, edge splitting, Catmull-Clark subdivision, and mesh skinning via a skeleton. Uses a vertex shader for mesh deformation."
   },
+
+
+
+
+
+
+  
   {
     "name": "3D Rasterizer",
     "href": null,
@@ -17,6 +24,14 @@
     "tags": ["C++", "Qt", "OpenGL"],
     "desc": "512x512 image renderer written in C++. Supports antialiasing up to 16x, importing .OBJ files, and Lambertian and Blinn-Phong shading. UI is built with Qt."
   },
+
+
+
+
+
+
+
+
   {
     "name": "Scallop",
     "href": "https://scallop.build",
@@ -26,6 +41,14 @@
     "tags": ["Next.js", "React", "TypeScript", "Tailwind CSS", "MySQL"],
     "desc": "Scallop is a neurosymbolic language for deep learning and LLMs. I'm currently helping to build a web platform to create, save, and publish custom Scallop user projects. Employs a Next.js frontend, Flask backend, and PlanetScale for storing data."
   },
+
+
+
+
+
+
+
+
   {
     "name": "RCW",
     "href": "https://aczw.itch.io/rcw",
@@ -35,6 +58,11 @@
     "tags": ["Unity", "C#", "Figma"],
     "desc": "Endless Unity minigame written in C#. UI was prototyped and exported from Figma. Color-based gameplay inspired by the Stroop effect. Playable from your browser!"
   },
+
+
+
+
+
   {
     "name": "sddm-theme-corners",
     "href": "https://github.com/aczw/sddm-theme-corners",

@@ -9,6 +9,7 @@ const projectsCollection = defineCollection({
       text: z.string()
     }).optional(),
     blurb: z.string(),
+    date: z.date(),
     cover: z
       .object({
         img: image(),

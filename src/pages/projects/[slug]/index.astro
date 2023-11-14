@@ -32,15 +32,17 @@ const { data } = entry;
     <section class="animate-fade [--delay:150ms]">
       <div class="flex gap-2.5">
         <h3 class="font-bold text-sweater-2">{data.title}</h3>
-        <span>•</span>
         {
           data.link ? (
-            <Link
-              href={data.link.url}
-              newTab
-            >
-              {data.link.text}
-            </Link>
+            <>
+              <span>•</span>
+              <Link
+                href={data.link.url}
+                newTab
+              >
+                {data.link.text}
+              </Link>
+            </>
           ) : null
         }
       </div>
