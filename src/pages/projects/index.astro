@@ -5,11 +5,14 @@ import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
+import { getCollection } from "astro:content";
+
+const projectEntries = await getCollection("projects");
 ---
 
 <PrimitiveLayout
   title="Projects • Charles Wang"
-  description="Here you'll find coding projects I've done, from my classes and random interests."
+  description="Websites, games, graphics programming, design case studies, and other stuff I've made."
 >
   <MainLayout className="space-y-12">
     <section
