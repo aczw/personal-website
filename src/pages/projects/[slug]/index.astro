@@ -22,7 +22,7 @@ const { data } = entry;
   title={data.title + " • Charles Wang"}
   description={data.blurb}
 >
-  <MainLayout className="space-y-10">
+  <MainLayout className="space-y-8">
     <Img
       src={data.cover.img}
       alt={data.cover.alt}
@@ -31,7 +31,7 @@ const { data } = entry;
 
     <section class="animate-fade [--delay:150ms]">
       <div class="flex gap-2.5">
-        <h3 class="text-sweater-2">{data.title}</h3>
+        <h1 class="text-sweater-2">{data.title}</h1>
         {
           data.link ? (
             <>
@@ -47,11 +47,23 @@ const { data } = entry;
         }
       </div>
       <p>{data.blurb}</p>
-      <p class="text-sweater-6">{data.tags.map((tag) => tag).join(", ")}</p>
+      <p class="text-sweater-6">Built with {data.tags.map((tag) => tag).join(", ")}</p>
     </section>
-
-    <article class="animate-fade space-y-[1rem] [--delay:225ms]">
-      <Content />
-    </article>
+    {
+      data.draft ? (
+        <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--delay:225ms]">
+          <h2 class="text-sweater-3">Under construction! ⚙️</h2>
+          <p>
+            Pardon <span class="line-through">our</span> my dust, I have not finished the write-up
+            for this project yet. I will get to it eventually, promise. If I've provided a link
+            above, go check that out instead!
+          </p>
+        </div>
+      ) : (
+        <article class="animate-fade space-y-[1rem] [--delay:225ms]">
+          <Content />
+        </article>
+      )
+    }
   </MainLayout>
 </PrimitiveLayout>

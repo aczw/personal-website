@@ -16,7 +16,8 @@ const projectsCollection = defineCollection({
         alt: z.string(),
       }),
     tags: z.array(z.string()),
-    order: z.number().min(0)
+    order: z.number().min(0),
+    draft: z.boolean()
   }),
 });
 
