@@ -1,10 +1,10 @@
 ---
 import lowkeyJson from "@/assets/projects/lowkey.json";
 import prominentJson from "@/assets/projects/prominent.json";
+import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
-import { Image } from "astro:assets";
 ---
 
 <PrimitiveLayout
@@ -21,11 +21,10 @@ import { Image } from "astro:assets";
             class="col-span-1 animate-fade space-y-2.5"
             style={{ "--delay": `${(idx + 1) * 100}ms` }}
           >
-            <Image
-              class="max-h-52 rounded-lg bg-sweater-9 object-cover object-top xs:max-h-64 sm:max-h-72 lg:max-h-[345px]"
+            <Img
               src={import(`../../assets/projects/${proj.imgName}.png`)}
-              loading="eager"
               alt={proj.imgAlt}
+              className="max-h-52 xs:max-h-64 sm:max-h-72 lg:max-h-[345px]"
             />
             {proj.href ? (
               <h3 class="pb-0.5 font-bold">

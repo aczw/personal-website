@@ -1,8 +1,8 @@
 ---
+import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 export async function getStaticPaths() {
@@ -23,10 +23,10 @@ const { data } = entry;
   description={data.blurb}
 >
   <MainLayout className="space-y-10">
-    <Image
+    <Img
       src={data.cover.img}
       alt={data.cover.alt}
-      class="animate-fade rounded-lg border-2 border-sweater-9 bg-sweater-9 object-cover object-top [--delay:75ms]"
+      className="animate-fade border-2 border-sweater-9 [--delay:75ms]"
     />
 
     <section class="animate-fade [--delay:150ms]">
