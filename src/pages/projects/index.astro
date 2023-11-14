@@ -1,81 +1,79 @@
 ---
-import lowkeyJson from "@/assets/projects/lowkey.json";
-import prominentJson from "@/assets/projects/prominent.json";
 import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 import { getCollection } from "astro:content";
 
+const moreThings = [
+  {
+    name: "ttt",
+    url: "https://ttt.charl.sh",
+    desc: "It's tic-tac-toe... small little game that finally made React click for me.",
+  },
+  {
+    name: "dotfiles",
+    url: "https://github.com/aczw/dotfiles",
+    desc: "I once accidentally deleted my entire home directory. I now backup my configs.",
+  },
+];
+
 const projectEntries = await getCollection("projects");
+projectEntries.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <PrimitiveLayout
   title="Projects • Charles Wang"
   description="Websites, games, graphics programming, design case studies, and other stuff I've made."
 >
-  <MainLayout className="space-y-12">
-    <section
-      class="mx-auto grid max-w-content grid-flow-row grid-cols-1 gap-8 sm:grid-cols-2 xl:gap-16"
-    >
+  <MainLayout className="space-y-10">
+    <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
       {
-        prominentJson.map((proj, idx) => (
-          <div
-            class="col-span-1 animate-fade space-y-2.5"
-            style={{ "--delay": `${(idx + 1) * 100}ms` }}
-          >
-            <Img
-              src={import(`../../assets/projects/${proj.imgName}.png`)}
-              alt={proj.imgAlt}
-              className="max-h-52 xs:max-h-64 sm:max-h-72 lg:max-h-[345px]"
-            />
-            {proj.href ? (
-              <h3 class="pb-0.5 font-bold">
-                <Link
-                  href={proj.href}
-                  newTab
-                >
-                  {proj.name}
-                </Link>
-              </h3>
-            ) : (
-              <h3 class="font-bold text-sweater-2">{proj.name}</h3>
-            )}
-            <ul class="flex flex-wrap gap-2.5">
-              {proj.tags.map((tag) => (
-                <li class="h-min rounded-full bg-sweater-7 px-2.5 py-1 text-sm text-sweater-3">
-                  {tag}
-                </li>
-              ))}
-            </ul>
-            <p>{proj.desc}</p>
-          </div>
-        ))
+        projectEntries.map(({ data, slug }, index) => {
+          return (
+            <a
+              href={"/projects/" + slug}
+              class="group col-span-1 animate-fade space-y-2.5 rounded-xl p-3 transition-colors hover:bg-sweater-9"
+              style={{ "--delay": `${(index + 1) * 75}ms` }}
+            >
+              <Img
+                src={data.cover.img}
+                alt={data.cover.alt}
+                className="max-h-60"
+              />
+              <p class="text-sweater-3 underline decoration-sweater-3/50 decoration-1 underline-offset-2 transition group-hover:text-sweater-1 group-hover:decoration-sweater-1">
+                {data.title}
+              </p>
+              <ul class="flex flex-wrap gap-2">
+                {data.tags.map((tag) => (
+                  <li class="h-min rounded-full bg-sweater-7 px-2 py-0.5 text-sm text-sweater-3">
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+              <p>{data.blurb}</p>
+            </a>
+          );
+        })
       }
     </section>
 
-    <section class="mx-auto w-full max-w-content animate-fade [--delay:100ms]">
-      <h3 class="mb-6 font-bold text-sweater-2">Other things I've made</h3>
-      <div class="grid grid-flow-row grid-cols-1 gap-6 sm:grid-cols-2">
+    <section class="animate-fade space-y-[1rem] [--delay:75ms]">
+      <h2 class="text-sweater-2">More things</h2>
+      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {
-          lowkeyJson.map((proj, idx) => (
+          moreThings.map(({ url, name, desc }, index) => (
             <div
               class="col-span-1 animate-fade"
-              style={{ "--delay": `${(idx + 1) * 100}ms` }}
+              style={{ "--delay": `${(index + 1) * 75}ms` }}
             >
-              {proj.href ? (
-                <h4>
-                  <Link
-                    href={proj.href}
-                    newTab
-                  >
-                    {proj.name}
-                  </Link>
-                </h4>
-              ) : (
-                <h4 class="text-sm font-bold text-sweater-2">{proj.name}</h4>
-              )}
-              <p>{proj.desc}</p>
+              <Link
+                href={url}
+                newTab
+              >
+                {name}
+              </Link>
+              <p>{desc}</p>
             </div>
           ))
         }

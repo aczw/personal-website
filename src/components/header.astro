@@ -1,15 +1,10 @@
 ---
 import Link from "@/components/link.astro";
 import Logo from "@/components/logo.astro";
-import { cn } from "@/utils/cn";
-import { removeTrailingSlash } from "@/utils/remove-trailing-slash";
 import { FileText, TerminalSquare } from "lucide-astro";
 
 const logoSize = 26;
 const iconSize = 16;
-
-const { pathname } = Astro.url;
-const path = removeTrailingSlash(pathname);
 ---
 
 <header class="mx-auto max-w-content bg-sweater-10 px-4 pt-4 content:pt-10">
@@ -29,10 +24,7 @@ const path = removeTrailingSlash(pathname);
     <div class="flex items-center space-x-6 pl-6">
       <Link
         href="/projects"
-        className={cn(
-          "flex items-center",
-          `${path === "/projects" ? "text-sweater-1 decoration-sweater-1/50" : ""}`,
-        )}
+        className="flex items-center"
       >
         <TerminalSquare
           size={iconSize}
@@ -43,7 +35,7 @@ const path = removeTrailingSlash(pathname);
       <a
         href="/resume.pdf"
         target="_blank"
-        class="flex items-center rounded-full bg-sweater-4 px-2.5 py-0.5 text-sweater-9 transition-colors hover:bg-sweater-2"
+        class="flex items-center rounded-full bg-sweater-4 px-2 py-0.5 text-sweater-9 transition-colors hover:bg-sweater-2"
       >
         <FileText
           size={iconSize}

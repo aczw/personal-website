@@ -2,7 +2,6 @@
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
 import "@/styles/base.css";
-import { removeTrailingSlash } from "@/utils/remove-trailing-slash";
 import "@fontsource/atkinson-hyperlegible/400.css";
 import "@fontsource/atkinson-hyperlegible/700.css";
 
@@ -13,9 +12,14 @@ interface Props {
 
 const { title, description } = Astro.props;
 
-const canonicalUrl = removeTrailingSlash(
-  new URL(Astro.url.pathname, Astro.site).toString(),
-);
+/**
+ * @see https://github.com/withastro/astro/issues/5248
+ */
+const removeTrailingSlash = (str: string) => {
+  return str.replace(/\/+$/, "");
+};
+
+const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site).toString());
 ---
 
 <!doctype html>
