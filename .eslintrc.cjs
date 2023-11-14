@@ -38,6 +38,17 @@ module.exports = {
       // see https://ota-meshi.github.io/eslint-plugin-astro/user-guide/#parser-configuration
       files: ["**/*.astro/*.js", "*.astro/*.js"],
       parser: "@typescript-eslint/parser"
+    },
+    {
+      files: ["*.md", "*.mdx"],
+      parser: "eslint-mdx",
+      extends: ["plugin:mdx/recommended"],
+      settings: {
+        "mdx/code-blocks": true
+      },
+      rules: {
+        "no-unused-vars": "off"
+      }
     }
   ]
 };

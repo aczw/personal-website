@@ -15,7 +15,11 @@ tags:
 slug: www
 ---
 
-I've always wanted a personal website for many reasons. For one, it felt cool to own a website that _belongs_ to you and points back at you. It makes me feel like I own a part of the internet (and according to ICANN, I do[^1])! I also recently began learning web dev, and there was no better way to put my skills to the test than to make my own site.
+import { Image } from "astro:assets";
+
+I've always wanted a personal website for many reasons. For one, it felt cool to own a website that *belongs* to you and points back at you. It makes me feel like I own a part of the internet (and according to ICANN, I do)! I also recently began learning web dev, and there was no better way to put my skills to the test than to make my own site.
+
+> My site uses the .sh TLD, which doesn't seem to have a [RDAP server](https://deployment.rdap.org/#:~:text=.sh) configured. You could do a WHOIS lookup from the [official registry website](https://www.nic.sh/whois-search.htm?domain_name=charl.sh), but I'm hiding my information anyway :)
 
 A more pragmatic reason is that I can showcase and talk about the projects (like this one!) and portfolio work I've done. As a college student looking for internships, it's nice to be able to point people to a centralized location containing all the stuff I want to show off.
 
@@ -56,7 +60,7 @@ While writing this I realized I could make one semantic change to how I wrote th
 
 This was fine and all and visually looked the way I wanted, but out of curiosity I checked how Firefox rendered this page using its Reader View:
 
-IMAGE HERE
+<Image src={import("./project-tags-before.png")} alt="A jumbled mess" class="rounded-md" />
 
 Well, that's not good. Firefox is (rightly) parsing my `<div>` tags and displaying no spaces between them. That kinda sucks, I mean, after all, these tags are just a _list_ of technologies associated with each project, it would be nice if they were comma-separated or bullet pointed...
 
@@ -74,7 +78,7 @@ Wait. Hold on. I can fix this.
 
 Firefox now shows this:
 
-IMAGE HERE
+<Image src={import("./project-tags-after.png")} alt="Tags are smooshed together and placed on one line, completely unreadable" />
 
 I'm still getting used to the idea that most HTML elements don't inherently _mean_ anything. They are, however, significant to the browser, to screen readers, and to other users. It doesn't help that most browsers add their own custom styling, because now I associate `<li>` tags with visual bullet points. This doesn't have to be the case though. My badges still look like badges, but now they're in a list.
 
@@ -83,5 +87,3 @@ I'm still getting used to the idea that most HTML elements don't inherently _mea
 ## Portfolio
 
 I had a great deal of trouble with this page.
-
-[^1]: My site uses the .sh TLD, which doesn't seem to have a [RDAP server](https://deployment.rdap.org/#:~:text=.sh) configured. You could do a WHOIS lookup from the [official registry website](https://www.nic.sh/whois-search.htm?domain_name=charl.sh), but I'm hiding my information anyway :)
