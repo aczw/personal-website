@@ -9,10 +9,8 @@ const config = {
       mono: ["Maple Mono", ...defaultTheme.fontFamily.mono],
     },
     extend: {
-      spacing: {
-        header: "64px",
-        footer: "56px",
-        prose: "670px",
+      maxWidth: {
+        content: "782px",
       },
       colors: {
         sweater: {
@@ -30,6 +28,7 @@ const config = {
       },
       screens: {
         xs: "475px",
+        content: "782px",
       },
       keyframes: {
         fade: {
@@ -38,7 +37,7 @@ const config = {
         },
       },
       animation: {
-        fade: "fade 0.25s ease-out var(--delay) backwards",
+        fade: "fade 0.4s ease-out var(--delay) backwards",
       },
     },
   },

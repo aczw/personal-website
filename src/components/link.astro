@@ -1,0 +1,36 @@
+---
+import { cn } from "@/utils/cn";
+import type { HTMLAttributes } from "astro/types";
+import { ArrowUpRight } from "lucide-astro";
+
+interface Props extends HTMLAttributes<"a"> {
+  icon?: boolean;
+  newTab?: boolean;
+  className?: string;
+}
+
+const { icon = true, newTab = false, className, ...attrs } = Astro.props;
+---
+
+<a
+  target={newTab ? "_blank" : undefined}
+  aria-label={attrs.title}
+  class={cn(
+    "w-fit text-sweater-3 underline decoration-sweater-3/50 decoration-1 underline-offset-2 transition hover:text-sweater-1 hover:decoration-sweater-1",
+    className,
+  )}
+  {...attrs}
+>
+  <slot />
+  {
+    /** partially copied from https://github.com/bdsqqq/igorbedesqui.com/blob/1aaf4c14f1de110ff00cf4a0db1a1f3d13d18193/components/ui/StyledLink.tsx#L49 */
+    newTab && icon ? (
+      <span class="whitespace-nowrap">
+        <ArrowUpRight
+          size={14}
+          class="inline align-baseline"
+        />
+      </span>
+    ) : null
+  }
+</a>

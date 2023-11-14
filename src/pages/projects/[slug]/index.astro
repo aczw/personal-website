@@ -1,0 +1,69 @@
+---
+import Img from "@/components/img.astro";
+import Link from "@/components/link.astro";
+import MainLayout from "@/layouts/main-layout.astro";
+import PrimitiveLayout from "@/layouts/primitive-layout.astro";
+import { getCollection } from "astro:content";
+
+export async function getStaticPaths() {
+  const projectEntries = await getCollection("projects");
+  return projectEntries.map((entry) => ({
+    params: { slug: entry.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const { data } = entry;
+---
+
+<PrimitiveLayout
+  title={data.title + " • Charles Wang"}
+  description={data.blurb}
+>
+  <MainLayout className="space-y-8">
+    <Img
+      src={data.cover.img}
+      alt={data.cover.alt}
+      className="animate-fade border-2 border-sweater-9 [--delay:75ms]"
+    />
+
+    <section class="animate-fade [--delay:150ms]">
+      <div class="flex gap-2.5">
+        <h1 class="text-sweater-2">{data.title}</h1>
+        {
+          data.link ? (
+            <>
+              <span>•</span>
+              <Link
+                href={data.link.url}
+                newTab
+              >
+                {data.link.text}
+              </Link>
+            </>
+          ) : null
+        }
+      </div>
+      <p>{data.blurb}</p>
+      <p class="text-sweater-6">Built with {data.tags.map((tag) => tag).join(", ")}</p>
+    </section>
+    {
+      data.draft ? (
+        <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--delay:225ms]">
+          <h2 class="text-sweater-3">Under construction! ⚙️</h2>
+          <p>
+            Pardon <span class="line-through">our</span> my dust, I have not finished the write-up
+            for this project yet. I will get to it eventually, promise. If I've provided a link
+            above, go check that out instead!
+          </p>
+        </div>
+      ) : (
+        <article class="animate-fade space-y-[1rem] [--delay:225ms]">
+          <Content />
+        </article>
+      )
+    }
+  </MainLayout>
+</PrimitiveLayout>

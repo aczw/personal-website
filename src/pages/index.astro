@@ -1,66 +1,112 @@
 ---
-import { LastFmRecent } from "@/components/react/lastfm-recent";
-import { LastFmStats } from "@/components/react/lastfm-stats";
-import { LastFmWeekly } from "@/components/react/lastfm-weekly";
-import { Link } from "@/components/react/link";
-import HtmlLayout from "@/layouts/html-layout.astro";
+export const prerender = false;
+
+import Img from "@/components/img.astro";
+import LastFm from "@/components/lastfm.astro";
+import Link from "@/components/link.astro";
+import MainLayout from "@/layouts/main-layout.astro";
+import PrimitiveLayout from "@/layouts/primitive-layout.astro";
+import { getEntries } from "astro:content";
+import { ArrowRight, ArrowRightCircle } from "lucide-astro";
+
+const selectedProjects = await getEntries([
+  { collection: "projects", slug: "rcw" },
+  { collection: "projects", slug: "scallop" },
+]);
 ---
 
-<HtmlLayout
+<PrimitiveLayout
   title="Charles Wang"
   description="Computer graphics student at the University of Pennsylvania."
 >
-  <main
-    class="flex min-h-[calc(100vh-theme(spacing.footer))] items-center justify-center pt-header"
-  >
-    <section
-      class="mx-4 my-8 max-w-prose space-y-16 xl:mx-0 xl:my-0 xl:grid xl:max-w-fit xl:grid-flow-col xl:auto-rows-fr xl:grid-cols-8 xl:grid-rows-4 xl:gap-3 xl:space-y-0"
-    >
-      <div
-        class="animate-fade space-y-4 rounded-xl bg-sweater-10 [--delay:100ms] xl:col-span-4 xl:row-span-4 xl:flex xl:h-[500px] xl:w-[500px] xl:flex-col xl:justify-between xl:bg-sweater-9 xl:p-16"
-      >
-        <h4 class="font-bold text-sweater-2 xl:text-sm">About</h4>
-        <p>
-          Hi, I'm Charles. I'm a student at the University of Pennsylvania
-          majoring in
-          <Link
-            href="http://cg.cis.upenn.edu/dmd.html"
-            newTab
-          >
-            <>Digital Media Design</>
-          </Link>, an interdisciplinary program that combines computer science,
-          graphics, and design.
-        </p>
-        <p>
-          I'm interested in making games and building websites. In my free time
-          I like running, designing album covers, obsessing over metro systems,
-          learning bass guitar, and ricing my Arch setup.
-        </p>
-        <p>Thanks for stopping by!</p>
-        <p>(〜￣▽￣)〜</p>
-      </div>
-
-      <div
-        class="animate-fade rounded-xl bg-sweater-10 [--delay:300ms] xl:col-span-4 xl:row-span-2 xl:flex xl:h-[244px] xl:w-[500px] xl:flex-col xl:justify-between xl:gap-3 xl:bg-sweater-9 xl:p-8"
-      >
-        <LastFmRecent client:load />
-      </div>
-
-      <div
-        class="animate-fade rounded-xl bg-sweater-10 [--delay:500ms] xl:col-span-4 xl:row-span-2 xl:flex xl:h-[244px] xl:w-[500px] xl:flex-col xl:justify-between xl:gap-3 xl:bg-sweater-9 xl:p-8"
-      >
-        <div class="mb-4 xl:mb-0">
-          <h4 class="mb-4 w-fit font-bold text-sweater-2 xl:mb-0 xl:text-sm">
-            My Last.fm profile
-          </h4>
-          <p>
-            For fun and out of curiosity, I started tracking my music habits a
-            few years ago.
-          </p>
-        </div>
-        <LastFmStats client:load />
-        <LastFmWeekly client:load />
-      </div>
+  <MainLayout className="space-y-10">
+    <section class="animate-fade space-y-[1rem] [--delay:75ms]">
+      <h2 class="text-sweater-2">About</h2>
+      <p>
+        Hi, my name is Charles. I'm a student at the University of Pennsylvania majoring in
+        <Link
+          href="http://cg.cis.upenn.edu/dmd.html"
+          newTab
+        >
+          <>Digital Media Design</>
+        </Link>, an interdisciplinary program that combines computer science and fine arts.
+      </p>
+      <p>
+        I want to make games and build websites. To that end, I help run Penn's game development
+        club <Link
+          href="https://pennupgrade.com"
+          newTab
+        >
+          <>UPGRADE</>
+        </Link> and also maintain <Link
+          href="http://cg.cis.upenn.edu/siggraph/"
+          newTab
+        >
+          <>the website</>
+        </Link> for our SIGGRAPH chapter.
+      </p>
+      <p>
+        In my free time I like running, designing album covers, obsessing over rail systems,
+        practicing bass guitar, and ricing my Arch setup.
+      </p>
+      <p>Thanks for stopping by. (〜￣▽￣)〜</p>
     </section>
-  </main>
-</HtmlLayout>
+
+    <section class="animate-fade space-y-[1rem] [--delay:150ms]">
+      <h2 class="mb-[1rem] text-sweater-2">Projects</h2>
+      <ul class="space-y-[1rem]">
+        {
+          selectedProjects.map(({ data, slug }) => (
+            <li class="group rounded-md bg-sweater-9 transition-colors hover:bg-sweater-8">
+              <a
+                href={"/projects/" + slug}
+                class="flex flex-col items-start justify-between gap-4 p-4 sm:flex-row sm:items-center sm:gap-6"
+              >
+                <Img
+                  src={data.cover.img}
+                  alt={data.cover.alt}
+                  className="max-h-48 sm:h-16 sm:w-28 object-cover object-top shrink-0"
+                />
+                <div class="flex items-center gap-4 sm:gap-6">
+                  <div>
+                    <h3 class="text-sweater-2">{data.title}</h3>
+                    <p>{data.blurb}</p>
+                  </div>
+                  <ArrowRightCircle
+                    size={20}
+                    class="shrink-0 stroke-sweater-7 transition-colors group-hover:stroke-sweater-5"
+                  />
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <Link
+        href="/projects"
+        className="group"
+      >
+        <div
+          class="relative z-[-2] mt-[1rem] flex h-12 items-end justify-center rounded-t-md bg-gradient-to-b from-sweater-9"
+        >
+          <div
+            class="absolute inset-0 z-[-1] rounded-t-md bg-gradient-to-b from-sweater-8 opacity-0 transition-opacity group-hover:opacity-100"
+            aria-hidden="true"
+          >
+          </div>
+          <span class="flex items-center">
+            See more <ArrowRight
+              class="ml-1"
+              size={16}
+            />
+          </span>
+        </div>
+      </Link>
+    </section>
+
+    <section class="animate-fade space-y-[1rem] [--delay:225ms]">
+      <h2 class="mb-[1rem] text-sweater-2">Status</h2>
+      <LastFm />
+    </section>
+  </MainLayout>
+</PrimitiveLayout>

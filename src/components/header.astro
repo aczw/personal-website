@@ -1,65 +1,45 @@
 ---
+import Link from "@/components/link.astro";
 import Logo from "@/components/logo.astro";
-import { Link } from "@/components/react/link";
-import { removeTrailingSlash } from "@/utils/remove-trailing-slash";
-import { FileText, PaintBucket, TerminalSquare } from "lucide-astro";
+import { FileText, TerminalSquare } from "lucide-astro";
 
-// see https://github.com/withastro/astro/issues/5248
-const { pathname } = Astro.url;
-const path = removeTrailingSlash(pathname);
+const logoSize = 26;
+const iconSize = 16;
 ---
 
-<header class="fixed z-10 w-full bg-sweater-10/90">
-  <div
-    aria-hidden="true"
-    class="absolute inset-x-0 top-0 h-header backdrop-blur-3xl"
-  >
-  </div>
-  <nav class="relative flex items-center justify-between">
+<header class="mx-auto max-w-content bg-sweater-10 px-4 pt-4 content:pt-10">
+  <nav class="flex items-center justify-between border-b-2 border-sweater-9 pb-4">
     <a
       href="/"
-      class="group p-[calc((theme(spacing.header)-26px)/2)]"
+      class="group"
     >
       <Logo
-        width={26}
-        height={26}
+        width={logoSize}
+        height={logoSize}
         alt="Charles Wang"
         className="fill-sweater-4 transition group-hover:rotate-[-15deg] group-hover:fill-sweater-1"
       />
     </a>
-    <div class="flex items-center space-x-5 py-4 pl-1 pr-4">
+
+    <div class="flex items-center space-x-6 pl-6">
       <Link
         href="/projects"
-        className={`flex items-center ${
-          path === "/projects" ? "text-sweater-1 decoration-sweater-1/50" : ""
-        }`}
+        className="flex items-center"
       >
         <TerminalSquare
-          size={16}
-          class="mr-1 hidden xs:block"
+          size={iconSize}
+          class="mr-1"
         /> Projects
-      </Link>
-
-      <Link
-        href="/portfolio"
-        className={`flex items-center ${
-          path === "/portfolio" ? "text-sweater-1 decoration-sweater-1/50" : ""
-        }`}
-      >
-        <PaintBucket
-          size={16}
-          class="mr-1 hidden xs:block"
-        /> Portfolio
       </Link>
 
       <a
         href="/resume.pdf"
         target="_blank"
-        class="flex items-center rounded-full bg-sweater-4 px-2.5 py-1 text-sweater-9 transition-colors hover:bg-sweater-2"
+        class="flex items-center rounded-full bg-sweater-4 px-2 py-0.5 text-sweater-9 transition-colors hover:bg-sweater-2"
       >
         <FileText
-          size={16}
-          class="mr-1 hidden xs:block"
+          size={iconSize}
+          class="mr-1"
         /> Resume
       </a>
     </div>

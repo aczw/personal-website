@@ -1,7 +1,8 @@
+/// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 
 interface ImportMetaEnv {
-  readonly PUBLIC_LASTFM_KEY: string;
+  readonly LASTFM_API_KEY: string;
 }
 
 interface ImportMeta {

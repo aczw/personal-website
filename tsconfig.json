@@ -15,6 +15,7 @@
     "**/*.cjs",
     "**/*.astro",
     ".eslintrc.cjs",
-    "tailwind.config.ts"
+    "tailwind.config.ts",
+    "astro.config.ts"
   ]
 }
