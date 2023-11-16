@@ -4,6 +4,7 @@ import Link from "@/components/link.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 import { getCollection } from "astro:content";
+import { ExternalLink, Wrench } from "lucide-astro";
 
 export async function getStaticPaths() {
   const projectEntries = await getCollection("projects");
@@ -19,7 +20,7 @@ const { data } = entry;
 ---
 
 <PrimitiveLayout
-  title={data.title + " • Charles Wang"}
+  title={data.title}
   description={data.blurb}
 >
   <MainLayout className="space-y-8">
@@ -30,28 +31,46 @@ const { data } = entry;
     />
 
     <section class="animate-fade [--delay:150ms]">
-      <div class="flex gap-2.5">
-        <h1 class="text-sweater-2">{data.title}</h1>
-        {
-          data.link ? (
-            <>
-              <span>•</span>
-              <Link
-                href={data.link.url}
-                newTab
-              >
-                {data.link.text}
-              </Link>
-            </>
-          ) : null
-        }
-      </div>
+      <h1 class="text-xl text-sweater-2">{data.title}</h1>
       <p>{data.blurb}</p>
-      <p class="text-sweater-6">Built with {data.tags.map((tag) => tag).join(", ")}</p>
     </section>
+
+    <section class="grid animate-fade grid-cols-1 gap-4 [--delay:225ms] xs:grid-cols-2">
+      {
+        data.link ? (
+          <div>
+            <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+              <ExternalLink
+                size={16}
+                class="mr-1.5"
+              />
+              {data.link.text}
+            </p>
+            <Link
+              href={data.link.url}
+              newTab
+              icon={false}
+            >
+              {data.link.url}
+            </Link>
+          </div>
+        ) : null
+      }
+      <div>
+        <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+          <Wrench
+            size={16}
+            class="mr-1.5"
+          />
+           Built with
+        </p>
+        <p class="text-sweater-3">{data.tags.map((tag) => tag).join(", ")}</p>
+      </div>
+    </section>
+
     {
       data.draft ? (
-        <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--delay:225ms]">
+        <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--delay:300ms]">
           <h2 class="text-sweater-3">Under construction! ⚙️</h2>
           <p>
             Pardon <span class="line-through">our</span> my dust, I have not finished the write-up

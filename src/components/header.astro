@@ -1,10 +1,8 @@
 ---
 import Link from "@/components/link.astro";
 import Logo from "@/components/logo.astro";
-import { FileText, TerminalSquare } from "lucide-astro";
 
 const logoSize = 26;
-const iconSize = 16;
 ---
 
 <header class="mx-auto max-w-content bg-sweater-10 px-4 pt-4 content:pt-10">
@@ -26,21 +24,15 @@ const iconSize = 16;
         href="/projects"
         className="flex items-center"
       >
-        <TerminalSquare
-          size={iconSize}
-          class="mr-1"
-        /> Projects
+        Projects
       </Link>
 
       <a
         href="/resume.pdf"
         target="_blank"
-        class="flex items-center rounded-full bg-sweater-4 px-2 py-0.5 text-sweater-9 transition-colors hover:bg-sweater-2"
+        class="flex items-center rounded-full bg-sweater-4 px-2.5 py-0.5 text-sweater-9 transition-colors hover:bg-sweater-2"
       >
-        <FileText
-          size={iconSize}
-          class="mr-1"
-        /> Resume
+        Resume
       </a>
     </div>
   </nav>
