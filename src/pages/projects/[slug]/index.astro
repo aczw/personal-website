@@ -4,7 +4,7 @@ import Link from "@/components/link.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 import { getCollection } from "astro:content";
-import { ExternalLink, Wrench } from "lucide-astro";
+import { Calendar, ExternalLink, Wrench } from "lucide-astro";
 
 export async function getStaticPaths() {
   const projectEntries = await getCollection("projects");
@@ -36,26 +36,44 @@ const { data } = entry;
     </section>
 
     <section class="grid animate-fade grid-cols-1 gap-4 [--delay:225ms] xs:grid-cols-2">
-      {
-        data.link ? (
-          <div>
-            <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
-              <ExternalLink
-                size={16}
-                class="mr-1.5"
-              />
-              {data.link.text}
-            </p>
-            <Link
-              href={data.link.url}
-              newTab
-              icon={false}
-            >
-              {data.link.url}
-            </Link>
-          </div>
-        ) : null
-      }
+      <div>
+        {
+          data.link ? (
+            <>
+              <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+                <ExternalLink
+                  size={16}
+                  class="mr-1.5"
+                />
+                {data.link.text}
+              </p>
+              <Link
+                href={data.link.url}
+                newTab
+                icon={false}
+              >
+                {data.link.url}
+              </Link>
+            </>
+          ) : (
+            <>
+              <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+                <Calendar
+                  size={16}
+                  class="mr-1.5"
+                />
+                Date
+              </p>
+              <time
+                class="text-sweater-3"
+                datetime={data.date.toISOString()}
+              >
+                {data.date.toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+              </time>
+            </>
+          )
+        }
+      </div>
       <div>
         <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
           <Wrench
@@ -64,7 +82,7 @@ const { data } = entry;
           />
            Built with
         </p>
-        <p class="text-sweater-3">{data.tags.map((tag) => tag).join(", ")}</p>
+        <p class="text-sweater-3">{data.tags.join(", ")}</p>
       </div>
     </section>
 
