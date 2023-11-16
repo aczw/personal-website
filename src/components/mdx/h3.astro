@@ -1,0 +1,26 @@
+---
+import { type HTMLAttributes } from "astro/types";
+import { Hash } from "lucide-astro";
+
+type Props = HTMLAttributes<"h3">;
+
+const { id, ...attrs } = Astro.props;
+---
+
+<h3
+  id={id}
+  {...attrs}
+  class="text-sweater-2"
+>
+  <a
+    href={`#${id}`}
+    class="group relative -ml-2 flex w-fit items-center gap-1.5 pl-2"
+  >
+    <slot />
+    <Hash
+      size={16}
+      class="absolute -left-4 stroke-transparent transition-colors group-hover:stroke-sweater-5"
+      aria-hidden="true"
+    />
+  </a>
+</h3>

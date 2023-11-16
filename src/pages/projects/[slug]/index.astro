@@ -1,6 +1,8 @@
 ---
 import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
+import H2 from "@/components/mdx/h2.astro";
+import H3 from "@/components/mdx/h3.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 import { getCollection } from "astro:content";
@@ -87,7 +89,7 @@ const { data } = entry;
     </section>
 
     {
-      data.draft ? (
+      data.draft && import.meta.env.PROD ? (
         <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--delay:300ms]">
           <h2 class="text-sweater-3">Under construction! ⚙️</h2>
           <p>
@@ -98,7 +100,7 @@ const { data } = entry;
         </div>
       ) : (
         <article class="animate-fade space-y-[1rem] [--delay:225ms]">
-          <Content />
+          <Content components={{ h2: H2, h3: H3 }} />
         </article>
       )
     }
