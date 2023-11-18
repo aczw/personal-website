@@ -11,11 +11,23 @@
   h6 {
     @apply font-bold;
   }
-}
 
-@layer base {
   img {
     @apply italic;
+  }
+
+  /* inline code should have some padding and background */
+  code {
+    @apply rounded-md bg-sweater-9 px-1 py-0.5 text-sm;
+  }
+
+  pre {
+    @apply rounded-md p-5;
+  }
+
+  /* remove padding and background in codeblocks */
+  pre code {
+    @apply bg-transparent p-0;
   }
 }
 
