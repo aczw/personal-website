@@ -6,7 +6,7 @@ link:
 blurb: How meta! Personal website built with Astro. You're currently looking at it :)
 date: 2023-11-15
 cover:
-  img: ./cover.png
+  img: ./charl-sh.png
   alt: Image depicts this website's homepage.
 tags:
   - Astro
@@ -20,31 +20,90 @@ slug: www
 
 import Img from "@/components/img.astro";
 
-I've always wanted a personal site. Wouldn't it be cool to *own* a website and be a part of the internet? At the time, I had just begun learning web dev as well, and there was no better way to put my skills to the test than to create my own site.
+import Link from "@/components/link.astro";
 
-A more pragmatic reason is that I can now have a centralized location to showcase and talk about projects I've done (like this one). As a college student, it's nice to be able to directly link to stuff I want to show off.
+I've always wanted a personal site. I could set it up to showcase and talk about projects I've done (like this one). As a college student, it's nice to be able to directly link to stuff I want to show off. It also felt cool to have a part of the internet that I could call my own.
 
-Obviously it all worked out, because you're here now. Welcome! ♪(´▽｀)
+When I started becoming interested in web dev, I knew what my first project would be: to create my own site. Luckily, it all worked out in the end. Welcome! ♪(´▽｀)
 
 This write-up explains a bit of my thought process behind the design and layout of this site, as well as how previous iterations of the site have helped shape it to what it is now today.
 
 ## aczw.dev
 
-Fun fact: what you're looking at is the third version of my site.
+You're currently looking at `v3` of my site. `v1` was hosted on an entirely different URL at `aczw.dev` and looked like this:
 
-## v2
+<Img src={ import("./aczw-dev.png") } alt="Screenshot of the first version of my website. Colors a bit brighter and everything is much, much bigger." />
 
-doing some _extremely_ insecure things. publicly exposing my Last.fm API key, anyone on the client could have CTRL+F'd the fetch URL and would've immediately gotten it. More of a principle thing than anything else. There is no reason for anyone to target me, but it was the wrong thing to do.
+`v1` is still live at <Link href="https://old.charl.sh" newTab>old.charl.sh</Link>. Why am I still keeping it alive? I dunno, I'm still attached to it. It has sentimental value. A lot of design elements carried over to both `v2` and `v3`.
+
+There were two main reasons I wanted to start over. The first is that I simply didn't like the design. I had sketched out a few ideas beforehand in Procreate and Figma, but I realized the proportions were way off. Why is the text so gigantic?? I started to dislike the color palette.
+
+The layout also started making less sense. The sticky sidebar achieved its goal of displaying my resume and socials, but it really didn't need that much *space*. The card system on the right felt restricting as well. What if I wanted some content that couldn't neatly fit?
+
+The second reason is the tech stack I used. I had recently stumbled upon <Link href="https://twitter.com/t3dotgg" newTab>Theo</Link> and decided to use <Link href="https://create.t3.gg" newTab>Create T3 App</Link> to jumpstart my site. I realize now it did not fit my needs *at all*. I was only using Next.js and Tailwind, completely ignoring its helpful integrations with tRPC, Prisma, and Auth.js.
+
+If I only wanted Next.js, I should've used `create-next-app`. But even Next.js felt overkill for my use case. I wanted something simpler; I'm not building a full-stack app! I also preferred to not leave behind the React knowledge I had just picked up. So I started looking for something different...
+
+## Why Astro
+
+<Link href="https://astro.build/" newTab>Astro</Link> advertises itself as a framework that focuses on content-first sites. That immediately interested me. The more I read, the more I was convinced. It delivered exactly what I had in mind:
+
+- Reusable components that look like vanilla HTML, but with JSX-like syntax
+- First-class support for Markdown as well as intriguing stuff like MDX
+- Integrations with UI frameworks like React, allowing me to create self-contained <Link href="https://docs.astro.build/en/concepts/islands/" newTab>islands</Link> of interactivity, while keeping everything else static
+- Statically generated pages by default, with SSR as an option
+
+I needed nothing more, nothing less. While I could have stuck with Next.js, I liked Astro's streamlined approach more. It felt like it was designed exactly for what I wanted to do. So, Astro it is! 
+
+## Version 2
+
+I've finished deciding on what to build my new site with. Now I need to tackle the second issue: the new design of the site.
+
+<Img src={ import("./v2-figma.png") } alt="A Figma file containing many different iterations of what my site could look like." />
+
+I played with a number of variations, keeping in mind how they would look on mobile. Going in I was heavily inspired by Google's <Link href="https://m3.material.io/" newTab>Material You</Link> design language, with its colors, odd shapes, and large rounded corners. From `v1`, I wanted to keep the purple color scheme, primary font, and buttons.
+
+<Img src={ import("./color-palette.png") } alt="The new purple color palette, now in 10 different shades. There also exists a green palette." />
+
+The original color palette had six shades. As I was building `v1`, I felt severely limited by the few choices I had. Therefore I expanded it to a range of 10 values for more variation. I made a green version too.
+
+The final result looked like this:
+
+<Img src={ import("./v2.png") } alt="The new homescreen, with information contained in rounded blocks." className="border-2 border-sweater-9" />
+
+<Img src={ import("./v2-projects.png") } alt="The projects page, with images arranged in a grid and tags displayed underneath visually." className="border-2 border-sweater-9" />
+
+<Img src={ import("./v2-portfolio.png") } alt="The portfolio page, with pieces displayed in columns and separated into different sections." className="border-2 border-sweater-9" />
+
+These are `/`, `/projects`, and `/portfolio` respectively.
+
+I was really satisfied with how it turned out. I absolutely loved the new shades of purple I picked. I incorporated live data from my music habits on the home page, which is nice because music is a big part of my life. I loved the footer with the cute scrolling text. I loved how much simpler, cleaner, and more organized it looked compared to `v1`. I love how my projects and portfolio now live on separate pages and are given more room to breathe.
+
+...so why did I decide to restart *again*?
+
+### The bad
+
+The way I handled data fetching was *extremely* insecure. publicly exposing my Last.fm API key, anyone on the client could have CTRL+F'd the fetch URL and would've immediately gotten it. More of a principle thing than anything else. There is no reason for anyone to target me, but it was the wrong thing to do.
 
 Related to this is SWR and the usage of React in this project. I wished that I could use pure Astro components, but in order to fetch data on the client, React libraries like SWR were still superior in terms of the out of the box defaults and features they provide.
 
-## Now
+homepage collapses weirdly on smaller screens. spent really long optimizing it, in the end basically had to redesign for smaller screens. twice the maintanence.
+
+## Now...
 
 The website is now 100% written using Astro components. This was possible because I updated the way I fetched data, which is now handled in a much more secure way.
 
-### Constraining the width
+Some inspirations:
 
-noticing how all websites with paragraphs keep the width at a fixed size so your eyes don’t have to scan across a large horizontal distance
+- elyssachou
+- nexxel.dev
+- tlshaw.me
+- nezu.world
+- https://udara.io/reinventing-this-blog
+
+with each iteration i stripped more stuff away and focused on what i truly wanted people to see first.
+
+noticing how all websites with paragraphs keep the width at a fixed size so your eyes don't have to scan across a large horizontal distance
 
 ## Semantic HTML for project tags
 
@@ -61,8 +120,6 @@ While writing this I realized I could make one semantic change to how I wrote th
 
 This was fine and all and visually looked the way I wanted, but out of curiosity I checked how Firefox rendered this page using its Reader View:
 
-<Img src={import("./project-tags-before.png")} alt="Tags are smooshed together and placed on one line, making them unreadable" class="rounded-md" />
-
 Well, that's not good. Firefox is (rightly) parsing my `<div>` tags and displaying no spaces between them. That kinda sucks, I mean, after all, these tags are just a _list_ of technologies associated with each project, it would be nice if they were comma-separated or bullet pointed...
 
 Wait. Hold on. I can fix this.
@@ -77,10 +134,6 @@ Wait. Hold on. I can fix this.
 </ul>
 ```
 
-Firefox now shows this:
-
-<Img src={import("./project-tags-after.png")} alt="Tags are now listed with bullet points." />
-
 I'm still getting used to the idea that most HTML elements don't inherently _mean_ anything. They are, however, significant to the browser, to screen readers, and to other users. It doesn't help that most browsers add their own custom styling, because now I associate `<li>` tags with visual bullet points. This doesn't have to be the case though. My badges still look like badges, but now they're in a list.
 
 > Side note: this is also why I like Tailwind's [Preflight](https://tailwindcss.com/docs/preflight) base styling. For example, they remove all default margins, and unstyle headings and lists.
@@ -88,3 +141,9 @@ I'm still getting used to the idea that most HTML elements don't inherently _mea
 ## Portfolio
 
 I had a great deal of trouble with this page.
+
+## Colophon
+
+This site was built with Astro and uses no external UI frameworks. It's styled using Tailwind, with a few `<style>` tags here and there. It's currently deployed on Vercel's free plan, but uses Cloudflare DNS.
+
+Primary type is <Link href="https://en.wikipedia.org/wiki/Atkinson_Hyperlegible" newTab>Atkinson Hyperlegible</Link>. Code is written in <Link href="https://github.com/subframe7536/Maple-font" newTab>Maple Mono</Link>. Icons are from <Link href="https://lucide.dev/" newTab>Lucide</Link>.
