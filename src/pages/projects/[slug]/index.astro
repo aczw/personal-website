@@ -1,6 +1,7 @@
 ---
 import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
+import Del from "@/components/mdx/del.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 import Li from "@/components/mdx/li.astro";
@@ -21,10 +22,13 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 const { data } = entry;
+
+const meta = import.meta.env.DEV ? (data.draft ? " [DRAFT]" : " [PUBLISHED]") : "";
+const title = data.title + meta;
 ---
 
 <PrimitiveLayout
-  title={data.title}
+  title={title}
   description={data.blurb}
 >
   <MainLayout className="space-y-8">
@@ -95,14 +99,14 @@ const { data } = entry;
         <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--delay:300ms]">
           <h2 class="text-sweater-3">Under construction! ⚙️</h2>
           <p>
-            Pardon <span class="line-through">our</span> my dust, I have not finished the write-up
-            for this project yet. I will get to it eventually, promise. If I've provided a link
-            above, go check that out instead!
+            Pardon <Del>our</Del> my dust, I have not finished the write-up for this project yet. I
+            will get to it eventually, promise. If I've provided a link above, go check that out
+            instead!
           </p>
         </div>
       ) : (
         <article class="animate-fade space-y-[1.2rem] leading-relaxed [--delay:225ms]">
-          <Content components={{ h2: H2, h3: H3, ul: Ul, li: Li }} />
+          <Content components={{ h2: H2, h3: H3, ul: Ul, li: Li, del: Del }} />
         </article>
       )
     }

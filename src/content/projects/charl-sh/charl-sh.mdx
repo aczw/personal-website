@@ -14,7 +14,7 @@ tags:
   - Tailwind
   - Figma
 order: 6
-draft: true
+draft: false
 slug: www
 ---
 
@@ -55,13 +55,13 @@ If I only wanted Next.js, I should've used `create-next-app`. But even Next.js f
 
 I needed nothing more, nothing less. While I could have stuck with Next.js, I liked Astro's streamlined approach more. It felt like it was designed exactly for what I wanted to do. So, Astro it is! 
 
-## Version 2
+## A completely new start
 
 I've finished deciding on what to build my new site with. Now I need to tackle the second issue: the new design of the site.
 
 <Img src={ import("./v2-figma.png") } alt="A Figma file containing many different iterations of what my site could look like." />
 
-I played with a number of variations, keeping in mind how they would look on mobile. Going in I was heavily inspired by Google's <Link href="https://m3.material.io/" newTab>Material You</Link> design language, with its colors, odd shapes, and large rounded corners. From `v1`, I wanted to keep the purple color scheme, primary font, and buttons.
+I played with a number of variations on layout and text placement. Going in I was heavily inspired by Google's <Link href="https://m3.material.io/" newTab>Material You</Link> design language, with its colors, odd shapes, and large rounded corners. From `v1`, I wanted to keep the purple color scheme, primary font, and buttons.
 
 <Img src={ import("./color-palette.png") } alt="The new purple color palette, now in 10 different shades. There also exists a green palette." />
 
@@ -77,73 +77,90 @@ The final result looked like this:
 
 These are `/`, `/projects`, and `/portfolio` respectively.
 
-I was really satisfied with how it turned out. I absolutely loved the new shades of purple I picked. I incorporated live data from my music habits on the home page, which is nice because music is a big part of my life. I loved the footer with the cute scrolling text. I loved how much simpler, cleaner, and more organized it looked compared to `v1`. I love how my projects and portfolio now live on separate pages and are given more room to breathe.
+I was really satisfied with how it turned out. I absolutely loved the new shades of purple I picked. I incorporated live data from my music habits on the home page, which is nice because music is a big part of my life. I love the footer with the scrolling text. I love how much simpler, cleaner, and more organized it looked compared to `v1`. I love how my projects and portfolio now live on separate pages and are given more room to breathe.
 
 ...so why did I decide to restart *again*?
 
 ### The bad
 
-The way I handled data fetching was *extremely* insecure. publicly exposing my Last.fm API key, anyone on the client could have CTRL+F'd the fetch URL and would've immediately gotten it. More of a principle thing than anything else. There is no reason for anyone to target me, but it was the wrong thing to do.
+To fetch my latest music stats, I make requests to the Last.fm API using my API key. However, the way I did it was *extremely* insecure. While most components were pure Astro, I used React and <Link href="https://swr.vercel.app/" newTab>SWR</Link> for this purpose. SWR needed access to my API key on the client, so... I made it available <Link href="https://docs.astro.build/en/guides/environment-variables/#getting-environment-variables" newTab>by prefixing it</Link> with `PUBLIC_`. Theoretically, anyone visiting my site could have CTRL+F'd it! This is more of a principle thing than anything; I wasn't seriously expecting anyone to steal my API key and use it. Still, it wasn't *good*.
 
-Related to this is SWR and the usage of React in this project. I wished that I could use pure Astro components, but in order to fetch data on the client, React libraries like SWR were still superior in terms of the out of the box defaults and features they provide.
+Related to this is that I wasn't too happy with pulling in an entire UI framework and fetching library just to display my most recently listened to music. Astro had to send all of this unnecessary JavaScript to the client, making my site footprint larger than it needs to be. I still prefer using React for large scale projects, but I wanted to start utilizing the built-in Astro features for data fetching.
 
-homepage collapses weirdly on smaller screens. spent really long optimizing it, in the end basically had to redesign for smaller screens. twice the maintanence.
+My final gripe is that the homepage collapses weirdly on smaller screens. I spent a really long time optimizing it, and in the end basically had to redesign for mobile. This meant I had to maintain two completely different designs for no real reason.
 
-## Now...
+So I sat down and rethought my process again. This time, I seeked some more outside help.
 
-The website is now 100% written using Astro components. This was possible because I updated the way I fetched data, which is now handled in a much more secure way.
+## Rethinking what I want
 
-Some inspirations:
+I took inspiration from everywhere. Some ideas came from websites of people I knew, like <Link href="https://www.elyssachou.com/" newTab>elyssachou.com</Link> and <Link href="https://tlshaw.me/" newTab>tlshaw.me</Link>, fellow DMD people. Other ideas came from websites I discovered online, like <Link href="https://www.nexxel.dev/" newTab>nexxel.dev</Link>, <Link href="https://nezu.world/" newTab>nezu.world</Link>, and <Link href="https://paco.me/" newTab>Paco Coursey's site</Link>. Udara Jay's post about <Link href="https://udara.io/reinventing-this-blog" newTab>reinventing their blog</Link> resonated with me.
 
-- elyssachou
-- nexxel.dev
-- tlshaw.me
-- nezu.world
-- https://udara.io/reinventing-this-blog
+Looking back now, I realize that with each iteration I stripped away more and more stuff, instead focusing on what I *truly wanted* people to see first.
 
-with each iteration i stripped more stuff away and focused on what i truly wanted people to see first.
+- Instead of the weird bento box layout for the homepage, I now use a header-content layout. Paragraphs get more room to breathe and I get to display a sneak peek of my projects/posts.
+- I still liked the live music updates but deemphasized it, because it wasn't the main reason I directed people to my site. It's mostly for my own enjoyment, anyway.
+- The header took up too much space so I made it nonsticky. I don't have that much content to require an always visible nav bar.
+- After a slight identity crisis, I decided to combine `/projects` and `/portfolio`. The label "portfolio" didn't make much sense. My programming and design stuff are often one and the same.
 
-noticing how all websites with paragraphs keep the width at a fixed size so your eyes don't have to scan across a large horizontal distance
+I keep everything at a fixed width now (750px, to be exact). I noticed this design choice on the other sites I was ~~stalking~~ *taking inspiration* from. Reading becomes much easier when your eyes don't have to scan across a large horizontal distance.
 
-## Semantic HTML for project tags
+### Going all in on Astro
 
-While writing this I realized I could make one semantic change to how I wrote the HTML for project tags. Before, each tag was contained within its own `<div>` like this.
+Oh, the website is also now 100% written using Astro components. No more React dependency! Along with this I updated the way I fetched data, which is now handled in a much more secure way.
 
-```html
-<div>
-  <div>Tag1</div>
-  <div>Tag2</div>
-  <div>Tag3</div>
-  <!-- ...and so on -->
-</div>
+First, I enabled SSR for my homepage, the place where the results of the data fetching are shown. Since the HTML is now rendered on-demand instead of at build time, I can fetch data in the <Link href="https://docs.astro.build/en/core-concepts/astro-components/#the-component-script" newTab>component script</Link> to get the latest information. I also made it a separate component to take advantage of <Link href="https://docs.astro.build/en/guides/server-side-rendering/#html-streaming" newTab>streaming</Link>.
+
+Basically, my `<LastFm />` component looks like this:
+
+```astro
+---
+import { getRecentTracks } from "@/utils/lastfm";
+
+const recentTracks = await getRecentTracks();
+const firstTrack = recentTracks.track[0];
+---
+
+<p class="...">The last song I listened to was {firstTrack.name}!</p>
 ```
 
-This was fine and all and visually looked the way I wanted, but out of curiosity I checked how Firefox rendered this page using its Reader View:
+I use Zod to verify and parse the data I get back from Last.fm, so I get some nice guarantees as well as type safety. The best part is that my `lastfm.ts` file looks like this:
 
-Well, that's not good. Firefox is (rightly) parsing my `<div>` tags and displaying no spaces between them. That kinda sucks, I mean, after all, these tags are just a _list_ of technologies associated with each project, it would be nice if they were comma-separated or bullet pointed...
+```ts
+const key = import.meta.env.LASTFM_API_KEY;
+const url = `https://apiurl.com/?api_key=${key}`;
 
-Wait. Hold on. I can fix this.
+// my schema goes in here
+const recentTracksSchema = z.promise(...);
 
-```html
-<!-- this makes more sense! -->
-<ul>
-  <li>Tag1</li>
-  <li>Tag2</li>
-  <li>Tag3</li>
-  <!-- ...and so on -->
-</ul>
+const getRecentTracks = async () => {
+  const data = await recentTracksSchema.parse(
+    fetch(url).then((res) => res.json()),
+  );
+
+  return data.recenttracks;
+};
+
+export { getRecentTracks };
 ```
 
-I'm still getting used to the idea that most HTML elements don't inherently _mean_ anything. They are, however, significant to the browser, to screen readers, and to other users. It doesn't help that most browsers add their own custom styling, because now I associate `<li>` tags with visual bullet points. This doesn't have to be the case though. My badges still look like badges, but now they're in a list.
+You can find <Link href="https://github.com/aczw/personal-website/blob/main/src/components/lastfm.astro" newTab>`lastfm.astro` here</Link> and <Link href="https://github.com/aczw/personal-website/blob/main/src/utils/lastfm.ts" newTab>`lastfm.ts` here</Link>.
 
-> Side note: this is also why I like Tailwind's [Preflight](https://tailwindcss.com/docs/preflight) base styling. For example, they remove all default margins, and unstyle headings and lists.
+My `LASTFM_API_KEY` never leaves the server, because this code is only run on the server. While SWR provided some nice features like refetching on window focus, I don't miss it when compared to this. I make a simple native fetch call and that's it!
 
-## Portfolio
+Astro makes all of this possible. I haven't even talked about <Link href="https://docs.astro.build/en/guides/content-collections/" newTab>Content Collections</Link>, which is Astro's solution for managing and querying the content you write. The current page you're looking at exists as a MDX file in the specialized `content/` directory, and is rendered to HTML automatically.
 
-I had a great deal of trouble with this page.
+Clearly, I really like Astro. I made the choice to switch in `v2` and haven't looked back.
+
+## Conclusion
+
+`aczw.dev` was started in the early summer of 2023. As of writing, it's now mid-November. My site has changed *a lot* in these past five months, and I've learned a lot about web dev as well as myself. `v1` to `v2` was a giant jump, while `v2` to `v3` was a more quiet, refined redesign. I don't think there will be any more large changes from here on out; I'm pretty happy with what I have.
+
+Nailing what you want on the first try is very difficult. It's what you learn along the way that will eventually guide you to something that you're finally satisfied with. I've had a lot of fun designing and redesigning the site, and don't regret making either `v1` or `v2`. They helped me get to `v3` after all.
+
+Thanks for reading. Lemme know what you think about the website.
 
 ## Colophon
 
-This site was built with Astro and uses no external UI frameworks. It's styled using Tailwind, with a few `<style>` tags here and there. It's currently deployed on Vercel's free plan, but uses Cloudflare DNS.
+This site was built with Astro and uses no external UI frameworks. It's styled using Tailwind, with a few `<style>` tags here and there. It's currently deployed on Vercel's free plan, but uses Cloudflare DNS. All the prototyping was done in Procreate and Figma.
 
 Primary type is <Link href="https://en.wikipedia.org/wiki/Atkinson_Hyperlegible" newTab>Atkinson Hyperlegible</Link>. Code is written in <Link href="https://github.com/subframe7536/Maple-font" newTab>Maple Mono</Link>. Icons are from <Link href="https://lucide.dev/" newTab>Lucide</Link>.

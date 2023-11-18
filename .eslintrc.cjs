@@ -44,7 +44,7 @@ module.exports = {
       parser: "eslint-mdx",
       extends: ["plugin:mdx/recommended"],
       settings: {
-        "mdx/code-blocks": true
+        "mdx/code-blocks": false
       },
       rules: {
         "no-unused-vars": "off"
