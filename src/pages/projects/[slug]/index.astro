@@ -24,7 +24,7 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const { data } = entry;
 
-const meta = import.meta.env.DEV ? (data.draft ? " [DRAFT]" : " [PUBLISHED]") : "";
+const meta = import.meta.env.DEV ? (data.published ? " [PUBLISHED]" : " [DRAFT]") : "";
 const title = data.title + meta;
 ---
 
@@ -96,7 +96,7 @@ const title = data.title + meta;
     </section>
 
     {
-      data.draft && import.meta.env.PROD ? (
+      !data.published && import.meta.env.PROD ? (
         <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--delay:300ms]">
           <h2 class="text-sweater-3">Under construction! ⚙️</h2>
           <p>

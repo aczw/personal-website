@@ -17,7 +17,7 @@ const projectsCollection = defineCollection({
       }),
     tags: z.array(z.string()),
     order: z.number().min(0),
-    draft: z.boolean()
+    published: z.boolean()
   }),
 });
 
