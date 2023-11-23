@@ -17,4 +17,58 @@ published: false
 slug: rcw
 ---
 
-Endless Unity minigame written in C#. UI was prototyped and exported from Figma. Color-based gameplay inspired by the Stroop effect. Playable from your browser!
+import Link from "@/components/link.astro";
+
+import Gif from "@/components/gif.astro";
+
+import videoMinigame from "./minigame-collection.mp4";
+
+Random Color Words (RCW) is a simple endless minigame about selecting the correct pair of colors and words. They're also randomly generated. Crazy name, I know.
+
+This was my first time using Unity, and is my first foray into game dev. Going into this project, I wasn't looking to create anything new or life-changing. My main goal was to experience and play with every aspect of the development process, and have the end result be something completely playable, polished, and cohesive. I'll let you be the judge of that.
+
+## Gameplay
+
+Given that I was approaching this as just a learning experience, I kept the gameplay loop simple. In fact, it's straight up taken from another game that I was playing at the time, called <Link href="https://store.steampowered.com/app/643270/OLDTV/" newTab>OLDTV</Link>. Both of us are heavily inspired by the <Link href="https://en.wikipedia.org/wiki/Stroop_effect" newTab>Stroop test</Link>, which is a psychological phenomenon where reaction time becomes delayed when the stimuli is incongruent.
+
+In normal human words, stuff that catches you off guard makes you do a double take. Which slows you down. Take these two words, for example.
+
+img
+
+The "Purple" on the left is colored in purple, while the one on the right is colored red. It turns out that it's easier for us to name the color of the left word than the right word, because the *word* matches the *color*. When the word reads "purple" but is actually colored red, this throws us off and delays our answer.
+
+How interesting. Why don't we add a timer, and force the player to decide whether the word matches its color in time. If you don't react fast enough, you lose. And the faster you react, the more points you get.
+
+Bam. That is literally the whole game.
+
+## Art
+
+- inspired by https://en.wikipedia.org/wiki/Rhythm_Heaven_Fever
+
+Generous use of thick borders, arcade-y vibe
+
+Buttons had to look delicious
+
+Color palette is the same as the words: red, yellow, green, blue, purple
+
+Originally was going for a factory look, with words potentially coming down an assembly line. Honestly, this was out of my skill scope, so I scratched that idea. But you can still see it in the metallic plates and muted gray backgrounds.
+
+## UI/UX
+
+buttons mmmmmfff.,,, buttons
+
+    <Gif><source src={ videoMinigame } type="video/mp4"></source></Gif>
+
+### Start screen
+
+Checkboards randomly zoom in/out, and randomly change colors. This was possible by simply randomly changing the UV coordinates
+
+## Programming
+
+Coding the game was, for the most part, pretty straight forward. I had Java experience so C# wasn't too far fetched, and reading the Unity documentation/searching things up along the way filled in the necessary gaps. One of the more confusing parts was figuring out what features were built-in and what I had to write on my own (me discovering <Link href="https://docs.unity3d.com/ScriptReference/Color.Lerp.html" newTab>`Color.Lerp`</Link> exists).
+
+Still, there were two new concepts that really stood out to me: coroutines, and events.
+
+### Coroutines
+
+### Events
