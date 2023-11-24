@@ -10,6 +10,8 @@ interface Props extends HTMLAttributes<"a"> {
 }
 
 const { icon = true, newTab = false, className, ...attrs } = Astro.props;
+
+// partially taken from https://github.com/bdsqqq/igorbedesqui.com/blob/1aaf4c14f1de110ff00cf4a0db1a1f3d13d18193/components/ui/StyledLink.tsx#L49
 ---
 
 <a
@@ -20,17 +22,10 @@ const { icon = true, newTab = false, className, ...attrs } = Astro.props;
     className,
   )}
   {...attrs}
->
-  <slot />
-  {
-    /** partially copied from https://github.com/bdsqqq/igorbedesqui.com/blob/1aaf4c14f1de110ff00cf4a0db1a1f3d13d18193/components/ui/StyledLink.tsx#L49 */
+  ><slot />{
     newTab && icon ? (
-      <span class="whitespace-nowrap">
-        <ArrowUpRight
-          size={14}
-          class="inline align-baseline"
-        />
-      </span>
+      // prettier-ignore
+      <span class="whitespace-nowrap"><ArrowUpRight size={14} class="inline align-baseline" /></span>
     ) : null
-  }
-</a>
+  }</a
+>

@@ -4,9 +4,7 @@ import { getRecentTracks } from "@/utils/lastfm";
 
 const recentTracks = await getRecentTracks();
 const firstTrack = recentTracks.track[0];
-const nowPlaying = firstTrack["@attr"]
-  ? firstTrack["@attr"].nowplaying === "true"
-  : false;
+const nowPlaying = firstTrack["@attr"] ? firstTrack["@attr"].nowplaying === "true" : false;
 ---
 
 <p>
@@ -15,39 +13,39 @@ const nowPlaying = firstTrack["@attr"]
       <>
         {nowPlaying ? (
           <>
-            I am{" "}
+            I am
             <Link
               href="https://www.last.fm/user/ashzw"
               newTab
             >
-              <>currently</>
-            </Link>{" "}
-            listening to <span class="text-sweater-2">{firstTrack.name}</span>{" "}
-            by <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
+              {"currently"}
+            </Link>
+            listening to <span class="text-sweater-2">{firstTrack.name}</span> by
+            <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
           </>
         ) : (
           <>
-            The last song I{" "}
+            The last song I
             <Link
               href="https://www.last.fm/user/ashzw"
               newTab
             >
-              <>listened to</>
+              {"listened to"}
             </Link>{" "}
-            was <span class="text-sweater-2">{firstTrack.name}</span> by{" "}
+            was <span class="text-sweater-2">{firstTrack.name}</span> by
             <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
           </>
         )}
       </>
     ) : (
       <>
-        I like tracking my music listening habits. Visit my{" "}
+        I like tracking my music listening habits. Visit my
         <Link
           href="https://www.last.fm/user/ashzw"
           newTab
         >
-          <>Last.fm profile</>
-        </Link>{" "}
+          {"Last.fm profile"}
+        </Link>
         to see my history.
       </>
     )
