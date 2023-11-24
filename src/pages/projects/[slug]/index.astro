@@ -33,16 +33,16 @@ const title = data.title + meta;
   description={data.blurb}
 >
   <MainLayout className="space-y-8">
-    <Img
-      src={data.cover.img}
-      alt={data.cover.alt}
-      className="animate-fade border-2 border-sweater-9 [--delay:75ms]"
-    />
-
-    <section class="animate-fade [--delay:150ms]">
+    <section class="animate-fade [--delay:75ms]">
       <h1 class="text-xl text-sweater-2">{data.title}</h1>
       <p>{data.blurb}</p>
     </section>
+
+    <Img
+      src={data.cover.img}
+      alt={data.cover.alt}
+      className="animate-fade border-2 border-sweater-9 [--delay:150ms]"
+    />
 
     <section class="grid animate-fade grid-cols-1 gap-4 [--delay:225ms] xs:grid-cols-2">
       <div>
