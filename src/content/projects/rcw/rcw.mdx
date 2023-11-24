@@ -25,9 +25,11 @@ import Img from "@/components/img.astro";
 
 import buttonsFigma from "./buttons-figma.mp4";
 
+import buttonsAni from "./buttons-ani.mp4";
+
 Random Color Words (RCW) is a simple endless minigame about selecting the correct pair of colors and words. They're also randomly generated. Crazy name, I know.
 
-This was my first time using Unity and my first full game. Going into this project, I wasn't looking to create anything new or life-changing. My main goal was to familiarize myself with all aspects of the development process, and have the end result be something completely playable, polished, and cohesive.
+This was my first time using Unity and my first full game. Going into this project, I wasn't looking to create anything new or ground-breaking. My main goal was to familiarize myself with all aspects of the development process, and have the end result be something completely playable, polished, and cohesive.
 
 ## Gameplay
 
@@ -43,48 +45,74 @@ How interesting. Why don't we add a timer, and force the player to decide whethe
 
 I keep it simple by only using five colors: Red, Yellow, Green, Blue, Purple.
 
-## Art direction
+## Buttons buttons buttons
 
-RCW is an endless, fast-paced minigame about getting the highest score. I was therefore inspired by arcade games and stuff like that. In particular, I became obsessed with the art of <Link href="https://en.wikipedia.org/wiki/Rhythm_Heaven_Fever" newTab>Rhythm Heaven Fever</Link>, a Wii game from 2012. I wanted to channel its chaotic vibe, juicy-looking buttons, and generous use of thick, black borders. The buttons had to look *delicious*.
+RCW is an endless, fast-paced minigame about getting the highest score. I was therefore inspired by arcade games and in particular, became obsessed with the art of <Link href="https://en.wikipedia.org/wiki/Rhythm_Heaven_Fever" newTab>Rhythm Heaven Fever</Link>, a 2012 Wii game. I wanted to channel its chaotic vibes, juicy-looking buttons, and generous use of thick borders. I mean, the buttons had to look *delicious*.
 
 I also liked the button hover effect in <Link href="https://battlecats.club/en/series/battlecats/" newTab>The Battle Cats</Link>, which flashed bright yellow and magenta. Here, I tried to recreate it in Figma.
 
     <Gif><source src={ buttonsFigma } type="video/mp4"></source></Gif>
 
-I use both the button design and hover effect in RCW. The nice thing about this art style was that it could be consistently applied everywhere.
+I use both the button design and hover effect in RCW. The nice thing about this art style was that it could be consistently applied everywhere, not just buttons.
 
-- Try to add skeumorphism through use of shadows, etc.
+- Add skeumorphism through the use of shadows, shading, etc.
 - Wrap it in a thick black border
 - Add a drop shadow
 - If I want to attract the player's attention, add color. Else, use gray
-- Inter Inter Inter
+- I love Inter
 
-Originally I was going for a factory setting, with words potentially "coming down" an assembly line. Honestly, this was out of my Unity skill scope, so I scratched that idea. But you can still see it in the metallic plates and muted gray backgrounds.
+Originally I was going for a factory setting, with words coming down a sort of assembly line. But honestly, this was out of my Unity skill scope, so I scratched that idea. You can still see it though in the metallic plates and muted gray backgrounds.
 
-### Figma is awesome
+### Figma does everything
 
 One thing that may surprise you is that all the art assets were made in Figma. This includes the start screen, in-game, and game over screen, as well as all the UI.
 
     <Img src={ import("./figma-ingame.png") } alt="The in-game screen, pause menu, and game over screen were all made in a single Figma file." />
 
-Sex
+In order to animate different parts of the UI, I exported assets as individual pieces that I would put back together in Unity. This allowed me to, for instance, only animate the border around a button but not change its inside color.
+
+I kept most things grayscale so that I could reuse the asset. In Unity, I simply colored each instance differently.
 
     <Img src={ import("./separated-ui.png") } alt="Each UI component is split into different parts and don't have color so I can set them in Unity and animate fading between colors." />
 
-It kinda feels weird 
+> In hindsight, I could also have done this with the 3-2-1 stoplight. When it became active, just overlay the glow on top to make it brighter.
 
-buttons mmmmmfff.,,, buttons
+It was really nice being able to see the final product within Figma, without needing to tweak anything in Unity. It made adding small changes much faster.
 
 ### Animating the UI
 
-Checkboards randomly zoom in/out, and randomly change colors. This was possible by simply randomly changing the UV coordinates
+The checkerboard on the start screen randomly zooms and changes colors every five seconds. This was done by constantly manipulating the `uvRect` of the checkerboard `RawImage`.
 
-## Programming
+```csharp
+[SerializeField] private RawImage checkerboard;
 
-Coding the game was, for the most part, pretty straight forward. I had Java experience so C# wasn't too far fetched, and reading the Unity documentation/searching things up along the way filled in the necessary gaps. One of the more confusing parts was figuring out what features were built-in and what I had to write on my own (me discovering <Link href="https://docs.unity3d.com/ScriptReference/Color.Lerp.html" newTab>`Color.Lerp`</Link> exists).
+// this would all go in Update()
+var length = Mathf.Lerp(2, 10, Mathf.PingPong(Time.time * 0.05f, 1));
+var speed = Random.Range(0.1f, 0.8f);
 
-Still, there were two new concepts that really stood out to me: coroutines, and events.
+checkerboard.uvRect = new Rect(
+    checkerboard.uvRect.position + new Vector2(speed * _x, speed * _y) * Time.deltaTime,
+    new Vector2(length, length)
+);
+```
 
-### Coroutines
+The other thing I'm really proud of are the button animations. When the instructions or credits button is activated, the same button is used to go back to the start screen.
 
-### Events
+    <Gif><source src={ buttonsAni } type="video/mp4"></source></Gif>
+
+The "Go back" text slides out, and the outside border becomes a panel for the text to exist in. I spent ~~too much~~ some time getting it to feel just right. I would like to thank this <Link href="https://easings.net/" newTab>easings cheat sheet</Link> for providing copy-and-paste animation curves.
+
+## Conclusion
+
+This project definitely helped expand my Unity and C# knowledge. I learned to use coroutines and C# events to broadcast gameplay happenings. I got more familiar with Unity's UI and animation system.
+
+How would I update this game in the future? The current gameplay loop is a blatant rip of OLDTV. I've floated some ideas around, including:
+
+- **Shop system.** Earn currency for each game you play that can be spent on powerups (score multiplier, increased time, more lives, freeze time, etc.)
+- **Round streak**. For every additional round you win in a row, a score multiplier is added.
+- **Expanding Reversed mode.** To make the player's life even harder, more distractions could be added (flipping the game upside down, smaller words, fake clones, etc.)
+- **Levels.** When your score reaches a certain threshold, new challenges appear. Old stuff is swapped out. Maybe add a way to continue from a certain level after losing.
+
+> Re: blatant rip. I feel that this fine in practice, because I approached RCW as a learning experience, not a game I wanted to sell or anything. Full credits to OLDTV!
+
+Code and assets are <Link href="https://github.com/aczw/RCW" newTab>open sourced on GitHub</Link>. Thanks for reading.
