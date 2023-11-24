@@ -39,7 +39,7 @@ In normal human words, stuff that catches you off guard slows you down. Take the
 
     <Img src={ import("./purple-comparison.png") } alt="There are two words and both spell out 'purple.' The one on the left is colored purple, and the one on the right is colored red." />
 
-One word is colored purple, and the other red. It turns out that it's easier for us to name the color of the left word than the right word, because the *word* matches the *color*. Whe the word reads "purple" but is actually colored red, this throws us off and delays delays our answer.
+One word is colored purple, and the other red. It turns out that it's easier for us to name the color of the left word than the right word, because the *word* matches the *color*. When the word reads "purple" but is actually colored red, this throws us off and delays our answer.
 
 How interesting. Why don't we add a timer, and force the player to decide whether the word matches its color in time. If you don't react fast enough, you lose. And the faster you react, the more points you get.
 
@@ -55,13 +55,13 @@ I also liked the button hover effect in <Link href="https://battlecats.club/en/s
 
 I use both the button design and hover effect in RCW. The nice thing about this art style was that it could be consistently applied everywhere, not just buttons.
 
-- Add skeumorphism through the use of shadows, shading, etc.
+- Add skeumorphism through the use of light, shading, etc.
 - Wrap it in a thick black border
-- Add a drop shadow
-- If I want to attract the player's attention, add color. Else, use gray
+- Add a drop shadow underneath
+- If I want to attract the player's attention, add some color. Else, use gray
 - I love Inter
 
-Originally I was going for a factory setting, with words coming down a sort of assembly line. But honestly, this was out of my Unity skill scope, so I scratched that idea. You can still see it though in the metallic plates and muted gray backgrounds.
+Originally I was going for a factory setting, with words coming down a sort of assembly line. But honestly, this was out of my Unity skill scope, so I scratched that idea. You can still see it in the metallic plates and muted gray backgrounds.
 
 ### Figma does everything
 
@@ -69,7 +69,7 @@ One thing that may surprise you is that all the art assets were made in Figma. T
 
     <Img src={ import("./figma-ingame.png") } alt="The in-game screen, pause menu, and game over screen were all made in a single Figma file." />
 
-In order to animate different parts of the UI, I exported assets as individual pieces that I would put back together in Unity. This allowed me to, for instance, only animate the border around a button but not change its inside color.
+In order to animate different parts of the UI, I exported assets as individual pieces that I could put back together in Unity. This allowed me to, for instance, only animate the border around a button but not change its inside color.
 
 I kept most things grayscale so that I could reuse the asset. In Unity, I simply colored each instance differently.
 
@@ -104,7 +104,7 @@ The "Go back" text slides out, and the outside border becomes a panel for the te
 
 ## Conclusion
 
-This project definitely helped expand my Unity and C# knowledge. I learned to use coroutines and C# events to broadcast gameplay happenings. I got more familiar with Unity's UI and animation system.
+This project definitely helped expand my Unity and C# knowledge. I learned to use coroutines and C# events to broadcast gameplay happenings. I became more familiar with Unity's UI and animation system.
 
 How would I update this game in the future? The current gameplay loop is a blatant rip of OLDTV. I've floated some ideas around, including:
 
@@ -113,6 +113,6 @@ How would I update this game in the future? The current gameplay loop is a blata
 - **Expanding Reversed mode.** To make the player's life even harder, more distractions could be added (flipping the game upside down, smaller words, fake clones, etc.)
 - **Levels.** When your score reaches a certain threshold, new challenges appear. Old stuff is swapped out. Maybe add a way to continue from a certain level after losing.
 
-> Re: blatant rip. I feel that this fine in practice, because I approached RCW as a learning experience, not a game I wanted to sell or anything. Full credits to OLDTV!
+> Re: blatant rip. I feel that this is fine in practice, because I approached RCW as a learning experience, not a game I wanted to sell or anything. Full credits to OLDTV!
 
 Code and assets are <Link href="https://github.com/aczw/RCW" newTab>open sourced on GitHub</Link>. Thanks for reading.
