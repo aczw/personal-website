@@ -29,7 +29,7 @@ import buttonsAni from "./buttons-ani.mp4";
 
 Random Color Words (RCW) is a simple endless minigame about selecting the correct pair of colors and words. They're also randomly generated. Crazy name, I know.
 
-This was my first time using Unity and my first full game. Going into this project, I wasn't looking to create anything new or ground-breaking. My main goal was to familiarize myself with all aspects of the development process, and have the end result be something completely playable, polished, and cohesive.
+This was my first time using Unity and my first full game. Going into this project, I wasn't looking to create anything new or ground-breaking. My main goal was to familiarize myself with all aspects of the development process, and have the end result be something playable, polished, and cohesive.
 
 ## Gameplay
 
@@ -84,19 +84,19 @@ It was really nice being able to see the final product within Figma, without nee
 The checkerboard on the start screen randomly zooms and changes colors every five seconds. This was done by constantly manipulating the `uvRect` of the checkerboard `RawImage`.
 
 ```csharp
-[SerializeField] private RawImage checkerboard;
+[SerializeField] private RawImage cb;
 
 // this would all go in Update()
 var length = Mathf.Lerp(2, 10, Mathf.PingPong(Time.time * 0.05f, 1));
 var speed = Random.Range(0.1f, 0.8f);
 
-checkerboard.uvRect = new Rect(
-    checkerboard.uvRect.position + new Vector2(speed * _x, speed * _y) * Time.deltaTime,
+cb.uvRect = new Rect(
+    cb.uvRect.position + new Vector2(speed * _x, speed * _y) * Time.deltaTime,
     new Vector2(length, length)
 );
 ```
 
-The other thing I'm really proud of are the button animations. When the instructions or credits button is activated, the same button is used to go back to the start screen.
+The other thing I'm really happy about are the button animations. When the instructions or credits button are activated, the same button is used to go back to the start screen.
 
     <Gif><source src={ buttonsAni } type="video/mp4"></source></Gif>
 
@@ -108,7 +108,7 @@ This project definitely helped expand my Unity and C# knowledge. I learned to us
 
 How would I update this game in the future? The current gameplay loop is a blatant rip of OLDTV. I've floated some ideas around, including:
 
-- **Shop system.** Earn currency for each game you play that can be spent on powerups (score multiplier, increased time, more lives, freeze time, etc.)
+- **Shop system.** Earn currency for each game you play that can be spent on power-ups (score multiplier, increased time, more lives, freeze time, etc.)
 - **Round streak**. For every additional round you win in a row, a score multiplier is added.
 - **Expanding Reversed mode.** To make the player's life even harder, more distractions could be added (flipping the game upside down, smaller words, fake clones, etc.)
 - **Levels.** When your score reaches a certain threshold, new challenges appear. Old stuff is swapped out. Maybe add a way to continue from a certain level after losing.
