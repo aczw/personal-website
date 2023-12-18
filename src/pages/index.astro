@@ -21,7 +21,7 @@ const selectedProjects = await getEntries([
 >
   <MainLayout className="space-y-10">
     <section class="animate-fade space-y-[1rem] [--delay:75ms]">
-      <h2 class="text-sweater-2">About</h2>
+      <h2 class="text-sweater-2">About me</h2>
       <p>
         Hi, my name is Charles. I'm a student at the University of Pennsylvania majoring in
         <Link
@@ -52,11 +52,11 @@ const selectedProjects = await getEntries([
         In my free time I like running, designing album covers, obsessing over rail systems,
         practicing bass guitar, and ricing my Arch setup.
       </p>
-      <p>Thanks for stopping by. (〜￣▽￣)〜</p>
+      <p>My contact info is below. Thanks for stopping by. (〜￣▽￣)〜</p>
     </section>
 
     <section class="animate-fade space-y-[1rem] [--delay:150ms]">
-      <h2 class="mb-[1rem] text-sweater-2">Projects</h2>
+      <h2 class="mb-[1rem] text-sweater-2">Highlighted projects</h2>
       <ul class="space-y-[1rem]">
         {
           selectedProjects.map(({ data, slug }) => (
@@ -97,13 +97,13 @@ const selectedProjects = await getEntries([
             aria-hidden="true"
           >
           </div>
-          <span class="flex items-center">View all projects</span>
+          <span class="flex items-center">View all</span>
         </div>
       </Link>
     </section>
 
     <section class="animate-fade space-y-[1rem] [--delay:225ms]">
-      <h2 class="mb-[1rem] text-sweater-2">Status</h2>
+      <h2 class="mb-[1rem] text-sweater-2">Music status</h2>
       <LastFm />
     </section>
   </MainLayout>

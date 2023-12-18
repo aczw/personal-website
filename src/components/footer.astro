@@ -39,13 +39,13 @@ const iconSize = 22;
         id="scroll"
         class="italic text-sweater-8 transition-colors"
         aria-hidden="true"
-      ></span> v2023.12.5
+      ></span> v2023.12.18
     </p>
   </span>
 </footer>
 
 <script>
-  let fun = [
+  const fun = [
     "soitgoes",
     "aczw",
     "newfaces",
@@ -56,14 +56,14 @@ const iconSize = 22;
     "allitcosts",
   ];
 
-  let pick = fun[Math.floor(Math.random() * fun.length)];
-  let offset = Math.floor(Math.random() * pick.length);
+  const pick = fun[Math.floor(Math.random() * fun.length)];
+  const offset = Math.floor(Math.random() * pick.length);
 
   document.getElementById("scroll")!.textContent = pick.slice(offset) + pick.slice(0, offset);
 
   setInterval(() => {
-    let scroll = document.getElementById("scroll");
-    let text = scroll!.textContent;
+    const scroll = document.getElementById("scroll");
+    const text = scroll!.textContent;
     scroll!.textContent = text!.slice(1) + text![0];
   }, 500);
 </script>
