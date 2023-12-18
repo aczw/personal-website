@@ -17,10 +17,23 @@ slug: mini-minecraft
 
 import { Vimeo } from "@astro-community/astro-embed-vimeo";
 
-First, let's take a look at this snazzy showcase reel I made (less than 3 minutes):
+First, let's take a look at this snazzy showcase reel I made (it's less than 3 minutes).
 
 <Vimeo id="893391293" />
 
-Voxel-based C++ game engine using OpenGL. Made from scratch in a team of three. I was
-responsible for implementing chunking, efficient rendering/face culling, block texturing, day/
-night sky system, and flood fill lighting.
+It does a nice job of showcasing all of our engine's features, and tells you who worked on what. Just to reiterate the video, I implemented the following features:
+
+- Chunking
+- Efficient chunk rendering and face culling
+- Block texturing and animations
+- Day/night cycle and sky system (sun, moon, clouds, stars)
+- Flood fill lighting
+- GUI, inventory, and text rendering
+
+I'll now talk a bit about each feature, their technical details, any design choices, and some challenges I faced. Let's begin!
+
+> Note that I cannot publicly show any code from this project because it was made for a class. Please contact me if you would like to see the code.
+
+## Chunking
+
+Just like Minecraft (and most voxel-based games), we group the world terrain into 16x16x256 collections of blocks. That's 16 blocks in the x- and z-directions, and 256 blocks in height.
