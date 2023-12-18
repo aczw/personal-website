@@ -8,12 +8,12 @@ import { getCollection } from "astro:content";
 const moreThings = [
   {
     name: "Mini Maya",
-    url: "https://google.com",
+    url: null,
     desc: "Mesh editor that supports subdivision, face triangulation, skeleton skinning, and more.",
   },
   {
     name: "3D Rasterizer",
-    url: "https://google.com",
+    url: null,
     desc: "CPU-based OBJ renderer written in C++. Supports antialiasing and shading models.",
   },
   {
@@ -77,12 +77,16 @@ projectEntries.sort((a, b) => a.data.order - b.data.order);
               class="col-span-1 animate-fade"
               style={{ "--delay": `${(index + 1) * 75}ms` }}
             >
-              <Link
-                href={url}
-                newTab
-              >
-                {name}
-              </Link>
+              {url ? (
+                <Link
+                  href={url}
+                  newTab
+                >
+                  {name}
+                </Link>
+              ) : (
+                <p class="text-sweater-2">{name}</p>
+              )}
               <p>{desc}</p>
             </div>
           ))
