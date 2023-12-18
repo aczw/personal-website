@@ -39,10 +39,6 @@ projectEntries.sort((a, b) => a.data.order - b.data.order);
   <MainLayout className="space-y-10">
     <section class="animate-fade space-y-[1rem] [--delay:75ms]">
       <h2 class="text-xl text-sweater-2">Projects</h2>
-      <p>
-        Enter a project to learn more information and get a detailed walkthrough. I focus on both my
-        programming and UI/UX process.
-      </p>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {
           projectEntries.map(({ data, slug }, index) => {
