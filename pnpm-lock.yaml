@@ -5,6 +5,12 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@astro-community/astro-embed-utils':
+    specifier: ^0.1.0
+    version: 0.1.0
+  '@astro-community/astro-embed-vimeo':
+    specifier: ^0.3.2
+    version: 0.3.2(astro@4.0.6)
   '@astrojs/mdx':
     specifier: ^2.0.1
     version: 2.0.1(astro@4.0.6)
@@ -89,6 +95,18 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.3
       '@jridgewell/trace-mapping': 0.3.20
+    dev: false
+
+  /@astro-community/astro-embed-utils@0.1.0:
+    resolution: {integrity: sha512-whbRs9JpUApKwdzfkakBPVQT73LFxgj/RrfUu0IXTDf5SqxniZaXG4WcdG5MKj0nQyc82O21f1RnY3ddOo/yng==}
+    dev: false
+
+  /@astro-community/astro-embed-vimeo@0.3.2(astro@4.0.6):
+    resolution: {integrity: sha512-6Uitc8CBQaJqhI56RPNcIAegNeKGTPKqPQEjyCIAvKX+qhS+DdGh9DTvrBybrlkSSH74tprURwO3VHp8zjjiwA==}
+    peerDependencies:
+      astro: ^2.0.0 || ^3.0.0-beta || ^4.0.0-beta
+    dependencies:
+      astro: 4.0.6(typescript@5.3.3)
     dev: false
 
   /@astrojs/compiler@1.8.2:

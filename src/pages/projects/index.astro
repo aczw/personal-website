@@ -7,14 +7,24 @@ import { getCollection } from "astro:content";
 
 const moreThings = [
   {
-    name: "ttt",
-    url: "https://ttt.charl.sh",
-    desc: "It's tic-tac-toe... small little game that finally made React click for me.",
+    name: "Mini Maya",
+    url: "https://google.com",
+    desc: "Mesh editor that supports subdivision, face triangulation, skeleton skinning, and more.",
   },
   {
-    name: "dotfiles",
-    url: "https://github.com/aczw/dotfiles",
-    desc: "I once accidentally deleted my entire home directory. I now backup my configs.",
+    name: "3D Rasterizer",
+    url: "https://google.com",
+    desc: "CPU-based OBJ renderer written in C++. Supports antialiasing and shading models.",
+  },
+  {
+    name: "scallop.build",
+    url: "https://scallop.build",
+    desc: "Full stack Next.js web platform for Scallop, a neurosymbolic programming language.",
+  },
+  {
+    name: "ttt",
+    url: "https://ttt.charl.sh",
+    desc: "Tic-tac-toe. Small little game that finally made React click for me.",
   },
 ];
 
@@ -59,7 +69,7 @@ projectEntries.sort((a, b) => a.data.order - b.data.order);
     </section>
 
     <section class="animate-fade space-y-[1rem] [--delay:75ms]">
-      <h2 class="text-sweater-2">More things</h2>
+      <h2 class="text-sweater-2">More things I've made</h2>
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {
           moreThings.map(({ url, name, desc }, index) => (
