@@ -30,7 +30,8 @@ const selectedProjects = await getEntries([
           newTab
         >
           {"Digital Media Design"}
-        </Link>, an interdisciplinary program that combines computer science and fine arts.
+        </Link>, a program that combines a regular computer science curriculum with computer
+        graphics and fine arts.
       </p>
       <p>
         I want to make games and build websites. To that end, I help run Penn's game development
@@ -41,23 +42,28 @@ const selectedProjects = await getEntries([
         >
           {"UPGRADE"}
         </Link>
-         and also maintain
+         and maintain our
         <Link
           href="http://cg.cis.upenn.edu/siggraph/"
           newTab
         >
-          {"the website"}
-        </Link> for our SIGGRAPH chapter.
+          {"SIGGRAPH chapter"}
+        </Link> website. I'm also working with <Link
+          href="https://www.cis.upenn.edu/~mhnaik/"
+          newTab
+        >
+          {"Professor Mayur Naik"}
+        </Link> and helping to build web platforms for our research group.
       </p>
       <p>
-        In my free time I like running, designing album covers, obsessing over trains, practicing
-        bass guitar, and ricing my Arch setup.
+        In my free time I like running, playing the bass, designing album covers, obsessing over
+        metro systems, and ricing my Arch setup.
       </p>
       <p>My contact info is below. Thanks for stopping by. (〜￣▽￣)〜</p>
     </section>
 
     <section class="animate-fade space-y-[1rem] [--delay:150ms]">
-      <h2 class="mb-[1rem] text-lg text-sweater-2">Projects</h2>
+      <h2 class="mb-[1rem] text-lg text-sweater-2">Portfolio</h2>
       <ul class="space-y-[1rem]">
         {
           selectedProjects.map(({ data, slug }) => (
@@ -104,7 +110,7 @@ const selectedProjects = await getEntries([
             aria-hidden="true"
           >
           </div>
-          <span class="flex items-center">View all projects</span>
+          <span class="flex items-center">View everything</span>
         </div>
       </Link>
     </section>

@@ -5,7 +5,7 @@ import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 import { getCollection } from "astro:content";
 
-const moreThings = [
+const moreThings: { name: string; url: string | null; desc: string }[] = [
   {
     name: "Mini Maya",
     url: null,
@@ -34,11 +34,11 @@ projectEntries.sort((a, b) => a.data.order - b.data.order);
 
 <PrimitiveLayout
   title="Projects • Charles Wang"
-  description="Websites, games, graphics programming, design case studies, and other stuff I've made."
+  description="Home to my portfolio. Websites, games, graphics programming, design case studies, and other stuff I've done."
 >
   <MainLayout className="space-y-10">
     <section class="animate-fade space-y-[1rem] [--delay:75ms]">
-      <h2 class="text-xl text-sweater-2">Projects</h2>
+      <h2 class="text-xl text-sweater-2">Portfolio</h2>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {
           projectEntries.map(({ data, slug }, index) => {
@@ -70,7 +70,7 @@ projectEntries.sort((a, b) => a.data.order - b.data.order);
     </section>
 
     <section class="animate-fade space-y-[1rem] [--delay:75ms]">
-      <h2 class="text-xl text-sweater-2">More things to check out</h2>
+      <h2 class="text-xl text-sweater-2">More projects</h2>
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {
           moreThings.map(({ url, name, desc }, index) => (
