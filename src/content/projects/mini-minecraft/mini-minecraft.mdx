@@ -23,12 +23,18 @@ slug: mini-minecraft
 ---
 
 import { Vimeo } from "@astro-community/astro-embed-vimeo";
+import Link from "@/components/link.astro";
+import Img from "@/components/img.astro";
 
-First, let's take a look at this snazzy showcase reel I made (it's less than 3 minutes).
+For the final project of our computer graphics class, I worked in a team of three to write a 3D voxel game engine (mostly) from scratch. While we all did parts of the programming, I focused more on the technical aspects of the engine. I also wanted to try my hand at creating a GUI system, which works pretty well for the few UI elements I added!
+
+Throughout the development process, we were clearly influenced by the way Minecraft approached its game design. However, as someone who grew up playing it, I took this opportunity to change some things I've always wished looked a bit different.
+
+Before anything else, let's take a look at this snazzy showcase reel I made (\<3 minutes).
 
 <Vimeo id="893391293" />
 
-It does a nice job of showcasing all of our engine's features, and tells you who worked on what. Just to reiterate the video, I implemented the following features:
+It does a nice job of showcasing all of our engine's features and tells you who worked on what. To reiterate the video, I implemented the following features:
 
 - Chunking
 - Efficient chunk rendering and face culling
@@ -38,10 +44,136 @@ It does a nice job of showcasing all of our engine's features, and tells you who
 - Flood fill lighting
 - GUI, inventory, and text rendering
 
-I'll now talk a bit about each feature, their technical details, any design choices, and some challenges I faced. Let's begin!
+I want to talk a bit about each, some technical details, design choices I made, and issues that I faced while building. Let's begin!
 
-> Note that I cannot publicly show any code from this project because it was made for a class. Please contact me if you would like to see the code.
+> I can't publicly share any code from this project, so any code I write here are just examples. Please contact me if you would like to see the code.
 
 ## Chunking
 
-Just like Minecraft (and most voxel-based games), we group the world terrain into 16x16x256 collections of blocks. That's 16 blocks in the x- and z-directions, and 256 blocks in height.
+Just like Minecraft, we group the world terrain into 16x16x256 collections of blocks. That's 16 blocks in the x- and z-directions, and 256 blocks in the y-direction (height).
+
+Actually, this chunk data structure is simply a 1D array that stores the block type at the given index. We use helper functions that convert from a (x, y, z) coordinate to this index, and back.
+
+```cpp
+enum Block {
+    EMPTY, STONE, DIRT, OAK_LOG /* ...and many more */
+};
+
+// we'll be adding more stuff to this class for later features.
+class Chunk
+{
+private:
+    std::array<Block, 16 * 16 * 256> blocks;
+};
+```
+
+A `Block` is just an enum that declares all the possible block types in our game. This includes `STONE`, `DIRT`, and `OAK_LOG`, but also the `EMPTY` block type, which simply represents air, or the absence of a block. This makes it easy to implement "breaking" a block; we're simply placing an `EMPTY` block!
+
+Our chunks are stored in the `Terrain` class. For easy access, we map a chunk's lower-left xz-coordinate in world space to a pointer to the chunk. It made sense for our terrain to "own" these chunks, so we're using `std::unique_ptr`s.
+
+```cpp
+class Terrain
+{
+private:
+    std::unordered_map<glm::ivec2, std::unique_ptr<Chunk>> chunks;
+
+public:
+    void render_terrain();
+};
+```
+
+> The `glm` namespace is the <Link href="https://github.com/g-truc/glm" newTab>GLM library</Link>, which implements vector and matrix types in an OpenGL-friendly manner.
+
+What does `render_terrain()` do? This brings us to...
+
+## Efficient rendering, face culling
+
+...rendering the actual blocks. One of the reasons we group blocks into chunks is because we render the terrain one chunk at a time. This has a number of benefits. For instance, my teammate implemented multithreading based on my chunks, which are easier to reason about than individual blocks.
+
+A block is made up of six faces. Each face is made up of two triangles. If we were to render all six faces for every single non-`EMPTY` block in a chunk, our GPU would catch on fire and our computer would be very sad. There's no point in rendering faces that are covered by another non-`EMPTY` block, because the player camera will never see it anyway.
+
+<Img src={import("./face-culling.png")} alt="Two blocks are right next to each other. The face in between does not need to be rendered." />
+
+Instead, when it comes time to render a given chunk, we iterate over every single block in the chunk. For each block, we check its six neighbors, and only render a face if that neighbor's block type is `EMPTY`. 
+
+> I did not implement this part, but we only ever render the portion of the terrain around the player's current world position. More details when I talk about distance fog.
+
+For each `Chunk`, we store a pointer to its neighbor chunks for a given direction. This way we can check block neighbors that reside in a neighboring chunk.
+
+```cpp
+enum Direction {
+    X_POS, X_NEG, Z_POS, Z_NEG, Y_POS, Y_NEG
+};
+
+class Chunk
+{
+private:
+    std::array<Block, 16 * 16 * 256> blocks;
+
+    // this really only makes sense for the X_POS, X_NEG, Z_POS, and Z_NEG directions
+    std::unordered_map<Direction, Chunk*> neighbors;
+};
+```
+
+If you were to go below ground in debug mode, everything now looks "hollowed out" from the inside. What you're seeing below are what our caves look like from the outside!
+
+<Img src={import("./hollowed-caves.png")} alt="Since we're not rendering any blocks inside the terrain, we can see snake-like caves underground." />
+
+**I cannot emphasize how much this improved performance.** On my laptop, my framerate basically tripled. Our game would feel horrible to play without these optimizations.
+
+## Texturing and block animations
+
+I render our terrain using <Link href="https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-9-vbo-indexing/" newTab>indexed rendering</Link> and store all vertex attributes in a single, <Link href="https://www.khronos.org/opengl/wiki/Vertex_Specification#Interleaved_attributes" newTab>interleaved</Link> VBO. This includes UV texture information and a single "animated" flag that I either set to `0.f` or `1.f`.
+
+```cpp
+struct VertexAttrs
+{
+    glm::vec4 position;
+    glm::vec4 normal;
+    glm::vec2 uv;
+    GLfloat animated;
+    /* ...more attributes here */
+}
+
+int stride = 4 + 4 + 2 + 1 /* + whatever +  additional + attrs */;
+```
+
+When passing vertex data to the GPU via `glVertexAttribPointer`, we utilize this `stride` value to tell the GPU when the data for the next vertex starts. We also specify the length or the "size" of each attribute. For example, `position` is 4 floats long, while `uv` is only 2 floats.
+
+<Img src={import("./interleaved-vbo.png")} alt="In a stream of floats, we specify the first four to be for position, the next four to be for normals, and so on." />
+
+All the block textures in our game live in a 256x256 texture sprite. Since each block face texture is 16x16 pixels, we can refer to specific textures using a coordinate system.
+
+<Img src={import("./block-uv.png")} alt="A dirt face texture at coordinate (2, 1) corresponds to (2/16, 1/16) in UV coordinates." />
+
+Furthermore, we map a block type to the coordinate of the texture for each of its six faces.
+
+```cpp
+std::unordered_map<Block, std::unordered_map<Direction, glm::ivec2>> block_uv_map;
+```
+
+UVs span a relative range of 0.0-1.0 in both dimensions, and block textures take up 1/16th of the total sprite, so we simply multiply the coordinate by 1/16 to get the correct UV. Note that this only describes the lower-left corner; we simply add 1/16 to either U, V, or both to get the other three corners.
+
+And animation? In this case, this refers to water and lava blocks seemingly "flowing." This effect was achieved by slowly translating over the texture sprite, moving the UV coordinate over time.
+
+## Distance fog
+
+If we fly really high up into the air, you'll see this circular fog that surrounds the player and slowly fades blocks into the distance.
+
+<Img src={import("./distance-fog.png")} alt="Blocks slowly fade into the distance in a circular radius around the player." />
+
+In the chunk fragment shader, I pass in the player's world position as a `uniform` and the fragment's world position as an `in` from the vertex shader. I find the distance between these two and divide by the max distance to get a value between 0.0-1.0.
+
+This is used to lerp between the original block color and the sampled sky color. I use a nice <Link href="https://easings.net/#easeInCubic" newTab>cubic easing curve</Link> to make the fog get denser the further the block is from the player.
+
+So, what is this max fog distance? At all times, we only render a specific number of chunks around the player. A 12x12 square of chunks, to be exact. The player is always at the center, so the max distance (which is the circle radius) is at most 96 blocks.
+
+<Img src={import("./distance-fog-diagram.png")} alt="Diagram depicting the fog starting roughly around 96 blocks around the player in all directions." />
+
+Apart from aesthetic purposes, the distance fog takes on a second role: to stop the player from seeing anything past the section of terrain we're drawing around them. But, distance fog is worth it to implement for aesthetics alone, in my opinion.
+
+<Img src={import("./distance-fog-pretty.png")} alt="A beautiful sunrise over the desert." />
+
+## Day/night cycle, celestial objects
+
+Apart from GUI, I am probably the most proud of this. Our engine features a day and night system that smoothly transitions in between sunrises and sunsets. 
