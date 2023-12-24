@@ -5,16 +5,26 @@ import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 import { getCollection } from "astro:content";
 
-const moreThings = [
+const moreThings: { name: string; url: string | null; desc: string }[] = [
+  {
+    name: "Mini Maya",
+    url: null,
+    desc: "Mesh editor that supports subdivision, face triangulation, skeleton skinning, and more.",
+  },
+  {
+    name: "3D Rasterizer",
+    url: null,
+    desc: "CPU-based OBJ renderer written in C++. Supports antialiasing and shading models.",
+  },
+  {
+    name: "scallop.build",
+    url: "https://scallop.build",
+    desc: "Full stack Next.js web platform for Scallop, a neurosymbolic programming language.",
+  },
   {
     name: "ttt",
     url: "https://ttt.charl.sh",
-    desc: "It's tic-tac-toe... small little game that finally made React click for me.",
-  },
-  {
-    name: "dotfiles",
-    url: "https://github.com/aczw/dotfiles",
-    desc: "I once accidentally deleted my entire home directory. I now backup my configs.",
+    desc: "Tic-tac-toe. Small little game that finally made React click for me.",
   },
 ];
 
@@ -24,42 +34,43 @@ projectEntries.sort((a, b) => a.data.order - b.data.order);
 
 <PrimitiveLayout
   title="Projects • Charles Wang"
-  description="Websites, games, graphics programming, design case studies, and other stuff I've made."
+  description="Home to my portfolio. Websites, games, graphics programming, design case studies, and other stuff I've done."
 >
   <MainLayout className="space-y-10">
-    <section class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      {
-        projectEntries.map(({ data, slug }, index) => {
-          return (
-            <a
-              href={"/projects/" + slug}
-              class="group col-span-1 animate-fade space-y-2.5 rounded-xl p-3 transition-colors hover:bg-sweater-9"
-              style={{ "--delay": `${(index + 1) * 75}ms` }}
-            >
-              <Img
-                src={data.cover.img}
-                alt={data.cover.alt}
-                className="max-h-60 object-cover object-top"
-              />
-              <p class="text-sweater-3 underline decoration-sweater-3/50 decoration-1 underline-offset-2 transition group-hover:text-sweater-1 group-hover:decoration-sweater-1">
-                {data.title}
-              </p>
-              <ul class="flex flex-wrap gap-2">
-                {data.tags.map((tag) => (
-                  <li class="h-min rounded-full bg-sweater-7 px-2 py-0.5 text-sm text-sweater-3">
-                    {tag}
-                  </li>
-                ))}
-              </ul>
-              <p>{data.blurb}</p>
-            </a>
-          );
-        })
-      }
+    <section class="animate-fade space-y-[1rem] [--delay:75ms]">
+      <h2 class="text-xl text-sweater-2">Portfolio</h2>
+      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        {
+          projectEntries.map(({ data, slug }, index) => {
+            return (
+              <a
+                href={"/projects/" + slug}
+                class="group col-span-1 animate-fade space-y-2.5 rounded-xl bg-sweater-9 p-3 transition-colors hover:bg-sweater-8"
+                style={{ "--delay": `${(index + 1) * 75}ms` }}
+              >
+                <Img
+                  src={data.cover.img}
+                  alt={data.cover.alt}
+                  className="max-h-60 object-cover object-top"
+                />
+                <h3 class="text-sweater-2">{data.title}</h3>
+                <ul class="flex flex-wrap gap-2">
+                  {data.tags.map((tag) => (
+                    <li class="h-min rounded-full bg-sweater-8 px-2 py-0.5 text-sm text-sweater-3 transition-colors group-hover:bg-sweater-7 group-hover:text-sweater-2">
+                      {tag}
+                    </li>
+                  ))}
+                </ul>
+                <p>{data.blurb}</p>
+              </a>
+            );
+          })
+        }
+      </div>
     </section>
 
     <section class="animate-fade space-y-[1rem] [--delay:75ms]">
-      <h2 class="text-sweater-2">More things</h2>
+      <h2 class="text-xl text-sweater-2">More projects</h2>
       <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
         {
           moreThings.map(({ url, name, desc }, index) => (
@@ -67,12 +78,18 @@ projectEntries.sort((a, b) => a.data.order - b.data.order);
               class="col-span-1 animate-fade"
               style={{ "--delay": `${(index + 1) * 75}ms` }}
             >
-              <Link
-                href={url}
-                newTab
-              >
-                {name}
-              </Link>
+              <h3 class="text-sweater-2">
+                {url ? (
+                  <Link
+                    href={url}
+                    newTab
+                  >
+                    {name}
+                  </Link>
+                ) : (
+                  <>{name}</>
+                )}
+              </h3>
               <p>{desc}</p>
             </div>
           ))

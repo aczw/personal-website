@@ -3,8 +3,10 @@ title: RCW
 link:
   url: https://aczw.itch.io/rcw
   text: Play on itch.io
-blurb: Endless Unity minigame about matching colors and text. Playable from your browser!
-date: 2023-06-01
+blurb: Endless Unity minigame about matching colors and text. Features a super clean UI and simple controls. Playable from your browser!
+duration:
+  date: 2023-06-15
+  length: 1 month
 cover:
   img: ./rcw.png
   alt: In the middle of a game round, with the timer running down and the player already having lost one life.
@@ -12,28 +14,30 @@ tags:
   - Unity
   - C#
   - Figma
-order: 4
+role:
+  - programming
+  - assets
+  - UI/UX
+order: 2
 published: true
 slug: rcw
 ---
 
 import Link from "@/components/link.astro";
-
 import Gif from "@/components/gif.astro";
-
 import Img from "@/components/img.astro";
-
-import buttonsFigma from "./buttons-figma.mp4";
-
-import buttonsAni from "./buttons-ani.mp4";
 
 Random Color Words (RCW) is a simple endless minigame about selecting the correct pair of colors and words. They're also randomly generated. Crazy name, I know.
 
-This was my first time using Unity and my first full game. Going into this project, I wasn't looking to create anything new or ground-breaking. My main goal was to familiarize myself with all aspects of the development process, and have the end result be something playable, polished, and cohesive.
+Prior to this, I had very limited experience with Unity and game development in general. I used this experience as a learning opportunity and tried to involve myself with every part of the development cycle. Coming from a design background, **I focused particularly on clean UI** and making sure that everything felt cohesive and polished. While I wasn't looking to make anything ground-breaking, I wanted the end result to be fully fleshed out and fun.
+
+I think I achieved that goal. I'm very happy to call this my first full game. Details below about how it all came together.
 
 ## Gameplay
 
-The gameplay loop is simple. The core idea is taken from <Link href="https://store.steampowered.com/app/643270/OLDTV/" newTab>OLDTV</Link> (which you should go play right now, it's free). Both of our games are heavily inspired by the <Link href="https://en.wikipedia.org/wiki/Stroop_effect" newTab>Stroop test</Link>, a psychological phenomenon where reaction time becomes delayed when the stimuli is incongruent.
+The gameplay loop is simple... and not original. The core idea is taken from <Link href="https://store.steampowered.com/app/643270/OLDTV/" newTab>OLDTV</Link> (which you should go play right now, it's free). Both of our games are heavily inspired by the <Link href="https://en.wikipedia.org/wiki/Stroop_effect" newTab>Stroop test</Link>, a psychological phenomenon where reaction time becomes delayed when the stimuli is incongruent.
+
+> Just to reiterate: full credits to OLDTV for the mechanics!
 
 In normal human words, stuff that catches you off guard slows you down. Take these two words, for example.
 
@@ -51,7 +55,7 @@ RCW is an endless, fast-paced minigame about getting the highest score. I was th
 
 I also liked the button hover effect in <Link href="https://battlecats.club/en/series/battlecats/" newTab>The Battle Cats</Link>, which flashed bright yellow and magenta. Here, I tried to recreate it in Figma.
 
-    <Gif><source src={ buttonsFigma } type="video/mp4"></source></Gif>
+    <Gif><source src="/projects/rcw/flashing-btns-figma.mp4" type="video/mp4"></source></Gif>
 
 I use both the button design and hover effect in RCW. The nice thing about this art style was that it could be consistently applied everywhere, not just buttons.
 
@@ -98,7 +102,7 @@ cb.uvRect = new Rect(
 
 The other thing I'm really happy about are the button animations. When the instructions or credits button are activated, the same button is used to go back to the start screen.
 
-    <Gif><source src={ buttonsAni } type="video/mp4"></source></Gif>
+    <Gif><source src="/projects/rcw/main-menu-ani-btns.mp4" type="video/mp4"></source></Gif>
 
 The "Go back" text slides out, and the outside border becomes a panel for the text to exist in. I spent ~~too much~~ some time getting it to feel just right. I would like to thank this <Link href="https://easings.net/" newTab>easings cheat sheet</Link> for providing copy-and-paste animation curves.
 
@@ -112,7 +116,5 @@ How would I update this game in the future? The current gameplay loop is a blata
 - **Round streak**. For every additional round you win in a row, a score multiplier is added.
 - **Expanding Reversed mode.** To make the player's life even harder, more distractions could be added (flipping the game upside down, smaller words, fake clones, etc.)
 - **Levels.** When your score reaches a certain threshold, new challenges appear. Old stuff is swapped out. Maybe add a way to continue from a certain level after losing.
-
-> Re: blatant rip. I feel that this is fine in practice, because I approached RCW as a learning experience, not a game I wanted to sell or anything. Full credits to OLDTV!
 
 Code and assets are <Link href="https://github.com/aczw/RCW" newTab>open sourced on GitHub</Link>. Thanks for reading.

@@ -2,7 +2,7 @@
   "name": "personal-website",
   "author": "Charles Wang <zwcharl@gmail.com> (https://charl.sh)",
   "type": "module",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -10,12 +10,14 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@astrojs/mdx": "^2.0.0",
+    "@astro-community/astro-embed-utils": "^0.1.0",
+    "@astro-community/astro-embed-vimeo": "^0.3.2",
+    "@astrojs/mdx": "^2.0.1",
     "@astrojs/sitemap": "^3.0.3",
     "@astrojs/tailwind": "^5.0.3",
-    "@astrojs/vercel": "^6.0.0",
-    "@fontsource/atkinson-hyperlegible": "^5.0.17",
-    "astro": "^4.0.1",
+    "@astrojs/vercel": "^6.1.0",
+    "@fontsource/atkinson-hyperlegible": "^5.0.18",
+    "astro": "^4.0.6",
     "clsx": "^2.0.0",
     "lucide-astro": "^0.279.0",
     "sharp": "^0.32.6",
@@ -23,15 +25,15 @@
     "tailwindcss": "^3.3.6"
   },
   "devDependencies": {
-    "@types/eslint": "^8.44.8",
-    "@typescript-eslint/eslint-plugin": "^6.13.2",
-    "@typescript-eslint/parser": "^6.13.2",
-    "eslint": "^8.55.0",
+    "@types/eslint": "^8.44.9",
+    "@typescript-eslint/eslint-plugin": "^6.14.0",
+    "@typescript-eslint/parser": "^6.14.0",
+    "eslint": "^8.56.0",
     "eslint-plugin-astro": "^0.29.1",
     "eslint-plugin-mdx": "^2.2.0",
     "eslint-plugin-react": "^7.33.2",
     "prettier-plugin-astro": "^0.12.2",
-    "prettier-plugin-tailwindcss": "^0.5.8",
-    "typescript": "^5.3.2"
+    "prettier-plugin-tailwindcss": "^0.5.9",
+    "typescript": "^5.3.3"
   }
 }

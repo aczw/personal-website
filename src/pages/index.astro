@@ -10,8 +10,9 @@ import { getEntries } from "astro:content";
 import { ArrowRightCircle } from "lucide-astro";
 
 const selectedProjects = await getEntries([
+  { collection: "projects", slug: "mini-minecraft" },
   { collection: "projects", slug: "rcw" },
-  { collection: "projects", slug: "www" },
+  { collection: "projects", slug: "sddm-theme-corners" },
 ]);
 ---
 
@@ -21,7 +22,7 @@ const selectedProjects = await getEntries([
 >
   <MainLayout className="space-y-10">
     <section class="animate-fade space-y-[1rem] [--delay:75ms]">
-      <h2 class="text-sweater-2">About</h2>
+      <h2 class="text-lg text-sweater-2">About me</h2>
       <p>
         Hi, my name is Charles. I'm a student at the University of Pennsylvania majoring in
         <Link
@@ -29,7 +30,8 @@ const selectedProjects = await getEntries([
           newTab
         >
           {"Digital Media Design"}
-        </Link>, an interdisciplinary program that combines computer science and fine arts.
+        </Link>, a program that combines a regular computer science curriculum with computer
+        graphics and fine arts.
       </p>
       <p>
         I want to make games and build websites. To that end, I help run Penn's game development
@@ -40,46 +42,57 @@ const selectedProjects = await getEntries([
         >
           {"UPGRADE"}
         </Link>
-         and also maintain
+         and maintain our
         <Link
           href="http://cg.cis.upenn.edu/siggraph/"
           newTab
         >
-          {"the website"}
-        </Link> for our SIGGRAPH chapter.
+          {"SIGGRAPH chapter"}
+        </Link> website. I'm also working with <Link
+          href="https://www.cis.upenn.edu/~mhnaik/"
+          newTab
+        >
+          {"Professor Mayur Naik"}
+        </Link> and helping to build web platforms for our research group.
       </p>
       <p>
-        In my free time I like running, designing album covers, obsessing over rail systems,
-        practicing bass guitar, and ricing my Arch setup.
+        In my free time I like running, playing the bass, designing album covers, obsessing over
+        metro systems, and ricing my Arch setup.
       </p>
-      <p>Thanks for stopping by. (〜￣▽￣)〜</p>
+      <p>My contact info is below. Thanks for stopping by. (〜￣▽￣)〜</p>
     </section>
 
     <section class="animate-fade space-y-[1rem] [--delay:150ms]">
-      <h2 class="mb-[1rem] text-sweater-2">Projects</h2>
+      <h2 class="mb-[1rem] text-lg text-sweater-2">Portfolio</h2>
       <ul class="space-y-[1rem]">
         {
           selectedProjects.map(({ data, slug }) => (
-            <li class="group rounded-md bg-sweater-9 transition-colors hover:bg-sweater-8">
+            <li class="group">
               <a
                 href={"/projects/" + slug}
-                class="flex flex-col items-start gap-4 p-3.5 sm:flex-row sm:items-center sm:gap-6"
+                class="relative flex items-center justify-between gap-6 overflow-hidden rounded-md p-3.5"
               >
                 <Img
                   src={data.cover.img}
                   alt={data.cover.alt}
-                  className="max-h-48 sm:h-16 sm:w-28 object-cover object-top shrink-0 rounded-sm"
+                  className="absolute inset-0 m-auto opacity-40 z-0 scale-105 blur group-hover:opacity-20 group-hover:blur-none transition"
                 />
-                <div class="flex grow items-center justify-between gap-4 sm:gap-6">
-                  <div>
-                    <h3 class="text-sweater-2">{data.title}</h3>
-                    <p>{data.blurb}</p>
-                  </div>
-                  <ArrowRightCircle
-                    size={20}
-                    class="shrink-0 stroke-sweater-7 transition-colors group-hover:stroke-sweater-5"
-                  />
+                <div
+                  aria-hidden="true"
+                  class="absolute inset-0 z-[1] rounded-md bg-gradient-to-l from-sweater-9 from-20%"
+                />
+                <div
+                  aria-hidden="true"
+                  class="absolute inset-0 z-[2] rounded-md bg-gradient-to-l from-sweater-8 opacity-0 transition-opacity group-hover:opacity-100"
+                />
+                <div class="z-[3]">
+                  <h3 class="text-sweater-2">{data.title}</h3>
+                  <p>{data.blurb}</p>
                 </div>
+                <ArrowRightCircle
+                  size={20}
+                  class="z-[3] shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3"
+                />
               </a>
             </li>
           ))
@@ -97,13 +110,13 @@ const selectedProjects = await getEntries([
             aria-hidden="true"
           >
           </div>
-          <span class="flex items-center">View all projects</span>
+          <span class="flex items-center">View everything</span>
         </div>
       </Link>
     </section>
 
     <section class="animate-fade space-y-[1rem] [--delay:225ms]">
-      <h2 class="mb-[1rem] text-sweater-2">Status</h2>
+      <h2 class="mb-[1rem] text-lg text-sweater-2">Music status</h2>
       <LastFm />
     </section>
   </MainLayout>

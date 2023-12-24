@@ -2,9 +2,11 @@
 title: charl.sh
 link:
   url: https://github.com/aczw/personal-website
-  text: Source on GitHub
+  text: Source code
 blurb: How meta! Personal website built with Astro. You're currently looking at it :)
-date: 2023-11-15
+duration:
+  date: 2023-12-18
+  length: 7 months
 cover:
   img: ./charl-sh.png
   alt: This website's homepage.
@@ -13,26 +15,29 @@ tags:
   - TypeScript
   - Tailwind
   - Figma
-order: 6
+role:
+  - programming
+  - design
+  - UI/UX
+order: 3
 published: true
 slug: www
 ---
 
 import Img from "@/components/img.astro";
-
 import Link from "@/components/link.astro";
 
-I've always wanted a personal site. It was cool to me to have a part of the Internet™ that I could call my own. As a college student, I could also set it up to showcase and talk about projects I've done (like this one!) It would be nice to be able to directly link to stuff I want to show off.
+Welcome! ♪(´▽｀)
 
-When I started learning web dev, I knew exactly I would do first: create my own site. Obviously, it all worked out in the end. Welcome! ♪(´▽｀)
+I've always wanted a personal site. I wanted a part of the Internet™ that I could call my own and decorate however I wanted. As a college student, I could also set it up to showcase and talk about projects I've done (like this one). When I started learning web dev, I knew exactly what I would build first.
 
-This write-up explains a bit of my thought process behind the design and layout of this site, as well as how previous iterations of the site have helped shape it to what it is now today.
+This website has been a 7 month long ordeal that's seen a domain change, an entire college semester, and countless iterations. I mean, countless nitpicking of details that only I would ever notice. But it was important to me, and now I've landed on something that I'll (probably) be satisfied with for a while. This write-up explores some previous versions of the site, how the design has developed over time, and why it looks the way it does today.
 
 ## aczw.dev
 
 I can split the development of my site into three versions: `v1`, `v2`, and the current iteration, `v3`. Version 1 was hosted on an entirely different URL, and looked like this:
 
-    <Img src={ import("./aczw-dev.png") } alt="Screenshot of the first version of my website. Colors are a bit brighter and everything is much, much bigger." />
+<Img src={import("./aczw-dev.png")} alt="Screenshot of the first version of my website. Colors are a bit brighter and everything is much, much bigger." />
 
 > It's still alive at <Link href="https://old.charl.sh" newTab>old.charl.sh</Link>, by the way. Why am I still keeping it alive? I dunno, I'm still attached to it. It has sentimental value. It's like, `v1`, you know.
 
@@ -40,7 +45,7 @@ It has a lot of design elements that persist to this day: the purple color schem
 
 There were two main reasons I wanted to start over. The first is that I simply didn't like the design. I had sketched out the basic layout and colors beforehand, but the final proportions were way off. Why is the text so gigantic?? The color palette also didn't translate well.
 
-    <Img src={ import("./v1-procreate.png") } alt="Sketch of a dialog box with some text and a button in two color schemes. Drawn in Procreate." />
+<Img src={import("./v1-procreate.png")} alt="Sketch of a dialog box with some text and a button in two color schemes. Drawn in Procreate." />
 
 > When I call my sketches basic, I mean it.
 
@@ -52,7 +57,7 @@ If I had only wanted Next.js, I should've used `create-next-app`. But even that 
 
 ## Why Astro
 
-    <Link href="https://astro.build/" newTab>Astro</Link> advertises itself as a framework that focuses on content-first websites. That immediately caught my eye. And, the more I read, the more I was convinced. It checked all the boxes in my head.
+<Link href="https://astro.build/" newTab>Astro</Link> advertises itself as a framework that focuses on content-first websites. That immediately caught my eye. And, the more I read, the more I was convinced. It checked all the boxes in my head.
 
 - Reusable components with JSX-like syntax. It feels like vanilla HTML more than anything.
 - First-class support for generating content with Markdown and MDX
@@ -65,21 +70,21 @@ I wanted nothing more, nothing less. While I could have stuck with Next.js, I li
 
 Okay cool, I've decided on what to build `v2` with. Now I need to tackle the second issue: actually designing the new layout.
 
-    <Img src={ import("./v2-figma.png") } alt="A Figma file containing many different iterations of what my site could look like." />
+<Img src={ import("./v2-figma.png") } alt="A Figma file containing many different iterations of what my site could look like." />
 
 I spent a good while experimenting with different homepage layouts, playing with the color and text. Going in, I was heavily inspired by Google's <Link href="https://m3.material.io/" newTab>Material You</Link> design language, with its odd shapes, large padding, and rounded corners.
 
-    <Img src={ import("./color-palette.png") } alt="The new purple color palette, now in 10 different shades. There also exists a green palette." />
+<Img src={ import("./color-palette.png") } alt="The new purple color palette, now in 10 different shades. There also exists a green palette." />
 
 The original `v1` color palette used six shades. As I was building `v2`, I felt severely limited by the few choices I had. Therefore `v2` uses a range of 10 shades. I also chose a purple that felt less... pink.
 
 With the Astro docs open in another window, I started building. The final result:
 
-    <Img src={ import("./v2.png") } alt="The new homescreen, with information contained in rounded blocks." className="border-2 border-sweater-9" />
+<Img src={ import("./v2.png") } alt="The new homescreen, with information contained in rounded blocks." className="border-2 border-sweater-9" />
 
-    <Img src={ import("./v2-projects.png") } alt="The projects page, with images arranged in a grid and tags displayed underneath visually." className="border-2 border-sweater-9" />
+<Img src={ import("./v2-projects.png") } alt="The projects page, with images arranged in a grid and tags displayed underneath visually." className="border-2 border-sweater-9" />
 
-    <Img src={ import("./v2-portfolio.png") } alt="The portfolio page, with pieces displayed in columns and separated into different sections." className="border-2 border-sweater-9" />
+<Img src={ import("./v2-portfolio.png") } alt="The portfolio page, with pieces displayed in columns and separated into different sections." className="border-2 border-sweater-9" />
 
 These are `/`, `/projects`, and `/portfolio` respectively.
 
@@ -91,7 +96,7 @@ I was really satisfied with how it turned out. I absolutely love the new shades 
 
 I fetched my music data in an *extremely* insecure method. To make requests to the Last.fm API, I brought in React and <Link href="https://swr.vercel.app/" newTab>SWR</Link> for the job. For this React component to access my API key from the client, I chose to make it publicly available by prefixing it with `PUBLIC_`. Theoretically, anyone visiting my site could do a `Ctrl+F` search to find it. Actually, I'll show you.
 
-    <Img src={ import("./v2-api.png") } alt="The inspector is open. I searched for 'api' in the JavaScript code and immediately found my secret API key." />
+<Img src={ import("./v2-api.png") } alt="The inspector is open. I searched for 'api' in the JavaScript code and immediately found my secret API key." />
 
 This is more of a principle thing than anything; I wasn't seriously expecting anyone to steal my API key and use it. Still, it wasn't exactly *good*.
 
