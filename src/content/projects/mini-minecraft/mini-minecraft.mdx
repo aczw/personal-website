@@ -18,7 +18,7 @@ role:
   - UI
 teamSize: 3
 order: 1
-published: false
+published: true
 slug: mini-minecraft
 ---
 
@@ -26,15 +26,15 @@ import { Vimeo } from "@astro-community/astro-embed-vimeo";
 import Link from "@/components/link.astro";
 import Img from "@/components/img.astro";
 
-For the final project of our computer graphics class, I worked in a team of three to write a 3D voxel game engine (mostly) from scratch. While we all did parts of the programming, I focused more on the technical aspects of the engine. I also wanted to try my hand at creating a GUI system, which works pretty well for the few UI elements I added!
+For the final project of our computer graphics class, I worked in a team of three to write a 3D voxel game engine (mostly) from scratch. While we all did parts of the programming, I focused mainly on rendering, GPU programming, and GUI. I'm especially proud of the UI system, which came together very last minute but turned out really well.
 
 Throughout the development process, we were clearly influenced by the way Minecraft approached its game design. However, as someone who grew up playing it, I took this opportunity to change some things I've always wished looked a bit different.
 
-Before anything else, let's take a look at this snazzy showcase reel I made (\<3 minutes).
+Let's first take a look at this snazzy showcase reel I made (\<3 minutes).
 
 <Vimeo id="893391293" />
 
-It does a nice job of showcasing all of our engine's features and tells you who worked on what. To reiterate the video, I implemented the following features:
+It does a nice job of showcasing all of our engine's features and credits who worked on what. To put the video in text form, I implemented the following features:
 
 - Chunking
 - Efficient chunk rendering and face culling
@@ -44,101 +44,104 @@ It does a nice job of showcasing all of our engine's features and tells you who 
 - Flood fill lighting
 - GUI, inventory, and text rendering
 
-I want to talk a bit about each, some technical details, design choices I made, and issues that I faced while building. Let's begin!
+I want to talk a bit about each, how I approached them, some technical details, and issues that I faced. Let's begin!
 
-> I can't publicly share any code from this project, so any code I write here are just examples. Please contact me if you would like to see the code.
+> I can't publicly share any code from this project, so anything I write here are just examples. Please contact me if you would like to see the code.
 
 ## Chunking
 
 Just like Minecraft, we group the world terrain into 16x16x256 collections of blocks. That's 16 blocks in the x- and z-directions, and 256 blocks in the y-direction (height).
 
-Actually, this chunk data structure is simply a 1D array that stores the block type at the given index. We use helper functions that convert from a (x, y, z) coordinate to this index, and back.
+Actually, this chunk data structure is simply a 1D array that stores the block type at the given index. We use helper functions that convert from a (x, y, z) coordinate to this index, and back. 
 
 ```cpp
 enum Block {
-    EMPTY, STONE, DIRT, OAK_LOG /* ...and many more */
-};
+  EMPTY, STONE, DIRT, OAK_LOG /* ...and many more */
 
 // we'll be adding more stuff to this class for later features.
 class Chunk
 {
 private:
-    std::array<Block, 16 * 16 * 256> blocks;
+  std::array<Block, 16 * 16 * 256> blocks;
 };
 ```
 
+> Why not a multidimensional array? While convenient, the arrays would take up more memory. When we have hundreds of these chunks, this becomes important.
+
 A `Block` is just an enum that declares all the possible block types in our game. This includes `STONE`, `DIRT`, and `OAK_LOG`, but also the `EMPTY` block type, which simply represents air, or the absence of a block. This makes it easy to implement "breaking" a block; we're simply placing an `EMPTY` block!
 
-Our chunks are stored in the `Terrain` class. For easy access, we map a chunk's lower-left xz-coordinate in world space to a pointer to the chunk. It made sense for our terrain to "own" these chunks, so we're using `std::unique_ptr`s.
+Our chunks are stored in the `Terrain` class. They also live on the heap. For easy access, we map a chunk's lower-left xz-coordinate (in world space) to a pointer to the chunk. Conceptually, our terrain should "own" these chunks, so we're using `std::unique_ptr`s.
 
 ```cpp
 class Terrain
 {
 private:
-    std::unordered_map<glm::ivec2, std::unique_ptr<Chunk>> chunks;
+  std::unordered_map<glm::ivec2, std::unique_ptr<Chunk>> chunks;
 
 public:
-    void render_terrain();
+  void render_terrain();
 };
 ```
 
-> The `glm` namespace is the <Link href="https://github.com/g-truc/glm" newTab>GLM library</Link>, which implements vector and matrix types in an OpenGL-friendly manner.
+> The `glm` namespace is from the <Link href="https://github.com/g-truc/glm" newTab>GLM library</Link>, which implements vector and matrix types in an OpenGL-friendly manner.
 
 What does `render_terrain()` do? This brings us to...
 
 ## Efficient rendering, face culling
 
-...rendering the actual blocks. One of the reasons we group blocks into chunks is because we render the terrain one chunk at a time. This has a number of benefits. For instance, my teammate implemented multithreading based on my chunks, which are easier to reason about than individual blocks.
+...drawing the actual blocks. You see, chunking our terrain has a number of benefits. For instance, my teammate implemented multithreading based on my chunks, which are easier to reason about than individual blocks. We then render the terrain, one chunk at a time.
 
-A block is made up of six faces. Each face is made up of two triangles. If we were to render all six faces for every single non-`EMPTY` block in a chunk, our GPU would catch on fire and our computer would be very sad. There's no point in rendering faces that are covered by another non-`EMPTY` block, because the player camera will never see it anyway.
+A block has six faces. Each face has two triangles. If rendered all six faces for every non-`EMPTY` block in a chunk, every single frame, our GPU would catch on fire and be very sad. There's no point in rendering faces that are covered by another non-`EMPTY` block, because the player never sees it anyway.
 
 <Img src={import("./face-culling.png")} alt="Two blocks are right next to each other. The face in between does not need to be rendered." />
 
-Instead, when it comes time to render a given chunk, we iterate over every single block in the chunk. For each block, we check its six neighbors, and only render a face if that neighbor's block type is `EMPTY`. 
+Instead, for each chunk, we iterate over every block in the chunk. For each non-`EMPTY` block, we check its six neighbors, and only render that side's face if that neighbor is not `EMPTY`. 
 
-> I did not implement this part, but we only ever render the portion of the terrain around the player's current world position. More details when I talk about distance fog.
+> I did not implement this part, but we only render a small portion of the terrain around the player's current position. More details when I talk about distance fog.
 
-For each `Chunk`, we store a pointer to its neighbor chunks for a given direction. This way we can check block neighbors that reside in a neighboring chunk.
+In the `Chunk` class, we store raw pointers to its neighbor chunks for each direction. This way we can check neighbors of blocks that reside in a neighboring chunk.
 
 ```cpp
 enum Direction {
-    X_POS, X_NEG, Z_POS, Z_NEG, Y_POS, Y_NEG
+  X_POS, X_NEG, Z_POS, Z_NEG, Y_POS, Y_NEG
 };
 
 class Chunk
 {
 private:
-    std::array<Block, 16 * 16 * 256> blocks;
+  std::array<Block, 16 * 16 * 256> blocks;
 
-    // this really only makes sense for the X_POS, X_NEG, Z_POS, and Z_NEG directions
-    std::unordered_map<Direction, Chunk*> neighbors;
+  // this really only makes sense for the X_POS, X_NEG, Z_POS, and Z_NEG directions
+  std::unordered_map<Direction, Chunk*> neighbors;
 };
 ```
 
-If you were to go below ground in debug mode, everything now looks "hollowed out" from the inside. What you're seeing below are what our caves look like from the outside!
+If you were to go below ground in debug mode, everything now looks "hollowed out." What you're seeing in the picture below are what our caves look like from the outside! The player is technically inside solid `STONE` right now, it's just not being drawn.
 
 <Img src={import("./hollowed-caves.png")} alt="Since we're not rendering any blocks inside the terrain, we can see snake-like caves underground." />
 
-**I cannot emphasize how much this improved performance.** On my laptop, my framerate basically tripled. Our game would feel horrible to play without these optimizations.
+> Take a look at that GUI. I'm so proud of it. Details later.
+
+**I cannot emphasize how much this improves performance.** On my laptop, my framerate basically tripled. Our game would feel horrible to play without these optimizations.
 
 ## Texturing and block animations
 
-I render our terrain using <Link href="https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-9-vbo-indexing/" newTab>indexed rendering</Link> and store all vertex attributes in a single, <Link href="https://www.khronos.org/opengl/wiki/Vertex_Specification#Interleaved_attributes" newTab>interleaved</Link> VBO. This includes UV texture information and a single "animated" flag that I either set to `0.f` or `1.f`.
+I render our chunks using <Link href="https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-9-vbo-indexing/" newTab>indexed rendering</Link> and store all vertex attributes in a single, <Link href="https://www.khronos.org/opengl/wiki/Vertex_Specification#Interleaved_attributes" newTab>interleaved</Link> VBO. This includes UV texture information and a single "animated" flag that I either set to 0 or 1.
 
 ```cpp
 struct VertexAttrs
 {
-    glm::vec4 position;
-    glm::vec4 normal;
-    glm::vec2 uv;
-    GLfloat animated;
-    /* ...more attributes here */
+  glm::vec4 position;
+  glm::vec4 normal;
+  glm::vec2 uv;
+  GLfloat animated;
+  /* ...more attributes here */
 }
 
 int stride = 4 + 4 + 2 + 1 /* + whatever +  additional + attrs */;
 ```
 
-When passing vertex data to the GPU via `glVertexAttribPointer`, we utilize this `stride` value to tell the GPU when the data for the next vertex starts. We also specify the length or the "size" of each attribute. For example, `position` is 4 floats long, while `uv` is only 2 floats.
+When passing vertex data to the GPU via `glVertexAttribPointer`, we utilize this `stride` value to tell the GPU when the data for the next vertex starts. We also specify the length, or the "size" of each attribute. For example, `position` is 4 floats long, while `uv` is only 2 floats.
 
 <Img src={import("./interleaved-vbo.png")} alt="In a stream of floats, we specify the first four to be for position, the next four to be for normals, and so on." />
 
@@ -150,11 +153,34 @@ Furthermore, we map a block type to the coordinate of the texture for each of it
 
 ```cpp
 std::unordered_map<Block, std::unordered_map<Direction, glm::ivec2>> block_uv_map;
+
+// for example, to access the UV coordinates for the Y_NEG face of a dirt block
+glm::ivec uv = block_uv_map[DIRT][Y_NEG];
 ```
 
-UVs span a relative range of 0.0-1.0 in both dimensions, and block textures take up 1/16th of the total sprite, so we simply multiply the coordinate by 1/16 to get the correct UV. Note that this only describes the lower-left corner; we simply add 1/16 to either U, V, or both to get the other three corners.
+UVs span a relative range of 0.0-1.0 in both dimensions, and block face textures take up 1/16th of the total sprite, so we simply multiply the coordinate by 1/16 to get the correct UV. Note that this only describes the lower-left corner; we simply add 1/16 to either U, V, or both to get the other three corners.
 
-And animation? In this case, this refers to water and lava blocks seemingly "flowing." This effect was achieved by slowly translating over the texture sprite, moving the UV coordinate over time.
+And animation? In this case, this refers to water and lava blocks seemingly "flowing." This effect was achieved by slowly translating over the texture sprite, moving the UV coordinate over time. "Time" in this case is a `uniform` variable in the shader that increments every frame.
+
+### Transparent blocks
+
+To avoid transparent blocks (like water, glass, etc.) incorrectly drawing over opaque blocks, we actually keep two separate VBOs and index buffers: one for opaque blocks and one for transparent.
+
+In `render_terrain()`, for every chunk we first draw all opaque blocks to screen, and then all transparent blocks. This solves our issues.
+
+```cpp
+void Terrain::render_terrain() {
+  // first render opaque blocks
+  for (const Chunk* c : chunk_list) {
+    c->render(true);
+  }
+
+  // then render transparent blocks
+  for (const Chunk* c : chunk_list) {
+    c->render(false);
+  }
+}
+```
 
 ## Distance fog
 
@@ -176,4 +202,103 @@ Apart from aesthetic purposes, the distance fog takes on a second role: to stop 
 
 ## Day/night cycle, celestial objects
 
-Apart from GUI, I am probably the most proud of this. Our engine features a day and night system that smoothly transitions in between sunrises and sunsets. 
+Apart from GUI, I am probably most proud of our engine's day and night cycle. We see the sun during the day, and the moon and stars at night. In between, sunrises and sunsets transition us nicely.
+
+<Img src={import("./day-night-cycle.png")} alt="A graph depicting what percentage of a day we spend in day, in night, and how long it takes to transition." />
+
+During development, I religiously followed the graph above. It defines a single day as a range from 0.0-1.0, and specifies exact durations for transitions between sections.
+
+- "Day" is considered to be 0-0.375, and is 0.375 long.
+- "Sunset" is considered to be 0.375-0.5, and is 0.125 long.
+- The transition between Day and Sunset starts at 0.3125 and ends at 0.4375. It is 0.125 long.
+- To enable a seamless Sunrise and Day transition, we split it when we go from `1 -> 0`.
+
+Making calculations depend on a relative 0.0-1.0 scale instead of a hardcoded number made changing the day length for debugging infinitely easier.
+
+### Skybox
+
+The skybox was not implemented using a cubemap. Instead, we perform a raycast from a pixel on our screen to the player camera in world position. In other words, we are going from screen space back to world space. The "skybox" is just a quad that we paint funny stuff on.
+
+We choose the far clip of the camera as the point where our ray should end. Since the ray is defined to start from the camera eye, we are essentially drawing a giant sphere around the player, where the ray becomes the radius.
+
+In fact, we can map the calculated ray to a color value. What we get is this:
+
+<Img src={import("./skybox-uv.png")} alt="The sky is split into green, red, and black." />
+
+This makes sense. Our crosshair is currently in the middle of three large color blotches. If we look along the x-axis (to the right), we get lots of red. If we look along the y-axis (up), we get lots of green. If we look behind us, we get black.
+
+### ...raycast?
+
+I think one thing that helped me understand this better was that all of this was being performed by the fragment shader, which has a different `gl_FragCoord` for each pixel on your screen. This means that the raycast to the player camera will return different results, and therefore result in many different colors.
+
+When you rotate your camera and look somewhere else, the world space position of the point you're raycasting to is different as well. That's how we get an illusion of the sky "moving" as we turn, when in reality we're just painting to a rectangle!
+
+### Celestial objects
+
+The sun, moon, and stars are a bit easier to wrap your head around. Both the sun and moon are simply two quads that rotate at a fixed distance around the player. This allows them to appear "infinitely" far away.
+
+In our <Link href="https://doc.qt.io/qt-6/qopenglwidget.html#paintGL" newTab>`paintGL()`</Link>, after drawing the sun and moon and before drawing the terrain, I reset the OpenGL depth buffer. This means that they are *always* drawn behind the terrain, no matter how high or low you are.
+
+```cpp
+// this is a built-in Qt function that makes it easier to communicate with OpenGL.
+// it is called every time our scene is drawn, so ~60 times a second.
+void MyWidget::paintGL() {
+  /* rendering stuff */
+
+  sun.render();
+  moon.render();
+
+  // reset depth buffer so all celestial objects are drawn behind terrain
+  glClear(GL_DEPTH_BUFFER_BIT);
+
+  terrain.render_terrain();
+}
+```
+
+Each individual star is a tiny quad that I rotate and scale by a random amount. I originally had the stars rotate around the player too, but that looked too unrealistic when the player climbed things. Instead, it only follows the player's x- and z-coordinates, but rotated at a fixed y-height.
+
+### Clouds
+
+A giant square floats above the player at all times. On it, I sample a portion of a large texture that contains all the possible clouds in the world:
+
+<Img src={import("./clouds-ps.png")} alt="Cloud texture is opened in Photoshop." />
+
+This was created in Photoshop. I used a noise function as the base, reduced the number of colors, and deleted the rest to make somewhat realistic-looking swirlies.
+
+When I load the texture into OpenGL, I make sure to set the texture to repeat for values of UV outside of 0.0-1.0:
+
+```cpp
+// keeps textures nice and pixelated
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+// repeat clouds
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+```
+
+This way, I can offset the UV coordinates based on the player's current world position. When the player moves forward, the UV coordinates translate "back," which gives the clouds the appearance of having been left behind. Some fragment shader code:
+
+```glsl
+uniform vec3 PlayerPos;
+uniform sampler2D Texture;
+uniform int Time;
+
+in vec2 UV;
+
+const float CLOUDS_INTERVAL = /* how fast the clouds move */;
+const float CLOUDS_SIZE = /* make this bigger than your clouds texture */;
+
+void main() {
+  vec2 offset = vec2(mod(PlayerPos.z, CLOUDS_SIZE) / CLOUDS_SIZE, mod(-PlayerPos.x, CLOUDS_SIZE) / CLOUDS_SIZE);
+  vec4 texColor = texture(Texture, UV + offset + vec2(mod(Time, CLOUDS_INTERVAL) / CLOUDS_INTERVAL, 0));
+
+  /* do some other stuff like distance fog and then output the color */
+}
+```
+
+I also use the previously mentioned `uniform` time variable to make the clouds translate across the sky even when you're not moving.
+
+These three components are pretty simple, but with some good skybox colors, animation times, and tweaking, I think our sky system feels cohesive and full of personality.
+
+*More coming soon...*
