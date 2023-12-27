@@ -92,7 +92,7 @@ What does `render_terrain()` do? This brings us to...
 
 ...drawing the actual blocks. You see, chunking our terrain has a number of benefits. For instance, my teammate implemented multithreading based on my chunks, which are easier to reason about than individual blocks. We then render the terrain, one chunk at a time.
 
-A block has six faces. Each face has two triangles. If rendered all six faces for every non-`EMPTY` block in a chunk, every single frame, our GPU would catch on fire and be very sad. There's no point in rendering faces that are covered by another non-`EMPTY` block, because the player never sees it anyway.
+A block has six faces. Each face has two triangles. If we rendered all six faces for every non-`EMPTY` block in a chunk, every single frame, our GPU would catch on fire and be very sad. There's no point in rendering faces that are covered by another non-`EMPTY` block, because the player never sees it anyway.
 
 <Img src={import("./face-culling.png")} alt="Two blocks are right next to each other. The face in between does not need to be rendered." />
 
@@ -205,9 +205,9 @@ Apart from aesthetic purposes, the distance fog takes on a second role: to stop 
 
 Apart from GUI, I am probably most proud of our engine's day and night cycle. We see the sun during the day, and the moon and stars at night. In between, sunrises and sunsets transition us nicely.
 
-<Img src={import("./day-night-cycle.png")} alt="A graph depicting what percentage of a day we spend in day, in night, and how long it takes to transition." />
+<Img src={import("./day-night-cycle.png")} alt="A diagram depicting what percentage of a day we spend in day, in night, and how long it takes to transition." />
 
-During development, I religiously followed the graph above. It defines a single day as a range from 0.0-1.0, and specifies exact durations for transitions between sections.
+During development, I religiously followed the diagram above. It defines a single day as a range from 0.0-1.0, and specifies exact durations for transitions between sections.
 
 - "Day" is considered to be 0-0.375, and is 0.375 long.
 - "Sunset" is considered to be 0.375-0.5, and is 0.125 long.
@@ -228,7 +228,7 @@ In fact, we can map the calculated ray to a color value. What we get is this:
 
 This makes sense. Our crosshair is currently in the middle of three large color blotches. If we look along the x-axis (to the right), we get lots of red. If we look along the y-axis (up), we get lots of green. If we look behind us, we get black.
 
-### ...raycast?
+### Where are the funny colors coming from??
 
 I think one thing that helped me understand this better was that all of this was being performed by the fragment shader, which has a different `gl_FragCoord` for each pixel on your screen. This means that the raycast to the player camera will return different results, and therefore result in many different colors.
 
@@ -256,17 +256,17 @@ void MyWidget::paintGL() {
 }
 ```
 
-Each individual star is a tiny quad that I rotate and scale by a random amount. I originally had the stars rotate around the player too, but that looked too unrealistic when the player climbed things. Instead, it only follows the player's x- and z-coordinates, but rotated at a fixed y-height.
+Each individual star is a tiny quad that I rotate and scale by a random amount. I originally had the stars rotate around the player too, but that looked too unrealistic when the player climbed things. Instead, it only follows the player's x- and z-coordinates, but rotates at a fixed y-height.
 
 ### Clouds
 
-A giant square floats above the player at all times. On it, I sample a portion of a large texture that contains all the possible clouds in the world:
+A giant quad floats above the player at all times. On it, I sample a portion of a large texture that contains all the possible clouds in the world:
 
 <Img src={import("./clouds-ps.png")} alt="Cloud texture is opened in Photoshop." />
 
 This was created in Photoshop. I used a noise function as the base, reduced the number of colors, and deleted the rest to make somewhat realistic-looking swirlies.
 
-When I load the texture into OpenGL, I make sure to set the texture to repeat for values of UV outside of 0.0-1.0:
+When I send the texture to the GPU, I set these options so that the texture repeats for values of UV outside of 0.0-1.0:
 
 ```cpp
 // keeps textures nice and pixelated
@@ -300,6 +300,96 @@ void main() {
 
 I also use the previously mentioned `uniform` time variable to make the clouds translate across the sky even when you're not moving.
 
-These three components are pretty simple, but with some good skybox colors, animation times, and tweaking, I think our sky system feels cohesive and full of personality.
+These three components are pretty simple, but with some good skybox colors, animation times, and tweaking, our sky system feels cohesive and full of personality.
 
-*More coming soon...*
+## Flood fill lighting
+
+This section could get its own entire write-up, but there are many articles on the internet that do a much better job explaining than I ever could. I'll link some here:
+
+- <Link href="https://www.reddit.com/r/gamedev/comments/2iru8i/fast_flood_fill_lighting_in_a_blocky_voxel_game/" newTab>This Reddit post</Link>
+- <Link href="https://0fps.net/2018/02/21/voxel-lighting/" newTab>0 FPS - Voxel lighting</Link>
+- <Link href="https://minecraft.wiki/w/Light#Block_light" newTab>Minecraft Wiki</Link>
+- <Link href="https://en.wikipedia.org/wiki/Flood_fill" newTab>Wikipedia article about flood fill</Link>
+
+In our engine, I store a 1D array for each chunk that tracks each block's light level. Just like Minecraft, our light scale ranges from 0-15.
+
+```cpp
+class Chunk
+{
+private:
+  std::array<Block, 16 * 16 * 256> blocks;
+  std::unordered_map<Direction, Chunk*> neighbors;
+
+  // using ints are overkill for our purposes and take up more space
+  std::array<unsigned char, 16 * 16 * 256> light_level;
+};
+```
+
+When we generate block data for a chunk, I keep track of all the naturally occurring light sources in the scene. After we finish, I run the flood fill algorithm on each light source, using a light value of 15. It's important to do this after we populate the `blocks` array so that the algorithm doesn't propagate through opaque blocks.
+
+Remember `VertexAttrs` from earlier? We add a new single-float attribute called `lightLevel`. In our fragment shader, we multiply our default block color by this additional brightness. Make sure to clamp it between 0.0-1.0 so the block doesn't get *too* bright.
+
+> I did the base algorithm implementation, and it works well for "no color" lights. My teammate decided to jazz it up a bit and added colored lights! That's what you see in the video.
+
+Note that each block face samples the light level from the neighbor block it's adjacent to. Depending on the light location, this also means each block face can be affected by a different light value!
+
+## GUI, inventory, text rendering
+
+The inventory system is very simple. Stupidly simple. Here, I'll reimplement it right here:
+
+```cpp
+struct Inventory
+{
+  std::array<Block, 9> slots;
+  int active;
+};
+```
+
+Pressing numkeys 1-9 (or scrolling with mouse wheel) sets the `active` variable accordingly. Whenever we want to access the currently selected block, we index into `slots` using `active`. This is nice because we don't have to keep track of what `Block` is selected, that is abstracted away for us.
+
+The UI took a bit more planning. Every UI element inherits from a base class that stores our screen's width, height, and aspect ratio. UI lives on a 2D surface, and so I use UV-like coordinates to specify each UI element's position on the screen.
+
+For example, if we wanted to draw a crosshair texture on a square at the center of the screen, I could use the following vertex positions:
+
+```cpp
+class Crosshair : public UI
+{
+  void set_vbo_data();
+};
+
+void Crosshair::set_vbo_data() {
+  // upper right, lower right, lower left, and upper left corners
+  pos = {glm::vec2(0.51f, 0.51f),
+         glm::vec2(0.51f, 0.49f),
+         glm::vec2(0.49f, 0.49f),
+         glm::vec2(0.49f, 0.51f)};
+}
+```
+
+We store the index, position, and UV buffers as `std::vector` member variables in `UI`. The `UI` base class only needs one function: `render_ui()`. It looks something like this:
+
+```cpp
+void UI::render_ui() {
+  int diff = screen_w - screen_h;
+  float margin = diff / 2.f;
+
+  std::vector<glm::vec2> scaled_pos;
+  for (const glm::vec2 &p : pos) {
+    scaled_pos.push_back(glm::vec2(p.x * screen_w / aspect_ratio + margin, p.y * screen_h));
+  }
+
+  /* send all of this correctly scaled vertex data to the GPU */
+}
+```
+
+We're allowed to define our UI element positions on a relative 0.0-1.0 scale because the `UI` class takes care of transforming it into actual positions based on our current working screen resolution. Furthermore, the x-values are offset by a margin that means everything stays centered.
+
+<Img src={import("./ui-scaling.png")} alt="Diagram showing how the UI is scaled up and doesn't matter what screen resolution we are." />
+
+I make a number of assumptions. First, that the screen width is greater than the height. Also, that the aspect ratio is always greater than 1. In addition, UI elements only exist in a square in the middle of the screen. However, for our rudimentary crosshair, hotbar, and text, this is more than enough to scale well and work across all screen resolutions.
+
+The hotbar is rendered the same way as the crosshair. The little overlay added on top of the currently active slot is rendered by adding an additional offset to the x-position depending on what slot number we're on.
+
+### Text rendering
+
+## Conclusion
