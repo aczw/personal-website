@@ -278,25 +278,9 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 ```
 
-This way, I can offset the UV coordinates based on the player's current world position. When the player moves forward, the UV coordinates translate "back," which gives the clouds the appearance of having been left behind. Some fragment shader code:
+This way, I can offset the UV coordinates based on the player's current world position. When the player moves forward, the UV coordinates translate "back," which gives the clouds the appearance of having been left behind. Take a look at <Link href="https://github.com/jdah/minecraft-weekend/blob/387ecb554946180094d58c57a4ee216dba506cc4/src/world/sky.c#L350C17-L350C17" newTab>jdh's implementation</Link> to get an idea of the math.
 
-```glsl
-uniform vec3 PlayerPos;
-uniform sampler2D Texture;
-uniform int Time;
-
-in vec2 UV;
-
-const float CLOUDS_INTERVAL = /* how fast the clouds move */;
-const float CLOUDS_SIZE = /* make this bigger than your clouds texture */;
-
-void main() {
-  vec2 offset = vec2(mod(PlayerPos.z, CLOUDS_SIZE) / CLOUDS_SIZE, mod(-PlayerPos.x, CLOUDS_SIZE) / CLOUDS_SIZE);
-  vec4 texColor = texture(Texture, UV + offset + vec2(mod(Time, CLOUDS_INTERVAL) / CLOUDS_INTERVAL, 0));
-
-  /* do some other stuff like distance fog and then output the color */
-}
-```
+> I could technically calculate this on the CPU, but I'm doing this work in our cloud shader.
 
 I also use the previously mentioned `uniform` time variable to make the clouds translate across the sky even when you're not moving.
 
@@ -394,4 +378,40 @@ The hotbar naturally uses `UI` as well. To render the currently active slot, I a
 
 Picture this. It's 4 AM and there are only a few hours left before the due date. Everything else is done but you don't want to sleep yet. You decide to go all out on one last thing, or fall asleep trying. End result? Very, very basic text rendering.
 
+<Img src={import("./font-ps.png")} alt="The font bitmap file is open in Photoshop." />
+
+The idea is simple: map a basic set of characters to UV coordinates on a texture sprite that contains the characters as a bitmap. This is not a new idea (<Link href="https://en.wikipedia.org/wiki/Computer_font#Bitmap_fonts" newTab>far, far from it</Link>) and there are probably thousands of implementations available online, but
+
+- this is a school project and I didn't want to bring in external libraries.
+- I was sleep-deprived and going mad.
+- I wanted to see if I could write my own.
+
+> The font comes from a heavily-customized Minecraft texture pack that I made over quarantine! If I didn't have a bitmap font like this ready, all of this probably wouldn't have happened.
+
+The question now becomes "how do I fill this character-to-UV map in a smart way?" I mean, I only have to map 78 characters by hand, which wouldn't have been *too* bad...
+
+No! There must exist a better way. And there does. Remember that in C++, the `char` type is really just <Link href="https://en.cppreference.com/w/cpp/language/ascii" newTab>ASCII representations</Link> of the characters. If we order the bitmap characters in ASCII order, generating the map on the fly becomes really easy:
+
+```cpp
+std::unordered_map<char, glm::ivec2> char_uv_map;
+
+char c = 'a';
+for (int i = 0; i < 26; i++) {
+  char_uv_map[c] = glm::ivec2(i, 1);
+  c++;
+}
+```
+
+Just increment `c` to get to the next character! Our `glm::ivec`s correspond to UV information about the font sprite. From there, I was able to render a single character, and then a string, which is really just many `char`s at once. My `Text` class inherits from `UI` as well to make things easier.
+
+Hopefully you can see how I could extend this system to add information about kerning, offsets, etc. Too bad I ran out of time though. I was able to, however, add an in-game debug mode that shows the player's current position, as well as the current chunk:
+
+<Img src={import("./debug-mode.png")} alt="Debug mode is turned on, and shows the current player position as (32, 158, 32) and chunk coordinate as (32, 32)." />
+
+This helped my teammates easily share cool structures they found for our showcase reel: just take a screenshot! I thought this was a great way to immediately start using my text system.
+
 ## Conclusion
+
+Overall, this project has been very rewarding and is probably the most fun I've had with a class project, ever. I've learned a lot about OpenGL, C++, and rendering in general. I've also become *very* aware of all the heavy lifting that engines like Unity or Unreal do for us.
+
+Anyways. Thanks for reading this far! :\)

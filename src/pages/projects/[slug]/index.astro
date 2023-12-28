@@ -24,8 +24,8 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 const { data } = entry;
 
-const meta = import.meta.env.DEV ? (data.published ? " [PUBLISHED]" : " [DRAFT]") : "";
-const title = data.title + meta;
+const meta = import.meta.env.DEV ? (data.published ? "[PUBLISHED] " : "[DRAFT] ") : "";
+const title = meta + data.title;
 ---
 
 <PrimitiveLayout
