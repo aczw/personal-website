@@ -1,6 +1,6 @@
 # www
 
-[![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build) ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=personal-website-aczw.vercel.app)
+[![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build) ![Vercel Deploy](https://therealsujitk-vercel-badge.vercel.app/?app=personal-website-aczw&label=Vercel)
 
 hi! this is the code for my website. it was built with Astro, styled with Tailwind, and deployed on Vercel.
 
