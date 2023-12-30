@@ -41,9 +41,12 @@ The gameplay loop is simple... and not original. The core idea is taken from <Li
 
 In normal human words, stuff that catches you off guard slows you down. Take these two words, for example.
 
-    <Img src={ import("./purple-comparison.png") } alt="There are two words and both spell out 'purple.' The one on the left is colored purple, and the one on the right is colored red." />
+<Img
+  src={import("./purple-comparison.png")}
+  alt="There are two words and both spell out 'purple.' The one on the left is colored purple, and the one on the right is colored red."
+/>
 
-One word is colored purple, and the other red. It turns out that it's easier for us to name the color of the left word than the right word, because the *word* matches the *color*. When the word reads "purple" but is actually colored red, this throws us off and delays our answer.
+One word is colored purple, and the other red. It turns out that it's easier for us to name the color of the left word than the right word, because the _word_ matches the _color_. When the word reads "purple" but is actually colored red, this throws us off and delays our answer.
 
 How interesting. Why don't we add a timer, and force the player to decide whether the word matches its color in time. If you don't react fast enough, you lose. And the faster you react, the more points you get.
 
@@ -51,11 +54,16 @@ I keep it simple by only using five colors: Red, Yellow, Green, Blue, Purple.
 
 ## Buttons buttons buttons
 
-RCW is an endless, fast-paced minigame about getting the highest score. I was therefore inspired by arcade games and in particular, became obsessed with the art of <Link href="https://en.wikipedia.org/wiki/Rhythm_Heaven_Fever" newTab>Rhythm Heaven Fever</Link>, a 2012 Wii game. I wanted to channel its chaotic vibes, juicy-looking buttons, and generous use of thick borders. I mean, the buttons had to look *delicious*.
+RCW is an endless, fast-paced minigame about getting the highest score. I was therefore inspired by arcade games and in particular, became obsessed with the art of <Link href="https://en.wikipedia.org/wiki/Rhythm_Heaven_Fever" newTab>Rhythm Heaven Fever</Link>, a 2012 Wii game. I wanted to channel its chaotic vibes, juicy-looking buttons, and generous use of thick borders. I mean, the buttons had to look _delicious_.
 
 I also liked the button hover effect in <Link href="https://battlecats.club/en/series/battlecats/" newTab>The Battle Cats</Link>, which flashed bright yellow and magenta. Here, I tried to recreate it in Figma.
 
-    <Gif><source src="/projects/rcw/flashing-btns-figma.mp4" type="video/mp4"></source></Gif>
+<Gif>
+  <source
+    src="/projects/rcw/flashing-btns-figma.mp4"
+    type="video/mp4"
+  ></source>
+</Gif>
 
 I use both the button design and hover effect in RCW. The nice thing about this art style was that it could be consistently applied everywhere, not just buttons.
 
@@ -71,13 +79,19 @@ Originally I was going for a factory setting, with words coming down a sort of a
 
 One thing that may surprise you is that all the art assets were made in Figma. This includes the start screen, in-game, and game over screen, as well as all the UI.
 
-    <Img src={ import("./figma-ingame.png") } alt="The in-game screen, pause menu, and game over screen were all made in a single Figma file." />
+<Img
+  src={import("./figma-ingame.png")}
+  alt="The in-game screen, pause menu, and game over screen were all made in a single Figma file."
+/>
 
 In order to animate different parts of the UI, I exported assets as individual pieces that I could put back together in Unity. This allowed me to, for instance, only animate the border around a button but not change its inside color.
 
 I kept most things grayscale so that I could reuse the asset. In Unity, I simply colored each instance differently.
 
-    <Img src={ import("./separated-ui.png") } alt="Each UI component is split into different parts and don't have color so I can set them in Unity and animate fading between colors." />
+<Img
+  src={import("./separated-ui.png")}
+  alt="Each UI component is split into different parts and don't have color so I can set them in Unity and animate fading between colors."
+/>
 
 > In hindsight, I could also have done this with the 3-2-1 stoplight. When it became active, just overlay the glow on top to make it brighter.
 
@@ -102,7 +116,12 @@ cb.uvRect = new Rect(
 
 The other thing I'm really happy about are the button animations. When the instructions or credits button are activated, the same button is used to go back to the start screen.
 
-    <Gif><source src="/projects/rcw/main-menu-ani-btns.mp4" type="video/mp4"></source></Gif>
+<Gif>
+  <source
+    src="/projects/rcw/main-menu-ani-btns.mp4"
+    type="video/mp4"
+  ></source>
+</Gif>
 
 The "Go back" text slides out, and the outside border becomes a panel for the text to exist in. I spent ~~too much~~ some time getting it to feel just right. I would like to thank this <Link href="https://easings.net/" newTab>easings cheat sheet</Link> for providing copy-and-paste animation curves.
 
