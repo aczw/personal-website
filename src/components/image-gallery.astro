@@ -36,11 +36,9 @@ switch (location) {
 }
 ---
 
-<image-gallery
-  class="block space-y-2 rounded-b-3xl rounded-t-xl bg-sweater-9 p-2.5 sm:space-y-3.5 sm:p-3.5"
->
+<image-gallery class="block space-y-3.5 sm:rounded-b-3xl sm:rounded-t-xl sm:bg-sweater-9 sm:p-3.5">
   <div class="flex items-center justify-between">
-    <div class="flex gap-2 sm:gap-3">
+    <div class="flex gap-3">
       <button
         id="prev"
         class="flex items-center rounded-md bg-sweater-8 px-2 transition-colors hover:bg-sweater-7"
@@ -89,7 +87,7 @@ switch (location) {
           <Img
             src={importImg()}
             alt={alt}
-            className="snap-center"
+            className="snap-center border-4 border-sweater-8 sm:border-none"
           />
         );
       })
