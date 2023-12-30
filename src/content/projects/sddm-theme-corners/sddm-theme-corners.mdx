@@ -61,7 +61,7 @@ After some tinkering and iterating, the final result looks like this:
 
 True to its name, everything is anchored to a corner. Interactive elements live on the bottom half, and the date/time on the top. I chose to group the power and session controls together (versus placing sessions below the user, for instance) because they're less commonly used.
 
-<Gif className="mx-auto w-[600px]">
+<Gif className="mx-auto w-[500px]">
   <source
     src="/projects/sddm-theme-corners/power-session-buttons.mp4"
     type="video/mp4"
@@ -72,7 +72,25 @@ Some themes included icons for popular DEs like GNOME, KDE, Deepin, and others. 
 
 The user picture (if you choose to enable it) also acts as a user switcher. All it really does is prefill in the user field. The last user logged in is saved, however, and filled in for you next time.
 
-Tying everything together are subtle animations that animate popups in and out of view. I especially like what happens when you enter an incorrect login:
+<Gif>
+  <source
+    src="/projects/sddm-theme-corners/user-picture-inputs.mp4"
+    type="video/mp4"
+  ></source>
+</Gif>
+
+The login button is grayed out until both input fields are filled out.
+
+> Am I assuming that every user should have a non-empty password? Yes, yes I am.
+
+Tying everything together are subtle animations that occur when popups come in and out of view. I especially like what happens when you enter a incorrect login:
+
+<Gif>
+  <source
+    src="/projects/sddm-theme-corners/incorrect-login-anim.mp4"
+    type="video/mp4"
+  ></source>
+</Gif>
 
 ## Learning Qt Quick and QML
 
