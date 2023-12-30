@@ -6,19 +6,113 @@ link:
 blurb: Extremely customizable login theme for SDDM, a Linux session manager. Open source.
 duration:
   date: 2023-01-15
-  length: 1.5 weeks
+  length: 2 weeks
 cover:
   img: ./sddm-theme-corners.png
-  alt: My customized login theme, featuring Hanako-kun and using an orange color scheme.
+  alt: My customized login theme, featuring a light, pastel blue color scheme with a glacier wallpaper.
 tags:
-  - QML
   - Qt Quick
+  - QML
 role:
   - programming
   - UI/UX
 order: 4
-published: false
+published: true
 slug: sddm-theme-corners
 ---
 
-Extremely customizable login theme for SDDM, a Linux session manager. Written in QML and uses Qt Quick. Has 60+ stars on GitHub if that counts for anything.
+import Link from "@/components/link.astro";
+import Img from "@/components/img.astro";
+import Gif from "@/components/gif.astro";
+import ImageGallery from "@/components/image-gallery.astro";
+
+Early on in my Linux journey, I was really into customizing my setup and theming _everything_. Form over function, you could say. This is commonly referred to as <Link href="https://jie-fang.github.io/blog/basics-of-ricing" newTab>ricing</Link> and there are whole <Link href="https://www.reddit.com/r/unixporn/" newTab>dedicated communities</Link> around it.
+
+There came a time when I wanted to decorate my login screen. Having chosen <Link href="https://github.com/sddm/sddm/" newTab>SDDM</Link> as my display manager of choice, I started looking for login themes... and didn't find anything that appealed to me. Thus `sddm-theme-corners` was born.
+
+In the spirit of open source, I made it publicly available on my GitHub. Since then, it's gotten quite a few stars and forks, which makes me happy because people are enjoying something I made :\)
+
+## Designing a login theme
+
+The themes I saw on the <Link href="https://store.kde.org/s/KDE%20Store/browse?cat=101&ord=rating" newTab>KDE Store</Link> felt too corporate to me, if that makes sense. They heavily utilize <Link href="https://store.kde.org/s/KDE%20Store/p/1214121" newTab>Gaussian blur</Link>, <Link href="https://store.kde.org/s/KDE%20Store/p/1283380" newTab>thin fonts and icons</Link>, and others tried doing <Link href="https://github.com/MarianArlt/sddm-sugar-light/wiki/Before-you-begin" newTab>too much at once</Link> for me. It feels like they belong to a past era (granted, some of them are years old now).
+
+This sounds like a diss. None of this is intended to be a diss. They're popular for a reason. Subjectively, the design just didn't appeal to me. Plus, without these projects I would've had no idea where to start programming! (More on this later.)
+
+After some tinkering and iterating, the final result looks like this:
+
+<ImageGallery
+  location="projects"
+  innerPath="sddm-theme-corners/"
+  imgs={[
+    {
+      src: "hanako.png",
+      alt: "An orange color scheme featuring completely round corners and Hanako-kun.",
+    },
+    {
+      src: "loud.png",
+      alt: "A very colorful background with black and white UI elements and squared corners.",
+    },
+    {
+      src: "sky.png",
+      alt: "Sunset over some buildings. UI elements are colored pink and purple.",
+    },
+  ]}
+/>
+
+True to its name, everything is anchored to a corner. Interactive elements live on the bottom half, and the date/time on the top. I chose to group the power and session controls together (versus placing sessions below the user, for instance) because they're less commonly used.
+
+<Gif>
+  <source
+    src="/projects/sddm-theme-corners/power-session-buttons.mp4"
+    type="video/mp4"
+  ></source>
+</Gif>
+
+Some themes included icons for popular DEs like GNOME, KDE, Deepin, and others. I felt that it would be impossible to cover all cases, and chose a text-based list instead. Icons don't offer enough detail anyway; what if I wanted GNOME on both Xorg and Wayland?
+
+The user picture (if you choose to enable it) also acts as a user switcher. All it really does is prefill in the user field. The last user logged in is saved, however, and filled in for you next time.
+
+<Gif>
+  <source
+    src="/projects/sddm-theme-corners/user-picture-inputs.mp4"
+    type="video/mp4"
+  ></source>
+</Gif>
+
+The login button is grayed out until both input fields are filled out.
+
+> Am I assuming that every user should have a non-empty password? Yes, yes I am.
+
+Tying everything together are subtle animations that occur when popups come in and out of view. I especially like what happens when you enter a incorrect login:
+
+<Gif>
+  <source
+    src="/projects/sddm-theme-corners/incorrect-login-anim.mp4"
+    type="video/mp4"
+  ></source>
+</Gif>
+
+Don't like the colors? I've exposed numerous config options that allow you to theme pretty much everything. You can also change the font and corner radius of the UI; however, the layout itself cannot be modified. After all, stuff in `corners` should stay in the corners!
+
+## Learning Qt Quick and QML
+
+Building the login theme was the most difficult part of the process. I had no prior experience with QML; this was my first time learning about the existence of Qt! As of December 2023, SDDM's own <Link href="https://github.com/sddm/sddm/blob/develop/docs/THEMING.md" newTab>documentation</Link> is also rather lacking and hasn't been updated in _years_.
+
+This is where previous SDDM themes really helped me get my footing. By looking through their code, I learned that `Main.qml` is the main entry file for SDDM. I discovered the existence of `theme.conf` and how to support customization options in my own code. I saw real, working examples of QML syntax, including utilizing a QML object's `id` attribute and adding custom properties.
+
+I definitely committed some coding sins figuring out how to hook everything together. I'm particularly proud of this abomination:
+
+<Img
+  src={import("./code-abomination.png")}
+  alt="A very long line of code that uses a lot of accessors and is not commented."
+/>
+
+I revisited this line for the write-up, and... I have no idea what it does. I wish I left, like, a single comment. I think it updates the picture displayed when you switch users.
+
+## Try it out!
+
+I've been using it everyday with no complaints. I might be biased, though.
+
+While SDDM is best known for being KDE's display manager, it actually works for any desktop environment. So `corners` does as well! If you're on Linux and like what you see, do test it out and lemme know what you think. I've provided <Link href="https://github.com/aczw/sddm-theme-corners#installation" newTab>installation instructions</Link> for the AUR as well as manual installation.
+
+Happy ricing! 🍚

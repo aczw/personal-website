@@ -1,4 +1,6 @@
 ---
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
 import { cn } from "@/utils/cn";
 
 interface Props {
@@ -8,6 +10,8 @@ interface Props {
 const { className } = Astro.props;
 ---
 
+<Header />
 <main class={cn("mx-auto max-w-content px-4 py-10", className)}>
   <slot />
 </main>
+<Footer />

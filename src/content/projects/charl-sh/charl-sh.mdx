@@ -26,6 +26,7 @@ slug: www
 
 import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
+import ImageGallery from "@/components/image-gallery.astro";
 
 Welcome! ♪(´▽｀)
 
@@ -37,7 +38,10 @@ This website has been a 7 month long ordeal that's seen a domain change, an enti
 
 I can split the development of my site into three versions: `v1`, `v2`, and the current iteration, `v3`. Version 1 was hosted on an entirely different URL, and looked like this:
 
-<Img src={import("./aczw-dev.png")} alt="Screenshot of the first version of my website. Colors are a bit brighter and everything is much, much bigger." />
+<Img
+  src={import("./aczw-dev.png")}
+  alt="Screenshot of the first version of my website. Colors are a bit brighter and everything is much, much bigger."
+/>
 
 > It's still alive at <Link href="https://old.charl.sh" newTab>old.charl.sh</Link>, by the way. Why am I still keeping it alive? I dunno, I'm still attached to it. It has sentimental value. It's like, `v1`, you know.
 
@@ -45,18 +49,22 @@ It has a lot of design elements that persist to this day: the purple color schem
 
 There were two main reasons I wanted to start over. The first is that I simply didn't like the design. I had sketched out the basic layout and colors beforehand, but the final proportions were way off. Why is the text so gigantic?? The color palette also didn't translate well.
 
-<Img src={import("./v1-procreate.png")} alt="Sketch of a dialog box with some text and a button in two color schemes. Drawn in Procreate." />
+<Img
+  src={import("./v1-procreate.png")}
+  alt="Sketch of a dialog box with some text and a button in two color schemes. Drawn in Procreate."
+/>
 
 > When I call my sketches basic, I mean it.
 
-The layout started making less sense. The sticky sidebar achieved its goal of displaying my resume and socials, but it really didn't need that much *space*. The card system on the right felt restricting as well. What if I wanted some content that couldn't neatly fit?
+The layout started making less sense. The sticky sidebar achieved its goal of displaying my resume and socials, but it really didn't need that much _space_. The card system on the right felt restricting as well. What if I wanted some content that couldn't neatly fit?
 
-The second reason is the tech stack I used. I had recently stumbled upon <Link href="https://twitter.com/t3dotgg" newTab>Theo</Link> and decided to use <Link href="https://create.t3.gg" newTab>Create T3 App</Link> to jumpstart my site. I realize now that it did not fit my needs *at all*. I completely ignored its helpful integrations with tRPC, Prisma, and Auth.js.
+The second reason is the tech stack I used. I had recently stumbled upon <Link href="https://twitter.com/t3dotgg" newTab>Theo</Link> and decided to use <Link href="https://create.t3.gg" newTab>Create T3 App</Link> to jumpstart my site. I realize now that it did not fit my needs _at all_. I completely ignored its helpful integrations with tRPC, Prisma, and Auth.js.
 
 If I had only wanted Next.js, I should've used `create-next-app`. But even that felt overkill for my use case; I wasn't trying to build a full-stack app or anything. So I started looking for something else...
 
 ## Why Astro
 
+{/* prettier-ignore */}
 <Link href="https://astro.build/" newTab>Astro</Link> advertises itself as a framework that focuses on content-first websites. That immediately caught my eye. And, the more I read, the more I was convinced. It checked all the boxes in my head.
 
 - Reusable components with JSX-like syntax. It feels like vanilla HTML more than anything.
@@ -70,35 +78,54 @@ I wanted nothing more, nothing less. While I could have stuck with Next.js, I li
 
 Okay cool, I've decided on what to build `v2` with. Now I need to tackle the second issue: actually designing the new layout.
 
-<Img src={ import("./v2-figma.png") } alt="A Figma file containing many different iterations of what my site could look like." />
+<Img
+  src={import("./v2-figma.png")}
+  alt="A Figma file containing many different iterations of what my site could look like."
+/>
 
 I spent a good while experimenting with different homepage layouts, playing with the color and text. Going in, I was heavily inspired by Google's <Link href="https://m3.material.io/" newTab>Material You</Link> design language, with its odd shapes, large padding, and rounded corners.
 
-<Img src={ import("./color-palette.png") } alt="The new purple color palette, now in 10 different shades. There also exists a green palette." />
+<Img
+  src={import("./color-palette.png")}
+  alt="The new purple color palette, now in 10 different shades. There also exists a green palette."
+/>
 
 The original `v1` color palette used six shades. As I was building `v2`, I felt severely limited by the few choices I had. Therefore `v2` uses a range of 10 shades. I also chose a purple that felt less... pink.
 
 With the Astro docs open in another window, I started building. The final result:
 
-<Img src={ import("./v2.png") } alt="The new homescreen, with information contained in rounded blocks." className="border-2 border-sweater-9" />
-
-<Img src={ import("./v2-projects.png") } alt="The projects page, with images arranged in a grid and tags displayed underneath visually." className="border-2 border-sweater-9" />
-
-<Img src={ import("./v2-portfolio.png") } alt="The portfolio page, with pieces displayed in columns and separated into different sections." className="border-2 border-sweater-9" />
+<ImageGallery
+  location="projects"
+  innerPath="charl-sh/"
+  imgs={[
+    { src: "v2.png", alt: "The new homescreen, with information contained in rounded blocks." },
+    {
+      src: "v2-projects.png",
+      alt: "The projects page, with images arranged in a grid and tags displayed underneath visually.",
+    },
+    {
+      src: "v2-portfolio.png",
+      alt: "The portfolio page, with pieces displayed in columns and separated into different sections.",
+    },
+  ]}
+/>
 
 These are `/`, `/projects`, and `/portfolio` respectively.
 
 I was really satisfied with how it turned out. I absolutely love the new shades of purple I picked. I incorporated live data from my music habits, a step up from `v1`. I love the footer with the scrolling text. I love how much simpler, cleaner, and more organized it felt. I love how my projects and portfolio now live on separate pages and have more room to breathe.
 
-...so, why did I restart *again*?
+...so, why did I restart _again_?
 
 ### The bad
 
-I fetched my music data in an *extremely* insecure method. To make requests to the Last.fm API, I brought in React and <Link href="https://swr.vercel.app/" newTab>SWR</Link> for the job. For this React component to access my API key from the client, I chose to make it publicly available by prefixing it with `PUBLIC_`. Theoretically, anyone visiting my site could do a `Ctrl+F` search to find it. Actually, I'll show you.
+I fetched my music data in an _extremely_ insecure method. To make requests to the Last.fm API, I brought in React and <Link href="https://swr.vercel.app/" newTab>SWR</Link> for the job. For this React component to access my API key from the client, I chose to make it publicly available by prefixing it with `PUBLIC_`. Theoretically, anyone visiting my site could do a `Ctrl+F` search to find it. Actually, I'll show you.
 
-<Img src={ import("./v2-api.png") } alt="The inspector is open. I searched for 'api' in the JavaScript code and immediately found my secret API key." />
+<Img
+  src={import("./v2-api.png")}
+  alt="The inspector is open. I searched for 'api' in the JavaScript code and immediately found my secret API key."
+/>
 
-This is more of a principle thing than anything; I wasn't seriously expecting anyone to steal my API key and use it. Still, it wasn't exactly *good*.
+This is more of a principle thing than anything; I wasn't seriously expecting anyone to steal my API key and use it. Still, it wasn't exactly _good_.
 
 I also wasn't too happy pulling in an entire UI framework and fetching library just to display my most recently listened to music. Astro sent all of this unnecessary JavaScript to the client, increasing my site footprint more than it needs to be. I should've used Astro's built-in features for <Link href="https://docs.astro.build/en/guides/data-fetching/" newTab>data fetching</Link> instead.
 
@@ -110,7 +137,7 @@ I needed to rethink how I approached this. This time, I seeked some more outside
 
 I sought inspiration from others. Some ideas came from fellow DMD people, like <Link href="https://www.elyssachou.com/" newTab>elyssachou.com</Link> and <Link href="https://tlshaw.me/" newTab>tlshaw.me</Link>. Some came from sites I discovered, like <Link href="https://www.nexxel.dev/" newTab>nexxel.dev</Link>, <Link href="https://nezu.world/" newTab>nezu.world</Link>, and <Link href="https://paco.me/" newTab>paco.me</Link>. Udara Jay's post about <Link href="https://udara.io/reinventing-this-blog" newTab>reinventing their blog</Link> resonated with me as well.
 
-I realize now that with each iteration, I stripped away more and more stuff, instead focusing on what I *truly wanted* people to see first.
+I realize now that with each iteration, I stripped away more and more stuff, instead focusing on what I _truly wanted_ people to see first.
 
 - Instead of the weird bento box layout for the homepage, use a standard header-content layout. Text gets more space to exist, and I get to display sneak peeks of my projects/posts.
 - I liked the live music updates but deemphasized it, because it wasn't the main reason I directed people to my site. It's mostly for my own enjoyment, anyway.
@@ -134,18 +161,17 @@ const key = import.meta.env.LASTFM_API_KEY;
 const url = `https://lastfmapiurl.com/?api_key=${key}`;
 
 // I define the schema here
-const recentTracksSchema = z.promise(...);
+const recentTracksSchema = z.promise(/* ... */);
 
 const getRecentTracks = async () => {
-  const data = await recentTracksSchema.parse(
-    fetch(url).then((res) => res.json()),
-  );
+  const data = await recentTracksSchema.parse(fetch(url).then((res) => res.json()));
 
   return data.recenttracks;
 };
 
 const recentTracks = await getRecentTracks();
 ---
+
 <p class="...">The last song I listened to was {recentTracks[0].name}!</p>
 ```
 
@@ -161,7 +187,7 @@ Clearly, I really like Astro. Between `v2` and `v3`, I've really come around to 
 
 ## Conclusion
 
-`aczw.dev` was started in early summer 2023. As of writing, it's now mid-November. My site has changed *a lot* in these past five months, and I've learned a lot about web dev as well as myself. I don't think there will be any significant changes from here on out.
+`aczw.dev` was started in early summer 2023. As of writing, it's now mid-November. My site has changed _a lot_ in these past five months, and I've learned a lot about web dev as well as myself. I don't think there will be any significant changes from here on out.
 
 Nailing what you want first try is very difficult. It's what you learn along the way that eventually guides you to something that you're satisfied with. I've had a lot of fun designing and redesigning the site, and don't regret either `v1` or `v2`. They helped me get to `v3`, after all.
 

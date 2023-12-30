@@ -1,0 +1,137 @@
+---
+import type { ImageMetadata } from "astro";
+import Img from "./img.astro";
+import { ArrowLeft, ArrowRight } from "lucide-astro";
+
+interface Props {
+  location: "projects";
+  innerPath?: string;
+  imgs: { src: string; alt: string }[];
+}
+
+const { location, innerPath, imgs } = Astro.props;
+
+let images: Record<
+  string,
+  () => Promise<{
+    default: ImageMetadata;
+  }>
+>;
+let prefix: string;
+
+/**
+ * @see https://docs.astro.build/en/recipes/dynamically-importing-images/
+ * @see https://github.com/vitejs/vite/issues/5478#issuecomment-955117892
+ */
+switch (location) {
+  case "projects":
+    images = import.meta.glob<{ default: ImageMetadata }>(
+      "/src/content/projects/**/*.{jpeg,jpg,png,gif}",
+    );
+    prefix = "/src/content/projects";
+    break;
+
+  default:
+    throw new Error(`cannot import images from unknown location "${location}"`);
+}
+---
+
+<image-gallery class="block space-y-3.5 sm:rounded-b-3xl sm:rounded-t-xl sm:bg-sweater-9 sm:p-3.5">
+  <div class="flex items-center justify-between">
+    <div class="flex gap-3">
+      <button
+        id="prev"
+        class="flex items-center rounded-md bg-sweater-8 px-2 transition-colors hover:bg-sweater-7"
+        aria-label="Previous"
+        ><ArrowLeft
+          aria-hidden="true"
+          size={16}
+          class="mr-1"
+        /> Prev</button
+      >
+      <button
+        id="next"
+        class="flex items-center rounded-md bg-sweater-8 px-2 transition-colors hover:bg-sweater-7"
+        aria-label="Previous"
+        >Next <ArrowRight
+          aria-hidden="true"
+          size={16}
+          class="ml-1"
+        />
+      </button>
+    </div>
+    <p
+      id="img-count"
+      class="rounded-md font-mono text-sm font-bold text-sweater-4"
+    >
+      1 of {imgs.length}
+    </p>
+  </div>
+
+  <div
+    id="container"
+    class="flex snap-x snap-mandatory gap-3.5 overflow-x-scroll scroll-smooth"
+  >
+    {
+      imgs.map(async ({ src, alt }) => {
+        const concatPath = `${prefix}${innerPath ? `/${innerPath}` : "/"}${src}`;
+        const importImg = images[concatPath];
+
+        if (!importImg) {
+          throw new Error(
+            `"${concatPath}" does not exist for glob "${prefix}/**/*.{jpeg,jpg,png,gif}!"`,
+          );
+        }
+
+        return (
+          <Img
+            src={importImg()}
+            alt={alt}
+            className="snap-center border-4 border-sweater-8 sm:border-none"
+          />
+        );
+      })
+    }
+  </div>
+</image-gallery>
+
+<script>
+  class Gallery extends HTMLElement {
+    constructor() {
+      super();
+
+      const imgCount = this.querySelector("#img-count");
+      const container = this.querySelector("#container");
+      const imgs = container!.children;
+
+      // keep track of which image we're at
+      let currIndex = 0;
+
+      const nextBtn = this.querySelector("#next");
+      nextBtn!.addEventListener("click", () => {
+        const width = imgs.item(currIndex)!.getBoundingClientRect().width;
+        container!.scrollLeft += width;
+
+        if (currIndex !== imgs.length - 1) {
+          currIndex += 1;
+        }
+
+        imgCount!.textContent = `${currIndex + 1} of ${imgs.length}`;
+      });
+
+      const prevBtn = this.querySelector("#prev");
+      prevBtn!.addEventListener("click", () => {
+        const width = imgs.item(currIndex)!.getBoundingClientRect().width;
+        container!.scrollLeft -= width;
+
+        if (currIndex !== 0) {
+          currIndex -= 1;
+        }
+
+        imgCount!.textContent = `${currIndex + 1} of ${imgs.length}`;
+      });
+    }
+  }
+
+  customElements.define("image-gallery", Gallery);
+</script>
