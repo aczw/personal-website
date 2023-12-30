@@ -24,26 +24,32 @@ slug: sddm-theme-corners
 import Link from "@/components/link.astro";
 import Img from "@/components/img.astro";
 
-Early on in my Linux journey, I was really into customizing my setup and theming everything. Form over function, you could say. This is commonly referred to as <Link href="https://jie-fang.github.io/blog/basics-of-ricing" newTab>ricing</Link> and there are whole <Link href="https://www.reddit.com/r/unixporn/" newTab>dedicated communities</Link> around it.
+Early on in my Linux journey, I was really into customizing my setup and theming *everything*. Form over function, you could say. This is commonly referred to as <Link href="https://jie-fang.github.io/blog/basics-of-ricing" newTab>ricing</Link> and there are whole <Link href="https://www.reddit.com/r/unixporn/" newTab>dedicated communities</Link> around it.
 
-There came a time when I wanted to decorate my login screen. Having chosen <Link href="https://github.com/sddm/sddm/" newTab>SDDM</Link> as my display manager of choice, I started looking for login themes... and didn't find anything that appealed to me. `sddm-theme-corners` was born out of this lack of SDDM themes that I enjoyed.
+There came a time when I wanted to decorate my login screen. Having chosen <Link href="https://github.com/sddm/sddm/" newTab>SDDM</Link> as my display manager of choice, I started looking for login themes... and didn't find anything that appealed to me. Thus `sddm-theme-corners` was born.
 
 In the spirit of open source, I made it publicly available on my GitHub. Since then, it's gotten quite a few stars and forks, which makes me happy because people are enjoying something I made :\)
 
 ## Designing a login theme
 
-The themes I saw on the <Link href="https://store.kde.org/s/KDE%20Store/browse?cat=101&ord=rating" newTab>KDE Store</Link> felt too corporate to me, if that makes sense. They heavily utilize <Link href="https://store.kde.org/s/KDE%20Store/p/1214121" newTab>Gaussian blur</Link> and <Link href="https://store.kde.org/s/KDE%20Store/p/1283380" newTab>thin fonts, icons</Link> and others tried doing <Link href="https://store.kde.org/s/KDE%20Store/p/1283380" newTab>too much at once</Link> for me.
+The themes I saw on the <Link href="https://store.kde.org/s/KDE%20Store/browse?cat=101&ord=rating" newTab>KDE Store</Link> felt too corporate to me, if that makes sense. They heavily utilize <Link href="https://store.kde.org/s/KDE%20Store/p/1214121" newTab>Gaussian blur</Link>, <Link href="https://store.kde.org/s/KDE%20Store/p/1283380" newTab>thin fonts and icons</Link>, and others tried doing <Link href="https://github.com/MarianArlt/sddm-sugar-light/wiki/Before-you-begin" newTab>too much at once</Link> for me. It feels like they belong to a past era (granted, some of them are years old now).
 
-None of this is intended to be a diss against those themes; they're popular for a reason. Subjectively, the design just didn't appeal to me. Plus, without these projects I would've had no idea where to start programming! (More on this later.)
+This sounds like a diss. None of this is intended to be a diss. They're popular for a reason. Subjectively, the design just didn't appeal to me. Plus, without these projects I would've had no idea where to start programming! (More on this later.)
 
-After some tinkering and deliberation, the final result looks like this:
+After some tinkering and iterating, the final result looks like this:
 
 <div class="p-3.5 bg-sweater-9 rounded-xl space-y-3.5">
-<p class="text-sweater-3 font-mono text-sm">This is an image gallery. Scroll left or right to see more pictures!</p>
+<p class="text-sweater-3 font-mono text-sm">This is an image gallery. <i>Scroll left or right to see more pictures!</i></p>
 <div class="flex overflow-x-scroll gap-3.5 snap-x snap-mandatory"><Img src={import("./hanako.png")} alt="An orange color scheme featuring completely round corners and Hanako-kun." className="snap-center" />
 <Img src={import("./loud.png")} alt="A very colorful background with black and white UI elements and squared corners." className="snap-center" />
 <Img src={import("./sky.png")} alt="Sunset over some buildings. UI elements are colored pink and purple." className="snap-center" /></div>
 </div>
+
+True to its name, everything is anchored to a corner. Interactive elements live on the bottom half, and the date/time on the top. I chose to group the power and session controls together (versus placing sessions below the user, for instance) because they're less commonly used.
+
+The user picture (if you choose to enable it) also acts as a user switcher. All it really does is prefill in the user field. The last user logged in is saved, however, and filled in for you next time.
+
+Some themes included icons for popular DEs like GNOME, KDE, Deepin, and others. I felt that it would be impossible to cover all cases, and chose a text-based list instead. Icons don't offer enough detail anyway; what if I wanted GNOME on both Xorg and Wayland?
 
 ## Learning Qt Quick and QML
 

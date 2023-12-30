@@ -18,7 +18,7 @@
 
   /* inline code should have some padding and background */
   code {
-    @apply rounded-xl bg-sweater-9 px-1 py-0.5 text-sm;
+    @apply rounded-md bg-sweater-9 px-1 py-0.5 text-sm;
   }
 
   pre {
