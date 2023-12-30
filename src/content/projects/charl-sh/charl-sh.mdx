@@ -26,6 +26,7 @@ slug: www
 
 import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
+import ImageGallery from "@/components/image-gallery.astro";
 
 Welcome! ♪(´▽｀)
 
@@ -93,22 +94,20 @@ The original `v1` color palette used six shades. As I was building `v2`, I felt 
 
 With the Astro docs open in another window, I started building. The final result:
 
-<Img
-  src={import("./v2.png")}
-  alt="The new homescreen, with information contained in rounded blocks."
-  className="border-2 border-sweater-9"
-/>
-
-<Img
-  src={import("./v2-projects.png")}
-  alt="The projects page, with images arranged in a grid and tags displayed underneath visually."
-  className="border-2 border-sweater-9"
-/>
-
-<Img
-  src={import("./v2-portfolio.png")}
-  alt="The portfolio page, with pieces displayed in columns and separated into different sections."
-  className="border-2 border-sweater-9"
+<ImageGallery
+  location="projects"
+  innerPath="charl-sh/"
+  imgs={[
+    { src: "v2.png", alt: "The new homescreen, with information contained in rounded blocks." },
+    {
+      src: "v2-projects.png",
+      alt: "The projects page, with images arranged in a grid and tags displayed underneath visually.",
+    },
+    {
+      src: "v2-portfolio.png",
+      alt: "The portfolio page, with pieces displayed in columns and separated into different sections.",
+    },
+  ]}
 />
 
 These are `/`, `/projects`, and `/portfolio` respectively.
