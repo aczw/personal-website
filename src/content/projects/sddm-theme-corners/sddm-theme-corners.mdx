@@ -92,9 +92,11 @@ Tying everything together are subtle animations that occur when popups come in a
   ></source>
 </Gif>
 
+Don't like the colors? I've exposed numerous config options that allow you to theme pretty much everything. You can also change the font and corner radius of the UI; however, the layout itself cannot be modified. After all, stuff in `corners` should stay in the corners!
+
 ## Learning Qt Quick and QML
 
-Building the login theme was the most difficult part of the process. I had no prior experience with QML; this was my first time learning about the existence of Qt! As of December 2023, SDDM's own <Link href="https://github.com/sddm/sddm/blob/develop/docs/THEMING.md" newTab>documentation on theming</Link> is also rather lacking and hasn't been updated in _years_.
+Building the login theme was the most difficult part of the process. I had no prior experience with QML; this was my first time learning about the existence of Qt! As of December 2023, SDDM's own <Link href="https://github.com/sddm/sddm/blob/develop/docs/THEMING.md" newTab>documentation</Link> is also rather lacking and hasn't been updated in _years_.
 
 This is where previous SDDM themes really helped me get my footing. By looking through their code, I learned that `Main.qml` is the main entry file for SDDM. I discovered the existence of `theme.conf` and how to support customization options in my own code. I saw real, working examples of QML syntax, including utilizing a QML object's `id` attribute and adding custom properties.
 
