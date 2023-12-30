@@ -17,12 +17,13 @@ role:
   - programming
   - UI/UX
 order: 4
-published: false
+published: true
 slug: sddm-theme-corners
 ---
 
 import Link from "@/components/link.astro";
 import Img from "@/components/img.astro";
+import Gif from "@/components/gif.astro";
 import Gallery from "@/components/gallery.astro";
 
 Early on in my Linux journey, I was really into customizing my setup and theming _everything_. Form over function, you could say. This is commonly referred to as <Link href="https://jie-fang.github.io/blog/basics-of-ricing" newTab>ricing</Link> and there are whole <Link href="https://www.reddit.com/r/unixporn/" newTab>dedicated communities</Link> around it.
@@ -59,6 +60,10 @@ After some tinkering and iterating, the final result looks like this:
 />
 
 True to its name, everything is anchored to a corner. Interactive elements live on the bottom half, and the date/time on the top. I chose to group the power and session controls together (versus placing sessions below the user, for instance) because they're less commonly used.
+
+<Gif className="mx-auto w-[600px]">
+  <source src="/projects/sddm-theme-corners/power-session-buttons.webm"></source>
+</Gif>
 
 Some themes included icons for popular DEs like GNOME, KDE, Deepin, and others. I felt that it would be impossible to cover all cases, and chose a text-based list instead. Icons don't offer enough detail anyway; what if I wanted GNOME on both Xorg and Wayland?
 
