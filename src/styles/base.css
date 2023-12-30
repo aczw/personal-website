@@ -18,11 +18,11 @@
 
   /* inline code should have some padding and background */
   code {
-    @apply rounded-md bg-sweater-9 px-1 py-0.5 text-sm;
+    @apply rounded-xl bg-sweater-9 px-1 py-0.5 text-sm;
   }
 
   pre {
-    @apply rounded-md p-4;
+    @apply rounded-xl p-4;
   }
 
   /* remove padding and background in codeblocks */
