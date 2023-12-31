@@ -95,8 +95,8 @@ switch (location) {
           <Img
             src={importImg()}
             alt={alt}
-            className="snap-center border-4 border-sweater-8 sm:border-none"
-            style={imgHeight ? { height: `${imgHeight}px`, width: "auto" } : undefined}
+            className="snap-center border-4 border-sweater-8 sm:border-none object-cover"
+            style={imgHeight ? { maxHeight: `${imgHeight}px`, width: "auto" } : undefined}
           />
         );
       })

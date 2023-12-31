@@ -6,29 +6,6 @@ import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 import { getCollection } from "astro:content";
 
-const moreThings: { name: string; url: string | null; desc: string }[] = [
-  {
-    name: "Mini Maya",
-    url: null,
-    desc: "Mesh editor that supports subdivision, face triangulation, skeleton skinning, and more.",
-  },
-  {
-    name: "3D Rasterizer",
-    url: null,
-    desc: "CPU-based OBJ renderer written in C++. Supports antialiasing and shading models.",
-  },
-  {
-    name: "scallop.build",
-    url: "https://scallop.build",
-    desc: "Full stack Next.js web platform for Scallop, a neurosymbolic programming language.",
-  },
-  {
-    name: "ttt",
-    url: "https://ttt.charl.sh",
-    desc: "Tic-tac-toe. Small little game that finally made React click for me.",
-  },
-];
-
 const writeUps = await getCollection("write-ups");
 writeUps.sort((a, b) => a.data.order - b.data.order);
 
@@ -94,7 +71,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
                         href={data.link.url}
                         newTab
                       >
-                        {data.title}
+                        {data.link.text}
                       </Link>
                     </div>
                   ) : (
