@@ -26,6 +26,25 @@ const writeUps = defineCollection({
   }),
 });
 
+const projects = defineCollection({
+  type: "data",
+  schema: z.object({
+    title: z.string(),
+    link: z.object({
+      url: z.string().url(),
+      text: z.string()
+    }).optional(),
+    blurb: z.string(),
+    date: z.coerce.date(),
+    imgs: z.array(z.object({
+      src: z.string(),
+      alt: z.string()
+    })),
+    tags: z.array(z.string())
+  })
+})
+
 export const collections = {
   "write-ups": writeUps,
+  projects
 };
