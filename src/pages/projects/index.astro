@@ -1,4 +1,5 @@
 ---
+import ImageGallery from "@/components/image-gallery.astro";
 import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
 import MainLayout from "@/layouts/main-layout.astro";
@@ -28,8 +29,10 @@ const moreThings: { name: string; url: string | null; desc: string }[] = [
   },
 ];
 
-const projectEntries = await getCollection("write-ups");
-projectEntries.sort((a, b) => a.data.order - b.data.order);
+const writeUps = await getCollection("write-ups");
+writeUps.sort((a, b) => a.data.order - b.data.order);
+
+const projects = await getCollection("projects");
 ---
 
 <PrimitiveLayout
@@ -41,7 +44,7 @@ projectEntries.sort((a, b) => a.data.order - b.data.order);
       <h2 class="text-xl text-sweater-2">Write-ups</h2>
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
         {
-          projectEntries.map(({ data, slug }, index) => {
+          writeUps.map(({ data, slug }, index) => {
             return (
               <a
                 href={"/projects/" + slug}
@@ -73,26 +76,36 @@ projectEntries.sort((a, b) => a.data.order - b.data.order);
       <h2 class="text-xl text-sweater-2">More projects</h2>
       <div class="grid grid-cols-1 gap-6">
         {
-          moreThings.map(({ url, name, desc }, index) => (
-            <div
-              class="col-span-1 animate-fade"
-              style={{ "--delay": `${(index + 1) * 75}ms` }}
-            >
-              <h3 class="text-sweater-2">
-                {url ? (
-                  <Link
-                    href={url}
-                    newTab
-                  >
-                    {name}
-                  </Link>
-                ) : (
-                  <>{name}</>
-                )}
-              </h3>
-              <p>{desc}</p>
-            </div>
-          ))
+          projects.map(({ id, collection, data }, index) => {
+            const innerPath = id.split("/")[0] + "/";
+
+            return (
+              <div
+                class="col-span-1 animate-fade"
+                style={{ "--delay": `${(index + 1) * 75}ms` }}
+              >
+                <h3 class="text-sweater-2">
+                  {data.link ? (
+                    <Link
+                      href={data.link.url}
+                      newTab
+                    >
+                      {data.title}
+                    </Link>
+                  ) : (
+                    <>{data.title}</>
+                  )}
+                </h3>
+                <ImageGallery
+                  location={collection}
+                  innerPath={innerPath}
+                  imgs={data.imgs}
+                  imgWidth={300}
+                />
+                <p>{data.blurb}</p>
+              </div>
+            );
+          })
         }
       </div>
     </section>
