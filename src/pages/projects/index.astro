@@ -28,7 +28,7 @@ const moreThings: { name: string; url: string | null; desc: string }[] = [
   },
 ];
 
-const projectEntries = await getCollection("projects");
+const projectEntries = await getCollection("write-ups");
 projectEntries.sort((a, b) => a.data.order - b.data.order);
 ---
 
@@ -71,7 +71,7 @@ projectEntries.sort((a, b) => a.data.order - b.data.order);
 
     <section class="animate-fade space-y-[1rem] [--delay:75ms]">
       <h2 class="text-xl text-sweater-2">More projects</h2>
-      <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      <div class="grid grid-cols-1 gap-6">
         {
           moreThings.map(({ url, name, desc }, index) => (
             <div
