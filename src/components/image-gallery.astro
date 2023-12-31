@@ -4,12 +4,13 @@ import Img from "./img.astro";
 import { ArrowLeft, ArrowRight } from "lucide-astro";
 
 interface Props {
-  location: "projects";
+  location: "write-ups" | "projects";
   innerPath?: string;
   imgs: { src: string; alt: string }[];
+  imgHeight?: number;
 }
 
-const { location, innerPath, imgs } = Astro.props;
+const { location, innerPath, imgs, imgHeight } = Astro.props;
 
 let images: Record<
   string,
@@ -24,6 +25,13 @@ let prefix: string;
  * @see https://github.com/vitejs/vite/issues/5478#issuecomment-955117892
  */
 switch (location) {
+  case "write-ups":
+    images = import.meta.glob<{ default: ImageMetadata }>(
+      "/src/content/write-ups/**/*.{jpeg,jpg,png,gif}",
+    );
+    prefix = "/src/content/write-ups";
+    break;
+
   case "projects":
     images = import.meta.glob<{ default: ImageMetadata }>(
       "/src/content/projects/**/*.{jpeg,jpg,png,gif}",
@@ -87,7 +95,8 @@ switch (location) {
           <Img
             src={importImg()}
             alt={alt}
-            className="snap-center border-4 border-sweater-8 sm:border-none"
+            className="snap-center border-4 border-sweater-8 sm:border-none object-cover"
+            style={imgHeight ? { maxHeight: `${imgHeight}px`, width: "auto" } : undefined}
           />
         );
       })
@@ -110,7 +119,7 @@ switch (location) {
       const nextBtn = this.querySelector("#next");
       nextBtn!.addEventListener("click", () => {
         const width = imgs.item(currIndex)!.getBoundingClientRect().width;
-        container!.scrollLeft += width;
+        container!.scrollLeft += width * 0.7;
 
         if (currIndex !== imgs.length - 1) {
           currIndex += 1;
@@ -122,7 +131,7 @@ switch (location) {
       const prevBtn = this.querySelector("#prev");
       prevBtn!.addEventListener("click", () => {
         const width = imgs.item(currIndex)!.getBoundingClientRect().width;
-        container!.scrollLeft -= width;
+        container!.scrollLeft -= width * 0.7;
 
         if (currIndex !== 0) {
           currIndex -= 1;

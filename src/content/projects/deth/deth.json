@@ -1,0 +1,29 @@
+{
+  "title": "deth",
+  "link": {
+    "url": "https://github.com/geant04/deth",
+    "text": "Download on GitHub"
+  },
+  "blurb": "Top down roguelite shooter made in Unity. Survive as many rounds as possible! Made in 24 hours for UPGRADE's Game Jam! Worked in a team of three. I did the inventory system, UI, and textures.",
+  "date": "2023-10-29",
+  "imgs": [
+    {
+      "src": "deth-homescreen.png",
+      "alt": "Main menu of our game. \"Death\" is spelled out using tiles."
+    },
+    {
+      "src": "deth-in-game-1.png",
+      "alt": "A mine is rapidly homing in on the player."
+    },
+    {
+      "src": "deth-in-game-2.png",
+      "alt": "A turret is shooting rapid bullets at the player."
+    }
+  ],
+  "tags": [
+    "Unity",
+    "C#",
+    "Photoshop"
+  ],
+  "order": 2
+}
