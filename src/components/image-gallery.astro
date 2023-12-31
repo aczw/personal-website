@@ -119,7 +119,7 @@ switch (location) {
       const nextBtn = this.querySelector("#next");
       nextBtn!.addEventListener("click", () => {
         const width = imgs.item(currIndex)!.getBoundingClientRect().width;
-        container!.scrollLeft += width;
+        container!.scrollLeft += width * 0.7;
 
         if (currIndex !== imgs.length - 1) {
           currIndex += 1;
@@ -131,7 +131,7 @@ switch (location) {
       const prevBtn = this.querySelector("#prev");
       prevBtn!.addEventListener("click", () => {
         const width = imgs.item(currIndex)!.getBoundingClientRect().width;
-        container!.scrollLeft -= width;
+        container!.scrollLeft -= width * 0.7;
 
         if (currIndex !== 0) {
           currIndex -= 1;
