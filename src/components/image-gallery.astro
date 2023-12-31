@@ -7,10 +7,10 @@ interface Props {
   location: "write-ups" | "projects";
   innerPath?: string;
   imgs: { src: string; alt: string }[];
-  imgWidth?: number;
+  imgHeight?: number;
 }
 
-const { location, innerPath, imgs, imgWidth } = Astro.props;
+const { location, innerPath, imgs, imgHeight } = Astro.props;
 
 let images: Record<
   string,
@@ -96,7 +96,7 @@ switch (location) {
             src={importImg()}
             alt={alt}
             className="snap-center border-4 border-sweater-8 sm:border-none"
-            style={imgWidth ? { width: `${imgWidth}px` } : undefined}
+            style={imgHeight ? { height: `${imgHeight}px`, width: "auto" } : undefined}
           />
         );
       })

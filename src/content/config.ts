@@ -40,7 +40,8 @@ const projects = defineCollection({
       src: z.string(),
       alt: z.string()
     })),
-    tags: z.array(z.string())
+    tags: z.array(z.string()),
+    order: z.number().min(1)
   })
 })
 

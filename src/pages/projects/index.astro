@@ -33,6 +33,7 @@ const writeUps = await getCollection("write-ups");
 writeUps.sort((a, b) => a.data.order - b.data.order);
 
 const projects = await getCollection("projects");
+projects.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <PrimitiveLayout
@@ -116,7 +117,7 @@ const projects = await getCollection("projects");
                   location={collection}
                   innerPath={innerPath}
                   imgs={data.imgs}
-                  imgWidth={310}
+                  imgHeight={260}
                 />
 
                 <p>{data.blurb}</p>

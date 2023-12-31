@@ -1,0 +1,24 @@
+{
+  "title": "3D Rasterizer",
+  "blurb": "CPU-based OBJ file renderer written in C++. Uses Qt to render to a 512x512 image. Supports antialiasing up to 16x, and two shading models (Lambertian, Blinn-Phong).",
+  "date": "2023-09-29",
+  "imgs": [
+    {
+      "src": "wahoo-normal.png",
+      "alt": "Mario OBJ file from Super Smash Bros. Brawl is rendered to the viewport."
+    },
+    {
+      "src": "wahoo-antialiasing.png",
+      "alt": "Mario rendered with 9x antialiasing."
+    },
+    {
+      "src": "wahoo-blinn-phong.png",
+      "alt": "Mario rendered with Blinn-Phong lighting and 9x antialiasing."
+    }
+  ],
+  "tags": [
+    "C++",
+    "Qt"
+  ],
+  "order": 2
+}
