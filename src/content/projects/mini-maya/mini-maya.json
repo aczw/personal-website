@@ -1,11 +1,27 @@
 {
   "title": "Mini Maya",
   "blurb": "Simple OBJ mesh editor, inspired by Maya. Uses a half-edge data structure under the hood and supports Catmull-Clark subdivision, face triangulation, edge splitting, skinning via joint skeletons, and more.",
-  "date": "2023-11-01",
+  "date": "2023-11-15",
   "imgs": [
     {
       "src": "mini-maya-cow.png",
       "alt": "A multicolored cow mesh is shown in the viewport. It was imported from an OBJ file."
+    },
+    {
+      "src": "cube-components-display.png",
+      "alt": "Cube has been triangulated on one of its faces. A vertex, half-edge, and face are selected."
+    },
+    {
+      "src": "mini-maya-cow-joint-skeleton.png",
+      "alt": "The cow has been skinned with a skeleton. The head joint is selected."
+    },
+    {
+      "src": "catmull-clark-subdivision.png",
+      "alt": "Cube has been subdivided twice."
+    },
+    {
+      "src": "mesh-deformation.png",
+      "alt": "The cow is deformed at the head and right foot."
     }
   ],
   "tags": [
