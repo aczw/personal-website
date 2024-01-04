@@ -3,8 +3,6 @@
  * @see https://web.dev/patterns/web-vitals-patterns/video/video-gif
  */
 
-import { cn } from "@/utils/cn";
-
 interface Props {
   className?: string;
 }
@@ -17,7 +15,7 @@ const { className } = Astro.props;
   loop
   muted
   playsinline
-  class={cn("rounded-xl bg-sweater-9", className)}
+  class:list={["rounded-xl bg-sweater-9", className]}
 >
   <slot />
 </video>

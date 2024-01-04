@@ -10,7 +10,7 @@ import Ul from "@/components/mdx/ul.astro";
 import MainLayout from "@/layouts/main-layout.astro";
 import PrimitiveLayout from "@/layouts/primitive-layout.astro";
 import { getCollection } from "astro:content";
-import { Calendar, ExternalLink, Flag, Users, Wrench } from "lucide-astro";
+import { Calendar, Flag, Link2, Users, Wrench } from "lucide-astro";
 
 export async function getStaticPaths() {
   const projectEntries = await getCollection("write-ups");
@@ -51,7 +51,7 @@ const title = meta + data.title;
             size={16}
             class="mr-1.5"
           />
-           Completed on
+          Completed on
         </p>
         <p class="text-sweater-3">
           {
@@ -68,7 +68,7 @@ const title = meta + data.title;
             size={16}
             class="mr-1.5"
           />
-           Built with
+          Built with
         </p>
         <p class="text-sweater-3">{data.tags.join(", ")}</p>
       </div>
@@ -92,7 +92,7 @@ const title = meta + data.title;
             size={16}
             class="mr-1.5"
           />
-           Responsible for
+          Responsible for
         </p>
         <p class="text-sweater-3">{data.role.join(", ")}</p>
       </div>
@@ -100,7 +100,7 @@ const title = meta + data.title;
         data.link ? (
           <div class="col-span-1">
             <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
-              <ExternalLink
+              <Link2
                 size={16}
                 class="mr-1.5"
               />
@@ -108,8 +108,7 @@ const title = meta + data.title;
             </p>
             <Link
               href={data.link.url}
-              newTab
-              icon={false}
+              target="_blank"
             >
               {data.link.url}
             </Link>
@@ -129,7 +128,9 @@ const title = meta + data.title;
         </div>
       ) : (
         <article class="animate-fade space-y-5 leading-normal [--delay:225ms]">
-          <Content components={{ h2: H2, h3: H3, ul: Ul, li: Li, del: Del, blockquote: Aside }} />
+          <Content
+            components={{ h2: H2, h3: H3, ul: Ul, li: Li, del: Del, blockquote: Aside, a: Link }}
+          />
         </article>
       )
     }
