@@ -1,1 +1,9 @@
-<del class="cursor-not-allowed text-sweater-6 line-through"><slot /></del>
+---
+const props = Astro.props;
+---
+
+<del
+  class="cursor-not-allowed text-sweater-6 line-through"
+  {...props}
+  ><slot /></del
+>

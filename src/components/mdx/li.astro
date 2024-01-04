@@ -1,1 +1,10 @@
-<li class="pl-3"><slot /></li>
+---
+const props = Astro.props;
+---
+
+<li
+  class="pl-3"
+  {...props}
+>
+  <slot />
+</li>
