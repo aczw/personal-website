@@ -1,38 +1,41 @@
 ---
-import Link from "@/components/link.astro";
 import { Github, Linkedin, Mail } from "lucide-astro";
-
-const iconSize = 22;
 ---
 
 <footer class="mx-auto max-w-content bg-sweater-10 px-4 pb-4 content:pb-10">
   <span class="flex items-center justify-between border-t-2 border-sweater-9 pt-4">
     <div class="flex items-center space-x-4">
-      <Link
+      <a
         href="https://www.linkedin.com/in/zwcharl/"
+        target="_blank"
         title="LinkedIn"
-        newTab
-        icon={false}
       >
-        <Linkedin size={iconSize} />
-      </Link>
+        <Linkedin
+          size={22}
+          class="stroke-sweater-3 transition-colors hover:stroke-sweater-1"
+        />
+      </a>
 
-      <Link
+      <a
         href="https://www.github.com/aczw"
+        target="_blank"
         title="GitHub"
-        newTab
-        icon={false}
       >
-        <Github size={iconSize} />
-      </Link>
+        <Github
+          size={22}
+          class="stroke-sweater-3 transition-colors hover:stroke-sweater-1"
+        />
+      </a>
 
-      <Link
+      <a
         href="mailto:zwcharl@gmail.com"
         title="Email"
-        icon={false}
       >
-        <Mail size={iconSize} />
-      </Link>
+        <Mail
+          size={22}
+          class="stroke-sweater-3 transition-colors hover:stroke-sweater-1"
+        />
+      </a>
     </div>
     <p
       aria-hidden="true"
@@ -41,7 +44,7 @@ const iconSize = 22;
       <span
         id="scroll"
         class="italic text-sweater-8 transition-colors"
-      ></span> Dec 2023
+      ></span> Jan 2024
     </p>
   </span>
 </footer>

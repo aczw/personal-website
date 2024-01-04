@@ -24,8 +24,6 @@ published: true
 slug: www
 ---
 
-import Img from "@/components/img.astro";
-import Link from "@/components/link.astro";
 import ImageGallery from "@/components/image-gallery.astro";
 
 Welcome! ♪(´▽｀)
@@ -38,38 +36,31 @@ This website has been a 7 month long ordeal that's seen a domain change, an enti
 
 I can split the development of my site into three versions: `v1`, `v2`, and the current iteration, `v3`. Version 1 was hosted on an entirely different URL, and looked like this:
 
-<Img
-  src={import("./aczw-dev.png")}
-  alt="Screenshot of the first version of my website. Colors are a bit brighter and everything is much, much bigger."
-/>
+![Screenshot of the first version of my website. Colors are a bit brighter and everything is much, much bigger.](./aczw-dev.png)
 
-> It's still alive at <Link href="https://old.charl.sh" newTab>old.charl.sh</Link>, by the way. Why am I still keeping it alive? I dunno, I'm still attached to it. It has sentimental value. It's like, `v1`, you know.
+> It's still alive at [old.charl.sh](https://old.charl.sh), by the way. Why am I still keeping it alive? I dunno, I'm still attached to it. It has sentimental value. It's like, `v1`, you know.
 
 It has a lot of design elements that persist to this day: the purple color scheme, the font choice, the obsession to advertise my Last.fm profile. It feels like I laid the groundwork for what's to come.
 
 There were two main reasons I wanted to start over. The first is that I simply didn't like the design. I had sketched out the basic layout and colors beforehand, but the final proportions were way off. Why is the text so gigantic?? The color palette also didn't translate well.
 
-<Img
-  src={import("./v1-procreate.png")}
-  alt="Sketch of a dialog box with some text and a button in two color schemes. Drawn in Procreate."
-/>
+![Sketch of a dialog box with some text and a button in two color schemes. Drawn in Procreate.](./v1-procreate.png)
 
 > When I call my sketches basic, I mean it.
 
 The layout started making less sense. The sticky sidebar achieved its goal of displaying my resume and socials, but it really didn't need that much _space_. The card system on the right felt restricting as well. What if I wanted some content that couldn't neatly fit?
 
-The second reason is the tech stack I used. I had recently stumbled upon <Link href="https://twitter.com/t3dotgg" newTab>Theo</Link> and decided to use <Link href="https://create.t3.gg" newTab>Create T3 App</Link> to jumpstart my site. I realize now that it did not fit my needs _at all_. I completely ignored its helpful integrations with tRPC, Prisma, and Auth.js.
+The second reason is the tech stack I used. I had recently stumbled upon [Theo](https://twitter.com/t3dotgg) and decided to use [`create-t3-app`](https://create.t3.gg) to jumpstart my site. I realize now that it did not fit my needs _at all_. I completely ignored its helpful integrations with tRPC, Prisma, and Auth.js.
 
 If I had only wanted Next.js, I should've used `create-next-app`. But even that felt overkill for my use case; I wasn't trying to build a full-stack app or anything. So I started looking for something else...
 
 ## Why Astro
 
-{/* prettier-ignore */}
-<Link href="https://astro.build/" newTab>Astro</Link> advertises itself as a framework that focuses on content-first websites. That immediately caught my eye. And, the more I read, the more I was convinced. It checked all the boxes in my head.
+[Astro](https://astro.build/) advertises itself as a framework that focuses on content-first websites. That immediately caught my eye. And, the more I read, the more I was convinced. It checked all the boxes in my head.
 
 - Reusable components with JSX-like syntax. It feels like vanilla HTML more than anything.
 - First-class support for generating content with Markdown and MDX
-- Integrations with UI frameworks like React, meaning I could gradually learn and transfer everything over. Related, but this also enables cool features like <Link href="https://docs.astro.build/en/concepts/islands/" newTab>component islands</Link>.
+- Integrations with UI frameworks like React, meaning I could gradually learn and transfer everything over. Related, but this also enables cool features like [component islands](https://docs.astro.build/en/concepts/islands/).
 - Statically generated pages by default, with SSR as an option
 
 I wanted nothing more, nothing less. While I could have stuck with Next.js, I liked Astro's approach more. It felt like it was designed exactly for what I wanted to do.
@@ -78,17 +69,11 @@ I wanted nothing more, nothing less. While I could have stuck with Next.js, I li
 
 Okay cool, I've decided on what to build `v2` with. Now I need to tackle the second issue: actually designing the new layout.
 
-<Img
-  src={import("./v2-figma.png")}
-  alt="A Figma file containing many different iterations of what my site could look like."
-/>
+![A Figma file containing many different iterations of what my site could look like.](./v2-figma.png)
 
-I spent a good while experimenting with different homepage layouts, playing with the color and text. Going in, I was heavily inspired by Google's <Link href="https://m3.material.io/" newTab>Material You</Link> design language, with its odd shapes, large padding, and rounded corners.
+I spent a good while experimenting with different homepage layouts, playing with the color and text. Going in, I was heavily inspired by Google's [Material You](https://m3.material.io/) design language, with its odd shapes, large padding, and rounded corners.
 
-<Img
-  src={import("./color-palette.png")}
-  alt="The new purple color palette, now in 10 different shades. There also exists a green palette."
-/>
+![The new purple color palette, now in 10 different shades. There also exists a green palette.](./color-palette.png)
 
 The original `v1` color palette used six shades. As I was building `v2`, I felt severely limited by the few choices I had. Therefore `v2` uses a range of 10 shades. I also chose a purple that felt less... pink.
 
@@ -118,16 +103,13 @@ I was really satisfied with how it turned out. I absolutely love the new shades 
 
 ### The bad
 
-I fetched my music data in an _extremely_ insecure method. To make requests to the Last.fm API, I brought in React and <Link href="https://swr.vercel.app/" newTab>SWR</Link> for the job. For this React component to access my API key from the client, I chose to make it publicly available by prefixing it with `PUBLIC_`. Theoretically, anyone visiting my site could do a `Ctrl+F` search to find it. Actually, I'll show you.
+I fetched my music data in an _extremely_ insecure method. To make requests to the Last.fm API, I brought in React and [SWR](https://swr.vercel.app/) for the job. For this React component to access my API key from the client, I chose to make it publicly available by prefixing it with `PUBLIC_`. Theoretically, anyone visiting my site could do a `Ctrl+F` search to find it. Actually, I'll show you.
 
-<Img
-  src={import("./v2-api.png")}
-  alt="The inspector is open. I searched for 'api' in the JavaScript code and immediately found my secret API key."
-/>
+![The inspector is open. I searched for 'api' in the JavaScript code and immediately found my secret API key.](./v2-api.png)
 
 This is more of a principle thing than anything; I wasn't seriously expecting anyone to steal my API key and use it. Still, it wasn't exactly _good_.
 
-I also wasn't too happy pulling in an entire UI framework and fetching library just to display my most recently listened to music. Astro sent all of this unnecessary JavaScript to the client, increasing my site footprint more than it needs to be. I should've used Astro's built-in features for <Link href="https://docs.astro.build/en/guides/data-fetching/" newTab>data fetching</Link> instead.
+I also wasn't too happy pulling in an entire UI framework and fetching library just to display my most recently listened to music. Astro sent all of this unnecessary JavaScript to the client, increasing my site footprint more than it needs to be. I should've used Astro's built-in features for [data fetching](https://docs.astro.build/en/guides/data-fetching/) instead.
 
 My final gripe is that the unique homepage design collapses weirdly on smaller screens. I spent a really long time optimizing it, and in the end basically had to redesign for mobile. This meant I had to maintain two completely different layouts for no real reason.
 
@@ -135,7 +117,7 @@ I needed to rethink how I approached this. This time, I seeked some more outside
 
 ## Rethinking what I want
 
-I sought inspiration from others. Some ideas came from fellow DMD people, like <Link href="https://www.elyssachou.com/" newTab>elyssachou.com</Link> and <Link href="https://tlshaw.me/" newTab>tlshaw.me</Link>. Some came from sites I discovered, like <Link href="https://www.nexxel.dev/" newTab>nexxel.dev</Link>, <Link href="https://nezu.world/" newTab>nezu.world</Link>, and <Link href="https://paco.me/" newTab>paco.me</Link>. Udara Jay's post about <Link href="https://udara.io/reinventing-this-blog" newTab>reinventing their blog</Link> resonated with me as well.
+I sought inspiration from others. Some ideas came from fellow DMD people, like [Elyssa Chou](https://www.elyssachou.com/) and [Thomas Shaw](https://tlshaw.me/). Some came from sites I discovered, like [nexxel.dev](https://www.nexxel.dev/), [nezu.world](https://nezu.world/), and [paco.me](https://paco.me/). Udara Jay's post about [reinventing their blog](https://udara.io/reinventing-this-blog) resonated with me as well.
 
 I realize now that with each iteration, I stripped away more and more stuff, instead focusing on what I _truly wanted_ people to see first.
 
@@ -150,7 +132,7 @@ I keep everything at a fixed width now (750px, to be exact). This was an intenti
 
 Oh, and everything is now 100% built with Astro components. No more React dependency! This means I also had to update the way I fetch data, which is now handled much more securely.
 
-First, I enabled SSR for my homepage, the place where the fetched data is displayed. Since the HTML is now rendered on-demand instead of at build time, I can just fetch data in the <Link href="https://docs.astro.build/en/core-concepts/astro-components/#the-component-script" newTab>component script</Link> to get the latest information. I also made it a separate component to take advantage of <Link href="https://docs.astro.build/en/guides/server-side-rendering/#html-streaming" newTab>streaming</Link>.
+First, I enabled SSR for my homepage, the place where the fetched data is displayed. Since the HTML is now rendered on-demand instead of at build time, I can just fetch data in the [component script](https://docs.astro.build/en/core-concepts/astro-components/#the-component-script) to get the latest information. I also made it a separate component to take advantage of [streaming](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming).
 
 My `<LastFm />` component basically looks like this:
 
@@ -177,11 +159,9 @@ const recentTracks = await getRecentTracks();
 
 I use Zod to parse the data I get back from Last.fm, so I can guarantee its shape and get some nice type hinting at the same time.
 
-> In my real code I wrote the fetching stuff in a separate file. You can find the <Link href="https://github.com/aczw/personal-website/blob/main/src/components/lastfm.astro" newTab>component here</Link> and the <Link href="https://github.com/aczw/personal-website/blob/main/src/utils/lastfm.ts" newTab>fetching and validation here</Link>.
-
 My `LASTFM_API_KEY` never leaves the server, because this code is only run on the server. While I could do this securely with SWR, I actually prefer this way more. It's a simple native `fetch` call and that's it!
 
-I've barely mentioned <Link href="https://docs.astro.build/en/guides/content-collections/" newTab>Content Collections</Link>, which is Astro's solution for managing and querying the content you write. This is also new in `v3`. The current page you're looking at exists as a MDX file in the specialized `content/` directory, and is rendered to HTML automatically.
+I've barely mentioned [Content Collections](https://docs.astro.build/en/guides/content-collections/), which is Astro's solution for managing and querying the content you write. This is also new in `v3`. The current page you're looking at exists as a MDX file in the specialized `content/` directory, and is rendered to HTML automatically.
 
 Clearly, I really like Astro. Between `v2` and `v3`, I've really come around to embrace it.
 
@@ -197,4 +177,4 @@ Thanks for reading. Lemme know what you think about the website.
 
 This site was built with Astro and uses no external UI frameworks. It's styled using Tailwind, with a few `<style>` tags here and there. It's currently deployed on Vercel's free plan, but uses Cloudflare DNS. All the prototyping was done in Procreate and Figma.
 
-Primary type is <Link href="https://en.wikipedia.org/wiki/Atkinson_Hyperlegible" newTab>Atkinson Hyperlegible</Link>. Code is written in <Link href="https://github.com/subframe7536/Maple-font" newTab>Maple Mono</Link>. Icons are from <Link href="https://lucide.dev/" newTab>Lucide</Link>.
+Primary type is [Atkinson Hyperlegible](https://en.wikipedia.org/wiki/Atkinson_Hyperlegible). Code is written in [Maple Mono](https://github.com/subframe7536/Maple-font). Icons are from [Lucide](https://lucide.dev/).

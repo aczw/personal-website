@@ -1,10 +1,9 @@
 ---
-import { cn } from "@/utils/cn";
 import type { ImageMetadata } from "astro";
 import type { HTMLAttributes } from "astro/types";
 import { Image } from "astro:assets";
 
-interface Props extends Omit<HTMLAttributes<"img">, "src" | "alt"> {
+interface Props extends Omit<HTMLAttributes<"img">, "src" | "alt" | "class"> {
   src: ImageMetadata | Promise<any>;
   alt: string;
   className?: string;
@@ -16,6 +15,6 @@ const { src, alt, className, style } = Astro.props;
 <Image
   src={src}
   alt={alt}
-  class={cn("rounded-xl bg-sweater-9", className)}
+  class:list={["rounded-xl bg-sweater-9", className]}
   style={style}
 />

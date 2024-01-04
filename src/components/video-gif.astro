@@ -1,0 +1,29 @@
+---
+/**
+ * @see https://web.dev/patterns/web-vitals-patterns/video/video-gif
+ */
+
+interface Props {
+  className?: string;
+  vids: { src: string; type: string }[];
+}
+
+const { className, vids } = Astro.props;
+---
+
+<video
+  autoplay
+  loop
+  muted
+  playsinline
+  class:list={["rounded-xl bg-sweater-9", className]}
+>
+  {
+    vids.map(({ src, type }) => (
+      <source
+        src={src}
+        type={type}
+      />
+    ))
+  }
+</video>
