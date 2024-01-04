@@ -23,7 +23,7 @@ published: true
 slug: rcw
 ---
 
-import Gif from "@/components/gif.astro";
+import VideoGif from "@/components/video-gif.astro";
 
 Random Color Words (RCW) is a simple endless minigame about selecting the correct pair of colors and words. They're also randomly generated. Crazy name, I know.
 
@@ -53,12 +53,7 @@ RCW is an endless, fast-paced minigame about getting the highest score. I was th
 
 I also liked the button hover effect in [The Battle Cats](https://battlecats.club/en/series/battlecats/), which flashed bright yellow and magenta. Here, I tried to recreate it in Figma.
 
-<Gif>
-  <source
-    src="/projects/rcw/flashing-btns-figma.mp4"
-    type="video/mp4"
-  ></source>
-</Gif>
+<VideoGif vids={[{ src: "/projects/rcw/flashing-btns-figma.mp4", type: "video/mp4" }]} />
 
 I use both the button design and hover effect in RCW. The nice thing about this art style was that it could be consistently applied everywhere, not just buttons.
 
@@ -105,12 +100,7 @@ cb.uvRect = new Rect(
 
 The other thing I'm really happy about are the button animations. When the instructions or credits button are activated, the same button is used to go back to the start screen.
 
-<Gif>
-  <source
-    src="/projects/rcw/main-menu-ani-btns.mp4"
-    type="video/mp4"
-  ></source>
-</Gif>
+<VideoGif vids={[{ src: "/projects/rcw/main-menu-ani-btns.mp4", type: "video/mp4" }]} />
 
 The "Go back" text slides out, and the outside border becomes a panel for the text to exist in. I spent ~~too much~~ some time getting it to feel just right. I would like to thank this [easings cheat sheet](https://easings.net/) for providing copy-and-paste animation curves.
 

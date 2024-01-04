@@ -5,9 +5,10 @@
 
 interface Props {
   className?: string;
+  vids: { src: string; type: string }[];
 }
 
-const { className } = Astro.props;
+const { className, vids } = Astro.props;
 ---
 
 <video
@@ -17,5 +18,12 @@ const { className } = Astro.props;
   playsinline
   class:list={["rounded-xl bg-sweater-9", className]}
 >
-  <slot />
+  {
+    vids.map(({ src, type }) => (
+      <source
+        src={src}
+        type={type}
+      />
+    ))
+  }
 </video>
