@@ -134,7 +134,16 @@ const title = meta + data.title;
       ) : (
         <article class="animate-fade space-y-5 leading-normal [--delay:225ms]">
           <Content
-            components={{ h2: H2, h3: H3, ul: Ul, li: Li, del: Del, blockquote: Aside, a: Anchor }}
+            components={{
+              h2: H2,
+              h3: H3,
+              ul: Ul,
+              li: Li,
+              del: Del,
+              blockquote: Aside,
+              a: Anchor,
+              img: Img,
+            }}
           />
         </article>
       )

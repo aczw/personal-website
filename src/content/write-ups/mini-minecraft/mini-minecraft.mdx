@@ -23,7 +23,6 @@ slug: mini-minecraft
 ---
 
 import { Vimeo } from "@astro-community/astro-embed-vimeo";
-import Img from "@/components/img.astro";
 
 For the final project of our computer graphics class, I worked in a team of three to write a 3D voxel engine. While we all wrote code, I focused primarily on rendering optimizations, GPU programming, and GUI.
 
@@ -89,10 +88,7 @@ Chunking our terrain provides a number of benefits when we draw our blocks. For 
 
 A block has six faces. Each face has two triangles. If we render every face, of every non-`EMPTY` block, of every chunk, every single frame, our GPU would catch on fire. There's no point in rendering faces that are hidden by another block. The player camera never sees it.
 
-<Img
-  src={import("./face-culling.png")}
-  alt="Two blocks are right next to each other. The face in between does not need to be rendered."
-/>
+![Two blocks are right next to each other. The face in between does not need to be rendered.](./face-culling.png)
 
 Instead, we first iterate over every block in the chunk. For each non-`EMPTY` block, we check its six neighbors, and only render a face if its neighbor is `EMPTY`.
 
@@ -117,10 +113,7 @@ private:
 
 If you were to fly below the ground, it now looks "hollowed out." What you're seeing in the picture below are what our caves look like... on the outside! The player is technically inside solid `STONE` right now, it's just not being drawn.
 
-<Img
-  src={import("./hollowed-caves.png")}
-  alt="Since we're not rendering any blocks inside the terrain, we can see snake-like caves underground."
-/>
+![Since we're not rendering any blocks inside the terrain, we can see snake-like caves underground.](./hollowed-caves.png)
 
 **I cannot emphasize how much this improves performance.** On my laptop, my framerate basically tripled. Our game would feel horrible to play without these optimizations.
 
@@ -143,10 +136,7 @@ int stride = 4 + 4 + 2 + 1 /* + additional attributes */;
 
 The ["stride" parameter](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml) in `glVertexAttribPointer` was difficult to wrap my head around. All it does is tell the GPU when the data for the next vertex starts. To the GPU, our VBO is just a really, really long line of floats. So, we must also specify the size of each attribute.
 
-<Img
-  src={import("./interleaved-vbo.png")}
-  alt="In a stream of floats, we specify the first four to be for position, the next four to be for normals, and so on."
-/>
+![In a stream of floats, we specify the first four to be for position, the next four to be for normals, and so on.](./interleaved-vbo.png)
 
 For example, `position` takes up four floats, while `anim` only uses one.
 
@@ -154,10 +144,7 @@ For example, `position` takes up four floats, while `anim` only uses one.
 
 All the block textures in our game live in a 256x256 texture sprite. Each block face texture is 16x16 pixels, so we can refer to specific textures using a coordinate system. Here, the dirt texture's lower-left corner is located at (2, 1) on our imaginary grid.
 
-<Img
-  src={import("./block-uv.png")}
-  alt="A dirt face texture at coordinate (2, 1) corresponds to (2/16, 1/16) in UV coordinates."
-/>
+![A dirt face texture at coordinate (2, 1) corresponds to (2/16, 1/16) in UV coordinates.](./block-uv.png)
 
 Furthermore, we map a block type to the texture coordinate for each of its six faces.
 
@@ -198,10 +185,7 @@ This solves our issue because transparent blocks now have the correct fragment c
 
 If we fly really high up into the air, you'll see a circular fog that surrounds the player and slowly fades blocks into the distance.
 
-<Img
-  src={import("./distance-fog.png")}
-  alt="Blocks slowly fade into the distance in a circular radius around the player."
-/>
+![Blocks slowly fade into the distance in a circular radius around the player.](./distance-fog.png)
 
 In the chunk fragment shader, I pass in the player's world position as a `uniform` and the fragment's world position as an `in` from the vertex shader. I find the distance between these two and divide by the max distance to get a value between 0.0-1.0.
 
@@ -209,26 +193,17 @@ This is used to lerp between the original block color and the sampled sky color.
 
 So, what is this max fog distance? At all times, we only render a specific number of chunks around the player. A 12x12 square of chunks, to be exact. The player is always at the center, so the max distance (which is the circle radius) is at most 96 blocks.
 
-<Img
-  src={import("./distance-fog-diagram.png")}
-  alt="Diagram depicting the fog starting roughly around 96 blocks around the player in all directions."
-/>
+![Diagram depicting the fog starting roughly around 96 blocks around the player in all directions.](./distance-fog-diagram.png)
 
 The distance fog now plays a second role: to stop the player from seeing chunks appear and disappear as they move. But, it's worth it to implement for aesthetics alone, in my opinion.
 
-<Img
-  src={import("./distance-fog-pretty.png")}
-  alt="A beautiful sunrise over the desert."
-/>
+![A beautiful sunrise over the desert.](./distance-fog-pretty.png)
 
 ## Day/night cycle, celestial objects
 
 Our engine features a day and night cycle. We see the sun during the day, and the moon and stars at night. Clouds are always visible. In between, sunrises and sunsets transition us nicely.
 
-<Img
-  src={import("./day-night-cycle.png")}
-  alt="A diagram depicting what percentage of a day we spend in day, in night, and how long it takes to transition."
-/>
+![A diagram depicting what percentage of a day we spend in day, in night, and how long it takes to transition.](./day-night-cycle.png)
 
 During development, I religiously followed the diagram above. It defines a single day as a range from 0.0-1.0, and specifies exact durations for transitions.
 
@@ -245,10 +220,7 @@ The skybox is not a cubemap. We're actually rendering to a screen space quad. To
 
 We're essentially tracing out a giant sphere around the player, where the ray spans the sphere radius. We map this position to a UV coordinate of the quad, which decides what color is painted.
 
-<Img
-  src={import("./skybox-uv.png")}
-  alt="The sky is split into green, red, and black."
-/>
+![The sky is split into green, red, and black.](./skybox-uv.png)
 
 In the picture above, I'm mapping the ray to a color. What we're seeing makes sense. If we look along the x-axis (to the right), we get lots of red. If we look along the y-axis (up), we get lots of green. If we look behind us, we get black. Blue can also be seen, just not here.
 
@@ -287,10 +259,7 @@ Each individual star is a tiny quad that I rotate and scale by a random amount. 
 
 A giant quad floats above the player at all times. On it, I sample a portion of a large texture that contains all the possible clouds in the world:
 
-<Img
-  src={import("./clouds-ps.png")}
-  alt="Cloud texture is opened in Photoshop."
-/>
+![Cloud texture is opened in Photoshop.](./clouds-ps.png)
 
 This was created in Photoshop. I used a noise function as the base, reduced the number of colors, and deleted the rest to make somewhat realistic-looking swirlies.
 
@@ -391,10 +360,7 @@ void UI::render_ui() {
 
 We're allowed to define our UI element positions on a relative 0.0-1.0 scale because the `UI` class takes care of transforming it into actual positions based on our current working screen resolution. Furthermore, the x-values are offset by a margin that centers everything.
 
-<Img
-  src={import("./ui-scaling.png")}
-  alt="Diagram showing how the UI is scaled up and doesn't matter what screen resolution we are."
-/>
+![Diagram showing how the UI is scaled up and doesn't matter what screen resolution we are.](./ui-scaling.png)
 
 I make a number of assumptions. First, that the screen width is greater than the height. Also, that the aspect ratio is always greater than 1. In addition, UI elements only exist in a square in the middle of the screen. However, for our rudimentary crosshair, hotbar, and text, this is more than enough to scale well and work across all screen resolutions.
 
@@ -404,10 +370,7 @@ The hotbar naturally uses `UI` as well. To render the currently active slot, I a
 
 Picture this. It's 4 AM and there are only a few hours left before the due date. Everything else is done but you don't want to sleep yet. You decide to go all out on one last thing, or fall asleep trying. End result? Very, very basic text rendering.
 
-<Img
-  src={import("./font-ps.png")}
-  alt="The font bitmap file is open in Photoshop."
-/>
+![The font bitmap file is open in Photoshop.](./font-ps.png)
 
 The idea is simple: map a basic set of characters to UV coordinates on a texture sprite that contains the characters as a bitmap. This is not a new idea ([far, far from it](https://en.wikipedia.org/wiki/Computer_font#Bitmap_fonts)) and there are probably thousands of implementations available online, but
 
@@ -435,10 +398,7 @@ Just increment `c` to get to the next character! Our `glm::ivec`s correspond to 
 
 Hopefully you can see how I could extend this system to add information about kerning, offsets, etc. Too bad I ran out of time though. I was able to, however, add an in-game debug mode that shows the player's current position, as well as the current chunk:
 
-<Img
-  src={import("./debug-mode.png")}
-  alt="Debug mode is turned on, and shows the current player position as (32, 158, 32) and chunk coordinate as (32, 32)."
-/>
+![Debug mode is turned on, and shows the current player position as (32, 158, 32) and chunk coordinate as (32, 32).](./debug-mode.png)
 
 This helped my teammates easily share cool structures they found for our showcase reel: just take a screenshot! I thought this was a great way to immediately start using my text system.
 

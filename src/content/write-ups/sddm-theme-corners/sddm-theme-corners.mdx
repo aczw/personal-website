@@ -21,7 +21,6 @@ published: true
 slug: sddm-theme-corners
 ---
 
-import Img from "@/components/img.astro";
 import Gif from "@/components/gif.astro";
 import ImageGallery from "@/components/image-gallery.astro";
 
@@ -101,10 +100,13 @@ This is where previous SDDM themes really helped me get my footing. By looking t
 
 I definitely committed some coding sins figuring out how to hook everything together. I'm particularly proud of this abomination:
 
-<Img
-  src={import("./code-abomination.png")}
-  alt="A very long line of code that uses a lot of accessors and is not commented."
-/>
+```
+Component.onCompleted: {
+  if (userPicture.enabled) {
+    userPicture.source = userWrapper.items.get(userList.currentIndex).model.icon;
+  }
+}
+```
 
 I revisited this line for the write-up, and... I have no idea what it does. I wish I left, like, a single comment. I think it updates the picture displayed when you switch users.
 
