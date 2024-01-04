@@ -1,6 +1,7 @@
 ---
 import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
+import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
 import Del from "@/components/mdx/del.astro";
 import H2 from "@/components/mdx/h2.astro";
@@ -62,6 +63,7 @@ const title = meta + data.title;
           }
         </p>
       </div>
+
       <div class="col-span-1">
         <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
           <Wrench
@@ -72,6 +74,7 @@ const title = meta + data.title;
         </p>
         <p class="text-sweater-3">{data.tags.join(", ")}</p>
       </div>
+
       {
         data.teamSize ? (
           <div class="col-span-1">
@@ -86,6 +89,7 @@ const title = meta + data.title;
           </div>
         ) : null
       }
+
       <div class="col-span-1">
         <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
           <Flag
@@ -96,6 +100,7 @@ const title = meta + data.title;
         </p>
         <p class="text-sweater-3">{data.role.join(", ")}</p>
       </div>
+
       {
         data.link ? (
           <div class="col-span-1">
@@ -129,7 +134,7 @@ const title = meta + data.title;
       ) : (
         <article class="animate-fade space-y-5 leading-normal [--delay:225ms]">
           <Content
-            components={{ h2: H2, h3: H3, ul: Ul, li: Li, del: Del, blockquote: Aside, a: Link }}
+            components={{ h2: H2, h3: H3, ul: Ul, li: Li, del: Del, blockquote: Aside, a: Anchor }}
           />
         </article>
       )

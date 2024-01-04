@@ -23,7 +23,6 @@ slug: mini-minecraft
 ---
 
 import { Vimeo } from "@astro-community/astro-embed-vimeo";
-import Link from "@/components/link.astro";
 import Img from "@/components/img.astro";
 
 For the final project of our computer graphics class, I worked in a team of three to write a 3D voxel engine. While we all wrote code, I focused primarily on rendering optimizations, GPU programming, and GUI.
@@ -82,7 +81,7 @@ private:
 };
 ```
 
-> The `glm` namespace is from the <Link href="https://github.com/g-truc/glm" newTab>GLM library</Link>, which implements vector and matrix types in an OpenGL-friendly manner.
+> The `glm` namespace is from the [GLM library](https://github.com/g-truc/glm), which implements vector and matrix types in an OpenGL-friendly manner.
 
 ## Efficient rendering, face culling
 
@@ -127,7 +126,7 @@ If you were to fly below the ground, it now looks "hollowed out." What you're se
 
 ## Texturing and block animations
 
-I render chunks using <Link href="https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-9-vbo-indexing/" newTab>indexed rendering</Link> and store all vertex attributes in a single, <Link href="https://www.khronos.org/opengl/wiki/Vertex_Specification#Interleaved_attributes" newTab>interleaved</Link> VBO. This includes UV texture information and a single "animated?" flag that I either set to 0 or 1.
+I render chunks using [indexed rendering](https://www.opengl-tutorial.org/intermediate-tutorials/tutorial-9-vbo-indexing/) and store all vertex attributes in a single, [interleaved](https://www.khronos.org/opengl/wiki/Vertex_Specification#Interleaved_attributes) VBO. This includes UV texture information and a single "animated?" flag that I either set to 0 or 1.
 
 ```cpp
 struct VertexAttrs
@@ -142,7 +141,7 @@ struct VertexAttrs
 int stride = 4 + 4 + 2 + 1 /* + additional attributes */;
 ```
 
-The <Link href="https://registry.khronos.org/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml" newTab>"stride" parameter</Link> in `glVertexAttribPointer` was difficult to wrap my head around. All it does is tell the GPU when the data for the next vertex starts. To the GPU, our VBO is just a really, really long line of floats. So, we must also specify the size of each attribute.
+The ["stride" parameter](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml) in `glVertexAttribPointer` was difficult to wrap my head around. All it does is tell the GPU when the data for the next vertex starts. To the GPU, our VBO is just a really, really long line of floats. So, we must also specify the size of each attribute.
 
 <Img
   src={import("./interleaved-vbo.png")}
@@ -206,7 +205,7 @@ If we fly really high up into the air, you'll see a circular fog that surrounds 
 
 In the chunk fragment shader, I pass in the player's world position as a `uniform` and the fragment's world position as an `in` from the vertex shader. I find the distance between these two and divide by the max distance to get a value between 0.0-1.0.
 
-This is used to lerp between the original block color and the sampled sky color. I use a nice <Link href="https://easings.net/#easeInCubic" newTab>cubic easing curve</Link> to make the fog get denser the further the block is from the player.
+This is used to lerp between the original block color and the sampled sky color. I use a nice [cubic easing curve](https://easings.net/#easeInCubic) to make the fog get denser the further the block is from the player.
 
 So, what is this max fog distance? At all times, we only render a specific number of chunks around the player. A 12x12 square of chunks, to be exact. The player is always at the center, so the max distance (which is the circle radius) is at most 96 blocks.
 
@@ -263,7 +262,7 @@ When you rotate your camera and look somewhere else, the world space position of
 
 The sun, moon, and stars are much simpler. Both the sun and moon are two quads that rotate at a fixed distance around the player. This allows them to appear "infinitely" far away.
 
-In our <Link href="https://doc.qt.io/qt-6/qopenglwidget.html#paintGL" newTab>`paintGL()`</Link>, after drawing the sun and moon and before drawing the terrain, I reset the OpenGL depth buffer. This means that they are _always_ drawn behind blocks, no matter the player's y-coordinate.
+In our [`paintGL()`]("https://doc.qt.io/qt-6/qopenglwidget.html#paintGL"), after drawing the sun and moon and before drawing the terrain, I reset the OpenGL depth buffer. This means that they are _always_ drawn behind blocks, no matter the player's y-coordinate.
 
 ```cpp
 // this is a built-in Qt function that makes it easier to communicate with OpenGL.
@@ -302,7 +301,7 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 ```
 
-This way, I can offset the UV coordinates based on the player's current world position. When the player moves forward, the UV coordinates translate "back," which gives the clouds the appearance of having been left behind. Take a look at <Link href="https://github.com/jdah/minecraft-weekend/blob/387ecb554946180094d58c57a4ee216dba506cc4/src/world/sky.c#L350C17-L350C17" newTab>jdh's implementation</Link> to get an idea of the math.
+This way, I can offset the UV coordinates based on the player's current world position. When the player moves forward, the UV coordinates translate "back," which gives the clouds the appearance of having been left behind. Take a look at [jdh's implementation](https://github.com/jdah/minecraft-weekend/blob/387ecb554946180094d58c57a4ee216dba506cc4/src/world/sky.c#L350C17-L350C17) to get an idea of the math.
 
 > I could technically calculate this on the CPU, but I'm doing this work in our cloud shader.
 
@@ -314,30 +313,10 @@ These three components are pretty simple, but with some good skybox colors, anim
 
 This section could get its own entire write-up, but there are many articles on the internet that do a much better job explaining than I ever could. I'll link some here:
 
-- <Link
-    href="https://www.reddit.com/r/gamedev/comments/2iru8i/fast_flood_fill_lighting_in_a_blocky_voxel_game/"
-    newTab
-  >
-    {"r/gamedev - Fast Flood Fill Lighting in a Blocky Voxel Game"}
-  </Link>
-- <Link
-    href="https://0fps.net/2018/02/21/voxel-lighting/"
-    newTab
-  >
-    {"0 FPS - Voxel lighting"}
-  </Link>
-- <Link
-    href="https://minecraft.wiki/w/Light#Block_light"
-    newTab
-  >
-    {"Minecraft Wiki - Light"}
-  </Link>
-- <Link
-    href="https://en.wikipedia.org/wiki/Flood_fill"
-    newTab
-  >
-    {"Wikipedia - Flood fill"}
-  </Link>
+- [r/gamedev - Fast Flood Fill Lighting in a Blocky Voxel Game](https://www.reddit.com/r/gamedev/comments/2iru8i/fast_flood_fill_lighting_in_a_blocky_voxel_game/)
+- [0 FPS - Voxel Lighting](https://0fps.net/2018/02/21/voxel-lighting/)
+- [Minecraft Wiki - Light](https://minecraft.wiki/w/Light#Block_light)
+- [Wikipedia - Flood fill](https://en.wikipedia.org/wiki/Flood_fill)
 
 In our engine, I store a 1D array for each chunk that tracks each block's light level. Just like Minecraft, our light scale ranges from 0-15.
 
@@ -430,7 +409,7 @@ Picture this. It's 4 AM and there are only a few hours left before the due date.
   alt="The font bitmap file is open in Photoshop."
 />
 
-The idea is simple: map a basic set of characters to UV coordinates on a texture sprite that contains the characters as a bitmap. This is not a new idea (<Link href="https://en.wikipedia.org/wiki/Computer_font#Bitmap_fonts" newTab>far, far from it</Link>) and there are probably thousands of implementations available online, but
+The idea is simple: map a basic set of characters to UV coordinates on a texture sprite that contains the characters as a bitmap. This is not a new idea ([far, far from it](https://en.wikipedia.org/wiki/Computer_font#Bitmap_fonts)) and there are probably thousands of implementations available online, but
 
 - this is a school project and I didn't want to bring in external libraries.
 - I was sleep-deprived and going mad.
@@ -440,7 +419,7 @@ The idea is simple: map a basic set of characters to UV coordinates on a texture
 
 The question now becomes "how do I fill this character-to-UV map in a smart way?" I mean, I only have to map 78 characters by hand, which wouldn't have been _too_ bad...
 
-No! There must exist a better way. And there does. Remember that in C++, the `char` type is really just <Link href="https://en.cppreference.com/w/cpp/language/ascii" newTab>ASCII representations</Link> of the characters. If we order the bitmap characters in ASCII order, generating the map on the fly becomes really easy:
+No! There must exist a better way. And there does. Remember that in C++, the `char` type is really just [ASCII representation](https://en.cppreference.com/w/cpp/language/ascii) of the characters. If we order the bitmap characters in ASCII order, generating the map on the fly becomes really easy:
 
 ```cpp
 std::unordered_map<char, glm::ivec2> char_uv_map;

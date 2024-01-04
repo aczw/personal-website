@@ -21,20 +21,19 @@ published: true
 slug: sddm-theme-corners
 ---
 
-import Link from "@/components/link.astro";
 import Img from "@/components/img.astro";
 import Gif from "@/components/gif.astro";
 import ImageGallery from "@/components/image-gallery.astro";
 
-Early on in my Linux journey, I was really into customizing my setup and theming _everything_. Form over function, you could say. This is commonly referred to as <Link href="https://jie-fang.github.io/blog/basics-of-ricing" newTab>ricing</Link> and there are whole <Link href="https://www.reddit.com/r/unixporn/" newTab>dedicated communities</Link> around it.
+Early on in my Linux journey, I was really into customizing my setup and theming _everything_. Form over function, you could say. This is commonly referred to as [ricing](https://jie-fang.github.io/blog/basics-of-ricing) and there are whole [dedicated communities](https://www.reddit.com/r/unixporn/) around it.
 
-There came a time when I wanted to decorate my login screen. Having chosen <Link href="https://github.com/sddm/sddm/" newTab>SDDM</Link> as my display manager of choice, I started looking for login themes... and didn't find anything that appealed to me. Thus `sddm-theme-corners` was born.
+There came a time when I wanted to decorate my login screen. Having chosen [SDDM](https://github.com/sddm/sddm/) as my display manager of choice, I started looking for login themes... and didn't find anything that appealed to me. Thus `sddm-theme-corners` was born.
 
 In the spirit of open source, I made it publicly available on my GitHub. Since then, it's gotten quite a few stars and forks, which makes me happy because people are enjoying something I made :\)
 
 ## Designing a login theme
 
-The themes I saw on the <Link href="https://store.kde.org/s/KDE%20Store/browse?cat=101&ord=rating" newTab>KDE Store</Link> felt too corporate to me, if that makes sense. They heavily utilize <Link href="https://store.kde.org/s/KDE%20Store/p/1214121" newTab>Gaussian blur</Link>, <Link href="https://store.kde.org/s/KDE%20Store/p/1283380" newTab>thin fonts and icons</Link>, and others tried doing <Link href="https://github.com/MarianArlt/sddm-sugar-light/wiki/Before-you-begin" newTab>too much at once</Link> for me. It feels like they belong to a past era (granted, some of them are years old now).
+The themes I saw on the [KDE Store](https://store.kde.org/s/KDE%20Store/browse?cat=101&ord=rating) felt too corporate to me, if that makes sense. They heavily utilize [Gaussian blur](https://store.kde.org/s/KDE%20Store/p/1214121), [thin icons and fonts](https://store.kde.org/s/KDE%20Store/p/1283380"), and others tried doing [too much at once](https://github.com/MarianArlt/sddm-sugar-light/wiki/Before-you-begin) for me. It feels like they belong to a past era (granted, some of them are years old now).
 
 This sounds like a diss. None of this is intended to be a diss. They're popular for a reason. Subjectively, the design just didn't appeal to me. Plus, without these projects I would've had no idea where to start programming! (More on this later.)
 
@@ -96,7 +95,7 @@ Don't like the colors? I've exposed numerous config options that allow you to th
 
 ## Learning Qt Quick and QML
 
-Building the login theme was the most difficult part of the process. I had no prior experience with QML; this was my first time learning about the existence of Qt! As of December 2023, SDDM's own <Link href="https://github.com/sddm/sddm/blob/develop/docs/THEMING.md" newTab>documentation</Link> is also rather lacking and hasn't been updated in _years_.
+Building the login theme was the most difficult part of the process. I had no prior experience with QML; this was my first time learning about the existence of Qt! As of December 2023, SDDM's own [documentation](https://github.com/sddm/sddm/blob/develop/docs/THEMING.md) is also rather lacking and hasn't been updated in _years_.
 
 This is where previous SDDM themes really helped me get my footing. By looking through their code, I learned that `Main.qml` is the main entry file for SDDM. I discovered the existence of `theme.conf` and how to support customization options in my own code. I saw real, working examples of QML syntax, including utilizing a QML object's `id` attribute and adding custom properties.
 
@@ -113,6 +112,6 @@ I revisited this line for the write-up, and... I have no idea what it does. I wi
 
 I've been using it everyday with no complaints. I might be biased, though.
 
-While SDDM is best known for being KDE's display manager, it actually works for any desktop environment. So `corners` does as well! If you're on Linux and like what you see, do test it out and lemme know what you think. I've provided <Link href="https://github.com/aczw/sddm-theme-corners#installation" newTab>installation instructions</Link> for the AUR as well as manual installation.
+While SDDM is best known for being KDE's display manager, it actually works for any desktop environment. So `corners` does as well! If you're on Linux and like what you see, do test it out and lemme know what you think. I've provided [installation instructions](https://github.com/aczw/sddm-theme-corners#installation) for the AUR as well as manual installation.
 
 Happy ricing! 🍚
