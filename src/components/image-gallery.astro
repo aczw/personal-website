@@ -49,7 +49,7 @@ switch (location) {
     <div class="flex gap-3">
       <button
         id="prev"
-        class="flex items-center rounded-md bg-sweater-8 px-2 transition-colors hover:bg-sweater-7"
+        class="flex items-center rounded-md bg-sweater-8 px-2 text-sweater-2 transition-colors hover:bg-sweater-7"
         aria-label="Previous"
         ><ArrowLeft
           aria-hidden="true"
@@ -59,7 +59,7 @@ switch (location) {
       >
       <button
         id="next"
-        class="flex items-center rounded-md bg-sweater-8 px-2 transition-colors hover:bg-sweater-7"
+        class="flex items-center rounded-md bg-sweater-8 px-2 text-sweater-2 transition-colors hover:bg-sweater-7"
         aria-label="Previous"
         >Next <ArrowRight
           aria-hidden="true"
@@ -68,11 +68,8 @@ switch (location) {
         />
       </button>
     </div>
-    <p
-      id="img-count"
-      class="rounded-md font-mono text-sm font-bold text-sweater-4"
-    >
-      1 of {imgs.length}
+    <p class="rounded-md font-mono text-sm font-bold text-sweater-4">
+      {imgs.length} images
     </p>
   </div>
 
@@ -109,7 +106,6 @@ switch (location) {
     constructor() {
       super();
 
-      const imgCount = this.querySelector("#img-count");
       const container = this.querySelector("#container");
       const imgs = container!.children;
 
@@ -124,8 +120,6 @@ switch (location) {
         if (currIndex !== imgs.length - 1) {
           currIndex += 1;
         }
-
-        imgCount!.textContent = `${currIndex + 1} of ${imgs.length}`;
       });
 
       const prevBtn = this.querySelector("#prev");
@@ -136,8 +130,6 @@ switch (location) {
         if (currIndex !== 0) {
           currIndex -= 1;
         }
-
-        imgCount!.textContent = `${currIndex + 1} of ${imgs.length}`;
       });
     }
   }

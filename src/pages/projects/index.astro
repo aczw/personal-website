@@ -52,7 +52,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
 
     <section class="animate-fade space-y-[1rem] [--delay:75ms]">
       <h2 class="text-xl text-sweater-2">More projects</h2>
-      <div class="grid grid-cols-1 gap-6">
+      <div class="grid grid-cols-1 gap-10">
         {
           projects.map(({ id, collection, data }, index) => {
             const innerPath = id.split("/")[0] + "/";
