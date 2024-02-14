@@ -2,6 +2,7 @@
 import "@/styles/base.css";
 import "@fontsource/atkinson-hyperlegible/400.css";
 import "@fontsource/atkinson-hyperlegible/700.css";
+import SpeedInsights from "@vercel/speed-insights/astro";
 
 interface Props {
   title?: string;
@@ -72,6 +73,8 @@ const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site)
     />
 
     <title>{(title ? title + " • " : "") + "Charles Wang"}</title>
+
+    <SpeedInsights />
   </head>
 
   <body class="bg-sweater-10 text-sweater-1">
