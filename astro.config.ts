@@ -6,12 +6,19 @@ import { defineConfig } from "astro/config";
 
 const config = defineConfig({
   site: "https://charl.sh",
-  integrations: [sitemap(), mdx(), tailwind({
-    applyBaseStyles: false,
-  })],
+  integrations: [
+    sitemap(),
+    mdx(),
+    tailwind({
+      applyBaseStyles: false,
+    }),
+  ],
   output: "hybrid",
   adapter: vercel({
     imageService: true,
+    webAnalytics: {
+      enabled: true,
+    },
   }),
   // see https://noahflk.com/blog/trailing-slashes-astro
   trailingSlash: "never",
