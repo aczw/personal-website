@@ -3,8 +3,11 @@ import LastFm from "@/components/lastfm.astro";
 ---
 
 <footer class="mx-auto max-w-text pb-4 text:pb-10">
-  <span class="flex gap-[1.25rem] border-t-2 border-sweater-9 pt-4 font-mono text-sm">
+  <span
+    class="flex justify-between gap-[1.25rem] border-t-2 border-sweater-9 pt-4 font-mono text-[14px] font-[100]"
+  >
     <LastFm />
+
     <div class="w-1/2 text-right">
       <p class="italic text-sweater-6">last updated Mar 2024</p>
       <span
@@ -22,7 +25,7 @@ import LastFm from "@/components/lastfm.astro";
     "aczw",
     "newfaces",
     "doitagain",
-    "tilinfinity",
+    "92tilinfinity",
     "suboptimal",
     "promiseme",
     "allitcosts",
@@ -37,5 +40,5 @@ import LastFm from "@/components/lastfm.astro";
     const scroll = document.getElementById("scroll");
     const text = scroll!.textContent;
     scroll!.textContent = text!.slice(1) + text![0];
-  }, 500);
+  }, 600);
 </script>

@@ -18,7 +18,7 @@
 
   /* inline code should have some padding and background */
   code {
-    @apply rounded-md bg-sweater-9 px-1 py-0.5 text-sm;
+    @apply rounded-md bg-sweater-9 px-1 py-0.5 text-[14px] font-[100];
   }
 
   pre {
@@ -32,33 +32,17 @@
 }
 
 @font-face {
-  font-family: "Maple Mono";
-  src: url("/fonts/MapleMono-Regular.woff2") format("woff2");
+  font-family: "Berkeley Mono Variable";
+  src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
+  font-weight: 100 150;
+  font-stretch: 75% 125%;
   font-style: normal;
-  font-weight: 400;
-  font-display: swap;
 }
 
 @font-face {
-  font-family: "Maple Mono";
-  src: url("/fonts/MapleMono-Italic.woff2") format("woff2");
+  font-family: "Berkeley Mono Variable";
+  src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
+  font-weight: 100 150;
+  font-stretch: 75% 125%;
   font-style: italic;
-  font-weight: 400;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Maple Mono";
-  src: url("/fonts/MapleMono-Bold.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Maple Mono";
-  src: url("/fonts/MapleMono-BoldItalic.woff2") format("woff2");
-  font-style: italic;
-  font-weight: 700;
-  font-display: swap;
 }

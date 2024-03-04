@@ -7,17 +7,14 @@ const track = (await response.json()) as Track;
 ---
 
 <div class="w-1/2 animate-fade [--order:0]">
-  <p class="text-sweater-7">{track.live ? "currently playing" : "last listened to"}</p>
-  <span class="group flex items-center text-sweater-6 hover:text-sweater-5">
+  <a
+    href="https://www.last.fm/user/ashzw"
+    target="_blank"
+    class="w-fit text-sweater-6 underline decoration-sweater-8 decoration-1 underline-offset-2 transition-colors hover:text-sweater-5 hover:decoration-sweater-6"
+  >
     <Music
-      size={15}
-      class="mr-1.5 transition-colors"
-    />
-    <a
-      href={track.url}
-      target="_blank"
-      class="truncate underline decoration-sweater-9 decoration-1 underline-offset-2 transition-colors group-hover:decoration-sweater-7"
-      >{track.song} — {track.artist}</a
-    >
-  </span>
+      size={14}
+      class="mr-1.5 inline shrink-0"
+    />{track.song} — {track.artist}
+  </a>
 </div>

@@ -6,7 +6,7 @@ const config = {
   theme: {
     fontFamily: {
       sans: ["Atkinson Hyperlegible", ...defaultTheme.fontFamily.sans],
-      mono: ["Maple Mono", ...defaultTheme.fontFamily.mono],
+      mono: ["Berkeley Mono Variable", ...defaultTheme.fontFamily.mono],
     },
     extend: {
       maxWidth: {
