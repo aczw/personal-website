@@ -7,6 +7,8 @@ import Link from "@/components/link.astro";
 import Footer from "@/layouts/footer.astro";
 import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
+import Main from "@/layouts/main.astro";
+
 import { getCollection } from "astro:content";
 
 const projects = await getCollection("write-ups");
@@ -16,15 +18,13 @@ projects.sort((a, b) => a.data.order - b.data.order);
 <Layout description="Computer graphics student at the University of Pennsylvania.">
   <Header />
 
-  <main class="space-y-10 py-5 text:py-10">
-    <blockquote
-      class="mx-auto flex max-w-text -translate-x-1.5 gap-6 font-mono text-sm italic text-sweater-3"
-    >
+  <Main>
+    <blockquote class="flex -translate-x-1.5 gap-6 font-mono text-sm italic text-sweater-3">
       <p>"Waiting for something to happen?"</p>
       <small class="text-sm">— MEWO</small>
     </blockquote>
 
-    <section class="mx-auto max-w-text animate-fade space-y-[1.25rem] [--order:0]">
+    <section class="animate-fade space-y-[1.25rem] [--order:0]">
       <h2 class="text-sweater-2">About me</h2>
 
       <div class="grid grid-cols-1 gap-[1.25rem] md:grid-cols-2">
@@ -60,7 +60,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
       </div>
     </section>
 
-    <section class="mx-auto max-w-text animate-fade space-y-[1.25rem] [--order:1]">
+    <section class="animate-fade space-y-[1.25rem] [--order:1]">
       <h2 class="text-sweater-2">Projects</h2>
       <p>
         An assortment of websites and games I've designed, as well as some computer graphics
@@ -102,7 +102,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
         }
       </ul>
     </section>
-  </main>
+  </Main>
 
   <Footer />
 </Layout>

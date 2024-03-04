@@ -1,70 +1,23 @@
 ---
-import { z } from "astro/zod";
+import { GET, type Track } from "@/pages/api/lastfm";
 import { Music } from "lucide-astro";
 
-const recentTracksSchema = z.promise(
-  z.object({
-    recenttracks: z.object({
-      track: z.array(
-        z.object({
-          artist: z.object({
-            mbid: z.string(),
-            "#text": z.string(),
-          }),
-          streamable: z.string(),
-          image: z.array(
-            z.object({
-              size: z.enum(["small", "medium", "large", "extralarge"]),
-              "#text": z.string(),
-            }),
-          ),
-          mbid: z.string(),
-          album: z.object({
-            mbid: z.string(),
-            "#text": z.string(),
-          }),
-          name: z.string(),
-          "@attr": z
-            .object({
-              nowplaying: z.enum(["true", "false"]),
-            })
-            .optional(),
-          url: z.string(),
-        }),
-      ),
-      "@attr": z.object({
-        user: z.string(),
-        totalPages: z.string(),
-        page: z.string(),
-        perPage: z.string(),
-        total: z.string(),
-      }),
-    }),
-  }),
-);
-
-const key = import.meta.env.LASTFM_API_KEY;
-const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${key}&limit=1&format=json`;
-
-const data = await recentTracksSchema.parse(fetch(url).then((res) => res.json()));
-const recentTracks = data.recenttracks;
-
-const firstTrack = recentTracks.track[0];
-const nowPlaying = firstTrack["@attr"] ? firstTrack["@attr"].nowplaying === "true" : false;
+const response = await GET(Astro);
+const track = (await response.json()) as Track;
 ---
 
 <div class="w-1/2 animate-fade [--order:0]">
-  <p class="text-sweater-7">{nowPlaying ? "currently playing" : "last listened to"}</p>
+  <p class="text-sweater-7">{track.live ? "currently playing" : "last listened to"}</p>
   <span class="group flex items-center text-sweater-6 hover:text-sweater-5">
     <Music
       size={15}
       class="mr-1.5 transition-colors"
     />
     <a
-      href={firstTrack.url}
+      href={track.url}
       target="_blank"
       class="truncate underline decoration-sweater-9 decoration-1 underline-offset-2 transition-colors group-hover:decoration-sweater-7"
-      >{firstTrack.name} — {firstTrack.artist["#text"]}</a
+      >{track.song} — {track.artist}</a
     >
   </span>
 </div>
