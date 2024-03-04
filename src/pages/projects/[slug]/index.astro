@@ -1,6 +1,4 @@
 ---
-export const prerender = true;
-
 import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
 import Anchor from "@/components/mdx/anchor.astro";
@@ -17,17 +15,15 @@ import Main from "@/layouts/main.astro";
 import { getCollection } from "astro:content";
 import { Calendar, Flag, Link2, Users, Wrench } from "lucide-astro";
 
-export async function getStaticPaths() {
-  const projectEntries = await getCollection("write-ups");
-  return projectEntries.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+const projectEntries = await getCollection("write-ups");
+const project = projectEntries.find((project) => project.slug === Astro.params.slug);
+
+if (!project) {
+  return Astro.redirect("/404");
 }
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
-const { data } = entry;
+const { Content } = await project.render();
+const { data } = project;
 
 const meta = import.meta.env.DEV ? (data.published ? "[PUBLISHED] " : "[DRAFT] ") : "";
 const title = meta + data.title;
