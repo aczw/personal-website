@@ -1,54 +1,18 @@
 ---
-import { Github, Linkedin, Mail } from "lucide-astro";
+import LastFm from "@/components/lastfm.astro";
 ---
 
 <footer class="mx-auto max-w-text pb-4 text:pb-10">
-  <span class="flex items-center justify-between border-t-2 border-sweater-9 pt-4">
-    <div class="flex items-center space-x-4">
-      <a
-        href="https://www.linkedin.com/in/zwcharl/"
-        target="_blank"
-        title="LinkedIn"
-        aria-label="LinkedIn"
-      >
-        <Linkedin
-          size={22}
-          class="stroke-sweater-3 transition-colors hover:stroke-sweater-1"
-        />
-      </a>
-
-      <a
-        href="https://www.github.com/aczw"
-        target="_blank"
-        title="GitHub"
-        aria-label="GitHub"
-      >
-        <Github
-          size={22}
-          class="stroke-sweater-3 transition-colors hover:stroke-sweater-1"
-        />
-      </a>
-
-      <a
-        href="mailto:zwcharl@gmail.com"
-        title="Email"
-        aria-label="Email"
-      >
-        <Mail
-          size={22}
-          class="stroke-sweater-3 transition-colors hover:stroke-sweater-1"
-        />
-      </a>
-    </div>
-    <p
-      aria-hidden="true"
-      class="font-mono text-sm text-sweater-6"
-    >
+  <span class="flex gap-[1.25rem] border-t-2 border-sweater-9 pt-4 font-mono text-sm">
+    <LastFm />
+    <div class="w-1/2 text-right">
+      <p class="italic text-sweater-6">last updated Mar 2024</p>
       <span
         id="scroll"
-        class="italic text-sweater-8 transition-colors"
-      ></span> Feb 2024
-    </p>
+        aria-hidden="true"
+        class="italic text-sweater-7 transition-colors"
+      ></span>
+    </div>
   </span>
 </footer>
 

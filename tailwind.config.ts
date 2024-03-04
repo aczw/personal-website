@@ -10,9 +10,8 @@ const config = {
     },
     extend: {
       maxWidth: {
-        // 750px + px-4 (16px on either side = 32px)
-        text: "782px",
-        wide: "1032px",
+        // whatever width + px-4 (16px on either side = 32px)
+        text: "932px",
       },
       colors: {
         sweater: {
@@ -30,7 +29,7 @@ const config = {
       },
       screens: {
         xs: "475px",
-        text: "782px",
+        text: "932px",
       },
       keyframes: {
         fade: {
@@ -39,7 +38,7 @@ const config = {
         },
       },
       animation: {
-        fade: "fade 0.4s ease-out var(--delay) backwards",
+        fade: "fade 0.4s ease-out calc(var(--order) * 75ms) backwards",
       },
     },
   },

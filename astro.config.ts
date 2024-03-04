@@ -13,7 +13,7 @@ const config = defineConfig({
       applyBaseStyles: false,
     }),
   ],
-  output: "hybrid",
+  output: "server",
   adapter: vercel({
     imageService: true,
     webAnalytics: {

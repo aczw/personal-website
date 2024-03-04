@@ -1,6 +1,6 @@
 ---
-import Link from "@/components/link.astro";
 import { z } from "astro/zod";
+import { Music } from "lucide-astro";
 
 const recentTracksSchema = z.promise(
   z.object({
@@ -53,47 +53,18 @@ const firstTrack = recentTracks.track[0];
 const nowPlaying = firstTrack["@attr"] ? firstTrack["@attr"].nowplaying === "true" : false;
 ---
 
-<p class="animate-fade [--delay:0ms]">
-  {
-    firstTrack ? (
-      <>
-        {nowPlaying ? (
-          <>
-            I am
-            <Link
-              href="https://www.last.fm/user/ashzw"
-              target="_blank"
-            >
-              {"currently"}
-            </Link>
-            listening to <span class="text-sweater-2">{firstTrack.name}</span> by
-            <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
-          </>
-        ) : (
-          <>
-            The last song I
-            <Link
-              href="https://www.last.fm/user/ashzw"
-              target="_blank"
-            >
-              {"listened to"}
-            </Link>{" "}
-            was <span class="text-sweater-2">{firstTrack.name}</span> by
-            <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
-          </>
-        )}
-      </>
-    ) : (
-      <>
-        I like tracking my music listening habits. Visit my
-        <Link
-          href="https://www.last.fm/user/ashzw"
-          target="_blank"
-        >
-          {"Last.fm profile"}
-        </Link>
-        to see my history.
-      </>
-    )
-  }
-</p>
+<div class="w-1/2 animate-fade [--order:0]">
+  <p class="text-sweater-7">{nowPlaying ? "currently playing" : "last listened to"}</p>
+  <span class="group flex items-center text-sweater-6 hover:text-sweater-5">
+    <Music
+      size={15}
+      class="mr-1.5 transition-colors"
+    />
+    <a
+      href={firstTrack.url}
+      target="_blank"
+      class="truncate underline decoration-sweater-9 decoration-1 underline-offset-2 transition-colors group-hover:decoration-sweater-7"
+      >{firstTrack.name} — {firstTrack.artist["#text"]}</a
+    >
+  </span>
+</div>

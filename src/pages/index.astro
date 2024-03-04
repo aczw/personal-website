@@ -1,69 +1,75 @@
 ---
-export const prerender = false;
-
-import { getEntries } from "astro:content";
 import { ArrowRightCircle } from "lucide-astro";
 
 import Img from "@/components/img.astro";
-import LastFm from "@/components/lastfm.astro";
 import Link from "@/components/link.astro";
 
 import Footer from "@/layouts/footer.astro";
 import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
+import { getCollection } from "astro:content";
 
-const selectedProjects = await getEntries([
-  { collection: "write-ups", slug: "mini-minecraft" },
-  { collection: "write-ups", slug: "rcw" },
-]);
+const projects = await getCollection("write-ups");
+projects.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout description="Computer graphics student at the University of Pennsylvania.">
   <Header />
 
-  <main class="space-y-10 py-10">
-    <section class="mx-auto max-w-text animate-fade space-y-[1rem] [--delay:75ms]">
-      <h2 class="text-lg text-sweater-2">About me</h2>
-      <p>
-        Hi, my name is Charles. I'm a student at the University of Pennsylvania majoring in
-        <Link
-          href="http://cg.cis.upenn.edu/dmd.html"
-          target="_blank"
-        >
-          {"Digital Media Design"}
-        </Link>, a program that combines CS with computer graphics and fine arts.
-      </p>
-      <p>
-        I like to make games and build websites. To that end I help run <Link
-          href="https://pennupgrade.com"
-          target="_blank"
-        >
-          {"UPGRADE"}
-        </Link>, our game development club, and maintain the
-        <Link
-          href="http://cg.cis.upenn.edu/siggraph/"
-          target="_blank"
-        >
-          {"website"}
-        </Link> for our SIGGRAPH chapter. I'm also working with <Link
-          href="https://www.cis.upenn.edu/~mhnaik/"
-          target="_blank"
-        >
-          {"Professor Mayur Naik"}
-        </Link> to help build web platforms for our research group.
-      </p>
-      <p>
-        In my free time I like running, playing the bass, designing album covers, obsessing over
-        metro systems, and ricing my Arch setup.
-      </p>
-      <p>My contact info is below. Thanks for stopping by. (〜￣▽￣)〜</p>
+  <main class="space-y-10 py-5 text:py-10">
+    <blockquote
+      class="mx-auto flex max-w-text -translate-x-1.5 gap-6 font-mono text-sm italic text-sweater-3"
+    >
+      <p>"Waiting for something to happen?"</p>
+      <small class="text-sm">— MEWO</small>
+    </blockquote>
+
+    <section class="mx-auto max-w-text animate-fade space-y-[1.25rem] [--order:0]">
+      <h2 class="text-sweater-2">About me</h2>
+
+      <div class="grid grid-cols-1 gap-[1.25rem] md:grid-cols-2">
+        <p>
+          Hi, I'm Charles. I'm a student at the University of Pennsylvania majoring in Digital Media
+          Design, which is a program that combines CS with computer graphics and fine arts.
+        </p>
+        <p>
+          I like to design interfaces for games and websites. To that end, I help run our game dev
+          club <Link
+            href="https://pennupgrade.com"
+            target="_blank"
+          >
+            {"UPGRADE"}
+          </Link> and our
+          <Link
+            href="http://cg.cis.upenn.edu/siggraph/"
+            target="_blank"
+          >
+            {"SIGGRAPH chapter"}
+          </Link>. I'm also working with <Link
+            href="https://www.cis.upenn.edu/~mhnaik/"
+            target="_blank"
+          >
+            {"Prof. Mayur Naik"}
+          </Link> to build web platforms.
+        </p>
+        <p>
+          In my free time I like running, making album covers, playing the bass, obsessing over
+          trains, and tinerking with my Arch install.
+        </p>
+        <p>My socials can be found above. Thanks for stopping by. (〜￣▽￣)〜</p>
+      </div>
     </section>
 
-    <section class="mx-auto max-w-wide animate-fade space-y-[1rem] [--delay:150ms]">
-      <h2 class="mb-[1rem] text-lg text-sweater-2">Projects</h2>
-      <ul class="space-y-[1rem]">
+    <section class="mx-auto max-w-text animate-fade space-y-[1.25rem] [--order:1]">
+      <h2 class="text-sweater-2">Projects</h2>
+      <p>
+        An assortment of websites and games I've designed, as well as some computer graphics
+        projects.
+      </p>
+
+      <ul class="grid grid-cols-1 gap-[1.25rem] sm:grid-cols-2">
         {
-          selectedProjects.map(({ data, slug }) => (
+          projects.map(({ data, slug }) => (
             <li class="group">
               <a
                 href={"/projects/" + slug}
@@ -72,6 +78,7 @@ const selectedProjects = await getEntries([
                 <Img
                   src={data.cover.img}
                   alt={data.cover.alt}
+                  loading="eager"
                   className="absolute inset-0 m-auto opacity-40 z-0 scale-105 blur group-hover:opacity-20 group-hover:blur-none transition"
                 />
                 <div
@@ -84,7 +91,6 @@ const selectedProjects = await getEntries([
                 />
                 <div class="z-[3]">
                   <h3 class="text-sweater-2">{data.title}</h3>
-                  <p>{data.blurb}</p>
                 </div>
                 <ArrowRightCircle
                   size={20}
@@ -95,26 +101,6 @@ const selectedProjects = await getEntries([
           ))
         }
       </ul>
-      <Link
-        href="/projects"
-        className="group"
-      >
-        <div
-          class="relative z-[-2] mt-[1rem] flex h-12 items-end justify-center rounded-t-md bg-gradient-to-b from-sweater-9"
-        >
-          <div
-            class="absolute inset-0 z-[-1] rounded-t-md bg-gradient-to-b from-sweater-8 opacity-0 transition-opacity group-hover:opacity-100"
-            aria-hidden="true"
-          >
-          </div>
-          <span class="flex items-center">View all projects</span>
-        </div>
-      </Link>
-    </section>
-
-    <section class="mx-auto max-w-text animate-fade space-y-[1rem] [--delay:225ms]">
-      <h2 class="mb-[1rem] text-lg text-sweater-2">Music status</h2>
-      <LastFm />
     </section>
   </main>
 
