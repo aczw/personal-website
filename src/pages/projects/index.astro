@@ -1,10 +1,13 @@
 ---
+import { getCollection } from "astro:content";
+
 import ImageGallery from "@/components/image-gallery.astro";
 import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
-import MainLayout from "@/layouts/main-layout.astro";
-import PrimitiveLayout from "@/layouts/primitive-layout.astro";
-import { getCollection } from "astro:content";
+
+import Footer from "@/layouts/footer.astro";
+import Header from "@/layouts/header.astro";
+import Layout from "@/layouts/layout.astro";
 
 const writeUps = await getCollection("write-ups");
 writeUps.sort((a, b) => a.data.order - b.data.order);
@@ -13,101 +16,103 @@ const projects = await getCollection("projects");
 projects.sort((a, b) => a.data.order - b.data.order);
 ---
 
-<PrimitiveLayout
+<Layout
   title="Projects"
   description="Home to my portfolio. Websites, games, graphics programming, design case studies, and other stuff I've done."
 >
-  <MainLayout className="space-y-10">
-    <section class="animate-fade space-y-[1rem] [--delay:75ms]">
-      <h2 class="text-xl text-sweater-2">Write-ups</h2>
-      <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-        {
-          writeUps.map(({ data, slug }, index) => {
-            return (
-              <a
-                href={"/projects/" + slug}
-                class="group col-span-1 animate-fade space-y-2.5 rounded-xl bg-sweater-9 p-3 transition-colors hover:bg-sweater-8"
-                style={{ "--delay": `${(index + 1) * 75}ms` }}
-              >
-                <Img
-                  src={data.cover.img}
-                  alt={data.cover.alt}
-                  className="max-h-60 object-cover object-top"
-                />
-                <h3 class="text-sweater-2">{data.title}</h3>
-                <ul class="flex flex-wrap gap-2">
-                  {data.tags.map((tag) => (
-                    <li class="h-min rounded-full bg-sweater-8 px-2 py-0.5 text-sm text-sweater-3 transition-colors group-hover:bg-sweater-7 group-hover:text-sweater-2">
-                      {tag}
-                    </li>
-                  ))}
-                </ul>
-                <p>{data.blurb}</p>
-              </a>
-            );
-          })
-        }
-      </div>
-    </section>
+  <Header />
 
-    <section class="animate-fade space-y-[1rem] [--delay:75ms]">
-      <h2 class="text-xl text-sweater-2">More projects</h2>
-      <div class="grid grid-cols-1 gap-10">
-        {
-          projects.map(({ id, collection, data }, index) => {
-            const innerPath = id.split("/")[0] + "/";
+  <section class="animate-fade space-y-[1rem] [--delay:75ms]">
+    <h2 class="text-xl text-sweater-2">Write-ups</h2>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {
+        writeUps.map(({ data, slug }, index) => {
+          return (
+            <a
+              href={"/projects/" + slug}
+              class="group col-span-1 animate-fade space-y-2.5 rounded-xl bg-sweater-9 p-3 transition-colors hover:bg-sweater-8"
+              style={{ "--delay": `${(index + 1) * 75}ms` }}
+            >
+              <Img
+                src={data.cover.img}
+                alt={data.cover.alt}
+                className="max-h-60 object-cover object-top"
+              />
+              <h3 class="text-sweater-2">{data.title}</h3>
+              <ul class="flex flex-wrap gap-2">
+                {data.tags.map((tag) => (
+                  <li class="h-min rounded-full bg-sweater-8 px-2 py-0.5 text-sm text-sweater-3 transition-colors group-hover:bg-sweater-7 group-hover:text-sweater-2">
+                    {tag}
+                  </li>
+                ))}
+              </ul>
+              <p>{data.blurb}</p>
+            </a>
+          );
+        })
+      }
+    </div>
+  </section>
 
-            return (
-              <div
-                class="col-span-1 animate-fade space-y-3"
-                style={{ "--delay": `${(index + 1) * 75}ms` }}
-              >
-                <div>
-                  {data.link ? (
-                    <div class="flex gap-2">
-                      <h3 class="text-sweater-2">{data.title}</h3>
-                      <span aria-hidden="true">•</span>
-                      <Link
-                        href={data.link.url}
-                        target="_blank"
-                      >
-                        {data.link.text}
-                      </Link>
-                    </div>
-                  ) : (
+  <section class="animate-fade space-y-[1rem] [--delay:75ms]">
+    <h2 class="text-xl text-sweater-2">More projects</h2>
+    <div class="grid grid-cols-1 gap-10">
+      {
+        projects.map(({ id, collection, data }, index) => {
+          const innerPath = id.split("/")[0] + "/";
+
+          return (
+            <div
+              class="col-span-1 animate-fade space-y-3"
+              style={{ "--delay": `${(index + 1) * 75}ms` }}
+            >
+              <div>
+                {data.link ? (
+                  <div class="flex gap-2">
                     <h3 class="text-sweater-2">{data.title}</h3>
-                  )}
-
-                  <div class="flex flex-col sm:flex-row sm:gap-1.5">
-                    <p>
-                      {data.date.toLocaleDateString("en-US", {
-                        month: "short",
-                        year: "numeric",
-                      })}
-                    </p>
-                    <span
-                      aria-hidden="true"
-                      class="hidden sm:inline"
+                    <span aria-hidden="true">•</span>
+                    <Link
+                      href={data.link.url}
+                      target="_blank"
                     >
-                      —
-                    </span>
-                    <p class="font-bold">{data.tags.join(", ")}</p>
+                      {data.link.text}
+                    </Link>
                   </div>
+                ) : (
+                  <h3 class="text-sweater-2">{data.title}</h3>
+                )}
+
+                <div class="flex flex-col sm:flex-row sm:gap-1.5">
+                  <p>
+                    {data.date.toLocaleDateString("en-US", {
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </p>
+                  <span
+                    aria-hidden="true"
+                    class="hidden sm:inline"
+                  >
+                    —
+                  </span>
+                  <p class="font-bold">{data.tags.join(", ")}</p>
                 </div>
-
-                <ImageGallery
-                  location={collection}
-                  innerPath={innerPath}
-                  imgs={data.imgs}
-                  imgHeight={260}
-                />
-
-                <p>{data.blurb}</p>
               </div>
-            );
-          })
-        }
-      </div>
-    </section>
-  </MainLayout>
-</PrimitiveLayout>
+
+              <ImageGallery
+                location={collection}
+                innerPath={innerPath}
+                imgs={data.imgs}
+                imgHeight={260}
+              />
+
+              <p>{data.blurb}</p>
+            </div>
+          );
+        })
+      }
+    </div>
+  </section>
+</Layout>
+
+<Footer />

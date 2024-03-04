@@ -8,8 +8,8 @@ import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 import Li from "@/components/mdx/li.astro";
 import Ul from "@/components/mdx/ul.astro";
-import MainLayout from "@/layouts/main-layout.astro";
-import PrimitiveLayout from "@/layouts/primitive-layout.astro";
+import Footer from "@/layouts/footer.astro";
+import Layout from "@/layouts/layout.astro";
 import { getCollection } from "astro:content";
 import { Calendar, Flag, Link2, Users, Wrench } from "lucide-astro";
 
@@ -29,124 +29,124 @@ const meta = import.meta.env.DEV ? (data.published ? "[PUBLISHED] " : "[DRAFT] "
 const title = meta + data.title;
 ---
 
-<PrimitiveLayout
+<Layout
   title={title}
   description={data.blurb}
 >
-  <MainLayout className="space-y-8">
-    <section class="animate-fade space-y-[1rem] [--delay:75ms]">
-      <h1 class="text-xl text-sweater-2">{data.title}</h1>
-      <p>{data.blurb}</p>
-    </section>
+  <section class="animate-fade space-y-[1rem] [--delay:75ms]">
+    <h1 class="text-xl text-sweater-2">{data.title}</h1>
+    <p>{data.blurb}</p>
+  </section>
 
-    <Img
-      src={data.cover.img}
-      alt={data.cover.alt}
-      className="animate-fade border-2 border-sweater-9 [--delay:150ms]"
-    />
+  <Img
+    src={data.cover.img}
+    alt={data.cover.alt}
+    className="animate-fade border-2 border-sweater-9 [--delay:150ms]"
+  />
 
-    <section class="grid animate-fade grid-cols-1 gap-4 [--delay:225ms] xs:grid-cols-2">
-      <div class="col-span-1">
-        <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
-          <Calendar
-            size={16}
-            class="mr-1.5"
-          />
-          Completed on
-        </p>
-        <p class="text-sweater-3">
-          {
-            `${data.duration.date.toLocaleDateString("en-US", {
-              month: "short",
-              year: "numeric",
-            })} (${data.duration.length})`
-          }
-        </p>
-      </div>
+  <section class="grid animate-fade grid-cols-1 gap-4 [--delay:225ms] xs:grid-cols-2">
+    <div class="col-span-1">
+      <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+        <Calendar
+          size={16}
+          class="mr-1.5"
+        />
+        Completed on
+      </p>
+      <p class="text-sweater-3">
+        {
+          `${data.duration.date.toLocaleDateString("en-US", {
+            month: "short",
+            year: "numeric",
+          })} (${data.duration.length})`
+        }
+      </p>
+    </div>
 
-      <div class="col-span-1">
-        <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
-          <Wrench
-            size={16}
-            class="mr-1.5"
-          />
-          Built with
-        </p>
-        <p class="text-sweater-3">{data.tags.join(", ")}</p>
-      </div>
-
-      {
-        data.teamSize ? (
-          <div class="col-span-1">
-            <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
-              <Users
-                size={16}
-                class="mr-1.5"
-              />
-              Group-based project
-            </p>
-            <p class="text-sweater-3">{`Team of ${data.teamSize}`}</p>
-          </div>
-        ) : null
-      }
-
-      <div class="col-span-1">
-        <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
-          <Flag
-            size={16}
-            class="mr-1.5"
-          />
-          Responsible for
-        </p>
-        <p class="text-sweater-3">{data.role.join(", ")}</p>
-      </div>
-
-      {
-        data.link ? (
-          <div class="col-span-1">
-            <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
-              <Link2
-                size={16}
-                class="mr-1.5"
-              />
-              {data.link.text}
-            </p>
-            <Link
-              href={data.link.url}
-              target="_blank"
-            >
-              {data.link.url}
-            </Link>
-          </div>
-        ) : null
-      }
-    </section>
+    <div class="col-span-1">
+      <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+        <Wrench
+          size={16}
+          class="mr-1.5"
+        />
+        Built with
+      </p>
+      <p class="text-sweater-3">{data.tags.join(", ")}</p>
+    </div>
 
     {
-      !data.published && import.meta.env.PROD ? (
-        <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--delay:300ms]">
-          <h2 class="text-sweater-3">Under construction! ⚙️</h2>
-          <p>
-            Apologies, I have not finished the write-up for this project yet. I will get to it
-            eventually, promise. If I've provided a link above, go check that out instead!
+      data.teamSize ? (
+        <div class="col-span-1">
+          <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+            <Users
+              size={16}
+              class="mr-1.5"
+            />
+            Group-based project
           </p>
+          <p class="text-sweater-3">{`Team of ${data.teamSize}`}</p>
         </div>
-      ) : (
-        <article class="animate-fade space-y-5 leading-normal [--delay:225ms]">
-          <Content
-            components={{
-              h2: H2,
-              h3: H3,
-              ul: Ul,
-              li: Li,
-              del: Del,
-              blockquote: Aside,
-              a: Anchor,
-              img: Img,
-            }}
-          />
-        </article>
-      )
+      ) : null
     }
-  </MainLayout>
-</PrimitiveLayout>
+
+    <div class="col-span-1">
+      <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+        <Flag
+          size={16}
+          class="mr-1.5"
+        />
+        Responsible for
+      </p>
+      <p class="text-sweater-3">{data.role.join(", ")}</p>
+    </div>
+
+    {
+      data.link ? (
+        <div class="col-span-1">
+          <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+            <Link2
+              size={16}
+              class="mr-1.5"
+            />
+            {data.link.text}
+          </p>
+          <Link
+            href={data.link.url}
+            target="_blank"
+          >
+            {data.link.url}
+          </Link>
+        </div>
+      ) : null
+    }
+  </section>
+
+  {
+    !data.published && import.meta.env.PROD ? (
+      <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--delay:300ms]">
+        <h2 class="text-sweater-3">Under construction! ⚙️</h2>
+        <p>
+          Apologies, I have not finished the write-up for this project yet. I will get to it
+          eventually, promise. If I've provided a link above, go check that out instead!
+        </p>
+      </div>
+    ) : (
+      <article class="animate-fade space-y-5 leading-normal [--delay:225ms]">
+        <Content
+          components={{
+            h2: H2,
+            h3: H3,
+            ul: Ul,
+            li: Li,
+            del: Del,
+            blockquote: Aside,
+            a: Anchor,
+            img: Img,
+          }}
+        />
+      </article>
+    )
+  }
+</Layout>
+
+<Footer />

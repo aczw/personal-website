@@ -1,13 +1,16 @@
 ---
 export const prerender = false;
 
+import { getEntries } from "astro:content";
+import { ArrowRightCircle } from "lucide-astro";
+
 import Img from "@/components/img.astro";
 import LastFm from "@/components/lastfm.astro";
 import Link from "@/components/link.astro";
-import MainLayout from "@/layouts/main-layout.astro";
-import PrimitiveLayout from "@/layouts/primitive-layout.astro";
-import { getEntries } from "astro:content";
-import { ArrowRightCircle } from "lucide-astro";
+
+import Footer from "@/layouts/footer.astro";
+import Header from "@/layouts/header.astro";
+import Layout from "@/layouts/layout.astro";
 
 const selectedProjects = await getEntries([
   { collection: "write-ups", slug: "mini-minecraft" },
@@ -15,9 +18,11 @@ const selectedProjects = await getEntries([
 ]);
 ---
 
-<PrimitiveLayout description="Computer graphics student at the University of Pennsylvania.">
-  <MainLayout className="space-y-10">
-    <section class="animate-fade space-y-[1rem] [--delay:75ms]">
+<Layout description="Computer graphics student at the University of Pennsylvania.">
+  <Header />
+
+  <main class="space-y-10 py-10">
+    <section class="mx-auto max-w-text animate-fade space-y-[1rem] [--delay:75ms]">
       <h2 class="text-lg text-sweater-2">About me</h2>
       <p>
         Hi, my name is Charles. I'm a student at the University of Pennsylvania majoring in
@@ -54,7 +59,7 @@ const selectedProjects = await getEntries([
       <p>My contact info is below. Thanks for stopping by. (〜￣▽￣)〜</p>
     </section>
 
-    <section class="animate-fade space-y-[1rem] [--delay:150ms]">
+    <section class="mx-auto max-w-wide animate-fade space-y-[1rem] [--delay:150ms]">
       <h2 class="mb-[1rem] text-lg text-sweater-2">Projects</h2>
       <ul class="space-y-[1rem]">
         {
@@ -107,9 +112,11 @@ const selectedProjects = await getEntries([
       </Link>
     </section>
 
-    <section class="animate-fade space-y-[1rem] [--delay:225ms]">
+    <section class="mx-auto max-w-text animate-fade space-y-[1rem] [--delay:225ms]">
       <h2 class="mb-[1rem] text-lg text-sweater-2">Music status</h2>
       <LastFm />
     </section>
-  </MainLayout>
-</PrimitiveLayout>
+  </main>
+
+  <Footer />
+</Layout>

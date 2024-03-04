@@ -1,15 +1,14 @@
 ---
-import Link from "@/components/link.astro";
-import PrimitiveLayout from "@/layouts/primitive-layout.astro";
+import Layout from "@/layouts/layout.astro";
 ---
 
-<PrimitiveLayout
+<Layout
   title="404"
   description="Page not found"
 >
-  <main class="flex min-h-screen flex-col items-center justify-center gap-10">
+  <section class="mt-8 flex flex-col items-center justify-center gap-2">
     <h1 class="text-5xl text-sweater-2">404</h1>
-    <p>Page not found. <Link href="/">Go back?</Link></p>
+    <p>Page not found.</p>
     <p class="italic text-sweater-6">Or stay here. I can't stop ya.</p>
-  </main>
-</PrimitiveLayout>
+  </section>
+</Layout>

@@ -1,0 +1,58 @@
+---
+import Link from "@/components/link.astro";
+
+const pathname = Astro.url.pathname;
+---
+
+<header class="mx-auto max-w-text pt-4 text:pt-10">
+  <nav class="flex items-center justify-between border-b-2 border-sweater-9 pb-4">
+    <a
+      href="/"
+      class="group"
+    >
+      <svg
+        width={26}
+        height={26}
+        viewBox="0 0 25 25"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        class:list={[
+          "fill-sweater-4 transition group-hover:fill-sweater-3",
+          { "rotate-[-15deg]": pathname === "/" },
+          { "group-hover:rotate-[-15deg]": pathname !== "/" },
+        ]}
+      >
+        <title>Charles Wang</title>
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M0.626373 0.626373C1.46154 -0.208791 2.81561 -0.208791 3.65077 0.626373L5.4716 2.4472C7.46803 1.03705 9.90466 0.208619 12.5348 0.208619C15.147 0.208619 17.5683 1.02581 19.5571 2.41849L21.3492 0.626374C22.1844 -0.208791 23.5385 -0.208791 24.3736 0.626374C25.2088 1.46154 25.2088 2.81561 24.3736 3.65077L22.5815 5.44289C23.9742 7.43167 24.7914 9.85302 24.7914 12.4652C24.7914 15.0953 23.963 17.532 22.5528 19.5284L24.3736 21.3492C25.2088 22.1844 25.2088 23.5385 24.3736 24.3736C23.5385 25.2088 22.1844 25.2088 21.3492 24.3736L19.5161 22.5405C17.5351 23.9158 15.1291 24.7218 12.5348 24.7218C9.92256 24.7218 7.50121 23.9047 5.51243 22.512L3.65077 24.3736C2.81561 25.2088 1.46154 25.2088 0.626375 24.3736C-0.208789 23.5385 -0.20879 22.1844 0.626375 21.3492L2.48803 19.4876C1.09535 17.4988 0.278161 15.0774 0.278161 12.4652C0.278161 9.87093 1.08418 7.46489 2.45946 5.48386L0.626373 3.65077C-0.208791 2.81561 -0.208791 1.46154 0.626373 0.626373ZM8.61003 19.4144C9.7689 20.0703 11.1081 20.4447 12.5348 20.4447C13.9432 20.4447 15.2664 20.0798 16.415 19.4394L12.5 15.5244L8.61003 19.4144ZM9.4756 12.5L5.58563 16.39C4.92971 15.2311 4.55531 13.8919 4.55531 12.4652C4.55531 11.0568 4.9202 9.73361 5.56062 8.58501L9.4756 12.5ZM15.5244 12.5L19.4587 16.4343C20.1302 15.2653 20.5142 13.9101 20.5142 12.4652C20.5142 11.0386 20.1398 9.69935 19.4839 8.54048L15.5244 12.5ZM16.4595 5.51609L12.5 9.4756L8.56574 5.54134C9.73472 4.86979 11.0899 4.48576 12.5348 4.48576C13.9614 4.48576 15.3006 4.86017 16.4595 5.51609Z"
+        ></path>
+      </svg>
+    </a>
+
+    <div class="flex items-center space-x-4 pl-6">
+      <Link
+        href="https://www.linkedin.com/in/zwcharl/"
+        target="_blank"
+        >LinkedIn</Link
+      >
+
+      <Link
+        href="https://www.github.com/aczw"
+        target="_blank"
+        >GitHub</Link
+      >
+
+      <Link href="mailto:czw@seas.upenn.edu">Email</Link>
+
+      <a
+        href="/_files/resume.pdf"
+        target="_blank"
+        class="flex items-center rounded-full bg-sweater-4 px-2.5 py-0.5 text-sweater-9 transition-colors hover:bg-sweater-3"
+      >
+        Resume
+      </a>
+    </div>
+  </nav>
+</header>
