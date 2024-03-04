@@ -8,51 +8,51 @@ interface Track {
   live: boolean;
 }
 
-const LastFmSchema = z.promise(
-  z.object({
-    recenttracks: z.object({
-      track: z.array(
-        z.object({
-          artist: z.object({
-            mbid: z.string(),
-            "#text": z.string(),
-          }),
-          streamable: z.string(),
-          image: z.array(
-            z.object({
-              size: z.enum(["small", "medium", "large", "extralarge"]),
+const GET: APIRoute = async () => {
+  const LastFmSchema = z.promise(
+    z.object({
+      recenttracks: z.object({
+        track: z.array(
+          z.object({
+            artist: z.object({
+              mbid: z.string(),
               "#text": z.string(),
             }),
-          ),
-          mbid: z.string(),
-          album: z.object({
+            streamable: z.string(),
+            image: z.array(
+              z.object({
+                size: z.enum(["small", "medium", "large", "extralarge"]),
+                "#text": z.string(),
+              }),
+            ),
             mbid: z.string(),
-            "#text": z.string(),
+            album: z.object({
+              mbid: z.string(),
+              "#text": z.string(),
+            }),
+            name: z.string(),
+            "@attr": z
+              .object({
+                nowplaying: z.enum(["true", "false"]),
+              })
+              .optional(),
+            url: z.string(),
           }),
-          name: z.string(),
-          "@attr": z
-            .object({
-              nowplaying: z.enum(["true", "false"]),
-            })
-            .optional(),
-          url: z.string(),
+        ),
+        "@attr": z.object({
+          user: z.string(),
+          totalPages: z.string(),
+          page: z.string(),
+          perPage: z.string(),
+          total: z.string(),
         }),
-      ),
-      "@attr": z.object({
-        user: z.string(),
-        totalPages: z.string(),
-        page: z.string(),
-        perPage: z.string(),
-        total: z.string(),
       }),
     }),
-  }),
-);
+  );
 
-const key = import.meta.env.LASTFM_API_KEY;
-const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${key}&limit=1&format=json`;
+  const key = import.meta.env.LASTFM_API_KEY;
+  const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${key}&limit=1&format=json`;
 
-const GET: APIRoute = async () => {
   const { recenttracks } = await LastFmSchema.parse(fetch(url).then((res) => res.json()));
   const firstTrack = recenttracks.track[0];
 
