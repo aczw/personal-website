@@ -22,11 +22,9 @@ projects.sort((a, b) => a.data.order - b.data.order);
     <section class="animate-fade space-y-[1.25rem] [--order:0]">
       <h2 class="text-sweater-2">About me</h2>
 
-      <blockquote
-        class="flex -translate-x-1 gap-6 font-mono text-[14px] font-[100] italic text-sweater-3"
-      >
-        <p>"Waiting for something to happen?"</p>
-        <small class="text-sm">— MEWO</small>
+      <blockquote class="-translate-x-1 font-mono text-[14px] font-[100] italic text-sweater-3">
+        <p class="inline">"Meow? (Waiting for something to happen?)"</p>
+        <small class="whitespace-nowrap text-sm">— MEWO</small>
       </blockquote>
 
       <div class="grid grid-cols-1 gap-[1.25rem] md:grid-cols-2">
@@ -56,7 +54,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
         </p>
         <p>
           In my free time I like running, making album covers, playing the bass, obsessing over
-          trains, and tinerking with my Arch install.
+          trains, and tinkering with my Arch install.
         </p>
         <p>
           My socials can be found above. Thanks for stopping by. <span class="whitespace-nowrap"
@@ -75,8 +73,11 @@ projects.sort((a, b) => a.data.order - b.data.order);
 
       <ul class="grid grid-cols-1 gap-[1.25rem] sm:grid-cols-2">
         {
-          projects.map(({ data, slug }) => (
-            <li class="group">
+          projects.map(({ data, slug }, index) => (
+            <li
+              class="group animate-fade"
+              style={{ "--order": index + 1 }}
+            >
               <a
                 href={"/projects/" + slug}
                 class="relative flex items-end justify-between gap-6 overflow-hidden rounded-md p-3.5 sm:h-28"

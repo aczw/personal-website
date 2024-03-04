@@ -1,43 +1,12 @@
 ---
-import Lastfm from "@/components/lastfm.astro";
+import LastFm from "@/components/lastfm.astro";
 ---
 
 <footer class="mx-auto max-w-text pb-4 text:pb-10">
   <span
-    class="flex justify-between gap-[1.25rem] border-t-2 border-sweater-9 pt-4 font-mono text-[14px] font-[100]"
+    class="flex animate-fade justify-between gap-[1.25rem] border-t-2 border-sweater-9 pt-4 font-mono text-[14px] font-[100] [--order:0]"
   >
-    <Lastfm />
-    <div class="w-1/2 text-right">
-      <p class="italic text-sweater-6">last updated Mar 2024</p>
-      <span
-        id="scroll"
-        aria-hidden="true"
-        class="italic text-sweater-7 transition-colors"
-      ></span>
-    </div>
+    <LastFm />
+    <p class="w-1/2 animate-fade text-right italic text-sweater-6 [--order:0]">updated Mar 2024</p>
   </span>
 </footer>
-
-<script>
-  const fun = [
-    "soitgoes",
-    "aczw",
-    "newfaces",
-    "doitagain",
-    "92tilinfinity",
-    "suboptimal",
-    "promiseme",
-    "allitcosts",
-  ];
-
-  const pick = fun[Math.floor(Math.random() * fun.length)];
-  const offset = Math.floor(Math.random() * pick.length);
-
-  document.getElementById("scroll")!.textContent = pick.slice(offset) + pick.slice(0, offset);
-
-  setInterval(() => {
-    const scroll = document.getElementById("scroll");
-    const text = scroll!.textContent;
-    scroll!.textContent = text!.slice(1) + text![0];
-  }, 600);
-</script>

@@ -10,11 +10,13 @@ const track = (await response.json()) as Track;
   <a
     href="https://www.last.fm/user/ashzw"
     target="_blank"
-    class="w-fit text-sweater-6 underline decoration-sweater-8 decoration-1 underline-offset-2 transition-colors hover:text-sweater-5 hover:decoration-sweater-6"
+    class="w-fit text-sweater-7 underline decoration-sweater-8 decoration-1 underline-offset-2 transition-colors hover:text-sweater-6 hover:decoration-sweater-6"
   >
     <Music
       size={14}
       class="mr-1.5 inline shrink-0"
-    />{track.song} — {track.artist}
+    /><span class="hidden xs:inline">{track.song} — {track.artist}</span><span class="xs:hidden"
+      >Music status</span
+    >
   </a>
 </div>

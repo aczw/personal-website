@@ -33,7 +33,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
               <a
                 href={"/projects/" + slug}
                 class="group col-span-1 animate-fade space-y-2.5 rounded-xl bg-sweater-9 p-3 transition-colors hover:bg-sweater-8"
-                style={{ "--delay": `${(index + 1) * 75}ms` }}
+                style={{ "--order": index }}
               >
                 <Img
                   src={data.cover.img}
@@ -66,7 +66,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
             return (
               <div
                 class="col-span-1 animate-fade space-y-3"
-                style={{ "--delay": `${(index + 1) * 75}ms` }}
+                style={{ "--order": index }}
               >
                 <div>
                   {data.link ? (

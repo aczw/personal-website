@@ -1,4 +1,5 @@
 ---
+import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
 ---
 
@@ -6,9 +7,47 @@ import Layout from "@/layouts/layout.astro";
   title="404"
   description="Page not found"
 >
-  <section class="mt-8 flex flex-col items-center justify-center gap-2">
-    <h1 class="text-5xl text-sweater-2">404</h1>
-    <p>Page not found.</p>
-    <p class="italic text-sweater-6">Or stay here. I can't stop ya.</p>
-  </section>
+  <Header />
+
+  <main
+    class="mx-auto flex min-h-[calc(100vh-81px)] max-w-text flex-col items-center justify-center space-y-8 py-5 text:py-10"
+  >
+    <section class="text-center">
+      <h2 class="font-mono text-5xl text-sweater-2">404</h2>
+      <p class="text-lg font-[130] text-sweater-2">Page not found</p>
+    </section>
+
+    <code class="font-[100] text-sweater-2">{Astro.url.pathname}</code>
+
+    <p
+      id="scroll"
+      aria-hidden="true"
+      class="font-mono font-[100] italic text-sweater-7 transition-colors"
+    >
+    </p>
+  </main>
 </Layout>
+
+<script>
+  const fun = [
+    "soitgoes",
+    "aczw",
+    "newfaces",
+    "doitagain",
+    "92tilinfinity",
+    "suboptimal",
+    "promiseme",
+    "allitcosts",
+  ];
+
+  const pick = fun[Math.floor(Math.random() * fun.length)];
+  const offset = Math.floor(Math.random() * pick.length);
+
+  document.getElementById("scroll")!.textContent = pick.slice(offset) + pick.slice(0, offset);
+
+  setInterval(() => {
+    const scroll = document.getElementById("scroll");
+    const text = scroll!.textContent;
+    scroll!.textContent = text!.slice(1) + text![0];
+  }, 400);
+</script>

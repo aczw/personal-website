@@ -6,7 +6,7 @@ import { Image } from "astro:assets";
 interface Props extends Omit<HTMLAttributes<"img">, "src" | "alt" | "class"> {
   src: ImageMetadata | Promise<any>;
   alt: string;
-  loading: "eager" | "lazy" | undefined | null;
+  loading?: "eager" | "lazy" | null;
   className?: string;
 }
 

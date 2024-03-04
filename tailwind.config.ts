@@ -28,6 +28,7 @@ const config = {
         },
       },
       screens: {
+        xxs: "375px",
         xs: "475px",
         text: "932px",
       },
@@ -38,7 +39,7 @@ const config = {
         },
       },
       animation: {
-        fade: "fade 0.4s ease-out calc(var(--order) * 75ms) backwards",
+        fade: "fade 0.4s ease-out calc(var(--order) * 90ms) backwards",
       },
     },
   },
