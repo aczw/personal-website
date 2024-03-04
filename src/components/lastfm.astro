@@ -1,5 +1,5 @@
 ---
-import { GET, type Track } from "@/pages/api/lastfm";
+import { GET, type Track } from "@/pages/lastfm.json";
 import { Music } from "lucide-astro";
 
 const response = await GET(Astro);
@@ -18,3 +18,4 @@ const track = (await response.json()) as Track;
     />{track.song} — {track.artist}
   </a>
 </div>
+@/pages/lastfm
