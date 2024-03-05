@@ -10,7 +10,7 @@ const { id, ...attrs } = Astro.props;
 <h2
   id={id}
   {...attrs}
-  class="text-lg text-sweater-2"
+  class="text-sweater-2"
 >
   <a
     href={`#${id}`}
@@ -18,8 +18,8 @@ const { id, ...attrs } = Astro.props;
   >
     <slot />
     <Hash
-      size={16}
-      class="wide:absolute wide:-left-4 stroke-transparent transition-colors group-hover:stroke-sweater-5"
+      size={14}
+      class="stroke-transparent transition-colors group-hover:stroke-sweater-5 wide:absolute wide:-left-4"
       aria-hidden="true"
     />
   </a>

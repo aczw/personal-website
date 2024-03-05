@@ -43,7 +43,7 @@ const title = meta + data.title;
     >
 
     <section class="animate-fade space-y-[0.75rem] [--order:0]">
-      <h1 class="text-xl text-sweater-2">{data.title}</h1>
+      <h1 class="text-sweater-2">{data.title}</h1>
       <p>{data.blurb}</p>
     </section>
 
@@ -54,14 +54,14 @@ const title = meta + data.title;
       className="animate-fade border-2 border-sweater-9 [--order:0]"
     />
 
-    <section class="grid animate-fade grid-cols-1 gap-[1.25rem] [--order:1] xxs:grid-cols-2">
+    <section class="grid animate-fade grid-cols-1 gap-y-[1.25rem] [--order:1] xxs:grid-cols-2">
       <div class="col-span-1">
         <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
           <Calendar
             size={16}
             class="mr-1.5"
           />
-          Completed on
+          Finished
         </p>
         <p class="text-sweater-3">
           {
@@ -92,7 +92,7 @@ const title = meta + data.title;
                 size={16}
                 class="mr-1.5"
               />
-              Group-based project
+              Team-based
             </p>
             <p class="text-sweater-3">{`Team of ${data.teamSize}`}</p>
           </div>
@@ -123,6 +123,7 @@ const title = meta + data.title;
             <Link
               href={data.link.url}
               target="_blank"
+              className="break-words"
             >
               {data.link.url}
             </Link>

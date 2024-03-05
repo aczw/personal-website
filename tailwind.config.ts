@@ -31,7 +31,7 @@ const config = {
       screens: {
         xxs: "375px",
         xs: "475px",
-        wide: "930px",
+        wide: "940px",
       },
       keyframes: {
         fade: {
