@@ -50,11 +50,14 @@ const GET: APIRoute = async () => {
     }),
   );
 
-  const key = import.meta.env.LASTFM_API_KEY;
-  const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${key}&limit=1&format=json`;
+  const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${import.meta.env.LASTFM_API_KEY}&limit=1&format=json`;
+  const result = LastFmSchema.safeParse(fetch(url).then((res) => res.json()));
 
-  const { recenttracks } = await LastFmSchema.parse(fetch(url).then((res) => res.json()));
-  const firstTrack = recenttracks.track[0];
+  if (!result.success) {
+    return new Response(null, { status: 502 });
+  }
+
+  const firstTrack = (await result.data).recenttracks.track[0];
 
   return new Response(
     JSON.stringify({
@@ -63,6 +66,7 @@ const GET: APIRoute = async () => {
       url: firstTrack.url,
       live: firstTrack["@attr"] ? firstTrack["@attr"].nowplaying === "true" : false,
     }),
+    { status: 200 },
   );
 };
 

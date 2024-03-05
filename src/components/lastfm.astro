@@ -3,20 +3,31 @@ import { GET, type Track } from "@/pages/api/lastfm";
 import { Music } from "lucide-astro";
 
 const response = await GET(Astro);
-const track = (await response.json()) as Track;
+const track = response.ok ? ((await response.json()) as Track) : null;
 ---
 
 <div class="w-1/2 animate-fade [--order:0]">
   <a
-    href="https://www.last.fm/user/ashzw"
+    href={track === null
+      ? "https://open.spotify.com/user/zhwq0rxdn060sgar22e07u193?si=3cfe23a176bf4272"
+      : "https://www.last.fm/user/ashzw"}
     target="_blank"
     class="w-fit text-sweater-7 underline decoration-sweater-8 decoration-1 underline-offset-2 transition-colors hover:text-sweater-6 hover:decoration-sweater-6"
   >
     <Music
       size={14}
       class="mr-1.5 inline shrink-0"
-    /><span class="hidden xs:inline">{track.song} — {track.artist}</span><span class="xs:hidden"
-      >Music status</span
-    >
+    />{
+      track === null ? (
+        <span>Playlists</span>
+      ) : (
+        <>
+          <span class="hidden xs:inline">
+            {track.song} — {track.artist}
+          </span>
+          <span class="xs:hidden">{track.live ? "Listening" : "Recently played"}</span>
+        </>
+      )
+    }
   </a>
 </div>
