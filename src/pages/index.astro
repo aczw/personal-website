@@ -18,7 +18,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
 <Layout description="Computer graphics student at the University of Pennsylvania.">
   <Header />
 
-  <Main className="max-w-wide">
+  <Main className="max-w-wide min-h-[calc(100vh-157px)]">
     <section class="animate-fade space-y-[1.25rem] [--order:0]">
       <h2 class="text-sweater-2">About me</h2>
 
@@ -98,10 +98,14 @@ projects.sort((a, b) => a.data.order - b.data.order);
                   class="absolute inset-0 z-[2] rounded-md bg-gradient-to-l from-sweater-8 from-5% opacity-0 transition-opacity group-hover:opacity-100"
                 />
 
-                <h3 class="z-[3] text-sweater-2">{data.title}</h3>
+                <div class="z-[3]">
+                  <h3 class="text-sweater-2">{data.title}</h3>
+                  <p>{data.tags.join(", ")}</p>
+                </div>
+
                 <ArrowRightCircle
                   size={20}
-                  class="z-[3] shrink-0 stroke-sweater-5 transition group-hover:rotate-[-25deg] group-hover:stroke-sweater-3"
+                  class="z-[3] shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3"
                 />
               </a>
             </li>

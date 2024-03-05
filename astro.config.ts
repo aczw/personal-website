@@ -23,6 +23,11 @@ const config = defineConfig({
   }),
   // see https://noahflk.com/blog/trailing-slashes-astro
   trailingSlash: "never",
+  markdown: {
+    shikiConfig: {
+      theme: "catppuccin-mocha",
+    },
+  },
 });
 
 export default config;

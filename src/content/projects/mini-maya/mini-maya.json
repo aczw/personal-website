@@ -1,6 +1,6 @@
 {
   "title": "Mini Maya",
-  "blurb": "Simple OBJ mesh editor, inspired by Maya. Uses a half-edge data structure under the hood and supports Catmull-Clark subdivision, face triangulation, edge splitting, skinning via joint skeletons, and more.",
+  "blurb": "OBJ mesh editor, inspired by Maya. Uses a half-edge data structure under the hood and supports Catmull-Clark subdivision, face triangulation, edge splitting, skinning via joint skeletons, and more.",
   "date": "2023-11-15",
   "imgs": [
     {

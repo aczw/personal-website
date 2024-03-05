@@ -22,40 +22,24 @@ slug: sddm-theme-corners
 ---
 
 import VideoGif from "@/components/video-gif.astro";
-import ImageGallery from "@/components/image-gallery.astro";
 
 Early on in my Linux journey, I was really into customizing my setup and theming _everything_. Form over function, you could say. This is commonly referred to as [ricing](https://jie-fang.github.io/blog/basics-of-ricing) and there are whole [dedicated communities](https://www.reddit.com/r/unixporn/) around it.
 
 There came a time when I wanted to decorate my login screen. Having chosen [SDDM](https://github.com/sddm/sddm/) as my display manager of choice, I started looking for login themes... and didn't find anything that appealed to me. Thus `sddm-theme-corners` was born.
 
-In the spirit of open source, I made it publicly available on my GitHub. Since then, it's gotten quite a few stars and forks, which makes me happy because people are enjoying something I made :\)
+I've made it publicly available on my GitHub. Since then, it's gotten quite a few stars and forks, which makes me happy because people are enjoying something I made :\)
 
 ## Designing a login theme
 
 The themes I saw on the [KDE Store](https://store.kde.org/s/KDE%20Store/browse?cat=101&ord=rating) felt too corporate to me, if that makes sense. They heavily utilize [Gaussian blur](https://store.kde.org/s/KDE%20Store/p/1214121), [thin icons and fonts](https://store.kde.org/s/KDE%20Store/p/1283380"), and others tried doing [too much at once](https://github.com/MarianArlt/sddm-sugar-light/wiki/Before-you-begin) for me. It feels like they belong to a past era (granted, some of them are years old now).
 
-This sounds like a diss. None of this is intended to be a diss. They're popular for a reason. Subjectively, the design just didn't appeal to me. Plus, without these projects I would've had no idea where to start programming! (More on this later.)
+This sounds like a diss. None of this is intended to be a diss. They're popular for a reason. Subjectively, the design just didn't appeal to me. Plus, without these projects I would've had no idea where to start programming! (More on this later.) After some tinkering and iterating, the final result looks like this:
 
-After some tinkering and iterating, the final result looks like this:
+![An orange color scheme featuring completely round corners and Hanako-kun.](./hanako.png)
 
-<ImageGallery
-  location="write-ups"
-  innerPath="sddm-theme-corners/"
-  imgs={[
-    {
-      src: "hanako.png",
-      alt: "An orange color scheme featuring completely round corners and Hanako-kun.",
-    },
-    {
-      src: "loud.png",
-      alt: "A very colorful background with black and white UI elements and squared corners.",
-    },
-    {
-      src: "sky.png",
-      alt: "Sunset over some buildings. UI elements are colored pink and purple.",
-    },
-  ]}
-/>
+![A very colorful background with black and white UI elements and squared corners.](./loud.png)
+
+![Sunset over some buildings. UI elements are colored pink and purple.](./sky.png)
 
 True to its name, everything is anchored to a corner. Interactive elements live on the bottom half, and the date/time on the top. I chose to group the power and session controls together (versus placing sessions below the user, for instance) because they're less commonly used.
 
@@ -91,7 +75,7 @@ This is where previous SDDM themes really helped me get my footing. By looking t
 
 I definitely committed some coding sins figuring out how to hook everything together. I'm particularly proud of this abomination:
 
-```
+```cpp
 Component.onCompleted: {
   if (userPicture.enabled) {
     userPicture.source = userWrapper.items.get(userList.currentIndex).model.icon;

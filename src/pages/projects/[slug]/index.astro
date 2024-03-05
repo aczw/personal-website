@@ -36,12 +36,13 @@ const title = meta + data.title;
   <Header />
 
   <Main className="max-w-narrow">
+    <Link
+      href="/projects"
+      className="flex -translate-x-1 items-center gap-1"
+      ><ArrowLeft size={14} /> Go back</Link
+    >
+
     <section class="animate-fade space-y-[0.75rem] [--order:0]">
-      <Link
-        href="/projects"
-        className="flex items-center gap-1 font-mono text-[14px] font-[100]"
-        ><ArrowLeft size={14} /> go back</Link
-      >
       <h1 class="text-xl text-sweater-2">{data.title}</h1>
       <p>{data.blurb}</p>
     </section>
