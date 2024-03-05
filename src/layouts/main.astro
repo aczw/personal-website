@@ -1,1 +1,9 @@
-<main class="mx-auto max-w-text space-y-10 py-5 text:py-10"><slot /></main>
+---
+interface Props {
+  className: string;
+}
+
+const { className } = Astro.props;
+---
+
+<main class:list={["wide:py-10 mx-auto space-y-10 py-5", className]}><slot /></main>

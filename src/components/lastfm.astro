@@ -4,6 +4,7 @@ import { Music } from "lucide-astro";
 
 const response = await GET(Astro);
 const track = response.ok ? ((await response.json()) as Track) : null;
+const available = track !== null;
 ---
 
 <div class="w-1/2 animate-fade [--order:0]">
@@ -17,17 +18,10 @@ const track = response.ok ? ((await response.json()) as Track) : null;
     <Music
       size={14}
       class="mr-1.5 inline shrink-0"
-    />{
-      track === null ? (
-        <span>Playlists</span>
-      ) : (
-        <>
-          <span class="hidden xs:inline">
-            {track.song} — {track.artist}
-          </span>
-          <span class="xs:hidden">{track.live ? "Listening" : "Recently played"}</span>
-        </>
-      )
-    }
+    /><span class="hidden xs:inline"
+      >{available ? `${track.song} — ${track.artist}` : "Playlists"}</span
+    ><span class="xs:hidden"
+      >{available ? (track.live ? "Listening" : "Recently played") : "Playlists"}</span
+    >
   </a>
 </div>

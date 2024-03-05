@@ -5,7 +5,7 @@ import { Github, Linkedin, Mail } from "lucide-astro";
 const pathname = Astro.url.pathname;
 ---
 
-<header class="mx-auto max-w-text pt-4 text:pt-10">
+<header class="max-w-wide wide:pt-10 mx-auto pt-4">
   <nav class="flex items-center justify-between border-b-2 border-sweater-9 pb-4">
     <a
       href="/"
@@ -32,7 +32,7 @@ const pathname = Astro.url.pathname;
       </svg>
     </a>
 
-    <div class="xxs:space-x-6 flex items-center space-x-4 pl-6">
+    <div class="flex items-center space-x-4 pl-6 xxs:space-x-6">
       <Link
         href="https://www.linkedin.com/in/zwcharl/"
         target="_blank"
@@ -40,7 +40,7 @@ const pathname = Astro.url.pathname;
         ><Linkedin
           class="xxs:hidden"
           size={22}
-        /><span class="xxs:inline hidden">LinkedIn</span></Link
+        /><span class="hidden xxs:inline">LinkedIn</span></Link
       >
 
       <Link
@@ -50,7 +50,7 @@ const pathname = Astro.url.pathname;
         ><Github
           class="xxs:hidden"
           size={22}
-        /><span class="xxs:inline hidden">GitHub</span></Link
+        /><span class="hidden xxs:inline">GitHub</span></Link
       >
 
       <Link
@@ -59,7 +59,7 @@ const pathname = Astro.url.pathname;
         ><Mail
           class="xxs:hidden"
           size={22}
-        /><span class="xxs:inline hidden">Email</span></Link
+        /><span class="hidden xxs:inline">Email</span></Link
       >
 
       <a

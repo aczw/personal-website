@@ -13,7 +13,7 @@ import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
 import { getCollection } from "astro:content";
-import { Calendar, Flag, Link2, Users, Wrench } from "lucide-astro";
+import { ArrowLeft, Calendar, Flag, Link2, Users, Wrench } from "lucide-astro";
 
 const projectEntries = await getCollection("write-ups");
 const project = projectEntries.find((project) => project.slug === Astro.params.slug);
@@ -35,8 +35,13 @@ const title = meta + data.title;
 >
   <Header />
 
-  <Main>
-    <section class="animate-fade space-y-[1.25rem] [--order:0]">
+  <Main className="max-w-narrow">
+    <section class="animate-fade space-y-[0.75rem] [--order:0]">
+      <Link
+        href="/projects"
+        className="flex items-center gap-1 font-mono text-[14px] font-[100]"
+        ><ArrowLeft size={14} /> go back</Link
+      >
       <h1 class="text-xl text-sweater-2">{data.title}</h1>
       <p>{data.blurb}</p>
     </section>
@@ -44,12 +49,13 @@ const title = meta + data.title;
     <Img
       src={data.cover.img}
       alt={data.cover.alt}
+      loading="eager"
       className="animate-fade border-2 border-sweater-9 [--order:0]"
     />
 
-    <section class="grid animate-fade grid-cols-1 gap-4 [--order:1] xs:grid-cols-2">
+    <section class="grid animate-fade grid-cols-1 gap-[1.25rem] [--order:1] xxs:grid-cols-2">
       <div class="col-span-1">
-        <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+        <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
           <Calendar
             size={16}
             class="mr-1.5"
@@ -67,7 +73,7 @@ const title = meta + data.title;
       </div>
 
       <div class="col-span-1">
-        <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+        <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
           <Wrench
             size={16}
             class="mr-1.5"
@@ -80,7 +86,7 @@ const title = meta + data.title;
       {
         data.teamSize ? (
           <div class="col-span-1">
-            <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+            <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
               <Users
                 size={16}
                 class="mr-1.5"
@@ -93,7 +99,7 @@ const title = meta + data.title;
       }
 
       <div class="col-span-1">
-        <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+        <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
           <Flag
             size={16}
             class="mr-1.5"
@@ -106,7 +112,7 @@ const title = meta + data.title;
       {
         data.link ? (
           <div class="col-span-1">
-            <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+            <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
               <Link2
                 size={16}
                 class="mr-1.5"

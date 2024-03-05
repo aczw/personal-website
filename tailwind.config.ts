@@ -11,7 +11,8 @@ const config = {
     extend: {
       maxWidth: {
         // whatever width + px-4 (16px on either side = 32px)
-        text: "932px",
+        wide: "932px",
+        narrow: "782px",
       },
       colors: {
         sweater: {
@@ -30,7 +31,7 @@ const config = {
       screens: {
         xxs: "375px",
         xs: "475px",
-        text: "932px",
+        wide: "932px",
       },
       keyframes: {
         fade: {
