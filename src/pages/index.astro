@@ -1,86 +1,108 @@
 ---
-export const prerender = false;
-
-import Img from "@/components/img.astro";
-import LastFm from "@/components/lastfm.astro";
-import Link from "@/components/link.astro";
-import MainLayout from "@/layouts/main-layout.astro";
-import PrimitiveLayout from "@/layouts/primitive-layout.astro";
-import { getEntries } from "astro:content";
 import { ArrowRightCircle } from "lucide-astro";
 
-const selectedProjects = await getEntries([
-  { collection: "write-ups", slug: "mini-minecraft" },
-  { collection: "write-ups", slug: "rcw" },
-]);
+import Img from "@/components/img.astro";
+import Link from "@/components/link.astro";
+
+import Footer from "@/layouts/footer.astro";
+import Header from "@/layouts/header.astro";
+import Layout from "@/layouts/layout.astro";
+import Main from "@/layouts/main.astro";
+
+import { getCollection } from "astro:content";
+
+const projects = await getCollection("write-ups");
+projects.sort((a, b) => a.data.order - b.data.order);
 ---
 
-<PrimitiveLayout description="Computer graphics student at the University of Pennsylvania.">
-  <MainLayout className="space-y-10">
-    <section class="animate-fade space-y-[1rem] [--delay:75ms]">
-      <h2 class="text-lg text-sweater-2">About me</h2>
-      <p>
-        Hi, my name is Charles. I'm a student at the University of Pennsylvania majoring in
-        <Link
-          href="http://cg.cis.upenn.edu/dmd.html"
-          target="_blank"
-        >
-          {"Digital Media Design"}
-        </Link>, a program that combines CS with computer graphics and fine arts.
-      </p>
-      <p>
-        I like to make games and build websites. To that end I help run <Link
-          href="https://pennupgrade.com"
-          target="_blank"
-        >
-          {"UPGRADE"}
-        </Link>, our game development club, and maintain the
-        <Link
-          href="http://cg.cis.upenn.edu/siggraph/"
-          target="_blank"
-        >
-          {"website"}
-        </Link> for our SIGGRAPH chapter. I'm also working with <Link
-          href="https://www.cis.upenn.edu/~mhnaik/"
-          target="_blank"
-        >
-          {"Professor Mayur Naik"}
-        </Link> to help build web platforms for our research group.
-      </p>
-      <p>
-        In my free time I like running, playing the bass, designing album covers, obsessing over
-        metro systems, and ricing my Arch setup.
-      </p>
-      <p>My contact info is below. Thanks for stopping by. (〜￣▽￣)〜</p>
+<Layout description="Computer graphics student at the University of Pennsylvania.">
+  <Header />
+
+  <Main className="max-w-wide min-h-[calc(100vh-157px)]">
+    <section class="animate-fade space-y-[1.25rem] [--order:0]">
+      <h2 class="text-sweater-2">About me</h2>
+
+      <blockquote class="-translate-x-1 font-mono text-[14px] font-[100] italic text-sweater-3">
+        <p class="inline">"Meow? (Waiting for something to happen?)"</p>
+        <small class="whitespace-nowrap text-sm">— MEWO</small>
+      </blockquote>
+
+      <div class="grid grid-cols-1 gap-[1.25rem] md:grid-cols-2">
+        <p>
+          Hi, I'm Charles. I'm a student at the University of Pennsylvania majoring in Digital Media
+          Design, which is a program that combines CS with computer graphics and fine arts.
+        </p>
+        <p>
+          I like to design interfaces for games and websites. To that end, I help run our game dev
+          club <Link
+            href="https://pennupgrade.com"
+            target="_blank"
+          >
+            {"UPGRADE"}
+          </Link> and our
+          <Link
+            href="http://cg.cis.upenn.edu/siggraph/"
+            target="_blank"
+          >
+            {"SIGGRAPH chapter"}
+          </Link>. I'm also working with <Link
+            href="https://www.cis.upenn.edu/~mhnaik/"
+            target="_blank"
+          >
+            {"Prof. Mayur Naik"}
+          </Link> to build web platforms.
+        </p>
+        <p>
+          In my free time I like running, making album covers, playing the bass, obsessing over
+          trains, and tinkering with my Arch install.
+        </p>
+        <p>
+          My socials can be found above. Thanks for stopping by. <span class="whitespace-nowrap"
+            >(〜￣▽￣)〜</span
+          >
+        </p>
+      </div>
     </section>
 
-    <section class="animate-fade space-y-[1rem] [--delay:150ms]">
-      <h2 class="mb-[1rem] text-lg text-sweater-2">Projects</h2>
-      <ul class="space-y-[1rem]">
+    <section class="animate-fade space-y-[1.25rem] [--order:1]">
+      <h2 class="text-sweater-2">Projects</h2>
+      <p>
+        An assortment of websites and games I've designed, as well as some computer graphics
+        projects. <Link href="/projects">View all my projects here.</Link>
+      </p>
+
+      <ul class="grid grid-cols-1 gap-[1.25rem] sm:grid-cols-2">
         {
-          selectedProjects.map(({ data, slug }) => (
-            <li class="group">
+          projects.map(({ data, slug }, index) => (
+            <li
+              class="group animate-fade"
+              style={{ "--order": index + 1 }}
+            >
               <a
                 href={"/projects/" + slug}
-                class="relative flex items-center justify-between gap-6 overflow-hidden rounded-md p-3.5"
+                class="relative flex items-end justify-between gap-6 overflow-hidden rounded-md p-3.5 sm:h-28"
               >
                 <Img
                   src={data.cover.img}
                   alt={data.cover.alt}
-                  className="absolute inset-0 m-auto opacity-40 z-0 scale-105 blur group-hover:opacity-20 group-hover:blur-none transition"
+                  loading="eager"
+                  className="absolute inset-0 m-auto opacity-60 z-0 scale-105 blur group-hover:opacity-30 group-hover:blur-none transition"
+                />
+
+                <div
+                  aria-hidden="true"
+                  class="absolute inset-0 z-[1] rounded-md bg-gradient-to-l from-sweater-9 from-15%"
                 />
                 <div
                   aria-hidden="true"
-                  class="absolute inset-0 z-[1] rounded-md bg-gradient-to-l from-sweater-9 from-20%"
+                  class="absolute inset-0 z-[2] rounded-md bg-gradient-to-l from-sweater-8 from-5% opacity-0 transition-opacity group-hover:opacity-100"
                 />
-                <div
-                  aria-hidden="true"
-                  class="absolute inset-0 z-[2] rounded-md bg-gradient-to-l from-sweater-8 opacity-0 transition-opacity group-hover:opacity-100"
-                />
+
                 <div class="z-[3]">
                   <h3 class="text-sweater-2">{data.title}</h3>
-                  <p>{data.blurb}</p>
+                  <p>{data.tags.join(", ")}</p>
                 </div>
+
                 <ArrowRightCircle
                   size={20}
                   class="z-[3] shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3"
@@ -90,26 +112,8 @@ const selectedProjects = await getEntries([
           ))
         }
       </ul>
-      <Link
-        href="/projects"
-        className="group"
-      >
-        <div
-          class="relative z-[-2] mt-[1rem] flex h-12 items-end justify-center rounded-t-md bg-gradient-to-b from-sweater-9"
-        >
-          <div
-            class="absolute inset-0 z-[-1] rounded-t-md bg-gradient-to-b from-sweater-8 opacity-0 transition-opacity group-hover:opacity-100"
-            aria-hidden="true"
-          >
-          </div>
-          <span class="flex items-center">View all projects</span>
-        </div>
-      </Link>
     </section>
+  </Main>
 
-    <section class="animate-fade space-y-[1rem] [--delay:225ms]">
-      <h2 class="mb-[1rem] text-lg text-sweater-2">Music status</h2>
-      <LastFm />
-    </section>
-  </MainLayout>
-</PrimitiveLayout>
+  <Footer />
+</Layout>

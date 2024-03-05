@@ -13,15 +13,21 @@ const config = defineConfig({
       applyBaseStyles: false,
     }),
   ],
-  output: "hybrid",
+  output: "server",
   adapter: vercel({
     imageService: true,
+    functionPerRoute: true,
     webAnalytics: {
       enabled: true,
     },
   }),
   // see https://noahflk.com/blog/trailing-slashes-astro
   trailingSlash: "never",
+  markdown: {
+    shikiConfig: {
+      theme: "catppuccin-mocha",
+    },
+  },
 });
 
 export default config;

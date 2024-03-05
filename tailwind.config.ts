@@ -6,11 +6,13 @@ const config = {
   theme: {
     fontFamily: {
       sans: ["Atkinson Hyperlegible", ...defaultTheme.fontFamily.sans],
-      mono: ["Maple Mono", ...defaultTheme.fontFamily.mono],
+      mono: ["Berkeley Mono Variable", ...defaultTheme.fontFamily.mono],
     },
     extend: {
       maxWidth: {
-        content: "782px",
+        // whatever width + px-4 (1rem on either side = 30px)
+        wide: "940px",
+        narrow: "780px",
       },
       colors: {
         sweater: {
@@ -27,8 +29,9 @@ const config = {
         },
       },
       screens: {
+        xxs: "375px",
         xs: "475px",
-        content: "782px",
+        wide: "930px",
       },
       keyframes: {
         fade: {
@@ -37,7 +40,7 @@ const config = {
         },
       },
       animation: {
-        fade: "fade 0.4s ease-out var(--delay) backwards",
+        fade: "fade 0.4s ease-out calc(var(--order) * 90ms) backwards",
       },
     },
   },

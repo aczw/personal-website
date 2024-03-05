@@ -8,33 +8,41 @@ import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 import Li from "@/components/mdx/li.astro";
 import Ul from "@/components/mdx/ul.astro";
-import MainLayout from "@/layouts/main-layout.astro";
-import PrimitiveLayout from "@/layouts/primitive-layout.astro";
+import Footer from "@/layouts/footer.astro";
+import Header from "@/layouts/header.astro";
+import Layout from "@/layouts/layout.astro";
+import Main from "@/layouts/main.astro";
 import { getCollection } from "astro:content";
-import { Calendar, Flag, Link2, Users, Wrench } from "lucide-astro";
+import { ArrowLeft, Calendar, Flag, Link2, Users, Wrench } from "lucide-astro";
 
-export async function getStaticPaths() {
-  const projectEntries = await getCollection("write-ups");
-  return projectEntries.map((entry) => ({
-    params: { slug: entry.slug },
-    props: { entry },
-  }));
+const projectEntries = await getCollection("write-ups");
+const project = projectEntries.find((project) => project.slug === Astro.params.slug);
+
+if (!project) {
+  return Astro.redirect("/404");
 }
 
-const { entry } = Astro.props;
-const { Content } = await entry.render();
-const { data } = entry;
+const { Content } = await project.render();
+const { data } = project;
 
 const meta = import.meta.env.DEV ? (data.published ? "[PUBLISHED] " : "[DRAFT] ") : "";
 const title = meta + data.title;
 ---
 
-<PrimitiveLayout
+<Layout
   title={title}
   description={data.blurb}
 >
-  <MainLayout className="space-y-8">
-    <section class="animate-fade space-y-[1rem] [--delay:75ms]">
+  <Header />
+
+  <Main className="max-w-narrow">
+    <Link
+      href="/projects"
+      className="flex -translate-x-1 items-center gap-1"
+      ><ArrowLeft size={14} /> Go back</Link
+    >
+
+    <section class="animate-fade space-y-[0.75rem] [--order:0]">
       <h1 class="text-xl text-sweater-2">{data.title}</h1>
       <p>{data.blurb}</p>
     </section>
@@ -42,12 +50,13 @@ const title = meta + data.title;
     <Img
       src={data.cover.img}
       alt={data.cover.alt}
-      className="animate-fade border-2 border-sweater-9 [--delay:150ms]"
+      loading="eager"
+      className="animate-fade border-2 border-sweater-9 [--order:0]"
     />
 
-    <section class="grid animate-fade grid-cols-1 gap-4 [--delay:225ms] xs:grid-cols-2">
+    <section class="grid animate-fade grid-cols-1 gap-[1.25rem] [--order:1] xxs:grid-cols-2">
       <div class="col-span-1">
-        <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+        <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
           <Calendar
             size={16}
             class="mr-1.5"
@@ -65,7 +74,7 @@ const title = meta + data.title;
       </div>
 
       <div class="col-span-1">
-        <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+        <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
           <Wrench
             size={16}
             class="mr-1.5"
@@ -78,7 +87,7 @@ const title = meta + data.title;
       {
         data.teamSize ? (
           <div class="col-span-1">
-            <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+            <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
               <Users
                 size={16}
                 class="mr-1.5"
@@ -91,7 +100,7 @@ const title = meta + data.title;
       }
 
       <div class="col-span-1">
-        <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+        <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
           <Flag
             size={16}
             class="mr-1.5"
@@ -104,7 +113,7 @@ const title = meta + data.title;
       {
         data.link ? (
           <div class="col-span-1">
-            <p class="flex items-center font-mono text-sm uppercase text-sweater-5">
+            <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
               <Link2
                 size={16}
                 class="mr-1.5"
@@ -124,7 +133,7 @@ const title = meta + data.title;
 
     {
       !data.published && import.meta.env.PROD ? (
-        <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--delay:300ms]">
+        <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--order:2]">
           <h2 class="text-sweater-3">Under construction! ⚙️</h2>
           <p>
             Apologies, I have not finished the write-up for this project yet. I will get to it
@@ -132,7 +141,7 @@ const title = meta + data.title;
           </p>
         </div>
       ) : (
-        <article class="animate-fade space-y-5 leading-normal [--delay:225ms]">
+        <article class="animate-fade space-y-5 leading-normal [--order:2]">
           <Content
             components={{
               h2: H2,
@@ -148,5 +157,7 @@ const title = meta + data.title;
         </article>
       )
     }
-  </MainLayout>
-</PrimitiveLayout>
+  </Main>
+
+  <Footer />
+</Layout>

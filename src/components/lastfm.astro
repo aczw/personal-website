@@ -1,99 +1,27 @@
 ---
-import Link from "@/components/link.astro";
-import { z } from "astro/zod";
+import { GET, type Track } from "@/pages/api/lastfm";
+import { Music } from "lucide-astro";
 
-const recentTracksSchema = z.promise(
-  z.object({
-    recenttracks: z.object({
-      track: z.array(
-        z.object({
-          artist: z.object({
-            mbid: z.string(),
-            "#text": z.string(),
-          }),
-          streamable: z.string(),
-          image: z.array(
-            z.object({
-              size: z.enum(["small", "medium", "large", "extralarge"]),
-              "#text": z.string(),
-            }),
-          ),
-          mbid: z.string(),
-          album: z.object({
-            mbid: z.string(),
-            "#text": z.string(),
-          }),
-          name: z.string(),
-          "@attr": z
-            .object({
-              nowplaying: z.enum(["true", "false"]),
-            })
-            .optional(),
-          url: z.string(),
-        }),
-      ),
-      "@attr": z.object({
-        user: z.string(),
-        totalPages: z.string(),
-        page: z.string(),
-        perPage: z.string(),
-        total: z.string(),
-      }),
-    }),
-  }),
-);
-
-const key = import.meta.env.LASTFM_API_KEY;
-const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${key}&limit=1&format=json`;
-
-const data = await recentTracksSchema.parse(fetch(url).then((res) => res.json()));
-const recentTracks = data.recenttracks;
-
-const firstTrack = recentTracks.track[0];
-const nowPlaying = firstTrack["@attr"] ? firstTrack["@attr"].nowplaying === "true" : false;
+const response = await GET(Astro);
+const track = response.ok ? ((await response.json()) as Track) : null;
+const available = track !== null;
 ---
 
-<p class="animate-fade [--delay:0ms]">
-  {
-    firstTrack ? (
-      <>
-        {nowPlaying ? (
-          <>
-            I am
-            <Link
-              href="https://www.last.fm/user/ashzw"
-              target="_blank"
-            >
-              {"currently"}
-            </Link>
-            listening to <span class="text-sweater-2">{firstTrack.name}</span> by
-            <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
-          </>
-        ) : (
-          <>
-            The last song I
-            <Link
-              href="https://www.last.fm/user/ashzw"
-              target="_blank"
-            >
-              {"listened to"}
-            </Link>{" "}
-            was <span class="text-sweater-2">{firstTrack.name}</span> by
-            <span class="text-sweater-2">{firstTrack.artist["#text"]}</span>.
-          </>
-        )}
-      </>
-    ) : (
-      <>
-        I like tracking my music listening habits. Visit my
-        <Link
-          href="https://www.last.fm/user/ashzw"
-          target="_blank"
-        >
-          {"Last.fm profile"}
-        </Link>
-        to see my history.
-      </>
-    )
-  }
-</p>
+<div class="w-1/2 animate-fade [--order:0]">
+  <a
+    href={track === null
+      ? "https://open.spotify.com/user/zhwq0rxdn060sgar22e07u193?si=3cfe23a176bf4272"
+      : "https://www.last.fm/user/ashzw"}
+    target="_blank"
+    class="w-fit text-sweater-7 underline decoration-sweater-8 decoration-1 underline-offset-2 transition-colors hover:text-sweater-6 hover:decoration-sweater-6"
+  >
+    <Music
+      size={14}
+      class="mr-1.5 inline shrink-0"
+    /><span class="hidden xs:inline"
+      >{available ? `${track.song} — ${track.artist}` : "Playlists"}</span
+    ><span class="xs:hidden"
+      >{available ? (track.live ? "Listening" : "Recently played") : "Playlists"}</span
+    >
+  </a>
+</div>

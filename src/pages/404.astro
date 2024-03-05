@@ -1,15 +1,53 @@
 ---
-import Link from "@/components/link.astro";
-import PrimitiveLayout from "@/layouts/primitive-layout.astro";
+import Header from "@/layouts/header.astro";
+import Layout from "@/layouts/layout.astro";
 ---
 
-<PrimitiveLayout
+<Layout
   title="404"
   description="Page not found"
 >
-  <main class="flex min-h-screen flex-col items-center justify-center gap-10">
-    <h1 class="text-5xl text-sweater-2">404</h1>
-    <p>Page not found. <Link href="/">Go back?</Link></p>
-    <p class="italic text-sweater-6">Or stay here. I can't stop ya.</p>
+  <Header />
+
+  <main
+    class="max-w-narrow wide:py-10 mx-auto flex min-h-[calc(100vh-81px)] flex-col items-center justify-center space-y-8 py-5"
+  >
+    <section class="text-center">
+      <h2 class="font-mono text-5xl text-sweater-2">404</h2>
+      <p class="text-lg font-[130] text-sweater-2">Page not found</p>
+    </section>
+
+    <code class="font-[100] text-sweater-2">{Astro.url.pathname}</code>
+
+    <p
+      id="scroll"
+      aria-hidden="true"
+      class="font-mono font-[100] italic text-sweater-7 transition-colors"
+    >
+    </p>
   </main>
-</PrimitiveLayout>
+</Layout>
+
+<script>
+  const fun = [
+    "soitgoes",
+    "aczw",
+    "newfaces",
+    "doitagain",
+    "92tilinfinity",
+    "suboptimal",
+    "promiseme",
+    "allitcosts",
+  ];
+
+  const pick = fun[Math.floor(Math.random() * fun.length)];
+  const offset = Math.floor(Math.random() * pick.length);
+
+  document.getElementById("scroll")!.textContent = pick.slice(offset) + pick.slice(0, offset);
+
+  setInterval(() => {
+    const scroll = document.getElementById("scroll");
+    const text = scroll!.textContent;
+    scroll!.textContent = text!.slice(1) + text![0];
+  }, 400);
+</script>
