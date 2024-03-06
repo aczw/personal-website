@@ -1,6 +1,7 @@
 ---
 import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
+
 import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
 import Del from "@/components/mdx/del.astro";
@@ -8,10 +9,12 @@ import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 import Li from "@/components/mdx/li.astro";
 import Ul from "@/components/mdx/ul.astro";
+
 import Footer from "@/layouts/footer.astro";
 import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
+
 import { getCollection } from "astro:content";
 import { ArrowLeft, Calendar, Flag, Link2, Users, Wrench } from "lucide-astro";
 
@@ -23,15 +26,21 @@ if (!project) {
 }
 
 const { Content } = await project.render();
-const { data } = project;
+const {
+  data: { title, link, blurb, duration, cover, tags, role, teamSize, published },
+} = project;
 
-const meta = import.meta.env.DEV ? (data.published ? "[PUBLISHED] " : "[DRAFT] ") : "";
-const title = meta + data.title;
+const options: Intl.DateTimeFormatOptions = {
+  month: "short",
+  year: "numeric",
+};
+
+const meta = import.meta.env.DEV ? (published ? "[PUBLISHED] " : "[DRAFT] ") : "";
 ---
 
 <Layout
-  title={title}
-  description={data.blurb}
+  title={meta + title}
+  description={blurb}
 >
   <Header />
 
@@ -43,13 +52,13 @@ const title = meta + data.title;
     >
 
     <section class="animate-fade space-y-[0.75rem] [--order:0]">
-      <h1 class="text-lg text-sweater-2">{data.title}</h1>
-      <p>{data.blurb}</p>
+      <h1 class="text-lg text-sweater-2">{title}</h1>
+      <p>{blurb}</p>
     </section>
 
     <Img
-      src={data.cover.img}
-      alt={data.cover.alt}
+      src={cover.img}
+      alt={cover.alt}
       loading="eager"
       className="animate-fade border-2 border-sweater-9 [--order:0]"
     />
@@ -61,15 +70,12 @@ const title = meta + data.title;
             size={16}
             class="mr-1.5"
           />
-          Finished
+          Duration
         </p>
         <p class="text-sweater-3">
-          {
-            `${data.duration.date.toLocaleDateString("en-US", {
-              month: "short",
-              year: "numeric",
-            })} (${data.duration.length})`
-          }
+          {duration.from.toLocaleDateString("en-US", options)} — {
+            duration.to.toLocaleDateString("en-US", options)
+          } ({duration.length})
         </p>
       </div>
 
@@ -81,11 +87,11 @@ const title = meta + data.title;
           />
           Built with
         </p>
-        <p class="text-sweater-3">{data.tags.join(", ")}</p>
+        <p class="text-sweater-3">{tags.join(", ")}</p>
       </div>
 
       {
-        data.teamSize ? (
+        teamSize ? (
           <div class="col-span-1">
             <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
               <Users
@@ -94,7 +100,7 @@ const title = meta + data.title;
               />
               Team-based
             </p>
-            <p class="text-sweater-3">{`Team of ${data.teamSize}`}</p>
+            <p class="text-sweater-3">{`Team of ${teamSize}`}</p>
           </div>
         ) : null
       }
@@ -107,25 +113,25 @@ const title = meta + data.title;
           />
           Responsible for
         </p>
-        <p class="text-sweater-3">{data.role.join(", ")}</p>
+        <p class="text-sweater-3">{role.join(", ")}</p>
       </div>
 
       {
-        data.link ? (
+        link ? (
           <div class="col-span-1">
             <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
               <Link2
                 size={16}
                 class="mr-1.5"
               />
-              {data.link.text}
+              {link.text}
             </p>
             <Link
-              href={data.link.url}
+              href={link.url}
               target="_blank"
               className="break-words"
             >
-              {data.link.url}
+              {link.url}
             </Link>
           </div>
         ) : null
@@ -133,7 +139,7 @@ const title = meta + data.title;
     </section>
 
     {
-      !data.published && import.meta.env.PROD ? (
+      !published && import.meta.env.PROD ? (
         <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--order:2]">
           <h2 class="text-sweater-3">Under construction! ⚙️</h2>
           <p>
