@@ -140,13 +140,13 @@ const meta = import.meta.env.DEV ? (published ? "[PUBLISHED] " : "[DRAFT] ") : "
 
     {
       !published && import.meta.env.PROD ? (
-        <div class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--order:2]">
-          <h2 class="text-sweater-3">Under construction! ⚙️</h2>
+        <article class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--order:2]">
+          <h2 class="text-lg text-sweater-3">Under construction! ⚙️</h2>
           <p>
             Apologies, I have not finished the write-up for this project yet. I will get to it
             eventually, promise. If I've provided a link above, go check that out instead!
           </p>
-        </div>
+        </article>
       ) : (
         <article class="animate-fade space-y-5 leading-normal [--order:2]">
           <Content
