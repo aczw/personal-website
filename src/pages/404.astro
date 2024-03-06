@@ -1,6 +1,9 @@
 ---
 import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
+
+Astro.response.status = 404;
+Astro.response.statusText = "Page not found";
 ---
 
 <Layout
@@ -10,14 +13,12 @@ import Layout from "@/layouts/layout.astro";
   <Header />
 
   <main
-    class="max-w-narrow wide:py-10 mx-auto flex min-h-[calc(100vh-81px)] flex-col items-center justify-center space-y-8 py-5"
+    class="mx-auto flex min-h-[calc(100vh-81px)] max-w-narrow flex-col items-center justify-center space-y-8 py-5 wide:py-10"
   >
     <section class="text-center">
       <h2 class="font-mono text-5xl text-sweater-2">404</h2>
       <p class="text-lg font-[130] text-sweater-2">Page not found</p>
     </section>
-
-    <code class="font-[100] text-sweater-2">{Astro.url.pathname}</code>
 
     <p
       id="scroll"

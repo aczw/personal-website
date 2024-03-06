@@ -28,6 +28,12 @@ const config = defineConfig({
       theme: "catppuccin-mocha",
     },
   },
+  redirects: {
+    "/resume": {
+      status: 307,
+      destination: "/_files/resume.pdf",
+    },
+  },
 });
 
 export default config;
