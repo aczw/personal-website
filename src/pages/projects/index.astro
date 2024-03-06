@@ -24,7 +24,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
 
   <Main className="max-w-wide">
     <section class="animate-fade space-y-[1.25rem] [--order:0]">
-      <h2 class="text-sweater-2">Write-ups</h2>
+      <h2 class="text-lg text-sweater-2">Write-ups</h2>
       <div class="grid grid-cols-1 gap-[1.25rem] sm:grid-cols-2">
         {
           writeUps.map(({ data, slug }, index) => {
@@ -57,7 +57,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
     </section>
 
     <section class="animate-fade space-y-[1.25rem] [--order:1]">
-      <h2 class="text-sweater-2">More projects</h2>
+      <h2 class="text-lg text-sweater-2">More projects</h2>
       <div class="grid grid-cols-1 gap-[1.25rem] md:grid-cols-2">
         {
           projects.map(({ data }, index) => (
