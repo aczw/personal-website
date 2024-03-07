@@ -23,7 +23,7 @@ Astro.response.statusText = "Page not found";
     <p
       id="scroll"
       aria-hidden="true"
-      class="font-mono font-[100] italic text-sweater-7 transition-colors"
+      class="rounded-md bg-sweater-9 px-1.5 py-0.5 font-mono font-[100] italic text-sweater-7 transition-colors"
     >
     </p>
   </main>
@@ -35,7 +35,7 @@ Astro.response.statusText = "Page not found";
     "aczw",
     "newfaces",
     "doitagain",
-    "92tilinfinity",
+    "tilinfinity",
     "suboptimal",
     "promiseme",
     "allitcosts",
@@ -50,5 +50,5 @@ Astro.response.statusText = "Page not found";
     const scroll = document.getElementById("scroll");
     const text = scroll!.textContent;
     scroll!.textContent = text!.slice(1) + text![0];
-  }, 400);
+  }, 500);
 </script>

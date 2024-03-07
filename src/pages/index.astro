@@ -1,7 +1,6 @@
 ---
-import { ArrowRightCircle } from "lucide-astro";
+import { ArrowRight } from "lucide-astro";
 
-import Img from "@/components/img.astro";
 import Link from "@/components/link.astro";
 
 import Footer from "@/layouts/footer.astro";
@@ -9,6 +8,7 @@ import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
 
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 const projects = await getCollection("write-ups");
@@ -73,35 +73,24 @@ projects.sort((a, b) => a.data.order - b.data.order);
               class="group animate-fade"
               style={{ "--order": index + 1 }}
             >
-              <a
-                href={"/projects/" + slug}
-                class="relative flex items-end justify-between gap-6 overflow-hidden rounded-md p-3.5 sm:h-28"
-              >
-                <Img
+              <a href={"/projects/" + slug}>
+                <Image
                   src={data.cover.img}
                   alt={data.cover.alt}
                   loading="eager"
-                  className="absolute inset-0 m-auto opacity-60 z-0 scale-105 blur group-hover:opacity-30 group-hover:blur-none transition"
+                  class="aspect-[16/10] rounded-t-xl object-cover  opacity-85 transition-opacity group-hover:opacity-100"
                 />
 
-                <div
-                  aria-hidden="true"
-                  class="absolute inset-0 z-[1] rounded-md bg-gradient-to-l from-sweater-9 from-15%"
-                />
-                <div
-                  aria-hidden="true"
-                  class="absolute inset-0 z-[2] rounded-md bg-gradient-to-l from-sweater-8 from-5% opacity-0 transition-opacity group-hover:opacity-100"
-                />
+                <div class="flex items-center justify-between gap-[1.25rem] rounded-b-xl bg-sweater-9 p-3 transition-colors group-hover:bg-sweater-8">
+                  <div>
+                    <h3 class="text-sweater-2">{data.title}</h3>
+                    <p>{data.tags.join(", ")}</p>
+                  </div>
 
-                <div class="z-[3]">
-                  <h3 class="text-sweater-2">{data.title}</h3>
-                  <p>{data.tags.join(", ")}</p>
+                  <div class="rounded-full bg-sweater-8 p-1.5 transition-colors group-hover:bg-sweater-7">
+                    <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3" />
+                  </div>
                 </div>
-
-                <ArrowRightCircle
-                  size={20}
-                  class="z-[3] shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3"
-                />
               </a>
             </li>
           ))
