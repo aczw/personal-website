@@ -26,7 +26,7 @@ function projectRoutes() {
 }
 
 const config = defineConfig({
-  site: "https://charl.sh",
+  site: "https://charleszw.com",
   integrations: [
     sitemap({
       customPages: projectRoutes(),
