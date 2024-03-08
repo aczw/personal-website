@@ -4,10 +4,34 @@ import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import { defineConfig } from "astro/config";
 
+import { readdirSync } from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+/**
+ * @see https://github.com/withastro/astro/issues/3682#issuecomment-1492468918
+ */
+function projectRoutes() {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = path.dirname(__filename);
+
+  const directoryPath = path.join(__dirname, "src", "content", "write-ups");
+  const files = readdirSync(directoryPath);
+  const urls = files.map((file) => {
+    const fileName = file.split(".")[0];
+    return `https://charleszw.com/${fileName}`;
+  });
+
+  return urls;
+}
+
 const config = defineConfig({
   site: "https://charl.sh",
   integrations: [
-    sitemap(),
+    sitemap({
+      customPages: projectRoutes(),
+      lastmod: new Date(),
+    }),
     mdx(),
     tailwind({
       applyBaseStyles: false,

@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://charl.sh/sitemap-index.xml
+Sitemap: https://charleszw.com/sitemap-index.xml
