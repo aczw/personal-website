@@ -63,7 +63,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
       <h2 class="text-lg text-sweater-2">Projects</h2>
       <p>
         An assortment of websites and games I've designed, as well as some computer graphics
-        projects. <Link href="/projects">View all my projects here.</Link>
+        projects.
       </p>
 
       <ul class="grid grid-cols-1 gap-[1.25rem] sm:grid-cols-2">
@@ -73,7 +73,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
               class="group animate-fade"
               style={{ "--order": index + 1 }}
             >
-              <a href={"/projects/" + slug}>
+              <a href={`/${slug}`}>
                 <Image
                   src={data.cover.img}
                   alt={data.cover.alt}
@@ -87,7 +87,10 @@ projects.sort((a, b) => a.data.order - b.data.order);
                     <p>{data.tags.join(", ")}</p>
                   </div>
 
-                  <div class="rounded-full bg-sweater-8 p-1.5 transition-colors group-hover:bg-sweater-7">
+                  <div
+                    aria-hidden="true"
+                    class="rounded-full bg-sweater-8 p-1.5 transition-colors group-hover:bg-sweater-7"
+                  >
                     <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3" />
                   </div>
                 </div>

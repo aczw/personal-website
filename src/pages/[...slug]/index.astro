@@ -16,11 +16,14 @@ import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
 
 import { getCollection } from "astro:content";
-import { ArrowLeft, Clock3, Flag, Link2, Users, Wrench } from "lucide-astro";
+import { Clock3, Flag, Link2, Users, Wrench } from "lucide-astro";
 
 const projectEntries = await getCollection("write-ups");
 const project = projectEntries.find((project) => project.slug === Astro.params.slug);
 
+/**
+ * @see https://github.com/withastro/astro/issues/4164#issuecomment-1492652365
+ */
 if (!project) {
   return Astro.redirect("/404");
 }
@@ -45,12 +48,6 @@ const meta = import.meta.env.DEV ? (published ? "[PUBLISHED] " : "[DRAFT] ") : "
   <Header />
 
   <Main className="max-w-narrow">
-    <Link
-      href="/projects"
-      className="flex -translate-x-1 items-center gap-1"
-      ><ArrowLeft size={14} /> Go back</Link
-    >
-
     <section class="animate-fade space-y-[0.7rem] [--order:0]">
       <h1 class="text-lg text-sweater-2">{title}</h1>
       <p>{blurb}</p>
