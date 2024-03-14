@@ -40,7 +40,6 @@ const config = defineConfig({
   output: "server",
   adapter: vercel({
     imageService: true,
-    functionPerRoute: true,
     webAnalytics: {
       enabled: true,
     },

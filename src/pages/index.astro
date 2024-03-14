@@ -20,8 +20,6 @@ projects.sort((a, b) => a.data.order - b.data.order);
 
   <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">
     <section class="animate-fade space-y-[1.25rem] [--order:0]">
-      <h2 class="text-lg text-sweater-2">About me</h2>
-
       <blockquote class="-translate-x-1 font-mono text-[14px] font-[100] italic text-sweater-3">
         <p class="inline">"Waiting for something to happen?"</p>
         <small class="whitespace-nowrap text-sm">— MEWO</small>
@@ -33,8 +31,7 @@ projects.sort((a, b) => a.data.order - b.data.order);
           Design, which is a program that combines CS with computer graphics and fine arts.
         </p>
         <p>
-          I like to design interfaces for games and websites. To that end, I help run our game dev
-          club <Link
+          I like to design and build games and websites. To that end, I help run our game dev club <Link
             href="https://pennupgrade.com"
             target="_blank"
           >
@@ -52,7 +49,10 @@ projects.sort((a, b) => a.data.order - b.data.order);
           trains, and tinkering with my Arch install.
         </p>
         <p>
-          My socials can be found above. Thanks for stopping by. <span class="whitespace-nowrap"
+          Check out some stuff I've done below. My socials can be found above. Thanks for stopping
+          by. <span
+            aria-hidden="true"
+            class="whitespace-nowrap"
             >(〜￣▽￣)〜</span
           >
         </p>
@@ -60,12 +60,6 @@ projects.sort((a, b) => a.data.order - b.data.order);
     </section>
 
     <section class="animate-fade space-y-[1.25rem] [--order:1]">
-      <h2 class="text-lg text-sweater-2">Projects</h2>
-      <p>
-        An assortment of websites and games I've designed, as well as some computer graphics
-        projects.
-      </p>
-
       <ul class="grid grid-cols-1 gap-[1.25rem] sm:grid-cols-2">
         {
           projects.map(({ data, slug }, index) => (
