@@ -10,7 +10,7 @@ duration:
   length: 9 months
 cover:
   img: ./www.png
-  alt: This website's homepage.
+  alt: This website's homepage is rendered on desktop and on mobile. The projects are blank and nondescript.
 tags:
   - Astro
   - TypeScript
@@ -25,72 +25,68 @@ published: true
 slug: www
 ---
 
-Welcome! ♪(´▽｀)
+What you're currently reading right now has been rewritten over and over as this place has developed and changed. In past versions, I talked about wanting a place on the internet to call my own. I would then give some details about past versions, what I didn't like about theme, how they led up to this point, etc.
 
-I've always wanted a personal site. I wanted a part of the Internet™ that I could call my own and decorate however I wanted. As a college student, I could also set it up to showcase and talk about projects I've done (like this one). When I started learning web dev, I knew exactly what I would build first.
+I agree with everything I've said before. But I cannot keep rewriting everytime my website changes!
 
-This website has been a 7 month long ordeal that's seen a domain change, an entire college semester, and countless iterations. I mean, countless nitpicking of details that only I would ever notice. But it was important to me, and now I've landed on something that I'll (probably) be satisfied with for a while. This write-up explores some previous versions of the site, how the design has developed over time, and why it looks the way it does today.
+What I've realized over the course of my journey through web dev is that websites are never a finished product. They grow, evolve, and change, just like us.
 
-## aczw.dev
+The revisions my site has gone through reflect how I've changed as a person. So, instead of concretely talking about each successive version of this site, I want to talk about the idea of _owning_ a website. And then, maybe also talk about designing and building one.
 
-I can split the development of my site into three versions: `v1`, `v2`, and the current iteration, `v3`. Version 1 was hosted on an entirely different URL, and looked like this:
+## A desire to express myself
+
+I've always wanted a personal site. For one, it was a way of expressing yourself. It's easy to think of the Internet™ as just Google, or Twitter, or YouTube, and forget that it's always been one computer, talking to another. You have unlimited control over how to present yourself, and in that way it was very freeing.
+
+As a college student, I could also use it to showcase and talk about projects and work I've done (like this one). However, this has led to its own issues, with me torn between making my site look how I want it, and optimizing it for recruiters and employers.
+
+Take `aczw.dev`, for instance. This was the first version of my site, and simultaneously looks completely different and very similar to what I have now.
 
 ![Screenshot of the first version of my website. Colors are a bit brighter and everything is much, much bigger.](./aczw-dev.png)
 
-> It's still alive at [old.charl.sh](https://old.charl.sh), by the way. Why am I still keeping it alive? I dunno, I'm still attached to it. It has sentimental value. It's like, `v1`, you know.
+> You can go visit it right now at [old.charleszw.com](https://old.charleszw.com) :\)
 
-It has a lot of design elements that persist to this day: the purple color scheme, the font choice, the obsession to advertise my Last.fm profile. It feels like I laid the groundwork for what's to come.
+There are a lot of design elements that persist to this day: the purple color scheme, particular font choices, and an obsession with letting people know what song I last listened to.
 
-There were two main reasons I wanted to start over. The first is that I simply didn't like the design. I had sketched out the basic layout and colors beforehand, but the final proportions were way off. Why is the text so gigantic?? The color palette also didn't translate well.
+The groundwork was laid for what's to come. Almost immediately though, there were things that dissatisfied me. On the technical side, I chose to use [Create T3 App](https://create.t3.gg) to jumpstart my site, which was overkill for so, so many reasons. The layout, while unique, also felt too busy and distracting.
 
-![Sketch of a dialog box with some text and a button in two color schemes. Drawn in Procreate.](./v1-procreate.png)
+> Also, I didn't realize how big my text would be! Turns out I made my Figma prototype way too large, and translated it over 1:1.
 
-> When I call my sketches basic, I mean it.
+From this iteration, I learned to be more subtle and tone things down when not necessary.
 
-The layout started making less sense. The sticky sidebar achieved its goal of displaying my resume and socials, but it really didn't need that much _space_. The card system on the right felt restricting as well. What if I wanted some content that couldn't neatly fit?
+## Switching frameworks
 
-The second reason is the tech stack I used. I had recently stumbled upon [Theo](https://twitter.com/t3dotgg) and decided to use [`create-t3-app`](https://create.t3.gg) to jumpstart my site. I realize now that it did not fit my needs _at all_. I completely ignored its helpful integrations with tRPC, Prisma, and Auth.js.
+It was around this time that I discovered [Astro](https://astro.build/), which advertised itself as a framework that focused on content-first websites. That immediately caught my eye, and pretty soon I made the switch.
 
-If I had only wanted Next.js, I should've used `create-next-app`. But even that felt overkill for my use case; I wasn't trying to build a full-stack app or anything. So I started looking for something else...
+Here are some reasons that I decided to restart and use Astro instead:
 
-## Why Astro
+- Reusable components with JSX syntax
+- First-class support for transpiling Markdown/MDX files to HTML
+- I was looking to learn more about web dev. I knew that React abstracted away many concepts and provided lots of syntactical sugar (like `onClick`), which might be helpful for someone more experienced, but gave me false impressions and ideas.
+- Support for multiple UI frameworks. This meant I could gradually learn and transfer everything over. It also enables cool features like [component islands](https://docs.astro.build/en/concepts/islands/).
 
-[Astro](https://astro.build/) advertises itself as a framework that focuses on content-first websites. That immediately caught my eye. And, the more I read, the more I was convinced. It checked all the boxes in my head.
-
-- Reusable components with JSX-like syntax. It feels like vanilla HTML more than anything.
-- First-class support for generating content with Markdown and MDX
-- Integrations with UI frameworks like React, meaning I could gradually learn and transfer everything over. Related, but this also enables cool features like [component islands](https://docs.astro.build/en/concepts/islands/).
-- Statically generated pages by default, with SSR as an option
-
-I wanted nothing more, nothing less. While I could have stuck with Next.js, I liked Astro's approach more. It felt like it was designed exactly for what I wanted to do.
-
-## A completely new start
-
-Okay cool, I've decided on what to build `v2` with. Now I need to tackle the second issue: actually designing the new layout.
+With the technology chosen, I now wanted to condense the key components of my website into their own chunks. That's when I started experimenting with the idea of separating things into "blocks."
 
 ![A Figma file containing many different iterations of what my site could look like.](./v2-figma.png)
 
-I spent a good while experimenting with different homepage layouts, playing with the color and text. Going in, I was heavily inspired by Google's [Material You](https://m3.material.io/) design language, with its odd shapes, large padding, and rounded corners.
+I liked the idea because it contained the chaos of the previous site. I liked the idea of content collapsing depending on the screen size, and I liked how organized the overall presentation was.
+
+I also spent some time updating other things, like the limited color palette I was working with. I chose a wider range of purples that were... less pink. I was greatly inspired by, and continue to be inspired by the way [Material You](https://m3.material.io/) handles colors and design elements.
 
 ![The new purple color palette, now in 10 different shades. There also exists a green palette.](./color-palette.png)
 
-The original `v1` color palette used six shades. As I was building `v2`, I felt severely limited by the few choices I had. Therefore `v2` uses a range of 10 shades. I also chose a purple that felt less... pink.
+Building on the music obsession from before, I now make an API call to the Last.fm servers to fetch information about my account, including actual live data about what I was currently playing. Yes, I'm obsessed.
 
-With the Astro docs open in another window, I started building. The final result:
+With the Astro docs open in another window, I started coding. The final result:
 
-![The new homescreen, with information contained in rounded blocks.](./v2-projects.png)
+![The new homescreen, with information contained in rounded blocks.](./v2.png)
 
-![The projects page, with images arranged in a grid and tags displayed underneath visually.](./v2.png)
+![The projects page, with images arranged in a grid and tags displayed underneath visually.](./v2-projects.png)
 
 ![The portfolio page, with pieces displayed in columns and separated into different sections.](./v2-portfolio.png)
 
-These are `/`, `/projects`, and `/portfolio` respectively.
+Everything looked exactly as I had imagined it. It was perfect, perfect, perfect... until it wasn't, again. In my quest to become quieter, I somehow jumped even further in the other direction.
 
-I was really satisfied with how it turned out. I absolutely love the new shades of purple I picked. I incorporated live data from my music habits, a step up from `v1`. I love the footer with the scrolling text. I love how much simpler, cleaner, and more organized it felt. I love how my projects and portfolio now live on separate pages and have more room to breathe.
-
-...so, why did I restart _again_?
-
-### The bad
+### Rethinking what I want
 
 I fetched my music data in an _extremely_ insecure method. To make requests to the Last.fm API, I brought in React and [SWR](https://swr.vercel.app/) for the job. For this React component to access my API key from the client, I chose to make it publicly available by prefixing it with `PUBLIC_`. Theoretically, anyone visiting my site could do a `Ctrl+F` search to find it. Actually, I'll show you.
 
@@ -103,8 +99,6 @@ I also wasn't too happy pulling in an entire UI framework and fetching library j
 My final gripe is that the unique homepage design collapses weirdly on smaller screens. I spent a really long time optimizing it, and in the end basically had to redesign for mobile. This meant I had to maintain two completely different layouts for no real reason.
 
 I needed to rethink how I approached this. This time, I seeked some more outside help.
-
-## Rethinking what I want
 
 I sought inspiration from others. Some ideas came from fellow DMD people, like [Elyssa Chou](https://www.elyssachou.com/) and [Thomas Shaw](https://tlshaw.me/). Some came from sites I discovered, like [nexxel.dev](https://www.nexxel.dev/), [nezu.world](https://nezu.world/), and [paco.me](https://paco.me/). Udara Jay's post about [reinventing their blog](https://udara.io/reinventing-this-blog) resonated with me as well.
 
