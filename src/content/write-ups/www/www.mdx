@@ -25,17 +25,15 @@ published: true
 slug: www
 ---
 
-What you're currently reading right now has been rewritten over and over as this place has developed and changed. In past versions, I talked about wanting a place on the internet to call my own. I would then give some details about past versions, what I didn't like about theme, how they led up to this point, etc.
+Hi, welcome to my little corner on the internet.
 
-I agree with everything I've said before. But I cannot keep rewriting everytime my website changes!
+When I first started learning web dev, this was my first project. And what I've realized over time is that websites are never a finished product. They grow, evolve, and change, just like us.
 
-What I've realized over the course of my journey through web dev is that websites are never a finished product. They grow, evolve, and change, just like us.
-
-The revisions my site has gone through reflect how I've changed as a person. So, instead of concretely talking about each successive version of this site, I want to talk about the idea of _owning_ a website. And then, maybe also talk about designing and building one.
+With each successive version, my expectations, preferences, and goals for this website have changed. One central thing has remained the same, which is the desire _to express myself_ and _create things._ So, how do you go about designing and building your own site from scratch?
 
 ## A desire to express myself
 
-I've always wanted a personal site. For one, it was a way of expressing yourself. It's easy to think of the Internet™ as just Google, or Twitter, or YouTube, and forget that it's always been one computer, talking to another. You have unlimited control over how to present yourself, and in that way it was very freeing.
+I've always wanted a personal site. For one, it was a way of showing myself off. It's easy to think of the Internet™ as just Google, or Twitter, or YouTube, and forget that it's always been one computer, talking to another. You have unlimited control over how to present yourself, and in that way it was very freeing.
 
 As a college student, I could also use it to showcase and talk about projects and work I've done (like this one). However, this has led to its own issues, with me torn between making my site look how I want it, and optimizing it for recruiters and employers.
 
@@ -51,7 +49,7 @@ The groundwork was laid for what's to come. Almost immediately though, there wer
 
 > Also, I didn't realize how big my text would be! Turns out I made my Figma prototype way too large, and translated it over 1:1.
 
-From this iteration, I learned to be more subtle and tone things down when not necessary.
+From this iteration, I tried to be more subtle and tone things down when not necessary.
 
 ## Switching frameworks
 
@@ -61,7 +59,7 @@ Here are some reasons that I decided to restart and use Astro instead:
 
 - Reusable components with JSX syntax
 - First-class support for transpiling Markdown/MDX files to HTML
-- I was looking to learn more about web dev. I knew that React abstracted away many concepts and provided lots of syntactical sugar (like `onClick`), which might be helpful for someone more experienced, but gave me false impressions and ideas.
+- I was looking to learn more about web dev. I knew that React abstracted away many concepts and provided lots of syntactical sugar (like `onClick`), which might be helpful for someone more experienced, but gave me false impressions and ideas about the web.
 - Support for multiple UI frameworks. This meant I could gradually learn and transfer everything over. It also enables cool features like [component islands](https://docs.astro.build/en/concepts/islands/).
 
 With the technology chosen, I now wanted to condense the key components of my website into their own chunks. That's when I started experimenting with the idea of separating things into "blocks."
@@ -74,90 +72,59 @@ I also spent some time updating other things, like the limited color palette I w
 
 ![The new purple color palette, now in 10 different shades. There also exists a green palette.](./color-palette.png)
 
-Building on the music obsession from before, I now make an API call to the Last.fm servers to fetch information about my account, including actual live data about what I was currently playing. Yes, I'm obsessed.
+Building on the music links from before, I now make an API call to the Last.fm servers to fetch information about my account, including actual live data about what I was currently playing. Yes, I'm obsessed.
 
 With the Astro docs open in another window, I started coding. The final result:
 
 ![The new homescreen, with information contained in rounded blocks.](./v2.png)
 
-![The projects page, with images arranged in a grid and tags displayed underneath visually.](./v2-projects.png)
-
-![The portfolio page, with pieces displayed in columns and separated into different sections.](./v2-portfolio.png)
-
 Everything looked exactly as I had imagined it. It was perfect, perfect, perfect... until it wasn't, again. In my quest to become quieter, I somehow jumped even further in the other direction.
 
-### Rethinking what I want
+## Rethinking what I want
 
-I fetched my music data in an _extremely_ insecure method. To make requests to the Last.fm API, I brought in React and [SWR](https://swr.vercel.app/) for the job. For this React component to access my API key from the client, I chose to make it publicly available by prefixing it with `PUBLIC_`. Theoretically, anyone visiting my site could do a `Ctrl+F` search to find it. Actually, I'll show you.
+What did I want out of my website? What did I want other people to see when they visit? The answers to these questions were often in conflict. It didn't help that I also wasn't sure what to show off to people.
+
+- The music obsession has gone too far. I'm really using half of my homepage to display arguably useless information to the visitor. I could be using that space to talk more about myself and what I do.
+- While the bento box layout seemed fine on paper, on practice it was difficult making the blocks look good on all screen sizes. I'm using CSS `grid` and sometimes this led to weird layouts on specific dimensions.
+- The more I used Astro, the less I wanted to rely on external UI frameworks. For my purposes, sending this much JavaScript to the client felt _unnecessary_, and I knew I could do everything I wanted without it.
+
+## Aside: how not to fetch data
+
+In the past, in order to make requests to the Last.fm API, I used React and [SWR](https://swr.vercel.app/). For this React component to access my API key from the client, I chose to make it publicly available by prefixing it with `PUBLIC_`. Theoretically, anyone visiting my site could simply Ctrl+F it. Actually, I'll just show it:
 
 ![The inspector is open. I searched for 'api' in the JavaScript code and immediately found my secret API key.](./v2-api.png)
 
-This is more of a principle thing than anything; I wasn't seriously expecting anyone to steal my API key and use it. Still, it wasn't exactly _good_.
+Was I seriously expecting anyone to steal the key and use it maliciously? No, but it reflected my inexperience with data fetching and keeping things secure on the web.
 
-I also wasn't too happy pulling in an entire UI framework and fetching library just to display my most recently listened to music. Astro sent all of this unnecessary JavaScript to the client, increasing my site footprint more than it needs to be. I should've used Astro's built-in features for [data fetching](https://docs.astro.build/en/guides/data-fetching/) instead.
+> Another thing: I was also relying on React, a UI library, to fetch data. This was also inexperience on my part. Frameworks like Astro provide clean, native ways to [fetch data](https://docs.astro.build/en/guides/data-fetching/) irregardless of the UI you build.
 
-My final gripe is that the unique homepage design collapses weirdly on smaller screens. I spent a really long time optimizing it, and in the end basically had to redesign for mobile. This meant I had to maintain two completely different layouts for no real reason.
+I know better now. All the data fetching is performed on the server, which my API key will never leave. I use Astro's API routes to perform a `GET` request that separates the work from the component that is displaying it. This does mean you have to mark the pages that display this data as SSR only.
 
-I needed to rethink how I approached this. This time, I seeked some more outside help.
+I've also gotten rid of the dependency on React and SWR.
 
-I sought inspiration from others. Some ideas came from fellow DMD people, like [Elyssa Chou](https://www.elyssachou.com/) and [Thomas Shaw](https://tlshaw.me/). Some came from sites I discovered, like [nexxel.dev](https://www.nexxel.dev/), [nezu.world](https://nezu.world/), and [paco.me](https://paco.me/). Udara Jay's post about [reinventing their blog](https://udara.io/reinventing-this-blog) resonated with me as well.
+## Doing some research and reflection
 
-I realize now that with each iteration, I stripped away more and more stuff, instead focusing on what I _truly wanted_ people to see first.
+To aid my redesign, I wanted to see how other people interpreted the idea of a personal website. This included fellow people from DMD, my friends, and other websites that I found intriguing.
 
-- Instead of the weird bento box layout for the homepage, use a standard header-content layout. Text gets more space to exist, and I get to display sneak peeks of my projects/posts.
+> You can find my notes about them [in the Vault.](https://vault.charleszw.com/Notes/Websites)
+
+I realize now that what I need is _simplification_. I don't want to overwhelm any visitors with extraneous info. I've seen how you can show off your personality with constraint and in more subtle ways. Instead, I focused on crafting a design that I truly wanted people to see first.
+
+- Instead of the weird bento box layout for the homepage, use a more standard layout. Text gets more space to exist, and I get to display sneakpeeks of my projects/posts.
 - I liked the live music updates but deemphasized it, because it wasn't the main reason I directed people to my site. It's mostly for my own enjoyment, anyway.
 - The header took up too much space, so I made it non-sticky. I don't have that much content to require an always visible nav bar.
 - After a slight identity crisis, I combined `/projects` and `/portfolio`. The "portfolio" label never made much sense. My programming and design stuff are often one and the same.
 
-I keep everything at a fixed width now (750px, to be exact). This was an intentional choice I took from the other sites I was ~~stalking~~ taking inspiration from. Reading becomes much easier when your eyes don't have to scan across a large horizontal distance.
+I keep everything at fixed widths now. This was an intentional choice I took from the other sites I was ~~stalking~~ taking inspiration from. Reading becomes much easier when your eyes don't have to scan across a large horizontal distance.
 
-### Going all in on Astro
+## The cycle continues
 
-Oh, and everything is now 100% built with Astro components. No more React dependency! This means I also had to update the way I fetch data, which is now handled much more securely.
+What you're currently reading has been rewritten over and over as this place has developed and changed. Every new version meant I had to update past sections, and then add a new section explaining why everything before sucked. This went on for quite a while. But I'm kinda tired of it now! No more!
 
-First, I enabled SSR for my homepage, the place where the fetched data is displayed. Since the HTML is now rendered on-demand instead of at build time, I can just fetch data in the [component script](https://docs.astro.build/en/core-concepts/astro-components/#the-component-script) to get the latest information. I also made it a separate component to take advantage of [streaming](https://docs.astro.build/en/guides/server-side-rendering/#html-streaming).
-
-My `<LastFm />` component basically looks like this:
-
-```astro
----
-// never leaves the server!
-const key = import.meta.env.LASTFM_API_KEY;
-const url = `https://lastfmapiurl.com/?api_key=${key}`;
-
-// I define the schema here
-const recentTracksSchema = z.promise(/* ... */);
-
-const getRecentTracks = async () => {
-  const data = await recentTracksSchema.parse(fetch(url).then((res) => res.json()));
-
-  return data.recenttracks;
-};
-
-const recentTracks = await getRecentTracks();
----
-
-<p class="...">The last song I listened to was {recentTracks[0].name}!</p>
-```
-
-I use Zod to parse the data I get back from Last.fm, so I can guarantee its shape and get some nice type hinting at the same time.
-
-My `LASTFM_API_KEY` never leaves the server, because this code is only run on the server. While I could do this securely with SWR, I actually prefer this way more. It's a simple native `fetch` call and that's it!
-
-I've barely mentioned [Content Collections](https://docs.astro.build/en/guides/content-collections/), which is Astro's solution for managing and querying the content you write. This is also new in `v3`. The current page you're looking at exists as a MDX file in the specialized `content/` directory, and is rendered to HTML automatically.
-
-Clearly, I really like Astro. Between `v2` and `v3`, I've really come around to embrace it.
-
-## Conclusion
-
-`aczw.dev` was started in early summer 2023. As of writing, it's now mid-November. My site has changed _a lot_ in these past five months, and I've learned a lot about web dev as well as myself. I don't think there will be any significant changes from here on out.
-
-Nailing what you want first try is very difficult. It's what you learn along the way that eventually guides you to something that you're satisfied with. I've had a lot of fun designing and redesigning the site, and don't regret either `v1` or `v2`. They helped me get to `v3`, after all.
-
-Thanks for reading. Lemme know what you think about the website.
+The revisions my site has gone through reflect how I've changed as a person, and will continue to change. I will start letting that speak for itself. So, thanks for reading!
 
 ## Colophon
 
-This site was built with Astro and uses no external UI frameworks. It's styled using Tailwind, with a few `<style>` tags here and there. It's currently deployed on Vercel's free plan, but uses Cloudflare DNS. All the prototyping was done in Procreate and Figma.
+This site was built with pure Astro and styled using Tailwind. It's currently deployed on Vercel's free plan, but uses Cloudflare DNS. All prototyping was done in Procreate and Figma.
 
-Primary type is [Atkinson Hyperlegible](https://en.wikipedia.org/wiki/Atkinson_Hyperlegible). Code is written in [Maple Mono](https://github.com/subframe7536/Maple-font). Icons are from [Lucide](https://lucide.dev/).
+Primary type is [Atkinson Hyperlegible](https://en.wikipedia.org/wiki/Atkinson_Hyperlegible). Code is written in [Berkeley Mono](https://berkeleygraphics.com/typefaces/berkeley-mono/). Icons are from [Lucide](https://lucide.dev/).
