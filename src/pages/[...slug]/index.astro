@@ -9,6 +9,7 @@ import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 import Li from "@/components/mdx/li.astro";
 import Ul from "@/components/mdx/ul.astro";
+import type { Project } from "@/content/config";
 
 import Footer from "@/layouts/footer.astro";
 import Header from "@/layouts/header.astro";
@@ -16,27 +17,48 @@ import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
 
 import { getCollection } from "astro:content";
-import { Clock3, Flag, Link2, Users, Wrench } from "lucide-astro";
+import { Info } from "lucide-astro";
 
-const projectEntries = await getCollection("write-ups");
-const project = projectEntries.find((project) => project.slug === Astro.params.slug);
+const posts = await getCollection("posts");
+const currPost = posts.find((project) => project.slug === Astro.params.slug);
 
 /**
  * @see https://github.com/withastro/astro/issues/4164#issuecomment-1492652365
  */
-if (!project) {
+if (!currPost) {
   return Astro.redirect("/404");
 }
 
-const { Content } = await project.render();
+const { Content } = await currPost.render();
 const {
-  data: { title, link, blurb, duration, cover, tags, role, teamSize, published },
-} = project;
+  data: { title, blurb, tags, cover, project, published },
+} = currPost;
 
-const options: Intl.DateTimeFormatOptions = {
-  month: "short",
-  year: "numeric",
-};
+function formatProjectDuration(project: Project) {
+  let from = "";
+  let to = "";
+
+  const { duration } = project;
+
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    year: "numeric",
+  };
+
+  if (typeof duration.from === "string") {
+    from = duration.from;
+  } else {
+    from = duration.from.toLocaleDateString("en-US", options);
+  }
+
+  if (typeof duration.to === "string") {
+    to = duration.to;
+  } else {
+    to = duration.to.toLocaleDateString("en-US", options);
+  }
+
+  return `${from} — ${to} (${duration.length})`;
+}
 
 const meta = import.meta.env.DEV ? (published ? "[PUBLISHED] " : "[DRAFT] ") : "";
 ---
@@ -60,92 +82,81 @@ const meta = import.meta.env.DEV ? (published ? "[PUBLISHED] " : "[DRAFT] ") : "
       className="animate-fade border-2 border-sweater-9 [--order:0]"
     />
 
-    <section class="grid animate-fade grid-cols-1 gap-[1.25rem] [--order:1] xxs:grid-cols-2">
-      <div class="col-span-1">
-        <p class="flex items-center font-mono font-[130] uppercase text-sweater-5">
-          <Clock3
-            size={14}
-            class="mr-1.5"
-          />
-          Duration
-        </p>
-        <p class="text-sweater-3">
-          {duration.from.toLocaleDateString("en-US", options)} — {
-            duration.to.toLocaleDateString("en-US", options)
-          } ({duration.length})
-        </p>
-      </div>
+    {
+      project ? (
+        <section class="animate-fade rounded-xl text-sweater-2 [--order:1]">
+          <h2 class="flex items-center rounded-t-xl bg-sweater-8 p-3.5 text-lg">
+            <Info
+              size={20}
+              class="mr-1.5"
+              aria-hidden="true"
+            />{" "}
+            Project details
+          </h2>
 
-      <div class="col-span-1">
-        <p class="flex items-center font-mono font-[130] uppercase text-sweater-5">
-          <Wrench
-            size={14}
-            class="mr-1.5"
-          />
-          Built with
-        </p>
-        <p class="text-sweater-3">{tags.join(", ")}</p>
-      </div>
+          <div class="grid grid-cols-1 gap-5 rounded-b-xl bg-sweater-9 p-3.5 xxs:grid-cols-2">
+            <div>
+              <h3 class="font-mono font-[130] uppercase text-sweater-4">Duration</h3>
+              <p>{formatProjectDuration(project)}</p>
+            </div>
 
-      {
-        teamSize ? (
-          <div class="col-span-1">
-            <p class="flex items-center font-mono font-[130] uppercase text-sweater-5">
-              <Users
-                size={14}
-                class="mr-1.5"
-              />
-              Group-based
-            </p>
-            <p class="text-sweater-3">{`Team of ${teamSize}`}</p>
+            <div>
+              <h3 class="font-mono font-[130] uppercase text-sweater-4">Built with</h3>
+              <p>{tags.join(", ")}</p>
+            </div>
+
+            {project.teamSize ? (
+              <div>
+                <h3 class="font-mono font-[130] uppercase text-sweater-4">Team-based</h3>
+                <p>{`Team of ${project.teamSize}`}</p>
+              </div>
+            ) : null}
+
+            <div>
+              <h3 class="font-mono font-[130] uppercase text-sweater-4">Responsible for</h3>
+              <p>{project.role.join(", ")}</p>
+            </div>
+
+            {project.link ? (
+              <div>
+                <h3 class="font-mono font-[130] uppercase text-sweater-4">{project.link.text}</h3>
+                <Link
+                  href={project.link.url}
+                  target="_blank"
+                  className="break-words"
+                >
+                  {project.link.url}
+                </Link>
+              </div>
+            ) : null}
           </div>
-        ) : null
-      }
-
-      <div class="col-span-1">
-        <p class="flex items-center font-mono font-[130] uppercase text-sweater-5">
-          <Flag
-            size={14}
-            class="mr-1.5"
-          />
-          Responsible for
-        </p>
-        <p class="text-sweater-3">{role.join(", ")}</p>
-      </div>
-
-      {
-        link ? (
-          <div class="col-span-1">
-            <p class="flex items-center font-mono text-[14px] font-[130] uppercase text-sweater-5">
-              <Link2
-                size={16}
-                class="mr-1.5"
-              />
-              {link.text}
-            </p>
-            <Link
-              href={link.url}
-              target="_blank"
-              className="break-words"
-            >
-              {link.url}
-            </Link>
-          </div>
-        ) : null
-      }
-    </section>
+        </section>
+      ) : null
+    }
 
     {
       !published && import.meta.env.PROD ? (
-        <article class="animate-fade rounded-lg border-2 border-sweater-6 bg-sweater-8 p-4 [--order:2]">
+        <article
+          class:list={[
+            "animate-fade rounded-xl bg-sweater-8 p-4",
+            { "[--order:1]": typeof project === "undefined" },
+            { "[--order:2]": project },
+          ]}
+        >
           <h2 class="text-lg text-sweater-3">Under construction! ⚙️</h2>
           <p>
-            Apologies, I have not finished the write-up for this project yet. I will get to it
-            eventually, promise. If I've provided a link above, go check that out instead!
+            Apologies, I have not finished this post. I will get to it eventually, promise. If I've
+            provided a link above, go check that out instead!
           </p>
         </article>
       ) : (
-        <article class="animate-fade space-y-5 leading-normal [--order:2]">
+        <article
+          class:list={[
+            "animate-fade space-y-5",
+            { "[--order:1]": typeof project === "undefined" },
+            { "[--order:2]": project },
+          ]}
+        >
           <Content
             components={{
               h2: H2,

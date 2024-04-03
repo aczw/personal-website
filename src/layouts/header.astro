@@ -1,7 +1,4 @@
 ---
-import Link from "@/components/link.astro";
-import { Github, Linkedin, Mail } from "lucide-astro";
-
 const pathname = Astro.url.pathname;
 ---
 
@@ -33,39 +30,10 @@ const pathname = Astro.url.pathname;
     </a>
 
     <div class="flex items-center space-x-4 pl-6 xs:space-x-6">
-      <Link
-        href="https://www.linkedin.com/in/zwcharl/"
-        target="_blank"
-        title="LinkedIn"
-        ><Linkedin
-          class="xs:hidden"
-          size={22}
-        /><span class="hidden xs:inline">LinkedIn</span></Link
-      >
-
-      <Link
-        href="https://www.github.com/aczw"
-        target="_blank"
-        title="GitHub"
-        ><Github
-          class="xs:hidden"
-          size={22}
-        /><span class="hidden xs:inline">GitHub</span></Link
-      >
-
-      <Link
-        href="mailto:czw@seas.upenn.edu"
-        title="Email"
-        ><Mail
-          class="xs:hidden"
-          size={22}
-        /><span class="hidden xs:inline">Email</span></Link
-      >
-
       <a
         href="/_files/resume.pdf"
         target="_blank"
-        class="flex items-center rounded-full bg-sweater-4 px-3 py-0.5 text-sweater-9 transition-colors hover:bg-sweater-2"
+        class="flex items-center justify-center rounded-full bg-sweater-4 px-3 py-0.5 text-sweater-9 transition-colors hover:bg-sweater-2"
       >
         Resume
       </a>

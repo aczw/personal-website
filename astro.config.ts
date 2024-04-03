@@ -4,7 +4,7 @@ import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 import { defineConfig } from "astro/config";
 
-import { readdirSync } from "node:fs";
+import { existsSync, readdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -15,7 +15,13 @@ function projectRoutes() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
 
-  const directoryPath = path.join(__dirname, "src", "content", "write-ups");
+  const directoryPath = path.join(__dirname, "src", "content", "posts");
+  if (!existsSync(directoryPath)) {
+    throw new Error(
+      `projectRoutes(): The path '${directoryPath}' does not exist. If you renamed something, make sure to update the path here as well.\n`,
+    );
+  }
+
   const files = readdirSync(directoryPath);
   const urls = files.map((file) => {
     const fileName = file.split(".")[0];

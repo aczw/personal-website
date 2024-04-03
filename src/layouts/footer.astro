@@ -1,12 +1,42 @@
 ---
 import LastFm from "@/components/last-fm.astro";
+import { Github, Linkedin, Mail } from "lucide-astro";
+
+const iconSize = 24;
 ---
 
-<footer class="max-w-wide wide:pb-10 mx-auto pb-4">
-  <span
-    class="mx-4 flex animate-fade justify-between gap-[1.25rem] border-t-2 border-sweater-9 pt-4 font-mono text-[14px] font-[100] [--order:0]"
+<footer class="mx-auto max-w-wide pb-4 wide:pb-10">
+  <div
+    class="mx-4 flex animate-fade justify-between gap-5 border-t-2 border-sweater-9 pt-4 font-mono text-[14px] font-[100] [--order:0]"
   >
     <LastFm />
-    <p class="w-1/2 animate-fade text-right italic text-sweater-6 [--order:0]">updated Mar 2024</p>
-  </span>
+
+    <div class="flex w-1/2 animate-fade justify-end gap-5 [--order:0] sm:gap-3.5">
+      <a
+        href="https://www.linkedin.com/in/zwcharl/"
+        target="_blank"
+        title="LinkedIn"
+        aria-label="My LinkedIn"
+        class="text-sweater-5 transition-colors hover:text-sweater-3"
+        ><Linkedin size={iconSize} /></a
+      >
+
+      <a
+        href="https://www.github.com/aczw"
+        target="_blank"
+        title="GitHub"
+        aria-label="My GitHub profile"
+        class="text-sweater-5 transition-colors hover:text-sweater-3"
+        ><Github size={iconSize} /></a
+      >
+
+      <a
+        href="mailto:czw@seas.upenn.edu"
+        title="Email"
+        aria-label="My email"
+        class="text-sweater-5 transition-colors hover:text-sweater-3"
+        ><Mail size={iconSize} /></a
+      >
+    </div>
+  </div>
 </footer>

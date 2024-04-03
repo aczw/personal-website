@@ -11,21 +11,23 @@ import Main from "@/layouts/main.astro";
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
-const projects = await getCollection("write-ups");
-projects.sort((a, b) => a.data.order - b.data.order);
+const posts = await getCollection("posts");
+posts.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout description="Computer graphics student at the University of Pennsylvania.">
   <Header />
 
   <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">
-    <section class="animate-fade space-y-[1.25rem] [--order:0]">
-      <blockquote class="-translate-x-1 font-mono text-[14px] font-[100] italic text-sweater-3">
-        <p class="inline">"Waiting for something to happen?"</p>
-        <small class="whitespace-nowrap text-sm">— MEWO</small>
-      </blockquote>
+    <blockquote
+      class="-translate-x-1.5 animate-fade font-mono text-[14px] font-[100] italic text-sweater-3 [--order:0]"
+    >
+      <p class="inline">"Waiting for something to happen?"</p>
+      <small class="whitespace-nowrap text-sm">— MEWO</small>
+    </blockquote>
 
-      <div class="grid grid-cols-1 gap-[1.25rem] md:grid-cols-2">
+    <section class="animate-fade space-y-5 [--order:1]">
+      <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
         <p>
           Hi, I'm Charles. I'm a student at the University of Pennsylvania majoring in Digital Media
           Design, which is a program that combines CS with computer graphics and fine arts.
@@ -49,8 +51,8 @@ projects.sort((a, b) => a.data.order - b.data.order);
           trains, and tinkering with my Arch install.
         </p>
         <p>
-          Check out some stuff I've done below. My socials can be found above. Thanks for stopping
-          by. <span
+          Check out some stuff I've done below. My socials can also be found below. Thanks for
+          stopping by. <span
             aria-hidden="true"
             class="whitespace-nowrap"
             >(〜￣▽￣)〜</span
@@ -59,34 +61,49 @@ projects.sort((a, b) => a.data.order - b.data.order);
       </div>
     </section>
 
-    <section class="animate-fade space-y-[1.25rem] [--order:1]">
-      <ul class="grid grid-cols-1 gap-[1.25rem] sm:grid-cols-2">
+    <section class="animate-fade space-y-5 pt-2.5 [--order:2]">
+      <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2">
         {
-          projects.map(({ data, slug }, index) => (
+          posts.map(({ data: { title, blurb, tags, cover }, slug }, index) => (
             <li
-              class="group animate-fade"
-              style={{ "--order": index + 1 }}
+              id="post"
+              class="group relative animate-fade pb-[var(--bar-height)]"
+              style={{ "--order": index + 2 }}
             >
               <a href={`/${slug}`}>
                 <Image
-                  src={data.cover.img}
-                  alt={data.cover.alt}
+                  src={cover.img}
+                  alt={cover.alt}
                   loading="eager"
-                  class="aspect-[16/10] rounded-t-xl object-cover  opacity-85 transition-opacity group-hover:opacity-100"
+                  class="aspect-[16/10] rounded-t-xl object-cover transition group-hover:scale-95 group-hover:opacity-50"
                 />
 
-                <div class="flex items-center justify-between gap-[1.25rem] rounded-b-xl bg-sweater-9 p-3 transition-colors group-hover:bg-sweater-8">
-                  <div>
-                    <h3 class="text-sweater-2">{data.title}</h3>
-                    <p>{data.tags.join(", ")}</p>
-                  </div>
+                <div
+                  id="bottom-bar"
+                  class="absolute bottom-0 h-[var(--bar-height)] w-full space-y-1 overflow-hidden rounded-b-xl bg-sweater-9 p-4 transition-[background-color,height,border-radius] group-hover:bottom-0 group-hover:h-[calc(var(--blurb-height)+var(--bar-height))] group-hover:rounded-t-xl group-hover:bg-sweater-8"
+                  data-blurb={blurb}
+                >
+                  <span class="flex items-center justify-between gap-5">
+                    <div id="post-title">
+                      <h3 class="break-words text-sweater-2">{title}</h3>
+                      <p class="animate-fade text-sweater-5 [--order:0] xs:hidden">
+                        {tags.join(", ")}
+                      </p>
+                    </div>
 
-                  <div
-                    aria-hidden="true"
-                    class="rounded-full bg-sweater-8 p-1.5 transition-colors group-hover:bg-sweater-7"
+                    <div
+                      aria-hidden="true"
+                      class="rounded-full bg-sweater-8 p-1.5 transition group-hover:opacity-0"
+                    >
+                      <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3" />
+                    </div>
+                  </span>
+                  <p
+                    id="blurb"
+                    class="opacity-0 transition-opacity group-hover:opacity-100"
                   >
-                    <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3" />
-                  </div>
+                    {blurb}
+                  </p>
                 </div>
               </a>
             </li>
@@ -98,3 +115,46 @@ projects.sort((a, b) => a.data.order - b.data.order);
 
   <Footer />
 </Layout>
+
+<script>
+  // see https://stackoverflow.com/questions/27451132/can-i-invert-the-height-direction-from-top-down-to-bottom-up
+  const posts = document.querySelectorAll<HTMLElement>("#post");
+
+  function updateBarHeights() {
+    // first get the max post title height from all posts
+    const maxTitleHeight = Math.max(
+      ...[...posts].map((post) => {
+        return post.querySelector<HTMLElement>("#post-title")!.getBoundingClientRect().height;
+      }),
+    );
+
+    posts.forEach((post) => {
+      // if the max height title is less than the arrow icon, use
+      // the arrow container's size instead, which is 35.25px
+      const contentHeight = Math.max(maxTitleHeight, 35.25);
+
+      // because we apply p-4 padding, which is 1rem
+      post.style.setProperty("--bar-height", `calc(${contentHeight}px + 2rem)`);
+    });
+  }
+
+  // initially call it once on window load, then add event listener to window
+  updateBarHeights();
+  addEventListener("resize", () => updateBarHeights());
+
+  posts.forEach((post) => {
+    const bar = post.querySelector<HTMLElement>("#bottom-bar")!;
+    const blurbHeight = bar.querySelector<HTMLElement>("#blurb")!.getBoundingClientRect().height;
+    bar.style.setProperty("--blurb-height", `${blurbHeight}px`);
+
+    post.addEventListener("mouseenter", () => {
+      // this has to be recalculated every mouseenter because we may have resized the window
+      const blurbHeight = bar.querySelector<HTMLElement>("#blurb")!.getBoundingClientRect().height;
+      bar.style.setProperty("--blurb-height", `${blurbHeight}px`);
+    });
+
+    post.addEventListener("mouseleave", () => {
+      bar.style.setProperty("--blurb-height", "0px");
+    });
+  });
+</script>

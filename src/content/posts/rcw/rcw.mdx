@@ -1,24 +1,27 @@
 ---
-title: RCW
-link:
-  url: https://aczw.itch.io/rcw
-  text: Play on itch.io
-blurb: Endless Unity minigame about matching colors and text. Features a super clean UI and simple controls. Playable from your browser!
-duration:
-  from: 2023-04-23
-  to: 2023-07-05
-  length: 3 months
-cover:
-  img: ./rcw.png
-  alt: In the middle of a game round, with the timer running down and the player already having lost one life.
+title: "Introducing RCW, my first Unity game"
+blurb: Endless minigame about matching colors and text together. I tried to focus on a super clean UI and simple controls. It's also playable from your browser!
 tags:
   - Unity
   - C#
   - Figma
-role:
-  - programming
-  - assets
-  - UI/UX
+cover:
+  img: ./rcw.png
+  alt: In the middle of a game round, with the timer running down and the player already having lost one life.
+
+project:
+  duration:
+    from: 2023-04-23
+    to: 2023-07-05
+    length: 3 months
+  role:
+    - programming
+    - assets
+    - UI/UX
+  link:
+    url: https://aczw.itch.io/rcw
+    text: Play on itch.io
+
 order: 2
 published: true
 slug: rcw
@@ -54,7 +57,10 @@ RCW is an endless, fast-paced minigame about getting the highest score. I was th
 
 I also liked the button hover effect in [The Battle Cats](https://battlecats.club/en/series/battlecats/), which flashed bright yellow and magenta. Here, I tried to recreate it in Figma.
 
-<VideoGif vids={[{ src: "/projects/rcw/flashing-btns-figma.mp4", type: "video/mp4" }]} />
+<VideoGif
+  folder="rcw"
+  vids={[{ name: "flashing-btns-figma.mp4", type: "video/mp4" }]}
+/>
 
 I use both the button design and hover effect in RCW. The nice thing about this art style was that it could be consistently applied everywhere, not just buttons.
 
@@ -101,7 +107,10 @@ cb.uvRect = new Rect(
 
 The other thing I'm really happy about are the button animations. When the instructions or credits button are activated, the same button is used to go back to the start screen.
 
-<VideoGif vids={[{ src: "/projects/rcw/main-menu-ani-btns.mp4", type: "video/mp4" }]} />
+<VideoGif
+  folder="rcw"
+  vids={[{ name: "main-menu-ani-btns.mp4", type: "video/mp4" }]}
+/>
 
 The "Go back" text slides out, and the outside border becomes a panel for the text to exist in. I spent ~~too much~~ some time getting it to feel just right. I would like to thank this [easings cheat sheet](https://easings.net/) for providing copy-and-paste animation curves.
 

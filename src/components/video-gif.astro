@@ -5,10 +5,11 @@
 
 interface Props {
   className?: string;
-  vids: { src: string; type: string }[];
+  folder: string;
+  vids: { name: string; type: string }[];
 }
 
-const { className, vids } = Astro.props;
+const { className, folder, vids } = Astro.props;
 ---
 
 <video
@@ -19,9 +20,9 @@ const { className, vids } = Astro.props;
   class:list={["rounded-xl bg-sweater-9", className]}
 >
   {
-    vids.map(({ src, type }) => (
+    vids.map(({ name, type }) => (
       <source
-        src={src}
+        src={`/_files/${folder}/${name}`}
         type={type}
       />
     ))

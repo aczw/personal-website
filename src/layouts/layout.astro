@@ -42,6 +42,19 @@ const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site)
       content={Astro.generator}
     />
 
+    <meta
+      property="og:title"
+      content={title ? title : "Charles Wang"}
+    />
+    <meta
+      property="og:description"
+      content={description}
+    />
+    <meta
+      property="og:url"
+      content={canonicalUrl}
+    />
+
     <link
       rel="canonical"
       href={canonicalUrl}

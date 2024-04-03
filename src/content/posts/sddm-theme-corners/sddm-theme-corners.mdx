@@ -1,22 +1,25 @@
 ---
-title: sddm-theme-corners
-link:
-  url: https://github.com/aczw/sddm-theme-corners
-  text: Source code
-blurb: Customizable theme for SDDM, a Linux display manager.
-duration:
-  from: 2023-01-03
-  to: 2023-01-17
-  length: 2 weeks
-cover:
-  img: ./sddm-theme-corners.png
-  alt: My customized login theme, featuring a light, pastel blue color scheme with a glacier wallpaper.
+title: Designing my own Linux login manager
+blurb: sddm-theme-corners is a theme for SDDM. It strives for customizability, simplicitly, and an intuitive layout.
 tags:
   - Qt Quick
   - QML
-role:
-  - programming
-  - UI/UX
+cover:
+  img: ./sddm-theme-corners.png
+  alt: My customized login theme, featuring a light, pastel blue color scheme with a glacier wallpaper.
+
+project:
+  duration:
+    from: 2023-01-03
+    to: 2023-01-17
+    length: 2 weeks
+  role:
+    - programming
+    - UI/UX
+  link:
+    url: https://github.com/aczw/sddm-theme-corners
+    text: Source code
+
 order: 4
 published: true
 slug: sddm-theme-corners
@@ -56,13 +59,15 @@ Common controls like power and session management are grouped together. Some the
 Some themes included icons for popular DEs like GNOME, KDE, Deepin, etc. I felt that it would be impossible to cover all cases, and chose a text-based list instead. Icons for sessions don't offer enough detail anyway; what if I wanted GNOME on both Xorg and Wayland?
 
 <VideoGif
-  vids={[{ src: "/projects/sddm-theme-corners/power-session-buttons.mp4", type: "video/mp4" }]}
+  folder="sddm-theme-corners"
+  vids={[{ name: "power-session-buttons.mp4", type: "video/mp4" }]}
 />
 
 The user picture (if you choose to enable it) also acts as a user switcher. All it really does is prefill in the user field. The last user logged in is saved, however, and filled in for you next time.
 
 <VideoGif
-  vids={[{ src: "/projects/sddm-theme-corners/user-picture-inputs.mp4", type: "video/mp4" }]}
+  folder="sddm-theme-corners"
+  vids={[{ name: "user-picture-inputs.mp4", type: "video/mp4" }]}
 />
 
 The login button is grayed out until both input fields are filled out.
@@ -72,7 +77,8 @@ The login button is grayed out until both input fields are filled out.
 Tying everything together are subtle animations that occur when popups come in and out of view. I especially like what happens when you enter an incorrect login:
 
 <VideoGif
-  vids={[{ src: "/projects/sddm-theme-corners/incorrect-login-anim.mp4", type: "video/mp4" }]}
+  folder="sddm-theme-corners"
+  vids={[{ name: "incorrect-login-anim.mp4", type: "video/mp4" }]}
 />
 
 Don't like the default colors or how round everything is? I've exposed multiple config options that allow you to theme pretty much everything. You can also change the font and datetime format; however, the layout itself cannot be modified. After all, stuff in `sddm-theme-corners` should stay in the corners!
@@ -97,8 +103,8 @@ I revisited this line for the write-up, and... I'm not too sure what it does. I 
 
 ## Try it out!
 
-I've been using it everyday with no complaints. I might be biased, though.
+I've been using it everyday with no complaints. I might be biased, though. 😜
 
 While SDDM is best known for being KDE's display manager, it actually works for any desktop environment. So `sddm-theme-corners` does as well! If you're on Linux and like what you see, do test it out and lemme know what you think. I've provided [installation instructions](https://github.com/aczw/sddm-theme-corners#installation) for the AUR as well as manual installation.
 
-Happy ricing! 🍚
+Happy ricing!
