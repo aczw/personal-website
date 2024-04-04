@@ -57,19 +57,17 @@ posts.sort((a, b) => a.data.order - b.data.order);
       </div>
     </section>
 
-    <section class="animate-fade space-y-5 pt-2.5 [--order:2]">
-      <ul class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        {
-          posts.map((post, index) => (
-            <li
-              class="animate-fade"
-              style={{ "--order": index + 2 }}
-            >
-              <PostCard {...post} />
-            </li>
-          ))
-        }
-      </ul>
+    <section class="grid animate-fade grid-cols-1 gap-5 pt-2.5 [--order:2] sm:grid-cols-2">
+      {
+        posts.map((post, index) => (
+          <PostCard
+            id="post"
+            class="group relative animate-fade pb-[var(--bar-height)]"
+            style={{ "--order": index + 2 }}
+            post={post}
+          />
+        ))
+      }
     </section>
   </Main>
 

@@ -1,34 +1,35 @@
 ---
 import { Image } from "astro:assets";
+import type { HTMLAttributes } from "astro/types";
 
 import type { Post } from "@/content/config";
 import { ArrowRight } from "lucide-astro";
 
-type Props = Post;
+type Props = { post: Post } & HTMLAttributes<"div">;
 
 const {
-  data: { title, blurb, tags, cover },
-  slug,
+  post: {
+    data: { title, blurb, tags, cover },
+    slug,
+  },
+  ...props
 } = Astro.props;
 
 // see https://stackoverflow.com/questions/27451132/can-i-invert-the-height-direction-from-top-down-to-bottom-up for the height animation CSS.
 ---
 
-<post-card
-  id="post"
-  class="group relative"
->
+<post-card {...props}>
   <a href={`/${slug}`}>
     <Image
       src={cover.img}
       alt={cover.alt}
       loading="eager"
-      class="mb-[var(--bar-height)] aspect-[16/10] rounded-t-xl object-cover transition group-hover:scale-95 group-hover:opacity-50"
+      class="aspect-[16/10] rounded-t-xl object-cover transition group-hover:scale-95 group-hover:opacity-50"
     />
 
     <div
       id="bottom-bar"
-      class="absolute bottom-0 h-[var(--bar-height)] w-full translate-y-[var(--bar-height)] space-y-1 overflow-hidden rounded-b-xl bg-sweater-9 p-4 transition-[background-color,height,border-radius] group-hover:bottom-0 group-hover:h-[calc(var(--blurb-height)+var(--bar-height))] group-hover:rounded-t-xl group-hover:bg-sweater-8"
+      class="absolute bottom-0 h-[var(--bar-height)] space-y-1 overflow-hidden rounded-b-xl bg-sweater-9 p-4 transition-[background-color,height,border-radius] group-hover:h-[calc(var(--blurb-height)+var(--bar-height))] group-hover:rounded-t-xl group-hover:bg-sweater-8"
       data-blurb={blurb}
     >
       <span class="flex items-center justify-between gap-5">
