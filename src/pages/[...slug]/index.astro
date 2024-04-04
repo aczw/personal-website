@@ -17,7 +17,6 @@ import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
 
 import { getCollection } from "astro:content";
-import { Info } from "lucide-astro";
 
 const posts = await getCollection("posts");
 const currPost = posts.find((project) => project.slug === Astro.params.slug);
@@ -84,52 +83,41 @@ const meta = import.meta.env.DEV ? (published ? "[PUBLISHED] " : "[DRAFT] ") : "
 
     {
       project ? (
-        <section class="animate-fade rounded-xl text-sweater-2 [--order:1]">
-          <h2 class="flex items-center rounded-t-xl bg-sweater-8 p-3.5 text-lg">
-            <Info
-              size={20}
-              class="mr-1.5"
-              aria-hidden="true"
-            />{" "}
-            Project details
-          </h2>
-
-          <div class="grid grid-cols-1 gap-5 rounded-b-xl bg-sweater-9 p-3.5 xxs:grid-cols-2">
-            <div>
-              <h3 class="font-mono font-[130] uppercase text-sweater-4">Duration</h3>
-              <p>{formatProjectDuration(project)}</p>
-            </div>
-
-            <div>
-              <h3 class="font-mono font-[130] uppercase text-sweater-4">Built with</h3>
-              <p>{tags.join(", ")}</p>
-            </div>
-
-            {project.teamSize ? (
-              <div>
-                <h3 class="font-mono font-[130] uppercase text-sweater-4">Team-based</h3>
-                <p>{`Team of ${project.teamSize}`}</p>
-              </div>
-            ) : null}
-
-            <div>
-              <h3 class="font-mono font-[130] uppercase text-sweater-4">Responsible for</h3>
-              <p>{project.role.join(", ")}</p>
-            </div>
-
-            {project.link ? (
-              <div>
-                <h3 class="font-mono font-[130] uppercase text-sweater-4">{project.link.text}</h3>
-                <Link
-                  href={project.link.url}
-                  target="_blank"
-                  className="break-words"
-                >
-                  {project.link.url}
-                </Link>
-              </div>
-            ) : null}
+        <section class="grid animate-fade grid-cols-1 gap-5 rounded-xl text-sweater-2 [--order:1] xxs:grid-cols-2">
+          <div>
+            <h3 class="font-mono font-[130] uppercase text-sweater-4">Duration</h3>
+            <p>{formatProjectDuration(project)}</p>
           </div>
+
+          <div>
+            <h3 class="font-mono font-[130] uppercase text-sweater-4">Built with</h3>
+            <p>{tags.join(", ")}</p>
+          </div>
+
+          {project.teamSize ? (
+            <div>
+              <h3 class="font-mono font-[130] uppercase text-sweater-4">Team size</h3>
+              <p>{project.teamSize}</p>
+            </div>
+          ) : null}
+
+          <div>
+            <h3 class="font-mono font-[130] uppercase text-sweater-4">Responsible for</h3>
+            <p>{project.role.join(", ")}</p>
+          </div>
+
+          {project.link ? (
+            <div>
+              <h3 class="font-mono font-[130] uppercase text-sweater-4">{project.link.text}</h3>
+              <Link
+                href={project.link.url}
+                target="_blank"
+                className="break-words"
+              >
+                {project.link.url}
+              </Link>
+            </div>
+          ) : null}
         </section>
       ) : null
     }

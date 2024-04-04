@@ -58,10 +58,11 @@ const posts = defineCollection({
     }),
 });
 
-type Project = NonNullable<CollectionEntry<"posts">["data"]["project"]>;
+type Post = CollectionEntry<"posts">;
+type Project = NonNullable<Post["data"]["project"]>;
 
 const collections = {
   posts,
 };
 
-export { collections, type Project };
+export { collections, type Post, type Project };

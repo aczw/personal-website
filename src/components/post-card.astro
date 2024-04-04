@@ -1,0 +1,99 @@
+---
+import { Image } from "astro:assets";
+
+import type { Post } from "@/content/config";
+import { ArrowRight } from "lucide-astro";
+
+type Props = Post;
+
+const {
+  data: { title, blurb, tags, cover },
+  slug,
+} = Astro.props;
+
+// see https://stackoverflow.com/questions/27451132/can-i-invert-the-height-direction-from-top-down-to-bottom-up for the height animation CSS.
+---
+
+<post-card
+  id="post"
+  class="group relative"
+>
+  <a href={`/${slug}`}>
+    <Image
+      src={cover.img}
+      alt={cover.alt}
+      loading="eager"
+      class="mb-[var(--bar-height)] aspect-[16/10] rounded-t-xl object-cover transition group-hover:scale-95 group-hover:opacity-50"
+    />
+
+    <div
+      id="bottom-bar"
+      class="absolute bottom-0 h-[var(--bar-height)] w-full translate-y-[var(--bar-height)] space-y-1 overflow-hidden rounded-b-xl bg-sweater-9 p-4 transition-[background-color,height,border-radius] group-hover:bottom-0 group-hover:h-[calc(var(--blurb-height)+var(--bar-height))] group-hover:rounded-t-xl group-hover:bg-sweater-8"
+      data-blurb={blurb}
+    >
+      <span class="flex items-center justify-between gap-5">
+        <div id="post-title">
+          <h3 class="break-words text-sweater-2">{title}</h3>
+          <p class="animate-fade text-sweater-5 [--order:0] xs:hidden">
+            {tags.join(", ")}
+          </p>
+        </div>
+
+        <div
+          aria-hidden="true"
+          class="rounded-full bg-sweater-8 p-1.5 transition group-hover:opacity-0"
+        >
+          <ArrowRight
+            class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3"
+          />
+        </div>
+      </span>
+
+      <p
+        id="blurb"
+        class="opacity-0 transition-opacity group-hover:opacity-100"
+      >
+        {blurb}
+      </p>
+    </div>
+  </a>
+</post-card>
+
+<script>
+  class PostCard extends HTMLElement {
+    constructor() {
+      super();
+
+      // initially call it once on window load, then add event listener to window
+      this.updateBarHeight();
+      window.addEventListener("resize", () => this.updateBarHeight());
+
+      const bar = this.querySelector<HTMLElement>("#bottom-bar")!;
+      this.updateBlurbHeight(bar);
+
+      // blurb height has to be recalculated every mouseenter because we may have resized the window
+      this.addEventListener("mouseenter", () => this.updateBlurbHeight(bar));
+      this.addEventListener("mouseleave", () => bar.style.setProperty("--blurb-height", "0px"));
+    }
+
+    updateBlurbHeight(bar: HTMLElement) {
+      const blurbHeight = bar.querySelector<HTMLElement>("#blurb")!.getBoundingClientRect().height;
+      bar.style.setProperty("--blurb-height", `${blurbHeight}px`);
+    }
+
+    updateBarHeight() {
+      // first get the post title height
+      const titleHeight =
+        this.querySelector<HTMLElement>("#post-title")!.getBoundingClientRect().height;
+
+      // if the max height title is less than the arrow icon, use
+      // the arrow container's size instead, which is 35.25px
+      const contentHeight = Math.max(titleHeight, 35.25);
+
+      // because we apply p-4 padding, which is 1rem on both sides
+      this.style.setProperty("--bar-height", `calc(${contentHeight}px + 2rem)`);
+    }
+  }
+
+  customElements.define("post-card", PostCard);
+</script>
