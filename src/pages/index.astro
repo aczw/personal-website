@@ -62,7 +62,7 @@ posts.sort((a, b) => a.data.order - b.data.order);
         posts.map((post, index) => (
           <PostCard
             id="post"
-            class="group relative h-fit animate-fade pb-[var(--bar-height)]"
+            class="group relative h-fit animate-fade pb-[var(--bar-h)]"
             style={{ "--order": index + 2 }}
             post={post}
           />

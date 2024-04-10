@@ -29,7 +29,8 @@ const {
 
     <div
       id="bottom-bar"
-      class="absolute bottom-0 h-[var(--bar-height)] space-y-1 overflow-hidden rounded-b-xl bg-sweater-9 p-4 transition-[background-color,height,border-radius] group-hover:h-[calc(var(--blurb-height)+var(--bar-height))] group-hover:rounded-t-xl group-hover:bg-sweater-8"
+      class="absolute bottom-0 h-[calc(var(--blurb-h)+var(--bar-h))] space-y-1 overflow-hidden rounded-b-xl bg-sweater-9 p-4 transition-[background-color,height,border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8"
+      style={{ "--blurb-h": "0px" }}
     >
       <span class="flex items-center justify-between gap-5">
         <div id="post-title">
@@ -64,25 +65,21 @@ const {
     constructor() {
       super();
 
-      // initially call it once on window load, then add event listener to window
-      this.updateBarHeight();
-      window.addEventListener("resize", () => this.updateBarHeight());
-
       const bar = this.querySelector<HTMLElement>("#bottom-bar")!;
-      this.updateBlurbHeight(bar);
+      const blurb = bar.querySelector<HTMLElement>("#blurb")!;
+
+      // initially call it once on HTML load, then add event listener to window
+      this._setBarHeight();
+      window.addEventListener("resize", () => this._setBarHeight());
 
       // blurb height has to be recalculated every mouseenter because we may have resized the window
-      this.addEventListener("mouseenter", () => this.updateBlurbHeight(bar));
-      this.addEventListener("mouseleave", () => bar.style.setProperty("--blurb-height", "0px"));
+      this.addEventListener("mouseenter", () =>
+        bar.style.setProperty("--blurb-h", `${blurb.getBoundingClientRect().height}px`),
+      );
+      this.addEventListener("mouseleave", () => bar.style.setProperty("--blurb-h", "0px"));
     }
 
-    updateBlurbHeight(bar: HTMLElement) {
-      const blurbHeight = bar.querySelector<HTMLElement>("#blurb")!.getBoundingClientRect().height;
-      bar.style.setProperty("--blurb-height", `${blurbHeight}px`);
-    }
-
-    updateBarHeight() {
-      // first get the post title height
+    _setBarHeight() {
       const titleHeight =
         this.querySelector<HTMLElement>("#post-title")!.getBoundingClientRect().height;
 
@@ -90,8 +87,8 @@ const {
       // the arrow container's size instead, which is 35.25px
       const contentHeight = Math.max(titleHeight, 35.25);
 
-      // because we apply p-4 padding, which is 1rem on both sides
-      this.style.setProperty("--bar-height", `calc(${contentHeight}px + 2rem)`);
+      // we apply p-4 padding, which is 1rem on all sides
+      this.style.setProperty("--bar-h", `calc(${contentHeight}px + 2rem)`);
     }
   }
 
