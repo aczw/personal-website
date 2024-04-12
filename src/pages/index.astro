@@ -7,10 +7,14 @@ import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
 
 import PostCard from "@/components/post-card.astro";
-import { getCollection } from "astro:content";
+import { getEntries } from "astro:content";
 
-const posts = await getCollection("posts");
-posts.sort((a, b) => a.data.order - b.data.order);
+const posts = await getEntries([
+  { collection: "posts", slug: "mini-minecraft" },
+  { collection: "posts", slug: "rcw" },
+  { collection: "posts", slug: "sddm-theme-corners" },
+  { collection: "posts", slug: "www" },
+]);
 ---
 
 <Layout description="Computer graphics student at the University of Pennsylvania.">

@@ -53,7 +53,6 @@ const posts = defineCollection({
         })
         .optional(),
 
-      order: z.number().min(1),
       published: z.boolean(),
     }),
 });
