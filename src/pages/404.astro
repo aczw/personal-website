@@ -4,6 +4,20 @@ import Layout from "@/layouts/layout.astro";
 
 Astro.response.status = 404;
 Astro.response.statusText = "Page not found";
+
+const fun = [
+  "soitgoes",
+  "aczw",
+  "newfaces",
+  "doitagain",
+  "tilinfinity",
+  "suboptimal",
+  "promiseme",
+  "allitcosts",
+];
+
+const pick = fun[Math.floor(Math.random() * fun.length)];
+const offset = Math.floor(Math.random() * pick.length);
 ---
 
 <Layout
@@ -25,30 +39,16 @@ Astro.response.statusText = "Page not found";
       aria-hidden="true"
       class="rounded-md bg-sweater-9 px-1.5 py-0.5 font-mono font-[100] italic text-sweater-7 transition-colors"
     >
+      {pick.slice(offset) + pick.slice(0, offset)}
     </p>
   </main>
 </Layout>
 
 <script>
-  const fun = [
-    "soitgoes",
-    "aczw",
-    "newfaces",
-    "doitagain",
-    "tilinfinity",
-    "suboptimal",
-    "promiseme",
-    "allitcosts",
-  ];
-
-  const pick = fun[Math.floor(Math.random() * fun.length)];
-  const offset = Math.floor(Math.random() * pick.length);
-
-  document.getElementById("scroll")!.textContent = pick.slice(offset) + pick.slice(0, offset);
+  const scroll = document.getElementById("scroll")!;
 
   setInterval(() => {
-    const scroll = document.getElementById("scroll");
-    const text = scroll!.textContent;
-    scroll!.textContent = text!.slice(1) + text![0];
+    const text = scroll.textContent!;
+    scroll.textContent = text.slice(1) + text[0];
   }, 500);
 </script>
