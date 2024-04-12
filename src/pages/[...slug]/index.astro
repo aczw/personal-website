@@ -28,10 +28,16 @@ if (!currPost) {
   return Astro.redirect("/404");
 }
 
-const { Content } = await currPost.render();
 const {
   data: { title, blurb, tags, cover, project, published },
 } = currPost;
+
+// if we found a post but it's still a draft, don't render it!
+if (!published) {
+  return Astro.redirect("/404");
+}
+
+const { Content } = await currPost.render();
 
 function formatProjectDuration(project: Project) {
   let from = "";
