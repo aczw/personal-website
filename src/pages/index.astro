@@ -67,7 +67,7 @@ const posts = await getEntries([
           <PostCard
             id="post"
             class="group relative h-fit animate-fade pb-[var(--bar-h)]"
-            style={{ "--order": index + 2 }}
+            style={{ "--order": index + 2, "--bar-h": "calc(35.25px + 2rem)" }}
             post={post}
           />
         ))
