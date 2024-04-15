@@ -2,9 +2,6 @@
 import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
 
-Astro.response.status = 404;
-Astro.response.statusText = "Page not found";
-
 const fun = [
   "soitgoes",
   "aczw",
@@ -51,8 +48,8 @@ const scrambled = pick.slice(offset) + pick.slice(0, offset);
   let text = scroll.dataset.scrambled!;
 
   // for some reason, whitespace is added to the front and end of the word, so we can't
-  // check scroll.textContent directly at first. instead, store the scrambled word in the dataset,
-  // and remove it afterwards because it's not necessary
+  // use scroll.textContent directly at first. instead, store the scrambled word in the dataset,
+  // and remove it afterwards because it's not necessary and looks weird
   delete scroll.dataset.scrambled;
 
   setInterval(() => {

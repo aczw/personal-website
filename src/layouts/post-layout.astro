@@ -1,0 +1,147 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+import Anchor from "@/components/mdx/anchor.astro";
+import Aside from "@/components/mdx/aside.astro";
+import Del from "@/components/mdx/del.astro";
+import H2 from "@/components/mdx/h2.astro";
+import H3 from "@/components/mdx/h3.astro";
+import Li from "@/components/mdx/li.astro";
+import Ul from "@/components/mdx/ul.astro";
+
+import Img from "@/components/img.astro";
+import Link from "@/components/link.astro";
+
+import Footer from "@/layouts/footer.astro";
+import Header from "@/layouts/header.astro";
+import Layout from "@/layouts/layout.astro";
+import Main from "@/layouts/main.astro";
+
+import type { Project } from "@/content/config";
+
+interface Props {
+  post: CollectionEntry<"posts">;
+}
+
+const { post } = Astro.props;
+const {
+  data: { title, blurb, tags, cover, project, published },
+} = post;
+
+// only show post status in development
+let status = published ? "[PUBLISHED] " : "[DRAFT] ";
+status = import.meta.env.DEV ? status : "";
+
+function formatDuration(project: Project) {
+  let from = "";
+  let to = "";
+
+  const { duration } = project;
+
+  const options: Intl.DateTimeFormatOptions = {
+    month: "short",
+    year: "numeric",
+  };
+
+  if (typeof duration.from === "string") {
+    from = duration.from;
+  } else {
+    from = duration.from.toLocaleDateString("en-US", options);
+  }
+
+  if (typeof duration.to === "string") {
+    to = duration.to;
+  } else {
+    to = duration.to.toLocaleDateString("en-US", options);
+  }
+
+  return `${from} — ${to} (${duration.length})`;
+}
+
+const { Content } = await post.render();
+---
+
+<Layout
+  title={status}
+  description={blurb}
+>
+  <Header />
+
+  <Main className="max-w-narrow">
+    <section class="animate-fade space-y-[0.7rem] [--order:0]">
+      <h1 class="text-lg text-sweater-2">{title}</h1>
+      <p>{blurb}</p>
+    </section>
+
+    <Img
+      src={cover.img}
+      alt={cover.alt}
+      loading="eager"
+      className="animate-fade border-2 border-sweater-9 [--order:0]"
+    />
+
+    {
+      project ? (
+        <section class="grid animate-fade grid-cols-1 gap-5 rounded-xl text-sweater-2 [--order:1] xxs:grid-cols-2">
+          <div>
+            <h3 class="font-mono font-[130] uppercase text-sweater-4">Duration</h3>
+            <p>{formatDuration(project)}</p>
+          </div>
+
+          <div>
+            <h3 class="font-mono font-[130] uppercase text-sweater-4">Built with</h3>
+            <p>{tags.join(", ")}</p>
+          </div>
+
+          {project.teamSize ? (
+            <div>
+              <h3 class="font-mono font-[130] uppercase text-sweater-4">Team size</h3>
+              <p>{project.teamSize}</p>
+            </div>
+          ) : null}
+
+          <div>
+            <h3 class="font-mono font-[130] uppercase text-sweater-4">Responsible for</h3>
+            <p>{project.role.join(", ")}</p>
+          </div>
+
+          {project.link ? (
+            <div>
+              <h3 class="font-mono font-[130] uppercase text-sweater-4">{project.link.text}</h3>
+              <Link
+                href={project.link.url}
+                target="_blank"
+                className="break-words"
+              >
+                {project.link.url}
+              </Link>
+            </div>
+          ) : null}
+        </section>
+      ) : null
+    }
+
+    <article
+      class:list={[
+        "animate-fade space-y-5",
+        { "[--order:1]": typeof project === "undefined" },
+        { "[--order:2]": project },
+      ]}
+    >
+      <Content
+        components={{
+          h2: H2,
+          h3: H3,
+          ul: Ul,
+          li: Li,
+          del: Del,
+          blockquote: Aside,
+          a: Anchor,
+          img: Img,
+        }}
+      />
+    </article>
+  </Main>
+
+  <Footer />
+</Layout>
