@@ -2,8 +2,10 @@
 
 [![Built with Astro](https://astro.badg.es/v2/built-with-astro/tiny.svg)](https://astro.build) ![Vercel Deploy](https://therealsujitk-vercel-badge.vercel.app/?app=personal-website-aczw&label=Vercel)
 
-hi! this is the code for my website. it was built with Astro, styled with Tailwind, and deployed on Vercel.
+Hi! This is the code for my website. I wanted my own little corner of the internet, and I think it turned out pretty well. Take a look around and lemme know what you think.
 
-design and colors were prototyped in Figma and Procreate. fonts used are [Atkinson Hyperlegible](https://en.wikipedia.org/wiki/Atkinson_Hyperlegible) and [Maple Mono](https://github.com/subframe7536/maple-font). icons are provided by [Lucide](https://lucide.dev/). if you're curious, I [wrote a post](https://charl.sh/projects/www) about how I made the site and the changes it's been through.
+## Colophon
 
-I wanted my own little corner of the internet, and I think it turned out pretty well. take a look around and lemme know what you think.
+Fonts are [Atkinson Hyperlegible](https://en.wikipedia.org/wiki/Atkinson_Hyperlegible) and [Berkeley Mono](https://berkeleygraphics.com/typefaces/berkeley-mono/). Icons are from [Lucide](https://lucide.dev/). If you're curious, I [wrote a post](https://charleszw.com/www) about how I made the site and the changes it's been through.
+
+It is built with Astro and is currently deployed on Vercel.
