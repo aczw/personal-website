@@ -9,9 +9,9 @@ const available = track !== null;
 
 <div class="w-1/2 animate-fade [--order:0]">
   <a
-    href={track === null
-      ? "https://open.spotify.com/user/zhwq0rxdn060sgar22e07u193?si=3cfe23a176bf4272"
-      : "https://www.last.fm/user/ashzw"}
+    href={available
+      ? "https://www.last.fm/user/ashzw"
+      : "https://open.spotify.com/user/zhwq0rxdn060sgar22e07u193?si=3cfe23a176bf4272"}
     target="_blank"
     class="w-fit text-sweater-7 underline decoration-sweater-8 decoration-1 underline-offset-2 transition-colors hover:text-sweater-6 hover:decoration-sweater-6"
   >
