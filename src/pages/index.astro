@@ -23,9 +23,8 @@ const posts = await getEntries([
   <Header />
 
   <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">
-    <blockquote class="-translate-x-1.5 font-mono text-[14px] font-[100] italic text-sweater-3">
-      <p class="inline">"Waiting for something to happen?"</p>
-      <small class="whitespace-nowrap text-sm">— MEWO</small>
+    <blockquote class="-translate-x-1.5 font-mono text-[14px] font-[120] italic text-sweater-3">
+      <p>"Waiting for something to happen?" — MEWO</p>
     </blockquote>
 
     <section class="space-y-5">
@@ -86,7 +85,7 @@ const posts = await getEntries([
                 <span class="flex items-center justify-between gap-5">
                   <div>
                     <h2 class="break-words text-sweater-2">{title}</h2>
-                    <p class="text-sweater-5">{tags.join(", ")}</p>
+                    <p class="font-mono text-[14px] font-[120] text-sweater-4">{tags.join(", ")}</p>
                   </div>
 
                   <div

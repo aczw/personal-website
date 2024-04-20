@@ -29,39 +29,14 @@ const posts = defineCollection({
         alt: z.string(),
       }),
 
-      project: z
-        .object({
-          duration: z.object({
-            from: z.union([z.date(), z.string()]),
-            to: z.union([z.date(), z.string()]),
-            length: z.string(),
-          }),
-          teamSize: z
-            .number()
-            .refine((size) => size >= 2, {
-              message:
-                "Team size is currently less than 2. This property is optional, so you can just remove it!",
-            })
-            .optional(),
-          role: z.array(z.string()),
-          link: z
-            .object({
-              url: z.string().url(),
-              text: z.string(),
-            })
-            .optional(),
-        })
-        .optional(),
-
       published: z.boolean(),
     }),
 });
 
 type Post = CollectionEntry<"posts">;
-type Project = NonNullable<Post["data"]["project"]>;
 
 const collections = {
   posts,
 };
 
-export { collections, type Post, type Project };
+export { collections, type Post };

@@ -4,13 +4,13 @@ import { Hash } from "lucide-astro";
 
 type Props = HTMLAttributes<"h3">;
 
-const { id, ...attrs } = Astro.props;
+const { id, ...props } = Astro.props;
 ---
 
 <h3
   id={id}
-  {...attrs}
-  class="text-sweater-2"
+  class="pt-4 text-sweater-2"
+  {...props}
 >
   <a
     href={`#${id}`}
