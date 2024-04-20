@@ -18,7 +18,6 @@ import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
 
 import type { Project } from "@/content/config";
-import { Vimeo } from "@astro-community/astro-embed-vimeo";
 
 interface Props {
   post: CollectionEntry<"posts">;
@@ -129,7 +128,6 @@ const { Content } = await post.render();
         { "[--order:2]": project },
       ]}
     >
-      <Vimeo id="893391293" />
       <Content
         components={{
           h2: H2,
