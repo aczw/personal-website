@@ -24,11 +24,7 @@ published: true
 slug: mini-minecraft
 ---
 
-import { Vimeo } from "@astro-community/astro-embed-vimeo";
-
-First, let's take a look at this snazzy showcase reel I made (it's less than 3 minutes).
-
-<Vimeo id="893391293" />
+First, let's take a look at this [snazzy showcase reel](https://vimeo.com/893391293) I made (it's less than 3 minutes).
 
 It does a nice job of demonstrating our engine's features and gives credits where due. While we all contributed code, I focused primarily on the following features:
 
@@ -40,7 +36,7 @@ It does a nice job of demonstrating our engine's features and gives credits wher
 - Flood fill lighting
 - GUI, inventory, and text rendering
 
-I'll talk a bit about each, some implementation details, and any other interesting details. Let's get started.
+I wanna talk a bit about each, some implementation details, and any other interesting details.
 
 > Please contact me if you would like to see the project code. Anything I write here are just quick examples (and are definitely not the best way to implement things).
 
@@ -60,13 +56,13 @@ private:
 };
 ```
 
-> Why not a 3D array? A flattened array enables faster lookup times due to the way it is laid out in memory.
+> Why not a 3D array? A flattened array should enable faster lookup times due to the way it is laid out in memory.
 
 A `Block` enum declares all possible block types in our game. The `EMPTY` block represents air, or the _absence_ of a block. There are some benefits to this. For instance, breaking a block is the same as placing an `EMPTY` block!
 
 Conceptually, our terrain should "own" these chunks, so they all live in a `Terrain` structure. For easy access, we represent a chunk by its lower-left xz-coordinate, and use smart pointers for safety.
 
-> `glm::ivec2` comes from [OpenGL Mathematics](https://github.com/g-truc/glm), a commonly-used library that implements vectors, matrices and other utilities in an OpenGL-friendly manner.
+> The `glm` namespace comes from [GLM](https://github.com/g-truc/glm), a commonly-used library that implements vectors, matrices and other utilities in an OpenGL-friendly manner.
 
 ```cpp
 class Terrain
@@ -104,7 +100,7 @@ If you were to noclip below the ground, it now looks "hollowed out." What you're
 
 ![Since we're not rendering any blocks inside the terrain, we can see snake-like caves underground.](./hollowed-caves.png)
 
-**I cannot emphasize how much this improves performance.** On my laptop, my framerate basically tripled. This was a crucial step in getting our game to run well.
+_I cannot emphasize how much this improves performance._ On my laptop, my framerate basically tripled. This was a crucial step in getting our game to run well.
 
 ## Texturing and block animations
 
@@ -119,6 +115,7 @@ struct VertexAttrs
   GLfloat animated;
 }
 
+// corresponds to the above and below
 int stride = 4 + 4 + 2 + 1;
 ```
 
@@ -216,6 +213,8 @@ Depending on the direction of the ray, we can decide different colors to give to
 
 ![The sky is split into green, red, and black depending on the direction of the ray.](./skybox-uv.png)
 
+There's a lot we can do here. For example, map a position to a UV coordinate, and output a different color depending on the value. Or, shooting a ray out and coloring the radius around that ray a different color, up to a certain angle (like a cone). I also lerp between colors depending on the time of day.
+
 ### Sun, moon, and stars
 
 Both the sun and moon are quads that rotate at a fixed distance _around_ the player. This allows them to appear "infinitely" far away.
@@ -258,8 +257,6 @@ glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 This way, I can offset the UV coordinates based on the player's current world position. When the player moves forward, the UV coordinates translate "back," which gives the clouds the appearance of having been left behind. Take a look at [jdh's implementation](https://github.com/jdah/minecraft-weekend/blob/387ecb554946180094d58c57a4ee216dba506cc4/src/world/sky.c#L350C17-L350C17) to get an idea of the math.
 
-> I could technically calculate this on the CPU, but I'm doing this work in our cloud shader.
-
 Overall the sky system is pretty rudimentary, but with some good skybox colors, animation times, and tweaking, it feels very cohesive and looks _very_ similar to Minecraft's.
 
 ## Flood fill lighting
@@ -286,7 +283,7 @@ We add a new vertex attribute that tracks the light level. In our chunk fragment
 
 Note that each block face samples the light level from its neighbor block. Depending on the light location, this also means each block face can be affected by a different light value! That's what makes this system feel more dynamic and lively, I feel.
 
-> I did the base algorithm implementation, and it works well. My teammate decided to jazz it up and add colored lights! That's what you see in the final video.
+> I did the base algorithm implementation, and it works well. My teammate improved it and added colored lights! That's what you see in the final video.
 
 ## Inventory
 
@@ -336,7 +333,7 @@ void UI::render_ui() {
     scaled_pos.push_back(glm::vec2(p.x * screen_w / aspect_ratio + margin, p.y * screen_h));
   }
 
-  /* send all of this correctly scaled vertex data to the GPU */
+  // send all of this correctly scaled vertex data to the GPU
 }
 ```
 
