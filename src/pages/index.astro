@@ -6,8 +6,10 @@ import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
 
-import PostCard from "@/components/post-card.astro";
+import { Image } from "astro:assets";
 import { getEntries } from "astro:content";
+
+import { ArrowRight } from "lucide-astro";
 
 const posts = await getEntries([
   { collection: "posts", slug: "mini-minecraft" },
@@ -21,21 +23,20 @@ const posts = await getEntries([
   <Header />
 
   <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">
-    <blockquote
-      class="-translate-x-1.5 animate-fade font-mono text-[14px] font-[100] italic text-sweater-3 [--order:0]"
-    >
+    <blockquote class="-translate-x-1.5 font-mono text-[14px] font-[100] italic text-sweater-3">
       <p class="inline">"Waiting for something to happen?"</p>
       <small class="whitespace-nowrap text-sm">— MEWO</small>
     </blockquote>
 
-    <section class="animate-fade space-y-5 [--order:1]">
+    <section class="space-y-5">
       <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
         <p>
           Hi, I'm Charles. I'm a student at the University of Pennsylvania majoring in Digital Media
           Design, which is a program that combines CS with computer graphics and fine arts.
         </p>
         <p>
-          I like to design and build games and websites. To that end, I help run our game dev club <Link
+          I like to design and build games and websites. I also have an interest in graphics
+          programming. To that end, I help run our game dev club <Link
             href="https://pennupgrade.com"
             target="_blank"
             >UPGRADE</Link
@@ -44,7 +45,7 @@ const posts = await getEntries([
             href="http://cg.cis.upenn.edu/siggraph/"
             target="_blank"
             >SIGGRAPH chapter</Link
-          >. I'm also working with Prof. Mayur Naik to build web platforms.
+          >.
         </p>
         <p>
           In my free time I like running, making album covers, playing the bass, obsessing over
@@ -61,16 +62,44 @@ const posts = await getEntries([
       </div>
     </section>
 
-    <section class="grid animate-fade grid-cols-1 gap-5 pt-2.5 [--order:2] sm:grid-cols-2">
+    <section class="grid grid-cols-1 gap-5 pt-2.5 sm:grid-cols-2">
       {
-        posts.map((post, index) => (
-          <PostCard
-            id="post"
-            class="group relative h-fit animate-fade pb-[var(--bar-h)]"
-            style={{ "--order": index + 2, "--bar-h": "calc(35.25px + 2rem)" }}
-            post={post}
-          />
-        ))
+        posts.map((post) => {
+          const {
+            data: { title, tags, cover },
+            slug,
+          } = post;
+          return (
+            <a
+              href={`/${slug}`}
+              class="group"
+            >
+              <Image
+                src={cover.img}
+                alt={cover.alt}
+                loading="eager"
+                class="aspect-[16/10] rounded-t-xl bg-sweater-9 object-cover opacity-80 transition-opacity group-hover:opacity-100"
+                transition:name={`cover-image-${slug}`}
+              />
+
+              <div class="space-y-1 rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">
+                <span class="flex items-center justify-between gap-5">
+                  <div>
+                    <h2 class="break-words text-sweater-2">{title}</h2>
+                    <p class="text-sweater-5">{tags.join(", ")}</p>
+                  </div>
+
+                  <div
+                    aria-hidden="true"
+                    class="rounded-full bg-sweater-8 p-1.5 transition-colors group-hover:bg-sweater-7"
+                  >
+                    <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3" />
+                  </div>
+                </span>
+              </div>
+            </a>
+          );
+        })
       }
     </section>
   </Main>

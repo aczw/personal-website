@@ -1,7 +1,3 @@
----
-const pathname = Astro.url.pathname;
----
-
 <header class="mx-auto max-w-wide pt-4 wide:pt-10">
   <nav class="mx-4 flex items-center justify-between border-b-2 border-sweater-9 pb-4">
     <a
@@ -14,11 +10,7 @@ const pathname = Astro.url.pathname;
         viewBox="0 0 25 25"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        class:list={[
-          "fill-sweater-4 transition group-hover:fill-sweater-2",
-          { "rotate-[-15deg]": pathname === "/" },
-          { "group-hover:rotate-[-15deg]": pathname !== "/" },
-        ]}
+        class="rotate-[-15deg] fill-sweater-4 transition group-hover:fill-sweater-2"
       >
         <title>Charles Wang</title>
         <path
@@ -34,6 +26,7 @@ const pathname = Astro.url.pathname;
         href="/_files/resume.pdf"
         target="_blank"
         class="flex items-center justify-center rounded-full bg-sweater-4 px-3 py-0.5 text-sweater-9 transition-colors hover:bg-sweater-2"
+        data-astro-reload
       >
         Resume
       </a>
