@@ -14,8 +14,6 @@ slug: link-shortener
 
 To see it in action, visit my Spotify profile at [go.czw.sh/spotify](https://go.czw.sh/spotify).
 
-## Background
-
 I like sharing music. To follow my friends and ~~stalk~~ see what they're listening to, I often send them my Spotify profile. However, ever since they removed [custom usernames](https://community.spotify.com/t5/Accounts/Spotify-Username-Completely-Random/td-p/4392395#), I've been stuck with the very memorable username of `zhwq0rxdn060sgar22e07u193`, and searching for my display name is pretty much impossible.
 
 To get around that, I use link shorteners, but I've found that they're very unreliable, and often shut down/stop working. With the recent release of Astro Studio and [Astro DB](https://astro.build/db/), I thought this was the perfect chance to test it out... and solve my issue once and for all.
@@ -24,33 +22,119 @@ To get around that, I use link shorteners, but I've found that they're very unre
 
 ## Setting up the project
 
-First I had to connect with Astro Studio and also add the Astro DB integration. Both of these were relatively simply to set up.
+First I had to connect with Astro Studio and also add the Astro DB integration. Both of these were relatively simple to set up. [Studio integration](https://docs.astro.build/en/recipes/studio/) is explained well, and even examples are provided for [how to work with the DB](https://docs.astro.build/en/guides/astro-db/) for people that don't know SQL (me).
 
-This project only has two routes: a main `index.astro` for the root, and a `[...slug].astro` file that captures everything else. The former is for creating new links, and the latter is where we do the redirecting.
+One thing that wasn't too clear was where I should create the `config.ts` file. It turns out that it should be placed in a `db` folder outside of your `src` folder. Otherwise, local type definitions weren't being generated for me in the `.astro` folder.
 
-## Creating short links
+> Installing Astro DB with the `astro add` command seems to avoid this confusion by doing it for you automatically, but I did it manually.
 
-> Why is every short link exactly 7 characters? Because "Spotify" is 7 characters and I wanted a custom link with the slug `spotify` that redirects to my profile. It's why I started this whole thing in the first place!
+My project only has two routes: a main `index.astro` for the root, and a `[...slug].astro` file that captures everything else. The former is for creating new links, and the latter is where we do the redirecting.
+
+The database schema is extremely simple: there are three columns, with the short link as the primary key, the original URL, and the date that it was generated. Astro DB makes it very easy to declare the schema. The following is the entirety of my `config.ts`:
+
+```ts
+import { column, defineDb, defineTable, NOW } from "astro:db";
+
+const Link = defineTable({
+  columns: {
+    short: column.text({ primaryKey: true }),
+    original: column.text(),
+    created: column.date({ default: NOW }),
+  },
+});
+
+export default defineDb({
+  tables: {
+    Link,
+  },
+});
+```
+
+## Generating short links
+
+There were many ways to do this, but I wanted to play with forms and Astro's [API routes](https://docs.astro.build/en/guides/endpoints/#server-endpoints-api-routes), so that's exactly what I did. The user inputs the original URL and upon submitting the form, I make a fetch call to `/api/create` that handles the generation. To update the UI (e.g. displaying the newly generated link, or showing an error message) I use React to keep track of state.
+
+The backend receives a `POST` request from the form, with the form data as the body. I use [`nanoid`](https://github.com/ai/nanoid) which generates a random string of characters for me. I'm using an alphanumeric alphabet of `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz` with a size of 7.
+
+> Why 7 characters? Because "Spotify" is 7 characters and I wanted a custom link with the slug `spotify` that redirects to my profile. It's why I started this whole thing in the first place!
+
+After performing input validation with Zod, I insert the values into the database, and return a response with a `2xx` code to signify everything went well. I also return the newly generated short link in the response body for the UI to consume.
+
+### Checking for collisions and errors
+
+Any random generator will have a probability of a collision, and [this calculator](https://zelark.github.io/nano-id-cc/) estimates that 266,000 short links need to be generated before we reach a _one percent_ probability of a collision. This is a very tiny number, and if it happens I should probably buy a lottery ticket, but I check anyway by querying the database:
+
+```js
+let short;
+
+while (true) {
+  short = nanoid();
+  const query = await db.select().from(Link).where(eq(Link.short, short));
+
+  if (query.length === 0) break;
+}
+```
+
+I also make sure to handle errors (wrapping stuff in try-catch) and return a `5xx` response if things go wrong, but I don't show that here.
 
 ## Redirecting
 
-Astro has a built-in way of modifying the response returned by the server. In particular, I set the status code to 301 and set the `Location` header to the original URL. Inside `[...slug].astro`:
+All potential redirects are handled in `[...slug].astro` in the frontmatter. Astro has a built-in way of dynamically modifying the response returned by the server. In particular, I set the status code to `301` and set the `Location` header to the original URL.
 
 ```astro
 ---
 Astro.response.status = 301;
-Astro.response.headers.set("Location", original);
+Astro.response.headers.set("Location", originalUrl);
 ---
 ```
 
-I spent a bit trying to figure out which [redirect status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections) I should be responding with. Doing a bit of research revealed that most link shorteners use either 301 or 302. I settled on 301 because
+Of course, this is all assuming that the slug in the URL exists in the database. So, we first select all the rows where the short link matches the slug (which there is only one of), and extract the original URL.
+
+If no short URL exists in the database, then I simply redirect to the home page.
+
+```astro
+---
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect("/");
+}
+
+const query = await db.select().from(Link).where(eq(Link.short, slug));
+const exist = query.length === 1;
+
+if (!exist) {
+  return Astro.redirect("/");
+}
+---
+```
+
+I spent a bit trying to figure out which [redirect status code](https://developer.mozilla.org/en-US/docs/Web/HTTP/Redirections) I should be responding with. Doing a bit of research revealed that most link shorteners use either `301` or `302`. I settled on `301` because
 
 - once a short URL is generated, it will forever be associated with the original URL. "Moved permanently" perfectly captures this idea.
 
-- the class of temporary redirections doesn't fit our motives here. Temporary implies that some day, a user will be able to access the page at our short URL. This will never happen; in fact, there is literally no HTML to render. More on this below.
+- the class of temporary redirections doesn't fit our motives here. Temporary implies that some day, a user will be able to access the resources/page at our short URL. This will never happen; in fact, there is literally no HTML to render or present. More on this below.
 
-- search engines and crawlers should never show the short URL. All information should be passed to the original URL.
+- search engines and crawlers should never show the short URL.
 
-> 308 also seems to be a valid alternative to 301, but from what I learned it mostly provides more consistency with non-`GET` operations. We only use `GET`, so 301 works fine.
+> `308` also seems to be a valid alternative to `301`, but from what I learned it mostly provides more consistency with non-`GET` operations. We only use `GET`, so `301` works fine.
 
-One interesting thing here is that I wrote no HTML for the `/[...slug]` route. The only code in `[...slug].astro` is in the Astro frontmatter, which only gets executed on the server. If no short URL exists in the database, then I simply redirect to the home page.
+One thing that is interesting to me is that I wrote no JSX for the `/[...slug]` route. The only code in `[...slug].astro` is in the Astro frontmatter, which only gets executed on the server. While Astro was originally launched with static generation in mind, we've come a long way, and from the way I've been using it, it feels totally possible to do things that are usually delegated to a "full-stack" framework.
+
+## Conclusion
+
+Unless Astro Studio shuts down anytime soon, my link shortener should continue to work. Maybe this time around, my Spotify profile link will last more than a couple of weeks. I hope.
+
+I might add a few more features in the future. Some stuff I have in mind include
+
+- letting users turn off numbers, capital letters, etc. in their short link
+
+- customizing the length of the short link (but I think 7 will always be the max)
+
+- letting other people also enter a custom short link
+
+- showing an error or "not found" page instead of redirecting to home
+
+- setting expiration dates for links. I don't have too much control over the server (this project is hosted on Vercel), so I might just lazily check (only check if the link is actually accessed).
+
+So if you're visiting the site in the future and see anything I didn't describe here, then I probably got around to doing it. The source code for this project [is available on GitHub](https://github.com/aczw/link-shortener) and to try it out, visit [go.czw.sh](https://go.czw.sh/).
