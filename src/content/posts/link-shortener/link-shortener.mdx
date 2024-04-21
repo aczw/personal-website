@@ -1,5 +1,5 @@
 ---
-title: Making my own link shortener with Astro DB
+title: Making a link shortener with Astro DB
 blurb: To easily share my Spotify, I like to use link shortener services. I got tired of how they always stopped working, so like any other sane person, I wrote my own.
 tags:
   - Astro
@@ -22,15 +22,19 @@ To get around that, I use link shorteners, but I've found that they're very unre
 
 > I'm also not insane, by the way; a simple search for ["spotify link shortener"](https://duckduckgo.com/?q=spotify+link+shortener) returns a number of _dedicated websites_ for doing this. Notably, Dub.co has their own [Spotify tool](https://dub.co/tools/spotify-link-shortener), which I used up to this point.
 
-## Setting up Astro Studio and Astro DB
+## Setting up the project
 
-This was easy enough to do.
+First I had to connect with Astro Studio and also add the Astro DB integration. Both of these were relatively simply to set up.
+
+This project only has two routes: a main `index.astro` for the root, and a `[...slug].astro` file that captures everything else. The former is for creating new links, and the latter is where we do the redirecting.
+
+## Creating short links
+
+> Why is every short link exactly 7 characters? Because "Spotify" is 7 characters and I wanted a custom link with the slug `spotify` that redirects to my profile. It's why I started this whole thing in the first place!
 
 ## Redirecting
 
-This project only has two routes: a main `index.astro` for the root, and a `[...slug].astro` that captures everything else. The former is for creating new links, and the latter is where we do the redirecting.
-
-Astro has a built-in way of modifying the response returned by the server. In particular, I set the status code to 301 and set the `Location` header to the original URL.
+Astro has a built-in way of modifying the response returned by the server. In particular, I set the status code to 301 and set the `Location` header to the original URL. Inside `[...slug].astro`:
 
 ```astro
 ---
@@ -49,4 +53,4 @@ I spent a bit trying to figure out which [redirect status code](https://develope
 
 > 308 also seems to be a valid alternative to 301, but from what I learned it mostly provides more consistency with non-`GET` operations. We only use `GET`, so 301 works fine.
 
-One interesting thing here is that no HTML exists for the `/[...slug]` route. The only code in this file is in the Astro frontmatter, which only gets executed on the server. If no short URL exists in the database, then I simply redirect to the home page.
+One interesting thing here is that I wrote no HTML for the `/[...slug]` route. The only code in `[...slug].astro` is in the Astro frontmatter, which only gets executed on the server. If no short URL exists in the database, then I simply redirect to the home page.
