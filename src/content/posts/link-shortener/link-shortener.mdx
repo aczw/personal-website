@@ -49,4 +49,4 @@ I spent a bit trying to figure out which [redirect status code](https://develope
 
 > 308 also seems to be a valid alternative to 301, but from what I learned it mostly provides more consistency with non-`GET` operations. We only use `GET`, so 301 works fine.
 
-One interesting thing here is that no HTML exists for the `/[...slug]` route. I only have Astro frontmatter code that gets executed on the server. If no short URL exists in the database, then I simply redirect to the home page.
+One interesting thing here is that no HTML exists for the `/[...slug]` route. The only code in this file is in the Astro frontmatter, which only gets executed on the server. If no short URL exists in the database, then I simply redirect to the home page.
