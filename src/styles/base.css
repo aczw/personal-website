@@ -18,16 +18,16 @@
 
   /* inline code should have some padding and background */
   code {
-    @apply rounded-md bg-sweater-9 px-1 py-0.5 text-[14px] font-[100];
+    @apply break-words rounded-md bg-sweater-9 px-1 py-0.5 text-[14px] font-[100];
   }
 
   pre {
     @apply rounded-xl p-4;
   }
 
-  /* remove padding and background in codeblocks */
+  /* remove padding, background, and word breaks in codeblocks */
   pre code {
-    @apply bg-transparent p-0;
+    @apply break-normal bg-transparent p-0;
   }
 }
 
