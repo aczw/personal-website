@@ -13,9 +13,9 @@ import { ArrowRight } from "lucide-astro";
 
 const posts = await getEntries([
   { collection: "posts", slug: "mini-minecraft" },
+  { collection: "posts", slug: "link-shortener" },
   { collection: "posts", slug: "rcw" },
   { collection: "posts", slug: "sddm-theme-corners" },
-  { collection: "posts", slug: "www" },
 ]);
 ---
 
@@ -51,8 +51,7 @@ const posts = await getEntries([
           trains, and tinkering with my Arch install.
         </p>
         <p>
-          Check out some stuff I've done below. My socials can also be found below. Thanks for
-          stopping by. <span
+          You can visit all my posts above. My socials can be found below. Thanks for stopping by. <span
             aria-hidden="true"
             class="whitespace-nowrap"
             >(〜￣▽￣)〜</span
@@ -70,14 +69,14 @@ const posts = await getEntries([
           } = post;
           return (
             <a
-              href={`/${slug}`}
+              href={`/posts/${slug}`}
               class="group"
             >
               <Image
                 src={cover.img}
                 alt={cover.alt}
                 loading="eager"
-                class="aspect-[16/10] rounded-t-xl bg-sweater-9 object-cover opacity-80 transition-opacity group-hover:opacity-100"
+                class="aspect-[16/10] rounded-t-xl bg-sweater-9 object-cover transition-opacity group-hover:opacity-100 sm:opacity-80"
                 transition:name={`cover-image-${slug}`}
               />
 
@@ -85,7 +84,9 @@ const posts = await getEntries([
                 <span class="flex items-center justify-between gap-5">
                   <div>
                     <h2 class="break-words text-sweater-2">{title}</h2>
-                    <p class="font-mono text-[14px] font-[120] text-sweater-4">{tags.join(", ")}</p>
+                    <p class="font-mono text-[14px] font-[120] text-sweater-4">
+                      {tags.join(" • ")}
+                    </p>
                   </div>
 
                   <div

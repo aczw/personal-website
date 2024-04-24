@@ -1,0 +1,68 @@
+---
+import Footer from "@/layouts/footer.astro";
+import Header from "@/layouts/header.astro";
+import Layout from "@/layouts/layout.astro";
+import Main from "@/layouts/main.astro";
+
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+const posts = await getCollection("posts");
+---
+
+<Layout
+  title="All posts"
+  description="Everything that I've written and published."
+>
+  <Header />
+
+  <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">
+    <section class="space-y-5">
+      <h1 class="text-lg text-sweater-2">All posts</h1>
+
+      <div class="flex flex-col gap-11 xs:gap-6">
+        {
+          posts.map((post) => {
+            const {
+              data: { title, tags, blurb, cover },
+              slug,
+            } = post;
+
+            return (
+              <a
+                href={`/posts/${slug}`}
+                class="group flex flex-col gap-3.5 xs:grid xs:grid-cols-8 xs:gap-5"
+              >
+                <Image
+                  src={cover.img}
+                  alt={cover.alt}
+                  loading="eager"
+                  class="col-span-3 rounded-lg bg-sweater-9 object-cover transition-opacity group-hover:opacity-100 xs:opacity-75 md:col-span-2"
+                  transition:name={`cover-image-${slug}`}
+                />
+
+                <div class="col-span-5 flex flex-col gap-1 md:col-span-6">
+                  <h2
+                    class="break-words text-sweater-2 underline decoration-sweater-3/50 decoration-1 underline-offset-2 xs:no-underline"
+                    transition:name={`title-${slug}`}
+                  >
+                    {title}
+                  </h2>
+                  <p transition:name={`blurb-${slug}`}>{blurb}</p>
+                  <p
+                    class="font-mono text-[14px] font-[120] text-sweater-4"
+                    transition:name={`tags-${slug}`}
+                  >
+                    {tags.join(" • ")}
+                  </p>
+                </div>
+              </a>
+            );
+          })
+        }
+      </div>
+    </section>
+  </Main>
+
+  <Footer />
+</Layout>

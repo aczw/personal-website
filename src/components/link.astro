@@ -5,12 +5,13 @@ interface Props extends Omit<HTMLAttributes<"a">, "class" | "aria-label"> {
   className?: string;
 }
 
-const { className, target, ...attrs } = Astro.props;
+const { className, target, title, ...attrs } = Astro.props;
 ---
 
 <a
   target={target}
-  aria-label={attrs.title}
+  aria-label={title}
+  title={title}
   class:list={[
     "w-fit text-sweater-3 underline decoration-sweater-3/50 decoration-1 underline-offset-2 transition hover:text-sweater-1 hover:decoration-sweater-2",
     className,
