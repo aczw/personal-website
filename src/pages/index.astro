@@ -23,11 +23,13 @@ const posts = await getEntries([
   <Header />
 
   <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">
-    <blockquote class="-translate-x-1.5 font-mono text-[14px] font-[120] italic text-sweater-3">
+    <blockquote
+      class="-translate-x-1.5 animate-fade font-mono text-[14px] font-[120] italic text-sweater-3 [--order:0]"
+    >
       <p>"Waiting for something to happen?" — MEWO</p>
     </blockquote>
 
-    <section class="space-y-5">
+    <section class="animate-fade space-y-5 [--order:1]">
       <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
         <p>
           Hi, I'm Charles. I'm a student at the University of Pennsylvania majoring in Digital Media
@@ -60,24 +62,25 @@ const posts = await getEntries([
       </div>
     </section>
 
-    <section class="grid grid-cols-1 gap-5 pt-2.5 sm:grid-cols-2">
+    <section class="grid animate-fade grid-cols-1 gap-5 pt-2.5 [--order:2] sm:grid-cols-2">
       {
-        posts.map((post) => {
+        posts.map((post, idx) => {
           const {
             data: { title, tags, cover },
             slug,
           } = post;
+
           return (
             <a
               href={`/posts/${slug}`}
-              class="group"
+              class="group animate-fade"
+              style={{ "--order": idx + 2 }}
             >
               <Image
                 src={cover.img}
                 alt={cover.alt}
                 loading="eager"
                 class="aspect-[16/10] rounded-t-xl bg-sweater-9 object-cover transition-opacity group-hover:opacity-100 sm:opacity-80"
-                transition:name={`cover-image-${slug}`}
               />
 
               <div class="space-y-1 rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">

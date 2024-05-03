@@ -6,10 +6,9 @@ import Aside from "@/components/mdx/aside.astro";
 import Del from "@/components/mdx/del.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
+import Img from "@/components/mdx/img.astro";
 import Li from "@/components/mdx/li.astro";
 import Ul from "@/components/mdx/ul.astro";
-
-import Img from "@/components/mdx/img.astro";
 
 import Footer from "@/layouts/footer.astro";
 import Header from "@/layouts/header.astro";
@@ -25,7 +24,6 @@ interface Props {
 const { post } = Astro.props;
 const {
   data: { title, blurb, tags, cover, published },
-  slug,
 } = post;
 
 // only show post status in development
@@ -42,18 +40,12 @@ const { Content } = await post.render();
   <Header />
 
   <Main className="max-w-narrow space-y-14 wide:space-y-14">
-    <section class="space-y-1">
-      <h2
-        class="text-lg text-sweater-2"
-        transition:name={`title-${slug}`}
-      >
+    <section class="animate-fade space-y-1 [--order:0]">
+      <h2 class="text-lg text-sweater-2">
         {title}
       </h2>
-      <p transition:name={`blurb-${slug}`}>{blurb}</p>
-      <p
-        class="font-mono text-[14px] font-[120] text-sweater-3"
-        transition:name={`tags-${slug}`}
-      >
+      <p>{blurb}</p>
+      <p class="font-mono text-[14px] font-[120] text-sweater-3">
         {tags.join(" • ")}
       </p>
     </section>
@@ -62,11 +54,10 @@ const { Content } = await post.render();
       src={cover.img}
       alt={cover.alt}
       loading="eager"
-      class="rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8"
-      transition:name={`cover-image-${slug}`}
+      class="animate-fade rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8 [--order:0]"
     />
 
-    <article class="space-y-6">
+    <article class="animate-fade space-y-6 [--order:0]">
       <Content
         components={{
           h2: H2,

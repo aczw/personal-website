@@ -27,7 +27,7 @@ const scrambled = pick.slice(offset) + pick.slice(0, offset);
   <main
     class="mx-auto flex min-h-[calc(100vh-81px)] max-w-narrow flex-col items-center justify-center space-y-8 py-5 wide:py-10"
   >
-    <section class="text-center">
+    <section class="animate-fade text-center [--order:0]">
       <h2 class="font-mono text-5xl font-[130] text-sweater-2">404</h2>
       <p class="text-lg font-[130] text-sweater-2">Sorry, page not found.</p>
     </section>
@@ -36,7 +36,7 @@ const scrambled = pick.slice(offset) + pick.slice(0, offset);
       id="scroll"
       aria-hidden="true"
       data-scrambled={scrambled}
-      class="rounded-md bg-sweater-9 px-1.5 py-0.5 font-mono font-[100] italic text-sweater-7 transition-colors"
+      class="animate-fade rounded-md bg-sweater-9 px-1.5 py-0.5 font-mono font-[100] italic text-sweater-7 transition-colors [--order:1]"
     >
       {scrambled}
     </p>

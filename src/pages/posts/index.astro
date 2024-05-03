@@ -17,12 +17,12 @@ const posts = await getCollection("posts");
   <Header />
 
   <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">
-    <section class="space-y-5">
+    <section class="animate-fade space-y-5 [--order:0]">
       <h1 class="text-lg text-sweater-2">All posts</h1>
 
       <div class="flex flex-col gap-11 xs:gap-6">
         {
-          posts.map((post) => {
+          posts.map((post, idx) => {
             const {
               data: { title, tags, blurb, cover },
               slug,
@@ -31,30 +31,22 @@ const posts = await getCollection("posts");
             return (
               <a
                 href={`/posts/${slug}`}
-                class="group flex flex-col gap-3.5 xs:grid xs:grid-cols-8 xs:gap-5"
+                class="group flex animate-fade flex-col gap-3.5 xs:grid xs:grid-cols-8 xs:gap-5"
+                style={{ "--order": idx }}
               >
                 <Image
                   src={cover.img}
                   alt={cover.alt}
                   loading="eager"
                   class="col-span-3 rounded-lg bg-sweater-9 object-cover transition-opacity group-hover:opacity-100 xs:opacity-75 md:col-span-2"
-                  transition:name={`cover-image-${slug}`}
                 />
 
                 <div class="col-span-5 flex flex-col gap-1 md:col-span-6">
-                  <h2
-                    class="break-words text-sweater-2 underline decoration-sweater-3/50 decoration-1 underline-offset-2 xs:no-underline"
-                    transition:name={`title-${slug}`}
-                  >
+                  <h2 class="break-words text-sweater-2 underline decoration-sweater-3/50 decoration-1 underline-offset-2 xs:no-underline">
                     {title}
                   </h2>
-                  <p transition:name={`blurb-${slug}`}>{blurb}</p>
-                  <p
-                    class="font-mono text-[14px] font-[120] text-sweater-4"
-                    transition:name={`tags-${slug}`}
-                  >
-                    {tags.join(" • ")}
-                  </p>
+                  <p>{blurb}</p>
+                  <p class="font-mono text-[14px] font-[120] text-sweater-4">{tags.join(" • ")}</p>
                 </div>
               </a>
             );
