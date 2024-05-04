@@ -40,7 +40,7 @@ const { Content } = await post.render();
   <Header />
 
   <Main className="max-w-narrow space-y-14 wide:space-y-14">
-    <section class="animate-fade space-y-1 [--order:0]">
+    <section class="space-y-1">
       <h2 class="text-lg text-sweater-2">
         {title}
       </h2>
@@ -54,10 +54,10 @@ const { Content } = await post.render();
       src={cover.img}
       alt={cover.alt}
       loading="eager"
-      class="animate-fade rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8 [--order:0]"
+      class="rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8"
     />
 
-    <article class="animate-fade space-y-6 [--order:0]">
+    <article class="space-y-6">
       <Content
         components={{
           h2: H2,
