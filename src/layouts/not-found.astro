@@ -2,6 +2,10 @@
 import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
 
+import notFound from "@/assets/not-found.png";
+import { Image } from "astro:assets";
+import Link from "@/components/link.astro";
+
 const fun = [
   "soitgoes",
   "aczw",
@@ -28,8 +32,17 @@ const scrambled = pick.slice(offset) + pick.slice(0, offset);
     class="mx-auto flex min-h-[calc(100vh-81px)] max-w-narrow flex-col items-center justify-center space-y-8 py-5 wide:py-10"
   >
     <section class="animate-fade text-center [--order:0]">
-      <h2 class="font-mono text-5xl font-[130] text-sweater-2">404</h2>
-      <p class="text-lg font-[130] text-sweater-2">Sorry, page not found.</p>
+      <Image
+        src={notFound}
+        alt="404 not found"
+      />
+      <p class="text-lg font-[130] text-sweater-2">
+        <Link
+          href="https://twitter.com/sawaratsuki1004"
+          target="_blank"
+          >Source.</Link
+        > Sorry, page not found~
+      </p>
     </section>
 
     <p
