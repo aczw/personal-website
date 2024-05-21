@@ -49,6 +49,10 @@ const config = defineConfig({
     webAnalytics: {
       enabled: true,
     },
+    includeFiles: [
+      "./public/_fonts/AtkinsonHyperlegible-Regular.ttf",
+      "./public/_fonts/AtkinsonHyperlegible-Bold.ttf",
+    ],
   }),
   // see https://noahflk.com/blog/trailing-slashes-astro
   trailingSlash: "never",
