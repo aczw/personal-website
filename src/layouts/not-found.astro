@@ -23,8 +23,12 @@ const scrambled = pick.slice(offset) + pick.slice(0, offset);
 ---
 
 <Layout
-  title="404"
-  description="Page not found"
+  meta={{
+    kind: "route",
+    title: "404",
+    description: "Sorry, this page doesn't exist.",
+    ogImageParams: "Page not found.",
+  }}
 >
   <Header />
 
