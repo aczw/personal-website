@@ -2,7 +2,6 @@ import { Resvg } from "@resvg/resvg-js";
 import type { APIRoute } from "astro";
 
 import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
 import satori from "satori";
 import { html } from "satori-html";
 
@@ -43,8 +42,12 @@ const GET: APIRoute = async ({ request }) => {
     }
   </div>`);
 
-  const atkinsonRegular = readFileSync(resolve("../../../_fonts/AtkinsonHyperlegible-Regular.ttf"));
-  const atkinsonBold = readFileSync(resolve("../../../_fonts/AtkinsonHyperlegible-Bold.ttf"));
+  const atkinsonRegular = readFileSync(
+    "file:///var/task/.vercel/output/static/_fonts/AtkinsonHyperlegible-Regular.ttf",
+  );
+  const atkinsonBold = readFileSync(
+    "file:///var/task/.vercel/output/static/_fonts/AtkinsonHyperlegible-Bold.ttf",
+  );
 
   const svg = await satori(markup, {
     width: 1280,
