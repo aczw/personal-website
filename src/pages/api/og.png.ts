@@ -43,11 +43,9 @@ const GET: APIRoute = async ({ request }) => {
   </div>`);
 
   const atkinsonRegular = readFileSync(
-    "file:///var/task/.vercel/output/static/_fonts/AtkinsonHyperlegible-Regular.ttf",
+    `${process.cwd()}/public/_fonts/AtkinsonHyperlegible-Regular.ttf`,
   );
-  const atkinsonBold = readFileSync(
-    "file:///var/task/.vercel/output/static/_fonts/AtkinsonHyperlegible-Bold.ttf",
-  );
+  const atkinsonBold = readFileSync(`${process.cwd()}/public/_fonts/AtkinsonHyperlegible-Bold.ttf`);
 
   const svg = await satori(markup, {
     width: 1280,
