@@ -19,7 +19,14 @@ const posts = await getEntries([
 ]);
 ---
 
-<Layout description="Computer graphics student at the University of Pennsylvania.">
+<Layout
+  meta={{
+    kind: "route",
+    title: null,
+    description: "Computer graphics student at the University of Pennsylvania.",
+    ogImageParams: "Graphics programming, games, websites.",
+  }}
+>
   <Header />
 
   <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">

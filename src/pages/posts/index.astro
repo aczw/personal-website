@@ -11,8 +11,12 @@ const posts = await getCollection("posts");
 ---
 
 <Layout
-  title="All posts"
-  description="Everything I've written."
+  meta={{
+    kind: "route",
+    title: "All posts",
+    description: "Writings on some stuff that I've done.",
+    ogImageParams: "All my posts.",
+  }}
 >
   <Header />
 

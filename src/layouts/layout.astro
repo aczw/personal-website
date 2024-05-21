@@ -3,27 +3,40 @@ import "@/styles/base.css";
 import "@fontsource/atkinson-hyperlegible/400.css";
 import "@fontsource/atkinson-hyperlegible/700.css";
 
+import type { CollectionEntry } from "astro:content";
+
 import SpeedInsights from "@vercel/speed-insights/astro";
 
+type LayoutProps =
+  | { kind: "route"; title: string | null; description: string; ogImageParams: string }
+  | { kind: "post"; post: CollectionEntry<"posts">; status: string };
+
 interface Props {
-  title?: string;
-  description: string;
+  meta: LayoutProps;
 }
 
-const { title, description } = Astro.props;
+const { meta } = Astro.props;
 
-/**
- * @see https://github.com/withastro/astro/issues/5248
- */
+// see https://github.com/withastro/astro/issues/5248
 const removeTrailingSlash = (str: string) => {
   return str.replace(/\/+$/, "");
 };
 
+let title = "Charles Wang";
+let description, ogImageParams;
+if (meta.kind === "route") {
+  title = (meta.title ? meta.title + " — " : "") + title;
+  description = meta.description;
+  ogImageParams = `?heading=${encodeURIComponent(meta.ogImageParams)}`;
+} else {
+  const { data, slug } = meta.post;
+
+  title = meta.status + data.title + " — " + title;
+  description = data.blurb;
+  ogImageParams = `?post=${slug}`;
+}
+
 const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site).toString());
-const newTitle = (title ? title + " — " : "") + "Charles Wang";
-const ogImageParams = title
-  ? `?title=${encodeURIComponent(title)}&blurb=${encodeURIComponent(description)}`
-  : "";
 ---
 
 <!doctype html>
@@ -48,7 +61,7 @@ const ogImageParams = title
 
     <meta
       property="og:title"
-      content={newTitle}
+      content={title}
     />
     <meta
       property="og:description"
@@ -73,7 +86,7 @@ const ogImageParams = title
     />
     <meta
       property="twitter:title"
-      content={newTitle}
+      content={title}
     />
     <meta
       property="twitter:description"
@@ -121,7 +134,7 @@ const ogImageParams = title
       crossorigin="anonymous"
     />
 
-    <title>{newTitle}</title>
+    <title>{title}</title>
 
     <SpeedInsights />
   </head>

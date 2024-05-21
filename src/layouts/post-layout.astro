@@ -33,10 +33,7 @@ status = import.meta.env.DEV ? status : "";
 const { Content } = await post.render();
 ---
 
-<Layout
-  title={status + title}
-  description={blurb}
->
+<Layout meta={{ kind: "post", post, status }}>
   <Header />
 
   <Main className="max-w-narrow space-y-14 wide:space-y-14">
