@@ -4,6 +4,10 @@ import type { APIRoute } from "astro";
 import satori from "satori";
 import { html } from "satori-html";
 
+export const config = {
+  runtime: "edge",
+};
+
 const GET: APIRoute = async ({ request }) => {
   const requestUrl = new URL(request.url);
   const params = requestUrl.searchParams;
