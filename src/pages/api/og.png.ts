@@ -1,7 +1,6 @@
 import { Resvg } from "@resvg/resvg-js";
 import type { APIRoute } from "astro";
 
-import { readFileSync } from "node:fs";
 import satori from "satori";
 import { html } from "satori-html";
 
@@ -42,19 +41,26 @@ const GET: APIRoute = async ({ request }) => {
     }
   </div>`);
 
+  const atkinsonRegular = await fetch(
+    new URL("../../assets/AtkinsonHyperlegible-Regular.ttf", import.meta.url),
+  ).then((res) => res.arrayBuffer());
+  const atkinsonBold = await fetch(
+    new URL("../../assets/AtkinsonHyperlegible-Bold.ttf", import.meta.url),
+  ).then((res) => res.arrayBuffer());
+
   const svg = await satori(markup, {
     width: 1280,
     height: 720,
     fonts: [
       {
         name: "Atkinson Hyperlegible",
-        data: readFileSync(`${process.cwd()}/public/_fonts/AtkinsonHyperlegible-Regular.ttf`),
+        data: atkinsonRegular,
         style: "normal",
         weight: 400,
       },
       {
         name: "Atkinson Hyperlegible",
-        data: readFileSync(`${process.cwd()}/public/_fonts/AtkinsonHyperlegible-Bold.ttf`),
+        data: atkinsonBold,
         style: "normal",
         weight: 700,
       },
