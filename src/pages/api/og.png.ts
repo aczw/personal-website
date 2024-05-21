@@ -5,9 +5,6 @@ import { readFileSync } from "node:fs";
 import satori from "satori";
 import { html } from "satori-html";
 
-const atkinsonRegular = readFileSync("../../assets/AtkinsonHyperlegible-Regular.ttf");
-const atkinsonBold = readFileSync("../../assets/AtkinsonHyperlegible-Bold.ttf");
-
 const GET: APIRoute = async ({ request }) => {
   const requestUrl = new URL(request.url);
   const params = requestUrl.searchParams;
@@ -44,6 +41,9 @@ const GET: APIRoute = async ({ request }) => {
         : `<div tw="text-6xl text-[#D6D3FF]">Graphics programming, games, websites.</div>`
     }
   </div>`);
+
+  const atkinsonRegular = readFileSync("../../../_fonts/AtkinsonHyperlegible-Regular.ttf");
+  const atkinsonBold = readFileSync("../../../_fonts/AtkinsonHyperlegible-Bold.ttf");
 
   const svg = await satori(markup, {
     width: 1280,
