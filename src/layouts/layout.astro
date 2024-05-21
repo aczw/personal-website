@@ -20,6 +20,10 @@ const removeTrailingSlash = (str: string) => {
 };
 
 const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site).toString());
+const newTitle = (title ? title + " — " : "") + "Charles Wang";
+const ogImageParams = title
+  ? `?title=${encodeURIComponent(title)}&blurb=${encodeURIComponent(description)}`
+  : "";
 ---
 
 <!doctype html>
@@ -44,7 +48,7 @@ const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site)
 
     <meta
       property="og:title"
-      content={title ? title : "Charles Wang"}
+      content={newTitle}
     />
     <meta
       property="og:description"
@@ -53,6 +57,27 @@ const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site)
     <meta
       property="og:url"
       content={canonicalUrl}
+    />
+    <meta
+      property="og:image"
+      content={`https://charleszw.com/api/og.png${ogImageParams}`}
+    />
+
+    <meta
+      property="twitter:image"
+      content={`https://charleszw.com/api/og.png${ogImageParams}`}
+    />
+    <meta
+      property="twitter:card"
+      content="summary_large_image"
+    />
+    <meta
+      property="twitter:title"
+      content={newTitle}
+    />
+    <meta
+      property="twitter:description"
+      content={description}
     />
 
     <link
@@ -96,7 +121,7 @@ const canonicalUrl = removeTrailingSlash(new URL(Astro.url.pathname, Astro.site)
       crossorigin="anonymous"
     />
 
-    <title>{(title ? title + " — " : "") + "Charles Wang"}</title>
+    <title>{newTitle}</title>
 
     <SpeedInsights />
   </head>

@@ -1,7 +1,7 @@
 import { type Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
-const config = {
+module.exports = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   future: {
     hoverOnlyWhenSupported: true,
@@ -49,5 +49,3 @@ const config = {
   },
   plugins: [],
 } satisfies Config;
-
-export default config;
