@@ -1,0 +1,76 @@
+<blockquote
+  class="-translate-x-1 animate-fade font-mono text-[14px] font-[120] italic text-sweater-3 [--order:3]"
+>
+  <p
+    id="quote"
+    class="h-[1rem] w-fit"
+  >
+  </p>
+</blockquote>
+
+<script>
+  const TEXT = '"Waiting for something to happen?"';
+  const SPEED = 40;
+  const SIZE = 5;
+  const SYMBOLS = "!@#$%^&*()[]_+-={}/";
+  const ELT = document.querySelector<HTMLParagraphElement>("#quote")!;
+
+  let length = TEXT.length;
+  let numIterations = length + SIZE;
+
+  function clampIndex(index: number) {
+    if (index <= 0) {
+      return 0;
+    } else if (index >= length - 1) {
+      return length - 1;
+    } else {
+      return index;
+    }
+  }
+
+  let iterationIndex = 0;
+
+  let timer = window.setInterval(() => {
+    if (iterationIndex < numIterations) {
+      let startIndex = iterationIndex - (SIZE - 1);
+      let endIndex = iterationIndex;
+
+      let garbledSize = clampIndex(endIndex) - clampIndex(startIndex);
+      if (startIndex <= clampIndex(endIndex)) {
+        garbledSize++;
+      }
+
+      let garbled = "";
+      for (let i = 0; i < garbledSize; i++) {
+        garbled += SYMBOLS.charAt(Math.floor(Math.random() * SYMBOLS.length));
+      }
+
+      let rest = TEXT.slice(0, startIndex >= 0 ? startIndex : 0);
+
+      // console.log(
+      //   "iterationIndex:",
+      //   iterationIndex,
+      //   "/ startIndex:",
+      //   startIndex,
+      //   "/ endIndex:",
+      //   endIndex,
+      //   "/ endIndex (clamped):",
+      //   clampIndex(endIndex),
+      //   "/ garbledSize:",
+      //   garbledSize,
+      //   "/ TEXT.slice end index:",
+      //   startIndex >= 0 ? startIndex : 0,
+      //   "/ rest:",
+      //   rest,
+      //   "/ garbled:",
+      //   garbled,
+      // );
+
+      ELT.innerText = rest + garbled;
+    } else {
+      clearInterval(timer);
+    }
+
+    iterationIndex++;
+  }, SPEED);
+</script>
