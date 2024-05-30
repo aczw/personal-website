@@ -67,33 +67,39 @@ const posts = await getEntries([
       </div>
     </section>
 
-    <section class="grid animate-fade grid-cols-1 gap-5 pt-2.5 [--order:2] sm:grid-cols-2">
+    <section
+      class="pointer-events-none grid animate-fade grid-cols-1 gap-5 pt-2.5 [--order:2] sm:grid-cols-2 [&>a:not(:hover)]:hover:brightness-[65%]"
+    >
       {
         posts.map((post, idx) => {
           const {
-            data: { title, tags, cover },
+            data: { title, cover, posted },
             slug,
           } = post;
+
+          if (!cover) {
+            throw new Error("Featured post on homepage must have a cover image!");
+          }
 
           return (
             <a
               href={`/posts/${slug}`}
-              class="group animate-fade"
+              class="group pointer-events-auto animate-fade transition-[filter_opacity]"
               style={{ "--order": idx + 2 }}
             >
               <Image
                 src={cover.img}
                 alt={cover.alt}
                 loading="eager"
-                class="aspect-[16/10] rounded-t-xl bg-sweater-9 object-cover transition-opacity group-hover:opacity-100 sm:opacity-80"
+                class="aspect-[16/10] rounded-t-xl bg-sweater-9 object-cover"
               />
 
               <div class="space-y-1 rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">
                 <span class="flex items-center justify-between gap-5">
                   <div>
                     <h2 class="break-words text-sweater-2">{title}</h2>
-                    <p class="font-mono text-[14px] font-[120] text-sweater-4">
-                      {tags.join(" • ")}
+                    <p class="font-mono text-[14px] font-[120] text-sweater-6 transition-colors group-hover:text-sweater-4">
+                      {posted.toLocaleString("en-US", { month: "short", year: "numeric" })}
                     </p>
                   </div>
 

@@ -23,7 +23,7 @@ interface Props {
 
 const { post } = Astro.props;
 const {
-  data: { title, blurb, tags, cover, published },
+  data: { title, blurb, posted, updated, cover, published },
 } = post;
 
 // only show post status in development
@@ -36,23 +36,46 @@ const { Content } = await post.render();
 <Layout meta={{ kind: "post", post, status }}>
   <Header />
 
-  <Main className="max-w-narrow space-y-14 wide:space-y-14">
-    <section class="space-y-1">
+  <Main className="max-w-narrow">
+    <section class="space-y-4">
       <h2 class="text-lg text-sweater-2">
         {title}
       </h2>
       <p>{blurb}</p>
-      <p class="font-mono text-[14px] font-[120] text-sweater-3">
-        {tags.join(" • ")}
-      </p>
+      <div
+        class="flex flex-col font-mono text-[14px] font-[120] text-sweater-6 xs:flex-row xs:gap-8"
+      >
+        <time
+          datetime={posted.toISOString()}
+          class="text-sweater-5"
+          >{
+            posted.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })
+          }</time
+        >{
+          updated ? (
+            <time datetime={updated.toISOString()}>
+              Updated{" "}
+              {updated.toLocaleString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </time>
+          ) : null
+        }
+      </div>
     </section>
 
-    <Image
-      src={cover.img}
-      alt={cover.alt}
-      loading="eager"
-      class="rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8"
-    />
+    {
+      cover ? (
+        <Image
+          src={cover.img}
+          alt={cover.alt}
+          loading="eager"
+          class="rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8"
+        />
+      ) : null
+    }
 
     <article class="space-y-6">
       <Content

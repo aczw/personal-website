@@ -4,10 +4,10 @@ import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
 
-import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
 const posts = await getCollection("posts");
+posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 ---
 
 <Layout
@@ -21,43 +21,52 @@ const posts = await getCollection("posts");
   <Header />
 
   <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">
-    <section class="animate-fade space-y-5 [--order:0]">
-      <h1 class="text-lg text-sweater-2">All posts</h1>
+    <ul class="flex flex-col [&>li:not(:hover)]:hover:brightness-50">
+      {
+        posts.map((post, idx) => {
+          const {
+            data: { title, blurb, posted },
+            slug,
+          } = post;
 
-      <div class="flex flex-col gap-11 xs:gap-6">
-        {
-          posts.map((post, idx) => {
-            const {
-              data: { title, tags, blurb, cover },
-              slug,
-            } = post;
-
-            return (
+          return (
+            <li
+              class="group animate-fade border-y border-sweater-9 transition-[filter_opacity] first:border-t-0 last:border-b-0"
+              style={{ "--order": idx }}
+            >
               <a
                 href={`/posts/${slug}`}
-                class="group flex animate-fade flex-col gap-3.5 xs:grid xs:grid-cols-8 xs:gap-5"
-                style={{ "--order": idx }}
+                class="flex  flex-col gap-2.5 py-4 xs:grid xs:grid-cols-9 xs:gap-4"
               >
-                <Image
-                  src={cover.img}
-                  alt={cover.alt}
-                  loading="eager"
-                  class="col-span-3 rounded-lg bg-sweater-9 object-cover transition-opacity group-hover:opacity-100 xs:opacity-75 md:col-span-2"
-                />
+                <time
+                  datetime={posted.toISOString()}
+                  class="col-span-2 font-mono text-[14px] font-[120] text-sweater-6 transition-colors group-hover:text-sweater-4"
+                >
+                  <span class="hidden xs:inline md:hidden">
+                    {posted.toLocaleDateString("en-US")}
+                  </span>
+                  <span class="xs:hidden md:inline">
+                    {posted.toLocaleString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </span>
+                </time>
 
-                <div class="col-span-5 flex flex-col gap-1 md:col-span-6">
-                  <h2 class="break-words text-sweater-2 underline decoration-sweater-3/50 decoration-1 underline-offset-2 xs:no-underline">
-                    {title}
-                  </h2>
-                  <p>{blurb}</p>
-                  <p class="font-mono text-[14px] font-[120] text-sweater-4">{tags.join(" • ")}</p>
+                <div class="col-span-7 flex flex-col gap-1.5">
+                  <h2 class="break-words leading-none text-sweater-2">{title}</h2>
+
+                  <p class="text-sweater-2 opacity-90 transition group-hover:text-sweater-1 group-hover:opacity-100">
+                    {blurb}
+                  </p>
                 </div>
               </a>
-            );
-          })
-        }
-      </div>
-    </section>
+            </li>
+          );
+        })
+      }
+    </ul>
   </Main>
 
   <Footer />

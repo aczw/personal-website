@@ -7,17 +7,15 @@ const iconSize = 24;
 
 <footer class="mx-auto max-w-wide pb-4 wide:pb-10">
   <div
-    class="mx-4 flex justify-between gap-5 border-t-2 border-sweater-9 pt-4 font-mono text-[14px] font-[100]"
+    class="mx-4 flex flex-row-reverse justify-between gap-5 border-t-2 border-sweater-9 pt-4 font-mono text-[14px] font-[100]"
   >
-    <LastFm />
-
-    <div class="flex w-1/2 animate-fade justify-end gap-5 [--order:0] sm:gap-3.5">
+    <div class="flex w-1/2 justify-end gap-5 sm:gap-3.5">
       <a
         href="https://www.linkedin.com/in/zwcharl/"
         target="_blank"
         title="LinkedIn"
         aria-label="My LinkedIn"
-        class="text-sweater-5 transition-colors hover:text-sweater-3"
+        class="text-sweater-4 transition-colors hover:text-sweater-2"
         ><Linkedin size={iconSize} /></a
       >
 
@@ -26,7 +24,7 @@ const iconSize = 24;
         target="_blank"
         title="GitHub"
         aria-label="My GitHub profile"
-        class="text-sweater-5 transition-colors hover:text-sweater-3"
+        class="text-sweater-4 transition-colors hover:text-sweater-2"
         ><Github size={iconSize} /></a
       >
 
@@ -34,9 +32,11 @@ const iconSize = 24;
         href="mailto:czw@seas.upenn.edu"
         title="Email"
         aria-label="My email"
-        class="text-sweater-5 transition-colors hover:text-sweater-3"
+        class="text-sweater-4 transition-colors hover:text-sweater-2"
         ><Mail size={iconSize} /></a
       >
     </div>
+
+    <LastFm />
   </div>
 </footer>
