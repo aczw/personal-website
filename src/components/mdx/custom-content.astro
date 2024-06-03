@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry, ContentEntryMap } from "astro:content";
+
+import Anchor from "@/components/mdx/anchor.astro";
+import Aside from "@/components/mdx/aside.astro";
+import Del from "@/components/mdx/del.astro";
+import H2 from "@/components/mdx/h2.astro";
+import H3 from "@/components/mdx/h3.astro";
+import Img from "@/components/mdx/img.astro";
+import Li from "@/components/mdx/li.astro";
+import Ul from "@/components/mdx/ul.astro";
+
+interface Props {
+  entry: CollectionEntry<keyof ContentEntryMap>;
+}
+
+let { entry } = Astro.props;
+let { Content } = await entry.render();
+---
+
+<Content
+  components={{
+    h2: H2,
+    h3: H3,
+    ul: Ul,
+    li: Li,
+    del: Del,
+    blockquote: Aside,
+    a: Anchor,
+    img: Img,
+  }}
+/>
