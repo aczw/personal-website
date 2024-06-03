@@ -6,7 +6,7 @@ import Main from "@/layouts/main.astro";
 
 import { getCollection } from "astro:content";
 
-const posts = await getCollection("posts");
+let posts = await getCollection("posts");
 posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 ---
 
@@ -24,8 +24,8 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
     <ul class="flex flex-col [&>li:not(:hover)]:hover:brightness-50">
       {
         posts.map((post, idx) => {
-          const {
-            data: { title, blurb, posted },
+          let {
+            data: { title, blurb, posted, published },
             slug,
           } = post;
 
@@ -36,11 +36,11 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
             >
               <a
                 href={`/posts/${slug}`}
-                class="flex  flex-col gap-2.5 py-4 xs:grid xs:grid-cols-9 xs:gap-4"
+                class="flex flex-col gap-2.5 py-4 xs:grid xs:grid-cols-9 xs:gap-4"
               >
                 <time
                   datetime={posted.toISOString()}
-                  class="col-span-2 font-mono text-[14px] font-[120] text-sweater-6 transition-colors group-hover:text-sweater-4"
+                  class="col-span-2 font-mono text-[14.5px] font-[120] text-sweater-5 transition-colors group-hover:text-sweater-4"
                 >
                   <span class="hidden xs:inline md:hidden">
                     {posted.toLocaleDateString("en-US")}
@@ -55,7 +55,10 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
                 </time>
 
                 <div class="col-span-7 flex flex-col gap-1.5">
-                  <h2 class="break-words leading-none text-sweater-2">{title}</h2>
+                  <h2 class="break-words leading-none text-sweater-2">
+                    {published ? "[PUBLISHED]" : "[DRAFT]"}
+                    {title}
+                  </h2>
 
                   <p class="text-sweater-2 opacity-90 transition group-hover:text-sweater-1 group-hover:opacity-100">
                     {blurb}
