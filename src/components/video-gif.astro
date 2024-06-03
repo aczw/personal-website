@@ -12,19 +12,21 @@ interface Props {
 const { className, folder, vids } = Astro.props;
 ---
 
-<video
-  autoplay
-  loop
-  muted
-  playsinline
-  class:list={["rounded-xl bg-sweater-9", className]}
->
-  {
-    vids.map(({ name, type }) => (
-      <source
-        src={`/_files/${folder}/${name}`}
-        type={type}
-      />
-    ))
-  }
-</video>
+<div class="py-2">
+  <video
+    autoplay
+    loop
+    muted
+    playsinline
+    class:list={["rounded-xl bg-sweater-9", className]}
+  >
+    {
+      vids.map(({ name, type }) => (
+        <source
+          src={`/_files/${folder}/${name}`}
+          type={type}
+        />
+      ))
+    }
+  </video>
+</div>
