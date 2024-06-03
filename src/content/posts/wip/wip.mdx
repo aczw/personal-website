@@ -1,52 +1,68 @@
 ---
-title: This site will always be a work in progress
-blurb: Exploring how I built this site, how it looked like in the past, and why it will always be a "work in progress."
+title: Work in progress.
+blurb: Road work ahead? I sure hope it does. Some random thoughts on building things, in the context of this website (and other projects).
 posted: 2023-11-20T22:17:00.000Z
 updated: 2024-04-12T21:27:00.000Z
-cover:
-  img: ./www.png
-  alt: This website's homepage is rendered on desktop and on mobile. The projects are blank and nondescript.
 
-published: true
-slug: www
+published: false
+slug: wip
 ---
 
 Hi, welcome to my little corner on the internet.
 
-When I first started learning web dev, this was my first project. And what I've realized over time is that websites are never a finished product. They grow, evolve, and change, just like us.
+When I first started learning web dev, this website was my first project. One of the few things I wanted to immediately include was a blog system: somewhere I can write about what I'm doing and the things I like. Naturally, the first entry was about this site and the experience of building it.
 
-With each successive version, my expectations, preferences, and goals for this website have changed. One central thing has remained the same, which is the desire _to express myself_ and _create things._ So, how do you go about designing and building your own site from scratch?
+For the longest time, I treated this post as a "source of truth" for how my website _finally_ came to be. A sort of explanation post for the _final_ state of the site; clearly, it wasn't going to change anymore after this one.
 
-## A desire to express myself
+Well, I was absolutely, completely, horribly wrong. At this point, I've updated it countless times, with four _major_ refactorings. The first three times, this post has also been rewritten. After all, the site has changed in a significant way, and I needed to mention how. Otherwise, the post would be outdated, right?
 
-I've always wanted a personal site. For one, it was a way of showing myself off. It's easy to think of the Internet™ as just Google, or Twitter, or YouTube, and forget that it's always been one computer, talking to another. You have unlimited control over how to present yourself, and in that way it was very freeing.
+I realize now this was the wrong way to go about things, and I think it's largely a mindset problem: even though the site is tied to who I am as a person, I somehow thought that it would remain in a standstill. Even when I am changing and growing and evolving.
 
-As a college student, I could also use it to showcase and talk about projects and work I've done (like this one). However, this has led to its own issues, with me torn between making my site look how I want it, and optimizing it for recruiters and employers.
+**Just like us, websites are never a finished product. Especially personal ones. And not just websites, but any projects that you care deeply for.**
 
-Take `aczw.dev`, for instance. This was the first version of my site, and simultaneously looks completely different and very similar to what I have now.
+I experienced this phenomenon firsthand over the past year. This is my fourth rewrite of "my website post". At this point, the post isn't about _building websites_ or _tracking changes_. The new post title to reflects that.
 
-![Screenshot of the first version of my website. Colors are a bit brighter and everything is much, much bigger.](./aczw-dev.png)
+> Something like a changelog fits the purpose of tracking changes a lot better; whenever I have new stuff to yap about, I add a new patch note. I talk a bit more about that idea in [its own post](/posts/changelogs).
 
-> You can go visit it right now at [old.charleszw.com](https://old.charleszw.com) :\)
+Things change, and I should _expect_ things to change. This applies to everything, not just some random person's identity crisis for their website (hint: me). And I think the fact that this post itself has now gone under multiple rewrites is a very beautiful and symbolic thing. I can't tell you what it means, but it definitely feels right.
 
-There are a lot of design elements that persist to this day: the purple color scheme, particular font choices, and an obsession with letting people know what song I last listened to.
+> If you want to see past versions, just go to this repo's [commit history](https://github.com/aczw/personal-website/commits). It's satisfying to go back in time and look at how, piece by piece, stuff has slowly changed. Thanks, version control.
 
-The groundwork was laid for what's to come. Almost immediately though, there were things that dissatisfied me. On the technical side, I chose to use [Create T3 App](https://create.t3.gg) to jumpstart my site, which was overkill for so, so many reasons. The layout, while unique, also felt too busy and distracting.
+## But why?
 
-> Also, I didn't realize how big my text would be! Turns out I made my Figma prototype way too large, and translated it over 1:1.
+I've written a lot of words about what has changed. Another equally important question I think is why I keep changing things. I mean, I know everyone does it; once you catch redesign-my-blog-itis, it infects you forever.
 
-From this iteration, I tried to be more subtle and tone things down when not necessary.
+But I would like to explain my own reasoning.
 
-## Switching frameworks
+With each successive version, my expectations, preferences, and goals for this website change. One central motivation has remained the same though, which is the desire to _express myself_.
 
-It was around this time that I discovered [Astro](https://astro.build/), which advertised itself as a framework that focused on content-first websites. That immediately caught my eye, and pretty soon I made the switch.
+For one, the platform feels infinite. It's easy to think of the Internet™ as just Google, Twitter, and YouTube, but I've gravitated towards the web so much because you have limitless control over how to present yourself. HTML, CSS, and JS are very, very powerful, accessible, and ubiquitous. It's very freeing.
 
-Here are some reasons that I decided to restart and use Astro instead:
+Having a domain is a way of showing myself off. This desire has led to its own challenges, with me often torn between making my site look how I want it, and optimizing it for recruiters and employers. _(You can contact me at the end of this post, by the way. Shameless plug.)_
 
-- Reusable components with JSX syntax
-- First-class support for transpiling Markdown/MDX files to HTML
+So how do you go about achieving everything above? I have tried out four different approaches now, and as my beliefs change I'm sure I'll think of even more. Every approach has felt like the _correct_ solution at the time. I'm sure they _were_ the correct solution at the time.
+
+Trust your past self a bit more. Seeing v1, v2, v3, etc. as mistakes is the wrong conclusion here.
+
+## Progression, not repetition
+
+In a past version of this post, I titled a section "The cycle continues." It was about how this post has been rewritten over and over again, and, to quote my exact words:
+
+> _"Every new version meant I had to update past sections, and then add a new section explaining why everything before sucked. This went on for quite a while. But I'm kinda tired of it now! No more!_
+>
+> _The revisions my site has gone through reflect how I've changed as a person, and will continue to change. I will start letting that speak for itself."_
+
+I mostly agree, past me. This ends now, today. But the section heading irked me: there was no cycle going on here. It implies everything repeats again. Here, it's the literal opposite: everything changes and evolves.
+
+I get it, though. Sometimes I feel like Sisyphus, starting from scratch all over again. But in my case, the process and final result is _always different_. Also, I enjoy it. Because I'm updating something I care about to better reflect the current me. Slightly different from endless, corporeal torture.
+
+So, for real this time, I'll let the changes speak for themselves. Well, that, and also through the [changelog](/changelog).
+
+:\)
+
+# OLD
+
 - I was looking to learn more about web dev. I knew that React abstracted away many concepts and provided lots of syntactical sugar (like `onClick`), which might be helpful for someone more experienced, but gave me false impressions and ideas about the web.
-- Support for multiple UI frameworks. This meant I could gradually learn and transfer everything over. It also enables cool features like [component islands](https://docs.astro.build/en/concepts/islands/).
 
 With the technology chosen, I now wanted to condense the key components of my website into their own chunks. That's when I started experimenting with the idea of separating things into "blocks."
 
@@ -55,8 +71,6 @@ With the technology chosen, I now wanted to condense the key components of my we
 I liked the idea because it contained the chaos of the previous site. I liked the idea of content collapsing depending on the screen size, and I liked how organized the overall presentation was.
 
 I also spent some time updating other things, like the limited color palette I was working with. I chose a wider range of purples that were... less pink. I was greatly inspired by, and continue to be inspired by the way [Material You](https://m3.material.io/) handles colors and design elements.
-
-![The new purple color palette, now in 10 different shades. There also exists a green palette.](./color-palette.png)
 
 Building on the music links from before, I now make an API call to the Last.fm servers to fetch information about my account, including actual live data about what I was currently playing. Yes, I'm obsessed.
 
