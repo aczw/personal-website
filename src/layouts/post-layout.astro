@@ -1,19 +1,12 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
-import Anchor from "@/components/mdx/anchor.astro";
-import Aside from "@/components/mdx/aside.astro";
-import Del from "@/components/mdx/del.astro";
-import H2 from "@/components/mdx/h2.astro";
-import H3 from "@/components/mdx/h3.astro";
-import Img from "@/components/mdx/img.astro";
-import Li from "@/components/mdx/li.astro";
-import Ul from "@/components/mdx/ul.astro";
-
 import Footer from "@/layouts/footer.astro";
 import Header from "@/layouts/header.astro";
 import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
+
+import CustomContent from "@/components/mdx/custom-content.astro";
 
 import { Image } from "astro:assets";
 
@@ -29,8 +22,6 @@ const {
 // only show post status in development
 let status = published ? "[PUBLISHED] " : "[DRAFT] ";
 status = import.meta.env.DEV ? status : "";
-
-const { Content } = await post.render();
 ---
 
 <Layout meta={{ kind: "post", post, status }}>
@@ -43,7 +34,7 @@ const { Content } = await post.render();
       </h2>
       <p>{blurb}</p>
       <div
-        class="flex flex-col font-mono text-[14px] font-[120] text-sweater-6 xs:flex-row xs:gap-8"
+        class="flex flex-col font-mono text-[14.5px] font-[120] text-sweater-6 xs:flex-row xs:gap-8"
       >
         <time
           datetime={posted.toISOString()}
@@ -77,19 +68,8 @@ const { Content } = await post.render();
       ) : null
     }
 
-    <article class="space-y-6">
-      <Content
-        components={{
-          h2: H2,
-          h3: H3,
-          ul: Ul,
-          li: Li,
-          del: Del,
-          blockquote: Aside,
-          a: Anchor,
-          img: Img,
-        }}
-      />
+    <article class="space-y-5">
+      <CustomContent entry={post} />
     </article>
   </Main>
 
