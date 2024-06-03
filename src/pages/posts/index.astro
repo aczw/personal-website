@@ -56,8 +56,7 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 
                 <div class="col-span-7 flex flex-col gap-1.5">
                   <h2 class="break-words leading-none text-sweater-2">
-                    {published ? "[PUBLISHED]" : "[DRAFT]"}
-                    {title}
+                    {import.meta.env.DEV ? (published ? "[PUBLISHED]" : "[DRAFT]") : ""} {title}
                   </h2>
 
                   <p class="text-sweater-2 opacity-90 transition group-hover:text-sweater-1 group-hover:opacity-100">
