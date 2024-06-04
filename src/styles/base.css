@@ -3,13 +3,22 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --fade-speed: 100ms;
+  }
+
+  html {
+    font-size: 15px;
+    @apply bg-sweater-10 text-sweater-1;
+  }
+
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-bold;
+    @apply font-bold text-sweater-2;
   }
 
   img {
@@ -29,20 +38,42 @@
   pre > code {
     @apply break-normal bg-transparent p-0;
   }
+
+  @font-face {
+    font-family: "Berkeley Mono Variable";
+    src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
+    font-weight: 100 150;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: "Berkeley Mono Variable";
+    src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
+    font-weight: 100 150;
+    font-style: italic;
+  }
 }
 
-@font-face {
-  font-family: "Berkeley Mono Variable";
-  src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
-  font-weight: 100 150;
-  font-stretch: 75% 125%;
-  font-style: normal;
+@layer components {
+  .pill {
+    @apply rounded-full bg-sweater-4 px-3 py-1.5 text-sweater-8 transition-colors hover:bg-sweater-3;
+  }
+
+  .pill[data-quiet] {
+    @apply bg-sweater-9 text-sweater-4 hover:bg-sweater-8 hover:text-sweater-3;
+  }
 }
 
-@font-face {
-  font-family: "Berkeley Mono Variable";
-  src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
-  font-weight: 100 150;
-  font-stretch: 75% 125%;
-  font-style: italic;
+@layer utilities {
+  .mewo-quote {
+    cursor:
+      url("/src/assets/mewo.webp") 32 32,
+      not-allowed;
+  }
+
+  .berkeley {
+    font-size: 14.5px;
+    font-weight: 120;
+    @apply font-mono;
+  }
 }
