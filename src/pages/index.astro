@@ -1,16 +1,13 @@
 ---
-import Link from "@/components/link.astro";
-import MewoQuote from "@/components/mewo-quote.astro";
-
-import Footer from "@/layouts/footer.astro";
-import Header from "@/layouts/header.astro";
-import Layout from "@/layouts/layout.astro";
-import Main from "@/layouts/main.astro";
-
 import { Image } from "astro:assets";
 import { getEntries } from "astro:content";
 
 import { ArrowRight } from "lucide-astro";
+
+import ContentLayout from "@/layouts/content-layout.astro";
+
+import Link from "@/components/link.astro";
+import MewoQuote from "@/components/mewo-quote.astro";
 
 const posts = await getEntries([
   { collection: "posts", slug: "mini-minecraft" },
@@ -20,7 +17,7 @@ const posts = await getEntries([
 ]);
 ---
 
-<Layout
+<ContentLayout
   meta={{
     kind: "route",
     title: null,
@@ -28,95 +25,77 @@ const posts = await getEntries([
     ogImageParams: "Graphics programming, games, websites.",
   }}
 >
-  <Header />
+  <MewoQuote />
 
-  <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">
-    <MewoQuote />
+  <section class="grid animate-fade grid-cols-1 gap-6 [--order:0] sm:grid-cols-2">
+    <p>
+      Hi, I'm Charles. I'm a student at the University of Pennsylvania majoring in <Link
+        href="http://cg.cis.upenn.edu/dmd.html"
+        target="_blank">Digital Media Design</Link
+      >, a program that combines CS with graphics and art. I like graphics programming, making
+      games, and building websites.
+    </p>
+    <p>
+      At school, I co-lead our game dev club <Link href="https://pennupgrade.com" target="_blank"
+        >UPGRADE</Link
+      > and take part in our SIGGRAPH chapter. I'm also on the creative team for PennApps, our collegiate
+      hackathon. In the past I helped design TEDxPenn's annual conference theme.
+    </p>
+    <p>
+      In my free time I like running, learning the bass, obsessing over trains, and tinkering with
+      my Arch install.
+    </p>
+    <p>
+      Below are some things I've done, as well as my socials where you can reach me. Thanks for
+      stopping by. <span aria-hidden="true" class="whitespace-nowrap">(〜￣▽￣)〜</span>
+    </p>
+  </section>
 
-    <section class="animate-fade space-y-5 [--order:1]">
-      <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
-        <p>
-          Hi, I'm Charles. I'm a student at the University of Pennsylvania majoring in Digital Media
-          Design, which is a program that combines CS with computer graphics and fine arts.
-        </p>
-        <p>
-          I'm interested in graphics programming, making games, and building websites. To that end,
-          I help run our game dev club <Link
-            href="https://pennupgrade.com"
-            target="_blank"
-            >UPGRADE</Link
-          > and our
-          <Link
-            href="http://cg.cis.upenn.edu/siggraph/"
-            target="_blank"
-            >SIGGRAPH chapter</Link
-          >.
-        </p>
-        <p>
-          In my free time I like running, making album covers, playing the bass, obsessing over
-          trains, and tinkering with my Arch install.
-        </p>
-        <p>
-          You can read more about some things I've done below, as well as find my socials. Thanks
-          for stopping by. <span
-            aria-hidden="true"
-            class="whitespace-nowrap"
-            >(〜￣▽￣)〜</span
+  <section
+    class="pointer-events-none grid grid-cols-1 gap-6 sm:grid-cols-2 [&>a:not(:hover)]:hover:brightness-[65%]"
+  >
+    {
+      posts.map((post, idx) => {
+        let {
+          data: { title, cover, posted },
+          slug,
+        } = post;
+
+        if (!cover) {
+          throw new Error("Featured post on homepage must have a cover image!");
+        }
+
+        return (
+          <a
+            href={`/posts/${slug}`}
+            class="group pointer-events-auto animate-fade transition-[filter_opacity]"
+            style={{ "--order": idx + 1 }}
           >
-        </p>
-      </div>
-    </section>
+            <Image
+              src={cover.img}
+              alt={cover.alt}
+              loading="eager"
+              class="aspect-[16/10] rounded-t-xl bg-sweater-9"
+            />
 
-    <section
-      class="pointer-events-none grid animate-fade grid-cols-1 gap-5 pt-2.5 [--order:2] sm:grid-cols-2 [&>a:not(:hover)]:hover:brightness-[65%]"
-    >
-      {
-        posts.map((post, idx) => {
-          const {
-            data: { title, cover, posted },
-            slug,
-          } = post;
-
-          if (!cover) {
-            throw new Error("Featured post on homepage must have a cover image!");
-          }
-
-          return (
-            <a
-              href={`/posts/${slug}`}
-              class="group pointer-events-auto animate-fade transition-[filter_opacity]"
-              style={{ "--order": idx + 2 }}
-            >
-              <Image
-                src={cover.img}
-                alt={cover.alt}
-                loading="eager"
-                class="aspect-[16/10] rounded-t-xl bg-sweater-9 object-cover"
-              />
-
-              <div class="space-y-1 rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">
-                <span class="flex items-center justify-between gap-5">
-                  <div>
-                    <h2 class="break-words text-sweater-2">{title}</h2>
-                    <p class="font-mono text-[14.5px] font-[120] text-sweater-5 transition-colors group-hover:text-sweater-4">
-                      {posted.toLocaleString("en-US", { month: "short", year: "numeric" })}
-                    </p>
-                  </div>
-
-                  <div
-                    aria-hidden="true"
-                    class="rounded-full bg-sweater-8 p-1.5 transition-colors group-hover:bg-sweater-7"
-                  >
-                    <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-3" />
-                  </div>
-                </span>
+            <div class="flex items-center justify-between gap-4 rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">
+              <div>
+                <h2>{title}</h2>
+                <p class="berkeley text-sweater-5 transition-colors group-hover:text-sweater-4">
+                  {posted.toLocaleString("en-US", { month: "short", year: "numeric" })}
+                </p>
               </div>
-            </a>
-          );
-        })
-      }
-    </section>
-  </Main>
 
-  <Footer />
-</Layout>
+              <div
+                aria-hidden="true"
+                class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
+              >
+                <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4" />
+              </div>
+            </div>
+          </a>
+        );
+      })
+    }
+  </section>
+</ContentLayout>
