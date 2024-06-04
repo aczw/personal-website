@@ -1,68 +1,48 @@
-<mewo-quote
-  ><blockquote
-    class="-translate-x-1 animate-fade font-mono text-[14.5px] font-[120] italic text-sweater-3 [--order:3]"
-  >
-    <p
-      id="quote"
-      class="h-[1rem] w-fit cursor-[url('../assets/mewo.webp')_32_32,_not-allowed] leading-none"
-    >
-    </p>
-  </blockquote></mewo-quote
->
+<blockquote class="berkeley -translate-x-1 animate-fade italic text-sweater-3 [--order:2]">
+  <p id="mewo-quote" class="mewo-quote h-4 w-fit"></p>
+</blockquote>
 
 <script>
-  customElements.define(
-    "mewo-quote",
-    class extends HTMLElement {
-      #text = '"Waiting for something to happen?"';
-      #speed = 40;
-      #size = 7;
-      #symbols = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()[]\\+-={}/";
-      #elt: HTMLParagraphElement;
+  const speed = 40;
+  const size = 7;
+  const elt = document.querySelector<HTMLParagraphElement>("#mewo-quote")!;
+  const text = '"Waiting for something to happen?"';
+  const symbols = "abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()[]\\+-={}/";
 
-      constructor() {
-        super();
-        this.#elt = this.querySelector<HTMLParagraphElement>("#quote")!;
+  function clampIndex(index: number) {
+    if (index <= 0) {
+      return 0;
+    } else if (index >= text.length - 1) {
+      return text.length - 1;
+    } else {
+      return index;
+    }
+  }
+
+  let numIterations = text.length + size;
+  let iterationIndex = 0;
+
+  let timer = window.setInterval(() => {
+    if (iterationIndex < numIterations) {
+      let startIndex = iterationIndex - (size - 1);
+      let endIndex = iterationIndex;
+
+      let garbledSize = clampIndex(endIndex) - clampIndex(startIndex);
+      if (startIndex <= clampIndex(endIndex)) {
+        garbledSize++;
       }
 
-      #clampIndex(index: number) {
-        if (index <= 0) {
-          return 0;
-        } else if (index >= this.#text.length - 1) {
-          return this.#text.length - 1;
-        } else {
-          return index;
-        }
+      let garbled = "";
+      for (let i = 0; i < garbledSize; i++) {
+        garbled += symbols.charAt(Math.floor(Math.random() * symbols.length));
       }
 
-      connectedCallback() {
-        let numIterations = this.#text.length + this.#size;
-        let iterationIndex = 0;
+      let rest = text.slice(0, startIndex >= 0 ? startIndex : 0);
+      elt.innerText = rest + garbled;
+    } else {
+      clearInterval(timer);
+    }
 
-        let timer = window.setInterval(() => {
-          if (iterationIndex < numIterations) {
-            let startIndex = iterationIndex - (this.#size - 1);
-            let endIndex = iterationIndex;
-
-            let garbledSize = this.#clampIndex(endIndex) - this.#clampIndex(startIndex);
-            if (startIndex <= this.#clampIndex(endIndex)) {
-              garbledSize++;
-            }
-
-            let garbled = "";
-            for (let i = 0; i < garbledSize; i++) {
-              garbled += this.#symbols.charAt(Math.floor(Math.random() * this.#symbols.length));
-            }
-
-            let rest = this.#text.slice(0, startIndex >= 0 ? startIndex : 0);
-            this.#elt.innerText = rest + garbled;
-          } else {
-            clearInterval(timer);
-          }
-
-          iterationIndex++;
-        }, this.#speed);
-      }
-    },
-  );
+    iterationIndex++;
+  }, speed);
 </script>
