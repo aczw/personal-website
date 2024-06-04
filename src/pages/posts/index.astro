@@ -1,7 +1,7 @@
 ---
+import BaseLayout from "@/layouts/base-layout.astro";
 import Footer from "@/layouts/footer.astro";
 import Header from "@/layouts/header.astro";
-import Layout from "@/layouts/layout.astro";
 import Main from "@/layouts/main.astro";
 
 import { getCollection } from "astro:content";
@@ -10,7 +10,7 @@ let posts = await getCollection("posts");
 posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 ---
 
-<Layout
+<BaseLayout
   meta={{
     kind: "route",
     title: "All posts",
@@ -72,4 +72,4 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
   </Main>
 
   <Footer />
-</Layout>
+</BaseLayout>

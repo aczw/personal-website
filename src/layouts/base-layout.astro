@@ -1,0 +1,91 @@
+---
+import "@/styles/base.css";
+import "@fontsource/atkinson-hyperlegible/400.css";
+import "@fontsource/atkinson-hyperlegible/700.css";
+
+import type { CollectionEntry } from "astro:content";
+
+import SpeedInsights from "@vercel/speed-insights/astro";
+
+type MetaKind =
+  | { kind: "route"; title: string | null; description: string; ogImageParams: string }
+  | { kind: "post"; post: CollectionEntry<"posts">; status: string };
+
+interface Props {
+  meta: MetaKind;
+}
+
+let { meta } = Astro.props;
+
+let title = "Charles Wang";
+let description, ogImageParams;
+if (meta.kind === "route") {
+  title = (meta.title ? meta.title + " — " : "") + title;
+  description = meta.description;
+  ogImageParams = `?heading=${encodeURIComponent(meta.ogImageParams)}`;
+} else {
+  let { data, slug } = meta.post;
+  title = meta.status + data.title + " — " + title;
+  description = data.blurb;
+  ogImageParams = `?post=${slug}`;
+}
+
+// see https://github.com/withastro/astro/issues/5248
+let canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+canonicalUrl = canonicalUrl.replace(/\/+$/, "");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta name="color-scheme" content="dark light" />
+
+    <meta property="og:site_name" content="Charles Wang" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={`https://charleszw.com/api/og.png${ogImageParams}`} />
+
+    <meta property="twitter:image" content={`https://charleszw.com/api/og.png${ogImageParams}`} />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link rel="icon" sizes="any" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
+    <link rel="icon" href="/favicon.ico" />
+
+    <link
+      rel="preload"
+      href="/_fonts/BerkeleyMonoVariable-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/_fonts/BerkeleyMonoVariable-Italic.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <title>{title}</title>
+
+    <SpeedInsights />
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>
