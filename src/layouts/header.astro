@@ -1,20 +1,17 @@
 ---
-import Link from "@/components/link.astro";
+const LOGO_SIZE = 26;
 ---
 
-<header class="mx-auto max-w-wide pt-4 wide:pt-10">
-  <nav class="mx-4 flex items-center justify-between border-b-2 border-sweater-9 pb-4">
-    <a
-      href="/"
-      class="group"
-    >
+<header class="mx-auto max-w-content pt-6">
+  <nav class="mx-7 flex items-center justify-between border-b-[3px] border-sweater-8 pb-6">
+    <a href="/" class="group">
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={26}
-        height={26}
-        fill="currentColor"
+        width={LOGO_SIZE}
+        height={LOGO_SIZE}
         viewBox="0 0 25 25"
-        class="rotate-[-15deg] fill-sweater-4 transition group-hover:fill-sweater-2"
+        fill="currentColor"
+        class="fill-sweater-5 transition-[fill_transform] group-hover:rotate-[-13deg] group-hover:fill-sweater-4"
       >
         <title>Charles Wang</title>
         <path
@@ -25,16 +22,10 @@ import Link from "@/components/link.astro";
       </svg>
     </a>
 
-    <div class="flex items-center space-x-4 pl-6 xs:space-x-8">
-      <Link href="/posts">Posts</Link>
+    <div class="flex items-center gap-4">
+      <a href="/posts" class="pill leading-none" data-quiet>Posts</a>
 
-      <a
-        href="/_files/resume.pdf"
-        target="_blank"
-        class="flex items-center justify-center rounded-full bg-sweater-4 px-3 py-1.5 leading-none text-sweater-9 transition-colors hover:bg-sweater-2"
-      >
-        Resume
-      </a>
+      <a href="/_files/resume.pdf" target="_blank" class="pill leading-none">Resume</a>
     </div>
   </nav>
 </header>

@@ -1,6 +1,6 @@
 ---
 import Header from "@/layouts/header.astro";
-import Layout from "@/layouts/layout.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
 
 import notFound from "@/assets/not-found.png";
 import { Image } from "astro:assets";
@@ -22,7 +22,7 @@ const offset = Math.floor(Math.random() * pick.length);
 const scrambled = pick.slice(offset) + pick.slice(0, offset);
 ---
 
-<Layout
+<BaseLayout
   meta={{
     kind: "route",
     title: "404",
@@ -33,19 +33,14 @@ const scrambled = pick.slice(offset) + pick.slice(0, offset);
   <Header />
 
   <main
-    class="mx-auto flex min-h-[calc(100vh-81px)] max-w-narrow flex-col items-center justify-center space-y-8 py-5 wide:py-10"
+    class="max-w-narrow mx-auto flex min-h-[calc(100vh-81px)] flex-col items-center justify-center space-y-8 py-5 wide:py-10"
   >
     <section class="animate-fade text-center [--order:0]">
-      <Image
-        src={notFound}
-        alt="404 not found"
-      />
-      <p class="text-lg font-[130] text-sweater-2">
-        <Link
-          href="https://twitter.com/sawaratsuki1004"
-          target="_blank"
-          >Source.</Link
-        > Sorry, page not found~
+      <Image src={notFound} alt="404 not found" />
+
+      <p class="text-lg font-[120] text-sweater-2">
+        <Link href="https://twitter.com/sawaratsuki1004" target="_blank">Source.</Link> Sorry, page not
+        found~
       </p>
     </section>
 
@@ -53,12 +48,12 @@ const scrambled = pick.slice(offset) + pick.slice(0, offset);
       id="scroll"
       aria-hidden="true"
       data-scrambled={scrambled}
-      class="animate-fade rounded-md bg-sweater-9 px-1.5 py-0.5 font-mono font-[100] italic text-sweater-7 transition-colors [--order:1]"
+      class="animate-fade rounded-md bg-sweater-9 px-1.5 py-0.5 font-mono font-[120] italic text-sweater-7 transition-colors [--order:1]"
     >
       {scrambled}
     </p>
   </main>
-</Layout>
+</BaseLayout>
 
 <script>
   // for some reason, whitespace is added to the front and end of the word, so we can't

@@ -1,40 +1,32 @@
 ---
-import LastFm from "@/components/last-fm.astro";
+import { version } from "../../package.json";
+
 import { Github, Linkedin, Mail } from "lucide-astro";
 
-const iconSize = 24;
+import LastFm from "@/components/last-fm.astro";
+import Link from "@/components/link.astro";
+
+const ICON_SIZE = 24;
 ---
 
-<footer class="mx-auto max-w-wide pb-4 wide:pb-10">
+<footer class="mx-auto max-w-content pb-6">
   <div
-    class="mx-4 flex flex-row-reverse justify-between gap-5 border-t-2 border-sweater-9 pt-4 font-mono text-[14px] font-[100]"
+    class="berkeley mx-7 flex flex-row-reverse items-center justify-between gap-4 border-t-[3px] border-sweater-8 pt-6"
   >
-    <div class="flex w-1/2 justify-end gap-5 sm:gap-3.5">
-      <a
-        href="https://www.linkedin.com/in/zwcharl/"
-        target="_blank"
-        title="LinkedIn"
-        aria-label="My LinkedIn"
-        class="text-sweater-4 transition-colors hover:text-sweater-2"
-        ><Linkedin size={iconSize} /></a
+    <div class="flex w-1/2 items-center justify-end gap-4">
+      <Link href="https://www.linkedin.com/in/zwcharl/" target="_blank" title="LinkedIn"
+        ><Linkedin size={ICON_SIZE} /></Link
       >
 
-      <a
-        href="https://www.github.com/aczw"
-        target="_blank"
-        title="GitHub"
-        aria-label="My GitHub profile"
-        class="text-sweater-4 transition-colors hover:text-sweater-2"
-        ><Github size={iconSize} /></a
+      <Link href="https://www.github.com/aczw" target="_blank" title="GitHub"
+        ><Github size={ICON_SIZE} /></Link
       >
 
-      <a
-        href="mailto:czw@seas.upenn.edu"
-        title="Email"
-        aria-label="My email"
-        class="text-sweater-4 transition-colors hover:text-sweater-2"
-        ><Mail size={iconSize} /></a
-      >
+      <Link href="mailto:czw@seas.upenn.edu" title="Email"><Mail size={ICON_SIZE} /></Link>
+
+      <a href="/changelog" class="pill leading-none" title={import.meta.env.DEV ? "DEV" : "PROD"}>
+        v{version}
+      </a>
     </div>
 
     <LastFm />
