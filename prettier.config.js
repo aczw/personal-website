@@ -1,17 +1,16 @@
 /** @type {import("prettier").Config & import("prettier-plugin-tailwindcss").PluginOptions} */
 const config = {
-  plugins: [ "prettier-plugin-astro", "prettier-plugin-tailwindcss" ],
+  plugins: ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
   overrides: [
     {
       files: "*.astro",
       options: {
-        parser: "astro"
-      }
-    }
+        parser: "astro",
+      },
+    },
   ],
   printWidth: 100,
-  singleAttributePerLine: true,
-  tailwindFunctions: [ "cn", "clsx", "twMerge" ],
+  tailwindFunctions: ["cn", "clsx", "twMerge"],
 };
 
 // I install both Astro and Prettier's official VSC extensions but only use Prettier
