@@ -1,21 +1,17 @@
 ---
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
-import Footer from "@/components/footer.astro";
-import Header from "@/components/header.astro";
-import BaseLayout from "@/layouts/base-layout.astro";
-import Main from "@/layouts/main.astro";
+import ContentLayout from "@/layouts/content-layout.astro";
 
 import CustomContent from "@/components/mdx/custom-content.astro";
-
-import { Image } from "astro:assets";
 
 interface Props {
   post: CollectionEntry<"posts">;
 }
 
-const { post } = Astro.props;
-const {
+let { post } = Astro.props;
+let {
   data: { title, blurb, posted, updated, cover, published },
 } = post;
 
@@ -24,52 +20,49 @@ let status = published ? "[PUBLISHED] " : "[DRAFT] ";
 status = import.meta.env.DEV ? status : "";
 ---
 
-<BaseLayout meta={{ kind: "post", post, status }}>
-  <Header />
-
-  <Main className="max-w-narrow">
-    <section class="space-y-4">
-      <h2 class="text-lg text-sweater-2">
+<ContentLayout meta={{ kind: "post", post, status }}>
+  <section
+    class:list={["space-y-5", { "border-b-[1.5px] border-sweater-9 pb-9 wide:pb-11": !cover }]}
+  >
+    <div class="space-y-1">
+      <h1 class="text-xl text-sweater-2">
         {title}
-      </h2>
-      <p>{blurb}</p>
-      <div
-        class="flex flex-col font-mono text-[14.5px] font-[120] text-sweater-6 xs:flex-row xs:gap-8"
-      >
-        <time datetime={posted.toISOString()} class="text-sweater-5"
-          >{
-            posted.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })
-          }</time
-        >{
-          updated ? (
-            <time datetime={updated.toISOString()}>
-              Updated{" "}
-              {updated.toLocaleString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </time>
-          ) : null
-        }
-      </div>
-    </section>
+      </h1>
+      <p class="text-sweater-2 opacity-90">{blurb}</p>
+    </div>
 
-    {
-      cover ? (
-        <Image
-          src={cover.img}
-          alt={cover.alt}
-          loading="eager"
-          class="rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8"
-        />
-      ) : null
-    }
+    <div
+      class="flex flex-col font-mono text-[14.5px] font-[120] text-sweater-6 xs:flex-row xs:gap-8"
+    >
+      <time datetime={posted.toISOString()} class="text-sweater-5"
+        >{posted.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time
+      >{
+        updated ? (
+          <time datetime={updated.toISOString()}>
+            Updated{" "}
+            {updated.toLocaleString("en-US", {
+              month: "long",
+              day: "numeric",
+              year: "numeric",
+            })}
+          </time>
+        ) : null
+      }
+    </div>
+  </section>
 
-    <article class="space-y-5">
-      <CustomContent entry={post} />
-    </article>
-  </Main>
+  {
+    cover ? (
+      <Image
+        src={cover.img}
+        alt={cover.alt}
+        loading="eager"
+        class="rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8"
+      />
+    ) : null
+  }
 
-  <Footer />
-</BaseLayout>
+  <article class="space-y-5">
+    <CustomContent entry={post} />
+  </article>
+</ContentLayout>
