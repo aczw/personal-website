@@ -1,8 +1,9 @@
 ---
-import NotFound from "@/layouts/not-found.astro";
-import PostLayout from "@/layouts/post-layout.astro";
-
 import { getCollection } from "astro:content";
+
+import NotFoundPage from "@/pages/[...slug]/index.astro";
+
+import PostLayout from "@/layouts/post-layout.astro";
 
 let posts = await getCollection("posts");
 let currPost = posts.find((project) => project.slug === Astro.params.slug);
@@ -10,10 +11,6 @@ let currPost = posts.find((project) => project.slug === Astro.params.slug);
 // if the current slug doesn't exist (aka the post doesn't exist), or the post exists
 // but is currently a draft, then we return a 404 for this request, and render differently
 const notFound = !currPost || (!import.meta.env.DEV && !currPost.data.published);
-if (notFound) {
-  Astro.response.status = 404;
-  Astro.response.statusText = "Page not found";
-}
 ---
 
-{notFound ? <NotFound /> : <PostLayout post={currPost} />}
+{notFound ? <NotFoundPage /> : <PostLayout post={currPost} />}

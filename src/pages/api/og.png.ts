@@ -1,18 +1,19 @@
-import { Resvg } from "@resvg/resvg-js";
 import type { APIRoute } from "astro";
 import { getEntry } from "astro:content";
 
 import { readFileSync } from "node:fs";
+
+import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { html } from "satori-html";
 
-type Content = { kind: "route"; heading: string } | { kind: "post"; title: string; tags: string[] };
+type ContentKind = { kind: "route"; heading: string } | { kind: "post"; title: string; date: Date };
 
 const GET: APIRoute = async ({ request }) => {
   const requestUrl = new URL(request.url);
   const params = requestUrl.searchParams;
 
-  let content: Content = { kind: "route", heading: "" };
+  let content: ContentKind = { kind: "route", heading: "" };
   const maybeHeading = params.get("heading");
   const maybePost = params.get("post");
 
@@ -21,7 +22,7 @@ const GET: APIRoute = async ({ request }) => {
   } else if (maybePost) {
     const post = await getEntry("posts", maybePost);
     if (post) {
-      content = { kind: "post", title: post.data.title, tags: post.data.tags };
+      content = { kind: "post", title: post.data.title, date: post.data.posted };
     }
   }
 
@@ -47,7 +48,7 @@ const GET: APIRoute = async ({ request }) => {
       ${
         content.kind === "route"
           ? `${logo} <span tw="text-8xl text-[#9A91FE] font-bold">Charles Wang</span>`
-          : `<span tw="text-[#C3BDFF] font-bold text-7xl mb-5">${content.title}</span><span tw="text-[#D6D3FF] text-6xl">${content.tags.join(", ")}</span>`
+          : `<span tw="text-[#C3BDFF] font-bold text-7xl mb-5">${content.title}</span><span tw="text-[#D6D3FF] text-6xl">${content.date.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>`
       }
     </div>
 

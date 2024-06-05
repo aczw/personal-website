@@ -9,6 +9,8 @@ interface Track {
 }
 
 const GET: APIRoute = async () => {
+  const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${import.meta.env.LASTFM_API_KEY}&limit=1&format=json`;
+
   const LastFmSchema = z.promise(
     z.object({
       recenttracks: z.object({
@@ -50,17 +52,15 @@ const GET: APIRoute = async () => {
     }),
   );
 
-  const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${import.meta.env.LASTFM_API_KEY}&limit=1&format=json`;
-
   try {
-    const response = fetch(url);
-    const result = LastFmSchema.safeParse(response.then((res) => res.json()));
+    const result = LastFmSchema.safeParse(fetch(url).then((res) => res.json()));
 
     if (!result.success) {
       return new Response(null, { status: 502 });
     }
 
-    const firstTrack = (await result.data).recenttracks.track[0];
+    const data = await result.data;
+    const firstTrack = data.recenttracks.track[0];
 
     return new Response(
       JSON.stringify({
