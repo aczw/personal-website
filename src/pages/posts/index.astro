@@ -1,75 +1,76 @@
 ---
-import Footer from "@/components/footer.astro";
-import Header from "@/components/header.astro";
-import BaseLayout from "@/layouts/base-layout.astro";
-import Main from "@/layouts/main.astro";
-
 import { getCollection } from "astro:content";
+
+import ContentLayout from "@/layouts/content-layout.astro";
 
 let posts = await getCollection("posts");
 posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 ---
 
-<BaseLayout
+<ContentLayout
+  minHeight
   meta={{
     kind: "route",
-    title: "All posts",
+    title: "Posts",
     description: "Writings on some stuff that I've done.",
     ogImageParams: "All my posts.",
   }}
 >
-  <Header />
+  <h1 class="animate-fade text-xl [--order:0]">All posts</h1>
 
-  <Main className="min-h-[calc(100vh-113px)] max-w-wide wide:min-h-[calc(100vh-157px)]">
-    <ul class="flex flex-col [&>li:not(:hover)]:hover:brightness-50">
-      {
-        posts.map((post, idx) => {
-          let {
-            data: { title, blurb, posted, published },
-            slug,
-          } = post;
+  <section class="flex flex-col [&>a:not(:hover)]:hover:brightness-50">
+    {
+      posts.map((post, idx) => {
+        let {
+          data: { title, blurb, posted, published },
+          slug,
+        } = post;
 
-          return (
-            <li
-              class="group animate-fade border-y border-sweater-9 transition-[filter_opacity] first:border-t-0 last:border-b-0"
-              style={{ "--order": idx }}
+        return (
+          <a
+            href={`/posts/${slug}`}
+            class="group flex animate-fade flex-col gap-4 border-y-[1.5px] border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100"
+            style={{ "--order": idx + 1 }}
+          >
+            <timep
+              datetime={posted.toISOString()}
+              title={posted.toLocaleString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                timeZoneName: "short",
+              })}
+              class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
             >
-              <a
-                href={`/posts/${slug}`}
-                class="flex flex-col gap-2.5 py-4 xs:grid xs:grid-cols-9 xs:gap-4"
-              >
-                <time
-                  datetime={posted.toISOString()}
-                  class="col-span-2 font-mono text-[14.5px] font-[120] text-sweater-5 transition-colors group-hover:text-sweater-4"
-                >
-                  <span class="hidden xs:inline md:hidden">
-                    {posted.toLocaleDateString("en-US")}
-                  </span>
-                  <span class="xs:hidden md:inline">
-                    {posted.toLocaleString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
-                  </span>
-                </time>
+              <span class="xs:hidden">
+                {posted.toLocaleString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </span>
+              <span class="hidden xs:inline">
+                {posted.toLocaleString("en-US", {
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "2-digit",
+                })}
+              </span>
+            </timep>
 
-                <div class="col-span-7 flex flex-col gap-1.5">
-                  <h2 class="break-words leading-none text-sweater-2">
-                    {import.meta.env.DEV ? (published ? "[PUBLISHED]" : "[DRAFT]") : ""} {title}
-                  </h2>
-
-                  <p class="text-sweater-2 opacity-90 transition group-hover:text-sweater-1 group-hover:opacity-100">
-                    {blurb}
-                  </p>
-                </div>
-              </a>
-            </li>
-          );
-        })
-      }
-    </ul>
-  </Main>
-
-  <Footer />
-</BaseLayout>
+            <div class="space-y-1.5">
+              <h2 class="break-words">
+                {import.meta.env.DEV ? (published ? "[PUBLISHED]" : "[DRAFT]") : ""} {title}
+              </h2>
+              <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
+                {blurb}
+              </p>
+            </div>
+          </a>
+        );
+      })
+    }
+  </section>
+</ContentLayout>
