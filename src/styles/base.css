@@ -28,7 +28,7 @@
 
   /* inline code should have some padding and background */
   code {
-    @apply break-words rounded-md bg-sweater-9 px-1 py-0.5 text-[14px] font-[100];
+    @apply break-words rounded-md bg-sweater-9 px-1.5 py-0.5 text-[14px] font-[100];
   }
 
   pre {
