@@ -1,6 +1,4 @@
 ---
-import type { CollectionEntry, ContentEntryMap } from "astro:content";
-
 import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
 import Del from "@/components/mdx/del.astro";
@@ -10,12 +8,14 @@ import Img from "@/components/mdx/img.astro";
 import Li from "@/components/mdx/li.astro";
 import Ul from "@/components/mdx/ul.astro";
 
+import type { AstroComponentFactory } from "astro/runtime/server/index.js";
+
 interface Props {
-  entry: CollectionEntry<keyof ContentEntryMap>;
+  entryContent: AstroComponentFactory;
 }
 
-let { entry } = Astro.props;
-let { Content } = await entry.render();
+let { entryContent } = Astro.props;
+let Content = entryContent;
 ---
 
 <Content

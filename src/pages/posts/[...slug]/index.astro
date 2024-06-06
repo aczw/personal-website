@@ -8,8 +8,9 @@ import PostLayout from "@/layouts/post-layout.astro";
 let posts = await getCollection("posts");
 let currPost = posts.find((project) => project.slug === Astro.params.slug);
 
-// if the current slug doesn't exist (aka the post doesn't exist), or the post exists
-// but is currently a draft, then we return a 404 for this request, and render differently
+// if the current slug doesn't exist (aka the post doesn't exist), or the post
+// exists but is currently a draft, then we return a 404 for this request, and
+// render the not found page instead of the post
 const notFound = !currPost || (!import.meta.env.DEV && !currPost.data.published);
 ---
 

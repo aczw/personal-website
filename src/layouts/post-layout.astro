@@ -4,6 +4,7 @@ import type { CollectionEntry } from "astro:content";
 
 import ContentLayout from "@/layouts/content-layout.astro";
 
+import Link from "@/components/link.astro";
 import CustomContent from "@/components/mdx/custom-content.astro";
 
 interface Props {
@@ -18,51 +19,75 @@ let {
 // only show post status in development
 let status = published ? "[PUBLISHED] " : "[DRAFT] ";
 status = import.meta.env.DEV ? status : "";
+
+let { Content, headings } = await post.render();
 ---
 
-<ContentLayout meta={{ kind: "post", post, status }}>
-  <section
-    class:list={["space-y-5", { "border-b-[1.5px] border-sweater-9 pb-9 wide:pb-11": !cover }]}
-  >
-    <div class="space-y-1">
-      <h1 class="text-xl text-sweater-2">
-        {title}
-      </h1>
-      <p class="text-sweater-2 opacity-90">{blurb}</p>
-    </div>
-
-    <div
-      class="flex flex-col font-mono text-[14.5px] font-[120] text-sweater-6 xs:flex-row xs:gap-8"
+<ContentLayout meta={{ kind: "post", post, status }} className="flex items-start gap-6 space-y-0">
+  <div class="w-full flex-shrink sm:w-[calc(100%-250px)]">
+    <section
+      class:list={["space-y-5", { "wide:pb-11 border-b-[1.5px] border-sweater-9 pb-9": !cover }]}
     >
-      <time datetime={posted.toISOString()} class="text-sweater-5"
-        >{posted.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })}</time
-      >{
-        updated ? (
-          <time datetime={updated.toISOString()}>
-            Updated{" "}
-            {updated.toLocaleString("en-US", {
-              month: "long",
-              day: "numeric",
-              year: "numeric",
-            })}
-          </time>
-        ) : null
-      }
-    </div>
-  </section>
+      <div class="space-y-1.5">
+        <h1 class="text-xl">
+          {title}
+        </h1>
+        <p class="subtitle">{blurb}</p>
+      </div>
 
-  {
-    cover ? (
-      <Image
-        src={cover.img}
-        alt={cover.alt}
-        loading="eager"
-        class="rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8"
-      />
-    ) : null
-  }
+      <div
+        class="flex flex-col font-mono text-[14.5px] font-[120] text-sweater-6 xs:flex-row xs:gap-8"
+      >
+        <time datetime={posted.toISOString()} class="text-sweater-5"
+          >{
+            posted.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })
+          }</time
+        >{
+          updated ? (
+            <time datetime={updated.toISOString()}>
+              Updated{" "}
+              {updated.toLocaleString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </time>
+          ) : null
+        }
+      </div>
+    </section>
 
-  <article class="space-y-5">
-    <CustomContent entry={post} />
-  </article>
+    {
+      cover ? (
+        <Image
+          src={cover.img}
+          alt={cover.alt}
+          loading="eager"
+          class="rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8"
+        />
+      ) : null
+    }
+
+    <article class="space-y-5">
+      <CustomContent entryContent={Content} />
+    </article>
+  </div>
+
+  <div class="sticky top-12 hidden w-[250px] flex-col items-start bg-sweater-9 sm:flex">
+    {
+      headings.map(({ depth, slug, text }) => {
+        if (depth === 1) {
+          throw new Error(
+            `No MDX heading should be H1! Check whether the post "${title}" contains any.`,
+          );
+        }
+
+        return (
+          <Link href={`#${slug}`} className={depth === 3 ? "ml-3" : ""}>
+            {text}
+          </Link>
+        );
+      })
+    }
+  </div>
 </ContentLayout>

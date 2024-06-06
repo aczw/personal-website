@@ -1,0 +1,59 @@
+---
+title: Changelogs
+blurb: Reading the update notes for your favorite game or app is always exciting. What's changed? What's not? Maybe websites should do it too.
+posted: 2099-04-20T08:10:00.000Z
+
+published: true
+slug: changelogs
+---
+
+import VideoGif from "@/components/video-gif.astro";
+
+I like [United States Graphics Company's](https://berkeleygraphics.com/engineering/) (formerly Berkeley Graphics, maker of the monospace font you see on this website) inclusion of a version number in the header, it aligns with their no-bullshit, industrial grade engineering aesthetics. I was also heavily inspired by [moya.cafe's inclusion of a changelog](https://moya.cafe/). The website already has so much personality, and it complements it nicely.
+
+Two wildly different sources of inspiration, but hey. Both are good.
+
+IMAGE HERE OF THE TWO, SIDE BY SIDE. caption: "Both. Both are good."
+
+I now have two methods of writing on this site: via posts, or via the changelog. I think both are necessary and fill different gaps: posts are for more permanent things, where edits are mostly for style, not content changes. The changelog is for more temporary things that can quickly become "out of date" and in fact, expects it. Every new update is _supposed_ to void the previous one, by design.
+
+You know how I realized this was the right decision? As part of launching `/changelog` I was rewriting a post about this website _because it was redundant now_. Furthermore, I was able to lift a lot of its content and directly plop it into one of the patch notes, further proving it's always been in the wrong place.
+
+Anyway, that post has essentially been [completely replaced](/posts/wip). For the better!
+
+## Semantic versioning
+
+What does semver mean in the context of my site? There aren't "breaking API changes" when I increment the major number. I followed this standard when assigning versions to past commits:
+
+1. shit
+2. fuck
+
+## Updating package.json with the current version
+
+It's not like I will ever publish the codebase as a NPM package, but the benefit to this is that I have a single source of truth for the current version of the site.
+
+This comes in handy when I want to reference it in my footer, for example. I first saw this in [Quartz's own `<Footer />` component](https://github.com/jackyzha0/quartz/blob/244801af65b9e628927c1f1b2518ae62ca2e354f/quartz/components/Footer.tsx#L3), where you can literally import the `version` field from `package.json` and reference it like a regular string:
+
+```astro
+---
+import { version } from "../../package.json";
+---
+
+<a href="/changelog">v{version}</a>
+```
+
+## Sticky sidebar
+
+The trickiest part was getting the version, date, and commit hash to be sticky. Adding `align-items: flex-start` solved the issue. This [StackOverflow answer](https://stackoverflow.com/a/66416972) explains it pretty well: the reason is that
+
+Lo and behold, it is also the solution that the Linear changelog uses. Below, notice how "May 30, 2024" becomes sticky as soon as we align items using `flex-start`.
+
+<VideoGif folder="changelogs" vids={[{ name: "flex-start.mp4", type: "video/mp4" }]} />
+
+## Something more?
+
+With every update patch to the website, I too have stuff to share, about my life. The website changes and so do I. If I feel brave enough in the future, it might eventually become a [/now](https://nownownow.com/about)-like situation. I can see this happening very naturally, it's an evolution that makes sense to me.
+
+A changelog for the website, a changelog for myself. For everyone to see. Oh boy. Like I said, still thinking about it. But I really do like yapping, so it's very much possible.
+
+Anyway, thanks for reading. Lemme know what you think of the website.
