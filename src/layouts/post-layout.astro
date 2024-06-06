@@ -2,9 +2,10 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
-import ContentLayout from "@/layouts/content-layout.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
 
-import Link from "@/components/link.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
 import CustomContent from "@/components/mdx/custom-content.astro";
 
 interface Props {
@@ -20,74 +21,104 @@ let {
 let status = published ? "[PUBLISHED] " : "[DRAFT] ";
 status = import.meta.env.DEV ? status : "";
 
+let options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric" };
+
 let { Content, headings } = await post.render();
 ---
 
-<ContentLayout meta={{ kind: "post", post, status }} className="flex items-start gap-6 space-y-0">
-  <div class="w-full flex-shrink sm:w-[calc(100%-250px)]">
-    <section
-      class:list={["space-y-5", { "wide:pb-11 border-b-[1.5px] border-sweater-9 pb-9": !cover }]}
-    >
-      <div class="space-y-1.5">
-        <h1 class="text-xl">
-          {title}
-        </h1>
-        <p class="subtitle">{blurb}</p>
-      </div>
+<BaseLayout meta={{ kind: "post", post, status }}>
+  <Header />
 
-      <div
-        class="flex flex-col font-mono text-[14.5px] font-[120] text-sweater-6 xs:flex-row xs:gap-8"
-      >
-        <time datetime={posted.toISOString()} class="text-sweater-5"
-          >{
-            posted.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })
-          }</time
-        >{
-          updated ? (
-            <time datetime={updated.toISOString()}>
-              Updated{" "}
-              {updated.toLocaleString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </time>
+  <main class="mx-auto flex max-w-content items-start gap-9 px-7 py-12">
+    <article class:list={["w-full sm:w-[calc(100%-200px)]", cover ? "space-y-6" : "space-y-12"]}>
+      <section class:list={["space-y-6", { "border-b-[1.5px] border-sweater-9 pb-12": !cover }]}>
+        <div class="space-y-1.5">
+          <h1 class="text-xl">{title}</h1>
+          <p class="subtitle">{blurb}</p>
+        </div>
+
+        <div class="berkeley grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-1 md:grid-cols-2">
+          <time datetime={posted.toISOString()} class="text-sweater-5">
+            {posted.toLocaleString("en-US", options)}
+          </time>
+
+          {
+            updated ? (
+              <time datetime={updated.toISOString()} class="text-sweater-6">
+                Updated {updated.toLocaleString("en-US", options)}
+              </time>
+            ) : null
+          }
+        </div>
+
+        {
+          cover ? (
+            <Image
+              src={cover.img}
+              alt={cover.alt}
+              loading="eager"
+              class="rounded-xl bg-sweater-9"
+            />
           ) : null
         }
-      </div>
-    </section>
+      </section>
 
-    {
-      cover ? (
-        <Image
-          src={cover.img}
-          alt={cover.alt}
-          loading="eager"
-          class="rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8"
-        />
-      ) : null
-    }
-
-    <article class="space-y-5">
-      <CustomContent entryContent={Content} />
+      <section class="space-y-6">
+        <CustomContent entryContent={Content} />
+      </section>
     </article>
-  </div>
 
-  <div class="sticky top-12 hidden w-[250px] flex-col items-start bg-sweater-9 sm:flex">
-    {
-      headings.map(({ depth, slug, text }) => {
-        if (depth === 1) {
-          throw new Error(
-            `No MDX heading should be H1! Check whether the post "${title}" contains any.`,
-          );
-        }
+    <aside
+      class="sticky top-12 hidden h-[calc(100vh-3rem-3rem)] w-[200px] flex-col justify-between gap-12 overflow-y-auto sm:flex"
+    >
+      <nav class="space-y-1.5">
+        <h2 class="text-xl">Contents</h2>
 
-        return (
-          <Link href={`#${slug}`} className={depth === 3 ? "ml-3" : ""}>
-            {text}
-          </Link>
-        );
-      })
-    }
-  </div>
-</ContentLayout>
+        <div class="flex flex-col leading-snug text-sweater-4">
+          <a href="#" class="mb-3 transition-colors hover:text-sweater-2">(Back to top!)</a>
+
+          {
+            headings.map(({ depth, slug, text }, index) => {
+              if (depth === 1) {
+                throw new Error(
+                  `No MDX heading should be H1! Check whether the post "${title}" contains any.`,
+                );
+              }
+
+              if (depth > 3) {
+                throw new Error(
+                  `Used a heading level greater than H3 in "${title}." Maybe we should support it now?`,
+                );
+              }
+
+              // between H2 headings or if the next heading after H3 is a H2,
+              // we add spacing. else, add no spacing.
+              let spacing = 0;
+              if (index !== headings.length - 1) {
+                let next = headings[index + 1];
+                if (next.depth === 2 && (depth === 2 || depth === 3)) {
+                  spacing = 0.75;
+                }
+              }
+
+              return (
+                <a
+                  href={`#${slug}`}
+                  class="transition-colors hover:text-sweater-2"
+                  style={{
+                    paddingLeft: `${(depth - 2) * 1.5}rem`,
+                    marginBottom: `${spacing}rem`,
+                  }}
+                >
+                  {text}
+                </a>
+              );
+            })
+          }
+        </div>
+      </nav>
+    </aside>
+  </main>
+
+  <Footer />
+</BaseLayout>
