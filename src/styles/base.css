@@ -10,7 +10,7 @@
 
   html {
     font-size: 15px;
-    @apply bg-sweater-10 text-sweater-1;
+    @apply scroll-smooth bg-sweater-10 text-sweater-1;
   }
 
   h1,
