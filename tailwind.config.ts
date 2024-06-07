@@ -32,8 +32,8 @@ module.exports = {
       },
       screens: {
         content: "902.5px",
+        post: "710px",
         xs: "480px",
-        "2xs": "360px",
       },
       keyframes: {
         fade: {
