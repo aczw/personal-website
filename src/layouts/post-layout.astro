@@ -51,16 +51,7 @@ let { Content, headings } = await post.render();
           }
         </div>
 
-        {
-          cover ? (
-            <Image
-              src={cover.img}
-              alt={cover.alt}
-              loading="eager"
-              class="rounded-lg bg-sweater-9"
-            />
-          ) : null
-        }
+        {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" /> : null}
       </section>
 
       <section class="space-y-6">

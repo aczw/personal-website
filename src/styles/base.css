@@ -23,13 +23,13 @@
   }
 
   img {
-    @apply bg-sweater-9 italic;
+    @apply italic;
   }
 
   /* style elements inside rendered markdown */
   article {
     img {
-      @apply rounded-lg;
+      @apply rounded-lg bg-sweater-9;
     }
 
     /* inline code should have some padding and background */
