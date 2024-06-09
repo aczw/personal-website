@@ -69,10 +69,16 @@ let { Content, headings } = await post.render();
     </article>
 
     <aside
-      class="sticky top-7 hidden h-[calc(100vh-3rem-3rem-74px)] w-[200px] flex-col justify-between gap-12 overflow-y-auto post:flex"
+      class="sticky top-12 hidden h-[calc(100vh-10rem)] w-[200px] -translate-y-12 flex-col justify-between gap-12 overflow-y-auto post:flex"
     >
-      <nav class="space-y-1.5">
-        <h2 class="text-xl">Contents</h2>
+      <nav class="relative">
+        <div
+          aria-hidden="true"
+          class="sticky inset-x-0 top-0 h-12 bg-gradient-to-b from-sweater-10"
+        >
+        </div>
+
+        <h2 class="mb-1.5 text-xl">Contents</h2>
 
         <div class="flex flex-col leading-snug text-sweater-6">
           <a href="#" class="mb-3 text-sweater-3 transition-colors hover:text-sweater-1"
@@ -117,6 +123,12 @@ let { Content, headings } = await post.render();
               );
             })
           }
+        </div>
+
+        <div
+          aria-hidden="true"
+          class="sticky inset-x-0 bottom-0 h-12 bg-gradient-to-t from-sweater-10"
+        >
         </div>
       </nav>
     </aside>
