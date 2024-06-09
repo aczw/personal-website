@@ -30,7 +30,7 @@ let { Content, headings } = await post.render();
   <Header />
 
   <main class="mx-auto flex max-w-content items-start gap-7 px-7 py-12">
-    <article class:list={["post:w-[calc(100%-200px)] w-full", cover ? "space-y-6" : "space-y-12"]}>
+    <article class:list={["w-full post:w-[calc(100%-200px)]", cover ? "space-y-6" : "space-y-12"]}>
       <section class:list={["space-y-6", { "border-b-[1.5px] border-sweater-9 pb-12": !cover }]}>
         <div class="space-y-1.5">
           <h1 class="text-xl">{title}</h1>
@@ -57,7 +57,7 @@ let { Content, headings } = await post.render();
               src={cover.img}
               alt={cover.alt}
               loading="eager"
-              class="rounded-xl bg-sweater-9"
+              class="rounded-lg bg-sweater-9"
             />
           ) : null
         }
@@ -69,7 +69,7 @@ let { Content, headings } = await post.render();
     </article>
 
     <aside
-      class="post:flex sticky top-7 hidden h-[calc(100vh-3rem-3rem-74px)] w-[200px] flex-col justify-between gap-12 overflow-y-auto"
+      class="sticky top-7 hidden h-[calc(100vh-3rem-3rem-74px)] w-[200px] flex-col justify-between gap-12 overflow-y-auto post:flex"
     >
       <nav class="space-y-1.5">
         <h2 class="text-xl">Contents</h2>

@@ -10,10 +10,10 @@ type Props = ComponentProps<typeof BaseLayout> & {
   className?: string;
 };
 
-let { minHeight, className, ...attrs } = Astro.props;
+let { minHeight, className, ...props } = Astro.props;
 ---
 
-<BaseLayout {...attrs}>
+<BaseLayout {...props}>
   <Header />
 
   <main
