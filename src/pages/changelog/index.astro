@@ -1,0 +1,95 @@
+---
+import Link from "@/components/link.astro";
+import CustomContent from "@/components/mdx/custom-content.astro";
+import ContentLayout from "@/layouts/content-layout.astro";
+
+import { getCollection } from "astro:content";
+import { Calendar, GitCommitHorizontal } from "lucide-astro";
+
+let changelog = await getCollection("changelog");
+changelog.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<ContentLayout
+  meta={{
+    kind: "route",
+    title: "Changelog",
+    description: "All the updates I've made to my website, organized as a series of patch notes.",
+    ogImageParams: "Release notes for this website.",
+  }}
+>
+  <div class="space-y-1.5">
+    <h1 class="text-xl">Changelog</h1>
+
+    <div class="grid grid-cols-1 gap-6 xs:grid-cols-2">
+      <p>
+        All the updates I've made to this site, organized as a series of patch notes. See <Link
+          href="/posts/changelogs">this post</Link
+        > for more context.
+      </p>
+
+      <p class="subtitle">
+        For commits from before I started tracking changes, I've retroactively assigned version
+        numbers~
+      </p>
+    </div>
+  </div>
+
+  <div class="relative flex flex-col">
+    {
+      changelog.map(async (note) => {
+        let {
+          data: { version, date, commit },
+        } = note;
+
+        let { Content } = await note.render();
+
+        return (
+          <article class="flex flex-col items-start gap-6 border-t-[1.5px] border-sweater-9 py-12 sm:flex-row">
+            <section class="flex gap-9 sm:sticky sm:top-7 sm:w-1/4 sm:flex-col sm:gap-0">
+              <h2 class="font-mono font-[150] text-sweater-5 sm:mb-6">{version}</h2>
+
+              <time
+                datetime={date.toISOString()}
+                title={date.toLocaleString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
+                  timeZoneName: "short",
+                })}
+                class="subtitle flex w-fit items-center"
+              >
+                <Calendar aria-hidden="true" size={14} class="mr-1.5" />
+
+                {date.toLocaleString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </time>
+
+              <Link
+                href={
+                  commit
+                    ? `https://github.com/aczw/personal-website/commit/${commit}`
+                    : "https://github.com/aczw/personal-website/commits/"
+                }
+                target="_blank"
+                className="flex items-center font-mono font-[120] text-[14.5px]"
+              >
+                <GitCommitHorizontal aria-hidden="true" size={16} class="mr-1.5" />
+                {commit ? commit.slice(0, 7) : "latest"}
+              </Link>
+            </section>
+
+            <section class="w-full space-y-5 sm:w-3/4">
+              <CustomContent entryContent={Content} />
+            </section>
+          </article>
+        );
+      })
+    }
+  </div>
+</ContentLayout>

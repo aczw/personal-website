@@ -8,7 +8,7 @@ type Props = HTMLAttributes<"h2">;
 let { id, ...props } = Astro.props;
 ---
 
-<h2 id={id} class="group w-fit text-lg [&:not(:first-child)]:pt-9" {...props}>
+<h2 id={id} class="group w-fit text-lg first:scroll-mt-9 [&:not(:first-child)]:pt-9" {...props}>
   <a href={`#${id}`} class="relative flex items-center gap-1.5 content:-ml-3 content:pl-3">
     <slot />
 
