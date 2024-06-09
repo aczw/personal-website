@@ -1,7 +1,5 @@
 ---
-/**
- * @see https://web.dev/patterns/web-vitals-patterns/video/video-gif
- */
+// see https://web.dev/patterns/web-vitals-patterns/video/video-gif
 
 interface Props {
   className?: string;
@@ -13,20 +11,7 @@ const { className, folder, vids } = Astro.props;
 ---
 
 <div class="py-2">
-  <video
-    autoplay
-    loop
-    muted
-    playsinline
-    class:list={["rounded-xl bg-sweater-9", className]}
-  >
-    {
-      vids.map(({ name, type }) => (
-        <source
-          src={`/_files/${folder}/${name}`}
-          type={type}
-        />
-      ))
-    }
+  <video autoplay loop muted playsinline class:list={["rounded-lg bg-sweater-9", className]}>
+    {vids.map(({ name, type }) => <source src={`/_files/${folder}/${name}`} type={type} />)}
   </video>
 </div>

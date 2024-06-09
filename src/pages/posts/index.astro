@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import ContentLayout from "@/layouts/content-layout.astro";
 
 let posts = await getCollection("posts");
+posts = posts.filter((post) => import.meta.env.DEV || post.data.published);
 posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 ---
 

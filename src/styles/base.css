@@ -23,21 +23,52 @@
   }
 
   img {
-    @apply italic;
+    @apply bg-sweater-9 italic;
   }
 
-  /* inline code should have some padding and background */
-  code {
-    @apply break-words rounded-md bg-sweater-9 px-1.5 py-0.5 text-[14px] font-[100];
-  }
+  /* style elements inside rendered markdown */
+  article {
+    img {
+      @apply rounded-lg;
+    }
 
-  pre {
-    @apply rounded-xl p-4;
-  }
+    /* inline code should have some padding and background */
+    code {
+      @apply break-words rounded-md bg-sweater-9 px-1 py-0.5 text-[14px] font-[100];
+    }
 
-  /* remove padding, background, and word breaks in codeblocks */
-  pre > code {
-    @apply break-normal bg-transparent p-0;
+    /* treat code differently inside callouts, but let utilities override it */
+    aside {
+      code {
+        @apply bg-sweater-8;
+      }
+    }
+
+    pre {
+      @apply rounded-lg p-4;
+
+      /* but remove padding, background, and word breaks in code blocks */
+      > code {
+        @apply break-normal bg-transparent p-0;
+      }
+    }
+
+    del {
+      @apply cursor-not-allowed text-sweater-6 line-through;
+    }
+
+    li {
+      @apply pl-4;
+    }
+
+    ul {
+      list-style-type: "➔";
+      @apply ml-6 list-outside space-y-2.5;
+
+      ::marker {
+        @apply text-sweater-4;
+      }
+    }
   }
 
   @font-face {
@@ -73,12 +104,12 @@
   }
 
   .berkeley {
-    font-size: 14.5px;
+    font-size: 14px;
     font-weight: 120;
     @apply font-mono;
   }
 
   .subtitle {
-    @apply text-sweater-2 opacity-90;
+    @apply text-sweater-2/85;
   }
 }
