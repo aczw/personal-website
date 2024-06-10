@@ -1,17 +1,22 @@
 ---
+import type { ContentEntryMap } from "astro:content";
+
 // see https://web.dev/patterns/web-vitals-patterns/video/video-gif
 
 interface Props {
-  className?: string;
-  folder: string;
-  vids: { name: string; type: string }[];
+  content: {
+    collection: keyof ContentEntryMap;
+    folder: string;
+  };
+  name: string;
 }
 
-const { className, folder, vids } = Astro.props;
+const {
+  content: { collection, folder },
+  name,
+} = Astro.props;
 ---
 
-<div class="py-2">
-  <video autoplay loop muted playsinline class:list={["rounded-lg bg-sweater-9", className]}>
-    {vids.map(({ name, type }) => <source src={`/_files/${folder}/${name}`} type={type} />)}
-  </video>
-</div>
+<video autoplay loop muted playsinline class="rounded-lg bg-sweater-9">
+  <source src={`/_files/${collection}/${folder}/${name}.mp4`} type="video/mp4" />
+</video>
