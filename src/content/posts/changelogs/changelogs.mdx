@@ -30,6 +30,18 @@ What does semver mean in the context of my site? There aren't "breaking API chan
 
 Am I actually going to update the version number for every single little change I made? Of course not. I'm not trying to meticulously track every detail I change; that's not the purpose here.
 
+### Rewriting history
+
+Actually sitting down and assigning version numbers proved to be harder than I thought. For the longest time I've been casually assigning numbers to new releases and nonchalantly incrementing the version count when I felt like it. Now I'm facing the consequences.
+
+For example, what I've always referred to as v1 shouldn't actually be the first stable version, because I never finished it. I restarted in the middle, so nothing was finalized. It had the v1 title simply because v2 was completely different.
+
+But this is not how semver works. If it's not stable, then it's not stable. And if that's true, then it does not deserve a major version change... it should still be in v0.x.0 territory.
+
+So yeah, I shifted everything back. It's now referred to as [v0.4.0](/changelog#v040/v040) and what used to be v2 is now the definite [v1.0.0 release](/changelog#v100). What was originally the v5 release has now become the v4 release.
+
+I think I'm the first person in history to release a new version with a _smaller_ version number than the previous release. No one else could be this stupid.
+
 ## Updating package.json with the current version
 
 It's not like I will ever publish the codebase as a NPM package, but the benefit to this is that I have a single source of truth for the current version of the site.
@@ -43,6 +55,8 @@ import { version } from "../../package.json";
 
 <a href="/changelog">v{version}</a>
 ```
+
+Earlier I said that I was casually updating the version number whenever I felt like it. This is where I was doing it. So, I actually had to _downgrade_ the package.json version to correct my mistakes. Thank god this package is not public.
 
 ## Sticky sidebar
 
