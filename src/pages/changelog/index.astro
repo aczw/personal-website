@@ -35,18 +35,35 @@ changelog.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
     </div>
   </div>
 
+  <div class="space-y-1.5">
+    <h2 class="text-lg">Jump to a version</h2>
+    <ul class="grid grid-cols-3 gap-y-1 xs:grid-cols-5 content:grid-cols-7">
+      {
+        changelog.map(({ data: { version }, slug }) => (
+          <li>
+            <Link href={`#${slug}`}>{version}</Link>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
   <div class="relative flex flex-col">
     {
       changelog.map(async (note) => {
         let {
           data: { version, date, commit },
+          slug,
         } = note;
 
         let { Content } = await note.render();
 
         return (
-          <article class="flex flex-col items-start gap-6 border-t-[1.5px] border-sweater-9 py-12 sm:flex-row">
-            <section class="flex gap-9 sm:sticky sm:top-7 sm:w-1/4 sm:flex-col sm:gap-0">
+          <article
+            id={slug}
+            class="group/note flex flex-col items-start gap-6 border-t-[1.5px] border-sweater-9 py-12 sm:flex-row"
+          >
+            <section class="flex flex-col sm:sticky sm:top-7 sm:w-1/4 sm:gap-0">
               <h2 class="font-mono font-[150] text-sweater-5 sm:mb-6">{version}</h2>
 
               <time
@@ -61,7 +78,7 @@ changelog.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
                 })}
                 class="subtitle flex w-fit items-center"
               >
-                <Calendar aria-hidden="true" size={14} class="mr-1.5" />
+                <Calendar aria-hidden="true" size={14} class="mr-1.5 hidden shrink-0 sm:block" />
 
                 {date.toLocaleString("en-US", {
                   month: "short",
@@ -77,14 +94,22 @@ changelog.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
                     : "https://github.com/aczw/personal-website/commits/"
                 }
                 target="_blank"
-                className="flex items-center font-mono font-[120] text-[14.5px]"
+                className="hidden sm:flex sm:mb-8 items-center berkeley"
               >
-                <GitCommitHorizontal aria-hidden="true" size={16} class="mr-1.5" />
+                <GitCommitHorizontal aria-hidden="true" size={16} class="mr-1.5 shrink-0" />
                 {commit ? commit.slice(0, 7) : "latest"}
               </Link>
+
+              <a
+                href="#"
+                class="pill hidden w-fit leading-none transition sm:block sm:opacity-0 sm:group-hover/note:opacity-100"
+                data-quiet
+              >
+                Back to top
+              </a>
             </section>
 
-            <section class="space-y-6 sm:w-3/4">
+            <section class="w-full space-y-6 sm:w-3/4">
               <CustomContent entryContent={Content} />
             </section>
           </article>
