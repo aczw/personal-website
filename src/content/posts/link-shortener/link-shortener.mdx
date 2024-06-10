@@ -129,7 +129,7 @@ Choosing colors is hard, so I used [Randoma11y](https://go.czw.sh/Z3gWKWH) to ge
 
 The rest of the site is pretty standard, but while making it I noticed one tiny, small, insignificant detail. It occurred whenever I clicked on the "Copy to clipboard" button:
 
-<VideoGif folder="link-shortener" vids={[{ name: "copy-bad.mp4", type: "video/mp4" }]} />
+<VideoGif content={{ collection: "posts", folder: "link-shortener" }} name="copy-bad" />
 
 The button changes width! That's so annoying! And not really important! But I had to fix it. The solution I came up with was to place two `<span>` tags inside the `<button>`, and when it was pressed, it would hide "Copy to clipboard" and show the other. It looks like this:
 
@@ -146,7 +146,7 @@ The key part is that "Copy to clipboard" remains in the DOM tree; I'm just hidin
 
 I then attached an event listener to the button and used `setTimeout()` to revert the changes after a short duration. Now the button width remains the same:
 
-<VideoGif folder="link-shortener" vids={[{ name: "copy-good.mp4", type: "video/mp4" }]} />
+<VideoGif content={{ collection: "posts", folder: "link-shortener" }} name="copy-good" />
 
 ## Conclusion
 
