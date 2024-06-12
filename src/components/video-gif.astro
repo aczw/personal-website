@@ -1,11 +1,11 @@
 ---
-import type { ContentEntryMap } from "astro:content";
+import type { ContentCollectionKey } from "astro:content";
 
 // see https://web.dev/patterns/web-vitals-patterns/video/video-gif
 
 interface Props {
   content: {
-    collection: keyof ContentEntryMap;
+    collection: ContentCollectionKey;
     folder: string;
   };
   name: string;
