@@ -1,0 +1,64 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import type { CollectionEntry } from "astro:content";
+
+import Link from "@/components/link.astro";
+import CustomContent from "@/components/mdx/custom-content.astro";
+import { Calendar, GitCommitHorizontal } from "lucide-astro";
+
+type Props = {
+  release: CollectionEntry<"changelog">;
+  className?: string;
+} & Omit<HTMLAttributes<"article">, "class">;
+
+let { release, className, ...props } = Astro.props;
+let { Content } = await release.render();
+
+let {
+  data: { version, date, commit },
+} = release;
+---
+
+<article class:list={["flex flex-col items-start gap-6 sm:flex-row", className]} {...props}>
+  <section class="flex shrink-0 flex-col sm:sticky sm:top-7 sm:w-1/5 sm:gap-0">
+    <h2 class="font-mono font-[150] text-sweater-5 sm:mb-6">{version}</h2>
+
+    <time
+      datetime={date.toISOString()}
+      title={date.toLocaleString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        timeZoneName: "short",
+      })}
+      class="subtitle flex w-fit items-center"
+    >
+      <Calendar aria-hidden="true" size={14} class="mr-1.5 hidden shrink-0 sm:block" />
+
+      {
+        date.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+        })
+      }
+    </time>
+
+    <Link
+      href={commit
+        ? `https://github.com/aczw/personal-website/commit/${commit}`
+        : "https://github.com/aczw/personal-website/commits/"}
+      target="_blank"
+      className="berkeley hidden items-center sm:mb-6 sm:flex"
+    >
+      <GitCommitHorizontal aria-hidden="true" size={16} class="mr-1.5 shrink-0" />
+      {commit ? commit.slice(0, 7) : "latest"}
+    </Link>
+  </section>
+
+  <section class="w-full space-y-6 sm:w-3/4">
+    <CustomContent entryContent={Content} />
+  </section>
+</article>
