@@ -4,10 +4,13 @@ import CustomContent from "@/components/mdx/custom-content.astro";
 import ContentLayout from "@/layouts/content-layout.astro";
 
 import { getCollection } from "astro:content";
-import { Calendar, GitCommitHorizontal } from "lucide-astro";
+import { ArrowRight, Calendar, GitCommitHorizontal } from "lucide-astro";
 
 let changelog = await getCollection("changelog");
 changelog.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+let displayed = changelog.slice(0, 3);
+let previous = changelog[3];
 ---
 
 <ContentLayout
@@ -18,52 +21,49 @@ changelog.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
     ogImageParams: "Release notes for this website.",
   }}
 >
-  <div class="space-y-1.5">
-    <h1 class="text-xl">Changelog</h1>
+  <div>
+    <h1 class="mb-1.5 animate-fade text-xl [--order:0]">Changelog</h1>
 
-    <div class="grid grid-cols-1 gap-6 xs:grid-cols-2">
-      <p>
+    <div class="mb-12 grid grid-cols-1 gap-6 xs:grid-cols-2">
+      <p class="animate-fade [--order:1]">
         All the updates I've made to this site, organized as a series of patch notes. See <Link
-          href="/posts/changelogs">this post</Link
+          href="/posts/changelogs">my post on changelogs</Link
         > for more context.
       </p>
-
-      <p class="subtitle">
-        For commits from before I started tracking changes, I've retroactively assigned version
-        numbers~
+      <p class="animate-fade [--order:2]">
+        Only the three most recent releases are shown here. Feel free to visit any older versions
+        via the links below.
       </p>
     </div>
-  </div>
 
-  <div class="space-y-1.5">
-    <h2 class="text-lg">Jump to a version</h2>
-    <ul class="grid grid-cols-3 gap-y-1 xs:grid-cols-5 content:grid-cols-7">
+    <ul
+      class="grid grid-cols-3 gap-y-1 border-y-[1.5px] border-sweater-9 py-6 [--fade-speed:50ms] xs:grid-cols-5 content:grid-cols-7"
+    >
       {
-        changelog.map(({ data: { version }, slug }) => (
-          <li>
-            <Link href={`#${slug}`}>{version}</Link>
+        changelog.map(({ data: { version }, slug }, index) => (
+          <li class="animate-fade" style={{ "--order": index }}>
+            <Link href={`/changelog/${slug}`}>{version}</Link>
           </li>
         ))
       }
     </ul>
   </div>
 
-  <div class="relative flex flex-col">
+  <div class="relative flex flex-col [--fade-speed:70ms]">
     {
-      changelog.map(async (note) => {
+      displayed.map(async (note, index) => {
         let {
           data: { version, date, commit },
-          slug,
         } = note;
 
         let { Content } = await note.render();
 
         return (
           <article
-            id={slug}
-            class="group/note flex flex-col items-start gap-6 border-t-[1.5px] border-sweater-9 py-12 sm:flex-row"
+            class="flex animate-fade flex-col items-start gap-6 border-t-[1.5px] border-sweater-9 py-12 first:border-t-0 first:pt-0 sm:flex-row"
+            style={{ "--order": index + 1 }}
           >
-            <section class="flex flex-col sm:sticky sm:top-7 sm:w-1/4 sm:gap-0">
+            <section class="flex shrink-0 flex-col sm:sticky sm:top-7 sm:w-1/5 sm:gap-0">
               <h2 class="font-mono font-[150] text-sweater-5 sm:mb-6">{version}</h2>
 
               <time
@@ -99,14 +99,6 @@ changelog.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
                 <GitCommitHorizontal aria-hidden="true" size={16} class="mr-1.5 shrink-0" />
                 {commit ? commit.slice(0, 7) : "latest"}
               </Link>
-
-              <a
-                href="#"
-                class="pill hidden w-fit leading-none transition sm:block sm:opacity-0 sm:group-hover/note:opacity-100"
-                data-quiet
-              >
-                Back to top
-              </a>
             </section>
 
             <section class="w-full space-y-6 sm:w-3/4">
@@ -116,5 +108,41 @@ changelog.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
         );
       })
     }
+
+    <div class="flex flex-col gap-3 border-t-[1.5px] border-sweater-9 py-12 xs:flex-row xs:gap-6">
+      <h2 class="w-full animate-fade [--order:0] xs:w-1/5">Previous changelog</h2>
+
+      <a
+        href={`/changelog/${previous.slug}`}
+        class="group flex w-full animate-fade items-center justify-between rounded-lg bg-sweater-9 p-4 transition-colors [--order:1] hover:bg-sweater-8 xs:w-4/5"
+      >
+        <div>
+          <p
+            class="font-mono font-[150] text-sweater-5 transition-colors group-hover:text-sweater-4"
+          >
+            {previous.data.version}
+          </p>
+          <p class="subtitle flex items-center">
+            Released
+            {
+              previous.data.date.toLocaleString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })
+            }
+          </p>
+        </div>
+
+        <div
+          aria-hidden="true"
+          class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
+        >
+          <ArrowRight
+            class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4"
+          />
+        </div>
+      </a>
+    </div>
   </div>
 </ContentLayout>

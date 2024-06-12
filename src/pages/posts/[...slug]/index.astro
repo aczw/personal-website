@@ -6,7 +6,7 @@ import NotFoundPage from "@/pages/[...slug]/index.astro";
 import PostLayout from "@/layouts/post-layout.astro";
 
 let posts = await getCollection("posts");
-let currPost = posts.find((project) => project.slug === Astro.params.slug);
+let currPost = posts.find((post) => post.slug === Astro.params.slug);
 
 // if the current slug doesn't exist (aka the post doesn't exist), or the post
 // exists but is currently a draft, then we return a 404 for this request, and
