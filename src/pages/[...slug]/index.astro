@@ -3,14 +3,14 @@ import { Image } from "astro:assets";
 
 import ContentLayout from "@/layouts/content-layout.astro";
 
-import notFound from "@/assets/not-found.png";
-
 import Link from "@/components/link.astro";
 
 Astro.response.status = 404;
 Astro.response.statusText = "Page not found";
 
 let fun = [
+  "404",
+  "pagenotfound",
   "soitgoes",
   "aczw",
   "newfaces",
@@ -24,6 +24,10 @@ let fun = [
 let pick = fun[Math.floor(Math.random() * fun.length)];
 let offset = Math.floor(Math.random() * pick.length);
 let scrambled = pick.slice(offset) + pick.slice(0, offset);
+
+let requestUrl = new URL(Astro.request.url);
+let params = requestUrl.searchParams;
+const hasUwu = params.has("uwu");
 ---
 
 <ContentLayout
@@ -36,25 +40,36 @@ let scrambled = pick.slice(offset) + pick.slice(0, offset);
     ogImageParams: "Page not found.",
   }}
 >
-  <Image
-    src={notFound}
-    alt="Page not found"
-    class="mb-16 w-[clamp(400px,80%,500px)] animate-fade [--order:0]"
-  />
+  {
+    hasUwu ? (
+      <Image
+        src={import("@/assets/not-found.png")}
+        alt="Page not found"
+        class="mb-16 w-[clamp(400px,80%,500px)] animate-fade [--order:0]"
+      />
+    ) : (
+      <p
+        id="scroll"
+        aria-hidden="true"
+        data-scrambled={scrambled}
+        class="w-fit animate-fade cursor-not-allowed rounded-full bg-sweater-9 px-6 py-2 font-mono text-[clamp(30px,7vw,90px)] italic text-sweater-7 [--order:0] sm:px-12"
+      >
+        {scrambled}
+      </p>
+    )
+  }
 
-  <section class="flex flex-col items-center gap-3">
-    <p class="animate-fade [--order:1]">
-      <Link href="https://twitter.com/sawaratsuki1004" target="_blank">Source.</Link>
+  <section class="flex animate-fade flex-col items-center [--order:1]">
+    <p>
+      {
+        hasUwu ? (
+          <Link href="https://twitter.com/sawaratsuki1004" target="_blank">
+            {"Source."}
+          </Link>
+        ) : null
+      }
+
       <span class="subtitle">Sorry, page not found~</span>
-    </p>
-
-    <p
-      id="scroll"
-      aria-hidden="true"
-      data-scrambled={scrambled}
-      class="berkeley w-fit animate-fade rounded-lg bg-sweater-9 px-2 py-0.5 italic text-sweater-6 [--order:2]"
-    >
-      {scrambled}
     </p>
   </section>
 </ContentLayout>
@@ -62,9 +77,9 @@ let scrambled = pick.slice(offset) + pick.slice(0, offset);
 <script>
   // for some reason, whitespace is added to the front and end of the word, so we can't
   // use scroll.textContent directly at first. instead, store the scrambled word in the dataset
-  const scroll = document.getElementById("scroll");
+  let scroll = document.getElementById("scroll");
 
-  // if the element doesn't exist, then the 404 component wasn't rendered and the post exists
+  // scroll element is only visible if ?uwu mode is off
   if (scroll) {
     let text = scroll.dataset.scrambled!;
 
@@ -74,6 +89,6 @@ let scrambled = pick.slice(offset) + pick.slice(0, offset);
     setInterval(() => {
       scroll.textContent = text.slice(1) + text[0];
       text = scroll.textContent;
-    }, 500);
+    }, 350);
   }
 </script>
