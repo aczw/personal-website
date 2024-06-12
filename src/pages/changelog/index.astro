@@ -1,16 +1,18 @@
 ---
-import Link from "@/components/link.astro";
-import CustomContent from "@/components/mdx/custom-content.astro";
+import { getCollection } from "astro:content";
+
+import { ArrowRight } from "lucide-astro";
+
 import ContentLayout from "@/layouts/content-layout.astro";
 
-import { getCollection } from "astro:content";
-import { ArrowRight, Calendar, GitCommitHorizontal } from "lucide-astro";
+import Link from "@/components/link.astro";
+import ReleaseContent from "@/components/mdx/release-content.astro";
 
-let changelog = await getCollection("changelog");
-changelog.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+let releases = await getCollection("changelog");
+releases.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-let displayed = changelog.slice(0, 3);
-let previous = changelog[3];
+let displayed = releases.slice(0, 3);
+let previous = releases[3];
 ---
 
 <ContentLayout
@@ -21,6 +23,14 @@ let previous = changelog[3];
     ogImageParams: "Release notes for this website.",
   }}
 >
+  <div>
+    TODO
+
+    <p>update meta for baselayout to generate og image for changelogs</p>
+    <p>update OG api to generate for changelogs</p>
+    <p>update sitemap.xml to also include changelogs</p>
+  </div>
+
   <div>
     <h1 class="mb-1.5 animate-fade text-xl [--order:0]">Changelog</h1>
 
@@ -40,7 +50,7 @@ let previous = changelog[3];
       class="grid grid-cols-3 gap-y-1 border-y-[1.5px] border-sweater-9 py-6 [--fade-speed:50ms] xs:grid-cols-5 content:grid-cols-7"
     >
       {
-        changelog.map(({ data: { version }, slug }, index) => (
+        releases.map(({ data: { version }, slug }, index) => (
           <li class="animate-fade" style={{ "--order": index }}>
             <Link href={`/changelog/${slug}`}>{version}</Link>
           </li>
@@ -51,62 +61,13 @@ let previous = changelog[3];
 
   <div class="relative flex flex-col [--fade-speed:70ms]">
     {
-      displayed.map(async (note, index) => {
-        let {
-          data: { version, date, commit },
-        } = note;
-
-        let { Content } = await note.render();
-
-        return (
-          <article
-            class="flex animate-fade flex-col items-start gap-6 border-t-[1.5px] border-sweater-9 py-12 first:border-t-0 first:pt-0 sm:flex-row"
-            style={{ "--order": index + 1 }}
-          >
-            <section class="flex shrink-0 flex-col sm:sticky sm:top-7 sm:w-1/5 sm:gap-0">
-              <h2 class="font-mono font-[150] text-sweater-5 sm:mb-6">{version}</h2>
-
-              <time
-                datetime={date.toISOString()}
-                title={date.toLocaleString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  timeZoneName: "short",
-                })}
-                class="subtitle flex w-fit items-center"
-              >
-                <Calendar aria-hidden="true" size={14} class="mr-1.5 hidden shrink-0 sm:block" />
-
-                {date.toLocaleString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </time>
-
-              <Link
-                href={
-                  commit
-                    ? `https://github.com/aczw/personal-website/commit/${commit}`
-                    : "https://github.com/aczw/personal-website/commits/"
-                }
-                target="_blank"
-                className="hidden sm:flex sm:mb-8 items-center berkeley"
-              >
-                <GitCommitHorizontal aria-hidden="true" size={16} class="mr-1.5 shrink-0" />
-                {commit ? commit.slice(0, 7) : "latest"}
-              </Link>
-            </section>
-
-            <section class="w-full space-y-6 sm:w-3/4">
-              <CustomContent entryContent={Content} />
-            </section>
-          </article>
-        );
-      })
+      displayed.map(async (release, index) => (
+        <ReleaseContent
+          release={release}
+          className="animate-fade border-t-[1.5px] border-sweater-9 py-12 first:border-t-0 first:pt-0"
+          style={{ "--order": index + 1 }}
+        />
+      ))
     }
 
     <div class="flex flex-col gap-3 border-t-[1.5px] border-sweater-9 py-12 xs:flex-row xs:gap-6">
@@ -122,7 +83,7 @@ let previous = changelog[3];
           >
             {previous.data.version}
           </p>
-          <p class="subtitle flex items-center">
+          <p class="subtitle">
             Released
             {
               previous.data.date.toLocaleString("en-US", {
