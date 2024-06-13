@@ -39,12 +39,17 @@ let previous = releases[3];
     </div>
 
     <ul
-      class="grid grid-cols-3 gap-y-1 border-y-[1.5px] border-sweater-9 py-6 [--fade-speed:50ms] xs:grid-cols-5 content:grid-cols-7"
+      class="pointer-events-none grid grid-cols-3 gap-y-1 border-y-[1.5px] border-sweater-9 py-6 [--fade-speed:50ms] xs:grid-cols-5 content:grid-cols-7 [&>li:not(:hover)]:hover:brightness-[65%]"
     >
       {
         releases.map(({ data: { version }, slug }, index) => (
-          <li class="animate-fade" style={{ "--order": index }}>
-            <Link href={`/changelog/${slug}`}>{version}</Link>
+          <li class="animate-fade transition-[filter]" style={{ "--order": index }}>
+            <Link
+              href={`/changelog/${slug}`}
+              className="pointer-events-auto transition-[filter,opacity,color]"
+            >
+              {version}
+            </Link>
           </li>
         ))
       }
