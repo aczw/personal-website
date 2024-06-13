@@ -68,7 +68,10 @@ let previous = releases[3];
     }
 
     <div class="flex flex-col gap-3 border-t-[1.5px] border-sweater-9 py-12 xs:flex-row xs:gap-6">
-      <h2 class="w-full animate-fade [--order:0] xs:w-1/5">Previous changelog</h2>
+      <div class="w-full animate-fade [--order:0] xs:w-1/5">
+        <h2>Previous changelog</h2>
+        <p class="subtitle">Read more</p>
+      </div>
 
       <a
         href={`/changelog/${previous.slug}`}
