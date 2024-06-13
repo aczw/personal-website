@@ -22,10 +22,8 @@ let { release, next, previous } = Astro.props;
 <ContentLayout
   minHeight
   meta={{
-    kind: "route",
-    title: `${release.data.version} release`,
-    description: "Release notes for {THIS VERSION} of this website.",
-    ogImageParams: release.data.version,
+    kind: "release",
+    release,
   }}
 >
   <div class="flex flex-col gap-3.5 border-b-[1.5px] border-sweater-9 pb-12 xs:flex-row xs:gap-7">
