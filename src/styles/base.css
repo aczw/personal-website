@@ -69,6 +69,15 @@
         @apply text-sweater-4;
       }
     }
+
+    figure {
+      font-size: 0.92rem;
+      @apply subtitle space-y-2 pb-2 transition-[color,opacity];
+
+      &:hover {
+        @apply text-sweater-1;
+      }
+    }
   }
 
   @font-face {
