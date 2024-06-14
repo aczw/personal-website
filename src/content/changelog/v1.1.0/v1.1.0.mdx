@@ -54,10 +54,10 @@ export default config;
 We can now plop these animations onto any HTML element we want. They fire as soon as the HTML element is rendered, so they're played on entry. Furthermore, via variables like `--animation-delay`, we can further customize each element by setting different values.
 
 ```tsx
-<ul class="animate-appear [--animation-delay:50ms]">
-  {elements.map((elt, index) => (
+<ul>
+  {listOfStuff.map((item, index) => (
     <li class="animate-appear" style={{ "--animation-delay": `${index * 50}ms` }}>
-      {elt.content}
+      {item}
     </li>
   ))}
 </ul>

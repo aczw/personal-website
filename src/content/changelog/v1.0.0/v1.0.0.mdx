@@ -57,15 +57,25 @@ Having made the switch, I once again [completely deleted everything](https://git
 
 I now turned to addressing my issues with the previous design. Unable to give up the idea of grouping things together, I experimented with condensing key components of my site into their own chunks. This is when I started grouping related topics into individual "blocks."
 
-> Very much inspired by the large shapes and border radii of Material You.
-
-![Various variations of the homepage playing with the blocks idea.](./blocks.png)
+<figure>
+  ![Various prototypes of the homepage open in a Figma file.](./blocks.png){" "}
+  <figcaption>
+    **Various versions of the homepage.** Prototyped in Figma. Very much inspired by the large
+    shapes and border radii of Material You.
+  </figcaption>
+</figure>
 
 I like how it contained the chaos a bit more. Depending on the screen size, the blocks would collapse as well, which I found interesting. The grid layout, which tries to center itself based on the available screen space, lended to more structure overall.
 
 I also chose to add a dedicated projects and portfolio page. There was just no way I was going to fit everything in one page.
 
-![The expanded color palette, now with 10 colors.](./sweater.png)
+<figure>
+  ![The expanded color palette open in Figma. Now has 10 colors.](./sweater.png)
+  <figcaption>
+    **"Sweater" color palette.** An expanded version of the previous palette, now with four more
+    colors.
+  </figcaption>
+</figure>
 
 Finally, I spent some time updating the limited color palette I was working with. I chose a wider range of purples that were... less pink. I was greatly inspired by, and continue to be inspired by the way Material You handles colors and their applications.
 
@@ -73,11 +83,13 @@ Finally, I spent some time updating the limited color palette I was working with
 
 Bit of background: I use [Last.fm](https://last.fm) to track my music listening history. This is because I don't want to wait until Spotify Wrapped to see my music stats, and also because it's platform agnostic: I have scrobbles from Spotify, Apple Music, and even my Plex server.
 
-Leveraging its API, I now fetch live music data about my Last.fm profile, including whether I am currently listening to a song, right now. ~~Yes, I'm insane and obsessed.~~
+Leveraging its API, I now fetch live music data about my Last.fm profile, including whether I am currently listening to a song, right now. ~~Yes, I'm insane.~~
 
 To do this, I'm currently using [SWR](https://swr.vercel.app) to manage data fetching, revalidation, and focus states. The library makes it really easy to type the response and conditionally render UI based on the current state. Its API is a React hook, so my component looks something like this:
 
 ```tsx
+import useSWR from "swr";
+
 interface LastFmResponse {
   recenttracks: {
     track: {
@@ -99,7 +111,7 @@ const LastFm = () => {
   // otherwise, we're free to consume the data and use it
   return (
     <div>
-      <p>I'm listening to this song right now:</p>
+      <p>I'm listening to this song right now!</p>
       <p>{data.recenttracks.track[0]}</p>
     </div>
   );
@@ -123,7 +135,7 @@ This whole ordeal took ~2 months to complete. I still can't believe it actually 
 - Still haven't done theme switching, still wanna do it.
 - The links on the projects page just go to a repo or video. Eventually I wanna publish write-ups for each of them.
 
-Until next time~
+Thanks for reading. Until next time~
 
 > **From the future:** here are screenshots of what `/`, `/projects`, and `/portfolio` looked like respectively.
 >
