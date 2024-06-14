@@ -1,8 +1,9 @@
+import { defineConfig } from "astro/config";
+
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
-import { defineConfig } from "astro/config";
 
 import { existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
