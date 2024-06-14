@@ -1,0 +1,81 @@
+---
+version: "v1.3.0"
+date: 2023-10-27T18:13:00.000Z
+commit: "54a42b9c3d0ce2a09f60b3596642c0181343d539"
+
+slug: "1.3.0"
+---
+
+Some smaller changes:
+
+- Add a .ico favicon (previously I only had PNG and SVG versions).
+- On `/portfolio`, I've grouped my pieces into three different sections: graphic design, art, and music related. I also directly link to my Behance now.
+- _Finally_ fix interop between Prettier and Astro. Now I don't have to manually run the formatter anymore!
+- Make headings use the monospace font by default. Wrapped in the `@layer` directive!
+- My projects page now uses a two-column setup. This really lets the images and blurbs stand out more.
+
+> **From the future:** here it is.
+>
+> ![My projects are open, arranged in a 2-column grid.](./v1.3.0-projects.png)
+
+## Collapsing the grid on mobile
+
+I found that the grid layout on the homepage is a little... awkward when the screen conditions aren't perfect. How I'm currently solving it is reducing the number of grid columns. However, this leads to some _interesting_ results.
+
+<figure>
+  ![Browser window vertically split into unequal sections, with my homepage open in
+  both.](./weird-layouts.png)
+  <figcaption>
+    **Testing display sizes.** Two weird-looking results on less than ideal screens.
+  </figcaption>
+</figure>
+
+I used to justify it to myself by saying something, like, the four colored squares are interesting to look at, and makes it look on purpose. In reality, I just had no idea how to handle screen sizes between 640px and 1080px.
+
+So I did the normal, sane thing (for once), which is to collapse to a more standard layout when space gets tight. Look, I want people to actually be able to _read it_, thank you.
+
+> **From the future:** what it looks like now. Miku!
+>
+> ![Browser window split vertically, one section has the new mobile layout.](./v1.3.0-mobile.png)
+
+As part of these changes, I've given myself a new Tailwind width utility called `prose`, which is exactly 670px. This seems to be around the max width that most people use, and it's because scanning across longer lines is harder to read. A really subtle reason, but it makes sense.
+
+## Theming! For, like, a few minutes
+
+Behold! Unfortunately, this is not accessible and I'm not releasing it.
+
+<figure>
+  ![The homepage, now tinted green.](./dash-homepage.png)
+  <figcaption>**The homepage.** Steeped in the "Dash" color palette from before.</figcaption>
+</figure>
+
+The original idea was this: you could switch colors via the little Space Invaders alien and dragon emoji. However, the theme that you choose should be remembered by the browser; that is, it shouldn't reset to purple everytime you visit the site.
+
+So what I did was try adapting this little snippet from [this Astro guide](https://docs.astro.build/en/tutorial/6-islands/2/#add-client-side-interactivity), which checks the browser's local storage before setting the theme.
+
+```astro
+<script is:inline>
+  const getTheme = () => {
+    const localTheme = localStorage.getItem("theme");
+
+    if (typeof localStorage !== "undefined" && localTheme) {
+      return localTheme;
+    }
+
+    return document.documentElement.dataset.theme;
+  };
+
+  const theme = getTheme();
+
+  document.documentElement.dataset.theme = theme;
+  localStorage.setItem("theme", theme);
+</script>
+```
+
+Unfortunately, the page would always flash white or purple for a split second, _and then_ switch over to green (if that is the current theme). There is something about the order in which the script is processed that is affecting the outcome, and I can't figure it out.
+
+> **From the future:** the funniest part about this is that I literally cannot replicate this bug right now. So I feel like I'm lying to myself.
+
+So yeah, I admit defeat for now. I'll try revisiting it again sometime in the future. The thing is that this is not the most important thing I should be focusing on right now, and I've already wasted so much time debugging it.
+
+But you know what they say, lose the battle and win the war. Or something. 🏳️
