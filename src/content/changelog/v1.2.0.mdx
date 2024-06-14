@@ -13,6 +13,18 @@ Minimal changes this time around.
 - General improvements, including more consistent padding/spacing and wording changes.
 - Added links to each portfolio piece. They mostly go to my [Behance profile](https://www.behance.net/charleszw) which has a lot more content.
 
+## Scrolling text
+
+Inspired by the scrolling LED projects by [Jenny Holzer](https://projects.jennyholzer.com/LEDs), I wanted to do something similar somewhere on the site, as a sort of easter egg. I really liked the effect it had over smoothly scrolling text. After figuring out `setInterval` and some string manipulation, we now have this in the footer. [Rest in peace, Mac.](https://www.youtube.com/watch?v=Uf24Uk6ZMLQ)
+
+<div style="border-width:5px;border-radius:0.5rem;border-color:#1D193D">
+  <VideoGif content={{ collection: "changelog", folder: "v1.2.0" }} name="v1.2.0-scrolling" />
+</div>
+
+> **From the future:** I had to absolutely _hunt down_ where I added this change. Turns out it was tucked away in a random commit called ["simplify things a bit"](https://github.com/aczw/personal-website/commit/130f887397655893b0bf566d183bb4db30e3bf51) where I, in fact, made my footer more complicated.
+>
+> Also, check out the [post-mortem music video](https://www.youtube.com/watch?v=hT7uYDjFfrY) for So It Goes, it's gorgeous.
+
 ## Sticky header and realistic glass blur
 
 I recently saw [this tweet](https://twitter.com/artur_bien/status/1707130112389378273) that points out that people trying to mimic glass on their websites are technically not doing it right most of the time, because light from elements should be reaching the glass before they even intersect. Point is, a simple CSS blur is not realistic.
