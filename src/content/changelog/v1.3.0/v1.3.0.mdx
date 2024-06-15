@@ -6,13 +6,11 @@ commit: "54a42b9c3d0ce2a09f60b3596642c0181343d539"
 slug: "1.3.0"
 ---
 
-Some smaller changes:
-
-- Add a .ico favicon (previously I only had PNG and SVG versions).
+- Added a .ico favicon (previously I only had PNG and SVG versions).
 - On `/portfolio`, I've grouped my pieces into three different sections: graphic design, art, and music related. I also directly link to my Behance now.
-- _Finally_ fix interop between Prettier and Astro. Now I don't have to manually run the formatter anymore!
-- Make headings use the monospace font by default. Wrapped in the `@layer` directive!
-- My projects page now uses a two-column setup. This really lets the images and blurbs stand out more.
+- _Finally_ fix interop between Prettier and Astro. I don't have to manually run the formatter anymore! The VS Code extension formats on save now.
+- Make headings use the monospace font by default. Declared in the `@layer` directive.
+- `/projects` now uses a two-column setup. This really lets the images and blurbs stand out more.
 
 > **From the future:** here it is.
 >
@@ -30,9 +28,9 @@ I found that the grid layout on the homepage is a little... awkward when the scr
   </figcaption>
 </figure>
 
-I used to justify it to myself by saying something, like, the four colored squares are interesting to look at, and makes it look on purpose. In reality, I just had no idea how to handle screen sizes between 640px and 1080px.
+I used to justify it to myself by saying something like, the four colored squares are interesting to look at, and it's being done on purpose. In reality, I just had no idea how to handle screen sizes between 640px and 1080px.
 
-So I did the normal, sane thing (for once), which is to collapse to a more standard layout when space gets tight. Look, I want people to actually be able to _read it_, thank you.
+So I did the normal, sane thing (for once), which is to collapse to a more standard layout when space gets tight. Look, I want people to actually be able to _read things_, thank you.
 
 > **From the future:** what it looks like now. Miku!
 >
@@ -51,7 +49,7 @@ Behold! Unfortunately, this is not accessible and I'm not releasing it.
 
 The original idea was this: you could switch colors via the little Space Invaders alien and dragon emoji. However, the theme that you choose should be remembered by the browser; that is, it shouldn't reset to purple everytime you visit the site.
 
-So what I did was try adapting this little snippet from [this Astro guide](https://docs.astro.build/en/tutorial/6-islands/2/#add-client-side-interactivity), which checks the browser's local storage before setting the theme.
+So what I did was try adapting a little snippet from [this Astro guide](https://docs.astro.build/en/tutorial/6-islands/2/#add-client-side-interactivity), which checks the browser's local storage before setting the theme.
 
 ```astro
 <script is:inline>

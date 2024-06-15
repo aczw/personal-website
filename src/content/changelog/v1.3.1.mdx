@@ -18,7 +18,7 @@ Small update not worthy of a minor version bump. Patch it is.
 
 Instead of the hardcoded "soitgoes" phrase, I now select from a list of phrases, pick one, and render it. This is done in the Astro frontmatter, so it's decided on the server. I then use the same script as before on the client side to actually animate it.
 
-The phrases:
+The current phrases:
 
 - `soitgoes`
 - `aczw`
@@ -32,4 +32,4 @@ The phrases:
 
 I wonder if you can guess where they all come from...
 
-Also, I just want to point out that this is not that easy to do with React, which expects components to render the same thing on every rerender (given the same inputs). I'm not even sure if this would pass React's strict mode.
+Also, I just want to point out that this is not that easy to do with React, which expects components to render the same way on every rerender (given the same inputs). I'm not even sure if this would pass React's strict mode.

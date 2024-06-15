@@ -8,7 +8,7 @@ slug: "1.1.0"
 
 import VideoGif from "@/components/video-gif.astro";
 
-Previously, the images on the projects page could have any size. Theoretically, a really _tall_ image would completely take up all the space on the screen. So I've clamped the image height.
+Previously, the images on the projects page could be any size. Theoretically, a really _tall_ image would completely take up all the space on the screen. So I've clamped the image height.
 
 I've also removed the background for each project. They look distinct enough on their own to not need any visual separation.
 
@@ -16,7 +16,7 @@ I've also removed the background for each project. They look distinct enough on 
 >
 > ![New projects page.](./v1.1.0-projects.png)
 
-On the portfolio page, you now get info about the piece upon hover, including its name and when it was made. And the max number of columns is now 3, to let them be bigger.
+On the portfolio page, you now get info about the piece upon hover, including its name and when it was made. Also, the max number of columns is now 3, to let the pieces be bigger.
 
 > **From the future:** definitely not the most mobile-friendly feature, but I didn't care as much back then. Definitely bit me in the ass eventually. What it looked like:
 >
@@ -24,7 +24,7 @@ On the portfolio page, you now get info about the piece upon hover, including it
 
 ## Entry animations
 
-I was ~~stalking~~ visiting [tlshaw.me](https://tlshaw.me) when I noticed a really nice, subtle animation when elements come into view. The way they implemented it is also very cool. We first define a few CSS keyframes to work with. I did mine inside my Tailwind config.
+I was ~~stalking~~ visiting [tlshaw.me](https://tlshaw.me) when I noticed a really nice, subtle animation when you first load the page. The way they implemented it is also very cool. We first define a few CSS keyframes to work with. I did mine inside my Tailwind config.
 
 We can then define our own CSS animation. I'm again adding it to my Tailwind theme, because this generates a `animate-*` utility with the name I choose, e.g. `animate-fade-in`.
 
@@ -55,9 +55,9 @@ We can now plop these animations onto any HTML element we want. They fire as soo
 
 ```tsx
 <ul>
-  {listOfStuff.map((item, index) => (
+  {listOfStuff.map((text, index) => (
     <li class="animate-appear" style={{ "--animation-delay": `${index * 50}ms` }}>
-      {item}
+      {text}
     </li>
   ))}
 </ul>
