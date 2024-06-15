@@ -1,0 +1,44 @@
+---
+version: "v2.0.0"
+date: 6969-49-20T00:00:00.000Z
+commit: "temporary322aba8d969bd4b500e02a528704ae8"
+
+slug: "2.0.0"
+---
+
+## Rethinking what I want
+
+What did I want out of my website? What did I want other people to see when they visit? The answers to these questions were often in conflict. It didn't help that I also wasn't sure what to show off to people.
+
+- The music obsession has gone too far. I'm really using half of my homepage to display arguably useless information to the visitor. I could be using that space to talk more about myself and what I do.
+- While the bento box layout seemed fine on paper, on practice it was difficult making the blocks look good on all screen sizes. I'm using CSS `grid` and sometimes this led to weird layouts on specific dimensions.
+- The more I used Astro, the less I wanted to rely on external UI frameworks. For my purposes, sending this much JavaScript to the client felt _unnecessary_, and I knew I could do everything I wanted without it.
+
+## Aside: how not to fetch data
+
+In the past, in order to make requests to the Last.fm API, I used React and [SWR](https://swr.vercel.app/). For this React component to access my API key from the client, I chose to make it publicly available by prefixing it with `PUBLIC_`. Theoretically, anyone visiting my site could simply Ctrl+F it. Actually, I'll just show it:
+
+![The inspector is open. I searched for 'api' in the JavaScript code and immediately found my secret API key.](./v2-api.png)
+
+Was I seriously expecting anyone to steal the key and use it maliciously? No, but it reflected my inexperience with data fetching and keeping things secure on the web.
+
+> Another thing: I was also relying on React, a UI library, to fetch data. This was also inexperience on my part. Frameworks like Astro provide clean, native ways to [fetch data](https://docs.astro.build/en/guides/data-fetching/) irregardless of the UI you build.
+
+I know better now. All the data fetching is performed on the server, which my API key will never leave. I use Astro's API routes to perform a `GET` request that separates the work from the component that is displaying it. This does mean you have to mark the pages that display this data as SSR only.
+
+I've also gotten rid of the dependency on React and SWR.
+
+## Doing some research and reflection
+
+To aid my redesign, I wanted to see how other people interpreted the idea of a personal website. This included fellow people from DMD, my friends, and other websites that I found intriguing.
+
+> You can find my notes about them [in the Vault.](https://vault.charleszw.com/Notes/Websites)
+
+I realize now that what I need is _simplification_. I don't want to overwhelm any visitors with extraneous info. I've seen how you can show off your personality with constraint and in more subtle ways. Instead, I focused on crafting a design that I truly wanted people to see first.
+
+- Instead of the weird bento box layout for the homepage, use a more standard layout. Text gets more space to exist, and I get to display sneakpeeks of my projects/posts.
+- I liked the live music updates but deemphasized it, because it wasn't the main reason I directed people to my site. It's mostly for my own enjoyment, anyway.
+- The header took up too much space, so I made it non-sticky. I don't have that much content to require an always visible nav bar.
+- After a slight identity crisis, I combined `/projects` and `/portfolio`. The "portfolio" label never made much sense. My programming and design stuff are often one and the same.
+
+I keep everything at fixed widths now. This was an intentional choice I took from the other sites I was ~~stalking~~ taking inspiration from. Reading becomes much easier when your eyes don't have to scan across a large horizontal distance.
