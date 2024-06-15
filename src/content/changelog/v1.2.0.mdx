@@ -8,11 +8,9 @@ slug: "1.2.0"
 
 import VideoGif from "@/components/video-gif.astro";
 
-Minimal changes this time around.
-
-- To further appeal to the SEO gods, I've added a `robots.txt` and sitemap.
-- Retire the `animate-appear` animation. I now use the more subtle fade in animation for everything. I think it suits the vibe more.
-- General improvements, including more consistent padding/spacing and wording changes.
+- To further appeal to the SEO gods, I've added a robots.txt and sitemap.
+- Retired the `animate-appear` animation. I now use the more subtle fade in animation for everything. I think it suits the vibe more.
+- General improvements, including more consistent padding/spacing and updated writing.
 - Added links to each portfolio piece. They mostly go to my [Behance profile](https://www.behance.net/charleszw) which has a lot more content.
 
 ## Scrolling text
@@ -29,16 +27,16 @@ Inspired by the scrolling LED projects by [Jenny Holzer](https://projects.jennyh
 
 ## Sticky header and realistic glass blur
 
-I recently saw [this tweet](https://twitter.com/artur_bien/status/1707130112389378273) that points out that people trying to mimic glass on their websites are technically not doing it right most of the time, because light from elements should be reaching the glass before they even intersect. Point is, a simple CSS blur is not realistic.
+I recently saw [this tweet](https://twitter.com/artur_bien/status/1707130112389378273) that points out that most glass-like materials on websites are technically not realistic, because light from elements should be reaching the glass before they even intersect. Point is, a simple CSS blur is not enough.
 
-Using a header navbar as an example, they had to absolutely position an element in the navbar, make it overflow vertically, and _then_ set the CSS blur. Then, using a mask they hide the part that's overflowing. The end result is that colors from elements that haven't intersected with the header yet are able to bleed into the blur, achieving the glass look.
+Using a header navbar as an example, to fix this they had to absolutely position an element in the navbar, make it overflow vertically, and _then_ set the CSS blur on that. Then, using a mask they hide the part that's overflowing. The end result is that colors from elements that haven't intersected with the header yet are able to bleed into the blur, achieving the glass look.
 
-[This amazing Twitter person](https://twitter.com/lepikhinb/status/1707727096083255330) wrapped up all the CSS into a Tailwind plugin ([playground here](https://play.tailwindcss.com/uW7SWuQeOA)) that I could just drop into my own website. I wanted to try it out so I made my header sticky, added the plugin to my config, and...
+[This amazing Twitter person](https://twitter.com/lepikhinb/status/1707727096083255330) wrapped up all the CSS into a Tailwind plugin ([playground here](https://play.tailwindcss.com/uW7SWuQeOA)) that I could just drop into my own website. I wanted to try it out so I made my header fixed, added the plugin to my config, and...
 
 <div style="border-width:5px;border-radius:0.5rem;border-color:#1D193D">
   <VideoGif content={{ collection: "changelog", folder: "v1.2.0" }} name="glass-header" />
 </div>
 
-...it was okay. I mean, it was pretty nice, and I liked how it attached to all the colors in my portfolio pieces. But when the rest of the site relied on flat colors and layering via different shades of my palette, this definitely clashed. Maybe I'll use it in another project.
+...it was okay. I mean, it was pretty nice, and I liked how it attached to all the colors in my portfolio pieces. But when the rest of the site relied on flat colors and layering via different shades of my palette, it definitely clashed a bit. For now, I've removed it.
 
-Oh, but I kept the sticky header. Made it really easy to navigate.
+Oh, but I kept the fixed header. Made it really easy to navigate.
