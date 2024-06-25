@@ -1,0 +1,79 @@
+---
+version: "v4.0.0"
+date: 2099-04-20T08:10:00.000Z
+
+slug: "4.0.0"
+---
+
+This was originally going to be v4.5.0. Then, it changed to v5.0.0. Now it's v4.0.0, smaller than the original version number. Lemme explain.
+
+Because this isn't exactly rocket code I can do whatever the hell I want.
+
+## Website changelog and "two" new posts
+
+There's now a dedicated page listing all the changes I've made to it, ever. You're currently looking at it. This page can always be accessed again from the version number in the footer.
+
+I also wrote a little post about it, which you can [read here](/posts/changelogs). It goes into the inspiration for the idea and how I set it up. Once again, Astro made everything really easy to do.
+
+### That website post is pointless now I guess
+
+I've never known what to do with [the post about this website](/posts/wip). If you've noticed, the content is different now; the old post used to be about the many changes this site has undergone. I had to update it every time I changed something. I sure wish there was an easier, better system to do that... oh wait.
+
+Anyway, after some <span aria-hidden="true" aria-label="deep thinking">𝓭𝓮𝓮𝓹 𝓽𝓱𝓲𝓷𝓴𝓲𝓷𝓰</span> I've replaced it with something new. Honestly wasn't sure how to end the post, as I usually write about projects, which I can summarize neatly with a conclusion. This was a different subject.
+
+I told myself that this will be the last time I'll ever touch it, but... it's me I'm talking about.
+
+## MEWO cursor
+
+If you're on desktop, try hovering over the quote on the homepage. You should see MEWO replace your cursor as long as it remains on the quote.
+
+Honestly, after adding the previous text animation, I wasn't too sure what else to do with it. I figured that since I removed the quote author, I might as well add it back some other way.
+
+Unfortunately MEWO has black fur, so it's a bit hard to see. More reason to add a sitewide light mode.
+
+I might also add sound effects in the future, for when you click on it. Not sure though.
+
+## Other changes in v4.0.0
+
+- adjust spacing for everything
+- create more specific layouts on top of a base layout (e.g. include header and footer already)
+- Revert `<MewoQuote />` back from being a web component
+- Rewrite bio on homepage. Add more about my school clubs :\)
+- Add more stuff to OG metadata, tell browser my site prefers dark
+- Add `subtitle` as a Tailwind utility. Sometimes standard text feels a bit too bright for what I'm trying to convey, so I set its opacity to 90% and slightly color it.
+- Delete `<NotFound />` because I realized you could directly import entire Astro pages as a component! So I can just import and use my site-wide 404 page in everything else.
+- Display date on OG metadata for each post (instead of tags, which have been destroyed)
+
+Really utilize Tailwind `@layer` directives more. I've moved a lot of unruly in-component directives to `base.css`. For example, I inlined the CSS for the MEWO cursor, which now has an absolute path, meaning in theory I could style anything with it.
+
+Instead of being inlined like this on the HTML element
+
+```html
+<p class="cursor-[url('../assets/mewo.webp')_32_32,_not-allowed]">Incredible quote.</p>
+```
+
+It's now easier to read like this:
+
+```css
+@layer utilities {
+  .mewo-quote {
+    cursor:
+      url("/src/assets/mewo.webp") 32 32,
+      not-allowed;
+  }
+}
+```
+
+Another use case was with Berkeley Mono: its weight range spans from 100 to 150. Since regular weight is usually 400, I always had to specify `font-[100]` right after using `font-mono`. I also prefer my monospaced fonts slightly smaller than normal, so it was usually also followed by a `font-[14.5px]`. Now all of that's gone.
+
+### More stuff:
+
+- New `<Main />` props to centralize common cases (min height, type of max width)
+- Clamp the song name in the footer to one line. Looks kind of weird now, so we'll see.
+- Combined badge-shaped elements (for now just the resume and version buttons) into a single `<Pill />` component. It's called a pill because it sounds cooler than a badge.
+- All text-based links in the header and footer use the `<Pill />` component now.
+- Created a `<CustomContent />` component that abstracts away configuring MDX components. Used by posts and this page.
+- Adjusted spacing between paragraphs in rendered MDX
+- Add a little separator between content for posts with no cover images
+- Wrapped `<VideoGif />` in extra y-margin
+- Update packages
