@@ -8,6 +8,8 @@ slug: "1.2.0"
 
 import VideoGif from "@/components/video-gif.astro";
 
+## General changes
+
 - To further appeal to the SEO gods, I've added a robots.txt and sitemap.
 - Retired the `animate-appear` animation. I now use the more subtle fade in animation for everything. I think it suits the vibe more.
 - General improvements, including more consistent padding/spacing and updated writing.
@@ -15,7 +17,9 @@ import VideoGif from "@/components/video-gif.astro";
 
 ## Scrolling text
 
-Inspired by the scrolling LED projects by [Jenny Holzer](https://projects.jennyholzer.com/LEDs), I wanted to do something similar somewhere on the site, as a sort of easter egg. I really liked the effect it had over smoothly scrolling text. After figuring out `setInterval` and some string manipulation, we now have this in the footer. [Rest in peace, Mac.](https://www.youtube.com/watch?v=Uf24Uk6ZMLQ)
+Inspired by the scrolling LED projects by [Jenny Holzer](https://projects.jennyholzer.com/LEDs), I wanted to do something similar somewhere on the site, as a sort of easter egg. I really liked the "ticking" effect it had over smoothly scrolling text.
+
+After figuring out `setInterval` (TypeScript was confused and was suggesting Node.js types) and some string manipulation, we now have this in the footer. [Rest in peace, Mac.](https://www.youtube.com/watch?v=Uf24Uk6ZMLQ)
 
 <div style="border-width:5px;border-radius:0.5rem;border-color:#1D193D">
   <VideoGif content={{ collection: "changelog", folder: "v1.2.0" }} name="v1.2.0-scrolling" />
