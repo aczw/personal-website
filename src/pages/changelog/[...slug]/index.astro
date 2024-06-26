@@ -1,0 +1,53 @@
+---
+import { getCollection } from "astro:content";
+
+import ReleaseLayout from "@/layouts/release-layout.astro";
+import NotFoundPage from "@/pages/[...slug]/index.astro";
+
+let releases = await getCollection("changelog");
+releases.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+let releaseIndex = -1;
+let currRelease = releases.find((release, index) => {
+  if (release.slug === Astro.params.slug) {
+    releaseIndex = index;
+    return true;
+  }
+
+  return false;
+});
+
+let previous = null;
+if (releases[releaseIndex - 1]) {
+  let {
+    data: { version, date },
+    slug,
+  } = releases[releaseIndex - 1];
+  previous = {
+    slug,
+    version,
+    date,
+  };
+}
+
+let next = null;
+if (releases[releaseIndex + 1]) {
+  let {
+    data: { version, date },
+    slug,
+  } = releases[releaseIndex + 1];
+  next = {
+    slug,
+    version,
+    date,
+  };
+}
+---
+
+{
+  !currRelease ? (
+    <NotFoundPage />
+  ) : (
+    <ReleaseLayout release={currRelease} next={previous} previous={next} />
+  )
+}

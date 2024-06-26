@@ -1,28 +1,19 @@
 ---
+import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
-import Anchor from "@/components/mdx/anchor.astro";
-import Aside from "@/components/mdx/aside.astro";
-import Del from "@/components/mdx/del.astro";
-import H2 from "@/components/mdx/h2.astro";
-import H3 from "@/components/mdx/h3.astro";
-import Img from "@/components/mdx/img.astro";
-import Li from "@/components/mdx/li.astro";
-import Ul from "@/components/mdx/ul.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
 
-import Footer from "@/layouts/footer.astro";
-import Header from "@/layouts/header.astro";
-import Layout from "@/layouts/layout.astro";
-import Main from "@/layouts/main.astro";
-
-import { Image } from "astro:assets";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+import CustomContent from "@/components/mdx/custom-content.astro";
 
 interface Props {
   post: CollectionEntry<"posts">;
 }
 
-const { post } = Astro.props;
-const {
+let { post } = Astro.props;
+let {
   data: { title, blurb, posted, updated, cover, published },
 } = post;
 
@@ -30,68 +21,129 @@ const {
 let status = published ? "[PUBLISHED] " : "[DRAFT] ";
 status = import.meta.env.DEV ? status : "";
 
-const { Content } = await post.render();
+let options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric" };
+
+let { Content, headings } = await post.render();
 ---
 
-<Layout meta={{ kind: "post", post, status }}>
+<BaseLayout meta={{ kind: "post", post, status }}>
   <Header />
 
-  <Main className="max-w-narrow">
-    <section class="space-y-4">
-      <h2 class="text-lg text-sweater-2">
-        {title}
-      </h2>
-      <p>{blurb}</p>
-      <div
-        class="flex flex-col font-mono text-[14px] font-[120] text-sweater-6 xs:flex-row xs:gap-8"
-      >
-        <time
-          datetime={posted.toISOString()}
-          class="text-sweater-5"
-          >{
-            posted.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric" })
-          }</time
-        >{
-          updated ? (
-            <time datetime={updated.toISOString()}>
-              Updated{" "}
-              {updated.toLocaleString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </time>
-          ) : null
-        }
-      </div>
-    </section>
+  <main class="mx-auto flex max-w-content items-start gap-7 px-7 py-12">
+    <article class:list={["w-full post:w-[calc(100%-200px)]", cover ? "space-y-6" : "space-y-12"]}>
+      <section class:list={["space-y-6", { "border-b-[1.5px] border-sweater-9 pb-12": !cover }]}>
+        <div class="space-y-1.5">
+          <h1 class="text-xl">{title}</h1>
+          <p class="subtitle">{blurb}</p>
+        </div>
 
-    {
-      cover ? (
-        <Image
-          src={cover.img}
-          alt={cover.alt}
-          loading="eager"
-          class="rounded-xl border-2 border-sweater-8 bg-sweater-9 shadow-[0_0_200px_0] shadow-sweater-8"
-        />
-      ) : null
-    }
+        <div class="berkeley grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-1 md:grid-cols-2">
+          <time datetime={posted.toISOString()} class="text-sweater-5">
+            {posted.toLocaleString("en-US", options)}
+          </time>
 
-    <article class="space-y-6">
-      <Content
-        components={{
-          h2: H2,
-          h3: H3,
-          ul: Ul,
-          li: Li,
-          del: Del,
-          blockquote: Aside,
-          a: Anchor,
-          img: Img,
-        }}
-      />
+          {
+            updated ? (
+              <time datetime={updated.toISOString()} class="text-sweater-6">
+                Updated {updated.toLocaleString("en-US", options)}
+              </time>
+            ) : null
+          }
+        </div>
+
+        {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" /> : null}
+      </section>
+
+      <section class="space-y-6">
+        <CustomContent entryContent={Content} />
+      </section>
     </article>
-  </Main>
+
+    <aside
+      class="sticky top-12 hidden h-[calc(100vh-10rem)] w-[200px] -translate-y-12 flex-col justify-between gap-12 overflow-y-auto post:flex"
+    >
+      <nav class="relative">
+        <div
+          aria-hidden="true"
+          class="sticky inset-x-0 top-0 h-12 bg-gradient-to-b from-sweater-10"
+        >
+        </div>
+
+        <h2 class="mb-1.5 text-xl">Contents</h2>
+
+        <div class="flex flex-col leading-snug text-sweater-6">
+          <a href="#" class="mb-3 text-sweater-3 transition-colors hover:text-sweater-1"
+            >(Back to top!)</a
+          >
+
+          {
+            headings.map(({ depth, slug, text }, index) => {
+              if (depth === 1) {
+                throw new Error(
+                  `No MDX heading should be H1! Check whether the post "${title}" contains any.`,
+                );
+              }
+
+              if (depth > 3) {
+                throw new Error(
+                  `Used a heading level greater than H3 in "${title}." Maybe we should support it now?`,
+                );
+              }
+
+              // between H2 headings or if the next heading after H3 is a H2,
+              // we add spacing. else, add no spacing.
+              let spacing = 0;
+              if (index !== headings.length - 1) {
+                let next = headings[index + 1];
+                if (next.depth === 2 && (depth === 2 || depth === 3)) {
+                  spacing = 0.75;
+                }
+              }
+
+              return (
+                <a
+                  href={`#${slug}`}
+                  class="transition-colors hover:text-sweater-2"
+                  style={{
+                    paddingLeft: `${(depth - 2) * 1.5}rem`,
+                    marginBottom: `${spacing}rem`,
+                  }}
+                >
+                  {text}
+                </a>
+              );
+            })
+          }
+        </div>
+
+        <div
+          aria-hidden="true"
+          class="sticky inset-x-0 bottom-0 h-12 bg-gradient-to-t from-sweater-10"
+        >
+        </div>
+      </nav>
+    </aside>
+  </main>
 
   <Footer />
-</Layout>
+</BaseLayout>
+
+<script>
+  let observer = new IntersectionObserver((entries) =>
+    entries.forEach((entry) => {
+      let id = entry.target.id;
+      let link = document.querySelector<HTMLAnchorElement>(`nav a[href="#${id}"]`);
+
+      let windowHeight = entry.rootBounds!.height;
+      if (windowHeight && link) {
+        if (entry.boundingClientRect.y < windowHeight) {
+          link.classList.add("text-sweater-3");
+        } else {
+          link.classList.remove("text-sweater-3");
+        }
+      }
+    }),
+  );
+
+  document.querySelectorAll("h2[id], h3[id]").forEach((heading) => observer.observe(heading));
+</script>

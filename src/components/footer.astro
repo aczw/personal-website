@@ -1,0 +1,34 @@
+---
+import { version } from "../../package.json";
+
+import { Github, Linkedin, Mail } from "lucide-astro";
+
+import LastFm from "@/components/last-fm.astro";
+import Link from "@/components/link.astro";
+
+const ICON_SIZE = 24;
+---
+
+<footer class="mx-auto max-w-content pb-6">
+  <div
+    class="berkeley mx-7 flex flex-row-reverse items-center justify-between gap-4 border-t-[3px] border-sweater-8 pt-6"
+  >
+    <div class="flex w-1/2 items-center justify-end gap-4">
+      <Link href="https://www.linkedin.com/in/zwcharl/" target="_blank" title="LinkedIn"
+        ><Linkedin size={ICON_SIZE} /></Link
+      >
+
+      <Link href="https://www.github.com/aczw" target="_blank" title="GitHub"
+        ><Github size={ICON_SIZE} /></Link
+      >
+
+      <Link href="mailto:czw@seas.upenn.edu" title="Email"><Mail size={ICON_SIZE} /></Link>
+
+      <a href="/changelog" class="pill leading-none" title={import.meta.env.DEV ? "DEV" : "PROD"}>
+        v{version}
+      </a>
+    </div>
+
+    <LastFm />
+  </div>
+</footer>

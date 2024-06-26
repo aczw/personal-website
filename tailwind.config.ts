@@ -1,7 +1,7 @@
 import { type Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
-module.exports = {
+const config: Config = {
   content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
   future: {
     hoverOnlyWhenSupported: true,
@@ -13,9 +13,8 @@ module.exports = {
     },
     extend: {
       maxWidth: {
-        // whatever width + px-4 (1rem on either side = 30px)
-        wide: "940px",
-        narrow: "780px",
+        // width + 1.75rem (26.25px) on both sides, so 850px + (2 * 26.25px) = 902.5px
+        content: "902.5px",
       },
       colors: {
         sweater: {
@@ -32,9 +31,9 @@ module.exports = {
         },
       },
       screens: {
-        xxs: "375px",
-        xs: "475px",
-        wide: "940px",
+        content: "902.5px",
+        post: "710px",
+        xs: "480px",
       },
       keyframes: {
         fade: {
@@ -43,9 +42,11 @@ module.exports = {
         },
       },
       animation: {
-        fade: "fade 0.4s ease-out calc(var(--order) * 90ms) backwards",
+        fade: "fade 0.4s ease-out calc(var(--order) * var(--fade-speed)) backwards",
       },
     },
   },
   plugins: [],
-} satisfies Config;
+};
+
+export default config;

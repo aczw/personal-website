@@ -3,46 +3,122 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --fade-speed: 100ms;
+    --visible-h: calc(100dvh - 74px - 74px); /* takes into account height of header + footer */
+  }
+
+  html {
+    font-size: 15px;
+    @apply scroll-smooth bg-sweater-10 text-sweater-1;
+  }
+
   h1,
   h2,
   h3,
   h4,
   h5,
   h6 {
-    @apply font-bold;
+    @apply font-bold text-sweater-2;
   }
 
   img {
     @apply italic;
   }
 
-  /* inline code should have some padding and background */
-  code {
-    @apply break-words rounded-md bg-sweater-9 px-1 py-0.5 text-[14px] font-[100];
+  /* style elements inside rendered markdown */
+  article {
+    img {
+      @apply rounded-lg bg-sweater-9;
+    }
+
+    /* inline code should have some padding and background */
+    code {
+      @apply break-words rounded-md bg-sweater-9 px-1 py-0.5 text-[14px] font-[100];
+    }
+
+    /* treat code differently inside callouts, but let utilities override it */
+    aside {
+      code {
+        @apply bg-sweater-8;
+      }
+    }
+
+    pre {
+      @apply rounded-lg p-4;
+
+      /* but remove padding, background, and word breaks in code blocks */
+      > code {
+        @apply break-normal bg-transparent p-0;
+      }
+    }
+
+    del {
+      @apply cursor-not-allowed text-sweater-6 line-through;
+    }
+
+    li {
+      @apply pl-4;
+    }
+
+    ul {
+      list-style-type: "➔";
+      @apply ml-6 list-outside space-y-2.5;
+
+      ::marker {
+        @apply text-sweater-4;
+      }
+    }
+
+    figure {
+      font-size: 0.92rem;
+      @apply subtitle space-y-2 pb-2 transition-[color,opacity];
+
+      &:hover {
+        @apply text-sweater-1;
+      }
+    }
   }
 
-  pre {
-    @apply rounded-xl p-4;
+  @font-face {
+    font-family: "Berkeley Mono Variable";
+    src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
+    font-weight: 100 150;
+    font-style: normal;
   }
 
-  /* remove padding, background, and word breaks in codeblocks */
-  pre code {
-    @apply break-normal bg-transparent p-0;
+  @font-face {
+    font-family: "Berkeley Mono Variable";
+    src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
+    font-weight: 100 150;
+    font-style: italic;
   }
 }
 
-@font-face {
-  font-family: "Berkeley Mono Variable";
-  src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
-  font-weight: 100 150;
-  font-stretch: 75% 125%;
-  font-style: normal;
+@layer components {
+  .pill {
+    @apply rounded-full bg-sweater-4 px-3 py-1.5 text-sweater-8 transition-colors hover:bg-sweater-3;
+  }
+
+  .pill[data-quiet] {
+    @apply bg-sweater-9 text-sweater-4 hover:bg-sweater-8 hover:text-sweater-3;
+  }
 }
 
-@font-face {
-  font-family: "Berkeley Mono Variable";
-  src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
-  font-weight: 100 150;
-  font-stretch: 75% 125%;
-  font-style: italic;
+@layer utilities {
+  .mewo-quote {
+    cursor:
+      url("/src/assets/mewo.webp") 32 32,
+      not-allowed;
+  }
+
+  .berkeley {
+    font-size: 14px;
+    font-weight: 120;
+    @apply font-mono;
+  }
+
+  .subtitle {
+    @apply text-sweater-2/85;
+  }
 }

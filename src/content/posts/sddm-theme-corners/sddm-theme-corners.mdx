@@ -45,15 +45,15 @@ Common controls like power and session management are grouped together. Some the
 Some themes included icons for popular DEs like GNOME, KDE, Deepin, etc. I felt that it would be impossible to cover all cases, and chose a text-based list instead. Icons for sessions don't offer enough detail anyway; what if I wanted GNOME on both Xorg and Wayland?
 
 <VideoGif
-  folder="sddm-theme-corners"
-  vids={[{ name: "power-session-buttons.mp4", type: "video/mp4" }]}
+  content={{ collection: "posts", folder: "sddm-theme-corners" }}
+  name="power-session-buttons"
 />
 
 The user picture (if you choose to enable it) also acts as a user switcher. All it really does is prefill in the user field. The last user logged in is saved, however, and filled in for you next time.
 
 <VideoGif
-  folder="sddm-theme-corners"
-  vids={[{ name: "user-picture-inputs.mp4", type: "video/mp4" }]}
+  content={{ collection: "posts", folder: "sddm-theme-corners" }}
+  name="user-picture-inputs"
 />
 
 The login button is grayed out until both input fields are filled out.
@@ -63,8 +63,8 @@ The login button is grayed out until both input fields are filled out.
 Tying everything together are subtle animations that occur when popups come in and out of view. I especially like what happens when you enter an incorrect login:
 
 <VideoGif
-  folder="sddm-theme-corners"
-  vids={[{ name: "incorrect-login-anim.mp4", type: "video/mp4" }]}
+  content={{ collection: "posts", folder: "sddm-theme-corners" }}
+  name="incorrect-login-anim"
 />
 
 Don't like the default colors or how round everything is? I've exposed multiple config options that allow you to theme pretty much everything. You can also change the font and datetime format; however, the layout itself cannot be modified. After all, stuff in `sddm-theme-corners` should stay in the corners!
