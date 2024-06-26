@@ -19,7 +19,8 @@ interface Props {
 let { meta } = Astro.props;
 
 let title = "Charles Wang";
-let description: string, ogImageParams: string;
+let description: string;
+let ogImageParams: string;
 
 switch (meta.kind) {
   case "route": {
@@ -39,7 +40,7 @@ switch (meta.kind) {
 
   case "release": {
     let { data, slug } = meta.release;
-    title = `Release notes for ${data.version} — ${title}`;
+    title = `${data.version} website release notes — ${title}`;
     description = `Notable changes in the ${data.version} release of this website.`;
     ogImageParams = `?release=${slug}`;
     break;
