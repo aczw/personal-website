@@ -34,7 +34,7 @@
 
     /* inline code should have some padding and background */
     code {
-      @apply break-words rounded-md bg-sweater-9 px-1 py-0.5 text-[14px] font-[100];
+      @apply break-words rounded-md bg-sweater-9 px-1 py-0.5 text-[13px] font-[100];
     }
 
     /* treat code differently inside callouts, but let utilities override it */
@@ -113,7 +113,7 @@
   }
 
   .berkeley {
-    font-size: 14px;
+    font-size: 13.5px;
     font-weight: 120;
     @apply font-mono;
   }
