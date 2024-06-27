@@ -1,0 +1,50 @@
+---
+version: "v2.1.0"
+date: 2023-12-24T08:49:00.000Z
+commit: "f90f32a2afcd4c15baa96e235f15d0487f37b521"
+
+slug: "2.1.0"
+---
+
+- display project metadata in a table-like grid at the top of each write-up
+- Added last updated date to the footer
+
+## Customizing MDX components
+
+I was happy to learn that MDX allows you to [customize](https://mdxjs.com/table-of-components/) the HTML components that you want rendered for each Markdown element.
+
+This includes inline code, codeblocks, bullet points, callouts, and even strikethrough text (renders to a [`<del>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del) element, only available in GitHub Flavored Markdown, which Astro [supports by default](https://docs.astro.build/en/reference/configuration-reference/#markdowngfm)).
+
+## Auto linking headings
+
+When Astro parses each Markdown file and renders it to HTML, it transpiles each Markdown heading into the corresponding \<hX> element, and adds an `id` attribute to it.
+
+Well, in my custom `<h2>` component that I pass to MDX, I can destructure the `id` attribute from `Astro.props` and use it. Here, I make every heading contain an anchor element with the `href` set to `id` so that people can get a copy of the current URL at this header.
+
+> I did this before discovering that there are less hacky ways of achieving the same results, i.e. using a [rehype plugin](https://github.com/rehypejs/rehype-autolink-headings) that does this for you. But hey, if it works it works.
+
+I also display a little hash symbol off to the side when you hover over the heading, so that the user knows it's linkable. For example, this is my `h2.astro` file:
+
+```astro
+---
+import { type HTMLAttributes } from "astro/types";
+import { Hash } from "lucide-astro";
+
+type Props = HTMLAttributes<"h2">;
+
+const { id, ...attrs } = Astro.props;
+---
+
+<h2 id={id} {...attrs} class="text-lg text-sweater-2">
+  <a href={`#${id}`} class="group relative -ml-2 flex w-fit items-center gap-1.5 pl-2">
+    <slot />
+    <Hash
+      size={16}
+      class="stroke-transparent transition-colors group-hover:stroke-sweater-5 content:absolute content:-left-4"
+      aria-hidden="true"
+    />
+  </a>
+</h2>
+```
+
+Don't forget that when we destructure `Astro.props`, we have to manually attach any remaining attributes onto the `<h2>` element via the spread operator. That's what the `{...attrs}` does.
