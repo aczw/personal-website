@@ -23,7 +23,33 @@ Anyway, after some <span aria-hidden="true" aria-label="deep thinking">𝓭𝓮�
 
 I told myself that this will be the last time I'll ever touch it, but... it's me I'm talking about.
 
-## MEWO cursor
+## Other changes in v4.0.0
+
+- adjust spacing for everything
+- create more specific layouts on top of a base layout (e.g. include header and footer already)
+- Revert `<MewoQuote />` back from being a web component
+- Rewrite bio on homepage. Add more about my school clubs :\)
+- Add more stuff to OG metadata, tell browser my site prefers dark
+- Add `subtitle` as a Tailwind utility. Sometimes standard text feels a bit too bright for what I'm trying to convey, so I set its opacity to 90% and slightly color it.
+- Delete `<NotFound />` because I realized you could directly import entire Astro pages as a component! So I can just import and use my site-wide 404 page in everything else.
+- Display date on OG metadata for each post (instead of tags, which have been destroyed)
+
+### More stuff:
+
+- New `<Main />` props to centralize common cases (min height, type of max width)
+- Clamp the song name in the footer to one line. Looks kind of weird now, so we'll see.
+- Combined badge-shaped elements (for now just the resume and version buttons) into a single `<Pill />` component. It's called a pill because it sounds cooler than a badge.
+- All text-based links in the header and footer use the `<Pill />` component now.
+- Created a `<CustomContent />` component that abstracts away configuring MDX components. Used by posts and this page.
+- Adjusted spacing between paragraphs in rendered MDX
+- Add a little separator between content for posts with no cover images
+- Wrapped `<VideoGif />` in extra y-margin
+
+## In rapid succession
+
+I have a lot to yap about and this section is dedicated to quick thoughts on other stuff I've changed.
+
+### MEWO cursor
 
 If you're on desktop, try hovering over the quote on the homepage. You should see MEWO replace your cursor as long as it remains on the quote.
 
@@ -33,7 +59,31 @@ Unfortunately MEWO has black fur, so it's a bit hard to see. More reason to add 
 
 I might also add sound effects in the future, for when you click on it. Not sure though.
 
-## Nested CSS and how jailbreaking finally caught up to me
+### Use more direct CSS
+
+Really utilize Tailwind `@layer` directives more. I've moved a lot of unruly in-component directives to `base.css`. For example, I inlined the CSS for the MEWO cursor, which now has an absolute path, meaning in theory I could style anything with it.
+
+Instead of being inlined like this on the HTML element
+
+```html
+<p class="cursor-[url('../assets/mewo.webp')_32_32,_not-allowed]">Incredible quote.</p>
+```
+
+It's now easier to read like this:
+
+```css
+@layer utilities {
+  .mewo-quote {
+    cursor:
+      url("/src/assets/mewo.webp") 32 32,
+      not-allowed;
+  }
+}
+```
+
+Another use case was with Berkeley Mono: its weight range spans from 100 to 150. Since regular weight is usually 400, I always had to specify `font-[100]` right after using `font-mono`. I also prefer my monospaced fonts slightly smaller than normal, so it was usually also followed by a `font-[14.5px]`. Now all of that's gone.
+
+### Nested CSS and how jailbreaking finally caught up to me
 
 So for background, I have an iPhone 13 Pro, and I've semi-jailbroken it using [Bootstrap](https://github.com/RootHide/Bootstrap) and [Serotonin](https://github.com/mineek/Serotonin) (it's only a "semi"-jailbreak for reasons that fly over my head). What this means is that I have to stay on a lower version of iOS, on 16.6.1 to be exact.
 
@@ -79,47 +129,13 @@ article {
 
 Honestly, up until this point jailbreaking has been a great experience. Apart from the occasional random reboots, I haven't had any weird issues or blockers (e.g. apps detecting my jailbreak). So it's _hilarious_ to me that this is the first issue that I've experienced.
 
-## Other changes in v4.0.0
+### Hello, Rosé Pine
 
-- adjust spacing for everything
-- create more specific layouts on top of a base layout (e.g. include header and footer already)
-- Revert `<MewoQuote />` back from being a web component
-- Rewrite bio on homepage. Add more about my school clubs :\)
-- Add more stuff to OG metadata, tell browser my site prefers dark
-- Add `subtitle` as a Tailwind utility. Sometimes standard text feels a bit too bright for what I'm trying to convey, so I set its opacity to 90% and slightly color it.
-- Delete `<NotFound />` because I realized you could directly import entire Astro pages as a component! So I can just import and use my site-wide 404 page in everything else.
-- Display date on OG metadata for each post (instead of tags, which have been destroyed)
+I've been a Catppuccin enjoyer for a very, very long time. I originally switched over from Tokyo Night, and I enjoyed how they supported a lot of different applications. However, recently I've been sort of obsessed with [Rosé Pine](https://rosepinetheme.com/), and I've switched this site's syntax highlighting over to it. I mean, look at how clean this is:
 
-Really utilize Tailwind `@layer` directives more. I've moved a lot of unruly in-component directives to `base.css`. For example, I inlined the CSS for the MEWO cursor, which now has an absolute path, meaning in theory I could style anything with it.
+<figure>
+  ![VS Code is open, showcasing the theme colors.](rose-pine.png)
+  <figcaption>**VS Code, dipped in Rosé Pine.** Oh yeah. I could stare at this all day.</figcaption>
+</figure>
 
-Instead of being inlined like this on the HTML element
-
-```html
-<p class="cursor-[url('../assets/mewo.webp')_32_32,_not-allowed]">Incredible quote.</p>
-```
-
-It's now easier to read like this:
-
-```css
-@layer utilities {
-  .mewo-quote {
-    cursor:
-      url("/src/assets/mewo.webp") 32 32,
-      not-allowed;
-  }
-}
-```
-
-Another use case was with Berkeley Mono: its weight range spans from 100 to 150. Since regular weight is usually 400, I always had to specify `font-[100]` right after using `font-mono`. I also prefer my monospaced fonts slightly smaller than normal, so it was usually also followed by a `font-[14.5px]`. Now all of that's gone.
-
-### More stuff:
-
-- New `<Main />` props to centralize common cases (min height, type of max width)
-- Clamp the song name in the footer to one line. Looks kind of weird now, so we'll see.
-- Combined badge-shaped elements (for now just the resume and version buttons) into a single `<Pill />` component. It's called a pill because it sounds cooler than a badge.
-- All text-based links in the header and footer use the `<Pill />` component now.
-- Created a `<CustomContent />` component that abstracts away configuring MDX components. Used by posts and this page.
-- Adjusted spacing between paragraphs in rendered MDX
-- Add a little separator between content for posts with no cover images
-- Wrapped `<VideoGif />` in extra y-margin
-- Update packages
+I've realized I prefer themes that use a very small selection of colors. That's probably why I also enjoy looking at [Vesper](https://github.com/raunofreiberg/vesper), which only consists of 4 colors, two of which are white and grey.
