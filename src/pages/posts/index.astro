@@ -19,7 +19,7 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 >
   <h1 class="animate-fade text-xl [--order:0]">All posts</h1>
 
-  <section class="flex flex-col [&>a:not(:hover)]:hover:brightness-50">
+  <section class="flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50">
     {
       posts.map((post, idx) => {
         let {
