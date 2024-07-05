@@ -28,23 +28,23 @@
 
   /* style elements inside rendered markdown */
   article {
-    img {
+    & img {
       @apply rounded-lg bg-sweater-9;
     }
 
     /* inline code should have some padding and background */
-    code {
+    & code {
       @apply break-words rounded-md bg-sweater-9 px-1 py-0.5 text-[13px] font-[100];
     }
 
     /* treat code differently inside callouts, but let utilities override it */
-    aside {
-      code {
+    & aside {
+      & code {
         @apply bg-sweater-8;
       }
     }
 
-    pre {
+    & pre {
       @apply rounded-lg p-4;
 
       /* but remove padding, background, and word breaks in code blocks */
@@ -53,15 +53,15 @@
       }
     }
 
-    del {
+    & del {
       @apply cursor-not-allowed text-sweater-6 line-through;
     }
 
-    li {
+    & li {
       @apply pl-4;
     }
 
-    ul {
+    & ul {
       list-style-type: "➔";
       @apply ml-6 list-outside space-y-2.5;
 
@@ -70,7 +70,7 @@
       }
     }
 
-    figure {
+    & figure {
       font-size: 0.92rem;
       @apply subtitle space-y-2 pb-2 transition-[color,opacity];
 
