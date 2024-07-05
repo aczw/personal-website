@@ -26,7 +26,7 @@
     @apply italic;
   }
 
-  /* style elements inside rendered markdown */
+  /* Only style elements rendered from Markdown */
   article {
     & img {
       @apply rounded-lg bg-sweater-9;

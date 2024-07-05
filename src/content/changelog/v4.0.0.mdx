@@ -33,6 +33,52 @@ Unfortunately MEWO has black fur, so it's a bit hard to see. More reason to add 
 
 I might also add sound effects in the future, for when you click on it. Not sure though.
 
+## Nested CSS and how jailbreaking finally caught up to me
+
+So for background, I have an iPhone 13 Pro, and I've semi-jailbroken it using [Bootstrap](https://github.com/RootHide/Bootstrap) and [Serotonin](https://github.com/mineek/Serotonin) (it's only a "semi"-jailbreak for reasons that fly over my head). What this means is that I have to stay on a lower version of iOS, on 16.6.1 to be exact.
+
+Well, as I was rewriting all the custom MDX components to just use CSS, I noticed some styling issues that only appeared on my phone, and not on desktop:
+
+> (the three pictures that I took, side by side)
+
+I thought that was weird. Some stuff, including lists, images, and codeblocks weren't styled at all, while headings, callouts, and links were. I realized that the elements not being styled were those that I moved to using CSS-only. So I took a look at my CSS file.
+
+I wrap all my posts and changelogs in a `<article>`, so I figured I match that. This way, styles I use for Markdown content won't clash with stuff I might do on other parts of the site (like images, for example). [CSS nesting](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_nesting/Using_CSS_nesting) is perfect for this, keeping my CSS scoped and organized.
+
+```css
+/* Only style elements rendered from Markdown*/
+article {
+  img {
+    /* ...whatever... */
+  }
+
+  code {
+    /* ...whatever... */
+  }
+}
+```
+
+Turns out, nested scoping without using a selector symbol like `&` was only introduced in [Safari 17.2 or above](https://caniuse.com/css-nesting). 17.2 has been out for more than 7 months at this point and [more than 75% of users](https://9to5mac.com/2024/06/11/ios-17-adoption-rate/) have updated, so I'm not too worried about others. But it looks bad for _myself!_
+
+> Stuff like this makes me appreciate how quick Apple users update their software. It also makes me sympathize more for Android's infamous fragmentation.
+
+The solution is to, of course, specify the `&` selector in my styles:
+
+```css
+/* Now everything renders correctly on my phone! */
+article {
+  & img {
+    /* ...whatever... */
+  }
+
+  & code {
+    /* ...whatever... */
+  }
+}
+```
+
+Honestly, up until this point jailbreaking has been a great experience. Apart from the occasional random reboots, I haven't had any weird issues or blockers (e.g. apps detecting my jailbreak). So it's _hilarious_ to me that this is the first issue that I've experienced.
+
 ## Other changes in v4.0.0
 
 - adjust spacing for everything
