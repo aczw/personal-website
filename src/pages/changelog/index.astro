@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-astro";
 import ContentLayout from "@/layouts/content-layout.astro";
 
 import Link from "@/components/link.astro";
-import ReleaseContent from "@/components/mdx/release-content.astro";
+import ReleaseContent from "@/components/mdx/content/release-content.astro";
 
 let releases = await getCollection("changelog");
 releases.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
