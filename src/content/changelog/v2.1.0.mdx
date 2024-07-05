@@ -6,23 +6,23 @@ commit: "f90f32a2afcd4c15baa96e235f15d0487f37b521"
 slug: "2.1.0"
 ---
 
-In this release, I fleshed out the project write-ups, so most of the changes will be related to them. I finished two write-ups, and began work on several more! Some smaller changes:
+In this release, I fleshed out the project write-ups, and most of the changes will be related to them. I finished two write-ups, and began work on several more! Some smaller changes:
 
 - Display project metadata in a table-like grid at the top of each write-up
 - Added last updated date to the footer
-- Experiment with using Bun
+- Experiment with using Bun on Linux
 
-The write-ups I finished are about this website and my small Unity game, [RCW](/posts/rcw). Make sure to check them out! I also began work on a post for Mini Minecraft.
+The write-ups I finished are about this website and my small Unity game, [RCW](/posts/rcw). Make sure to check them out! I also began work on a post for Mini Minecraft, a game engine that I helped make for a class... stay tuned.
 
-> **From the future:** unfortunately, this website's write-up doesn't exist anymore. It's largely been replaced by these changelog you're currently reading :)
+> **From the future:** this website's write-up doesn't exist anymore. It's largely been replaced by these changelogs you're currently reading :)
 
 ## GIF-less GIFs
 
-Sometimes, when you're trying to a make a point, a visualization is helpful. Sometimes, even an image is not enough; you want something _moving_. But, while working on this update I learned that [GIFs are actually worse than MP4s](https://web.dev/patterns/web-vitals-patterns/video/video-gif) in terms of space efficiency.
+Sometimes, when you're trying to a make a point, a visualization is helpful. Sometimes, even an image is not enough; you want something _moving_. But while working on this update, I learned that [GIFs are actually worse than MP4s](https://web.dev/patterns/web-vitals-patterns/video/video-gif) in terms of space efficiency.
 
-Thing is, GIFs were primarily designed for images, and not videos. Animated GIFs were expected to only have a few frames at most, simply animations. This is why they essentially stored each frame as an _entirely new image_, unlike dedicated video formats, which more generally only store the _changes_ between frames.
+Thing is, GIFs were primarily designed for images, not videos. Animated GIFs were expected to only have a few frames at most, simply being animations. This is why they essentially stored each frame as an _entirely new image_, unlike dedicated video formats, which generally only store the _changes_ between frames.
 
-Following the web.dev link above, I created a custom `<Gif />` component that simply plays videos in the style of GIFs:
+Following the advice from the web.dev link above, I made a custom `<Gif />` component that plays videos in the style of GIFs:
 
 ```html
 <video autoplay loop muted playsinline class="rounded-md bg-sweater-9">
@@ -30,7 +30,7 @@ Following the web.dev link above, I created a custom `<Gif />` component that si
 </video>
 ```
 
-Then in my MDX file, I can import a MP4 video, and add it as a video source.
+The attributes are pretty self-explanatory. Then, in my MDX file, I can import the component and a MP4 video, and add it as a video source.
 
 ```mdx
 import Gif from "@/components/gif.astro";
@@ -41,7 +41,7 @@ import amazingVideo from "./amazing-video.mp4";
 Some writing blah blah blah. Here, to illustrate:
 
 <Gif>
-  <source src={buttonsFigma} type="video/mp4"></source>
+  <source src={amazingVideo} type="video/mp4"></source>
 </Gif>
 
 Incredible, right?
@@ -53,7 +53,7 @@ Using MP4 files actually makes my job a lot easier, because Windows' Snipping To
 
 I was happy to learn that MDX allows you to [customize](https://mdxjs.com/table-of-components/) the HTML components that you want rendered for each Markdown element.
 
-This includes inline code, codeblocks, images, lists, callouts, and even strikethrough text (renders to a [`<del>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del), only available in GitHub Flavored Markdown, which Astro supports by default. TIL about `<del>`, and correspondingly, `<ins>`).
+> This includes inline code, codeblocks, images, lists, callouts, and even strikethrough text. It renders to a [`<del>` element](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del) by default. TIL about `<del>`, and correspondingly, `<ins>`. Note that some of these only exist in GitHub Flavored Markdown.
 
 So before I even finished a write-up, I took some time to customize stuff to my liking. Now everything is themed correctly.
 
@@ -74,10 +74,10 @@ import { Hash } from "lucide-astro";
 
 type Props = HTMLAttributes<"h2">;
 
-const { id, ...attrs } = Astro.props;
+const { id, ...props } = Astro.props;
 ---
 
-<h2 id={id} {...attrs} class="text-lg text-sweater-2">
+<h2 id={id} class="text-lg text-sweater-2" {...props}>
   <a href={`#${id}`} class="group relative -ml-2 flex w-fit items-center gap-1.5 pl-2">
     <slot />
     <Hash
@@ -89,4 +89,4 @@ const { id, ...attrs } = Astro.props;
 </h2>
 ```
 
-Don't forget that when we destructure `Astro.props`, we have to manually attach any remaining attributes onto the `<h2>` element via the spread operator. That's what the `{...attrs}` does.
+Don't forget that when we destructure `Astro.props`, we have to manually attach any remaining attributes onto the `<h2>` element via the spread operator. That's what the `{...props}` does.
