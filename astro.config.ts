@@ -76,7 +76,7 @@ const config = defineConfig({
   trailingSlash: "never",
   markdown: {
     shikiConfig: {
-      theme: "catppuccin-mocha",
+      theme: "rose-pine-moon",
     },
   },
   redirects: {
