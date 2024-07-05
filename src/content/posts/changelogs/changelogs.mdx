@@ -13,7 +13,10 @@ I like [United States Graphics Company's](https://berkeleygraphics.com/engineeri
 
 Two wildly different sources of inspiration, but hey. Both are good.
 
-IMAGE HERE OF THE TWO, SIDE BY SIDE. caption: "Both. Both are good."
+<figure>
+  IMAGE HERE OF THE TWO, SIDE BY SIDE.{" "}
+  <figcaption>**The two websites, side by side.** Both. Both are good.</figcaption>
+</figure>
 
 I now have two methods of writing on this site: via posts, or via the changelog. I think both are necessary and fill different gaps: posts are for more permanent things, where edits are mostly for style, not content changes. The changelog is for more temporary things that can quickly become "out of date" and in fact, expects it. Every new update is _supposed_ to void the previous one, by design.
 
@@ -30,6 +33,12 @@ Other ways that you can think of this changelog idea:
 - A timeline of how my website has changed
 - A time machine to see how things have evolved
 - A way for me to yap about interesting things I learned while making this site
+
+Whenever I updated this site, I've always kept track of an internal version number in my head. This number showed up as version updates in my package.json, and sometimes I would also name commits after these versions (for example, here's [v4.4.0](https://github.com/aczw/personal-website/commit/d830237fb29a615b9789640f4db8eab8b5614b36), which is actually v3.4.0. Long story). To anyone else, these numbers would look clinically insane, as I've never explained them; but they were there to allow me to keep track of things. It also made it feel like I was working on an actual app that required updates, which felt nice.
+
+Once again, Astro made everything really easy to do. I was largely able to reuse the preexisting code I had for my posts, because each of these changelogs is a MDX file.
+
+You know how weird it was to write in present tense about everything that I did in the past? Yeah anyways.
 
 ## Semantic versioning
 
@@ -49,6 +58,8 @@ For example, what I've always referred to as v1 shouldn't actually be the first 
 But this is not how semver works. If it's not stable, then it's not stable. And if that's true, then it does not deserve a major version change... it should still be in v0.x.0 territory.
 
 So yeah, I shifted everything back. It's now referred to as [v0.4.0](/changelog#v040/v040) and what used to be v2 is now the definite [v1.0.0 release](/changelog#v100/v100). What was originally the v5 release has now become the v4 release.
+
+This was originally going to be v4.5.0. Then, it changed to v5.0.0. Now it's v4.0.0, smaller than the original version number.
 
 I think I'm the first person in history to release a new version with a _smaller_ version number than the previous release. No one else could be this stupid.
 

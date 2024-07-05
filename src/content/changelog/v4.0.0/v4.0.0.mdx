@@ -5,83 +5,41 @@ date: 2099-04-20T08:10:00.000Z
 slug: "4.0.0"
 ---
 
-This was originally going to be v4.5.0. Then, it changed to v5.0.0. Now it's v4.0.0, smaller than the original version number. Lemme explain.
+Hey! We're on v4.0.0 now. Welcome, welcome.
 
-Because this isn't exactly rocket code I can do whatever the hell I want.
+Some major changes have occurred, but at the same time, it feels like nothing has really changed. Seems to be the trend for the past few updates, and I don't see it changing any time soon. I'm finding less and less things I want to change with each release.
 
-## Website changelog and "two" new posts
+So, what's exactly new?
 
-There's now a dedicated page listing all the changes I've made to it, ever. You're currently looking at it. This page can always be accessed again from the version number in the footer.
+## Website changelog
 
-I also wrote a little post about it, which you can [read here](/posts/changelogs). It goes into the inspiration for the idea and how I set it up. Once again, Astro made everything really easy to do.
+I've added a new section to my site, listing all the changes I've made to it, ever. You're currently reading it. These are the release notes for version 4.0.0.
 
-### That website post is pointless now I guess
+This is the short version of the story. [I made a little post](/posts/changelogs) that goes into more detail, including the inspiration for the idea, how I set it up, and other stuff that doesn't belong in a changelog. So go read the post to learn more.
 
-I've never known what to do with [the post about this website](/posts/wip). If you've noticed, the content is different now; the old post used to be about the many changes this site has undergone. I had to update it every time I changed something. I sure wish there was an easier, better system to do that... oh wait.
+## One new post and one "new" post
 
-Anyway, after some <span aria-hidden="true" aria-label="deep thinking">𝓭𝓮𝓮𝓹 𝓽𝓱𝓲𝓷𝓴𝓲𝓷𝓰</span> I've replaced it with something new. Honestly wasn't sure how to end the post, as I usually write about projects, which I can summarize neatly with a conclusion. This was a different subject.
+So that's the new post for this release. As for the "new" post...
+
+Usually by now, I would be busy updating that website post I made 8 months ago with the newest reflections and changes, but that is not possible anymore. That's because I _**Deleted**_ it. Completely. Utterly. Yeah
+
+Lemme explain. I used to have a post discussing this website and the many changes it has undergone. It was one of the [first things I published](/changelog/2.1.0) on this website.
+
+I've never known what to do with it. I updated it everytime I changed something. Turns out, treating a post as a live document is very exhausting and annoying. It's one of the reasons why I created this changelog, whose sole purpose is to discuss updates.
+
+Well, the changelog largely supersedes that post. So after some <span aria-hidden="true" aria-label="deep thinking">𝓭𝓮𝓮𝓹 𝓽𝓱𝓲𝓷𝓴𝓲𝓷𝓰</span>, I've replaced it with [something new](/posts/wip). Honestly wasn't sure how to end the new post, as I usually write about projects, which I can summarize neatly with a conclusion. This was a different subject.
 
 I told myself that this will be the last time I'll ever touch it, but... it's me I'm talking about.
 
-## Other changes in v4.0.0
+## Using more direct CSS
 
-- adjust spacing for everything
-- create more specific layouts on top of a base layout (e.g. include header and footer already)
-- Revert `<MewoQuote />` back from being a web component
-- Rewrite bio on homepage. Add more about my school clubs :\)
-- Add more stuff to OG metadata, tell browser my site prefers dark
-- Add `subtitle` as a Tailwind utility. Sometimes standard text feels a bit too bright for what I'm trying to convey, so I set its opacity to 90% and slightly color it.
-- Delete `<NotFound />` because I realized you could directly import entire Astro pages as a component! So I can just import and use my site-wide 404 page in everything else.
-- Display date on OG metadata for each post (instead of tags, which have been destroyed)
+I've started utilizing Tailwind `@layer` directives more. A lot of unruly in-component classes have been moved to a CSS file. And while Tailwind discourages complicated CSS classes, I've found a few of them to be very helpful.
 
-### More stuff:
+For example, Berkeley Mono defines its weight range from 100 to 150. Since `font-weight: regular` is 400, I always had to specify `font-[100]` after `font-mono` to keep Berkeley from becoming too thick by default. I also prefer my monospaced fonts slightly smaller than normal, so I had a `font-[13px]` or something in there too. I did this everytime I wanted to use the monospaced font. Now a simple `berkeley` class takes care of all of that.
 
-- New `<Main />` props to centralize common cases (min height, type of max width)
-- Clamp the song name in the footer to one line. Looks kind of weird now, so we'll see.
-- Combined badge-shaped elements (for now just the resume and version buttons) into a single `<Pill />` component. It's called a pill because it sounds cooler than a badge.
-- All text-based links in the header and footer use the `<Pill />` component now.
-- Created a `<CustomContent />` component that abstracts away configuring MDX components. Used by posts and this page.
-- Adjusted spacing between paragraphs in rendered MDX
-- Add a little separator between content for posts with no cover images
-- Wrapped `<VideoGif />` in extra y-margin
+> I realize how dumb this sounds; this is literally CSS 101. But for someone who's used Tailwind since they started learning web dev, this is _new_ to me. So please humor me.
 
-## In rapid succession
-
-I have a lot to yap about and this section is dedicated to quick thoughts on other stuff I've changed.
-
-### MEWO cursor
-
-If you're on desktop, try hovering over the quote on the homepage. You should see MEWO replace your cursor as long as it remains on the quote.
-
-Honestly, after adding the previous text animation, I wasn't too sure what else to do with it. I figured that since I removed the quote author, I might as well add it back some other way.
-
-Unfortunately MEWO has black fur, so it's a bit hard to see. More reason to add a sitewide light mode.
-
-I might also add sound effects in the future, for when you click on it. Not sure though.
-
-### Use more direct CSS
-
-Really utilize Tailwind `@layer` directives more. I've moved a lot of unruly in-component directives to `base.css`. For example, I inlined the CSS for the MEWO cursor, which now has an absolute path, meaning in theory I could style anything with it.
-
-Instead of being inlined like this on the HTML element
-
-```html
-<p class="cursor-[url('../assets/mewo.webp')_32_32,_not-allowed]">Incredible quote.</p>
-```
-
-It's now easier to read like this:
-
-```css
-@layer utilities {
-  .mewo-quote {
-    cursor:
-      url("/src/assets/mewo.webp") 32 32,
-      not-allowed;
-  }
-}
-```
-
-Another use case was with Berkeley Mono: its weight range spans from 100 to 150. Since regular weight is usually 400, I always had to specify `font-[100]` right after using `font-mono`. I also prefer my monospaced fonts slightly smaller than normal, so it was usually also followed by a `font-[14.5px]`. Now all of that's gone.
+I've also added a `subtitle` class. Sometimes standard text feels a bit too bright for what I'm trying to convey, so subtitles are slightly colored and have their opacity set to 90%.
 
 ### Nested CSS and how jailbreaking finally caught up to me
 
@@ -129,15 +87,90 @@ article {
 
 Honestly, up until this point jailbreaking has been a great experience. Apart from the occasional random reboots, I haven't had any weird issues or blockers (e.g. apps detecting my jailbreak). So it's _hilarious_ to me that this is the first issue that I've experienced.
 
+## New post layout and table of contents
+
+updated max width to be slightly bigger, smaller post width looked weird with wider header, figured extra space might go to something useful like a table of contents
+
+this is perfect because if i were to render the Markdown content at full width it would be a bit uncomfortable to read
+
+> notice a lot of other sites also get rid of the TOC entirely on mobile, so I'll follow suit. But I do wonder if there's a way to sneak it in somewhere else e.g. at the top, right before the writing.
+
+One thing I like in particular is that if there's not enough vertical screen space, the table of contents will overflow and gain a scrollbar. I also spent a painstakingly long time getting the headings to smoothly fade in and out at the top and bottom. This was done with gradients that were overlaid.
+
+I've also gotten rid of tags entirely. They served no purpose and were simply for deocration. Maybe if I have more posts in the future they might become useful in filtering.
+
+## In rapid succession
+
+I have a lot of smaller stuff to yap about and this section is dedicated to quick thoughts on other stuff I've changed.
+
+### MEWO cursor
+
+If you're on desktop, try hovering over the quote on the homepage. You should see MEWO replace your cursor as long as it remains on the quote.
+
+Honestly, after adding the previous text animation, I wasn't too sure what else to do with it. I figured that since I removed the quote author, I might as well add it back some other way.
+
+Unfortunately MEWO has black fur, so she's a bit hard to see. More reason to add a sitewide light mode, I guess. I might also add sound effects in the future when you click on her.
+
+Also, I've made the MEWO cursor a simple CSS class that you can apply anywhere.
+
+```css
+.mewo-quote {
+  cursor:
+    url("/src/assets/mewo.webp") 32 32,
+    not-allowed;
+}
+```
+
+So to add MEWO to an element, simply add `mewo-quote` to the class. Wonderful. ~~I'm soooo going to abuse this. Someone stop me.~~
+
+> To build on the point earlier about inlined Tailwind not exactly being pleasant to read: this is how you would directly apply it.
+>
+> ```html
+> <p class="cursor-[url('../assets/mewo.webp')_32_32,_not-allowed]">Incredible quote.</p>
+> ```
+>
+> I would rather have `mewo-quote`, y'know?
+
+### Pill component
+
+During development, I made a custom pill component
+
+- Combined badge-shaped elements (for now just the resume and version buttons) into a single `<Pill />` component. It's called a pill because it sounds cooler than a badge.
+- All text-based links in the header and footer use the `<Pill />` component now.
+
+### ?uwu mode
+
+There was this trend going on a while back about using these kawaii-inspired logos of products and icons when you secretly added a `?uwu` or `?uwu=true` in the URL parameters. ~~Being the bandwagoner that I am~~ I decided to add it to my 404 page.
+
 ### Hello, Rosé Pine
 
-I've been a Catppuccin Mocha enjoyer for a very, very long time. I originally switched over to it from Tokyo Night, and I enjoyed how they supported a lot of different applications. However, recently I've been sort of obsessed with [Rosé Pine](https://rosepinetheme.com/), and I've switched this site's syntax highlighting over to it. I mean, look at how clean this is:
+I've been a Catppuccin Mocha enjoyer for a very, very long time. I originally switched over to it from Tokyo Night, and I enjoyed how they supported a lot of different applications.
+
+However, recently I've been sort of obsessed with [Rosé Pine](https://rosepinetheme.com/), and I've switched this site's syntax highlighting over to it. I mean, look at how gorgeous this looks:
 
 <figure>
   ![VS Code is open, showcasing the theme colors.](rose-pine.png)
-  <figcaption>**VS Code, dipped in Rosé Pine.** Oh yeah. I could stare at this all day.</figcaption>
+  <figcaption>**VS Code, dipped in Rosé Pine.** I could stare at this all day.</figcaption>
 </figure>
 
 > I'm using a brighter version called Rosé Pine Moon on the website because it compliments the site colors a bit better, I think.
 
 I've realized I prefer themes that use a very small selection of colors. That's probably why I also enjoy looking at [Vesper](https://github.com/raunofreiberg/vesper), which only consists of 4 colors, two of which are white and grey.
+
+## Laundry for v4.0.0 and reflection
+
+Even more, quicker changes. There were many other changes too small to be noteworthy.
+
+- Adjusted spacing for everything, in posts and across the site.
+- Rewrote my bio on the homepage. Added more about my school clubs and interests :\)
+- As part of the new `/changelog/*` route, I've added dynamic Open Graph (OG) image generation for it.
+- Also updated OG image generation for posts because they don't have tags anymore; now it shows the date.
+- Added more stuff in the head, including more OG metadata and browser hints about my site preferring dark mode over light. I _really_ should make a light mode.
+- Added captions underneath certain images to give them additional context.
+- Deleted the `<NotFound />` component because I realized you could directly import entire Astro pages as a component! So I can just import and use my site-wide 404 page in everything else.
+- Reverted `<MewoQuote />` back from being a web component. I don't know man.
+- Clamp the song name in the footer to one line. Looks kind of weird now, so we'll see.
+
+Honestly, this release feels pretty _final_. I'm always scared to declare something like that because knowing me, I'll come out with v5 the next week. But I've really taken my time to work this one through the pipeline. And with all the reflecting that I did while writing the changelogs, I've come to the conclusion that I'm pretty happy with what I have.
+
+Instead, I'll focus my attention on writing more posts and doing _new_ cool shit instead of constantly rewriting old stuff.
