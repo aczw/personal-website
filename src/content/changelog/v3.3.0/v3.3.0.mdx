@@ -1,16 +1,20 @@
 ---
-version: "v3.4.0"
+version: "v3.3.0"
 date: 2024-05-30T07:51:00.000Z
 commit: "d830237fb29a615b9789640f4db8eab8b5614b36"
 
-slug: "3.4.0"
+slug: "3.3.0"
 ---
 
-## MEWO quote entry animation
+## Text animation
 
 ~~Literally copied from~~ Inspired by [rauno.me's project page](https://rauno.me/projects), I wanted to see if I could achieve a similar effect. It's probably not very efficient (I'm doing a _lot_ of JS string concatenation), but the final effect looks pretty good. I also made it a web component, for some reason.
 
 > This took me so long to figure out. Lots of off-by-one index errors. Had to pull out the pen and paper and write things down.
+
+(video here)
+
+How it works is that
 
 ## Redesigned all posts page
 
@@ -19,6 +23,8 @@ For a page that's supposed to list every post I've every made, it's not very spa
 ### Chosen one
 
 You'll see this on the homepage as well, but if you're on desktop try hovering over a post. You'll see a cool effect: every element _not_ being hovered will dim.
+
+(video here)
 
 After seeing it in action on [paco.me's writing page](https://paco.me/writing), I wanted to ~~copyright infringe it~~ try recreating it.
 
@@ -36,14 +42,14 @@ Note that if there are gaps between children, then add `pointer-events-none` to 
 
 ```html
 <ul class="pointer [&>li:not(:hover)]:hover:brightness-[65%]" />
-  <li class="pointer-events-auto transition-[filter]"></li>
-  <li class="pointer-events-auto transition-[filter]"></li>
-  <li class="pointer-events-auto transition-[filter]"></li>
+  <li class="pointer-events-auto transition-[filter]">Item 1</li>
+  <li class="pointer-events-auto transition-[filter]">Item 2</li>
+  <li class="pointer-events-auto transition-[filter]">Item 3</li>
   <!-- ... -->
 </ul>
 ```
 
-## Other changes for v4.4.0
+## Other changes for v3.3.0
 
 - Make images optional for posts. Sometimes there is no "cover image" for a post, ya know? Not everything has to be big and grand. Honestly, Link Shortener didn't need a cover, but I had to make one because it was required. This gave me more reason to condense `/posts` as well.
 - Removed post tags. They were not useful. I don't have enough posts to worry about filtering.
