@@ -6,6 +6,7 @@ commit: "893e83abae0e8db60704c477142f250925952aee"
 slug: "1.2.0"
 ---
 
+import Border from "@/components/mdx/border.astro";
 import VideoGif from "@/components/video-gif.astro";
 
 ## General changes
@@ -21,9 +22,9 @@ Inspired by the scrolling LED projects by [Jenny Holzer](https://projects.jennyh
 
 After figuring out `setInterval` (TypeScript was confused and was suggesting Node.js types) and some string manipulation, we now have this in the footer. [Rest in peace, Mac.](https://www.youtube.com/watch?v=Uf24Uk6ZMLQ)
 
-<div style="border-width:5px;border-radius:0.5rem;border-color:#1D193D">
+<Border>
   <VideoGif content={{ collection: "changelog", folder: "v1.2.0" }} name="v1.2.0-scrolling" />
-</div>
+</Border>
 
 > **From the future:** I had to absolutely _hunt down_ where I added this change. Turns out it was tucked away in a random commit called ["simplify things a bit"](https://github.com/aczw/personal-website/commit/130f887397655893b0bf566d183bb4db30e3bf51) where I, in fact, made my footer more complicated.
 >
@@ -37,9 +38,9 @@ Using a header navbar as an example, to fix this they had to absolutely position
 
 [This amazing Twitter person](https://twitter.com/lepikhinb/status/1707727096083255330) wrapped up all the CSS into a Tailwind plugin ([playground here](https://play.tailwindcss.com/uW7SWuQeOA)) that I could just drop into my own website. I wanted to try it out so I made my header fixed, added the plugin to my config, and...
 
-<div style="border-width:5px;border-radius:0.5rem;border-color:#1D193D">
+<Border>
   <VideoGif content={{ collection: "changelog", folder: "v1.2.0" }} name="glass-header" />
-</div>
+</Border>
 
 ...it was okay. I mean, it was pretty nice, and I liked how it attached to all the colors in my portfolio pieces. But when the rest of the site relied on flat colors and layering via different shades of my palette, it definitely clashed a bit. For now, I've removed it.
 

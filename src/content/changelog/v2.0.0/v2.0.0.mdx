@@ -6,6 +6,7 @@ commit: "bfee3c201ba27bf3b3777e154224ed6dd1e757bb"
 slug: "2.0.0"
 ---
 
+import Border from "@/components/mdx/border.astro";
 import VideoGif from "@/components/video-gif.astro";
 
 Welcome to charl.sh, version 2.0.0.
@@ -108,9 +109,9 @@ The more conventional header-content layout also allows me to showcase two of my
 
 As a workaround, I absolutely positioned two identical gradients on top of each other, one with a lighter gradient color. I then faked the transition by animating one of the element's opacity value on hover. The resulting code looks very messy for how simple the design is:
 
-<div style="border-width:5px;border-radius:0.5rem;border-color:#1D193D">
+<Border>
   <VideoGif content={{ collection: "changelog", folder: "v2.0.0" }} name="gradient-hover" />
-</div>
+</Border>
 
 ```tsx
 <a href="/projects" class="group">
@@ -135,9 +136,9 @@ I can also add custom metadata to the Markdown/MDX file via frontmatter, and val
 In fact, the GitHub link, project blurb, tech stack, and even cover image that you see below were all specified in the MDX file that this write-up comes from!
 
 <figure>
-  <div style="border-width:5px;border-radius:0.5rem;border-color:#1D193D">
+  <Border>
     ![The write-up page for how I made this website. It is under construction.](./write-up-page.png)
-  </div>
+  </Border>
   <figcaption>**Write-up page for how this site came to be.** Trippy.</figcaption>
 </figure>
 
