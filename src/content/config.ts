@@ -30,9 +30,7 @@ const posts = defineCollection({
               const epsilon = 0.01;
 
               // sometimes we can't get an exact aspect ratio, and that's okay within epsilon
-              if (ratio >= 1.6 - epsilon && ratio <= 1.6 + epsilon) {
-                return true;
-              }
+              if (Math.abs(ratio - 1.6) <= epsilon) return true;
 
               return false;
             },
