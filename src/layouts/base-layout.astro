@@ -40,11 +40,14 @@ switch (meta.kind) {
 
   case "release": {
     let { data, slug } = meta.release;
-    title = `${data.version} website release notes — ${title}`;
+    title = `Website release ${data.version} — ${title}`;
     description = `Notable changes in the ${data.version} release of this website.`;
     ogImageParams = `?release=${slug}`;
     break;
   }
+
+  default:
+    throw new Error("Unreachable!");
 }
 
 // see https://github.com/withastro/astro/issues/5248
