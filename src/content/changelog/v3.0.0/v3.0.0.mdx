@@ -6,6 +6,8 @@ commit: "8645ec51115cee8a9f38d4448e6cf21f22e5ca45"
 slug: "3.0.0"
 ---
 
+import VideoGif from "@/components/video-gif.astro";
+
 What? So soon? Another major version bump? But we only had one minor release for v2!
 
 Well, not really. Between v2.1.0 and this release, more than two months have passed. Happy belated new year, by the way. Hope things are off to a good start.
@@ -22,8 +24,21 @@ Anyways. If nothing else, a domain change itself probably demands a major versio
 
 ## Failed experiment: image carousels
 
-I want to mention this because it's one of the experiments that I did that made me want to restart. So, sometimes I wanted to showcase many images in a row, right? For example, a slideshow of images for a particular project. Displaying them verticaly one by one takes up too much space. So I decided to try building an image carousel that scrolled horizontally.
+Sometimes I wanted to showcase many images in a row. For example, a slideshow of images for a particular project. Displaying them vertically one by one takes up too much space. So I decided to try building an image carousel that scrolled horizontally.
 
-Some time passed after building it, and I realized I _did not_ like it. Firstly, it didn't even work that well. The arrows would either over or under scroll, and the current image counter often broke. So much so that I [entirely removed it](https://github.com/aczw/personal-website/commit/8b3434539a74a94cad490f4b730e62d79fb0c8f5). A surefire sign that _all_ of it was going to be removed soon.
+<figure>
+  <div style="border-width:5px;border-radius:0.5rem;border-color:#1D193D">
+    <VideoGif content={{ collection: "changelog", folder: "v3.0.0" }} name="image-carousel" />
+  </div>
+  <figcaption>**Image carousel.** It worked until it didn't.</figcaption>
+</figure>
 
-So yeah. I still gotta figure out how to display many images at once. But I would rather have nothing than this.
+Building it wasn't too difficult. Some JavaScript, button event listeners, and programmatic scrolling based on the width of the current image.
+
+And they served a legitimately useful purpose: inside write-ups, they allowed me to show many pictures successively. For projects that didn't have write-ups yet, I was able to provide some screenshots for the viewer to scroll through.
+
+But I realized that I just did not _like_ it. Firstly, it didn't even work that well. The arrows would either over or under scroll, and the current image counter often broke. So much so that I [entirely removed it](https://github.com/aczw/personal-website/commit/8b3434539a74a94cad490f4b730e62d79fb0c8f5). A surefire sign that _all_ of it was going to be removed soon.
+
+It just didn't live up to my standards of something that was used so much across the site.
+
+So yeah. I still gotta figure out how to display many images at once. But I would rather have nothing for now than this.
