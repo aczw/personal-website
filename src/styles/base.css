@@ -28,6 +28,10 @@
 
   /* Only style elements rendered from Markdown */
   article {
+    & p {
+      text-wrap: pretty;
+    }
+
     & img {
       @apply rounded-lg bg-sweater-9;
     }
