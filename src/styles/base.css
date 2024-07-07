@@ -61,13 +61,21 @@
       @apply pl-4;
     }
 
-    & ul {
-      list-style-type: "➔";
-      @apply ml-6 list-outside space-y-2.5;
+    & ul,
+    ol {
+      @apply ml-6 list-outside space-y-2;
 
       ::marker {
         @apply text-sweater-4;
       }
+    }
+
+    & ul {
+      list-style-type: "➔";
+    }
+
+    & ol {
+      list-style-type: decimal;
     }
 
     & figure {
