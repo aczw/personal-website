@@ -70,7 +70,7 @@
       }
 
       > li {
-        @apply break-all;
+        @apply break-words;
       }
     }
 
