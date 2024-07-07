@@ -68,6 +68,10 @@
       ::marker {
         @apply text-sweater-4;
       }
+
+      > li {
+        @apply break-all;
+      }
     }
 
     & ul {
