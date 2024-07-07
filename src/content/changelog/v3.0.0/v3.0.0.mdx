@@ -40,12 +40,42 @@ Making the MVP wasn't too difficult. Some JavaScript, button event listeners, an
 
 And they served a legitimately useful purpose: inside write-ups, they allowed me to show many pictures successively. For projects that didn't have write-ups yet, I was able to provide some screenshots for the viewer to scroll through.
 
-<Border>
-  <VideoGif content={{ collection: "changelog", folder: "v3.0.0" }} name="carousel-projects" />
-</Border>
+<figure>
+  <Border>
+    <VideoGif content={{ collection: "changelog", folder: "v3.0.0" }} name="carousel-projects" />
+  </Border>
+  <figcaption>
+    **Screenshots for my projects.** Watch me click-drag on the image to try and scroll. Oops.
+  </figcaption>
+</figure>
 
 But I realized that I just did not _like_ it. Firstly, it didn't even work too well. The arrows would either over or under scroll, and the current image counter often broke.
 
 Granted, I could have spent some more time polishing it and fixing the issues. But at the end of the day, it was just an experiment. It didn't live up to my standards of something that was used so much across the site.
 
 So yeah. I still gotta figure out how to display many images at once. But I would rather have nothing for now than this. Plus, I have some other ideas that are much cooler.
+
+## Mass simplification
+
+### ...of components
+
+I generally tried removing Astro components and custom logic where possible. Less passing of props, less elements to render. That sort of stuff.
+
+### ...of my existing write-ups
+
+I have this tendency to read and re-read everything I've published. It's a bad habit for sure—I should have just proofread it in the first place, and I keep trying to make it _perfect_—and it leads me to finding all sorts of issues I want to fix.
+
+So I spent some time rewriting many parts of all four write-ups. Wait, did I say four? That's right, because during this period I also released a post about a [voxel game engine](/posts/mini-minecraft) I helped make, and a [Linux login theme I created.](/posts/sddm-theme-corners)
+
+### ...of the homepage
+
+I've simplified things where they didn't need to be complicated, and complicated things that should have more attention. Part of that is moving the Last.fm status to the footer, and changing the look of projects to a grid layout so more can be seen at once. I've switched the blurb to just the tags though because it started to look like a word salad.
+
+<figure>
+  <Border>![A side-by-side comparison of version 3 and 2.](v3-vs-v2-homepage.png)</Border>
+  <figcaption>**Comparison.** More projects in the same amount of space.</figcaption>
+</figure>
+
+As a test, I've also moved the socials to the header, to make them more prevalent. Consequently I removed the projects link. I've seen a few people do this, linking it somewhere else on the homepage. I think contact info is more important? Still on the fence.
+
+I "complicated" things though by adding a quote to the homepage that means a lot to me. 💜
