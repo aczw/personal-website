@@ -27,7 +27,7 @@ What I didn't know is that SSR has affected the way my 404 page would be rendere
 
 It seems to do with the fact that Vercel is much bigger than Astro—meaning, it needs to handle other frameworks or sites that may not provide fallback HTML for a 404. So now the question becomes, should Astro modify Vercel's response (which legitimately provides useful data), or leave it be? Both seem like the right choice.
 
-Seems like others have faced similar issues. Following their advice, I've now created a "catch all" page that
+I've looked online and others have faced similar issues. Following their discussions, I've now created a "catch all" page that
 
 1. manually sets the response header and error code to `404`, and
 2. renders my custom error page component.
@@ -142,6 +142,8 @@ const posts = document.querySelectorAll<HTMLElement>("#post");
 function updateBarHeights() {
   // first get the max post title height from all posts
   const maxTitleHeight = Math.max(
+    // the reason we destructure `posts` is because it's actually a NodeList, not an Array,
+    // so we can't map it directly
     ...[...posts].map((post) => {
       return post.querySelector<HTMLElement>("#post-title")!.getBoundingClientRect().height;
     }),
@@ -192,7 +194,7 @@ One last thing: while the effect only activates on hover, it's fine because the 
 
 I know I just praised Astro above, but one limitation of the [sitemap integration](https://docs.astro.build/en/guides/integrations-guide/sitemap/#why-astro-sitemap) is that it doesn't generate links for dynamic routes when using SSR. Makes sense, I guess; Astro literally doesn't know which paths are legit.
 
-Other people have faced similar issues. [This answer](https://github.com/withastro/astro/issues/3682#issuecomment-1492468918) is a good solution if your setup is really simple like mine. Essentially we are crawling through the files in our content folder, and we provide those names to Astro, which has an option to pass in additional entries to the sitemap generation. Thank you, @modelorona.
+Other people have faced similar issues. [This answer](https://github.com/withastro/astro/issues/3682#issuecomment-1492468918) is a good solution if your setup is really simple like mine. Essentially we are crawling through the files in our content folder, and we provide those names to Astro, which can take additional custom entries to the sitemap generation.
 
 ```ts
 import { existsSync, readdirSync } from "node:fs";
