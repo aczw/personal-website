@@ -39,7 +39,7 @@ let previous = releases[3];
     </div>
 
     <ul
-      class="pointer-events-none grid grid-cols-4 gap-y-1 border-y-[1.5px] border-sweater-9 py-6 [--fade-speed:50ms] xs:grid-cols-5 sm:grid-cols-6 content:grid-cols-7 [&>li:not(:hover)]:hover:brightness-[65%]"
+      class="pointer-events-none grid grid-cols-4 gap-y-1 border-y-[1.5px] border-sweater-9 py-6 [--fade-speed:30ms] xs:grid-cols-5 sm:grid-cols-6 content:grid-cols-7 [&>li:not(:hover)]:hover:brightness-[65%]"
     >
       {
         releases.map(({ data: { version }, slug }, index) => (
@@ -62,7 +62,7 @@ let previous = releases[3];
         <ReleaseContent
           release={release}
           className="animate-fade border-t-[1.5px] border-sweater-9 py-12 first:border-t-0 first:pt-0"
-          style={{ "--order": index + 1 }}
+          style={{ "--order": index }}
         />
       ))
     }
