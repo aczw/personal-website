@@ -6,7 +6,19 @@ commit: "afe802f237d8dda845149d757214d50c96aece70"
 slug: "3.2.0"
 ---
 
-import Border from "@/components/mdx/border.astro";
-import VideoGif from "@/components/video-gif.astro";
+//import Border from "@/components/mdx/border.astro";
+//import VideoGif from "@/components/video-gif.astro";
 
-test
+## Bundows
+
+[Windows support for Bun](https://bun.sh/blog/bun-v1.1) got released recently, and I immediately tried it out because I've heard about how fast it is, and the reception on the macOS side has been great so far.
+
+> **From the future:** I didn't bother running benchmarks when I first switched so just now I did a really quick informal test using pnpm 9.5.0 and bun 1.1.18.
+>
+> I simply ran install for a clean clone of this website's repo, and... pnpm was almost 20 seconds _faster!_ 39 seconds versus 58. I even made sure to clean pnpm's store.
+>
+> I might be doing something wrong because in Bun's release post, it claims that it ran 18x faster than pnpm. Even if Bun is slower, I suppose the advantage of using it is the myriad of other features it brings along.
+
+It works for the most part, but I did run into an issue about subshells not being implemented. The turnaround for this issue was _very_ quick though; it was [filed](https://github.com/oven-sh/bun/issues/9781) on the release date, and _two days later_ they marked it as fixed.
+
+Just from eyeballing the [PR](https://github.com/oven-sh/bun/pull/9905/files), the implementation doesn't seem very trivial either. So these Bun guys are simply just cracked.
