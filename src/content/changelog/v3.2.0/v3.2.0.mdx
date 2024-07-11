@@ -6,19 +6,65 @@ commit: "afe802f237d8dda845149d757214d50c96aece70"
 slug: "3.2.0"
 ---
 
-//import Border from "@/components/mdx/border.astro";
-//import VideoGif from "@/components/video-gif.astro";
+import Border from "@/components/mdx/border.astro";
+import VideoGif from "@/components/video-gif.astro";
 
 ## Bundows
 
 [Windows support for Bun](https://bun.sh/blog/bun-v1.1) got released recently, and I immediately tried it out because I've heard about how fast it is, and the reception on the macOS side has been great so far.
 
-> **From the future:** I didn't bother running benchmarks when I first switched so just now I did a really quick informal test using pnpm 9.5.0 and bun 1.1.18.
+> **From the future:** I didn't bother running benchmarks when I first switched, so just now I did a really quick informal test using pnpm 9.5.0 and bun 1.1.18.
 >
-> I simply ran install for a clean clone of this website's repo, and... pnpm was almost 20 seconds _faster!_ 39 seconds versus 58. I even made sure to clean pnpm's store.
+> I installed all dependencies for a clean clone of this website's repo, and... pnpm was almost 20 seconds _faster!_ 39 seconds versus 58. I made sure to clean pnpm's store.
 >
 > I might be doing something wrong because in Bun's release post, it claims that it ran 18x faster than pnpm. Even if Bun is slower, I suppose the advantage of using it is the myriad of other features it brings along.
 
-It works for the most part, but I did run into an issue about subshells not being implemented. The turnaround for this issue was _very_ quick though; it was [filed](https://github.com/oven-sh/bun/issues/9781) on the release date, and _two days later_ they marked it as fixed.
+The experience... is the same. I guess that was what they were going for; it should feel seamless. My monkey brain can't get excited unless there's something life changing, but I can acknowledge the work and effort the Bun team must've put in to maintain parity.
 
-Just from eyeballing the [PR](https://github.com/oven-sh/bun/pull/9905/files), the implementation doesn't seem very trivial either. So these Bun guys are simply just cracked.
+### Subshells
+
+Everything works for the most part, but I did run into an issue about subshells not being implemented. The turnaround for this issue was _very_ quick though; it was [filed](https://github.com/oven-sh/bun/issues/9781) on the release date, and _two days later_ they marked it as fixed.
+
+> Just from eyeballing the [PR](https://github.com/oven-sh/bun/pull/9905/files), the implementation doesn't seem very trivial either. So the Bun team is just cracked. Gotcha. 😭
+
+## Removing the blurb drawer :(
+
+It is with a heavy heart that I announce the removal of the blurb drawer experiment. It only lasted one release, but it was a fan favorite ~~what the hell am I saying~~.
+
+During this time, I fixed numerous issues around the drawer, including breakage on mobile, small gaps between the bar and image, as well as simplifying the CSS and HTML attributes needed to make it.
+
+<figure>
+  <Border>
+    <VideoGif content={{ collection: "changelog", folder: "v3.2.0" }} name="blurb-resizing" />
+  </Border>
+  <figcaption>
+    **Strange behavior on resizing.** I'll try my best to find a JS-less solution, because that was
+    what was causing my problems.
+  </figcaption>
+</figure>
+
+Issues remained: the sudden jumping of the bar to its absolutely position on page load, or jittering on window resize. They were very noticeable, at least to me. So for now, it's gone. But this is #1 on my list of things to revive, given that I can find a better implementation.
+
+### Disabling hover styles when unsupported
+
+The drawer relied on checking whether the user's mouse was hovered over it to start animating. Well, on devices with no concept of "cursor hovering" it led to weird issues of the hover effect becoming ["sticky."](https://duckduckgo.com/?q=css+hover+sticky+mobile) Before discovering this, I didn't realize that it _had a name_ and was so prevalent; I thought I was just fucking something up.
+
+TIL that [CSS supports](https://www.w3.org/TR/mediaqueries-4/#mf-interaction) checking whether the current device the page is rendered on knows the concept of hovering, as well as how you're interacting with things (touchscreen, mouse, etc.). This is similar to styles only being active at certain screen width breakpoints.
+
+This is such a big issue that Tailwind [introduced a new feature](https://github.com/tailwindlabs/tailwindcss/pull/8394) to enable this. They've hidden it behind a future flag because technically it's a breaking change, but it will be on by default in v4. I've gone ahead and turned it on now; even though the blurb drawer is no more, it's still relevant to other stuff (like links).
+
+```ts
+// in tailwind.config.ts
+const config = {
+  /* ...other stuff... */
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
+};
+
+export default config;
+```
+
+## Experiment: view transitions
+
+## Small stuff
