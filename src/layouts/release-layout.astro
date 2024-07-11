@@ -1,8 +1,12 @@
 ---
-import ReleaseContent from "@/components/mdx/content/release-content.astro";
-import ContentLayout from "@/layouts/content-layout.astro";
 import type { CollectionEntry } from "astro:content";
-import { ArrowLeft, ArrowRight } from "lucide-astro";
+
+import Link from "@/components/link.astro";
+import ReleaseContent from "@/components/mdx/content/release-content.astro";
+
+import ContentLayout from "@/layouts/content-layout.astro";
+
+import { ArrowLeft, ArrowRight, CircleArrowLeft } from "lucide-astro";
 
 type AdjacentRelease = {
   slug: CollectionEntry<"changelog">["slug"];
@@ -26,7 +30,24 @@ let { release, next, previous } = Astro.props;
     release,
   }}
 >
-  <div class="flex flex-col gap-3.5 border-b-[1.5px] border-sweater-9 pb-12 xs:flex-row xs:gap-7">
+  <div class="flex flex-col gap-6 border-b-[1.5px] border-sweater-9 pb-12 sm:flex-row sm:items-end">
+    <div class="shrink-0 sm:w-1/5">
+      <Link href="/changelog" className="flex items-center"
+        ><CircleArrowLeft size={15} class="mr-2" />All releases</Link
+      >
+    </div>
+
+    <div>
+      <h1 class="mb-1.5 text-xl">Website release notes</h1>
+      <p class="subtitle">
+        Updates and changes I've made to this site, organized as a series of patch notes.
+      </p>
+    </div>
+  </div>
+
+  <ReleaseContent release={release} />
+
+  <div class="flex flex-col gap-3.5 border-t-[1.5px] border-sweater-9 pt-12 xs:flex-row xs:gap-7">
     {
       next ? (
         <a
@@ -97,6 +118,4 @@ let { release, next, previous } = Astro.props;
       )
     }
   </div>
-
-  <ReleaseContent release={release} />
 </ContentLayout>

@@ -5,7 +5,7 @@ import type { CollectionEntry } from "astro:content";
 import Link from "@/components/link.astro";
 import CustomContent from "@/components/mdx/content/custom-content.astro";
 
-import { Calendar, GitCommitHorizontal } from "lucide-astro";
+import { Calendar, CircleArrowUp, GitCommitHorizontal } from "lucide-astro";
 
 type Props = {
   release: CollectionEntry<"changelog">;
@@ -18,45 +18,66 @@ let { Content } = await release.render();
 let {
   data: { version, date, commit },
 } = release;
+
+// Hard code check if some release notes are too short, and if they are then don't bother
+// rendering the back to top button and modifying height of sidebar. Listen, I know, but
+// currently there's only *one* release note that is too short.
+let tallEnough = version !== "v0.1.0";
 ---
 
 <article class:list={["flex flex-col items-start gap-6 sm:flex-row", className]} {...props}>
-  <section class="flex shrink-0 flex-col sm:sticky sm:top-7 sm:w-1/5 sm:gap-0">
-    <h2 class="font-mono font-[150] text-sweater-5 sm:mb-6">{version}</h2>
+  <section
+    class:list={[
+      "flex shrink-0 flex-col justify-between sm:sticky sm:top-7 sm:w-1/5",
+      { "sm:h-[calc(100vh-3.5rem)] sm:max-h-[calc(100vh-3.5rem)]": tallEnough },
+    ]}
+  >
+    <div class="flex flex-col">
+      <h2 class="font-mono font-[150] text-sweater-5 sm:mb-6">{version}</h2>
 
-    <time
-      datetime={date.toISOString()}
-      title={date.toLocaleString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        timeZoneName: "short",
-      })}
-      class="subtitle flex w-fit items-center"
-    >
-      <Calendar aria-hidden="true" size={14} class="mr-1.5 hidden shrink-0 sm:block" />
-
-      {
-        date.toLocaleString("en-US", {
-          month: "short",
+      <time
+        datetime={date.toISOString()}
+        title={date.toLocaleString("en-US", {
+          month: "long",
           day: "numeric",
           year: "numeric",
-        })
-      }
-    </time>
+          hour: "numeric",
+          minute: "numeric",
+          timeZoneName: "short",
+        })}
+        class="subtitle flex w-fit items-center"
+      >
+        <Calendar aria-hidden="true" size={14} class="mr-1.5 hidden shrink-0 sm:block" />
 
-    <Link
-      href={commit
-        ? `https://github.com/aczw/personal-website/commit/${commit}`
-        : "https://github.com/aczw/personal-website/commits/"}
-      target="_blank"
-      className="berkeley hidden items-center sm:mb-6 sm:flex"
-    >
-      <GitCommitHorizontal aria-hidden="true" size={16} class="mr-1.5 shrink-0" />
-      {commit ? commit.slice(0, 7) : "latest"}
-    </Link>
+        {
+          date.toLocaleString("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          })
+        }
+      </time>
+
+      <Link
+        href={commit
+          ? `https://github.com/aczw/personal-website/commit/${commit}`
+          : "https://github.com/aczw/personal-website/commits/"}
+        target="_blank"
+        className="berkeley mb-6 hidden items-center sm:mb-0 sm:flex"
+      >
+        <GitCommitHorizontal aria-hidden="true" size={16} class="mr-1.5 shrink-0" />
+        {commit ? commit.slice(0, 7) : "latest"}
+      </Link>
+    </div>
+
+    {
+      tallEnough ? (
+        <Link href="#" className="hidden items-center sm:flex" data-quiet>
+          <CircleArrowUp size={15} class="mr-2" />
+          Back to top
+        </Link>
+      ) : null
+    }
   </section>
 
   <section class="w-full space-y-6 sm:w-3/4">
