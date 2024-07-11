@@ -38,7 +38,7 @@ let previous = releases[1];
     </div>
 
     <ul
-      class="pointer-events-none grid grid-cols-4 gap-y-1 border-y-[1.5px] border-sweater-9 py-6 [--fade-speed:30ms] xs:grid-cols-5 sm:grid-cols-6 content:grid-cols-7 [&>li:not(:hover)]:hover:brightness-[65%]"
+      class="border-y-thin pointer-events-none grid grid-cols-4 gap-y-1 border-sweater-9 py-6 [--fade-speed:30ms] xs:grid-cols-5 sm:grid-cols-6 content:grid-cols-7 [&>li:not(:hover)]:hover:brightness-[65%]"
     >
       {
         releases.map(({ data: { version }, slug }, index) => (
@@ -58,10 +58,10 @@ let previous = releases[1];
   <div class="relative flex flex-col [--fade-speed:70ms]">
     <ReleaseContent
       release={releases[0]}
-      className="animate-fade border-t-[1.5px] border-sweater-9 py-12 [--order:0] first:border-t-0 first:pt-0"
+      className="border-t-thin animate-fade border-sweater-9 py-12 [--order:0] first:border-t-0 first:pt-0"
     />
 
-    <div class="flex flex-col gap-3 border-t-[1.5px] border-sweater-9 py-12 xs:flex-row xs:gap-6">
+    <div class="border-t-thin flex flex-col gap-3 border-sweater-9 py-12 xs:flex-row xs:gap-6">
       <div class="w-full animate-fade [--order:0] xs:w-1/5">
         <h2>More releases</h2>
         <p class="subtitle">Previous changelog</p>
