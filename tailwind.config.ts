@@ -35,6 +35,10 @@ const config: Config = {
         post: "710px",
         xs: "480px",
       },
+      borderWidth: {
+        thin: "1.5px",
+        thick: "3px",
+      },
       keyframes: {
         fade: {
           from: { opacity: "0" },

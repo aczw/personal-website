@@ -31,7 +31,7 @@ let { Content, headings } = await post.render();
 
   <main class="mx-auto flex max-w-content items-start gap-7 px-7 py-12">
     <article class:list={["w-full post:w-[calc(100%-200px)]", cover ? "space-y-6" : "space-y-12"]}>
-      <section class:list={["space-y-6", { "border-b-[1.5px] border-sweater-9 pb-12": !cover }]}>
+      <section class:list={["space-y-6", { "border-b-thin border-sweater-9 pb-12": !cover }]}>
         <div class="space-y-1.5">
           <h1 class="text-xl">{title}</h1>
           <p class="subtitle">{blurb}</p>
