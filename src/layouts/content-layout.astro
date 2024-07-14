@@ -1,11 +1,9 @@
 ---
 import type { ComponentProps } from "astro/types";
 
-import Footer from "@/components/footer.astro";
-import Header from "@/components/header.astro";
-import BaseLayout from "@/layouts/base-layout.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
 
-type Props = ComponentProps<typeof BaseLayout> & {
+type Props = ComponentProps<typeof CommonLayout> & {
   minHeight?: boolean;
   className?: string;
 };
@@ -13,9 +11,7 @@ type Props = ComponentProps<typeof BaseLayout> & {
 let { minHeight, className, ...props } = Astro.props;
 ---
 
-<BaseLayout {...props}>
-  <Header />
-
+<CommonLayout {...props}>
   <main
     class:list={[
       "mx-auto max-w-content space-y-12 px-7 py-12",
@@ -25,6 +21,4 @@ let { minHeight, className, ...props } = Astro.props;
   >
     <slot />
   </main>
-
-  <Footer />
-</BaseLayout>
+</CommonLayout>

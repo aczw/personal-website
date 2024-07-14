@@ -2,10 +2,8 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 
-import BaseLayout from "@/layouts/base-layout.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
 
-import Footer from "@/components/footer.astro";
-import Header from "@/components/header.astro";
 import CustomContent from "@/components/mdx/content/custom-content.astro";
 
 interface Props {
@@ -26,9 +24,7 @@ let options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year:
 let { Content, headings } = await post.render();
 ---
 
-<BaseLayout meta={{ kind: "post", post, status }}>
-  <Header />
-
+<CommonLayout meta={{ kind: "post", post, status }}>
   <main class="mx-auto flex max-w-content items-start gap-7 px-7 py-12">
     <article class:list={["w-full post:w-[calc(100%-200px)]", cover ? "space-y-6" : "space-y-12"]}>
       <section class:list={["space-y-6", { "border-b-thin border-sweater-9 pb-12": !cover }]}>
@@ -80,13 +76,13 @@ let { Content, headings } = await post.render();
             headings.map(({ depth, slug, text }, index) => {
               if (depth === 1) {
                 throw new Error(
-                  `No MDX heading should be H1! Check whether the post "${title}" contains any.`,
+                  `No MDX heading should be H1! Check whether the post "${title}" contains any.`
                 );
               }
 
               if (depth > 3) {
                 throw new Error(
-                  `Used a heading level greater than H3 in "${title}." Maybe we should support it now?`,
+                  `Used a heading level greater than H3 in "${title}." Maybe we should support it now?`
                 );
               }
 
@@ -124,9 +120,7 @@ let { Content, headings } = await post.render();
       </nav>
     </aside>
   </main>
-
-  <Footer />
-</BaseLayout>
+</CommonLayout>
 
 <script>
   let observer = new IntersectionObserver((entries) =>
@@ -142,7 +136,7 @@ let { Content, headings } = await post.render();
           link.classList.remove("text-sweater-3");
         }
       }
-    }),
+    })
   );
 
   document.querySelectorAll("h2[id], h3[id]").forEach((heading) => observer.observe(heading));
