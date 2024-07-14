@@ -1,13 +1,12 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
+import { ArrowLeft, ArrowRight, CircleArrowLeft } from "lucide-astro";
+
+import CommonLayout from "@/layouts/common-layout.astro";
+
 import Link from "@/components/link.astro";
 import ReleaseContent from "@/components/mdx/content/release-content.astro";
-
-import Footer from "@/components/footer.astro";
-import Header from "@/components/header.astro";
-import BaseLayout from "@/layouts/base-layout.astro";
-import { ArrowLeft, ArrowRight, CircleArrowLeft } from "lucide-astro";
 
 type AdjacentRelease = {
   slug: CollectionEntry<"changelog">["slug"];
@@ -24,31 +23,35 @@ interface Props {
 let { release, next, previous } = Astro.props;
 ---
 
-<BaseLayout
+<CommonLayout
   meta={{
     kind: "release",
     release,
   }}
 >
-  <Header />
+  <main
+    class="mx-auto flex min-h-[var(--visible-h)] max-w-content flex-col justify-between px-7 py-12"
+  >
+    <div>
+      <div
+        class="flex flex-col gap-6 border-b-thin border-sweater-9 pb-12 sm:flex-row sm:items-end"
+      >
+        <div class="shrink-0 sm:w-1/5">
+          <Link href="/changelog" className="flex items-center"
+            ><CircleArrowLeft size={15} class="mr-2" />All releases</Link
+          >
+        </div>
 
-  <main class="mx-auto min-h-[var(--visible-h)] max-w-content px-7 py-12">
-    <div class="flex flex-col gap-6 border-b-thin border-sweater-9 pb-12 sm:flex-row sm:items-end">
-      <div class="shrink-0 sm:w-1/5">
-        <Link href="/changelog" className="flex items-center"
-          ><CircleArrowLeft size={15} class="mr-2" />All releases</Link
-        >
+        <div>
+          <h1 class="mb-1.5 text-xl">Website release notes</h1>
+          <p class="subtitle">
+            Updates and changes I've made to this site, organized as a series of patch notes.
+          </p>
+        </div>
       </div>
 
-      <div>
-        <h1 class="mb-1.5 text-xl">Website release notes</h1>
-        <p class="subtitle">
-          Updates and changes I've made to this site, organized as a series of patch notes.
-        </p>
-      </div>
+      <ReleaseContent release={release} />
     </div>
-
-    <ReleaseContent release={release} />
 
     <div class="flex flex-col gap-3.5 border-t-thin border-sweater-9 pt-12 xs:flex-row xs:gap-7">
       {
@@ -122,6 +125,4 @@ let { release, next, previous } = Astro.props;
       }
     </div>
   </main>
-
-  <Footer />
-</BaseLayout>
+</CommonLayout>

@@ -28,20 +28,20 @@ let tallEnough = version !== "v0.1.0";
 <article class:list={["flex flex-col items-start gap-6 sm:flex-row", className]} {...props}>
   <section
     class:list={[
-      "flex shrink-0 flex-col bg-sweater-7 sm:sticky sm:top-0 sm:w-1/5",
+      "flex shrink-0 relative flex-col mt-12 sm:mt-0 sm:sticky sm:top-0 sm:w-1/5",
       {
-        "relative h-screen overflow-y-auto": tallEnough,
+        "sm:h-screen overflow-y-auto": tallEnough,
       },
     ]}
   >
     <div
       aria-hidden="true"
-      class="sticky inset-x-0 top-0 h-12 shrink-0 bg-gradient-to-b from-sweater-1"
+      class="hidden sm:block sticky inset-x-0 top-0 h-12 shrink-0 bg-gradient-to-b from-sweater-10"
     >
     </div>
 
     <div class="flex grow flex-col justify-between sm:gap-6">
-      <div>
+      <div class="flex flex-col">
         <h2 class="font-mono font-[150] text-sweater-5 sm:mb-6">{version}</h2>
 
         <time
@@ -91,12 +91,12 @@ let tallEnough = version !== "v0.1.0";
 
     <div
       aria-hidden="true"
-      class="sticky inset-x-0 bottom-0 h-12 shrink-0 bg-gradient-to-b from-transparent to-sweater-1"
+      class="sticky hidden sm:block inset-x-0 bottom-0 h-12 shrink-0 bg-gradient-to-t from-sweater-10"
     >
     </div>
   </section>
 
-  <section class="my-12 w-full space-y-6 sm:w-3/4">
+  <section class="sm:mt-12 mb-12 w-full space-y-6 sm:w-3/4">
     <CustomContent entryContent={Content} />
   </section>
 </article>
