@@ -4,8 +4,9 @@ import type { CollectionEntry } from "astro:content";
 import Link from "@/components/link.astro";
 import ReleaseContent from "@/components/mdx/content/release-content.astro";
 
-import ContentLayout from "@/layouts/content-layout.astro";
-
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
 import { ArrowLeft, ArrowRight, CircleArrowLeft } from "lucide-astro";
 
 type AdjacentRelease = {
@@ -23,99 +24,104 @@ interface Props {
 let { release, next, previous } = Astro.props;
 ---
 
-<ContentLayout
-  minHeight
+<BaseLayout
   meta={{
     kind: "release",
     release,
   }}
 >
-  <div class="border-b-thin flex flex-col gap-6 border-sweater-9 pb-12 sm:flex-row sm:items-end">
-    <div class="shrink-0 sm:w-1/5">
-      <Link href="/changelog" className="flex items-center"
-        ><CircleArrowLeft size={15} class="mr-2" />All releases</Link
-      >
+  <Header />
+
+  <main class="mx-auto min-h-[var(--visible-h)] max-w-content px-7 py-12">
+    <div class="flex flex-col gap-6 border-b-thin border-sweater-9 pb-12 sm:flex-row sm:items-end">
+      <div class="shrink-0 sm:w-1/5">
+        <Link href="/changelog" className="flex items-center"
+          ><CircleArrowLeft size={15} class="mr-2" />All releases</Link
+        >
+      </div>
+
+      <div>
+        <h1 class="mb-1.5 text-xl">Website release notes</h1>
+        <p class="subtitle">
+          Updates and changes I've made to this site, organized as a series of patch notes.
+        </p>
+      </div>
     </div>
 
-    <div>
-      <h1 class="mb-1.5 text-xl">Website release notes</h1>
-      <p class="subtitle">
-        Updates and changes I've made to this site, organized as a series of patch notes.
-      </p>
+    <ReleaseContent release={release} />
+
+    <div class="flex flex-col gap-3.5 border-t-thin border-sweater-9 pt-12 xs:flex-row xs:gap-7">
+      {
+        next ? (
+          <a
+            class="group flex w-full items-center gap-4 rounded-lg bg-sweater-9 px-4 py-2 transition-colors hover:bg-sweater-8 xs:w-1/2 xs:py-4"
+            href={`/changelog/${next.slug}`}
+          >
+            <div
+              aria-hidden="true"
+              class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
+            >
+              <ArrowLeft class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4" />
+            </div>
+
+            <div>
+              <p class="font-mono font-[150] text-sweater-5 transition-colors group-hover:text-sweater-4">
+                {next.version}
+              </p>
+              <p class="subtitle">
+                <span class="xs:hidden sm:inline">Released</span>
+
+                {next.date.toLocaleString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
+          </a>
+        ) : (
+          <div class="berkeley hidden w-1/2 items-center rounded-lg border-thin border-dashed border-sweater-9 bg-sweater-9/25 px-4 text-sweater-8 xs:flex">
+            End of time...
+          </div>
+        )
+      }
+
+      {
+        previous ? (
+          <a
+            class="group flex w-full items-center justify-end gap-4 rounded-lg bg-sweater-9 p-2 px-4 py-2 transition-colors hover:bg-sweater-8 xs:w-1/2 xs:py-4"
+            href={`/changelog/${previous.slug}`}
+          >
+            <div class="text-right">
+              <p class="font-mono font-[150] text-sweater-5 transition-colors group-hover:text-sweater-4">
+                {previous.version}
+              </p>
+              <p class="subtitle">
+                <span class="xs:hidden sm:inline">Released</span>
+
+                {previous.date.toLocaleString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
+
+            <div
+              aria-hidden="true"
+              class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
+            >
+              <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4" />
+            </div>
+          </a>
+        ) : (
+          <div class="berkeley hidden w-1/2 items-center justify-end rounded-lg border-thin border-dashed border-sweater-9 bg-sweater-9/25 px-4 text-sweater-8 xs:flex">
+            Beginning of time...
+          </div>
+        )
+      }
     </div>
-  </div>
+  </main>
 
-  <ReleaseContent release={release} />
-
-  <div class="border-t-thin flex flex-col gap-3.5 border-sweater-9 pt-12 xs:flex-row xs:gap-7">
-    {
-      next ? (
-        <a
-          class="group flex w-full items-center gap-4 rounded-lg bg-sweater-9 px-4 py-2 transition-colors hover:bg-sweater-8 xs:w-1/2 xs:py-4"
-          href={`/changelog/${next.slug}`}
-        >
-          <div
-            aria-hidden="true"
-            class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
-          >
-            <ArrowLeft class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4" />
-          </div>
-
-          <div>
-            <p class="font-mono font-[150] text-sweater-5 transition-colors group-hover:text-sweater-4">
-              {next.version}
-            </p>
-            <p class="subtitle">
-              <span class="xs:hidden sm:inline">Released</span>
-
-              {next.date.toLocaleString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
-          </div>
-        </a>
-      ) : (
-        <div class="berkeley border-thin hidden w-1/2 items-center rounded-lg border-dashed border-sweater-9 bg-sweater-9/25 px-4 text-sweater-8 xs:flex">
-          End of time...
-        </div>
-      )
-    }
-
-    {
-      previous ? (
-        <a
-          class="group flex w-full items-center justify-end gap-4 rounded-lg bg-sweater-9 p-2 px-4 py-2 transition-colors hover:bg-sweater-8 xs:w-1/2 xs:py-4"
-          href={`/changelog/${previous.slug}`}
-        >
-          <div class="text-right">
-            <p class="font-mono font-[150] text-sweater-5 transition-colors group-hover:text-sweater-4">
-              {previous.version}
-            </p>
-            <p class="subtitle">
-              <span class="xs:hidden sm:inline">Released</span>
-
-              {previous.date.toLocaleString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
-            </p>
-          </div>
-
-          <div
-            aria-hidden="true"
-            class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
-          >
-            <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4" />
-          </div>
-        </a>
-      ) : (
-        <div class="berkeley border-thin hidden w-1/2 items-center justify-end rounded-lg border-dashed border-sweater-9 bg-sweater-9/25 px-4 text-sweater-8 xs:flex">
-          Beginning of time...
-        </div>
-      )
-    }
-  </div>
-</ContentLayout>
+  <Footer />
+</BaseLayout>
