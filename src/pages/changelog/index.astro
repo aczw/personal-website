@@ -78,10 +78,11 @@ let previous = releases[1];
             <p class="subtitle">
               Released
               {
-                previous.data.date.toLocaleString("en-US", {
+                previous.data.date.toLocaleDateString("en-US", {
                   month: "long",
                   day: "numeric",
                   year: "numeric",
+                  timeZone: "America/New_York",
                 })
               }
             </p>

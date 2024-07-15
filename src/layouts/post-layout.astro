@@ -19,7 +19,12 @@ let {
 let status = published ? "[PUBLISHED] " : "[DRAFT] ";
 status = import.meta.env.DEV ? status : "";
 
-let options: Intl.DateTimeFormatOptions = { month: "long", day: "numeric", year: "numeric" };
+let dateOptions: Intl.DateTimeFormatOptions = {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+  timeZone: "America/New_York",
+};
 
 let { Content, headings } = await post.render();
 ---
@@ -37,13 +42,19 @@ let { Content, headings } = await post.render();
 
         <div class="berkeley grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-1 md:grid-cols-2">
           <time datetime={posted.toISOString()} class="text-sweater-5">
-            {posted.toLocaleString("en-US", options)}
+            {posted.toLocaleDateString("en-US", dateOptions)} at {
+              posted.toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "numeric",
+                timeZone: "America/New_York",
+              })
+            }
           </time>
 
           {
             updated ? (
               <time datetime={updated.toISOString()} class="text-sweater-6">
-                Updated {updated.toLocaleString("en-US", options)}
+                Updated {updated.toLocaleDateString("en-US", dateOptions)}
               </time>
             ) : null
           }
