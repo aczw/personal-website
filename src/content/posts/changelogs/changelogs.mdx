@@ -19,11 +19,9 @@ What do the websites of [United States Graphics Company](https://berkeleygraphic
   </figcaption>
 </figure>
 
-I was naturally drawn towards this, probably because I really like tracking things. It's why I thought to download a copy of my elementary school Google account before it got disabled, and it's why I maintain an Obsidian vault with (mostly) daily journal entries.
+I was drawn towards this, probably because I also like tracking things: of my running activity, of my music listening history, of the anime and manga I've consumed, of my game save files, of bookmarks, of restaurants I've visited, of lecture notes, of tasks I've completed, of phone contacts. But it's not the data alone; I like seeing how it's changed _over time._
 
-I like collecting data: of my running activity, of my music listening history, of the anime and manga I've consumed, of my game save files, of bookmarks, of restaurants I've visited, of lecture notes, of tasks I've completed, of phone contacts. But it's not the data alone; I like seeing how it's changed _over time._
-
-So I think it's natural for me to want to keep track of how this website has evolved and changed. And I did! I used to maintain a post on this site detailing additions and removals as they came. It was great. But it was exhausting too. I would have to rewrite the entire post when something changed, because suddenly it was _out of date._
+So I think it's natural for me to keep track of how this website has evolved and changed. And I did! I used to maintain a post on this site detailing additions and removals as they came. It was great. But it was exhausting too. I would have to rewrite the entire post when something changed, because suddenly it was _out of date._
 
 <figure>
   <Border>![The cover image for the old post about this site.](www-post.png)</Border>
@@ -38,10 +36,10 @@ implied that previous releases were out of date.
 
 ## Designing a changelog system
 
-As I played around with the idea, things started falling into place, maybe even a bit too well. It was proof that I should have done this a long time ago.
+As I played around with the idea, things started falling into place, maybe even a bit too well. Maybe it was proof that I should have done this a long time ago.
 
-- At first I was worried about missing information. Then I realized Git has naturally been tracking every little thing I've done. I can just read my commits.
-- I can reuse the MDX components and CSS styles I had for posts.
+- At first I was worried about missing information. Then I realized Git has naturally been tracking every little thing I've done, ever. I can just read my commits.
+- I can reuse the MDX components and CSS styles from my posts.
 - A content collection is _perfect_ for this job. I quickly whipped up the following:
 
 ```ts
@@ -59,7 +57,7 @@ const changelog = defineCollection({
 });
 ```
 
-You know what sealed the deal? As I started planning out individual release notes, I was often able to copy entire chunks of text from the post about this website, and directly insert it with minimal tweaks. This told me it's always been in the wrong place.
+You know what sealed the deal? As I started planning out individual release notes, I was often able to copy entire chunks of text from the website post, and directly insert it with minimal tweaks. This told me it's always been in the wrong place.
 
 ### Correct mindset
 
@@ -78,7 +76,7 @@ Posts are for more permanent, evergreen ideas and projects. Meanwhile, a changel
 
 ### Semantic versioning
 
-To differentiate releases, I decided to use [semver](https://semver.org/). But what would it mean in the context of my site? This wasn't a library that people would consume; there are never going to be breaking API changes to warn users of. So I developed some guidelines (not rules):
+To differentiate releases, I decided to use [semver](https://semver.org/). But what would it mean in the context of my site? This wasn't a library that people would consume; there are never going to be breaking API changes to warn users of. So I developed some guidelines:
 
 - Above all, changes I write about should be _interesting._ So if nothing of value has happened, don't update the version. I'm playing fast and loose with the definition of a "changelog" here. I'm not trying to meticulously track every detail I change.
 - Major version changes include complete redesigns, changes that greatly affected the codebase, or general layout updates.
@@ -92,13 +90,13 @@ With everything planned out, I sat down and started assigning version numbers. T
 
 For example, what I've always referred to as v1 shouldn't actually be the first stable version, because I never finished it. I restarted in the middle, so nothing was finalized. According to semver, this means it's in the v0.x.x territory.
 
-This meant I had to shift _everything_ back. What was referred to as v1 in my commit history is now [v0.3.0](/changelog/0.3.0), my v2 commit is now actually [v1.0.0](/changelog/1.0.0), and so on. I can't easily change those commit names, but I don't want to anyway; the version change is something I want to track too!
+This meant I had to shift _everything_ back. What was referred to as v1 in my commit history is now [v0.3.0](/changelog/0.3.0), my v2 commit is now actually [v1.0.0](/changelog/1.0.0), and so on. I don't really want to go back and change the commit names, so I'll just live with it.
 
-> Fun fact: I made this change in the middle of developing the changelog system. At that point, all of _this_ was still referred to as v5.0.0. But now it's v4.
+I made this change in the middle of writing the changelogs. At that point, this very release was still referred to as v5.0.0. But now it's v4.
 
-I think I'm the first person in history to release a new version with a _smaller_ number than the previous release.
-
-I don't really want this achievement.
+> I think I'm the first person in history to release a new version with a _smaller_ number than the previous release.
+>
+> I don't really want this achievement.
 
 ## Technical stuff
 
