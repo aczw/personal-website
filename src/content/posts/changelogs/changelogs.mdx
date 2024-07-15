@@ -1,38 +1,118 @@
 ---
 title: Changelogs
-blurb: Reading the update notes for the stuff you use is always exciting. What's changed? What's not? Just for fun, I've added them to this site as well.
-posted: 2025-04-20T08:10:00.000Z
+blurb: Reading the update notes for the stuff you use is always exciting. What's changed? What's not? For fun, I've decided to add them to this site as well.
+posted: 2024-07-15T08:10:00.000Z
 
-published: false
+published: true
 slug: changelogs
 ---
 
 import VideoGif from "@/components/video-gif.astro";
+import Border from "@/components/mdx/border.astro";
 
-I like [United States Graphics Company's](https://berkeleygraphics.com/engineering/) (formerly Berkeley Graphics, maker of the monospace font you see on this website) inclusion of a version number in the header, it aligns with their no-bullshit, industrial grade engineering aesthetics. I was also heavily inspired by [moya.cafe's inclusion of a changelog](https://moya.cafe/). The website already has so much personality, and it complements it nicely.
-
-Two wildly different sources of inspiration, but hey. Both are good.
+What do the websites of [United States Graphics Company](https://berkeleygraphics.com/engineering/) (formerly Berkeley Graphics, creator of Berkeley Mono) and [moya.cafe](https://moya.cafe) have in common? They both track information about themselves. The former via a version number, the latter via a changelog.
 
 <figure>
-  IMAGE HERE OF THE TWO, SIDE BY SIDE.{" "}
-  <figcaption>**The two websites, side by side.** Both. Both are good.</figcaption>
+  ![Four images arranged in a collage from both websites.](usg-moya.png)
+  <figcaption>
+    **Two wildly different sources of inspiration.** But hey. Both. Both are good.
+  </figcaption>
 </figure>
 
-I now have two methods of writing on this site: via posts, or via the changelog. I think both are necessary and fill different gaps: posts are for more permanent things, where edits are mostly for style, not content changes. The changelog is for more temporary things that can quickly become "out of date" and in fact, expects it. Every new update is _supposed_ to void the previous one, by design.
+I was naturally drawn towards this, probably because I really like tracking things. It's why I thought to download a copy of my elementary school Google account before it got disabled, and it's why I maintain an Obsidian vault with (mostly) daily journal entries.
 
-You know how I realized this was the right decision? As part of launching `/changelog` I was rewriting a post about this website _because it was redundant now_. Furthermore, I was able to lift a lot of its content and directly plop it into one of the patch notes, further proving it's always been in the wrong place.
+I like collecting data: of my running activity, of my music listening history, of the anime and manga I've consumed, of my game save files, of bookmarks, of restaurants I've visited, of lecture notes, of tasks I've completed, of phone contacts. But it's not the data alone; I like seeing how it's changed _over time._
 
-And yes, I'm committed to the bit. I wrote over 10+ release notes and backfilled all previous releases, assigning version numbers to things that didn't have any.
+So I think it's natural for me to want to keep track of how this website has evolved and changed. And I did! I used to maintain a post on this site detailing additions and removals as they came. It was great. But it was exhausting too. I would have to rewrite the entire post when something changed, because suddenly it was _out of date._
 
-I'm thinking of it as public journaling. For whoever is brave enough to learn from me, they'll be able to see past mistakes I've made and where exactly stuff was introduced.
+<figure>
+  <Border>![The cover image for the old post about this site.](www-post.png)</Border>
+  <figcaption>
+    **Cover image for the website post.** Updated 5+ months after being published...
+  </figcaption>
+</figure>
 
-Anyway, that post has essentially been [completely replaced](/posts/wip). For the better!
+After seeing the two websites above, I realized what was wrong: the format in which I was writing about
+the changes. I didn't want a post; I wanted _release notes._ I wanted a _changelog_ where it's inherently
+implied that previous releases were out of date.
 
-Other ways that you can think of this changelog idea:
+## Designing a changelog system
+
+As I played around with the idea, things started falling into place, maybe even a bit too well. It was proof that I should have done this a long time ago.
+
+- At first I was worried about missing information. Then I realized Git has naturally been tracking every little thing I've done. I can just read my commits.
+- I can reuse the MDX components and CSS styles I had for posts.
+- A content collection is _perfect_ for this job. I quickly whipped up the following:
+
+```ts
+import { defineCollection, z } from "astro:content";
+
+const changelog = defineCollection({
+  type: "content",
+  schema: z.object({
+    version: z.string().regex(/^v[0-9]+\.[0-9]+\.[0-9]+$/g, {
+      message: "Version numbers should follow semantic versioning!",
+    }),
+    date: z.date(),
+    commit: z.string().length(40).optional(),
+  }),
+});
+```
+
+You know what sealed the deal? As I started planning out individual release notes, I was often able to copy entire chunks of text from the post about this website, and directly insert it with minimal tweaks. This told me it's always been in the wrong place.
+
+### Correct mindset
+
+I'm thinking of these changelogs as public journaling. For whoever is brave/bored/interested enough to learn from me and read what I have to say, they'll be able to see past mistakes I've made and my thought process for making changes.
+
+Other ways you can interpret this project:
 
 - A timeline of how my website has changed
 - A time machine to see how things have evolved
 - A way for me to yap about interesting things I learned while making this site
+- Things that I should proably have made a Twitter account for and posted about
+
+I now have two methods of writing on this site: via posts, or via the changelog. I think both are necessary and fill different niches.
+
+Posts are for more permanent, evergreen ideas and projects. Meanwhile, a changelog is for more temporary things in the sense that it can quickly become out of date and, in fact, expects it. Every new update is _supposed_ to void the previous one, by design.
+
+### Semantic versioning
+
+To differentiate releases, I decided to use [semver](https://semver.org/). But what would it mean in the context of my site? This wasn't a library that people would consume; there are never going to be breaking API changes to warn users of. So I developed some guidelines (not rules):
+
+- Above all, changes I write about should be _interesting._ So if nothing of value has happened, don't update the version. I'm playing fast and loose with the definition of a "changelog" here. I'm not trying to meticulously track every detail I change.
+- Major version changes include complete redesigns, changes that greatly affected the codebase, or general layout updates.
+- Minor versions include smaller changes and experiments within larger layouts. They only modify a small part of the site. Only when I have 3-5 of these changes will I write a collective changelog about them.
+- Patches should be rare because they're only meant for bugfixes. So I would only write about them if something _catastrophic_ has happened (read: if I majorly fucked up and it's really funny to talk about).
+- Posts will not get a version bump because they don't modify the website per se.
+
+## Rewriting history
+
+With everything planned out, I sat down and started assigning version numbers. This proved to be harder than expected. You see, I've been casually assigning them to commits and nonchalantly incrementing the count when I felt like it. Now I'm facing the consequences.
+
+For example, what I've always referred to as v1 shouldn't actually be the first stable version, because I never finished it. I restarted in the middle, so nothing was finalized. According to semver, this means it's in the v0.x.x territory.
+
+This meant I had to shift _everything_ back. What was referred to as v1 in my commit history is now [v0.3.0](/changelog/0.3.0), my v2 commit is now actually [v1.0.0](/changelog/1.0.0), and so on. I can't easily change those commit names, but I don't want to anyway; the version change is something I want to track too!
+
+> Fun fact: I made this change in the middle of developing the changelog system. At that point, all of _this_ was still referred to as v5.0.0. But now it's v4.
+
+I think I'm the first person in history to release a new version with a _smaller_ number than the previous release.
+
+I don't really want this achievement.
+
+## Technical stuff
+
+### Sticky sidebar
+
+The trickiest part was getting the version, date, and commit hash to be sticky. Adding `align-items: flex-start` solved the issue. This [StackOverflow answer](https://stackoverflow.com/a/66416972) explains it pretty well: the reason is that
+
+Lo and behold, it is also the solution that the Linear changelog uses. Below, notice how "May 30, 2024" becomes sticky as soon as we align items using `flex-start`.
+
+<VideoGif content={{ collection: "posts", folder: "changelogs" }} name="flex-start" />
+
+And yes, I'm committed to the bit. I wrote over 10+ release notes and backfilled all previous releases, assigning version numbers to things that didn't have any.
+
+Anyway, that post has essentially been [completely replaced](/posts/wip). For the better!
 
 Whenever I updated this site, I've always kept track of an internal version number in my head. This number showed up as version updates in my package.json, and sometimes I would also name commits after these versions (for example, here's [v4.4.0](https://github.com/aczw/personal-website/commit/d830237fb29a615b9789640f4db8eab8b5614b36), which is actually v3.4.0. Long story). To anyone else, these numbers would look clinically insane, as I've never explained them; but they were there to allow me to keep track of things. It also made it feel like I was working on an actual app that required updates, which felt nice.
 
@@ -46,7 +126,23 @@ You know how weird it was to write in present tense about everything that I did 
 
 Writing these changelogs has really made me question my knowledge of the English language. I haven't written this much content in a very, very long time. I learned two things: stop worrying about the placement of every single little word. And that I need to write more.
 
-## On writing
+### Updating package.json with the current version
+
+It's not like I will ever publish the codebase as a NPM package, but the benefit to this is that I have a single source of truth for the current version of the site.
+
+This comes in handy when I want to reference it in my footer, for example. I first saw this in [Quartz's own `<Footer />` component](https://github.com/jackyzha0/quartz/blob/244801af65b9e628927c1f1b2518ae62ca2e354f/quartz/components/Footer.tsx#L3), where you can literally import the `version` field from `package.json` and reference it like a regular string:
+
+```astro
+---
+import { version } from "../../package.json";
+---
+
+<a href="/changelog">v{version}</a>;
+```
+
+Earlier I said that I was casually updating the version number whenever I felt like it. This is where I was doing it. So, I actually had to _downgrade_ the package.json version to correct my mistakes. Thank god this package is not public.
+
+## Tangent: thoughts on writing and passion
 
 Honestly, I really struggled to write all the changelogs. It was just so much _content_ to write and it felt like I was overloading my site. I mean, this was just supposed to be a fun side project. Why have I written more changelogs than actual posts? It helps that the entire thing is still limited to a single link in the footer.
 
@@ -73,58 +169,3 @@ I constantly struggle with doing things just to have fun, to satiate an inner cu
 I often forget that the coolest stuff I've done started off innocent enough, with no end goal in mind. Only when I'm done do I realize "wait, putting this on my resume would actually be pretty cool." Currently, I have it backwards, and I would really like to change that. This mindset has been very detrimental and I want to change it for my mental health and sanity.
 
 Anyways. Changelogs are
-
-## Semantic versioning
-
-What does semver mean in the context of my site? There aren't "breaking API changes" when I increment the major number. I followed this standard when assigning versions to past commits:
-
-1. shit
-2. fuck
-
-Am I actually going to update the version number for every single little change I made? Of course not. I'm not trying to meticulously track every detail I change; that's not the purpose here.
-
-### Rewriting history
-
-Actually sitting down and assigning version numbers proved to be harder than I thought. For the longest time I've been casually assigning numbers to new releases and nonchalantly incrementing the version count when I felt like it. Now I'm facing the consequences.
-
-For example, what I've always referred to as v1 shouldn't actually be the first stable version, because I never finished it. I restarted in the middle, so nothing was finalized. It had the v1 title simply because v2 was completely different.
-
-But this is not how semver works. If it's not stable, then it's not stable. And if that's true, then it does not deserve a major version change... it should still be in v0.x.0 territory.
-
-So yeah, I shifted everything back. It's now referred to as [v0.4.0](/changelog#v040/v040) and what used to be v2 is now the definite [v1.0.0 release](/changelog#v100/v100). What was originally the v5 release has now become the v4 release.
-
-This was originally going to be v4.5.0. Then, it changed to v5.0.0. Now it's v4.0.0, smaller than the original version number.
-
-I think I'm the first person in history to release a new version with a _smaller_ version number than the previous release. No one else could be this stupid.
-
-## Updating package.json with the current version
-
-It's not like I will ever publish the codebase as a NPM package, but the benefit to this is that I have a single source of truth for the current version of the site.
-
-This comes in handy when I want to reference it in my footer, for example. I first saw this in [Quartz's own `<Footer />` component](https://github.com/jackyzha0/quartz/blob/244801af65b9e628927c1f1b2518ae62ca2e354f/quartz/components/Footer.tsx#L3), where you can literally import the `version` field from `package.json` and reference it like a regular string:
-
-```astro
----
-import { version } from "../../package.json";
----
-
-<a href="/changelog">v{version}</a>
-```
-
-Earlier I said that I was casually updating the version number whenever I felt like it. This is where I was doing it. So, I actually had to _downgrade_ the package.json version to correct my mistakes. Thank god this package is not public.
-
-## Sticky sidebar
-
-The trickiest part was getting the version, date, and commit hash to be sticky. Adding `align-items: flex-start` solved the issue. This [StackOverflow answer](https://stackoverflow.com/a/66416972) explains it pretty well: the reason is that
-
-Lo and behold, it is also the solution that the Linear changelog uses. Below, notice how "May 30, 2024" becomes sticky as soon as we align items using `flex-start`.
-
-<VideoGif content={{ collection: "posts", folder: "changelogs" }} name="flex-start" />
-
-## Something more?
-
-With every update patch to the website, I too have stuff to share, about my life. The website changes and so do I. If I feel brave enough in the future, it might eventually become a [/now](https://nownownow.com/about)-like situation. I can see this happening very naturally, it's an evolution that makes sense to me.
-
-A changelog for the website, a changelog for myself. For everyone to see. Oh boy. Like I said, still thinking about it. But I really do like yapping, so it's very much possible.
-
-Anyway, thanks for reading. Lemme know what you think of the website.import VideoGif from "@/components/video-gif.astro";import VideoGif from "@/components/video-gif.astro";
