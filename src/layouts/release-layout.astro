@@ -74,10 +74,11 @@ let { release, next, previous } = Astro.props;
               <p class="subtitle">
                 <span class="xs:hidden sm:inline">Released</span>
 
-                {next.date.toLocaleString("en-US", {
+                {next.date.toLocaleDateString("en-US", {
                   month: "long",
                   day: "numeric",
                   year: "numeric",
+                  timeZone: "America/New_York",
                 })}
               </p>
             </div>
@@ -102,10 +103,11 @@ let { release, next, previous } = Astro.props;
               <p class="subtitle">
                 <span class="xs:hidden sm:inline">Released</span>
 
-                {previous.date.toLocaleString("en-US", {
+                {previous.date.toLocaleDateString("en-US", {
                   month: "long",
                   day: "numeric",
                   year: "numeric",
+                  timeZone: "America/New_York",
                 })}
               </p>
             </div>

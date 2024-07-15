@@ -28,15 +28,15 @@ let tallEnough = version !== "v0.1.0";
 <article class:list={["flex flex-col items-start gap-6 sm:flex-row", className]} {...props}>
   <section
     class:list={[
-      "flex shrink-0 relative flex-col mt-12 sm:mt-0 sm:sticky sm:top-0 sm:w-1/5",
+      "relative mt-12 flex shrink-0 flex-col sm:sticky sm:top-0 sm:mt-0 sm:w-1/5",
       {
-        "sm:h-screen overflow-y-auto": tallEnough,
+        "overflow-y-auto sm:h-screen": tallEnough,
       },
     ]}
   >
     <div
       aria-hidden="true"
-      class="hidden sm:block sticky inset-x-0 top-0 h-12 shrink-0 bg-gradient-to-b from-sweater-10"
+      class="sticky inset-x-0 top-0 hidden h-12 shrink-0 bg-gradient-to-b from-sweater-10 sm:block"
     >
     </div>
 
@@ -53,6 +53,7 @@ let tallEnough = version !== "v0.1.0";
             hour: "numeric",
             minute: "numeric",
             timeZoneName: "short",
+            timeZone: "America/New_York",
           })}
           class="subtitle flex w-fit items-center"
         >
@@ -63,6 +64,7 @@ let tallEnough = version !== "v0.1.0";
               month: "short",
               day: "numeric",
               year: "numeric",
+              timeZone: "America/New_York",
             })
           }
         </time>
@@ -91,12 +93,12 @@ let tallEnough = version !== "v0.1.0";
 
     <div
       aria-hidden="true"
-      class="sticky hidden sm:block inset-x-0 bottom-0 h-12 shrink-0 bg-gradient-to-t from-sweater-10"
+      class="sticky inset-x-0 bottom-0 hidden h-12 shrink-0 bg-gradient-to-t from-sweater-10 sm:block"
     >
     </div>
   </section>
 
-  <section class="sm:mt-12 mb-12 w-full space-y-6 sm:w-3/4">
+  <section class="mb-12 w-full space-y-6 sm:mt-12 sm:w-3/4">
     <CustomContent entryContent={Content} />
   </section>
 </article>

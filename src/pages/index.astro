@@ -82,7 +82,11 @@ const posts = await getEntries([
               <div>
                 <h2>{title}</h2>
                 <p class="berkeley text-sweater-5 transition-colors group-hover:text-sweater-4">
-                  {posted.toLocaleString("en-US", { month: "short", year: "numeric" })}
+                  {posted.toLocaleDateString("en-US", {
+                    month: "short",
+                    year: "numeric",
+                    timeZone: "America/New_York",
+                  })}
                 </p>
               </div>
 

@@ -30,10 +30,10 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
         return (
           <a
             href={`/posts/${slug}`}
-            class="border-y-thin group flex animate-fade flex-col gap-4 border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100"
+            class="group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100"
             style={{ "--order": idx + 1 }}
           >
-            <timep
+            <time
               datetime={posted.toISOString()}
               title={posted.toLocaleString("en-US", {
                 month: "long",
@@ -41,25 +41,28 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
                 year: "numeric",
                 hour: "numeric",
                 minute: "numeric",
+                timeZone: "America/New_York",
                 timeZoneName: "short",
               })}
               class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
             >
               <span class="xs:hidden">
-                {posted.toLocaleString("en-US", {
+                {posted.toLocaleDateString("en-US", {
                   month: "long",
                   day: "numeric",
                   year: "numeric",
+                  timeZone: "America/New_York",
                 })}
               </span>
               <span class="hidden xs:inline">
-                {posted.toLocaleString("en-US", {
+                {posted.toLocaleDateString("en-US", {
                   month: "2-digit",
                   day: "2-digit",
                   year: "2-digit",
+                  timeZone: "America/New_York",
                 })}
               </span>
-            </timep>
+            </time>
 
             <div class="space-y-1.5">
               <h2 class="break-words">
