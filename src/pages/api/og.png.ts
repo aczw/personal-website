@@ -15,12 +15,12 @@ type ContentKind =
 const GET: APIRoute = async ({ request }) => {
   const requestUrl = new URL(request.url);
   const params = requestUrl.searchParams;
-  let content: ContentKind = { kind: "route", heading: "" };
-
+  
   const maybeHeading = params.get("heading");
   const maybePost = params.get("post");
   const maybeRelease = params.get("release");
 
+  let content: ContentKind = { kind: "route", heading: "" };
   if (maybeHeading) {
     content = { kind: "route", heading: maybeHeading };
   } else if (maybePost) {
