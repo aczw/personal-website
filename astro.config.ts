@@ -9,6 +9,8 @@ import { existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+const SITE_NAME = "https://charleszw.com";
+
 /**
  * @see https://github.com/withastro/astro/issues/3682#issuecomment-1492468918
  */
@@ -16,9 +18,7 @@ function contentRoutes() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
 
-  const site = "https://charleszw.com";
   const contentPath = join(__dirname, "src", "content");
-
   const postsPath = join(contentPath, "posts");
   if (!existsSync(postsPath)) {
     throw new Error(
@@ -28,7 +28,7 @@ function contentRoutes() {
 
   const postUrls = readdirSync(postsPath).map((file) => {
     const fileName = file.split(".")[0];
-    return `${site}/posts/${fileName}`;
+    return `${SITE_NAME}/posts/${fileName}`;
   });
 
   const changelogPath = join(contentPath, "changelog");
@@ -43,18 +43,17 @@ function contentRoutes() {
     const versionPieces = file.split(".").splice(0, 3);
     // remove the "v" because the slug doesn't contain it
     const slug = `${versionPieces[0].slice(1)}.${versionPieces[1]}.${versionPieces[2]}`;
-    return `${site}/changelog/${slug}`;
+    return `${SITE_NAME}/changelog/${slug}`;
   });
 
   return [...postUrls, ...changelogUrls];
 }
 
 const config = defineConfig({
-  site: "https://charleszw.com",
+  site: SITE_NAME,
   integrations: [
     sitemap({
       customPages: contentRoutes(),
-      lastmod: new Date(),
     }),
     mdx(),
     tailwind({
@@ -64,6 +63,10 @@ const config = defineConfig({
   output: "server",
   adapter: vercel({
     imageService: true,
+    imagesConfig: {
+      domains: [],
+      sizes: [160, 320, 640, 1280, 2560],
+    },
     webAnalytics: {
       enabled: true,
     },

@@ -81,10 +81,10 @@ const hasUwu = params.has("uwu");
 
   // scroll element is only visible if ?uwu mode is off
   if (scroll) {
-    let text = scroll.dataset.scrambled!;
+    let text = scroll.dataset["scrambled"]!;
 
     // remove it because now it's unnecessary and looks ugly lol
-    delete scroll.dataset.scrambled;
+    delete scroll.dataset["scrambled"];
 
     setInterval(() => {
       scroll.textContent = text.slice(1) + text[0];
