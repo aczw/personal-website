@@ -9,8 +9,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 
 type MetaKind =
   | { kind: "route"; title: string | null; description: string; ogImageParams: string }
-  | { kind: "post"; post: CollectionEntry<"posts">; status: string }
-  | { kind: "release"; release: CollectionEntry<"changelog"> };
+  | { kind: "post"; post: CollectionEntry<"posts">; status: string };
 
 interface Props {
   meta: MetaKind;
@@ -35,14 +34,6 @@ switch (meta.kind) {
     title = meta.status + data.title + " — " + title;
     description = data.blurb;
     ogImageParams = `?post=${slug}`;
-    break;
-  }
-
-  case "release": {
-    let { data, slug } = meta.release;
-    title = `Website release ${data.version} — ${title}`;
-    description = `Notable changes in the ${data.version} release of this website.`;
-    ogImageParams = `?release=${slug}`;
     break;
   }
 
