@@ -31,22 +31,7 @@ function contentRoutes() {
     return `${SITE_NAME}/posts/${fileName}`;
   });
 
-  const changelogPath = join(contentPath, "changelog");
-  if (!existsSync(changelogPath)) {
-    throw new Error(
-      `contentRoutes(): The changelog directory "${changelogPath}" does not exist!\n`,
-    );
-  }
-
-  const changelogUrls = readdirSync(changelogPath).map((file) => {
-    // my version numbering has exactly two periods, so we collect the first three array elements
-    const versionPieces = file.split(".").splice(0, 3);
-    // remove the "v" because the slug doesn't contain it
-    const slug = `${versionPieces[0].slice(1)}.${versionPieces[1]}.${versionPieces[2]}`;
-    return `${SITE_NAME}/changelog/${slug}`;
-  });
-
-  return [...postUrls, ...changelogUrls];
+  return postUrls;
 }
 
 const config = defineConfig({
