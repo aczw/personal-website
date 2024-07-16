@@ -50,7 +50,8 @@ const config = defineConfig({
     imageService: true,
     imagesConfig: {
       domains: [],
-      sizes: [160, 320, 640, 1280, 2560],
+      formats: ["image/avif", "image/webp"],
+      sizes: [80, 96, 144, 160, 196, 240, 256, 320, 384, 480, 496, 520, 640, 768, 850],
     },
     webAnalytics: {
       enabled: true,
