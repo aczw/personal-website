@@ -49,7 +49,7 @@
     }
 
     & pre {
-      @apply rounded-lg p-4;
+      @apply rounded-lg border-thin border-sweater-4/15 p-4;
 
       /* but remove padding, background, and word breaks in code blocks */
       > code {
