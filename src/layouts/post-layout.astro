@@ -40,15 +40,18 @@ let { Content, headings } = await post.render();
           <p class="subtitle">{blurb}</p>
         </div>
 
-        <div class="berkeley grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-1 md:grid-cols-2">
+        <div class="berkeley grid grid-cols-1 xs:grid-cols-2 xs:gap-12">
           <time datetime={posted.toISOString()} class="text-sweater-5">
-            {posted.toLocaleDateString("en-US", dateOptions)} at {
-              posted.toLocaleTimeString("en-US", {
-                hour: "numeric",
-                minute: "numeric",
-                timeZone: "America/New_York",
-              })
-            }
+            {posted.toLocaleDateString("en-US", dateOptions)}
+            <span class="whitespace-nowrap"
+              >at {
+                posted.toLocaleTimeString("en-US", {
+                  hour: "numeric",
+                  minute: "numeric",
+                  timeZone: "America/New_York",
+                })
+              }</span
+            >
           </time>
 
           {
@@ -89,13 +92,13 @@ let { Content, headings } = await post.render();
             headings.map(({ depth, slug, text }, index) => {
               if (depth === 1) {
                 throw new Error(
-                  `No MDX heading should be H1! Check whether the post "${title}" contains any.`
+                  `No MDX heading should be H1! Check whether the post "${title}" contains any.`,
                 );
               }
 
               if (depth > 3) {
                 throw new Error(
-                  `Used a heading level greater than H3 in "${title}." Maybe we should support it now?`
+                  `Used a heading level greater than H3 in "${title}." Maybe we should support it now?`,
                 );
               }
 
@@ -149,7 +152,7 @@ let { Content, headings } = await post.render();
           link.classList.remove("text-sweater-3");
         }
       }
-    })
+    }),
   );
 
   document.querySelectorAll("h2[id], h3[id]").forEach((heading) => observer.observe(heading));

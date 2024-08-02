@@ -6,6 +6,4 @@ Hi! This is the code for my website. I wanted my own little corner of the intern
 
 ## Colophon
 
-Fonts are [Atkinson Hyperlegible](https://en.wikipedia.org/wiki/Atkinson_Hyperlegible) and [Berkeley Mono](https://berkeleygraphics.com/typefaces/berkeley-mono/). Icons are from Lucide. If you're curious, I [keep a changelog](https://charleszw.com/changelog) of notable updates I've made to the site.
-
-It is built with Astro and is currently deployed on Vercel.
+I use [Atkinson Hyperlegible](https://en.wikipedia.org/wiki/Atkinson_Hyperlegible) and [Berkeley Mono](https://berkeleygraphics.com/typefaces/berkeley-mono/). Icons are from Lucide. The website is 100% Astro and does not use any external UI libraries. Currently deployed on Vercel's free plan.
