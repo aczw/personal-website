@@ -12,6 +12,9 @@ import { fileURLToPath } from "node:url";
 const SITE_NAME = "https://charleszw.com";
 
 /**
+ * Astro's sitemap integration does not include dynamic routes in the generated sitemap when
+ * the site uses SSR. This function crawls the filesystem and does it manually.
+ *
  * @see https://github.com/withastro/astro/issues/3682#issuecomment-1492468918
  */
 function contentRoutes() {
