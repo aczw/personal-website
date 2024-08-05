@@ -1,10 +1,20 @@
 ---
 import { GET, type Track } from "@/pages/api/last-fm.json";
+
 import { Music } from "lucide-astro";
 
-let response = await GET(Astro);
-let track = response.ok ? ((await response.json()) as Track) : null;
+const response = await GET(Astro);
+const track = response.ok ? ((await response.json()) as Track) : null;
 const available = track !== null;
+
+let title = "";
+if (available) {
+  if (track.live) {
+    title += "Currently listening: ";
+  }
+
+  title += `${track.song} by ${track.artist}`;
+}
 ---
 
 <div class="w-1/2 animate-fade [--order:0]">
@@ -13,13 +23,23 @@ const available = track !== null;
       ? "https://www.last.fm/user/ashzw"
       : "https://open.spotify.com/user/zhwq0rxdn060sgar22e07u193?si=3cfe23a176bf4272"}
     target="_blank"
-    class="pill flex w-fit"
+    title={title}
+    class="pill flex w-fit gap-2"
     data-quiet
   >
-    <Music size={15} class="ml-2 mr-2.5 inline shrink-0 xs:ml-0" />
+    <Music size={15} class="inline shrink-0" />
 
     <span class="line-clamp-1 hidden w-full break-all leading-none xs:[display:-webkit-box]">
       {available ? `${track.song} — ${track.artist}` : "Playlists"}
     </span>
+
+    {
+      available && track.live ? (
+        <div aria-hidden class="relative size-2.5 shrink-0 self-center">
+          <div class="absolute inset-0 size-full animate-ping rounded-full bg-sweater-4" />
+          <div class="size-full rounded-full bg-sweater-4" />
+        </div>
+      ) : null
+    }
   </a>
 </div>
