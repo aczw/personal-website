@@ -62,7 +62,7 @@
     }
 
     & li {
-      @apply pl-3;
+      @apply break-words pl-3;
     }
 
     & ul,
@@ -71,10 +71,6 @@
 
       ::marker {
         @apply text-sweater-4;
-      }
-
-      > li {
-        @apply break-words;
       }
     }
 
