@@ -52,12 +52,12 @@ const posts = await getEntries([
   </section>
 
   <section
-    class="pointer-events-none grid grid-cols-1 gap-6 sm:grid-cols-2 [&>a:not(:hover)]:hover:brightness-[65%]"
+    class="pointer-events-none grid grid-cols-1 gap-6 sm:grid-cols-2 [&>a:not(:hover)]:hover:brightness-[50%]"
   >
     {
       posts.map((post, idx) => {
         let {
-          data: { title, cover, posted },
+          data: { title, cover, posted, blurb },
           slug,
         } = post;
 
@@ -65,36 +65,60 @@ const posts = await getEntries([
           throw new Error("Featured post on homepage must have a cover image!");
         }
 
+        const postedDate = posted.toLocaleDateString("en-US", {
+          month: "short",
+          year: "numeric",
+          timeZone: "America/New_York",
+        });
+
         return (
           <a
             href={`/posts/${slug}`}
-            class="group pointer-events-auto animate-fade transition-[filter_opacity]"
+            class="group pointer-events-auto relative animate-fade transition-[filter_opacity]"
             style={{ "--order": idx + 1 }}
           >
             <Image
               src={cover.img}
               alt={cover.alt}
               loading="eager"
-              class="aspect-[16/10] rounded-t-xl bg-sweater-9"
+              class="aspect-[16/10] rounded-t-xl bg-sweater-9 transition group-hover:scale-[.93] group-hover:opacity-75"
             />
 
-            <div class="flex items-center justify-between gap-4 rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">
-              <div>
-                <h2>{title}</h2>
-                <p class="berkeley text-sweater-5 transition-colors group-hover:text-sweater-4">
-                  {posted.toLocaleDateString("en-US", {
-                    month: "short",
-                    year: "numeric",
-                    timeZone: "America/New_York",
-                  })}
-                </p>
+            <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <h2 class="text-pretty">{title}</h2>
+                  <p class="berkeley text-sweater-5 transition-colors group-hover:text-sweater-4">
+                    {postedDate}
+                  </p>
+                </div>
+
+                <div
+                  aria-hidden="true"
+                  class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
+                >
+                  <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4" />
+                </div>
               </div>
 
-              <div
-                aria-hidden="true"
-                class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
-              >
-                <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4" />
+              <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
+                <div class="overflow-hidden text-pretty opacity-0 transition-opacity group-hover:opacity-100">
+                  <p>{blurb}</p>
+                  <div aria-hidden class="h-4" />
+                </div>
+              </div>
+            </div>
+
+            <div aria-hidden class="p-4">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <h2>{title}</h2>
+                  <p class="berkeley">{postedDate}</p>
+                </div>
+
+                <div class="rounded-full p-1">
+                  <div class="size-[24px]" />
+                </div>
               </div>
             </div>
           </a>
