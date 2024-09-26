@@ -2,12 +2,11 @@
 import { Image } from "astro:assets";
 import { getEntries } from "astro:content";
 
-import { ArrowRight } from "lucide-astro";
+import { ArrowRight, Github, Linkedin, Mail, ScrollText } from "lucide-astro";
 
 import ContentLayout from "@/layouts/content-layout.astro";
 
 import Link from "@/components/link.astro";
-import MewoQuote from "@/components/mewo-quote.astro";
 
 const posts = await getEntries([
   { collection: "posts", slug: "mini-minecraft" },
@@ -25,35 +24,51 @@ const posts = await getEntries([
     ogImageParams: "Graphics programming, games, websites.",
   }}
 >
-  <MewoQuote />
-
-  <section class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+  <section class="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 content:gap-y-8">
     <p class="animate-fade [--order:0]">
-      Hi, I'm Charles. I'm a student at the University of Pennsylvania majoring in <Link
+      Hi, I'm Charles! I'm a student at UPenn majoring in <Link
         href="http://cg.cis.upenn.edu/dmd.html"
         target="_blank">Digital Media Design</Link
-      >, a program that combines computer science, computer graphics, and art. I like graphics
-      programming, making games, and building websites.
+      >, a program combining computer science with computer graphics. I'm interested in graphics
+      programming, making games, UI/UX, and building websites.
     </p>
+
     <p class="animate-fade [--order:0]">
       At school, I co-lead our game dev club <Link href="https://pennupgrade.com" target="_blank"
         >UPGRADE</Link
-      > and take part in our SIGGRAPH chapter. I'm also on the creative team for PennApps, our collegiate
+      > and am a member of our SIGGRAPH chapter. I'm also on the creative team for PennApps, our collegiate
       hackathon. In the past I helped design TEDxPenn's annual conference theme.
     </p>
+
     <p class="subtitle animate-fade [--order:1]">
-      In my free time I like running, making playlists, learning the bass guitar, and obsessing over
-      subway systems.
+      In my free time I like running, making playlists, learning the bass guitar, and taking the
+      SEPTA to explore Philly.
     </p>
-    <p class="subtitle animate-fade [--order:1]">
-      Below are some things I've done, as well as my socials where you can reach me. Thanks for
+
+    <p class="subtitle hidden animate-fade [--order:1] sm:block">
+      Below are some things I've done, as well as my socials where you can find me. Thanks for
       stopping by. <span aria-hidden="true" class="whitespace-nowrap">(〜￣▽￣)〜</span>
     </p>
   </section>
 
-  <section
-    class="pointer-events-none grid grid-cols-1 gap-6 sm:grid-cols-2 [&>a:not(:hover)]:hover:brightness-[50%]"
-  >
+  <section class="grid grid-cols-2 gap-6 sm:grid-cols-4">
+    <div
+      class="*:berkeley col-span-2 grid grid-cols-subgrid gap-3 *:animate-fade *:items-center *:justify-between *:gap-2 *:rounded-lg *:bg-sweater-9 *:p-4 *:text-sweater-2 *:transition-colors hover:*:bg-sweater-8 sm:col-span-4 sm:gap-6"
+    >
+      <a href="/_files/resume.pdf" class="flex [--order:1]" target="_blank"
+        >Resume<ScrollText size={18} class="shrink-0" /></a
+      >
+      <a href="https://linkedin.com/in/zwcharl" class="flex [--order:2]" target="_blank"
+        >LinkedIn<Linkedin size={18} class="shrink-0" /></a
+      >
+      <a href="https://github.com/aczw" class="hidden [--order:3] sm:flex" target="_blank"
+        >GitHub<Github size={18} class="shrink-0" /></a
+      >
+      <a href="mailto:czw@seas.upenn.edu" class="hidden [--order:4] sm:flex" target="_blank"
+        >Email<Mail size={18} class="shrink-0" /></a
+      >
+    </div>
+
     {
       posts.map((post, idx) => {
         let {
@@ -74,14 +89,14 @@ const posts = await getEntries([
         return (
           <a
             href={`/posts/${slug}`}
-            class="group pointer-events-auto relative animate-fade transition-[filter_opacity]"
+            class="group relative col-span-2 animate-fade transition-opacity"
             style={{ "--order": idx + 1 }}
           >
             <Image
               src={cover.img}
               alt={cover.alt}
               loading="eager"
-              class="aspect-[16/10] rounded-t-xl bg-sweater-9 transition group-hover:scale-[.93] group-hover:opacity-75"
+              class="aspect-[16/10] rounded-t-xl bg-sweater-9 transition group-hover:scale-[.93] group-hover:opacity-50"
             />
 
             <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
@@ -104,12 +119,12 @@ const posts = await getEntries([
               <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
                 <div class="overflow-hidden text-pretty opacity-0 transition-opacity group-hover:opacity-100">
                   <p>{blurb}</p>
-                  <div aria-hidden class="h-4" />
+                  <div aria-hidden="true" class="h-4" />
                 </div>
               </div>
             </div>
 
-            <div aria-hidden class="p-4">
+            <div aria-hidden="true" class="p-4">
               <div class="flex items-center justify-between gap-4">
                 <div>
                   <h2>{title}</h2>

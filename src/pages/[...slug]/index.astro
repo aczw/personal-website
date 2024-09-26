@@ -14,7 +14,7 @@ Astro.response.status = 404;
 Astro.response.statusText = "Page not found";
 
 let fun = [
-  "404",
+  "WFSTH",
   "pagenotfound",
   "soitgoes",
   "aczw",
@@ -74,21 +74,21 @@ const hasUwu = params.has("uwu");
         ) : null
       }
 
-      <span class="subtitle">Sorry, page not found~</span>
+      <span class="subtitle">Sorry, that's a 404. Page not found~</span>
     </p>
   </section>
 </ContentLayout>
 
 <script>
-  // for some reason, whitespace is added to the front and end of the word, so we can't
+  // For some reason, whitespace is added to the front and end of the word, so we can't
   // use scroll.textContent directly at first. instead, store the scrambled word in the dataset
   let scroll = document.getElementById("scroll");
 
-  // scroll element is only visible if ?uwu mode is off
+  // Scroll element is only visible if ?uwu mode is off
   if (scroll) {
     let text = scroll.dataset["scrambled"]!;
 
-    // remove it because now it's unnecessary and looks ugly lol
+    // Remove it because now it's unnecessary and looks ugly lol
     delete scroll.dataset["scrambled"];
 
     setInterval(() => {
