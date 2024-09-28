@@ -83,12 +83,7 @@
     }
 
     & figure {
-      font-size: 0.92rem;
-      @apply subtitle space-y-2 transition-[color,opacity];
-
-      &:hover {
-        @apply text-sweater-1;
-      }
+      @apply subtitle space-y-2 text-[0.9rem];
     }
 
     @media (min-width: 480px) {

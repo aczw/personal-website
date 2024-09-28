@@ -48,7 +48,7 @@ let { Content, headings } = await post.render();
           {
             updated ? (
               <time datetime={updated.toISOString()} class="text-sweater-6">
-                Last updated {updated.toLocaleDateString("en-US", dateOptions)}
+                Updated {updated.toLocaleDateString("en-US", dateOptions)}
               </time>
             ) : null
           }
