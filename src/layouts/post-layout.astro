@@ -43,21 +43,12 @@ let { Content, headings } = await post.render();
         <div class="berkeley grid grid-cols-1 xs:grid-cols-2 xs:gap-12">
           <time datetime={posted.toISOString()} class="text-sweater-5">
             {posted.toLocaleDateString("en-US", dateOptions)}
-            <span class="whitespace-nowrap"
-              >at {
-                posted.toLocaleTimeString("en-US", {
-                  hour: "numeric",
-                  minute: "numeric",
-                  timeZone: "America/New_York",
-                })
-              }</span
-            >
           </time>
 
           {
             updated ? (
               <time datetime={updated.toISOString()} class="text-sweater-6">
-                Updated {updated.toLocaleDateString("en-US", dateOptions)}
+                Last updated {updated.toLocaleDateString("en-US", dateOptions)}
               </time>
             ) : null
           }
@@ -81,10 +72,12 @@ let { Content, headings } = await post.render();
         >
         </div>
 
-        <h2 class="mb-1.5 text-xl">Contents</h2>
+        <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
 
         <div class="flex flex-col leading-snug text-sweater-6">
-          <a href="#" class="mb-3 text-sweater-3 transition-colors hover:text-sweater-1"
+          <a
+            href="#"
+            class="mb-3 rounded-md px-[0.4rem] py-1 leading-none text-sweater-3 transition-colors hover:bg-sweater-9 hover:text-sweater-1"
             >(Back to top!)</a
           >
 
@@ -115,9 +108,9 @@ let { Content, headings } = await post.render();
               return (
                 <a
                   href={`#${slug}`}
-                  class="transition-colors hover:text-sweater-2"
+                  class="rounded-md py-1 pr-[0.4rem] leading-none transition-colors hover:bg-sweater-9 hover:text-sweater-2"
                   style={{
-                    paddingLeft: `${(depth - 2) * 1.5}rem`,
+                    paddingLeft: `${(depth - 2) * 1.5 + 0.4}rem`,
                     marginBottom: `${spacing}rem`,
                   }}
                 >
