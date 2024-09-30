@@ -2,6 +2,7 @@
 import { getCollection } from "astro:content";
 
 import ContentLayout from "@/layouts/content-layout.astro";
+import PostPublishedStatus from "@/components/dev/post-published-status.astro";
 
 let posts = await getCollection("posts");
 posts = posts.filter((post) => import.meta.env.DEV || post.data.published);
@@ -66,7 +67,8 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 
             <div class="space-y-1.5">
               <h2 class="break-words">
-                {import.meta.env.DEV ? (published ? "[PUBLISHED]" : "[DRAFT]") : ""} {title}
+                <PostPublishedStatus published={published} />
+                {title}
               </h2>
               <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
                 {blurb}

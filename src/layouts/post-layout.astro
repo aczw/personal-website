@@ -5,6 +5,7 @@ import type { CollectionEntry } from "astro:content";
 import CommonLayout from "@/layouts/common-layout.astro";
 
 import CustomContent from "@/components/mdx/content/custom-content.astro";
+import PostPublishedStatus from "@/components/dev/post-published-status.astro";
 
 interface Props {
   post: CollectionEntry<"posts">;
@@ -42,6 +43,7 @@ let { Content, headings } = await post.render();
 
         <div class="berkeley grid grid-cols-1 xs:grid-cols-2 xs:gap-12">
           <time datetime={posted.toISOString()} class="text-sweater-5">
+            <PostPublishedStatus published={published} />
             {posted.toLocaleDateString("en-US", dateOptions)}
           </time>
 

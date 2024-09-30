@@ -7,13 +7,9 @@ const response = await GET(Astro);
 const track = response.ok ? ((await response.json()) as Track) : null;
 const available = track !== null;
 
-let title = "";
+let title = null;
 if (available) {
-  if (track.live) {
-    title += "Currently listening: ";
-  }
-
-  title += `${track.song} by ${track.artist}`;
+  title = `${track.live ? "Currently listening:" : "Last listened to:"} ${track.song} by ${track.artist}`;
 }
 ---
 

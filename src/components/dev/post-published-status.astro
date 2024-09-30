@@ -1,0 +1,20 @@
+---
+interface Props {
+  published: boolean;
+}
+
+const { published } = Astro.props;
+---
+
+{
+  import.meta.env.DEV ? (
+    <span
+      class:list={[
+        "berkeley mr-2 w-fit rounded-full px-2 leading-none text-sweater-1",
+        published ? "cursor- bg-emerald-600" : "bg-red-600",
+      ]}
+    >
+      {published ? "PUBLISHED" : "DRAFT"}
+    </span>
+  ) : null
+}
