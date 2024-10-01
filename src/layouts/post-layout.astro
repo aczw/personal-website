@@ -76,10 +76,10 @@ let { Content, headings } = await post.render();
 
         <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
 
-        <div class="flex flex-col leading-snug text-sweater-6">
+        <div class="mr-7 flex flex-col leading-snug text-sweater-6 content:mr-0">
           <a
             href="#"
-            class="mb-3 rounded-md px-[0.4rem] py-1 leading-none text-sweater-3 transition-colors hover:bg-sweater-9 hover:text-sweater-1"
+            class="mb-[0.4rem] rounded-md px-[0.4rem] py-1 leading-none text-sweater-3 transition-colors hover:bg-sweater-9 hover:text-sweater-1"
             >(Back to top!)</a
           >
 
@@ -103,7 +103,7 @@ let { Content, headings } = await post.render();
               if (index !== headings.length - 1) {
                 let next = headings[index + 1];
                 if (next.depth === 2 && (depth === 2 || depth === 3)) {
-                  spacing = 0.75;
+                  spacing = 0.4;
                 }
               }
 
@@ -125,7 +125,7 @@ let { Content, headings } = await post.render();
 
         <div
           aria-hidden="true"
-          class="sticky inset-x-0 bottom-0 h-12 bg-gradient-to-t from-sweater-10"
+          class="sticky inset-x-0 -bottom-[1px] h-12 bg-gradient-to-t from-sweater-10"
         >
         </div>
       </nav>

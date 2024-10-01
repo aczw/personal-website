@@ -6,7 +6,6 @@ import "@fontsource/atkinson-hyperlegible/700.css";
 import type { CollectionEntry } from "astro:content";
 
 import SpeedInsights from "@vercel/speed-insights/astro";
-import ScreenSizeIndicator from "@/components/dev/screen-size-indicator.astro";
 
 type MetaKind =
   | { kind: "route"; title: string | null; description: string; ogImageParams: string }
@@ -99,6 +98,5 @@ canonicalUrl = canonicalUrl.replace(/\/+$/, "");
 
   <body>
     <slot />
-    <ScreenSizeIndicator />
   </body>
 </html>
