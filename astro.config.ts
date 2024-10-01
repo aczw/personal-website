@@ -9,7 +9,8 @@ import { existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import astroExpressiveCode from "astro-expressive-code";
+import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
+import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 
 const SITE_NAME = "https://charleszw.com";
 
@@ -49,14 +50,39 @@ const config = defineConfig({
       applyBaseStyles: false,
     }),
     astroExpressiveCode({
+      plugins: [pluginCollapsibleSections()],
       themes: ["rose-pine-moon"],
       useThemedSelectionColors: true,
+
       styleOverrides: {
         borderWidth: "0px",
         borderRadius: "0.5rem",
+        uiFontFamily: "Atkinson Hyperlegible",
+        uiFontSize: "1rem",
         codeFontFamily: "Berkeley Mono Variable",
         codeFontWeight: "120",
         codeFontSize: "13px",
+
+        frames: {
+          editorActiveTabBackground: ({ theme }) => theme.colors["editor.background"],
+          editorActiveTabIndicatorHeight: "2px",
+          editorActiveTabIndicatorTopColor: "#C3BDFF",
+          editorTabBarBackground: ({ theme }) => setAlpha(theme.colors["editor.background"], 0.5),
+          editorTabBorderRadius: "0.3rem",
+          shadowColor: "transparent",
+        },
+
+        textMarkers: {
+          markBackground: ({ resolveSetting }) =>
+            `lch(23.59% 18.75 ${resolveSetting("textMarkers.markHue")} / ${resolveSetting("textMarkers.backgroundOpacity")})`,
+          markBorderColor: ({ resolveSetting }) =>
+            `lch(23.59% 18.75 ${resolveSetting("textMarkers.markHue")} / ${resolveSetting("textMarkers.borderOpacity")})`,
+          markHue: "293.7",
+        },
+
+        collapsibleSections: {
+          closedBackgroundColor: "#393552",
+        },
       },
     }),
     mdx(),

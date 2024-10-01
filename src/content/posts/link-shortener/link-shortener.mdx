@@ -1,7 +1,8 @@
 ---
 title: Making a link shortener with Astro DB
-blurb: To easily share my Spotify, I like to use link shortener services. I got tired of how they always stopped working, so like any other sane person, I wrote my own.
-posted: 2024-04-24T08:10:00.000Z
+blurb: To easily share my Spotify profile, I like to use link shortener services. I got tired of how they always stopped working, so the obvious solution here was to write my own.
+posted: 2024-04-24T08:10:00-04
+updated: 2024-10-01T04:14:00-04
 cover:
   img: ./link-shortener.png
   alt: A repeating pattern of the words "Link Shortener" and the logo, which looks like a brick wall of sort.
@@ -12,29 +13,25 @@ slug: link-shortener
 
 import VideoGif from "@/components/video-gif.astro";
 
-To see it in action, visit my Spotify profile at [go.czw.sh/spotify](https://go.czw.sh/spotify).
+I really like talking about and sharing music. To that end, in order to follow my friends and ~~stalk~~ see what they're listening to, I often send them my Spotify profile. However, ever since they removed [custom usernames](https://go.czw.sh/5R6v06B), I've been stuck with the very memorable username of `zhwq0rxdn060sgar22e07u193`, and searching for my display name is pretty much impossible.
 
-> I've also replaced _every single link_ in this post using it!!
+To get around that, I use link shorteners, but I've found that they're very unreliable, and often shut down/stop working. With the recent release of Astro Studio and [Astro DB](https://go.czw.sh/zqqVN3L), I thought this was the perfect chance to test it out... and hopefully my woes once and for all.
 
-I like sharing music. To follow my friends and ~~stalk~~ see what they're listening to, I often send them my Spotify profile. However, ever since they removed [custom usernames](https://go.czw.sh/5R6v06B), I've been stuck with the very memorable username of `zhwq0rxdn060sgar22e07u193`, and searching for my display name is pretty much impossible.
-
-To get around that, I use link shorteners, but I've found that they're very unreliable, and often shut down/stop working. With the recent release of Astro Studio and [Astro DB](https://go.czw.sh/zqqVN3L), I thought this was the perfect chance to test it out... and solve my issue once and for all.
-
-> I'm also not insane, by the way; a simple search for ["spotify link shortener"](https://go.czw.sh/1dNUjwr) returns a number of _dedicated websites_ for doing this. Notably, Dub.co has their own [Spotify tool](https://go.czw.sh/xbnvsYD), which I used up to this point.
+> If you think the premise is a bit silly, I promise you it's not; a simple search for ["spotify link shortener"](https://go.czw.sh/1dNUjwr) returns a nontrivial number of _dedicated websites_ for doing this. Notably, Dub.co has their own [Spotify tool](https://go.czw.sh/xbnvsYD), which I used up to this point.
 
 ## Setting up the project
 
-First I had to connect with Astro Studio and also add the Astro DB integration. Both of these were relatively simple to set up. [Studio integration](https://go.czw.sh/BAJUv7X) is explained well, and even examples are provided for [how to work with the DB](https://go.czw.sh/eRcYP5E) for people that don't know SQL (me).
+First I had to connect with Astro Studio and also add the Astro DB integration. Both of these were relatively simple to set up. [Studio integration](https://go.czw.sh/OUhNwkR) is explained well, and examples for [interacting with the DB](https://go.czw.sh/eRcYP5E) are even provided for people that don't know SQL (me).
 
 One thing that wasn't too clear was where I should create the `config.ts` file. It turns out that it should be placed in a `db` folder outside of your `src` folder. Otherwise, local type definitions weren't being generated for me in the `.astro` folder.
 
-> Installing Astro DB with the `astro add` command seems to avoid this confusion by doing it for you automatically, but I did it manually.
+> Installing Astro DB with the `astro add` command seems to take care of this for you automatically, but I did it manually.
 
-My project only has two routes: a main `index.astro` for the root, and a `[...slug].astro` file that captures everything else. The former is for creating new links, and the latter is where we do the redirecting.
+My project only has two routes: a main `index.astro` for the homepage, and a `[...slug].astro` file that captures everything else. The former is for creating new links, and the latter is where we do the redirecting.
 
-The database schema is extremely simple: there are three columns, with the short link as the primary key, the original URL, and the date that it was generated. Astro DB makes it very easy to declare the schema. This is my entire `config.ts`:
+The database schema is extremely simple: there are three columns, with the short link as the primary key, the original URL, and the date that it was generated. Astro DB makes it very easy to declare the schema:
 
-```ts
+```ts title="db/config.ts"
 import { column, defineDb, defineTable, NOW } from "astro:db";
 
 const Link = defineTable({
@@ -58,7 +55,7 @@ There were many ways to do this, but I wanted to play with forms and Astro's [AP
 
 The backend receives a `POST` request from the form, with the form data as the body. I use [`nanoid`](https://go.czw.sh/D9rxQRQ) which generates a random string of characters for me. I'm using an alphanumeric alphabet with a size of 7.
 
-> Why 7 characters? Because "Spotify" is 7 characters and I wanted a custom link with the slug `spotify` that redirects to my profile. It's why I started this whole thing in the first place!
+> Why 7? Because "Spotify" is 7 characters, the entire point of this endeavor! Could I increase it for security and longevity? Of course, but then, no Spotify :(
 
 After performing input validation with Zod, I insert the values into the database, and return a response with a `2xx` code to signify everything went well. I also return the newly generated short link in the response body for the UI to consume.
 
@@ -66,7 +63,7 @@ After performing input validation with Zod, I insert the values into the databas
 
 Any random generator will have a probability of a collision, and [this calculator](https://go.czw.sh/arAX8LZ) estimates that 266,000 short links need to be generated before we reach a _one percent_ probability of a collision. This is a very tiny number, and if it happens I should probably buy a lottery ticket, but I check anyway by querying the database:
 
-```js
+```js title="src/pages/api/create.ts"
 let short;
 
 while (true) {
@@ -77,7 +74,7 @@ while (true) {
 }
 ```
 
-I also make sure to handle errors (wrapping stuff in try-catch) and return a `5xx` response if things go wrong, but I don't show that here.
+In the actual production version of this code snippet I make sure to handle errors (wrapping stuff in try-catch) and return a `5xx` response if things go wrong.
 
 ## Redirecting
 
@@ -85,8 +82,10 @@ All potential redirects are handled in `[...slug].astro` inside the frontmatter.
 
 If no short URL exists in the database, then I simply redirect to the home page.
 
-```astro
+```astro title="src/pages/[...slug].astro"
 ---
+import { Link, db, eq } from "astro:db";
+
 const { slug } = Astro.params;
 
 if (!slug) {
@@ -104,12 +103,29 @@ if (!exist) {
 
 Astro has a built-in way of dynamically modifying the response returned by the server. In particular, I set the status code to `301` and set the `Location` header to the original URL.
 
-```astro
+```astro title="src/pages/[...slug].astro" ins={17-18} collapse={2-15}
 ---
+import { Link, db, eq } from "astro:db";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+  return Astro.redirect("/");
+}
+
+const query = await db.select().from(Link).where(eq(Link.short, slug));
+const exist = query.length === 1;
+
+if (!exist) {
+  return Astro.redirect("/");
+}
+
 Astro.response.status = 301;
-Astro.response.headers.set("Location", originalUrl);
+Astro.response.headers.set("Location", query[0].original);
 ---
 ```
+
+### Which redirect code?
 
 I spent a bit trying to figure out which [redirect status code](https://go.czw.sh/NO8O5lM) I should be responding with. Doing a bit of research revealed that most link shorteners use either `301` or `302`. I settled on `301` because
 
@@ -119,15 +135,25 @@ I spent a bit trying to figure out which [redirect status code](https://go.czw.s
 
 - search engines and crawlers should never show the short URL.
 
-> `308` also seems to be a valid alternative to `301`, but from what I learned it mostly provides more consistency with non-`GET` operations. We only use `GET`, so `301` works fine.
+`308` also seems to be a valid alternative to `301`, but from what I learned it mostly provides more consistency with non-`GET` operations. We only use `GET`, so `301` works fine.
 
-One thing that is interesting to me is that I wrote no JSX for the `/[...slug]` route. The only code in `[...slug].astro` is in the Astro frontmatter, which only gets executed on the server. While Astro was originally launched with static generation in mind, we've come a long way, and from the way I've been using it, it feels totally possible to do things that are usually delegated to a "full-stack" framework.
+### Astro as a backend
 
-## Styling and frontend
+If you noticed, there exists no JSX, and therefore, no HTML for the `/[...slug]` route. The only code in `[...slug].astro` is in the Astro frontmatter, whose content gets executed everytime a request is made to serve that route.
 
-Choosing colors is hard, so I used [Randoma11y](https://go.czw.sh/Z3gWKWH) to generate an accessible color palette for me. I wanted to keep things simple, so the whole site is just two colors and one font, and I picked [Commit Mono](https://go.czw.sh/dZEo7El) because it's a nice neutral and readable monospaced font.
+The only reason _that_ occurs is because Astro is server side rendering this specific route on demand. But essentially, I've turned this route into another API endpoint like `/api/create`.
 
-The rest of the site is pretty standard, but while making it I noticed one tiny, small, insignificant detail. It occurred whenever I clicked on the "Copy to clipboard" button:
+This was an interesting realization for me because it demonstrated Astro's flexibility, which I really appreciate. I think many people I talk to still believe Astro's sole purpose is to be a static site generator, and while that is one of its use cases, it's evolved to be so much more.
+
+From the way I've been using it, I would argue Astro can now do everything that used to be delegated to an "actual" fullstack framework. Astro on the frontend, Astro on the backend.
+
+## Styling
+
+Choosing colors is hard, so I used [Randoma11y](https://go.czw.sh/Z3gWKWH) to generate an accessible color palette for me. I wanted to keep things simple, so the whole site is just two colors and one font, and I picked [Commit Mono](https://go.czw.sh/dZEo7El) because it's a nice and neutral monospace font.
+
+### Copy to clipboard interaction
+
+Most of the frontend isn't too noteworthy, but I do want to talk about one thing. While writing the copy to clipboard functionality I noticed one tiny, small, insignificant detail. It occurred whenever I clicked on the button:
 
 <VideoGif content={{ collection: "posts", folder: "link-shortener" }} name="copy-bad" />
 
@@ -142,15 +168,17 @@ The button changes width! That's so annoying! And not really important! But I ha
 </button>
 ```
 
-The key part is that "Copy to clipboard" remains in the DOM tree; I'm just hiding it by setting the opacity to zero. This allows the button to maintain its width even when the text changes. In order to center "Copied," I had to position it absolutely, to account for the fact that the other `<span>` tag was still inside the button.
+The key part is that both elements remain in the DOM tree; I'm just hiding one by setting its opacity to zero. This allows the button to maintain its width even when the visible text changes. This did mean I had to position the "Copied" text absolutely, to account for the fact that the other `<span>` tag was still inside the button.
 
 I then attached an event listener to the button and used `setTimeout()` to revert the changes after a short duration. Now the button width remains the same:
 
 <VideoGif content={{ collection: "posts", folder: "link-shortener" }} name="copy-good" />
 
-## Conclusion
+## Potential future plans
 
 Unless Astro Studio shuts down anytime soon, my link shortener should continue to work. Maybe this time around, my Spotify profile link will last more than a couple of weeks. I hope.
+
+> **10/1/24 update:** [Astro Studio is shutting down](https://go.czw.sh/lzgd415). I am very upset. I will take a look at [Turso](https://go.czw.sh/GRYMtnq), which is what the docs recommend as a replacement. They do seem to have a free plan and there is [a migration guide](https://go.czw.sh/hrv89rA), but... _sigh_.
 
 I might add a few more features in the future. Some stuff I have in mind include
 
@@ -166,4 +194,12 @@ I might add a few more features in the future. Some stuff I have in mind include
 
 - setting expiration dates for links. I don't have too much control over the server (this project is hosted on Vercel), so I might just lazily check (only check if the link is actually accessed).
 
-So if you're visiting the site in the future and see anything I didn't describe here, then I probably got around to doing it. The source code for this project [is available on GitHub](https://go.czw.sh/oydXRPc) and to try it out, visit [go.czw.sh](https://go.czw.sh/).
+So if you're visiting the site in the future and see anything I didn't describe here, then I probably got around to doing it.
+
+## See it in action
+
+Access my Spotify profile at [go.czw.sh/spotify](https://go.czw.sh/spotify).
+
+Also, I'm not sure if you've noticed, but every single external URL I linked to in this post has been ran through the link shortener :)
+
+The source code for this project [is available on GitHub](https://go.czw.sh/oydXRPc) and to try it out yourself, visit [go.czw.sh](https://go.czw.sh/).

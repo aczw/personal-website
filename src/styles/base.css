@@ -73,7 +73,8 @@
       list-style-type: decimal;
     }
 
-    & figure {
+    /* Only select <figure> elements not from the Expressive Code package */
+    & :not(.expressive-code) > figure {
       @apply subtitle space-y-2 text-[0.9rem];
     }
 
