@@ -36,24 +36,15 @@
       @apply rounded-lg bg-sweater-9;
     }
 
-    /* inline code should have some padding and background */
+    /* Inline code should have some padding and unique background color */
     & code {
       @apply break-words rounded-md bg-sweater-9 px-1 py-0.5 text-[13px] font-[100];
     }
 
-    /* treat code differently inside callouts, but let utilities override it */
+    /* Treat inline code differently inside callouts, but let utilities override it */
     & aside {
       & code {
         @apply bg-sweater-8;
-      }
-    }
-
-    & pre {
-      @apply rounded-lg p-4;
-
-      /* but remove padding, background, and word breaks in code blocks */
-      > code {
-        @apply break-normal bg-transparent p-0;
       }
     }
 

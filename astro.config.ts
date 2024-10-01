@@ -9,6 +9,8 @@ import { existsSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
+import astroExpressiveCode from "astro-expressive-code";
+
 const SITE_NAME = "https://charleszw.com";
 
 /**
@@ -43,10 +45,21 @@ const config = defineConfig({
     sitemap({
       customPages: contentRoutes(),
     }),
-    mdx(),
     tailwind({
       applyBaseStyles: false,
     }),
+    astroExpressiveCode({
+      themes: ["rose-pine-moon"],
+      useThemedSelectionColors: true,
+      styleOverrides: {
+        borderWidth: "0px",
+        borderRadius: "0.5rem",
+        codeFontFamily: "Berkeley Mono Variable",
+        codeFontWeight: "120",
+        codeFontSize: "13px",
+      },
+    }),
+    mdx(),
   ],
   output: "server",
   adapter: vercel({
@@ -66,11 +79,6 @@ const config = defineConfig({
   }),
   // see https://noahflk.com/blog/trailing-slashes-astro
   trailingSlash: "never",
-  markdown: {
-    shikiConfig: {
-      theme: "rose-pine-moon",
-    },
-  },
   redirects: {
     "/resume": {
       status: 307,
