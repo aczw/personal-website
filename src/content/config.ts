@@ -8,6 +8,7 @@ const posts = defineCollection({
       blurb: z.string().refine((blurb) => blurb.length <= 190, {
         message: "Blurb should be 190 characters or less, so it fits on the home screen.",
       }),
+      tags: z.array(z.enum(["graphics", "game", "web"])),
       posted: z.date(),
       updated: z.date().optional(),
       cover: z

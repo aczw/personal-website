@@ -3,10 +3,14 @@ import { getCollection } from "astro:content";
 
 import ContentLayout from "@/layouts/content-layout.astro";
 import PostPublishedStatus from "@/components/dev/post-published-status.astro";
+import { CircleX } from "lucide-astro";
 
 let posts = await getCollection("posts");
-posts = posts.filter((post) => import.meta.env.DEV || post.data.published);
 posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
+
+// TODO
+const searchParams = Astro.url.searchParams;
+const filteredByGraphics = searchParams.has("filter", "graphics");
 ---
 
 <ContentLayout
@@ -18,20 +22,50 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
     ogImageParams: "All my posts.",
   }}
 >
-  <h1 class="animate-fade text-xl [--order:0]">All posts</h1>
+  <section>
+    <h1 class="animate-fade text-xl [--order:0]">All posts</h1>
+    <div class="flex items-center gap-2.5">
+      {
+        filteredByGraphics ? (
+          <>
+            <p class="berkeley text-sweater-4">Filtered by:</p>
+            <a
+              title={'Remove "graphics" filter'}
+              href="/posts"
+              class="pill flex items-center gap-1.5 leading-none"
+              data-quiet
+            >
+              graphics <CircleX size={14} />
+            </a>
+          </>
+        ) : null
+      }
+    </div>
+  </section>
 
-  <section class="flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50">
+  <section
+    class:list={[
+      "flex flex-col [--fade-speed:25ms]",
+      { "[&>a:not(:hover)]:hover:brightness-50": !filteredByGraphics },
+    ]}
+  >
     {
       posts.map((post, idx) => {
         let {
-          data: { title, blurb, posted, published },
+          data: { title, blurb, tags, posted, published },
           slug,
         } = post;
 
         return (
           <a
             href={`/posts/${slug}`}
-            class="group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100"
+            class:list={[
+              "group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100",
+              {
+                "brightness-[0.3] hover:brightness-[0.8]":
+                  filteredByGraphics && !tags.includes("graphics"),
+              },
+            ]}
             style={{ "--order": idx + 1 }}
           >
             <time
