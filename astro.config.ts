@@ -65,6 +65,7 @@ const config = defineConfig({
 
         frames: {
           editorActiveTabBackground: ({ theme }) => theme.colors["editor.background"],
+          editorActiveTabForeground: "#C3BDFF",
           editorActiveTabIndicatorHeight: "2px",
           editorActiveTabIndicatorTopColor: "#C3BDFF",
           editorTabBarBackground: ({ theme }) => setAlpha(theme.colors["editor.background"], 0.5),
