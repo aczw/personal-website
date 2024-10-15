@@ -1,6 +1,6 @@
 ---
-title: Making a Unity game!
-blurb: RCW is an endless minigame about matching colors and text together. I tried to focus on a super clean UI and simple controls. It's also playable from your browser!
+title: Learning Unity and making my first game
+blurb: RCW is an endless minigame about matching the right colors and words together. The longer you survive, the higher your score! Play it now on itch.io.
 tags:
   - game
   - graphics
@@ -15,30 +15,78 @@ slug: rcw
 ---
 
 import VideoGif from "@/components/video-gif.astro";
+import { Image } from "astro:assets";
 
-Play now on [itch.io!](https://aczw.itch.io/rcw)
+I've always wanted to make games, and so this summer I took the plunge and decided to start learning Unity. The end result is this quick-n'-dirty game that I made in a month or so. More than anything, this was a learning experience to get my feet wet; you'll find that none of the stuff here is very original or game-changing, but that's okay.
 
-Random Color Words (RCW) is a simple endless minigame about selecting the correct pair of colors and words. They're also randomly generated. Crazy name, I know.
+In this post I wanted to talk a little about how I approached coding, designing, and making assets for the game in the eyes of someone new to Unity, C#, and game dev in general.
 
-Prior to this, I had very limited experience with Unity and game development in general. I used this experience as a learning opportunity and tried to involve myself with every part of the development cycle. Coming from a design background, _I focused particularly on clean UI_ and making sure that everything felt cohesive and polished. While I wasn't looking to make anything ground-breaking, I wanted the end result to be fully fleshed out and fun.
+## Overview
 
-I think I achieved that goal. I'm very happy to call this my first full game. Details below about how it all came together.
+In Random Color Words (RCW) you are constantly trying to pair the correct combination of colors and words together. Both of these are randomly generated at the start of each round. Incredibly strong innovative start here, I know.
 
-## Gameplay
+I saw this project as a way to involve myself with every part of a game development cycle. This led to me getting my hands dirty with things other than programming, like the audio or the UI. And being new to... well, everything, I focused my attention on simple but _polished_ and _fleshed out_ results. And hopefully, a little fun to play.
 
-The gameplay loop is simple... and not original. The core idea is taken from [OLDTV](https://store.steampowered.com/app/643270/OLDTV/) (which you should go play right now, it's free). Both of our games are heavily inspired by the [Stroop test](https://en.wikipedia.org/wiki/Stroop_effect), a psychological phenomenon where reaction time becomes delayed when the stimuli is incongruent.
+I think I achieved that goal. I'm proud to be able to publish RCW as a "complete package."
 
-> Just to reiterate: full credits to OLDTV for the mechanics!
+## Brainstorming gameplay
 
-In normal human words, stuff that catches you off guard slows you down. Take these two words, for example.
+To begin, I started brainstorming simple gameplay ideas that didn't take too much time to implement. This means that the gameplay loop should be simple, and the best way to achieve that is to make the game _infinite_ and have no ending. Just like an arcade game.
 
-![There are two words and both spell out 'purple.' The one on the left is colored purple, and the one on the right is colored red.](./purple-comparison.png)
+Recently I had been playing this game called [OLDTV](https://store.steampowered.com/app/643270/OLDTV/). The premise is that you're a gifted child sitting in front of a TV, and you're trying to switch between every single channel in the world.
 
-One word is colored purple, and the other red. It turns out that it's easier for us to name the color of the left word than the right word, because the _word_ matches the _color_. When the word reads "purple" but is actually colored red, this throws us off and delays our answer.
+<figure>
+  <VideoGif content={{ collection: "posts", folder: "rcw" }} name="oldtv" />
+  <figcaption>**OLDTV.** In-game footage. It's free on Steam, go play it.</figcaption>
+</figure>
 
-How interesting. Why don't we add a timer, and force the player to decide whether the word matches its color in time. If you don't react fast enough, you lose. And the faster you react, the more points you get.
+But uh, you're not exactly pressing next on the TV remote. What is happening?
 
-I keep it simple by only using five colors: Red, Yellow, Green, Blue, Purple.
+### Explanation
+
+Essentially, each round we're given a color word, and a word color—uh, what? Actually, ignore the game for a second—let's just consider these two words below.
+
+![There are two words and both spell out 'purple.' The one on the left is colored purple, and the one on the right is colored red.](purple-comparison.png)
+
+One word is colored purple, and the other is colored red. If I were to ask you what color the word on the right is, you might find yourself saying "purple" on instinct, which is wrong!
+
+It turns out that it's easier for us to name the color of the left word than the right word, because the word itself _matches_ its color. When the word reads "purple" but is actually colored red, this throws us off and delays our answer.
+
+This is the premise on which OLDTV works. Given the current word and color combination, left click if the color matches the word, and right click if it doesn't. To make your life even more fun, OLDTV can (and will) flip your screen upside down, change the background color, and even reverse the controls. Oh, and there's a time limit so you're forced to react quickly.
+
+### Using the Stroop effect
+
+Turns out this phenomenon has a name. It's called the [Stroop effect](https://en.wikipedia.org/wiki/Stroop_effect), a psychological phenomenon where "reaction time becomes delayed when the stimuli is incongruent." In simpler human words, stuff that catches you off guard slows you down.
+
+I thought this would be an awesome mechanic to ~~shamelessly rip from OLDTV~~ implement. On paper it doesn't sound too hard: just randomly pick a word and color each round, and check whether the correct user input was entered.
+
+There are some differences between RCW and OLDTV though:
+
+- I use these five colors: <span class="text-[#d20f39]">**Red**</span>, <span class="text-[#dfc31d]">**Yellow**</span>, <span class="text-[#409f2b]">**Green**</span>, <span class="text-[#1e66f5]">**Blue**</span>, <span class="text-[#8739ee]">**Purple**</span>.
+- OLDTV instantly boots you out the moment you mess up. Instead, I have a lives system, where you get three chances.
+- I also have a score system that depends on how fast you react. More on that below.
+
+With the gameplay decided, it was time to code.
+
+## Programming the game and learning C#
+
+I will admit that RCW's code is a _little_ bit overengineered. If I were to redo everything today, I would definitely structure things differently (read: simplify things). But in order to actively learn Unity idioms and C# features, I tried out many different things throughout the codebase.
+
+<figure class="mx-auto flex max-w-[275px] items-end gap-5">
+  ![Filetree of C# files for the game](rcw-files.png)
+  <figcaption>**RCW's filetree.** This was just _a little_ bit insane.</figcaption>
+</figure>
+
+- singleton pattern
+- coroutines
+- c# events and delegates
+- c# properties, structs, and classes
+
+## Music and SFX
+
+I know I said I wanted to dabble in a little bit of everything, but I wasn't going to sit there and _start learning music production_, so this time I turned to the internet for some help.
+
+> Can I quickly give a shoutout to the [OLDTV soundtrack](https://www.youtube.com/watch?v=Nwswp1GKM_w&list=PLGrojvvZb3f_C0B75O_L1GBhzA8x19lED&index=2)? My God this game has amazing music, it makes it even sadder when I eventually lose and it stops playing.
 
 ## Buttons buttons buttons
 
