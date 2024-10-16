@@ -78,7 +78,7 @@ To get started, I looked through the default themes that SDDM provides, as well 
 
 I definitely committed some coding sins while trying to figure out how to hook everything together. I'm particularly proud of this abomination:
 
-```cpp
+```js
 Component.onCompleted: {
   if (userPicture.enabled) {
     userPicture.source = userWrapper.items.get(userList.currentIndex).model.icon;

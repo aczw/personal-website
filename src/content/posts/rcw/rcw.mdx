@@ -74,12 +74,82 @@ I will admit that RCW's code is a _little_ bit overengineered. If I were to redo
 
 <figure class="mx-auto flex max-w-[275px] items-end gap-5">
   ![Filetree of C# files for the game](rcw-files.png)
-  <figcaption>**RCW's filetree.** This was just _a little_ bit insane.</figcaption>
+  <figcaption>**RCW's filetree.** This is just a _little_ bit insane.</figcaption>
 </figure>
 
-- singleton pattern
+### Singleton pattern
+
+Everytime I searched up something related to "singletons" or static instances, the resources I find seemed to always discourage it. See:
+
+- [Singletons in Unity (done right)](https://gamedevbeginner.com/singletons-in-unity-the-right-way/). "Done right" implies people usually do it wrong....
+- [What are drawbacks or disadvantages of singleton pattern?](https://stackoverflow.com/questions/137975/what-are-drawbacks-or-disadvantages-of-singleton-pattern) Here I wasn't even trying to look for disadvantages, this was just one of the first results for "unity singleton."
+- [Singletons: are they ALWAYS bad?](https://www.reddit.com/r/Unity3D/comments/13jghvh/singletons_are_they_always_bad/) Yeesh.
+
+From what I've read some disadvantages include having to modify/keep global state and increased inflexibility. To be fair, people from the links above aren't arguing against using it at all, but to consider whether it's suitable for the current context; it seems like it's misused/overused often.
+
+I can see how keeping global state in a large codebase can be scary and hard. But RCW is not that, and in my case singletons really helped. For instance, I have an `Audio` class which manages all my sounds in the game. Here it is:
+
+```csharp
+public class Audio : MonoBehaviour
+{
+    public static Audio Instance { get; private set; }
+
+    public AudioSource musicSource;
+    public AudioSource sfxSource;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    /* Plus some other helpers */
+}
+```
+
+`Awake()` makes sure there only exists one instance of this class throughout the project. Repeat similarly for `AudioClips`, which stores all the sound files in the game. Then, I can just play music or SFX wherever I want, whenever I want, like when my cursor enters an on-screen button:
+
+```csharp
+public void OnPointerEnter(PointerEventData eventData)
+{
+    Audio.Instance.sfxSource.PlayOneShot(AudioClips.Instance.buttonHover);
+}
+```
+
+I also use the singleton pattern for my main game manager, the `Rcw` class. It's important I can easily access this class because it contains all gameplay-related events, which other components need to subscribe to. Speaking of events...
+
+### Events
+
+C# is incredible. I discovered their existence in the middle of development, and started converting many things over, then back, but not everything; so the game runs in a sorta singleton/observer hybrid. Again, code's a bit messy.
+
+In `Rcw`, I define events for most things that can happen in-game, like winning a round, losing a life, or starting a new game.
+
+```csharp
+public event Action GameInit;
+public event Action GameStart;
+public event Action GameLost;
+
+public event Action ScoreChanged;
+public event Action LifeLost;
+public event Action ColorWordChanged;
+public event Action ReverseChanged;
+
+public event Action RoundWon;
+public event Action RoundLost;
+```
+
+Events especially came in handy
+
+### Other stuff
+
 - coroutines
-- c# events and delegates
 - c# properties, structs, and classes
 
 ## Music and SFX
