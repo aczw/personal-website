@@ -72,15 +72,18 @@ There are some differences between RCW and OLDTV though:
 
 - I use these five colors: <span class="text-[#d20f39]">**Red**</span>, <span class="text-[#dfc31d]">**Yellow**</span>, <span class="text-[#409f2b]">**Green**</span>, <span class="text-[#1e66f5]">**Blue**</span>, <span class="text-[#8739ee]">**Purple**</span>.
 - OLDTV instantly boots you out the moment you mess up. Instead, I have a lives system, where you get three chances.
-- I also have a score system that depends on how fast you react. More on that below.
+- I also have a score system that depends on how fast you react.
 
 With the gameplay decided, it was time to code.
 
 ## Programming the game and learning C#
 
-I will admit that RCW's code is a _little_ bit overengineered. If I were to redo everything today, I would definitely structure things differently (read: simplify things). But in order to actively learn Unity idioms and C# features, I tried out many different things throughout the codebase.
+I will admit that RCW's code is a _little_ bit overengineered. If I were to redo everything
+today, I would definitely structure things differently (read: simplify things). But in order to
+actively learn Unity idioms and C# features, I tried out many different things throughout the
+codebase.
 
-<figure class="mx-auto flex max-w-[275px] items-end gap-5">
+<figure class="mx-auto flex max-w-[225px] items-end gap-4 xs:float-right xs:ml-6 xs:block xs:max-w-[150px] xs:gap-0">
   ![Filetree of C# files for the game](rcw-files.png)
   <figcaption>**RCW's filetree.** This is just a _little_ bit insane.</figcaption>
 </figure>
@@ -195,19 +198,38 @@ public class UIScoreboard : MonoBehaviour
 
 This component's sole purpose is to display the score, and it does it very well. But if I wanted to add some new functionality that occurs when the score changes, I just create another script that subscribes to the same event. It's great.
 
+### Other stuff
+
+Obviously there was so much more that I learned and played around with, but talking about it is a bit dull and quickly turns into a C# tutorial, which is not my intention. But I'll list some stuff:
+
+- Coroutines and being able to pause logic until the next frame is amazing.
+- The different types of C# data structures. I used a `struct` for storing the colors and their associated names, for example.
+- Getters, setters, and avoiding Java-esque methods via properties. God these are amazing.
+
+Funnily enough I feel that the least interesting part of the codebase is the `RoundProp` component which actually generates the color and word for each round. I try to maintain a counter so that a matching color and word is generated every 2 to 7 rounds. [Here's the source file](https://github.com/aczw/RCW/blob/main/Assets/Scripts/RoundProp.cs) if you're interested in taking a look though.
+
 ## Music and SFX
 
-I know I said I wanted to dabble in a little bit of everything, but I wasn't going to sit there and _start learning music production_, so this time I turned to the internet for some help.
+I know I said I wanted to dabble in a little bit of everything, but I wasn't exactly going to _start learning music production_, so this time I turned to the internet for some help.
 
 > Can I quickly give a shoutout to the [OLDTV soundtrack](https://www.youtube.com/watch?v=Nwswp1GKM_w&list=PLGrojvvZb3f_C0B75O_L1GBhzA8x19lED&index=2)? My God this game has amazing music, it makes it even sadder when I eventually lose and it stops playing.
 
-## Buttons buttons buttons
+To make the game feel more alive I wanted most interactions to play sound, and for them to be unique. It took me quite some time to compile together sounds, and I had certain criteria I wanted to hit:
 
-RCW is an endless, fast-paced minigame about getting the highest score. I was therefore inspired by arcade games and in particular, became obsessed with the art of [Rhythm Heaven Fever](https://en.wikipedia.org/wiki/Rhythm_Heaven_Fever), a 2012 Wii game. I wanted to channel its chaotic vibes, juicy-looking buttons, and generous use of thick borders. I mean, the buttons had to look _delicious_.
+- For the main menu I wanted something that sounded like "elevator music." In-game should be upbeat and exciting, and the game over screen should be slower and sound sadder.
+- I wanted the sound effects to sound "juicy," if that makes any sense.
+
+In the end I'm really happy with what I found. So a big thank you to Eric Matyas from [soundimage.org](https://soundimage.org) and SubspaceAudio from [opengameart.org](https://opengameart.org) for making awesome free music (and obviously sounds are also credited within the game itself).
+
+## Art direction and design
+
+RCW is an endless, fast-paced minigame about getting the highest score. I was therefore inspired by arcade games and in particular, became obsessed with the art of [Rhythm Heaven Fever](https://en.wikipedia.org/wiki/Rhythm_Heaven_Fever), a 2012 Wii game. I wanted to channel its chaotic vibes, candy-looking buttons, and generous use of thick borders. I mean, the buttons had to look _delicious_.
 
 I also liked the button hover effect in [The Battle Cats](https://battlecats.club/en/series/battlecats/), which flashed bright yellow and magenta. Here, I tried to recreate it in Figma.
 
 <VideoGif content={{ collection: "posts", folder: "rcw" }} name="flashing-btns-figma" />
+
+### Buttons buttons buttons
 
 I use both the button design and hover effect in RCW. The nice thing about this art style was that it could be consistently applied everywhere, not just buttons.
 
@@ -219,7 +241,7 @@ I use both the button design and hover effect in RCW. The nice thing about this 
 
 Originally I was going for a factory setting, with words coming down a sort of assembly line. But honestly, this was out of my Unity skill scope, so I scratched that idea. You can still see it in the metallic plates and muted gray backgrounds.
 
-### The part where Figma does everything
+### Making literally everything in Figma
 
 One thing that may surprise you is that all the art assets were made in Figma. This includes the start screen, in-game, and game over screen, as well as all the UI.
 
@@ -258,7 +280,7 @@ The other thing I'm really happy about are the button animations. When the instr
 
 The "Go back" text slides out, and the outside border becomes a panel for the text to exist in. I spent ~~too much~~ some time getting it to feel just right. I would like to thank this [easings cheat sheet](https://easings.net/) for providing copy-and-paste animation curves.
 
-## Conclusion
+## Future updates??
 
 This project definitely helped expand my Unity and C# knowledge. I learned to use coroutines and C# events to broadcast gameplay happenings. I became more familiar with Unity's UI and animation system.
 
