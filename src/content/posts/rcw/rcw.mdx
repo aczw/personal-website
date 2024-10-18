@@ -23,15 +23,19 @@ In this post I wanted to talk a little about how I approached coding, designing,
 
 ## Overview
 
-In Random Color Words (RCW) you are constantly trying to pair the correct combination of colors and words together. Both of these are randomly generated at the start of each round. Incredibly strong innovative start here, I know.
+In Random Color Words (RCW) you are constantly trying to pair the correct combination of colors and words together. Both of these are randomly generated at the start of each round.
 
-I saw this project as a way to involve myself with every part of a game development cycle. This led to me getting my hands dirty with things other than programming, like the audio or the UI. And being new to... well, everything, I focused my attention on simple but _polished_ and _fleshed out_ results. And hopefully, a little fun to play.
+> Incredibly creative name for a game, I know. That's why I like calling it RCW instead.
+
+I saw this project as a way to involve myself with every part of a game development cycle. This led to me getting my hands dirty with things other than programming, like the audio and UI. And being new to... well, everything, I focused my attention on simple but _polished_ and _fleshed out_ results. And hopefully, the game's fun to play as well.
 
 I think I achieved that goal. I'm proud to be able to publish RCW as a "complete package."
 
 ## Brainstorming gameplay
 
-To begin, I started brainstorming simple gameplay ideas that didn't take too much time to implement. This means that the gameplay loop should be simple, and the best way to achieve that is to make the game _infinite_ and have no ending. Just like an arcade game.
+To begin, I started brainstorming simple gameplay ideas that didn't take too much time to implement. This means that the gameplay loop should be simple, and the best way to achieve that is to make the game _infinite_ and have no ending, like an arcade game.
+
+No ideas came to mind, and so I turned to other sources for inspiration...
 
 Recently I had been playing this game called [OLDTV](https://store.steampowered.com/app/643270/OLDTV/). The premise is that you're a gifted child sitting in front of a TV, and you're trying to switch between every single channel in the world.
 
@@ -40,19 +44,23 @@ Recently I had been playing this game called [OLDTV](https://store.steampowered.
   <figcaption>**OLDTV.** In-game footage. It's free on Steam, go play it.</figcaption>
 </figure>
 
-But uh, you're not exactly pressing next on the TV remote. What is happening?
+But uh, you're not exactly pressing next on the TV remote. What's happening here?
 
 ### Explanation
 
-Essentially, each round we're given a color word, and a word color—uh, what? Actually, ignore the game for a second—let's just consider these two words below.
+Essentially, each round we're given a color word, and a word color—uh, that's just as confusing. Actually, lemme restart. Ignore the game for a sec—let's just consider these two words below.
 
-![There are two words and both spell out 'purple.' The one on the left is colored purple, and the one on the right is colored red.](purple-comparison.png)
+<figure>
+  ![There are two words and both spell out 'purple.' The one on the left is colored purple, and the
+  one on the right is colored red.](purple-comparison.png)
+  <figcaption>**Purple.** Purple.</figcaption>
+</figure>
 
 One word is colored purple, and the other is colored red. If I were to ask you what color the word on the right is, you might find yourself saying "purple" on instinct, which is wrong!
 
 It turns out that it's easier for us to name the color of the left word than the right word, because the word itself _matches_ its color. When the word reads "purple" but is actually colored red, this throws us off and delays our answer.
 
-This is the premise on which OLDTV works. Given the current word and color combination, left click if the color matches the word, and right click if it doesn't. To make your life even more fun, OLDTV can (and will) flip your screen upside down, change the background color, and even reverse the controls. Oh, and there's a time limit so you're forced to react quickly.
+This is OLDTV's gimmick. Given the current word and color combination, left click if the color matches the word, and right click if it doesn't. To make your life even more fun, OLDTV can (and will) flip your screen upside down, change the background color, and even reverse the controls. Oh, and there's a time limit so you're forced to react quickly.
 
 ### Using the Stroop effect
 
@@ -85,7 +93,7 @@ Everytime I searched up something related to "singletons" or static instances, t
 - [What are drawbacks or disadvantages of singleton pattern?](https://stackoverflow.com/questions/137975/what-are-drawbacks-or-disadvantages-of-singleton-pattern) Here I wasn't even trying to look for disadvantages, this was just one of the first results for "unity singleton."
 - [Singletons: are they ALWAYS bad?](https://www.reddit.com/r/Unity3D/comments/13jghvh/singletons_are_they_always_bad/) Yeesh.
 
-From what I've read some disadvantages include having to modify/keep global state and increased inflexibility. To be fair, people from the links above aren't arguing against using it at all, but to consider whether it's suitable for the current context; it seems like it's misused/overused often.
+From what I've read some disadvantages include having to modify/keep global state and increased inflexibility. To be fair, people from the links above aren't arguing to never use it, but to consider whether it's suitable for the _current_ context; it seems like it's misused/overused often.
 
 I can see how keeping global state in a large codebase can be scary and hard. But RCW is not that, and in my case singletons really helped. For instance, I have an `Audio` class which manages all my sounds in the game. Here it is:
 
@@ -125,9 +133,9 @@ public void OnPointerEnter(PointerEventData eventData)
 
 I also use the singleton pattern for my main game manager, the `Rcw` class. It's important I can easily access this class because it contains all gameplay-related events, which other components need to subscribe to. Speaking of events...
 
-### Events
+### Events and UI
 
-C# is incredible. I discovered their existence in the middle of development, and started converting many things over, then back, but not everything; so the game runs in a sorta singleton/observer hybrid. Again, code's a bit messy.
+I discovered the existence of C# events in the middle of development, and started converting many things over, realizing not everything works, and then back; so the game runs in a singleton/observer hybrid. Again, learning new things! It's okay.
 
 In `Rcw`, I define events for most things that can happen in-game, like winning a round, losing a life, or starting a new game.
 
@@ -145,12 +153,47 @@ public event Action RoundWon;
 public event Action RoundLost;
 ```
 
-Events especially came in handy
+The `event` keyword prevents it from being invoked in other files. This encourages me to constrain all gameplay logic within `Rcw`, and broadcast out changes when necessary.
 
-### Other stuff
+**I found the most use out of events for updating the UI.** Before discovering events existed, I saw two options:
 
-- coroutines
-- c# properties, structs, and classes
+1. Store a reference to a UI-related component within `Rcw`, and use it when necessary.
+2. Use more singletons. Maybe a `UIManager`, for instance.
+
+Both options cluttered up the code and made tracking things harder. With events, however, only `Rcw` needed to be accessible, things are more centralized, and C# scripts are free to subscribe to whatever they need within their own file.
+
+The additional freedom that events warranted me made me go a little crazy with separating UI stuff into their own files, I think (I mean, just take a look at the screenshot above). But it really kept things modular, and kept behaviors within their own domains. For example, this is a simplified version of the script that controls the score UI:
+
+```csharp title="UIScoreboard.cs"
+public class UIScoreboard : MonoBehaviour
+{
+    [SerializeField] private TMP_Text scoreText;
+
+    private void Start()
+    {
+        Rcw.Instance.ScoreChanged += OnScoreChanged;
+        scoreText.text = "000000";
+    }
+
+    private void OnScoreChanged()
+    {
+        var score = Rcw.Instance.Score;
+        scoreText.text = score switch
+        {
+            >= 1000000 => "WTF",
+            >= 100000 => score.ToString(),
+            >= 10000 => "0" + score,
+            >= 1000 => "00" + score,
+            >= 100 => "000" + score,
+            >= 10 => "0000" + score,
+            >= 1 => "00000" + score,
+            _ => "000000"
+        };
+    }
+}
+```
+
+This component's sole purpose is to display the score, and it does it very well. But if I wanted to add some new functionality that occurs when the score changes, I just create another script that subscribes to the same event. It's great.
 
 ## Music and SFX
 
