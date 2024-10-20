@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
-import ContentLayout from "@/layouts/content-layout.astro";
+import MainLayout from "@/layouts/main-layout.astro";
 import PostPublishedStatus from "@/components/dev/post-published-status.astro";
 import { CircleX } from "lucide-astro";
 
@@ -9,63 +9,85 @@ let posts = await getCollection("posts");
 posts = posts.filter((post) => import.meta.env.DEV || post.data.published);
 posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 
-// TODO
+let mapped = posts.map(({ data: { title, blurb, tags, posted, published }, slug }) => {
+  return { data: { title, blurb, tags, posted, published }, slug: `/posts/${slug}` };
+});
+
 const searchParams = Astro.url.searchParams;
-const filteredByGraphics = searchParams.has("filter", "graphics");
+const hasGraphics = searchParams.has("filter", "graphics");
+
+// Compatibility with Disney and other apps from 10/7
+if (hasGraphics) {
+  mapped.length = 0;
+
+  mapped.push(
+    {
+      data: {
+        title: "Creating a voxel OpenGL game engine",
+        blurb:
+          'For the final project of our graphics class, I worked in a team of three to build a "mini" version of Minecraft. I handled chunking, rendering, gameplay systems, and UI.',
+        tags: "graphics",
+        posted: new Date("2023-12-26T09:41:00.000Z"),
+        published: true,
+      },
+      slug: "/projects/mini-minecraft",
+    },
+    {
+      data: {
+        title: "Learning Unity and making my first game",
+        blurb:
+          "RCW is an endless minigame about matching the right colors and words together. The longer you survive, the higher your score! Play it now on itch.io.",
+        tags: "graphics",
+        posted: new Date("2023-11-24T08:38:00.000Z"),
+        published: true,
+      },
+      slug: "/projects/rcw",
+    },
+  );
+}
 ---
 
-<ContentLayout
+<MainLayout
   minHeight
   meta={{
     kind: "route",
     title: "Posts",
-    description: "Writings on some stuff that I've done.",
+    description:
+      "Writing about things I've learned, ideas I'm working on, or topics that interest me.",
     ogImageParams: "All my posts.",
   }}
 >
   <section>
     <h1 class="animate-fade text-xl [--order:0]">All posts</h1>
-    <div class="flex items-center gap-2.5">
-      {
-        filteredByGraphics ? (
-          <>
-            <p class="berkeley text-sweater-4">Filtered by:</p>
-            <a
-              title={'Remove "graphics" filter'}
-              href="/posts"
-              class="pill flex items-center gap-1.5 leading-none"
-              data-quiet
-            >
-              graphics <CircleX size={14} />
-            </a>
-          </>
-        ) : null
-      }
-    </div>
+    {
+      hasGraphics ? (
+        <div class="flex items-center gap-2.5">
+          <p class="berkeley text-sweater-4">Filtered by:</p>
+          <a
+            title={'Remove "graphics" filter'}
+            href="/posts"
+            class="pill flex items-center gap-1.5 leading-none"
+          >
+            graphics <CircleX size={14} />
+          </a>
+        </div>
+      ) : null
+    }
   </section>
 
-  <section
-    class:list={[
-      "flex flex-col [--fade-speed:25ms]",
-      { "[&>a:not(:hover)]:hover:brightness-50": !filteredByGraphics },
-    ]}
-  >
+  <section class:list={["flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50"]}>
     {
-      posts.map((post, idx) => {
+      mapped.map((post, idx) => {
         let {
-          data: { title, blurb, tags, posted, published },
+          data: { title, blurb, posted, published },
           slug,
         } = post;
 
         return (
           <a
-            href={`/posts/${slug}`}
+            href={slug}
             class:list={[
               "group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100",
-              {
-                "brightness-[0.3] hover:brightness-[0.8]":
-                  filteredByGraphics && !tags.includes("graphics"),
-              },
             ]}
             style={{ "--order": idx + 1 }}
           >
@@ -114,4 +136,4 @@ const filteredByGraphics = searchParams.has("filter", "graphics");
       })
     }
   </section>
-</ContentLayout>
+</MainLayout>

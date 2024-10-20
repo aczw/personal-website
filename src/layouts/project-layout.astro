@@ -1,0 +1,31 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+
+import ContentLayout from "@/layouts/content-layout.astro";
+
+interface Props {
+  project: CollectionEntry<"projects">;
+}
+
+const { project } = Astro.props;
+let {
+  data: { name, blurb, tags, cover },
+} = project;
+---
+
+<ContentLayout entry={{ kind: "project", project }}>
+  <Image src={cover.img.src} alt={cover.img.alt} loading="eager" class="relative" />
+
+  <section class="space-y-4 py-6">
+    <div>
+      <h1 class="border-t-thin border-sweater-9 pt-10 text-xl">{name}</h1>
+      <p>{blurb}</p>
+    </div>
+
+    <div class="border-b-thin border-sweater-9 pb-12">
+      <h2>Tech stack</h2>
+      <p>{tags.sort().join(", ")}</p>
+    </div>
+  </section>
+</ContentLayout>

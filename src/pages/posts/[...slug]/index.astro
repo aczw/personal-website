@@ -2,7 +2,6 @@
 import { getCollection } from "astro:content";
 
 import NotFoundPage from "@/pages/[...slug]/index.astro";
-
 import PostLayout from "@/layouts/post-layout.astro";
 
 let posts = await getCollection("posts");

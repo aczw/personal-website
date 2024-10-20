@@ -1,17 +1,15 @@
 ---
-import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
 
-import CommonLayout from "@/layouts/common-layout.astro";
-
-import CustomContent from "@/components/mdx/content/custom-content.astro";
+import ContentLayout from "@/layouts/content-layout.astro";
 import PostPublishedStatus from "@/components/dev/post-published-status.astro";
 
 interface Props {
   post: CollectionEntry<"posts">;
 }
 
-let { post } = Astro.props;
+const { post } = Astro.props;
 let {
   data: { title, blurb, posted, updated, cover, published },
 } = post;
@@ -26,129 +24,28 @@ let dateOptions: Intl.DateTimeFormatOptions = {
   year: "numeric",
   timeZone: "America/New_York",
 };
-
-let { Content, headings } = await post.render();
 ---
 
-<CommonLayout meta={{ kind: "post", post, status }}>
-  <main class="mx-auto flex max-w-content items-start gap-7 px-7">
-    <article
-      class:list={["w-full py-12 post:w-[calc(100%-200px)]", cover ? "space-y-6" : "space-y-12"]}
-    >
-      <section class:list={["space-y-6", { "border-b-thin border-sweater-9 pb-12": !cover }]}>
-        <div class="space-y-1.5">
-          <h1 class="text-xl">{title}</h1>
-          <p class="subtitle">{blurb}</p>
-        </div>
+<ContentLayout entry={{ kind: "post", post, status }}>
+  <section class="space-y-3 pb-12">
+    <h1 class="text-xl">{title} <PostPublishedStatus published={published} /></h1>
 
-        <div class="berkeley grid grid-cols-1 xs:grid-cols-2 xs:gap-12">
-          <time datetime={posted.toISOString()} class="text-sweater-5">
-            <PostPublishedStatus published={published} />
-            {posted.toLocaleDateString("en-US", dateOptions)}
+    {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" class="" /> : null}
+
+    <p class="subtitle">{blurb}</p>
+
+    <div class="berkeley grid grid-cols-1 xs:grid-cols-2 xs:gap-6">
+      <time datetime={posted.toISOString()} class="text-sweater-5">
+        {posted.toLocaleDateString("en-US", dateOptions)}
+      </time>
+
+      {
+        updated ? (
+          <time datetime={updated.toISOString()} class="text-sweater-6">
+            Updated {updated.toLocaleDateString("en-US", dateOptions)}
           </time>
-
-          {
-            updated ? (
-              <time datetime={updated.toISOString()} class="text-sweater-6">
-                Updated {updated.toLocaleDateString("en-US", dateOptions)}
-              </time>
-            ) : null
-          }
-        </div>
-
-        {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" /> : null}
-      </section>
-
-      <section class="space-y-6">
-        <CustomContent entryContent={Content} />
-      </section>
-    </article>
-
-    <aside
-      class="sticky top-0 hidden h-[calc(100vh-10rem)] w-[200px] shrink-0 overflow-y-auto post:flex"
-    >
-      <nav class="relative">
-        <div
-          aria-hidden="true"
-          class="sticky inset-x-0 top-0 h-12 bg-gradient-to-b from-sweater-10"
-        >
-        </div>
-
-        <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
-
-        <div class="mr-7 flex flex-col leading-snug text-sweater-6 content:mr-0">
-          <a
-            href="#"
-            class="mb-[0.4rem] rounded-md px-[0.4rem] py-1 leading-none text-sweater-3 transition-colors hover:bg-sweater-9 hover:text-sweater-1"
-            >(Back to top!)</a
-          >
-
-          {
-            headings.map(({ depth, slug, text }, index) => {
-              if (depth === 1) {
-                throw new Error(
-                  `No MDX heading should be H1! Check whether the post "${title}" contains any.`,
-                );
-              }
-
-              if (depth > 3) {
-                throw new Error(
-                  `Used a heading level greater than H3 in "${title}." Maybe we should support it now?`,
-                );
-              }
-
-              // between H2 headings or if the next heading after H3 is a H2,
-              // we add spacing. else, add no spacing.
-              let spacing = 0;
-              if (index !== headings.length - 1) {
-                let next = headings[index + 1];
-                if (next.depth === 2 && (depth === 2 || depth === 3)) {
-                  spacing = 0.4;
-                }
-              }
-
-              return (
-                <a
-                  href={`#${slug}`}
-                  class="rounded-md py-1 pr-[0.4rem] leading-none transition-colors hover:bg-sweater-9 hover:text-sweater-2"
-                  style={{
-                    paddingLeft: `${(depth - 2) * 1.5 + 0.4}rem`,
-                    marginBottom: `${spacing}rem`,
-                  }}
-                >
-                  {text}
-                </a>
-              );
-            })
-          }
-        </div>
-
-        <div
-          aria-hidden="true"
-          class="sticky inset-x-0 -bottom-[1px] h-12 bg-gradient-to-t from-sweater-10"
-        >
-        </div>
-      </nav>
-    </aside>
-  </main>
-</CommonLayout>
-
-<script>
-  let observer = new IntersectionObserver((entries) =>
-    entries.forEach((entry) => {
-      let id = entry.target.id;
-      let link = document.querySelector<HTMLAnchorElement>(`nav a[href="#${id}"]`);
-
-      let windowHeight = entry.rootBounds!.height;
-      if (windowHeight && link) {
-        if (entry.boundingClientRect.y < windowHeight) {
-          link.classList.add("text-sweater-3");
-        } else {
-          link.classList.remove("text-sweater-3");
-        }
+        ) : null
       }
-    }),
-  );
-
-  document.querySelectorAll("h2[id], h3[id]").forEach((heading) => observer.observe(heading));
-</script>
+    </div>
+  </section>
+</ContentLayout>

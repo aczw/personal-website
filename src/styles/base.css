@@ -74,8 +74,8 @@
     }
 
     /* Only select <figure> elements not from the Expressive Code package */
-    & :not(.expressive-code) > figure {
-      @apply subtitle space-y-2 text-[0.9rem];
+    & figcaption {
+      @apply subtitle mt-2 text-[0.9rem];
     }
 
     @media (min-width: 480px) {
@@ -107,7 +107,7 @@
 
 @layer components {
   .pill {
-    @apply rounded-full bg-sweater-4 px-3 py-1.5 text-sweater-8 transition-colors hover:bg-sweater-3;
+    @apply rounded-full bg-sweater-4 px-3 py-1.5 text-sweater-9 transition-colors hover:bg-sweater-3;
   }
 
   .pill[data-quiet] {

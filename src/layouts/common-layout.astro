@@ -12,9 +12,8 @@ type Props = ComponentProps<typeof BaseLayout>;
 
 <BaseLayout {...Astro.props}>
   <Header />
-
   <slot />
-  <ScreenSizeIndicator />
-
   <Footer />
+
+  <ScreenSizeIndicator />
 </BaseLayout>

@@ -1,14 +1,37 @@
 import { defineCollection, z } from "astro:content";
 
+const Filters = ["graphics", "games", "art"] as const;
+const TypeSchema = z.enum(Filters);
+const BlurbSchema = z.string().refine((blurb) => blurb.length <= 190, {
+  message: "Blurb should be 190 characters or less (so it looks nice on the home screen).",
+});
+
+const projects = defineCollection({
+  type: "content",
+  schema: ({ image }) =>
+    z.object({
+      name: z.string(),
+      blurb: BlurbSchema,
+      tags: z.array(z.string()),
+      type: TypeSchema,
+      cover: z.object({
+        img: z.object({
+          src: image(),
+          alt: z.string(),
+        }),
+        hasVideo: z.boolean(),
+      }),
+      order: z.number(),
+    }),
+});
+
 const posts = defineCollection({
   type: "content",
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      blurb: z.string().refine((blurb) => blurb.length <= 190, {
-        message: "Blurb should be 190 characters or less, so it fits on the home screen.",
-      }),
-      tags: z.array(z.enum(["graphics", "game", "web"])),
+      blurb: BlurbSchema,
+      tags: TypeSchema.optional(),
       posted: z.date(),
       updated: z.date().optional(),
       cover: z
@@ -36,7 +59,8 @@ const posts = defineCollection({
 });
 
 const collections = {
+  projects,
   posts,
 };
 
-export { collections };
+export { collections, Filters };

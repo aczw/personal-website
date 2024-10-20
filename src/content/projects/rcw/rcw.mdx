@@ -1,21 +1,22 @@
 ---
-title: Learning Unity and making my first game
-blurb: RCW is an endless minigame about matching the right colors and words together. The longer you survive, the higher your score! Play it now on itch.io.
+name: RCW
+blurb: My first experience with Unity and game dev, RCW is an endless minigame about matching the right colors and words together. Playable on itch.io.
 tags:
-  - game
-  - graphics
-posted: 2023-11-24T08:38:00.000Z
-updated: 2024-05-03T11:14:00.000Z
+  - Unity
+  - C#
+  - Figma
+type: games
 cover:
-  img: ./rcw.png
-  alt: In the middle of a game round, with the timer running down and the player already having lost one life.
+  img:
+    src: rcw.png
+    alt: In the middle of a game round, with the timer running down and the player already having lost one life.
+  hasVideo: false
+order: 2
 
-published: true
 slug: rcw
 ---
 
 import VideoGif from "@/components/video-gif.astro";
-import { Image } from "astro:assets";
 
 I've always wanted to make games, and so this summer I took the plunge and decided to start learning Unity. The end result is this quick-n'-dirty game that I made in a month or so. More than anything, this was a learning experience to get my feet wet; you'll find that none of the stuff here is very original or game-changing, but that's okay.
 
@@ -282,8 +283,6 @@ The "Go back" text slides out, and the outside border becomes a panel for the te
 
 ## Future updates??
 
-This project definitely helped expand my Unity and C# knowledge. I learned to use coroutines and C# events to broadcast gameplay happenings. I became more familiar with Unity's UI and animation system.
-
 How would I update this game in the future? The current gameplay loop is a blatant rip of OLDTV. I've floated some ideas around, including:
 
 - **Shop system.** Earn currency for each game you play that can be spent on power-ups (score multiplier, increased time, more lives, freeze time, etc.)
@@ -291,4 +290,4 @@ How would I update this game in the future? The current gameplay loop is a blata
 - **Expanding Reversed mode.** To make the player's life even harder, more distractions could be added (flipping the game upside down, smaller words, fake clones, etc.)
 - **Levels.** When your score reaches a certain threshold, new challenges appear. Old stuff is swapped out. Maybe add a way to continue from a certain level after losing.
 
-Code and assets are [available on GitHub](https://github.com/aczw/RCW). Thanks for reading.
+...but for now, I'll just enjoy the current results. Repo is public and [available on GitHub](https://github.com/aczw/RCW). Thanks for reading!

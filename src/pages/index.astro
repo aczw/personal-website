@@ -1,22 +1,24 @@
 ---
 import { Image } from "astro:assets";
 import { getEntries } from "astro:content";
+import { getCollection } from "astro:content";
 
-import { ArrowRight, Github, Linkedin, Mail, ScrollText } from "lucide-astro";
-
-import ContentLayout from "@/layouts/content-layout.astro";
-
+import MainLayout from "@/layouts/main-layout.astro";
 import Link from "@/components/link.astro";
 
-const posts = await getEntries([
-  { collection: "posts", slug: "mini-minecraft" },
-  { collection: "posts", slug: "link-shortener" },
-  { collection: "posts", slug: "rcw" },
-  { collection: "posts", slug: "sddm-theme-corners" },
+const posts = await getCollection("posts");
+const recentPosts = posts
+  .filter((post) => post.data.published)
+  .sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime())
+  .slice(0, 3);
+
+const projects = await getEntries([
+  { collection: "projects", slug: "mini-minecraft" },
+  { collection: "projects", slug: "rcw" },
 ]);
 ---
 
-<ContentLayout
+<MainLayout
   meta={{
     kind: "route",
     title: null,
@@ -26,11 +28,9 @@ const posts = await getEntries([
 >
   <section class="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 content:gap-y-8">
     <p class="animate-fade [--order:0]">
-      Hi, I'm Charles! I'm a student at UPenn majoring in <Link
-        href="http://cg.cis.upenn.edu/dmd.html"
-        target="_blank">Digital Media Design</Link
-      >, a program combining computer science with computer graphics. I'm interested in graphics
-      programming, making games, UI/UX, and building websites.
+      Hi, I'm Charles. I'm a student at the University of Pennsylvania studying computer graphics
+      and CS as part of the Digital Media Design program. I'm interested in graphics programming,
+      making games, design, and building websites.
     </p>
 
     <p class="animate-fade [--order:0]">
@@ -41,8 +41,7 @@ const posts = await getEntries([
     </p>
 
     <p class="subtitle animate-fade [--order:1]">
-      In my free time I like running, making playlists, learning the bass guitar, and taking the
-      SEPTA to explore Philly.
+      In my free time I like running, making playlists, learning the bass guitar, and riding SEPTA.
     </p>
 
     <p class="subtitle hidden animate-fade [--order:1] sm:block">
@@ -51,94 +50,74 @@ const posts = await getEntries([
     </p>
   </section>
 
-  <section class="grid grid-cols-2 gap-6 sm:grid-cols-4">
-    <div
-      class="*:berkeley col-span-2 grid grid-cols-subgrid gap-3 *:animate-fade *:items-center *:justify-between *:gap-2 *:rounded-lg *:bg-sweater-9 *:p-4 *:text-sweater-2 *:transition-colors hover:*:bg-sweater-8 sm:col-span-4 sm:gap-6"
-    >
-      <a href="/_files/resume.pdf" class="flex [--order:1]" target="_blank"
-        >Resume<ScrollText size={18} class="shrink-0" /></a
-      >
-      <a href="https://linkedin.com/in/zwcharl" class="flex [--order:2]" target="_blank"
-        >LinkedIn<Linkedin size={18} class="shrink-0" /></a
-      >
-      <a href="https://github.com/aczw" class="hidden [--order:3] sm:flex" target="_blank"
-        >GitHub<Github size={18} class="shrink-0" /></a
-      >
-      <a href="mailto:czw@seas.upenn.edu" class="hidden [--order:4] sm:flex" target="_blank"
-        >Email<Mail size={18} class="shrink-0" /></a
-      >
+  <section class="space-y-4">
+    <div class="flex animate-fade items-center justify-between gap-4 [--order:1]">
+      <h2 class="text-xl">Some projects</h2>
+      <a href="/projects" class="pill leading-none" data-quiet>View more</a>
     </div>
 
-    {
-      posts.map((post, idx) => {
-        let {
-          data: { title, cover, posted, blurb },
-          slug,
-        } = post;
-
-        if (!cover) {
-          throw new Error("Featured post on homepage must have a cover image!");
-        }
-
-        const postedDate = posted.toLocaleDateString("en-US", {
-          month: "short",
-          year: "numeric",
-          timeZone: "America/New_York",
-        });
-
-        return (
-          <a
-            href={`/posts/${slug}`}
-            class="group relative col-span-2 animate-fade transition-opacity"
-            style={{ "--order": idx + 1 }}
-          >
-            <Image
-              src={cover.img}
-              alt={cover.alt}
-              loading="eager"
-              class="aspect-[16/10] rounded-t-xl bg-sweater-9 transition group-hover:scale-[.93] group-hover:opacity-50"
-            />
-
-            <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <h2 class="text-pretty">{title}</h2>
-                  <p class="berkeley text-sweater-5 transition-colors group-hover:text-sweater-4">
-                    {postedDate}
-                  </p>
-                </div>
-
-                <div
-                  aria-hidden="true"
-                  class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
-                >
-                  <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4" />
-                </div>
-              </div>
-
-              <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
-                <div class="overflow-hidden text-pretty opacity-0 transition-opacity group-hover:opacity-100">
-                  <p>{blurb}</p>
-                  <div aria-hidden="true" class="h-4" />
-                </div>
-              </div>
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+      {
+        projects.map(({ data: { name, tags, cover }, slug }, idx) => (
+          <a href={`/projects/${slug}`} class="group animate-fade" style={{ "--order": idx + 1 }}>
+            <div class="relative aspect-[16/10] opacity-90 transition-opacity group-hover:opacity-100">
+              <Image
+                src={cover.img.src}
+                alt={cover.img.alt}
+                loading="eager"
+                class="absolute inset-0 rounded-t-xl bg-sweater-9"
+              />
             </div>
 
-            <div aria-hidden="true" class="p-4">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <h2>{title}</h2>
-                  <p class="berkeley">{postedDate}</p>
-                </div>
-
-                <div class="rounded-full p-1">
-                  <div class="size-[24px]" />
-                </div>
-              </div>
+            <div class="flex flex-col justify-between rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8 xs:flex-row xs:gap-4 sm:flex-col sm:gap-0 md:flex-row md:gap-4">
+              <h2 class="text-pretty">{name}</h2>
+              <p class="berkeley text-sweater-5">{tags.sort().join(", ")}</p>
             </div>
           </a>
-        );
-      })
-    }
+        ))
+      }
+    </div>
   </section>
-</ContentLayout>
+
+  <section class="space-y-4">
+    <div class="flex animate-fade items-center justify-between gap-4 [--order:2]">
+      <h2 class="text-xl">Recent posts</h2>
+      <a href="/posts" class="pill leading-none" data-quiet>View more</a>
+    </div>
+
+    <ul class="flex flex-col">
+      {
+        recentPosts.map((post, idx) => {
+          const {
+            data: { title, posted },
+            slug,
+          } = post;
+
+          return (
+            <li
+              class="group animate-fade border-t-thin border-sweater-9"
+              style={{ "--order": idx + 2 }}
+            >
+              <a
+                href={`/posts/${slug}`}
+                class="flex flex-col justify-between py-4 *:transition-colors xs:flex-row xs:gap-4"
+              >
+                <h2 class="subtitle text-pretty group-hover:text-sweater-2">{title}</h2>
+                <time
+                  datetime={posted.toISOString()}
+                  class="berkeley text-sweater-5 group-hover:text-sweater-3"
+                >
+                  {posted.toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    timeZone: "America/New_York",
+                  })}
+                </time>
+              </a>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </section>
+</MainLayout>

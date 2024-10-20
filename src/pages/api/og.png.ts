@@ -7,7 +7,10 @@ import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { html } from "satori-html";
 
-type ContentKind = { kind: "route"; heading: string } | { kind: "post"; title: string; date: Date };
+type ContentKind =
+  | { kind: "route"; heading: string }
+  | { kind: "post"; title: string; date: Date }
+  | { kind: "project"; name: string; tags: string };
 
 const GET: APIRoute = async ({ request }) => {
   const requestUrl = new URL(request.url);
@@ -15,6 +18,7 @@ const GET: APIRoute = async ({ request }) => {
 
   const maybeHeading = params.get("heading");
   const maybePost = params.get("post");
+  const maybeProject = params.get("project");
 
   let content: ContentKind = { kind: "route", heading: "" };
   if (maybeHeading) {
@@ -23,6 +27,15 @@ const GET: APIRoute = async ({ request }) => {
     const post = await getEntry("posts", maybePost);
     if (post) {
       content = { kind: "post", title: post.data.title, date: post.data.posted };
+    }
+  } else if (maybeProject) {
+    const project = await getEntry("projects", maybeProject);
+    if (project) {
+      content = {
+        kind: "project",
+        name: project.data.name,
+        tags: project.data.tags.sort().join(", "),
+      };
     }
   }
 
@@ -41,6 +54,8 @@ const GET: APIRoute = async ({ request }) => {
     />
   </svg>`;
 
+  // So the markup looks a little cleaner/easier to read
+  const c = content;
   const markup = html(`<div
     tw="h-full text-[16px] w-full bg-[#0A0919] flex flex-col justify-between p-20"
   >
@@ -48,15 +63,13 @@ const GET: APIRoute = async ({ request }) => {
       ${
         content.kind === "route"
           ? `${logo} <span tw="text-8xl text-[#9A91FE] font-bold">Charles Wang</span>`
-          : `<span tw="text-[#C3BDFF] mb-3.5 font-bold text-7xl">${content.title}</span>
+          : `<span tw="text-[#C3BDFF] mb-3.5 font-bold text-7xl">${c.kind === "post" ? c.title : c.kind === "project" ? `Project — ${c.name}` : "UNREACHABLE"}</span>
           
-          <span tw="text-[#D6D3FF] mb-3.5 text-6xl">${content.date.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "America/New_York" })}</span>`
+          <span tw="text-[#D6D3FF] mb-3.5 text-6xl">${c.kind === "post" ? c.date.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "America/New_York" }) : c.kind === "project" ? `Made with ${c.tags}` : "UNCREACHABLE"}</span>`
       }
     </div>
 
-    <div tw="text-7xl flex flex-col text-[#D6D3FF]">
-      ${content.kind === "route" ? content.heading : logo}
-    </div>
+    <div tw="text-7xl flex flex-col text-[#D6D3FF]">${c.kind === "route" ? c.heading : logo}</div>
   </div>`);
 
   const svg = await satori(markup, {

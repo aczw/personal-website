@@ -3,13 +3,9 @@ import "@/styles/base.css";
 import "@fontsource/atkinson-hyperlegible/400.css";
 import "@fontsource/atkinson-hyperlegible/700.css";
 
-import type { CollectionEntry } from "astro:content";
+import type { MetaKind } from "@/types";
 
 import SpeedInsights from "@vercel/speed-insights/astro";
-
-type MetaKind =
-  | { kind: "route"; title: string | null; description: string; ogImageParams: string }
-  | { kind: "post"; post: CollectionEntry<"posts">; status: string };
 
 interface Props {
   meta: MetaKind;
@@ -34,6 +30,14 @@ switch (meta.kind) {
     title = meta.status + data.title + " — " + title;
     description = data.blurb;
     ogImageParams = `?post=${slug}`;
+    break;
+  }
+
+  case "project": {
+    let { data, slug } = meta.project;
+    title = data.name + " — " + title;
+    description = data.blurb;
+    ogImageParams = `?project=${slug}`;
     break;
   }
 

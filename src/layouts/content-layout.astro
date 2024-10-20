@@ -1,24 +1,125 @@
 ---
-import type { ComponentProps } from "astro/types";
+import { Image } from "astro:assets";
+
+import type { EntryKind } from "@/types";
 
 import CommonLayout from "@/layouts/common-layout.astro";
+import Anchor from "@/components/mdx/anchor.astro";
+import Aside from "@/components/mdx/aside.astro";
+import H2 from "@/components/mdx/h2.astro";
+import H3 from "@/components/mdx/h3.astro";
 
-type Props = ComponentProps<typeof CommonLayout> & {
-  minHeight?: boolean;
-  className?: string;
-};
+interface Props {
+  entry: EntryKind;
+}
 
-let { minHeight, className, ...props } = Astro.props;
+const { entry } = Astro.props;
+
+const { Content, headings } =
+  entry.kind === "post" ? await entry.post.render() : await entry.project.render();
 ---
 
-<CommonLayout {...props}>
-  <main
-    class:list={[
-      "mx-auto max-w-content space-y-12 px-7 py-12",
-      { "min-h-[var(--visible-h)]": minHeight },
-      className,
-    ]}
-  >
-    <slot />
+<CommonLayout meta={entry}>
+  <main class="mx-auto flex max-w-content items-start gap-7 px-7">
+    <article class="w-full space-y-6 py-12 post:w-[calc(100%-200px)]">
+      <slot />
+
+      <Content
+        components={{
+          h2: H2,
+          h3: H3,
+          blockquote: Aside,
+          a: Anchor,
+          img: Image,
+        }}
+      />
+    </article>
+
+    <aside
+      class="sticky top-0 hidden h-[calc(100vh-10rem)] w-[200px] shrink-0 overflow-y-auto post:flex"
+    >
+      <nav class="relative">
+        <div
+          aria-hidden="true"
+          class="sticky inset-x-0 top-0 h-12 bg-gradient-to-b from-sweater-10"
+        >
+        </div>
+
+        <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
+
+        <div class="mr-7 flex flex-col leading-snug text-sweater-6 content:mr-0">
+          <a
+            href="#"
+            class="mb-[0.4rem] rounded-md px-[0.4rem] py-1 leading-none text-sweater-3 transition-colors hover:bg-sweater-9 hover:text-sweater-1"
+            >(Back to top!)</a
+          >
+
+          {
+            headings.map(({ depth, slug, text }, index) => {
+              if (depth === 1) {
+                throw new Error(
+                  `No MDX heading should be H1! Check whether the content contains any.`,
+                );
+              }
+
+              if (depth > 3) {
+                throw new Error(
+                  `Used a heading level greater than H3 in this content. Maybe we should support it now?`,
+                );
+              }
+
+              // between H2 headings or if the next heading after H3 is a H2,
+              // we add spacing. else, add no spacing.
+              let spacing = 0;
+              if (index !== headings.length - 1) {
+                let next = headings[index + 1];
+                if (next.depth === 2 && (depth === 2 || depth === 3)) {
+                  spacing = 0.4;
+                }
+              }
+
+              return (
+                <a
+                  href={`#${slug}`}
+                  class="rounded-md py-1 pr-[0.4rem] leading-none transition-colors hover:bg-sweater-9 hover:text-sweater-2"
+                  style={{
+                    paddingLeft: `${(depth - 2) * 1.5 + 0.4}rem`,
+                    marginBottom: `${spacing}rem`,
+                  }}
+                >
+                  {text}
+                </a>
+              );
+            })
+          }
+        </div>
+
+        <div
+          aria-hidden="true"
+          class="sticky inset-x-0 -bottom-[1px] h-12 bg-gradient-to-t from-sweater-10"
+        >
+        </div>
+      </nav>
+    </aside>
   </main>
 </CommonLayout>
+
+<script>
+  let observer = new IntersectionObserver((entries) =>
+    entries.forEach((entry) => {
+      let id = entry.target.id;
+      let link = document.querySelector<HTMLAnchorElement>(`nav a[href="#${id}"]`);
+
+      let windowHeight = entry.rootBounds!.height;
+      if (windowHeight && link) {
+        if (entry.boundingClientRect.y < windowHeight) {
+          link.classList.add("text-sweater-3");
+        } else {
+          link.classList.remove("text-sweater-3");
+        }
+      }
+    }),
+  );
+
+  document.querySelectorAll("h2[id], h3[id]").forEach((heading) => observer.observe(heading));
+</script>

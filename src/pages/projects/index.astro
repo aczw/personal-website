@@ -1,0 +1,141 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
+import MainLayout from "@/layouts/main-layout.astro";
+import { CircleX, ArrowRight } from "lucide-astro";
+import { Filters } from "@/content/config";
+
+let projects = await getCollection("projects");
+projects.sort((a, b) => a.data.order - b.data.order);
+
+const searchParams = Astro.url.searchParams;
+const filterParams = Filters.map((filter) => searchParams.has("filter", filter));
+
+const isFilteredByAny = filterParams.reduce((acc, x) => acc || x);
+
+if (isFilteredByAny) {
+  const index = filterParams.indexOf(true);
+  projects = projects.filter((p) => p.data.type === Filters[index]);
+}
+---
+
+<MainLayout
+  minHeight
+  meta={{
+    kind: "route",
+    title: "Projects",
+    description: "Projects I've made, mostly related to graphics, games, and web development.",
+    ogImageParams: "Projects I've done.",
+  }}
+>
+  <section class="space-y-4">
+    <h1 class="animate-fade text-xl [--order:0]">
+      All projects {isFilteredByAny ? <span class="text-sweater-6">(filtered)</span> : null}
+    </h1>
+
+    <div
+      class="flex animate-fade flex-wrap items-center gap-2.5 border-y-thin border-sweater-9 py-4 [--order:1]"
+    >
+      <p class="berkeley text-sweater-4">Filter{isFilteredByAny ? "ed" : ""} by:</p>
+
+      <div class="flex items-center gap-2.5">
+        {
+          Filters.map((filter, idx) => {
+            const isCurrFiltered = filterParams[idx];
+
+            return (
+              <a
+                title={isCurrFiltered ? `Remove "${filter}" filter` : `Filter by "${filter}"`}
+                class="pill flex animate-fade items-center gap-1.5 leading-none"
+                href={`/projects${isCurrFiltered ? "" : `?filter=${filter}`}`}
+                data-quiet={!isCurrFiltered}
+                style={{ "--order": idx + 1 }}
+              >
+                {filter} {isCurrFiltered ? <CircleX size={16} /> : null}
+              </a>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class:list={["grid grid-cols-1 gap-6 sm:grid-cols-2"]}>
+    {
+      projects.map((project, idx) => {
+        const {
+          data: { name, blurb, tags, cover },
+          slug,
+        } = project;
+        const processedTags = tags.sort().join(", ");
+
+        return (
+          <a
+            href={`/projects/${slug}`}
+            class="group relative animate-fade transition-opacity"
+            style={{ "--order": idx }}
+          >
+            <Image
+              src={cover.img.src}
+              alt={cover.img.alt}
+              loading="eager"
+              class="aspect-[16/10] rounded-t-xl bg-sweater-9 transition group-hover:scale-[.93] group-hover:opacity-50"
+            />
+
+            <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <h2 class="text-pretty">{name}</h2>
+                  <p class="berkeley text-sweater-5 transition-colors group-hover:text-sweater-4">
+                    {processedTags}
+                  </p>
+                </div>
+
+                <div
+                  aria-hidden="true"
+                  class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
+                >
+                  <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4" />
+                </div>
+              </div>
+
+              <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
+                <div class="overflow-hidden text-pretty opacity-0 transition-opacity group-hover:opacity-100">
+                  <p>{blurb}</p>
+                  <div aria-hidden="true" class="h-4" />
+                </div>
+              </div>
+            </div>
+
+            <div aria-hidden="true" class="p-4">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <h2>{name}</h2>
+                  <p class="berkeley">{processedTags}</p>
+                </div>
+
+                <div class="rounded-full p-1">
+                  <div class="size-[24px]" />
+                </div>
+              </div>
+            </div>
+          </a>
+        );
+      })
+    }
+  </section>
+
+  {
+    projects.length === 0 ? (
+      <div class="flex justify-center text-sweater-6">
+        <p>
+          No filtered results!
+          <span aria-hidden="true" class="whitespace-nowrap">
+            (っ °Д °;)っ
+          </span>
+        </p>
+      </div>
+    ) : null
+  }
+</MainLayout>

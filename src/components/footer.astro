@@ -1,7 +1,5 @@
 ---
-import { version } from "../../package.json";
-
-import { Github, History, Linkedin, Mail, ScrollText } from "lucide-astro";
+import { Github, Linkedin, Mail, ScrollText } from "lucide-astro";
 
 import LastFm from "@/components/last-fm.astro";
 import Link from "@/components/link.astro";
@@ -26,12 +24,7 @@ const ICON_SIZE = 24;
         ><Github size={ICON_SIZE} /></Link
       >
 
-      <Link href="mailto:czw@seas.upenn.edu" title="Email"><Mail size={ICON_SIZE} /></Link>
-
-      <p class="pill leading-none" title={import.meta.env.DEV ? "DEV" : "PROD"}>
-        <span class="hidden sm:inline">v{version}</span>
-        <span class="sm:hidden"><History size={15} class="inline shrink-0" /></span>
-      </p>
+      <Link href="mailto:zwcharl@gmail.com" title="Email"><Mail size={ICON_SIZE} /></Link>
     </div>
 
     <LastFm />

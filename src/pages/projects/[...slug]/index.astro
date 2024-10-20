@@ -1,0 +1,14 @@
+---
+import { getCollection } from "astro:content";
+
+import NotFoundPage from "@/pages/[...slug]/index.astro";
+
+import ProjectLayout from "@/layouts/project-layout.astro";
+
+let projects = await getCollection("projects");
+let currProject = projects.find((project) => project.slug === Astro.params["slug"]);
+
+const notFound = !currProject;
+---
+
+{notFound ? <NotFoundPage /> : <ProjectLayout project={currProject} />}
