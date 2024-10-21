@@ -20,30 +20,34 @@ const hasGraphics = searchParams.has("filter", "graphics");
 if (hasGraphics) {
   mapped.length = 0;
 
-  mapped.push(
-    {
-      data: {
-        title: "Creating a voxel OpenGL game engine",
-        blurb:
-          'For the final project of our graphics class, I worked in a team of three to build a "mini" version of Minecraft. I handled chunking, rendering, gameplay systems, and UI.',
-        tags: "graphics",
-        posted: new Date("2023-12-26T09:41:00.000Z"),
-        published: true,
-      },
-      slug: "/projects/mini-minecraft",
+  let projects = await getCollection("projects");
+  projects = projects
+    .filter((p) => p.data.type === "graphics")
+    .sort((a, b) => a.data.order - b.data.order);
+
+  mapped = projects.map((p) => {
+    const {
+      data: { name, blurb },
+      slug,
+    } = p;
+
+    return {
+      data: { title: name, blurb, tags: "graphics", posted: new Date(), published: true },
+      slug: `/projects/${slug}`,
+    };
+  });
+
+  mapped.push({
+    data: {
+      title: "Learning Unity and making my first game",
+      blurb:
+        "RCW is an endless minigame about matching the right colors and words together. The longer you survive, the higher your score! Play it now on itch.io.",
+      tags: "graphics",
+      posted: new Date("2023-11-24T08:38:00.000Z"),
+      published: true,
     },
-    {
-      data: {
-        title: "Learning Unity and making my first game",
-        blurb:
-          "RCW is an endless minigame about matching the right colors and words together. The longer you survive, the higher your score! Play it now on itch.io.",
-        tags: "graphics",
-        posted: new Date("2023-11-24T08:38:00.000Z"),
-        published: true,
-      },
-      slug: "/projects/rcw",
-    },
-  );
+    slug: "/projects/rcw",
+  });
 }
 ---
 
@@ -91,36 +95,38 @@ if (hasGraphics) {
             ]}
             style={{ "--order": idx + 1 }}
           >
-            <time
-              datetime={posted.toISOString()}
-              title={posted.toLocaleString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-                hour: "numeric",
-                minute: "numeric",
-                timeZone: "America/New_York",
-                timeZoneName: "short",
-              })}
-              class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
-            >
-              <span class="xs:hidden">
-                {posted.toLocaleDateString("en-US", {
+            {!hasGraphics ? (
+              <time
+                datetime={posted.toISOString()}
+                title={posted.toLocaleString("en-US", {
                   month: "long",
                   day: "numeric",
                   year: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
                   timeZone: "America/New_York",
+                  timeZoneName: "short",
                 })}
-              </span>
-              <span class="hidden xs:inline">
-                {posted.toLocaleDateString("en-US", {
-                  month: "2-digit",
-                  day: "2-digit",
-                  year: "2-digit",
-                  timeZone: "America/New_York",
-                })}
-              </span>
-            </time>
+                class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
+              >
+                <span class="xs:hidden">
+                  {posted.toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    year: "numeric",
+                    timeZone: "America/New_York",
+                  })}
+                </span>
+                <span class="hidden xs:inline">
+                  {posted.toLocaleDateString("en-US", {
+                    month: "2-digit",
+                    day: "2-digit",
+                    year: "2-digit",
+                    timeZone: "America/New_York",
+                  })}
+                </span>
+              </time>
+            ) : null}
 
             <div class="space-y-1.5">
               <h2 class="break-words">
