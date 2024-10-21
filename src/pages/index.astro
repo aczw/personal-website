@@ -15,7 +15,7 @@ const recentPosts = posts
 
 const projects = await getEntries([
   { collection: "projects", slug: "mini-minecraft" },
-  { collection: "projects", slug: "rcw" },
+  { collection: "projects", slug: "pbr-renderer" },
 ]);
 ---
 
@@ -71,9 +71,9 @@ const projects = await getEntries([
               class="overflow-hidden rounded-t-xl opacity-90 transition-opacity group-hover:opacity-100"
             />
 
-            <div class="flex flex-col justify-between rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8 xs:flex-row xs:gap-4 sm:flex-col sm:gap-0 md:flex-row md:gap-4">
+            <div class="flex flex-col justify-between rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">
               <h2 class="text-pretty">{name}</h2>
-              <p class="berkeley text-sweater-5">{tags.sort().join(", ")}</p>
+              <p class="berkeley text-sweater-5">Made with {tags.sort().join(", ")}</p>
             </div>
           </a>
         ))
