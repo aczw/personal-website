@@ -32,8 +32,9 @@
       text-wrap: pretty;
     }
 
-    & img {
-      @apply rounded-lg bg-sweater-9;
+    & img,
+    video {
+      @apply rounded-xl bg-sweater-9;
     }
 
     /* Inline code should have some padding and unique background color */

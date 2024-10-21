@@ -1,8 +1,8 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { Image } from "astro:assets";
 
 import ContentLayout from "@/layouts/content-layout.astro";
+import ProjectCover from "@/components/project-cover.astro";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -11,11 +11,12 @@ interface Props {
 const { project } = Astro.props;
 let {
   data: { name, blurb, tags, cover },
+  slug,
 } = project;
 ---
 
 <ContentLayout entry={{ kind: "project", project }}>
-  <Image src={cover.img.src} alt={cover.img.alt} loading="eager" class="relative" />
+  <ProjectCover slug={slug} cover={cover} />
 
   <section class="space-y-4 py-6">
     <div>

@@ -5,7 +5,7 @@ import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel/serverless";
 
-import { existsSync, readdirSync } from "node:fs";
+import { readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -20,31 +20,30 @@ const SITE_NAME = "https://charleszw.com";
  *
  * @see https://github.com/withastro/astro/issues/3682#issuecomment-1492468918
  */
-function contentRoutes() {
+function getContentRoutes() {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = dirname(__filename);
 
   const contentPath = join(__dirname, "src", "content");
-  const postsPath = join(contentPath, "posts");
-  if (!existsSync(postsPath)) {
-    throw new Error(
-      `contentRoutes(): The posts content directory "${postsPath}" does not exist!\n`,
-    );
-  }
 
-  const postUrls = readdirSync(postsPath).map((file) => {
+  const postUrls = readdirSync(join(contentPath, "posts")).map((file) => {
     const fileName = file.split(".")[0];
     return `${SITE_NAME}/posts/${fileName}`;
   });
 
-  return postUrls;
+  const projectUrls = readdirSync(join(contentPath, "projects")).map((file) => {
+    const fileName = file.split(".")[0];
+    return `${SITE_NAME}/projects/${fileName}`;
+  });
+
+  return [...postUrls, ...projectUrls];
 }
 
 const config = defineConfig({
   site: SITE_NAME,
   integrations: [
     sitemap({
-      customPages: contentRoutes(),
+      customPages: getContentRoutes(),
     }),
     tailwind({
       applyBaseStyles: false,

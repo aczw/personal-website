@@ -1,0 +1,28 @@
+---
+import type { z } from "astro/zod";
+import { type CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+
+import VideoGif from "@/components/video-gif.astro";
+import type { ProjectCoverSchema } from "@/content/config";
+
+interface Props {
+  slug: CollectionEntry<"projects">["slug"];
+  cover: z.infer<ReturnType<typeof ProjectCoverSchema>>;
+  class?: string;
+}
+
+const { slug, cover, class: className } = Astro.props;
+---
+
+<div class:list={["relative aspect-[16/10] *:absolute *:inset-0", className]}>
+  <Image src={cover.img.src} alt={cover.img.alt} loading="eager" class="bg-sweater-9" />
+
+  {
+    cover.hasVideo ? (
+      <div class="project-cover transition-opacity motion-reduce:hidden" style={{ opacity: 100 }}>
+        <VideoGif content={{ collection: "projects", folder: slug }} name="cover" />
+      </div>
+    ) : null
+  }
+</div>

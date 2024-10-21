@@ -1,10 +1,11 @@
 ---
 import { getCollection } from "astro:content";
-import { Image } from "astro:assets";
 
 import MainLayout from "@/layouts/main-layout.astro";
 import { CircleX, ArrowRight } from "lucide-astro";
 import { Filters } from "@/content/config";
+import ProjectCover from "@/components/project-cover.astro";
+import ProjectCoverControls from "@/components/project-cover-controls.astro";
 
 let projects = await getCollection("projects");
 projects.sort((a, b) => a.data.order - b.data.order);
@@ -35,28 +36,38 @@ if (isFilteredByAny) {
     </h1>
 
     <div
-      class="flex animate-fade flex-wrap items-center gap-2.5 border-y-thin border-sweater-9 py-4 [--order:1]"
+      class="flex animate-fade items-center justify-between border-y-thin border-sweater-9 [--order:1]"
     >
-      <p class="berkeley text-sweater-4">Filter{isFilteredByAny ? "ed" : ""} by:</p>
+      <div
+        class="flex flex-grow flex-wrap items-center gap-2.5 border-r-thin border-sweater-9 py-4 pr-4"
+      >
+        <p class="berkeley text-sweater-4">
+          Filter{isFilteredByAny ? "ed" : ""} by:
+        </p>
 
-      <div class="flex items-center gap-2.5">
-        {
-          Filters.map((filter, idx) => {
-            const isCurrFiltered = filterParams[idx];
+        <div class="flex items-center gap-2.5">
+          {
+            Filters.map((filter, idx) => {
+              const isCurrFiltered = filterParams[idx];
 
-            return (
-              <a
-                title={isCurrFiltered ? `Remove "${filter}" filter` : `Filter by "${filter}"`}
-                class="pill flex animate-fade items-center gap-1.5 leading-none"
-                href={`/projects${isCurrFiltered ? "" : `?filter=${filter}`}`}
-                data-quiet={!isCurrFiltered}
-                style={{ "--order": idx + 1 }}
-              >
-                {filter} {isCurrFiltered ? <CircleX size={16} /> : null}
-              </a>
-            );
-          })
-        }
+              return (
+                <a
+                  title={isCurrFiltered ? `Remove "${filter}" filter` : `Filter by "${filter}"`}
+                  class="pill flex animate-fade items-center gap-1.5 leading-none"
+                  href={`/projects${isCurrFiltered ? "" : `?filter=${filter}`}`}
+                  data-quiet={!isCurrFiltered}
+                  style={{ "--order": idx + 1 }}
+                >
+                  {filter} {isCurrFiltered ? <CircleX size={16} /> : null}
+                </a>
+              );
+            })
+          }
+        </div>
+      </div>
+
+      <div class="flex-shrink-0 py-4 pl-4">
+        <ProjectCoverControls />
       </div>
     </div>
   </section>
@@ -76,11 +87,10 @@ if (isFilteredByAny) {
             class="group relative animate-fade transition-opacity"
             style={{ "--order": idx }}
           >
-            <Image
-              src={cover.img.src}
-              alt={cover.img.alt}
-              loading="eager"
-              class="aspect-[16/10] rounded-t-xl bg-sweater-9 transition group-hover:scale-[.93] group-hover:opacity-50"
+            <ProjectCover
+              slug={slug}
+              cover={cover}
+              class="overflow-hidden rounded-t-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
             />
 
             <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">

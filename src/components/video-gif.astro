@@ -1,4 +1,5 @@
 ---
+import type { CollectionEntry } from "astro:content";
 import type { ContentCollectionKey } from "astro:content";
 
 // see https://web.dev/patterns/web-vitals-patterns/video/video-gif
@@ -6,7 +7,7 @@ import type { ContentCollectionKey } from "astro:content";
 interface Props {
   content: {
     collection: ContentCollectionKey;
-    folder: string;
+    folder: CollectionEntry<ContentCollectionKey>["slug"];
   };
   name: string;
 }
@@ -17,6 +18,6 @@ const {
 } = Astro.props;
 ---
 
-<video autoplay loop muted playsinline class="rounded-lg bg-sweater-9">
+<video autoplay loop muted playsinline class="bg-sweater-9">
   <source src={`/_files/${collection}/${folder}/${name}.mp4`} type="video/mp4" />
 </video>
