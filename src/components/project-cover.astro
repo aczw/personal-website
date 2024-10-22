@@ -21,7 +21,7 @@ const { slug, cover, class: className } = Astro.props;
   {
     cover.hasVideo ? (
       <div class="project-cover transition-opacity motion-reduce:hidden" style={{ opacity: 100 }}>
-        <VideoGif content={{ collection: "projects", folder: slug }} name="cover" />
+        <VideoGif content={{ collection: "projects", folder: slug }} name="cover" useWebM />
       </div>
     ) : null
   }

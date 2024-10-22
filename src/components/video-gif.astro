@@ -10,14 +10,18 @@ interface Props {
     folder: CollectionEntry<ContentCollectionKey>["slug"];
   };
   name: string;
+  useWebM?: boolean;
 }
 
 const {
   content: { collection, folder },
   name,
+  useWebM,
 } = Astro.props;
+
+const container = useWebM ? "webm" : "mp4";
 ---
 
 <video autoplay loop muted playsinline class="h-full w-full animate-fade bg-sweater-9 [--order:0]">
-  <source src={`/_files/${collection}/${folder}/${name}.mp4`} type="video/mp4" />
+  <source src={`/_files/${collection}/${folder}/${name}.${container}`} type=`video/${container}` />
 </video>
