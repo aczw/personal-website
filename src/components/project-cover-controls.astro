@@ -2,46 +2,57 @@
 import { Pause, Play } from "lucide-astro";
 ---
 
-<project-cover-controls class="motion-reduce:hidden"
-  ><button
-    id="project-cover-controls"
-    class="pill leading-none *:items-center *:gap-1.5"
+<project-cover-controls class="motion-reduce:hidden">
+  <button
+    class="pill relative leading-none *:flex *:items-center *:justify-center *:gap-1 *:transition-opacity"
     title="Pause the videos playing on this page"
     data-quiet
-    ><p id="pause" class="flex">
-      <span class="hidden xs:inline">Pause</span><Pause size={16} />
-    </p><p id="play" class="hidden">
-      <span class="hidden xs:inline">Play</span><Play size={16} />
-    </p></button
-  ></project-cover-controls
->
+  >
+    <span id="play" class="absolute inset-x-0" style={{ opacity: "0" }}>
+      Play <Play size={16} class="inline-flex" />
+    </span>
+    <span id="pause">Pause <Pause size={16} class="inline-flex" /></span>
+  </button>
+</project-cover-controls>
 
 <script>
   // Invariant: only one controls button exists per page, otherwise this constructor would
-  // be called multiple times which is bad: pause/play state is not synced between buttons.
+  // be called multiple times which is bad as pause/play state is not synced between buttons.
   //
-  // Invariant: we begin with the video playing (so button reads "Pause")
+  // Invariant: videos autoplay on page load (so button should initially pause the videos)
   class ProjectCoverControls extends HTMLElement {
     connectedCallback() {
-      const button = this.querySelector("button")!;
-      const projectCovers = document.querySelectorAll<HTMLDivElement>("div.project-cover")!;
-      const pause = this.querySelector("#pause")!;
-      const play = this.querySelector("#play")!;
+      let paused = false;
 
+      const button = this.querySelector("button")!;
+      const videos = document.querySelectorAll<HTMLVideoElement>("div.project-cover > video")!;
+
+      const pause = this.querySelector<HTMLSpanElement>("#pause")!;
+      const play = this.querySelector<HTMLSpanElement>("#play")!;
+
+      // Every video is either paused or playing, so just checking the first one is fine
       button.addEventListener("click", () => {
-        projectCovers.forEach((elt) => {
-          elt.style["opacity"] = Number(elt.style["opacity"]) < 100 ? "100" : "0";
+        if (paused) {
+          pause.style.opacity = "100";
+          play.style.opacity = "0";
+          button.title = "Pause the videos playing on this page";
+        } else {
+          pause.style.opacity = "0";
+          play.style.opacity = "100";
+          button.title = "Play videos on this page";
+        }
+
+        videos.forEach((video) => {
+          if (paused) {
+            video.play();
+            video.parentElement!.style.opacity = "100";
+          } else {
+            video.pause();
+            video.parentElement!.style.opacity = "0";
+          }
         });
 
-        if (pause.classList.contains("flex")) {
-          pause.classList.replace("flex", "hidden");
-          play.classList.replace("hidden", "flex");
-          button.title = "Play videos on this page";
-        } else {
-          play.classList.replace("flex", "hidden");
-          pause.classList.replace("hidden", "flex");
-          button.title = "Pause the videos playing on this page";
-        }
+        paused = !paused;
       });
     }
   }

@@ -29,7 +29,6 @@ const ProjectCoverSchema = ({ image }: SchemaContext) =>
       src: ImageAspectRatioSchema({ image }),
       alt: z.string(),
     }),
-    hasVideo: z.boolean(),
   });
 
 const projects = defineCollection({
