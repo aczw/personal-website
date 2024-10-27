@@ -26,6 +26,7 @@ const projects = await getEntries([
     description: "Computer graphics student at the University of Pennsylvania.",
     ogImageParams: "Graphics programming, games, websites.",
   }}
+  useVerticalSpacing
 >
   <section class="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 content:gap-y-8">
     <p class="animate-fade [--order:0]">
@@ -87,7 +88,7 @@ const projects = await getEntries([
       <a href="/posts" class="pill leading-none" data-quiet>View more</a>
     </div>
 
-    <ul class="flex flex-col">
+    <ul class="flex flex-col [--fade-speed:50ms]">
       {
         recentPosts.map((post, idx) => {
           const {

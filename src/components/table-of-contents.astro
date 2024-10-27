@@ -1,0 +1,91 @@
+---
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  headings: MarkdownHeading[];
+}
+
+const { headings } = Astro.props;
+---
+
+<aside
+  class="sticky top-0 hidden h-[calc(100vh-10rem)] w-[200px] shrink-0 overflow-y-auto post:flex"
+>
+  <nav class="relative w-full">
+    <div aria-hidden="true" class="sticky inset-x-0 top-0 h-12 bg-gradient-to-b from-sweater-10">
+    </div>
+
+    <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
+
+    <div class="mr-7 flex flex-col leading-snug text-sweater-6 content:mr-0">
+      <a
+        href="#"
+        class="mb-[0.4rem] rounded-md px-[0.4rem] py-1 leading-none text-sweater-3 transition-colors hover:bg-sweater-9 hover:text-sweater-1"
+        >(Back to top!)</a
+      >
+
+      {
+        headings.map(({ depth, slug, text }, index) => {
+          if (depth === 1) {
+            throw new Error(`No MDX heading should be H1! Check whether the content contains any.`);
+          }
+
+          if (depth > 3) {
+            throw new Error(
+              `Used a heading level greater than H3 in this content. Maybe we should support it now?`,
+            );
+          }
+
+          // between H2 headings or if the next heading after H3 is a H2,
+          // we add spacing. else, add no spacing.
+          let spacing = 0;
+          if (index !== headings.length - 1) {
+            let next = headings[index + 1];
+            if (next.depth === 2 && (depth === 2 || depth === 3)) {
+              spacing = 0.4;
+            }
+          }
+
+          return (
+            <a
+              href={`#${slug}`}
+              class="rounded-md py-1 pr-[0.4rem] leading-none transition-colors hover:bg-sweater-9 hover:text-sweater-2"
+              style={{
+                paddingLeft: `${(depth - 2) * 1.5 + 0.4}rem`,
+                marginBottom: `${spacing}rem`,
+              }}
+            >
+              {text}
+            </a>
+          );
+        })
+      }
+    </div>
+
+    <div
+      aria-hidden="true"
+      class="sticky inset-x-0 -bottom-[1px] h-12 bg-gradient-to-t from-sweater-10"
+    >
+    </div>
+  </nav>
+</aside>
+
+<script>
+  let observer = new IntersectionObserver((entries) =>
+    entries.forEach((entry) => {
+      let id = entry.target.id;
+      let link = document.querySelector<HTMLAnchorElement>(`nav a[href="#${id}"]`);
+
+      let windowHeight = entry.rootBounds!.height;
+      if (windowHeight && link) {
+        if (entry.boundingClientRect.y < windowHeight) {
+          link.classList.add("text-sweater-3");
+        } else {
+          link.classList.remove("text-sweater-3");
+        }
+      }
+    }),
+  );
+
+  document.querySelectorAll("h2[id], h3[id]").forEach((heading) => observer.observe(heading));
+</script>

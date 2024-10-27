@@ -1,8 +1,10 @@
 ---
 import type { CollectionEntry } from "astro:content";
 
-import ContentLayout from "@/layouts/content-layout.astro";
 import ProjectCover from "@/components/project-cover.astro";
+import MainLayout from "@/layouts/main-layout.astro";
+import CustomContent from "@/components/mdx/custom-content.astro";
+import TableOfContents from "@/components/table-of-contents.astro";
 
 interface Props {
   project: CollectionEntry<"projects">;
@@ -13,20 +15,30 @@ let {
   data: { name, blurb, tags, cover },
   slug,
 } = project;
+
+const { Content, headings } = await project.render();
 ---
 
-<ContentLayout entry={{ kind: "project", project }}>
-  <ProjectCover slug={slug} cover={cover} />
+<MainLayout meta={{ kind: "project", project }}>
+  <ProjectCover slug={slug} cover={cover} class="mt-12 overflow-hidden rounded-xl" />
 
-  <section class="space-y-4 py-6">
-    <div>
-      <h1 class="border-t-thin border-sweater-9 pt-10 text-xl">{name}</h1>
-      <p>{blurb}</p>
-    </div>
+  <div class="mb-12 flex gap-7">
+    <article class="mt-12 w-full space-y-12 post:w-[calc(100%-200px)]">
+      <section class="space-y-4 border-b-thin border-sweater-9 pb-12">
+        <div class="space-y-1">
+          <h1 class="text-xl">{name}</h1>
+          <p>{blurb}</p>
+        </div>
 
-    <div class="border-b-thin border-sweater-9 pb-12">
-      <h2>Tech stack</h2>
-      <p>{tags.sort().join(", ")}</p>
-    </div>
-  </section>
-</ContentLayout>
+        <div>
+          <h2>Tech stack</h2>
+          <p>{tags.sort().join(", ")}</p>
+        </div>
+      </section>
+
+      <section class="space-y-6"><CustomContent entryContent={Content} /></section>
+    </article>
+
+    <TableOfContents headings={headings} />
+  </div>
+</MainLayout>

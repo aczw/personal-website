@@ -22,13 +22,14 @@ if (isFilteredByAny) {
 ---
 
 <MainLayout
-  minHeight
   meta={{
     kind: "route",
     title: "Projects",
     description: "Projects I've made, mostly related to graphics, games, and web development.",
     ogImageParams: "Projects I've done.",
   }}
+  useMinHeight
+  useVerticalSpacing
 >
   <section class="space-y-4">
     <h1 class="animate-fade text-xl [--order:0]">
@@ -45,7 +46,7 @@ if (isFilteredByAny) {
           Filter{isFilteredByAny ? "ed" : ""} by:
         </p>
 
-        <div class="flex items-center gap-2.5">
+        <div class="flex items-center gap-2.5 [--fade-speed:50ms]">
           {
             Filters.map((filter, idx) => {
               const isCurrFiltered = filterParams[idx];
@@ -72,7 +73,7 @@ if (isFilteredByAny) {
     </div>
   </section>
 
-  <section class:list={["grid grid-cols-1 gap-6 sm:grid-cols-2"]}>
+  <section class="grid grid-cols-1 gap-6 [--fade-speed:40ms] sm:grid-cols-2">
     {
       projects.map((project, idx) => {
         const {
@@ -92,6 +93,12 @@ if (isFilteredByAny) {
               cover={cover}
               class="overflow-hidden rounded-t-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
             />
+
+            {import.meta.env.DEV ? (
+              <span class="pill absolute left-2.5 top-2.5 font-bold leading-none">
+                {project.data.order}
+              </span>
+            ) : null}
 
             <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
               <div class="flex items-center justify-between gap-4">

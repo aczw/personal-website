@@ -5,7 +5,6 @@
 @layer base {
   :root {
     --fade-speed: 100ms;
-    --visible-h: calc(100dvh - 74px - 74px); /* takes into account height of header + footer */
   }
 
   html {

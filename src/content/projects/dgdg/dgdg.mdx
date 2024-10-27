@@ -1,0 +1,81 @@
+---
+name: DuckGooseDuckGoose
+blurb: duk an goos clim montan. A stress-inducing two player game made in 24 hours for UPGRADE's Spring 2023 Game Jam.
+tags:
+  - Unity
+  - C#
+  - Figma
+type: games
+cover:
+  img:
+    src: dgdg.png
+    alt: Duck and Goose are at the very beginning on the same platform, attempting to get to the lemonade stand on their right.
+order: 5
+
+slug: dgdg
+---
+
+import VideoGif from "@/components/video-gif.astro";
+
+In previous [UPGRADE](https://pennupgrade.com) game jams, the unspoken assumption is that the game we would be making is 2D, because, well, we only have 24 hours, you know? We didn't possibly think it was enough time for a 3D game.
+
+This time around, however, the team I was in wanted to prove ourselves wrong; we were gearing up to produce our first [club-wide 3D game](/projects/tanks) next year, and we just wanted to see how much we could theoretically get done in a short amount of time.
+
+It turns out, a lot.
+
+Centered around this jam's "1 HP" theme, you and another person play as a duck and a goose as you try to scale a series of grassy platforms to get to the top. There are some surprises, though:
+
+- You don't really walk, you just... roll. Duck and goose seriously don't want to listen to you!
+- While each of you can individually move, you both _share a single jump button_, namely the spacebar. So you'll always jump at the same time!
+- If anyone falls off the platform you both lose and die from heartbreak (that's what I like to think anyway. Not canon).
+- If you get too far from each other you also automatically lose. So you have to work together the entire time!
+
+## UI
+
+<figure class="hidden max-w-[150px] xs:float-right xs:ml-6 xs:block xs:pb-3">
+  <VideoGif
+    content={{ collection: "projects", folder: "dgdg" }}
+    name="dgdg-timeline-warning"
+    hasWebM
+  />
+  <figcaption>
+    **Warning.** Appears when Duck and Goose are too far apart from each other.
+  </figcaption>
+</figure>
+
+As usual, I mostly handled the UI side of things. I wanted to somehow convey the progress the players have made and warn them if they were getting close to losing. Thus the "minimap" on the side of the screen was born.
+
+Since we only really care about how far up the players have traveled, a straight vertical line conveyed the most information in the least amount of space. One aspect of the gameplay that made building the UI difficult was that platforms are randomly generated at the start, so I didn't immediately know how to define where the "end" of the minimap is.
+
+But we quickly figured it out by simply tracking some additional information and passing it to the UI, which allows me to now define progress on a 0 to 1 relative scale (the minimap is really just a reskinned Unity UI slider). Then, each `Update()` I calculate the progress of the duck and goose by getting their vertical position and dividing by the end height.
+
+<figure class="mx-auto max-w-[125px] xs:hidden">
+  <VideoGif
+    content={{ collection: "projects", folder: "dgdg" }}
+    name="dgdg-timeline-warning"
+    hasWebM
+  />
+  <figcaption>
+    **Warning.** Appears when Duck and Goose are too far apart from each other.
+  </figcaption>
+</figure>
+
+I also did the speedrun clock and the progress bar that appears when a player tries to unlock the double jump ability at one of the lemonade stands.
+
+<figure>
+  <VideoGif
+    content={{ collection: "projects", folder: "dgdg" }}
+    name="dgdg-lemonade-stand"
+    hasWebM
+  />
+  <figcaption>
+    **Unlocking double jump.** Confession: the progress ring is supposed to positioned directly over
+    Duck and Goose, but it broke for some reason and I didn't have enough time to fix it.
+  </figcaption>
+</figure>
+
+A fun last-minute addition is the scene transition that occurs when the game is restarted. I basically ripped the code that I wrote in [RCW](/projects/rcw) and modified the animation to be an upwards chevron and a broken heart, because you just lost :(
+
+## Play now on itch.io
+
+After the jam we also produced a WebGL build so now you can directly play the game from [UPGRADE's website](https://pennupgrade.com/games/duckgooseduckgoose). So grab a friend and go have some fun!

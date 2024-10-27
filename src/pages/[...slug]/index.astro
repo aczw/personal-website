@@ -1,7 +1,7 @@
 ---
 /**
  * Note that the reason any of this even works is because of the way Astro calculates
- * route priority. Also see https://docs.astro.build/en/guides/routing/#route-priority-order
+ * route priority. See https://docs.astro.build/en/guides/routing/#route-priority-order
  */
 
 import { Image } from "astro:assets";
@@ -35,14 +35,15 @@ const hasUwu = params.has("uwu");
 ---
 
 <MainLayout
-  minHeight
-  className="flex flex-col items-center justify-center"
   meta={{
     kind: "route",
     title: "404",
     description: "Sorry, this page doesn't exist.",
     ogImageParams: "Page not found.",
   }}
+  class="flex flex-col items-center justify-center"
+  useMinHeight
+  useVerticalSpacing
 >
   {
     hasUwu ? (

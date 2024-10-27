@@ -52,7 +52,6 @@ if (hasGraphics) {
 ---
 
 <MainLayout
-  minHeight
   meta={{
     kind: "route",
     title: "Posts",
@@ -60,9 +59,12 @@ if (hasGraphics) {
       "Writing about things I've learned, ideas I'm working on, or topics that interest me.",
     ogImageParams: "All my posts.",
   }}
+  useMinHeight
+  useVerticalSpacing
 >
-  <section>
+  <section class="space-y-4">
     <h1 class="animate-fade text-xl [--order:0]">All posts</h1>
+
     {
       hasGraphics ? (
         <div class="flex items-center gap-2.5">
@@ -77,69 +79,69 @@ if (hasGraphics) {
         </div>
       ) : null
     }
-  </section>
 
-  <section class:list={["flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50"]}>
-    {
-      mapped.map((post, idx) => {
-        let {
-          data: { title, blurb, posted, published },
-          slug,
-        } = post;
+    <div class:list={["flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50"]}>
+      {
+        mapped.map((post, idx) => {
+          let {
+            data: { title, blurb, posted, published },
+            slug,
+          } = post;
 
-        return (
-          <a
-            href={slug}
-            class:list={[
-              "group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100",
-            ]}
-            style={{ "--order": idx + 1 }}
-          >
-            {!hasGraphics ? (
-              <time
-                datetime={posted.toISOString()}
-                title={posted.toLocaleString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  timeZone: "America/New_York",
-                  timeZoneName: "short",
-                })}
-                class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
-              >
-                <span class="xs:hidden">
-                  {posted.toLocaleDateString("en-US", {
+          return (
+            <a
+              href={slug}
+              class:list={[
+                "group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100",
+              ]}
+              style={{ "--order": idx + 1 }}
+            >
+              {!hasGraphics ? (
+                <time
+                  datetime={posted.toISOString()}
+                  title={posted.toLocaleString("en-US", {
                     month: "long",
                     day: "numeric",
                     year: "numeric",
+                    hour: "numeric",
+                    minute: "numeric",
                     timeZone: "America/New_York",
+                    timeZoneName: "short",
                   })}
-                </span>
-                <span class="hidden xs:inline">
-                  {posted.toLocaleDateString("en-US", {
-                    month: "2-digit",
-                    day: "2-digit",
-                    year: "2-digit",
-                    timeZone: "America/New_York",
-                  })}
-                </span>
-              </time>
-            ) : null}
+                  class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
+                >
+                  <span class="xs:hidden">
+                    {posted.toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      year: "numeric",
+                      timeZone: "America/New_York",
+                    })}
+                  </span>
+                  <span class="hidden xs:inline">
+                    {posted.toLocaleDateString("en-US", {
+                      month: "2-digit",
+                      day: "2-digit",
+                      year: "2-digit",
+                      timeZone: "America/New_York",
+                    })}
+                  </span>
+                </time>
+              ) : null}
 
-            <div class="space-y-1.5">
-              <h2 class="break-words">
-                <PostPublishedStatus published={published} />
-                {title}
-              </h2>
-              <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
-                {blurb}
-              </p>
-            </div>
-          </a>
-        );
-      })
-    }
+              <div class="space-y-1.5">
+                <h2 class="break-words">
+                  <PostPublishedStatus published={published} />
+                  {title}
+                </h2>
+                <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
+                  {blurb}
+                </p>
+              </div>
+            </a>
+          );
+        })
+      }
+    </div>
   </section>
 </MainLayout>

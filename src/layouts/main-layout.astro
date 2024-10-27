@@ -4,18 +4,21 @@ import type { ComponentProps } from "astro/types";
 import CommonLayout from "@/layouts/common-layout.astro";
 
 type Props = ComponentProps<typeof CommonLayout> & {
-  minHeight?: boolean;
-  className?: string;
+  useMinHeight?: boolean;
+  useVerticalSpacing?: boolean;
+  class?: string;
 };
 
-let { minHeight, className, ...props } = Astro.props;
+let { useMinHeight, useVerticalSpacing, class: className, ...props } = Astro.props;
 ---
 
 <CommonLayout {...props}>
   <main
     class:list={[
-      "mx-auto max-w-content space-y-12 px-7 py-12",
-      { "min-h-[var(--visible-h)]": minHeight },
+      "mx-auto max-w-content px-7",
+      { "space-y-12 py-12": useVerticalSpacing },
+      // Takes into account header and footer height
+      { "min-h-[calc(100dvh-74px-74px)]": useMinHeight },
       className,
     ]}
   >

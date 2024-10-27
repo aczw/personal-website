@@ -2,8 +2,10 @@
 import type { CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
 
-import ContentLayout from "@/layouts/content-layout.astro";
 import PostPublishedStatus from "@/components/dev/post-published-status.astro";
+import MainLayout from "@/layouts/main-layout.astro";
+import CustomContent from "@/components/mdx/custom-content.astro";
+import TableOfContents from "@/components/table-of-contents.astro";
 
 interface Props {
   post: CollectionEntry<"posts">;
@@ -24,28 +26,38 @@ let dateOptions: Intl.DateTimeFormatOptions = {
   year: "numeric",
   timeZone: "America/New_York",
 };
+
+const { Content, headings } = await post.render();
 ---
 
-<ContentLayout entry={{ kind: "post", post, status }}>
-  <section class="space-y-3 pb-12">
-    <h1 class="text-xl">{title} <PostPublishedStatus published={published} /></h1>
+<MainLayout meta={{ kind: "post", post, status }} class="flex gap-7">
+  <article class="w-full space-y-12 py-12 post:w-[calc(100%-200px)]">
+    <section class="space-y-4">
+      <h1 class="text-xl">{title} <PostPublishedStatus published={published} /></h1>
 
-    {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" class="" /> : null}
+      {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" class="" /> : null}
 
-    <p class="subtitle">{blurb}</p>
+      <p class="subtitle">{blurb}</p>
 
-    <div class="berkeley grid grid-cols-1 xs:grid-cols-2 xs:gap-6">
-      <time datetime={posted.toISOString()} class="text-sweater-5">
-        {posted.toLocaleDateString("en-US", dateOptions)}
-      </time>
+      <div
+        class="berkeley grid grid-cols-1 border-b-thin border-sweater-9 pb-12 xs:grid-cols-2 xs:gap-6"
+      >
+        <time datetime={posted.toISOString()} class="text-sweater-5">
+          {posted.toLocaleDateString("en-US", dateOptions)}
+        </time>
 
-      {
-        updated ? (
-          <time datetime={updated.toISOString()} class="text-sweater-6">
-            Updated {updated.toLocaleDateString("en-US", dateOptions)}
-          </time>
-        ) : null
-      }
-    </div>
-  </section>
-</ContentLayout>
+        {
+          updated ? (
+            <time datetime={updated.toISOString()} class="text-sweater-6">
+              Updated {updated.toLocaleDateString("en-US", dateOptions)}
+            </time>
+          ) : null
+        }
+      </div>
+    </section>
+
+    <section class="space-y-6"><CustomContent entryContent={Content} /></section>
+  </article>
+
+  <TableOfContents headings={headings} />
+</MainLayout>
