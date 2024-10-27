@@ -18,6 +18,6 @@ const { slug, cover, class: className } = Astro.props;
 <div class:list={["relative aspect-[16/10] *:absolute *:inset-0", className]}>
   <Image src={cover.img.src} alt={cover.img.alt} loading="eager" class="bg-sweater-9" />
   <div class="project-cover transition-opacity motion-reduce:hidden" style={{ opacity: 100 }}>
-    <VideoGif content={{ collection: "projects", folder: slug }} name="cover" useWebM />
+    <VideoGif content={{ collection: "projects", folder: slug }} name="cover" hasWebM />
   </div>
 </div>
