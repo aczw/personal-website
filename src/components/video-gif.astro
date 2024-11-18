@@ -11,18 +11,20 @@ interface Props {
   };
   name: string;
   hasWebM?: boolean;
+  small?: boolean;
 }
 
 const {
   content: { collection, folder },
   name,
   hasWebM,
+  small,
 } = Astro.props;
 
-const path = `/_files/${collection}/${folder}/${name}`;
+const path = `/_files/${collection}/${folder}`;
 ---
 
 <video autoplay loop muted playsinline class="h-full w-full animate-fade bg-sweater-9 [--order:0]">
-  {hasWebM ? <source src={`${path}.webm`} type="video/webm" /> : null}
-  <source src={`${path}.mp4`} type="video/mp4" />
+  {hasWebM ? <source src={`${path}/${name}.webm`} type="video/webm" /> : null}
+  <source src={`${path}/${small ? name.split("-")[0] : name}.mp4`} type="video/mp4" />
 </video>

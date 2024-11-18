@@ -10,14 +10,20 @@ interface Props {
   slug: CollectionEntry<"projects">["slug"];
   cover: z.infer<ReturnType<typeof ProjectCoverSchema>>;
   class?: string;
+  small?: boolean;
 }
 
-const { slug, cover, class: className } = Astro.props;
+const { slug, cover, class: className, small } = Astro.props;
 ---
 
 <div class:list={["relative aspect-[16/10] *:absolute *:inset-0", className]}>
   <Image src={cover.img.src} alt={cover.img.alt} loading="eager" class="bg-sweater-9" />
   <div class="project-cover transition-opacity motion-reduce:hidden" style={{ opacity: 100 }}>
-    <VideoGif content={{ collection: "projects", folder: slug }} name="cover" hasWebM />
+    <VideoGif
+      content={{ collection: "projects", folder: slug }}
+      name=`cover${small ? "-small" : ""}`
+      hasWebM
+      small={small}
+    />
   </div>
 </div>
