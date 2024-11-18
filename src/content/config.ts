@@ -38,6 +38,12 @@ const projects = defineCollection({
       name: z.string(),
       blurb: BlurbSchema,
       tags: z.array(z.string()),
+      link: z
+        .object({
+          href: z.string().url(),
+          text: z.string(),
+        })
+        .optional(),
       type: TypeSchema,
       cover: ProjectCoverSchema({ image }),
       order: z.number(),

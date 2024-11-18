@@ -5,9 +5,8 @@ import NotFoundPage from "@/pages/[...slug]/index.astro";
 
 import ProjectLayout from "@/layouts/project-layout.astro";
 
-let projects = await getCollection("projects");
-let currProject = projects.find((project) => project.slug === Astro.params["slug"]);
-
+const projects = await getCollection("projects");
+const currProject = projects.find((project) => project.slug === Astro.params["slug"]);
 const notFound = !currProject;
 ---
 
