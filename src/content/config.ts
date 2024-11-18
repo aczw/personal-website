@@ -42,6 +42,7 @@ const projects = defineCollection({
         .object({
           href: z.string().url(),
           text: z.string(),
+          icon: z.enum(["ext", "play"]),
         })
         .optional(),
       type: TypeSchema,

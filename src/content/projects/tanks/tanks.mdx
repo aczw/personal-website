@@ -1,10 +1,14 @@
 ---
-name: Tanks (WIP)
-blurb: Game prototype made by the UPGRADE team across the span of a month. Heavily inspired by Wii Tanks.
+name: Tanks (Demo)
+blurb: Game prototype made by the UPGRADE team across the span of a month. Heavily inspired by "Tanks!" from Wii Play.
 tags:
   - Unity
   - C#
   - GLSL
+link:
+  href: https://pennupgrade.itch.io/chetrico
+  text: Play the demo on itch.io!
+  icon: play
 type: games
 cover:
   img:
@@ -15,17 +19,13 @@ order: 4
 slug: tanks
 ---
 
+import { YouTube } from "astro-embed";
+
 This YouTube video contains more demo footage:
 
-<iframe
-  src="https://www.youtube-nocookie.com/embed/RYcAgzZ8RGQ?si=YAbjCrUpTORjwJIQ"
-  title="YouTube video player"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-  referrerpolicy="strict-origin-when-cross-origin"
-  allowfullscreen
-  style="aspect-ratio: 16 / 9; width: 100%; height: auto;"
-></iframe>
+<div class="overflow-hidden rounded-xl">
+  <YouTube id="https://youtu.be/RYcAgzZ8RGQ" />
+</div>
 
 To prepare for the upcoming school year, the new UPGRADE board (includes me!) built a prototype/demo of the game idea that we wanted to make with the club during the year.
 
@@ -33,10 +33,10 @@ This game is heavily inspired by Wii Tanks, which has you fighting other tanks b
 
 We created a design document to keep track of gameplay ideas, features, and rules our demo should follow, so I've been involved with all parts of the planning process. As for actual development, I mostly worked on the camera system, which allows you to define a custom boundary to keep the player tank visible in, and otherwise start panning across the screen.
 
-## Play the (unlisted) game on itch.io
+## Help us test the game and give feedback!
 
 This experience taught us a lot of things about how to prepare for the actual game and we got a lot of good tester feedback.
 
-Due to the nature of the game not being finished, it's currently unlisted on itch.io, but you can [play it via this link](https://pennupgrade.itch.io/chetrico). We made a WebGL build to make everyone's lives a bit easier.
+Due to the nature of the game not being finished, it's currently unlisted on itch.io, but you can play it via the direct link above. We made a WebGL build to make everyone's lives a bit easier.
 
 If you're reading this and have some free time, we would love more feedback! You can contact me directly via my socials or you can join the UPGRADE Discord server. The invite link can be found on [the website](https://pennupgrade.com).
