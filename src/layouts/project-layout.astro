@@ -1,7 +1,6 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
-import { ExternalLink, Play } from "lucide-astro";
 
 import MainLayout from "@/layouts/main-layout.astro";
 
@@ -12,21 +11,18 @@ import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
+import Link from "@/components/link.astro";
 
 interface Props {
   project: CollectionEntry<"projects">;
 }
 
 const { project } = Astro.props;
-let {
-  data: { name, blurb, tags, link, cover },
+const {
+  data: { name, blurb, metadata, cover },
   slug,
 } = project;
-
-const iconProps = {
-  class: "text-sweater-7 transition-colors group-hover:text-sweater-5",
-  size: 22,
-};
+const { tech, link, sourceHref } = metadata;
 
 const { Content, headings } = await project.render();
 ---
@@ -36,39 +32,36 @@ const { Content, headings } = await project.render();
 
   <div class="mb-12 flex gap-7">
     <article class="mt-12 w-full space-y-12 post:w-[calc(100%-200px)]">
-      <section
-        class="grid grid-cols-1 gap-6 border-b-thin border-sweater-9 pb-12 xs:grid-cols-3 xs:gap-16"
-      >
-        <div class:list={["space-y-4", link ? "xs:col-span-2" : "xs:col-span-3"]}>
-          <div class="space-y-1">
-            <h1 class="text-xl">{name}</h1>
-            <p>{blurb}</p>
-          </div>
-
-          <div>
-            <h2>Tech stack</h2>
-            <p>{tags.sort().join(", ")}</p>
-          </div>
+      <section class="space-y-6 border-b-thin border-sweater-9 pb-12">
+        <div class="space-y-1">
+          <h1 class="text-xl">{name}</h1>
+          <p>{blurb}</p>
         </div>
 
-        {
-          link ? (
-            <a
-              href={link.href}
-              target="_blank"
-              class="group flex h-fit items-center gap-6 self-center rounded-lg bg-sweater-8 p-2 transition-colors hover:bg-sweater-7 xs:col-span-1 xs:block xs:-translate-x-5 xs:space-y-3 xs:p-3"
-            >
-              <div
-                aria-hidden="true"
-                class="flex place-content-center rounded bg-sweater-4 px-6 py-2 shadow-[0px_0px_15px_-2px_#ADA6FF] transition group-hover:bg-sweater-2 group-hover:shadow-[0px_0px_20px_3px_#ADA6FF] xs:px-2 xs:py-3.5"
-              >
-                {link.icon === "play" ? <Play {...iconProps} /> : <ExternalLink {...iconProps} />}
-              </div>
+        <div class="grid grid-cols-2 gap-x-4 gap-y-2 xs:grid-cols-3">
+          <div>
+            <h2>Tech</h2>
+            <p>{tech.sort().join(", ")}</p>
+          </div>
 
-              <p class="berkeley text-center leading-tight text-sweater-3">{link.text}</p>
-            </a>
-          ) : null
-        }
+          {
+            link ? (
+              <div>
+                <h2>{link.text}</h2>
+                <Link href={link.href}>{link.href.substring(8)}</Link>
+              </div>
+            ) : null
+          }
+
+          {
+            sourceHref ? (
+              <div>
+                <h2>Source</h2>
+                <Link href={sourceHref}>Visit GitHub repo</Link>
+              </div>
+            ) : null
+          }
+        </div>
       </section>
 
       <section class="space-y-6">

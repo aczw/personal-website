@@ -64,7 +64,7 @@ const projects = await getEntries([
 
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
       {
-        projects.map(({ data: { name, tags, cover }, slug }, idx) => (
+        projects.map(({ data: { name, metadata, cover }, slug }, idx) => (
           <a href={`/projects/${slug}`} class="group animate-fade" style={{ "--order": idx + 1 }}>
             <ProjectCover
               slug={slug}
@@ -73,9 +73,16 @@ const projects = await getEntries([
               small
             />
 
-            <div class="flex flex-col justify-between rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">
+            <div class="space-y-1.5 rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">
               <h2 class="text-pretty">{name}</h2>
-              <p class="berkeley text-sweater-5">Made with {tags.sort().join(", ")}</p>
+
+              <li class="flex flex-wrap gap-2">
+                {metadata.tech.map((tech) => (
+                  <ul class="berkeley rounded-full bg-sweater-8 px-2 py-1 leading-none text-sweater-3 transition-colors group-hover:bg-sweater-7">
+                    {tech}
+                  </ul>
+                ))}
+              </li>
             </div>
           </a>
         ))
@@ -106,7 +113,8 @@ const projects = await getEntries([
                 href={`/posts/${slug}`}
                 class="flex flex-col justify-between py-4 *:transition-colors xs:flex-row xs:gap-4"
               >
-                <h2 class="subtitle text-pretty group-hover:text-sweater-2">{title}</h2>
+                <h2 class="subtitle text-pretty group-hover:text-sweater-1">{title}</h2>
+
                 <time
                   datetime={posted.toISOString()}
                   class="berkeley text-sweater-5 group-hover:text-sweater-3"

@@ -37,7 +37,22 @@ const projects = defineCollection({
     z.object({
       name: z.string(),
       blurb: BlurbSchema,
-      tags: z.array(z.string()),
+      metadata: z.object({
+        tech: z.string().array(),
+        link: z
+          .object({
+            href: z.string().url(),
+            text: z.string(),
+          })
+          .optional(),
+        sourceHref: z
+          .string()
+          .url()
+          .refine((url) => url.startsWith("https://github.com/"), {
+            message: "I assume source code is hosted on GitHub!",
+          })
+          .optional(),
+      }),
       link: z
         .object({
           href: z.string().url(),

@@ -77,15 +77,14 @@ if (isFilteredByAny) {
     {
       projects.map((project, idx) => {
         const {
-          data: { name, blurb, tags, cover },
+          data: { name, blurb, metadata, cover },
           slug,
         } = project;
-        const processedTags = tags.sort().join(", ");
 
         return (
           <a
             href={`/projects/${slug}`}
-            class="group relative animate-fade transition-opacity"
+            class="group relative h-fit animate-fade transition-opacity"
             style={{ "--order": idx }}
           >
             <ProjectCover
@@ -104,17 +103,26 @@ if (isFilteredByAny) {
             <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
               <div class="flex items-center justify-between gap-4">
                 <div>
-                  <h2 class="text-pretty">{name}</h2>
-                  <p class="berkeley text-sweater-5 transition-colors group-hover:text-sweater-4">
-                    {processedTags}
-                  </p>
+                  <h2>{name}</h2>
+                  <li class="flex flex-wrap gap-x-2">
+                    {metadata.tech.map((tech, idx) => (
+                      <ul class="berkeley text-sweater-5">
+                        <span>{tech}</span>
+                        {idx !== metadata.tech.length - 1 ? (
+                          <span aria-hidden="true" class="text-sweater-7">
+                            /
+                          </span>
+                        ) : null}
+                      </ul>
+                    ))}
+                  </li>
                 </div>
 
                 <div
                   aria-hidden="true"
                   class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
                 >
-                  <ArrowRight class="shrink-0 stroke-sweater-5 transition-colors group-hover:stroke-sweater-4" />
+                  <ArrowRight class="shrink-0 stroke-sweater-6 transition-colors group-hover:stroke-sweater-4" />
                 </div>
               </div>
 
@@ -126,11 +134,18 @@ if (isFilteredByAny) {
               </div>
             </div>
 
-            <div aria-hidden="true" class="p-4">
+            <div aria-hidden="true" class="p-4 text-transparent">
               <div class="flex items-center justify-between gap-4">
                 <div>
                   <h2>{name}</h2>
-                  <p class="berkeley">{processedTags}</p>
+                  <li class="flex flex-wrap gap-x-2">
+                    {metadata.tech.map((tech, idx) => (
+                      <ul class="berkeley">
+                        <span>{tech}</span>
+                        {idx !== metadata.tech.length - 1 ? <span>/</span> : null}
+                      </ul>
+                    ))}
+                  </li>
                 </div>
 
                 <div class="rounded-full p-1">
@@ -143,17 +158,4 @@ if (isFilteredByAny) {
       })
     }
   </section>
-
-  {
-    projects.length === 0 ? (
-      <div class="flex justify-center text-sweater-6">
-        <p>
-          No filtered results!
-          <span aria-hidden="true" class="whitespace-nowrap">
-            (っ °Д °;)っ
-          </span>
-        </p>
-      </div>
-    ) : null
-  }
 </MainLayout>
