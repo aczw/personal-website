@@ -53,15 +53,15 @@
     }
 
     & li {
-      @apply break-words pl-3;
+      @apply break-words pl-2.5;
     }
 
     & ul,
     ol {
-      @apply ml-3 list-outside space-y-2;
+      @apply ml-5 list-outside space-y-2;
 
       ::marker {
-        @apply text-sweater-4;
+        @apply tabular-nums text-sweater-4;
       }
     }
 
@@ -76,17 +76,6 @@
     /* Only select <figure> elements not from the Expressive Code package */
     & figcaption {
       @apply subtitle mt-2 text-[0.9rem];
-    }
-
-    @media (min-width: 480px) {
-      & ul,
-      ol {
-        @apply ml-6;
-      }
-
-      & li {
-        @apply pl-4;
-      }
     }
   }
 
