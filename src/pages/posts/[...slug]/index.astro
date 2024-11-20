@@ -1,15 +1,80 @@
 ---
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
-import NotFoundPage from "@/pages/[...slug]/index.astro";
-import PostLayout from "@/layouts/post-layout.astro";
+import MainLayout from "@/layouts/main-layout.astro";
 
-const posts = await getCollection("posts");
-const currPost = posts.find((post) => post.slug === Astro.params["slug"]);
+import PostPublishedStatus from "@/components/dev/post-published-status.astro";
+import TableOfContents from "@/components/table-of-contents.astro";
+
+import Anchor from "@/components/mdx/anchor.astro";
+import Aside from "@/components/mdx/aside.astro";
+import H2 from "@/components/mdx/h2.astro";
+import H3 from "@/components/mdx/h3.astro";
+
+const postCollection = await getCollection("posts");
+const post = postCollection.find((post) => post.slug === Astro.params["slug"]);
 
 // If the current slug doesn't exist (aka the post doesn't exist), or the post
-// exists but is currently a draft, then we return a 404 for this request
-const notFound = !currPost || (!import.meta.env.DEV && !currPost.data.published);
+// exists but is currently a draft, then we return a 404
+if (!post || (!import.meta.env.DEV && !post.data.published)) return Astro.rewrite("/404");
+
+let {
+  data: { title, blurb, posted, updated, cover, published },
+} = post;
+
+// Only show post status in development
+let status = published ? "[PUBLISHED] " : "[DRAFT] ";
+status = import.meta.env.DEV ? status : "";
+
+let dateOptions: Intl.DateTimeFormatOptions = {
+  month: "long",
+  day: "numeric",
+  year: "numeric",
+  timeZone: "America/New_York",
+};
+
+const { Content, headings } = await post.render();
 ---
 
-{notFound ? <NotFoundPage /> : <PostLayout post={currPost} />}
+<MainLayout meta={{ kind: "post", post, status }} class="flex gap-7">
+  <article class="w-full space-y-12 py-12 post:w-[calc(100%-200px)]">
+    <section class="space-y-4">
+      <h1 class="text-xl">{title} <PostPublishedStatus published={published} /></h1>
+
+      {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" class="" /> : null}
+
+      <p class="subtitle">{blurb}</p>
+
+      <div
+        class="berkeley grid grid-cols-1 border-b-thin border-sweater-9 pb-12 xs:grid-cols-2 xs:gap-6"
+      >
+        <time datetime={posted.toISOString()} class="text-sweater-5">
+          {posted.toLocaleDateString("en-US", dateOptions)}
+        </time>
+
+        {
+          updated ? (
+            <time datetime={updated.toISOString()} class="text-sweater-6">
+              Updated {updated.toLocaleDateString("en-US", dateOptions)}
+            </time>
+          ) : null
+        }
+      </div>
+    </section>
+
+    <section class="space-y-6">
+      <Content
+        components={{
+          h2: H2,
+          h3: H3,
+          blockquote: Aside,
+          a: Anchor,
+          img: Image,
+        }}
+      />
+    </section>
+  </article>
+
+  <TableOfContents headings={headings} />
+</MainLayout>
