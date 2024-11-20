@@ -11,6 +11,7 @@ import { fileURLToPath } from "node:url";
 
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import embeds from "astro-embed/integration";
 
 const SITE_NAME = "https://charleszw.com";
 
@@ -83,6 +84,13 @@ const config = defineConfig({
         collapsibleSections: {
           closedBackgroundColor: "#393552",
         },
+      },
+    }),
+    embeds({
+      services: {
+        BlueskyPost: false,
+        Tweet: false,
+        LinkPreview: false,
       },
     }),
     mdx(),
