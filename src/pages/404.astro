@@ -1,16 +1,12 @@
 ---
-/**
- * Note that the reason any of this even works is because of the way Astro calculates
- * route priority. See https://docs.astro.build/en/guides/routing/#route-priority-order
- */
-
 import { Image } from "astro:assets";
 
 import MainLayout from "@/layouts/main-layout.astro";
 import Link from "@/components/link.astro";
 
+// Set response code, just in case it wasn't obvious
 Astro.response.status = 404;
-Astro.response.statusText = "Page not found";
+Astro.response.statusText = "Page Not Found";
 
 let fun = [
   "WFSTH",
