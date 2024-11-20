@@ -5,9 +5,84 @@ import NotFoundPage from "@/pages/[...slug]/index.astro";
 
 import ProjectLayout from "@/layouts/project-layout.astro";
 
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+
+import MainLayout from "@/layouts/main-layout.astro";
+
+import ProjectCover from "@/components/project-cover.astro";
+import TableOfContents from "@/components/table-of-contents.astro";
+
+import Anchor from "@/components/mdx/anchor.astro";
+import Aside from "@/components/mdx/aside.astro";
+import H2 from "@/components/mdx/h2.astro";
+import H3 from "@/components/mdx/h3.astro";
+import Link from "@/components/link.astro";
+
 const projects = await getCollection("projects");
 const currProject = projects.find((project) => project.slug === Astro.params["slug"]);
 const notFound = !currProject;
+const project = currProject!;
+
+const {
+  data: { name, blurb, metadata, cover },
+  slug,
+} = project;
+const { tech, link, sourceHref } = metadata;
+
+const { Content, headings } = await project.render();
 ---
 
-{notFound ? <NotFoundPage /> : <ProjectLayout project={currProject} />}
+<MainLayout meta={{ kind: "project", project }}>
+  <ProjectCover slug={slug} cover={cover} class="mt-12 overflow-hidden rounded-xl" />
+
+  <div class="mb-12 flex gap-7">
+    <article class="mt-12 w-full space-y-12 post:w-[calc(100%-200px)]">
+      <section class="space-y-6 border-b-thin border-sweater-9 pb-12">
+        <div class="space-y-1">
+          <h1 class="text-xl">{name}</h1>
+          <p>{blurb}</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-x-4 gap-y-2 xs:grid-cols-3">
+          <div>
+            <h2>Tech</h2>
+            <p>{tech.sort().join(", ")}</p>
+          </div>
+
+          {
+            link ? (
+              <div>
+                <h2>{link.text}</h2>
+                <Link href={link.href}>{link.href.substring(8)}</Link>
+              </div>
+            ) : null
+          }
+
+          {
+            sourceHref ? (
+              <div>
+                <h2>Source</h2>
+                <Link href={sourceHref}>Visit GitHub repo</Link>
+              </div>
+            ) : null
+          }
+        </div>
+      </section>
+
+      <section class="space-y-6">
+        <Content
+          components={{
+            h2: H2,
+            h3: H3,
+            blockquote: Aside,
+            a: Anchor,
+            img: Image,
+          }}
+        />
+      </section>
+    </article>
+
+    <TableOfContents headings={headings} />
+  </div>
+</MainLayout>
