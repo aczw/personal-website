@@ -3,7 +3,6 @@ import type { z } from "astro/zod";
 import { type CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
 
-import VideoGif from "@/components/video-gif.astro";
 import type { ProjectCoverSchema } from "@/content/config";
 
 interface Props {
@@ -14,16 +13,30 @@ interface Props {
 }
 
 const { slug, cover, class: className, small } = Astro.props;
+
+const path = `/_files/projects/${slug}`;
 ---
 
-<div class:list={["relative aspect-[16/10] *:absolute *:inset-0", className]}>
+<project-cover class:list={["relative block aspect-[16/10] *:absolute *:inset-0", className]}>
   <Image src={cover.img.src} alt={cover.img.alt} loading="eager" class="bg-sweater-9" />
-  <div class="project-cover transition-opacity motion-reduce:hidden" style={{ opacity: 100 }}>
-    <VideoGif
-      content={{ collection: "projects", folder: slug }}
-      name=`cover${small ? "-small" : ""}`
-      hasWebM
-      small={small}
-    />
+
+  {/* Setting opacity directly on the video element doesn't seem to work */}
+  <div style={{ opacity: 0 }} class="transition-opacity will-change-[opacity]">
+    <video
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
+      class="h-full w-full motion-reduce:hidden"
+    >
+      <source src={`${path}/${small ? "cover-small" : "cover"}.webm`} type="video/webm" />
+      <source src={`${path}/cover.mp4`} type="video/mp4" />
+    </video>
   </div>
-</div>
+</project-cover>
+
+<script>
+  import { ProjectCover } from "@/shared";
+  customElements.define("project-cover", ProjectCover);
+</script>

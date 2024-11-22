@@ -1,8 +1,10 @@
 ---
+/**
+ * See https://web.dev/patterns/web-vitals-patterns/video/video-gif
+ */
+
 import type { CollectionEntry } from "astro:content";
 import type { ContentCollectionKey } from "astro:content";
-
-// See https://web.dev/patterns/web-vitals-patterns/video/video-gif
 
 interface Props {
   content: {
@@ -11,14 +13,12 @@ interface Props {
   };
   name: string;
   hasWebM?: boolean;
-  small?: boolean;
 }
 
 const {
   content: { collection, folder },
   name,
   hasWebM,
-  small,
 } = Astro.props;
 
 const path = `/_files/${collection}/${folder}`;
@@ -26,5 +26,5 @@ const path = `/_files/${collection}/${folder}`;
 
 <video autoplay loop muted playsinline class="h-full w-full animate-fade bg-sweater-9 [--order:0]">
   {hasWebM ? <source src={`${path}/${name}.webm`} type="video/webm" /> : null}
-  <source src={`${path}/${small ? name.split("-")[0] : name}.mp4`} type="video/mp4" />
+  <source src={`${path}/${name}.mp4`} type="video/mp4" />
 </video>

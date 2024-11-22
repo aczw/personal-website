@@ -16,43 +16,52 @@ import { Pause, Play } from "lucide-astro";
 </project-cover-controls>
 
 <script>
-  // Invariant: only one controls button exists per page, otherwise this constructor would
-  // be called multiple times which is bad as pause/play state is not synced between buttons.
-  //
-  // Invariant: videos autoplay on page load (so button should initially pause the videos)
+  import { ProjectCover } from "@/shared";
+
+  // Invariants:
+  // - Only one controls button exists per page/in the DOM, otherwise this function
+  //   is called multiple times, which is bad as pause/play state is not synced between buttons.
+  // - Every single video is either paused or playing, no strays
   class ProjectCoverControls extends HTMLElement {
+    #paused: boolean;
+    #button: HTMLButtonElement;
+    #projectCovers: ProjectCover[];
+    #pause: HTMLSpanElement;
+    #play: HTMLSpanElement;
+
+    constructor() {
+      super();
+
+      this.#paused = false;
+      this.#button = this.querySelector("button")!;
+      this.#projectCovers = Array.from(document.querySelectorAll<ProjectCover>("project-cover"))!;
+      this.#pause = this.querySelector<HTMLSpanElement>("#pause")!;
+      this.#play = this.querySelector<HTMLSpanElement>("#play")!;
+    }
+
     connectedCallback() {
-      let paused = false;
-
-      const button = this.querySelector("button")!;
-      const videos = document.querySelectorAll<HTMLVideoElement>("div.project-cover > video")!;
-
-      const pause = this.querySelector<HTMLSpanElement>("#pause")!;
-      const play = this.querySelector<HTMLSpanElement>("#play")!;
-
-      // Every video is either paused or playing, so just checking the first one is fine
-      button.addEventListener("click", () => {
-        if (paused) {
-          pause.style.opacity = "100";
-          play.style.opacity = "0";
-          button.title = "Pause the videos playing on this page";
+      this.#button.addEventListener("click", () => {
+        if (this.#paused) {
+          this.#pause.style.opacity = "100";
+          this.#play.style.opacity = "0";
+          this.#button.title = "Pause the videos playing on this page";
         } else {
-          pause.style.opacity = "0";
-          play.style.opacity = "100";
-          button.title = "Play videos on this page";
+          this.#pause.style.opacity = "0";
+          this.#play.style.opacity = "100";
+          this.#button.title = "Play videos on this page";
         }
 
-        videos.forEach((video) => {
-          if (paused) {
-            video.play();
-            video.parentElement!.style.opacity = "100";
+        this.#projectCovers.forEach((pc) => {
+          pc.externallyPaused = !this.#paused;
+
+          if (this.#paused) {
+            pc.playVideo();
           } else {
-            video.pause();
-            video.parentElement!.style.opacity = "0";
+            pc.pauseVideo();
           }
         });
 
-        paused = !paused;
+        this.#paused = !this.#paused;
       });
     }
   }
