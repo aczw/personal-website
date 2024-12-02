@@ -3,52 +3,10 @@ import { getCollection } from "astro:content";
 
 import MainLayout from "@/layouts/main-layout.astro";
 import PostPublishedStatus from "@/components/dev/post-published-status.astro";
-import { CircleX } from "lucide-astro";
 
 let posts = await getCollection("posts");
 posts = posts.filter((post) => import.meta.env.DEV || post.data.published);
 posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
-
-let mapped = posts.map(({ data: { title, blurb, tags, posted, published }, slug }) => {
-  return { data: { title, blurb, tags, posted, published }, slug: `/posts/${slug}` };
-});
-
-const searchParams = Astro.url.searchParams;
-const hasGraphics = searchParams.has("filter", "graphics");
-
-// Compatibility with Disney and other apps from 10/7
-if (hasGraphics) {
-  mapped.length = 0;
-
-  let projects = await getCollection("projects");
-  projects = projects
-    .filter((p) => p.data.type === "graphics")
-    .sort((a, b) => a.data.order - b.data.order);
-
-  mapped = projects.map((p) => {
-    const {
-      data: { name, blurb },
-      slug,
-    } = p;
-
-    return {
-      data: { title: name, blurb, tags: "graphics", posted: new Date(), published: true },
-      slug: `/projects/${slug}`,
-    };
-  });
-
-  mapped.push({
-    data: {
-      title: "Learning Unity and making my first game",
-      blurb:
-        "RCW is an endless minigame about matching the right colors and words together. The longer you survive, the higher your score! Play it now on itch.io.",
-      tags: "graphics",
-      posted: new Date("2023-11-24T08:38:00.000Z"),
-      published: true,
-    },
-    slug: "/projects/rcw",
-  });
-}
 ---
 
 <MainLayout
@@ -65,24 +23,9 @@ if (hasGraphics) {
   <section class="space-y-4">
     <h1 class="animate-fade text-xl [--order:0]">All posts</h1>
 
-    {
-      hasGraphics ? (
-        <div class="flex items-center gap-2.5">
-          <p class="berkeley text-sweater-4">Filtered by:</p>
-          <a
-            title={'Remove "graphics" filter'}
-            href="/posts"
-            class="pill flex items-center gap-1.5 leading-none"
-          >
-            graphics <CircleX size={14} />
-          </a>
-        </div>
-      ) : null
-    }
-
     <div class:list={["flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50"]}>
       {
-        mapped.map((post, idx) => {
+        posts.map((post, idx) => {
           let {
             data: { title, blurb, posted, published },
             slug,
@@ -96,38 +39,36 @@ if (hasGraphics) {
               ]}
               style={{ "--order": idx + 1 }}
             >
-              {!hasGraphics ? (
-                <time
-                  datetime={posted.toISOString()}
-                  title={posted.toLocaleString("en-US", {
+              <time
+                datetime={posted.toISOString()}
+                title={posted.toLocaleString("en-US", {
+                  month: "long",
+                  day: "numeric",
+                  year: "numeric",
+                  hour: "numeric",
+                  minute: "numeric",
+                  timeZone: "America/New_York",
+                  timeZoneName: "short",
+                })}
+                class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
+              >
+                <span class="xs:hidden">
+                  {posted.toLocaleDateString("en-US", {
                     month: "long",
                     day: "numeric",
                     year: "numeric",
-                    hour: "numeric",
-                    minute: "numeric",
                     timeZone: "America/New_York",
-                    timeZoneName: "short",
                   })}
-                  class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
-                >
-                  <span class="xs:hidden">
-                    {posted.toLocaleDateString("en-US", {
-                      month: "long",
-                      day: "numeric",
-                      year: "numeric",
-                      timeZone: "America/New_York",
-                    })}
-                  </span>
-                  <span class="hidden xs:inline">
-                    {posted.toLocaleDateString("en-US", {
-                      month: "2-digit",
-                      day: "2-digit",
-                      year: "2-digit",
-                      timeZone: "America/New_York",
-                    })}
-                  </span>
-                </time>
-              ) : null}
+                </span>
+                <span class="hidden xs:inline">
+                  {posted.toLocaleDateString("en-US", {
+                    month: "2-digit",
+                    day: "2-digit",
+                    year: "2-digit",
+                    timeZone: "America/New_York",
+                  })}
+                </span>
+              </time>
 
               <div class="space-y-1.5">
                 <h2 class="break-words">

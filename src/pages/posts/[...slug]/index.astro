@@ -19,7 +19,7 @@ const post = postCollection.find((post) => post.slug === Astro.params["slug"]);
 // exists but is currently a draft, then we return a 404
 if (!post || (!import.meta.env.DEV && !post.data.published)) return Astro.rewrite("/404");
 
-let {
+const {
   data: { title, blurb, posted, updated, cover, published },
 } = post;
 
@@ -27,7 +27,7 @@ let {
 let status = published ? "[PUBLISHED] " : "[DRAFT] ";
 status = import.meta.env.DEV ? status : "";
 
-let dateOptions: Intl.DateTimeFormatOptions = {
+const dateOptions: Intl.DateTimeFormatOptions = {
   month: "long",
   day: "numeric",
   year: "numeric",
