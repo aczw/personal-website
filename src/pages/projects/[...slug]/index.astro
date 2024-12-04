@@ -28,11 +28,11 @@ const { Content, headings } = await project.render();
 ---
 
 <MainLayout meta={{ kind: "project", project }}>
-  <ProjectCover slug={slug} cover={cover} class="mt-12 overflow-hidden rounded-xl" />
+  <ProjectCover slug={slug} cover={cover} useVideo class="mt-12 overflow-hidden rounded-xl" />
 
   <div class="mb-12 flex gap-7">
     <article class="mt-12 w-full space-y-12 post:w-[calc(100%-200px)]">
-      <section class="space-y-6 border-b-thin border-sweater-9 pb-12">
+      <section class="space-y-10 border-b-thin border-sweater-9 pb-12">
         <div class="space-y-1">
           <h1 class="text-xl">{name}</h1>
           <p>{blurb}</p>
@@ -48,7 +48,9 @@ const { Content, headings } = await project.render();
             link ? (
               <div>
                 <h2>{link.text}</h2>
-                <Link href={link.href}>{link.href.substring(8)}</Link>
+                <Link href={link.href} target="_blank">
+                  {link.href.substring(8)}
+                </Link>
               </div>
             ) : null
           }
@@ -57,7 +59,9 @@ const { Content, headings } = await project.render();
             sourceHref ? (
               <div>
                 <h2>Source</h2>
-                <Link href={sourceHref}>Visit GitHub repo</Link>
+                <Link href={sourceHref} target="_blank">
+                  Visit GitHub repo
+                </Link>
               </div>
             ) : null
           }

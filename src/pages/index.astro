@@ -15,7 +15,7 @@ const recentPosts = posts
 
 const projects = await getEntries([
   { collection: "projects", slug: "mini-minecraft" },
-  { collection: "projects", slug: "pbr-renderer" },
+  { collection: "projects", slug: "door" },
 ]);
 ---
 
@@ -69,8 +69,8 @@ const projects = await getEntries([
             <ProjectCover
               slug={slug}
               cover={cover}
+              useVideo={{ small: true }}
               class="overflow-hidden rounded-t-xl opacity-90 transition-opacity group-hover:opacity-100"
-              small
             />
 
             <div class="space-y-1.5 rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">

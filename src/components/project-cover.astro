@@ -8,32 +8,38 @@ import type { ProjectCoverSchema } from "@/content/config";
 interface Props {
   slug: CollectionEntry<"projects">["slug"];
   cover: z.infer<ReturnType<typeof ProjectCoverSchema>>;
+  useVideo?: boolean | { small: boolean };
   class?: string;
-  small?: boolean;
 }
 
-const { slug, cover, class: className, small } = Astro.props;
+const { slug, cover, class: className, useVideo } = Astro.props;
 
 const path = `/_files/projects/${slug}`;
 ---
 
-<project-cover class:list={["relative block aspect-[16/10] *:absolute *:inset-0", className]}>
+<project-cover
+  class:list={["relative block aspect-[16/10] *:absolute *:inset-0", className]}
+  data-use-video={useVideo ? "true" : "false"}
+>
   <Image src={cover.img.src} alt={cover.img.alt} loading="eager" class="bg-sweater-9" />
 
-  {/* Setting opacity directly on the video element doesn't seem to work */}
-  <div style={{ opacity: 0 }} class="transition-opacity will-change-[opacity]">
-    <video
-      autoplay
-      loop
-      muted
-      playsinline
-      preload="auto"
-      class="h-full w-full motion-reduce:hidden"
-    >
-      <source src={`${path}/${small ? "cover-small" : "cover"}.webm`} type="video/webm" />
-      <source src={`${path}/cover.mp4`} type="video/mp4" />
-    </video>
-  </div>
+  {
+    useVideo ? (
+      <div
+        style={{ opacity: 0 }}
+        class="transition-opacity will-change-[opacity] motion-reduce:hidden"
+      >
+        {/* Setting opacity directly on video element doesn't seem to work */}
+        <video autoplay loop muted playsinline preload="auto" class="h-full w-full">
+          <source
+            src={`${path}/${typeof useVideo !== "boolean" && useVideo.small ? "cover-small" : "cover"}.webm`}
+            type="video/webm"
+          />
+          <source src={`${path}/cover.mp4`} type="video/mp4" />
+        </video>
+      </div>
+    ) : null
+  }
 </project-cover>
 
 <script>

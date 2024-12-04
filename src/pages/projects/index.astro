@@ -1,8 +1,9 @@
 ---
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
+
+import { CircleX, ArrowRight } from "lucide-astro";
 
 import MainLayout from "@/layouts/main-layout.astro";
-import { CircleX, ArrowRight } from "lucide-astro";
 import { Filters } from "@/content/config";
 import ProjectCover from "@/components/project-cover.astro";
 import ProjectCoverControls from "@/components/project-cover-controls.astro";
@@ -19,6 +20,8 @@ if (isFilteredByAny) {
   const index = filterParams.indexOf(true);
   projects = projects.filter((p) => p.data.type === Filters[index]);
 }
+
+const useVideo: CollectionEntry<"projects">["slug"][] = ["path-tracer", "rcw", "fireball"];
 ---
 
 <MainLayout
@@ -90,8 +93,8 @@ if (isFilteredByAny) {
             <ProjectCover
               slug={slug}
               cover={cover}
+              useVideo={useVideo.includes(slug) ? { small: true } : false}
               class="overflow-hidden rounded-t-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
-              small
             />
 
             {import.meta.env.DEV ? (
