@@ -105,12 +105,6 @@
 }
 
 @layer utilities {
-  .mewo-quote {
-    cursor:
-      url("/src/assets/mewo.webp") 32 32,
-      not-allowed;
-  }
-
   .berkeley {
     font-size: 13.5px;
     font-weight: 120;

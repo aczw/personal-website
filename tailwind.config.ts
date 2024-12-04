@@ -48,6 +48,9 @@ const config: Config = {
       animation: {
         fade: "fade 0.4s ease-out calc(var(--order) * var(--fade-speed)) backwards",
       },
+      cursor: {
+        mewo: 'url("/src/assets/mewo.webp") 32 32, not-allowed',
+      },
     },
   },
 };

@@ -21,7 +21,12 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
   useVerticalSpacing
 >
   <section class="space-y-4">
-    <h1 class="animate-fade text-xl [--order:0]">All posts</h1>
+    <div class="flex animate-fade items-start justify-between gap-14 [--order:0] xs:items-end">
+      <h1 class="flex-shrink-0 text-xl">All posts</h1>
+      <p class="berkeley cursor-mewo max-w-[20ch] text-right italic text-sweater-7">
+        Unfortunately I love yapping too much
+      </p>
+    </div>
 
     <div class:list={["flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50"]}>
       {
@@ -33,7 +38,7 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 
           return (
             <a
-              href={slug}
+              href={`/posts/${slug}`}
               class:list={[
                 "group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100",
               ]}
