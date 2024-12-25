@@ -1,32 +1,40 @@
 ---
-import { Github, Linkedin, Mail, ScrollText } from "lucide-astro";
+import { Github, Linkedin, Mail, Music, ScrollText } from "lucide-astro";
 
 import LastFm from "@/components/last-fm.astro";
 import Link from "@/components/link.astro";
-
-const ICON_SIZE = 24;
 ---
 
 <footer class="mx-auto max-w-content pb-6">
   <div
-    class="berkeley mx-7 flex flex-row-reverse items-center justify-between gap-4 border-t-thick border-sweater-8 pt-6"
+    class="berkeley mx-7 flex items-center justify-between gap-4 border-t-thick border-sweater-8 pt-6"
   >
+    <div class="w-1/2">
+      <LastFm server:defer>
+        <a
+          href="https://www.last.fm/user/ashzw"
+          target="_blank"
+          class="pill flex w-fit gap-2 leading-[1.1]"
+          data-quiet="true"
+          slot="fallback"
+        >
+          <Music size={15} class="inline" /> Scrobbles
+        </a>
+      </LastFm>
+    </div>
+
     <div class="flex w-1/2 items-center justify-end gap-4">
-      <Link href="/_files/resume.pdf" target="_blank" title="Resume"
-        ><ScrollText size={ICON_SIZE} /></Link
-      >
+      <Link href="/_files/resume.pdf" target="_blank" title="Resume"><ScrollText size={24} /></Link>
 
       <Link href="https://www.linkedin.com/in/zwcharl/" target="_blank" title="LinkedIn"
-        ><Linkedin size={ICON_SIZE} /></Link
+        ><Linkedin size={24} /></Link
       >
 
       <Link href="https://www.github.com/aczw" target="_blank" title="GitHub"
-        ><Github size={ICON_SIZE} /></Link
+        ><Github size={24} /></Link
       >
 
-      <Link href="mailto:zwcharl@gmail.com" title="Email"><Mail size={ICON_SIZE} /></Link>
+      <Link href="mailto:zwcharl@gmail.com" title="Email"><Mail size={24} /></Link>
     </div>
-
-    <LastFm />
   </div>
 </footer>

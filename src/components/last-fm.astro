@@ -9,33 +9,26 @@ const available = track !== null;
 
 let title = null;
 if (available) {
-  title = `${track.live ? "Currently listening:" : "Last listened to:"} ${track.song} by ${track.artist}`;
+  title = `${track.live ? "Currently listening to" : "Last listened to"} ${track.song} by ${track.artist}`;
 }
 ---
 
-<div class="w-1/2 animate-fade [--order:0]">
+<div class="pill w-fit" data-quiet="true">
   <a
-    href={available
-      ? "https://www.last.fm/user/ashzw"
-      : "https://open.spotify.com/user/zhwq0rxdn060sgar22e07u193?si=3cfe23a176bf4272"}
+    href={available ? track.url : "https://www.last.fm/user/ashzw"}
     target="_blank"
     title={title}
-    class="pill flex w-fit gap-2"
-    data-quiet="true"
+    class:list={["flex gap-2", { "animate-pulse": available && track.live }]}
   >
     <Music size={15} class="inline shrink-0" />
 
-    <span class="line-clamp-1 hidden w-full break-all leading-none xs:[display:-webkit-box]">
-      {available ? `${track.song} — ${track.artist}` : "Playlists"}
+    <span
+      class="line-clamp-1 hidden w-full animate-fade break-all leading-[1.1] [--order:0] xs:[display:-webkit-box]"
+    >
+      {available ? `${track.artist} — ${track.song}` : "Scrobbles"}
     </span>
-
-    {
-      available && track.live ? (
-        <div aria-hidden="true" class="relative size-2.5 shrink-0 self-center">
-          <div class="absolute inset-0 size-full animate-ping rounded-full bg-sweater-4" />
-          <div class="size-full rounded-full bg-sweater-4" />
-        </div>
-      ) : null
-    }
+    <span class="animate-fade leading-[1.1] [--order:0] xs:hidden">
+      {available && track.live ? "Scrobbling" : "Scrobbles"}
+    </span>
   </a>
 </div>

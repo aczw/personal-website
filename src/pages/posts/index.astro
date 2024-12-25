@@ -27,7 +27,7 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
       </p>
     </div>
 
-    <div class:list={["flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50"]}>
+    <div class="flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50">
       {
         posts.map((post, idx) => {
           let {
@@ -38,9 +38,7 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
           return (
             <a
               href={`/posts/${id}`}
-              class:list={[
-                "group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100",
-              ]}
+              class="group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100"
               style={{ "--order": idx + 1 }}
             >
               <time
