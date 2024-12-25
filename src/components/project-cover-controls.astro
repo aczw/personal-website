@@ -6,7 +6,7 @@ import { Pause, Play } from "lucide-astro";
   <button
     class="pill relative leading-none *:flex *:items-center *:justify-center *:gap-1 *:transition-opacity"
     title="Pause the videos playing on this page"
-    data-quiet
+    data-quiet="true"
   >
     <span id="play" class="absolute inset-x-0" style={{ opacity: "0" }}>
       Play <Play size={16} class="inline-flex" />
@@ -16,7 +16,7 @@ import { Pause, Play } from "lucide-astro";
 </project-cover-controls>
 
 <script>
-  import { ProjectCover } from "@/shared";
+  import { ProjectCover } from "@/scripts/project-cover";
 
   // Invariants:
   // - Only one controls button exists per page/in the DOM, otherwise this function

@@ -1,5 +1,6 @@
 import type { APIRoute } from "astro";
 import { z } from "astro/zod";
+import { LASTFM_API_KEY } from "astro:env/server";
 
 interface Track {
   song: string;
@@ -9,8 +10,6 @@ interface Track {
 }
 
 const GET: APIRoute = async () => {
-  const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${import.meta.env.LASTFM_API_KEY}&limit=1&format=json`;
-
   const LastFmSchema = z.promise(
     z.object({
       recenttracks: z.object({
@@ -51,6 +50,8 @@ const GET: APIRoute = async () => {
       }),
     }),
   );
+
+  const url = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=ashzw&api_key=${LASTFM_API_KEY}&limit=1&format=json`;
 
   try {
     const result = LastFmSchema.safeParse(fetch(url).then((res) => res.json()));

@@ -1,6 +1,6 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
+import { getEntry, render } from "astro:content";
 
 import MainLayout from "@/layouts/main-layout.astro";
 
@@ -11,17 +11,28 @@ import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
+import { validProjectCover } from "@/scripts/util";
 
-const postCollection = await getCollection("posts");
-const post = postCollection.find((post) => post.slug === Astro.params["slug"]);
+// Return 404 if server request doesn't contain ID
+const { id } = Astro.params;
+if (!id) {
+  return Astro.rewrite("/404");
+}
 
-// If the current slug doesn't exist (aka the post doesn't exist), or the post
+// If the current ID doesn't exist (aka the post doesn't exist), or the post
 // exists but is currently a draft, then we return a 404
-if (!post || (!import.meta.env.DEV && !post.data.published)) return Astro.rewrite("/404");
+const post = await getEntry("posts", id);
+if (!post || (!import.meta.env.DEV && !post.data.published)) {
+  return Astro.rewrite("/404");
+}
 
 const {
   data: { title, blurb, posted, updated, cover, published },
 } = post;
+
+if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
+  throw new Error("Cover images must have an aspect ratio of 16:10!");
+}
 
 // Only show post status in development
 let status = published ? "[PUBLISHED] " : "[DRAFT] ";
@@ -34,7 +45,7 @@ const dateOptions: Intl.DateTimeFormatOptions = {
   timeZone: "America/New_York",
 };
 
-const { Content, headings } = await post.render();
+const { Content, headings } = await render(post);
 ---
 
 <MainLayout meta={{ kind: "post", post, status }} class="flex gap-7">

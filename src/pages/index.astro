@@ -7,15 +7,12 @@ import Link from "@/components/link.astro";
 import ProjectCoverControls from "@/components/project-cover-controls.astro";
 import ProjectCover from "@/components/project-cover.astro";
 
-const posts = await getCollection("posts");
-const recentPosts = posts
-  .filter((post) => post.data.published)
-  .sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime())
-  .slice(0, 3);
+let posts = await getCollection("posts", (post) => post.data.published);
+posts = posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime()).slice(0, 3);
 
 const projects = await getEntries([
-  { collection: "projects", slug: "mini-minecraft" },
-  { collection: "projects", slug: "door" },
+  { collection: "projects", id: "mini-minecraft" },
+  { collection: "projects", id: "door" },
 ]);
 ---
 
@@ -58,16 +55,18 @@ const projects = await getEntries([
 
       <div class="flex gap-2">
         <ProjectCoverControls />
-        <a href="/projects" class="pill whitespace-nowrap leading-none" data-quiet>View more</a>
+        <a href="/projects" class="pill whitespace-nowrap leading-none" data-quiet="true"
+          >View more</a
+        >
       </div>
     </div>
 
     <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
       {
-        projects.map(({ data: { name, metadata, cover }, slug }, idx) => (
-          <a href={`/projects/${slug}`} class="group animate-fade" style={{ "--order": idx + 1 }}>
+        projects.map(({ data: { name, metadata, cover }, id }, idx) => (
+          <a href={`/projects/${id}`} class="group animate-fade" style={{ "--order": idx + 1 }}>
             <ProjectCover
-              slug={slug}
+              id={id}
               cover={cover}
               useVideo={{ small: true }}
               class="overflow-hidden rounded-t-xl opacity-90 transition-opacity group-hover:opacity-100"
@@ -93,15 +92,15 @@ const projects = await getEntries([
   <section class="space-y-4">
     <div class="flex animate-fade items-center justify-between gap-4 [--order:2]">
       <h2 class="text-xl">Recent posts</h2>
-      <a href="/posts" class="pill leading-none" data-quiet>View more</a>
+      <a href="/posts" class="pill leading-none" data-quiet="true">View more</a>
     </div>
 
     <ul class="flex flex-col [--fade-speed:50ms]">
       {
-        recentPosts.map((post, idx) => {
+        posts.map((post, idx) => {
           const {
             data: { title, posted },
-            slug,
+            id,
           } = post;
 
           return (
@@ -110,7 +109,7 @@ const projects = await getEntries([
               style={{ "--order": idx + 2 }}
             >
               <a
-                href={`/posts/${slug}`}
+                href={`/posts/${id}`}
                 class="flex flex-col justify-between py-4 *:transition-colors xs:flex-row xs:gap-4"
               >
                 <h2 class="subtitle text-pretty group-hover:text-sweater-1">{title}</h2>

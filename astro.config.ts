@@ -1,9 +1,9 @@
-import { defineConfig } from "astro/config";
+import { defineConfig, envField } from "astro/config";
 
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
-import vercel from "@astrojs/vercel/serverless";
+import vercel from "@astrojs/vercel";
 
 import { readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -17,6 +17,8 @@ const SITE_NAME = "https://charleszw.com";
 /**
  * Astro's sitemap integration does not include dynamic routes in the generated sitemap when
  * the site uses SSR. This function crawls the filesystem and does it manually.
+ *
+ * Note to self: this also includes routes that are private/drafts.
  *
  * @see https://github.com/withastro/astro/issues/3682#issuecomment-1492468918
  */
@@ -90,11 +92,6 @@ const config = defineConfig({
   output: "server",
   adapter: vercel({
     imageService: true,
-    imagesConfig: {
-      domains: [],
-      formats: ["image/avif", "image/webp"],
-      sizes: [80, 96, 144, 160, 196, 240, 256, 320, 384, 480, 496, 520, 640, 768, 850],
-    },
     webAnalytics: {
       enabled: true,
     },
@@ -103,7 +100,12 @@ const config = defineConfig({
       "./public/_fonts/AtkinsonHyperlegible-Bold.ttf",
     ],
   }),
-  // see https://noahflk.com/blog/trailing-slashes-astro
+  env: {
+    schema: {
+      LASTFM_API_KEY: envField.string({ context: "server", access: "secret", optional: false }),
+    },
+  },
+  // See https://noahflk.com/blog/trailing-slashes-astro
   trailingSlash: "never",
   redirects: {
     "/resume": {

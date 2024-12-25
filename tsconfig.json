@@ -5,20 +5,11 @@
     "paths": {
       "@/*": ["src/*"]
     },
-
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noPropertyAccessFromIndexSignature": true
   },
-  "include": [
-    "src/**/*",
-    "**/*.js",
-    "**/*.mjs",
-    "**/*.cjs",
-    "**/*.astro",
-    ".eslintrc.cjs",
-    "tailwind.config.ts",
-    "astro.config.ts"
-  ]
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
 }

@@ -99,7 +99,7 @@
     @apply rounded-full bg-sweater-4 px-3 py-1.5 text-sweater-9 transition-colors hover:bg-sweater-3;
   }
 
-  .pill[data-quiet] {
+  .pill[data-quiet="true"] {
     @apply bg-sweater-9 text-sweater-4 hover:bg-sweater-8 hover:text-sweater-3;
   }
 }

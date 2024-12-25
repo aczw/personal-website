@@ -1,14 +1,3 @@
-import type { CollectionEntry } from "astro:content";
-
-type EntryKind =
-  | { kind: "post"; post: CollectionEntry<"posts">; status: string }
-  | { kind: "project"; project: CollectionEntry<"projects"> };
-
-type MetaKind =
-  | { kind: "route"; title: string | null; description: string; ogImageParams: string }
-  | EntryKind;
-
-// Referenced in both ProjectCover and ProjectCoverControls, hence why it's placed here
 class ProjectCover extends HTMLElement {
   externallyPaused: boolean;
 
@@ -62,4 +51,4 @@ class ProjectCover extends HTMLElement {
   }
 }
 
-export { type MetaKind, type EntryKind, ProjectCover };
+export { ProjectCover };

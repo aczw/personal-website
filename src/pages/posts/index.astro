@@ -4,8 +4,7 @@ import { getCollection } from "astro:content";
 import MainLayout from "@/layouts/main-layout.astro";
 import PostPublishedStatus from "@/components/dev/post-published-status.astro";
 
-let posts = await getCollection("posts");
-posts = posts.filter((post) => import.meta.env.DEV || post.data.published);
+let posts = await getCollection("posts", (post) => import.meta.env.DEV || post.data.published);
 posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 ---
 
@@ -33,12 +32,12 @@ posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
         posts.map((post, idx) => {
           let {
             data: { title, blurb, posted, published },
-            slug,
+            id,
           } = post;
 
           return (
             <a
-              href={`/posts/${slug}`}
+              href={`/posts/${id}`}
               class:list={[
                 "group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100",
               ]}

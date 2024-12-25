@@ -34,7 +34,7 @@ const GET: APIRoute = async ({ request }) => {
       content = {
         kind: "project",
         name: project.data.name,
-        tags: project.data.tags.sort().join(", "),
+        tags: project.data.metadata.tech.sort().join(", "),
       };
     }
   }

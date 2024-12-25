@@ -9,7 +9,7 @@ import type { ContentCollectionKey } from "astro:content";
 interface Props {
   content: {
     collection: ContentCollectionKey;
-    folder: CollectionEntry<ContentCollectionKey>["slug"];
+    folder: CollectionEntry<ContentCollectionKey>["id"];
   };
   name: string;
   hasWebM?: boolean;

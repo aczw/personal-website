@@ -3,25 +3,31 @@ import type { z } from "astro/zod";
 import { type CollectionEntry } from "astro:content";
 import { Image } from "astro:assets";
 
-import type { ProjectCoverSchema } from "@/content/config";
+import type { ImageSchema } from "@/content.config";
+import { validProjectCover } from "@/scripts/util";
 
 interface Props {
-  slug: CollectionEntry<"projects">["slug"];
-  cover: z.infer<ReturnType<typeof ProjectCoverSchema>>;
+  id: CollectionEntry<"projects">["id"];
+  cover: z.infer<ReturnType<typeof ImageSchema>>;
   useVideo?: boolean | { small: boolean };
   class?: string;
 }
 
-const { slug, cover, class: className, useVideo } = Astro.props;
+const { id, cover, class: className, useVideo } = Astro.props;
+const path = `/_files/projects/${id}`;
 
-const path = `/_files/projects/${slug}`;
+if (!validProjectCover(cover.img.width, cover.img.height)) {
+  throw new Error(
+    `Error rendering ${id}: project cover images must have an aspect ratio of 16:10!`,
+  );
+}
 ---
 
 <project-cover
   class:list={["relative block aspect-[16/10] *:absolute *:inset-0", className]}
   data-use-video={useVideo ? "true" : "false"}
 >
-  <Image src={cover.img.src} alt={cover.img.alt} loading="eager" class="bg-sweater-9" />
+  <Image src={cover.img} alt={cover.alt} loading="eager" class="bg-sweater-9" />
 
   {
     useVideo ? (
@@ -43,6 +49,6 @@ const path = `/_files/projects/${slug}`;
 </project-cover>
 
 <script>
-  import { ProjectCover } from "@/shared";
+  import { ProjectCover } from "@/scripts/project-cover";
   customElements.define("project-cover", ProjectCover);
 </script>

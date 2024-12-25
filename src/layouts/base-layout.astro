@@ -1,9 +1,12 @@
 ---
-import "@/base.css";
+import "@/style.css";
+
 import "@fontsource/atkinson-hyperlegible/400.css";
 import "@fontsource/atkinson-hyperlegible/700.css";
+import "@fontsource/atkinson-hyperlegible/400-italic.css";
+import "@fontsource/atkinson-hyperlegible/700-italic.css";
 
-import type { MetaKind } from "@/shared";
+import type { MetaKind } from "@/scripts/types";
 
 import SpeedInsights from "@vercel/speed-insights/astro";
 
@@ -26,18 +29,18 @@ switch (meta.kind) {
   }
 
   case "post": {
-    let { data, slug } = meta.post;
+    let { data, id } = meta.post;
     title = meta.status + data.title + " — " + title;
     description = data.blurb;
-    ogImageParams = `?post=${slug}`;
+    ogImageParams = `?post=${id}`;
     break;
   }
 
   case "project": {
-    let { data, slug } = meta.project;
+    let { data, id } = meta.project;
     title = data.name + " — " + title;
     description = data.blurb;
-    ogImageParams = `?project=${slug}`;
+    ogImageParams = `?project=${id}`;
     break;
   }
 
