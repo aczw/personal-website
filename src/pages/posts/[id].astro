@@ -49,9 +49,9 @@ const { Content, headings } = await render(post);
 ---
 
 <MainLayout meta={{ kind: "post", post, status }} class="flex gap-7">
-  <article class="w-full space-y-12 py-12 post:w-[calc(100%-200px)]">
+  <article class="w-full space-y-12 py-12 post:w-[calc(100%-0px)]">
     <section class="space-y-4">
-      <h1 class="text-xl">{title} <PostPublishedStatus published={published} /></h1>
+      <!-- <h1 class="text-xl">{title} <PostPublishedStatus published={published} /></h1> -->
 
       {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" class="" /> : null}
 
@@ -87,5 +87,5 @@ const { Content, headings } = await render(post);
     </section>
   </article>
 
-  <TableOfContents headings={headings} />
+  <!-- <TableOfContents headings={headings} /> -->
 </MainLayout>

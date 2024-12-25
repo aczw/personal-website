@@ -6,6 +6,7 @@ import MainLayout from "@/layouts/main-layout.astro";
 import Link from "@/components/link.astro";
 import ProjectCoverControls from "@/components/project-cover-controls.astro";
 import ProjectCover from "@/components/project-cover.astro";
+import { ArrowRight } from "lucide-astro";
 
 let posts = await getCollection("posts", (post) => post.data.published);
 posts = posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime()).slice(0, 3);
@@ -25,63 +26,87 @@ const projects = await getEntries([
   }}
   useVerticalSpacing
 >
-  <section class="grid grid-cols-1 gap-x-6 gap-y-5 sm:grid-cols-2 content:gap-y-8">
+  <section class="space-y-6">
     <p class="animate-fade [--order:0]">
-      Hi, I'm Charles. I'm a student at the University of Pennsylvania studying computer graphics
-      and CS as part of the Digital Media Design program. I'm interested in graphics programming,
-      making games, design, and building websites.
+      Hi! I'm a third year student in the Digital Media Design program at UPenn. I'm concurrently
+      finishing a Master's in Computer Graphics and Game Technology. I like graphics programming and
+      design.
     </p>
 
-    <p class="animate-fade [--order:0]">
-      At school, I co-lead our game dev club <Link href="https://pennupgrade.com" target="_blank"
-        >UPGRADE</Link
-      > and am a member of our SIGGRAPH chapter. I'm also on the creative team for PennApps, our collegiate
-      hackathon. In the past I helped design TEDxPenn's annual conference theme.
+    <p class="animate-fade [--order:1]">
+      At school I co-lead our game dev club called <Link
+        href="https://pennupgrade.com"
+        target="_blank">UPGRADE</Link
+      >, and am a member of our SIGGRAPH chapter. Last summer I interned on the Effects team at
+      TikTok in San Jose.
     </p>
 
-    <p class="subtitle animate-fade [--order:1]">
+    <p class="subtitle animate-fade [--order:2]">
       In my free time I like running, making playlists, learning the bass guitar, and riding SEPTA.
-    </p>
-
-    <p class="subtitle hidden animate-fade [--order:1] sm:block">
-      Below are some things I've done, as well as my socials where you can find me. Thanks for
-      stopping by. <span aria-hidden="true" class="cursor-mewo whitespace-nowrap">(〜￣▽￣)〜</span>
+      Thanks for visiting. <span aria-hidden="true" class="cursor-mewo whitespace-nowrap"
+        >(〜￣▽￣)〜</span
+      >
     </p>
   </section>
 
   <section class="space-y-4">
-    <div class="flex animate-fade items-center justify-between gap-4 [--order:1]">
-      <h2 class="text-xl">Some projects</h2>
-
-      <div class="flex gap-2">
-        <ProjectCoverControls />
-        <a href="/projects" class="pill whitespace-nowrap leading-none" data-quiet="true"
-          >View more</a
-        >
-      </div>
+    <div
+      class="flex animate-fade items-center gap-3.5 text-[36px] font-bold leading-none [--order:1]"
+    >
+      <h2 class="cursor-default text-sweater-5">Projects</h2>
+      <a href="/projects" class="text-sweater-7 transition-colors hover:text-sweater-6">
+        View all
+      </a>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-1">
       {
         projects.map(({ data: { name, metadata, cover }, id }, idx) => (
-          <a href={`/projects/${id}`} class="group animate-fade" style={{ "--order": idx + 1 }}>
+          <a
+            href={`/projects/${id}`}
+            class="group relative h-fit animate-fade transition-opacity"
+            style={{ "--order": idx }}
+          >
             <ProjectCover
               id={id}
               cover={cover}
               useVideo={{ small: true }}
-              class="overflow-hidden rounded-t-xl opacity-90 transition-opacity group-hover:opacity-100"
+              class="overflow-hidden rounded-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
             />
 
-            <div class="space-y-1.5 rounded-b-xl bg-sweater-9 p-4 transition-colors group-hover:bg-sweater-8">
-              <h2 class="text-pretty">{name}</h2>
+            <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
+              <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
+                <div class="overflow-hidden text-pretty opacity-0 transition-opacity group-hover:opacity-100">
+                  <div aria-hidden="true" class="h-4" />
 
-              <ul class="flex flex-wrap gap-2">
-                {metadata.tech.map((tech) => (
-                  <li class="berkeley rounded-full bg-sweater-8 px-2 py-1 leading-none text-sweater-3 transition-colors group-hover:bg-sweater-7">
-                    {tech}
-                  </li>
-                ))}
-              </ul>
+                  <div class="flex items-center justify-between gap-4">
+                    <div>
+                      <h2>{name}</h2>
+                      <li class="flex flex-wrap gap-x-2">
+                        {metadata.tech.map((tech, idx) => (
+                          <ul class="berkeley text-sweater-5">
+                            <span>{tech}</span>
+                            {idx !== metadata.tech.length - 1 ? (
+                              <span aria-hidden="true" class="text-sweater-7">
+                                /
+                              </span>
+                            ) : null}
+                          </ul>
+                        ))}
+                      </li>
+                    </div>
+
+                    <div
+                      aria-hidden="true"
+                      class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
+                    >
+                      <ArrowRight class="shrink-0 stroke-sweater-6 transition-colors group-hover:stroke-sweater-4" />
+                    </div>
+                  </div>
+
+                  <div aria-hidden="true" class="h-4" />
+                </div>
+              </div>
             </div>
           </a>
         ))
@@ -90,9 +115,11 @@ const projects = await getEntries([
   </section>
 
   <section class="space-y-4">
-    <div class="flex animate-fade items-center justify-between gap-4 [--order:2]">
-      <h2 class="text-xl">Recent posts</h2>
-      <a href="/posts" class="pill leading-none" data-quiet="true">View more</a>
+    <div
+      class="flex animate-fade items-center gap-3.5 text-[36px] font-bold leading-none [--order:2]"
+    >
+      <h2 class="cursor-default text-sweater-5">Recent posts</h2>
+      <a href="/posts" class="text-sweater-7 transition-colors hover:text-sweater-6"> View all </a>
     </div>
 
     <ul class="flex flex-col [--fade-speed:50ms]">
