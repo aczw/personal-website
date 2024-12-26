@@ -78,13 +78,13 @@ const GET: APIRoute = async ({ request }) => {
     fonts: [
       {
         name: "Atkinson Hyperlegible",
-        data: readFileSync(`${process.cwd()}/public/_fonts/AtkinsonHyperlegible-Regular.ttf`),
+        data: readFileSync(`${process.cwd()}/public/_fonts/AtkinsonHyperlegible-Regular.woff`),
         style: "normal",
         weight: 400,
       },
       {
         name: "Atkinson Hyperlegible",
-        data: readFileSync(`${process.cwd()}/public/_fonts/AtkinsonHyperlegible-Bold.ttf`),
+        data: readFileSync(`${process.cwd()}/public/_fonts/AtkinsonHyperlegible-Bold.woff`),
         style: "normal",
         weight: 700,
       },
@@ -103,7 +103,7 @@ const GET: APIRoute = async ({ request }) => {
   return new Response(image.asPng(), {
     headers: {
       "Content-Type": "image/png",
-      "Cache-Control": "public, no-transform, max-age=604800" /* one week */,
+      "Cache-Control": "public, no-transform, max-age=604800" /* One week */,
     },
   });
 };

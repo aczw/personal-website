@@ -26,7 +26,7 @@ const projects = await getEntries([
   }}
   useVerticalSpacing
 >
-  <section class="space-y-6">
+  <section class="grid grid-cols-2 gap-x-8 gap-y-6">
     <p class="animate-fade [--order:0]">
       Hi! I'm a third year student in the Digital Media Design program at UPenn. I'm concurrently
       finishing a Master's in Computer Graphics and Game Technology. I like graphics programming and
@@ -34,17 +34,19 @@ const projects = await getEntries([
     </p>
 
     <p class="animate-fade [--order:1]">
-      At school I co-lead our game dev club called <Link
-        href="https://pennupgrade.com"
-        target="_blank">UPGRADE</Link
-      >, and am a member of our SIGGRAPH chapter. Last summer I interned on the Effects team at
+      At school I co-lead our game dev club <Link href="https://pennupgrade.com" target="_blank"
+        >UPGRADE</Link
+      > and assist with teaching <Link
+        href="https://www.cis.upenn.edu/~cis4600/current/"
+        target="_blank">CIS 5600</Link
+      >, our introductory computer graphics course. Last summer I interned on the Effects team at
       TikTok in San Jose.
     </p>
 
-    <p class="subtitle animate-fade [--order:2]">
-      In my free time I like running, making playlists, learning the bass guitar, and riding SEPTA.
-      Thanks for visiting. <span aria-hidden="true" class="cursor-mewo whitespace-nowrap"
-        >(〜￣▽￣)〜</span
+    <p class="subtitle col-span-2 animate-fade [--order:2]">
+      In my free time I like running, making playlists, and riding SEPTA. Thanks for visiting. <span
+        aria-hidden="true"
+        class="cursor-mewo whitespace-nowrap">(〜￣▽￣)〜</span
       >
     </p>
   </section>
@@ -59,7 +61,7 @@ const projects = await getEntries([
       </a>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-1">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
       {
         projects.map(({ data: { name, metadata, cover }, id }, idx) => (
           <a

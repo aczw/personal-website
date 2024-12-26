@@ -16,7 +16,6 @@
     "@astrojs/tailwind": "5.1.4",
     "@astrojs/vercel": "8.0.1",
     "@expressive-code/plugin-collapsible-sections": "^0.38.3",
-    "@fontsource/atkinson-hyperlegible": "^5.1.0",
     "@resvg/resvg-js": "^2.6.2",
     "@vercel/analytics": "^1.4.1",
     "@vercel/speed-insights": "^1.1.0",

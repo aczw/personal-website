@@ -80,17 +80,51 @@
   }
 
   @font-face {
-    font-family: "Berkeley Mono Variable";
-    src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
-    font-weight: 100 150;
+    font-family: "Atkinson Hyperlegible";
     font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: url("_fonts/AtkinsonHyperlegible-Regular.woff") format("woff");
+  }
+
+  @font-face {
+    font-family: "Atkinson Hyperlegible";
+    font-style: italic;
+    font-display: swap;
+    font-weight: 400;
+    src: url("_fonts/AtkinsonHyperlegible-Italic.woff") format("woff");
+  }
+
+  @font-face {
+    font-family: "Atkinson Hyperlegible";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: url("_fonts/AtkinsonHyperlegible-Bold.woff") format("woff");
+  }
+
+  @font-face {
+    font-family: "Atkinson Hyperlegible";
+    font-style: italic;
+    font-display: swap;
+    font-weight: 700;
+    src: url("_fonts/AtkinsonHyperlegible-BoldItalic.woff") format("woff");
   }
 
   @font-face {
     font-family: "Berkeley Mono Variable";
-    src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
+    font-style: normal;
+    font-display: swap;
     font-weight: 100 150;
+    src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
+  }
+
+  @font-face {
+    font-family: "Berkeley Mono Variable";
     font-style: italic;
+    font-display: swap;
+    font-weight: 100 150;
+    src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
   }
 }
 

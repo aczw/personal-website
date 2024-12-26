@@ -13,8 +13,8 @@ const config: Config = {
     },
     extend: {
       maxWidth: {
-        // width + 2rem (30px) on both sides, so 450px + 2 * 30px = 510px
-        content: "510px",
+        // width + 2rem (30px) on both sides, so 800px + 2 * 30px = 860px
+        content: "810px",
       },
       colors: {
         sweater: {
@@ -31,7 +31,7 @@ const config: Config = {
         },
       },
       screens: {
-        content: "510px",
+        content: "810px",
         post: "710px",
         xs: "480px",
       },

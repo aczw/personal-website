@@ -40,7 +40,7 @@ const { Content, headings } = await render(project);
   <ProjectCover id={id} cover={cover} useVideo class="mt-12 overflow-hidden rounded-xl" />
 
   <div class="mb-12 flex gap-7">
-    <article class="mt-12 w-full space-y-12 post:w-[calc(100%-200px)]">
+    <article class="mt-12 w-full space-y-12">
       <section class="space-y-10 border-b-thin border-sweater-9 pb-12">
         <div class="space-y-1">
           <h1 class="text-xl">{name}</h1>
@@ -77,19 +77,21 @@ const { Content, headings } = await render(project);
         </div>
       </section>
 
-      <section class="space-y-6">
-        <Content
-          components={{
-            h2: H2,
-            h3: H3,
-            blockquote: Aside,
-            a: Anchor,
-            img: Image,
-          }}
-        />
+      <section class="flex gap-8">
+        <div class="max-w-[750px] space-y-6">
+          <Content
+            components={{
+              h2: H2,
+              h3: H3,
+              blockquote: Aside,
+              a: Anchor,
+              img: Image,
+            }}
+          />
+        </div>
+
+        <TableOfContents headings={headings} />
       </section>
     </article>
-
-    <TableOfContents headings={headings} />
   </div>
 </MainLayout>
