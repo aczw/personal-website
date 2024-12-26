@@ -10,6 +10,9 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
+  rules: {
+    "no-unused-vars": ["error", { args: "none" }],
+  },
   overrides: [
     {
       files: ["*.astro"],

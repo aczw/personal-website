@@ -11,18 +11,18 @@ let { id, ...props } = Astro.props;
 <h2 id={id} class="w-fit text-lg first:scroll-mt-9 [&:not(:first-child)]:pt-9" {...props}>
   <a
     href={`#${id}`}
-    class="group relative flex items-center gap-1.5 rounded-r-lg pr-2 transition-colors hover:bg-sweater-9 content:-ml-3 content:pl-3"
+    class="normal:-ml-3 normal:pl-3 group relative flex items-center gap-1.5 rounded-r-lg pr-2 transition-colors hover:bg-sweater-9"
   >
     <slot />
 
     <Hash
       size={16}
-      class="stroke-transparent transition-colors group-hover:stroke-sweater-5 content:absolute content:-left-3"
+      class="normal:absolute normal:-left-3 stroke-transparent transition-colors group-hover:stroke-sweater-5"
       aria-hidden="true"
     />
     <div
       aria-hidden="true"
-      class="absolute -left-2 z-[-1] size-[26px] rounded-l-lg transition-colors group-hover:bg-sweater-9 content:-left-4"
+      class="normal:-left-4 absolute -left-2 z-[-1] size-[26px] rounded-l-lg transition-colors group-hover:bg-sweater-9"
     >
     </div>
   </a>

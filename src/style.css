@@ -84,7 +84,7 @@
     font-style: normal;
     font-display: swap;
     font-weight: 400;
-    src: url("_fonts/AtkinsonHyperlegible-Regular.woff") format("woff");
+    src: url("/_fonts/AtkinsonHyperlegible-Regular.woff") format("woff");
   }
 
   @font-face {
@@ -92,7 +92,7 @@
     font-style: italic;
     font-display: swap;
     font-weight: 400;
-    src: url("_fonts/AtkinsonHyperlegible-Italic.woff") format("woff");
+    src: url("/_fonts/AtkinsonHyperlegible-Italic.woff") format("woff");
   }
 
   @font-face {
@@ -100,7 +100,7 @@
     font-style: normal;
     font-display: swap;
     font-weight: 700;
-    src: url("_fonts/AtkinsonHyperlegible-Bold.woff") format("woff");
+    src: url("/_fonts/AtkinsonHyperlegible-Bold.woff") format("woff");
   }
 
   @font-face {
@@ -108,7 +108,7 @@
     font-style: italic;
     font-display: swap;
     font-weight: 700;
-    src: url("_fonts/AtkinsonHyperlegible-BoldItalic.woff") format("woff");
+    src: url("/_fonts/AtkinsonHyperlegible-BoldItalic.woff") format("woff");
   }
 
   @font-face {
@@ -147,5 +147,13 @@
 
   .subtitle {
     @apply text-sweater-2/85;
+  }
+
+  .span-normal {
+    @apply max-w-normal mx-auto px-8;
+  }
+
+  .span-wide {
+    @apply max-w-wide mx-auto px-8;
   }
 }

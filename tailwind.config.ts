@@ -2,7 +2,7 @@ import { type Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
 const config: Config = {
-  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  content: ["./src/**/*.{astro,html,js,ts,md,mdx}"],
   future: {
     hoverOnlyWhenSupported: true,
   },
@@ -12,9 +12,10 @@ const config: Config = {
       mono: ["Berkeley Mono Variable", ...defaultTheme.fontFamily.mono],
     },
     extend: {
+      // Account for 2rem (30px) padding on sides, so <width> + 2 * 30px
       maxWidth: {
-        // width + 2rem (30px) on both sides, so 800px + 2 * 30px = 860px
-        content: "810px",
+        normal: "710px",
+        wide: "910px",
       },
       colors: {
         sweater: {
@@ -31,7 +32,8 @@ const config: Config = {
         },
       },
       screens: {
-        content: "810px",
+        // Used for MDX headings
+        normal: "710px",
         post: "710px",
         xs: "480px",
       },

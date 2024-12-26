@@ -1,22 +1,17 @@
----
-import { Box, CornerDownRight, NotebookText } from "lucide-astro";
----
-
-<header class="mx-auto max-w-content pt-24">
-  <nav class="mx-8 grid grid-cols-2 gap-8">
-    <div class="space-y-1.5 text-sweater-4">
+<header class="max-w-normal mx-auto pt-24">
+  <nav class="mx-8 flex flex-col gap-1">
+    <div class="space-y-1 text-sweater-4">
       <a
         href="/"
-        class="peer block w-fit [&:has(+_a:hover)_>_svg]:rotate-[-13deg] [&:has(+_a:hover)_>_svg]:fill-sweater-3"
+        class="peer block w-fit transition-[fill_transform] hover:rotate-[-13deg] hover:text-sweater-3 [&:has(+_a:hover)]:rotate-[-13deg] [&:has(+_a:hover)]:text-sweater-3"
+        aria-hidden="true"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="34"
-          height="34"
+          width="2rem"
+          height="2rem"
           viewBox="0 0 25 25"
           fill="currentColor"
-          class="transition-[fill_transform] hover:rotate-[-13deg] hover:fill-sweater-3"
-          aria-hidden="true"
         >
           <path
             fill-rule="evenodd"
@@ -28,25 +23,34 @@ import { Box, CornerDownRight, NotebookText } from "lucide-astro";
 
       <a
         href="/"
-        class="block w-fit text-[36px] font-bold leading-none transition-colors hover:text-sweater-3 peer-hover:text-sweater-3"
+        class="block w-fit text-4xl font-bold leading-none transition-colors hover:text-sweater-3 peer-hover:text-sweater-3"
       >
         Charles Wang
       </a>
+    </div>
 
-      <!-- <a
+    <div
+      class="grid grid-cols-2 gap-8 text-4xl font-bold text-sweater-6 *:flex *:w-fit *:gap-2 *:leading-none *:transition-colors"
+    >
+      <a href="/projects" class="leading-none hover:text-sweater-5">Projects</a>
+      <a href="/posts" class="leading-none hover:text-sweater-5">Writing</a>
+    </div>
+
+    <!-- <div class="space-y-1.5 text-sweater-4">
+      <a
         href="/projects"
         class="flex gap-2 text-[36px] font-bold leading-none text-sweater-6 transition-colors hover:text-sweater-5"
       >
-        <CornerDownRight class="shrink-0 stroke-[5]" /> Projects
+        <CornerDownRight class="shrink-0 stroke-[5]" />Projects
       </a>
 
       <a
         href="/posts"
         class="flex gap-2 text-[36px] font-bold leading-none text-sweater-4 transition-colors hover:text-sweater-3"
       >
-        <CornerDownRight class="shrink-0 stroke-[5]" /> Mini Minecraft
-      </a> -->
-    </div>
+        <CornerDownRight class="shrink-0 stroke-[5]" />Mini Minecraft
+      </a>
+    </div> -->
 
     <!-- <div
       class="flex flex-col gap-1.5 *:flex *:w-fit *:gap-2 *:text-[36px] *:font-bold *:leading-none *:text-sweater-6 *:transition-colors"
@@ -59,4 +63,13 @@ import { Box, CornerDownRight, NotebookText } from "lucide-astro";
       </a>
     </div> -->
   </nav>
+
+  <!-- <div class="mx-8 mt-1.5 grid grid-cols-2 gap-8">
+    <a
+      href="/posts"
+      class="col-start-2 col-end-3 flex w-fit gap-2 text-[28px] font-bold leading-none text-sweater-4 transition-colors hover:text-sweater-3"
+    >
+      Making a link shortener with Astro DB
+    </a>
+  </div> -->
 </header>

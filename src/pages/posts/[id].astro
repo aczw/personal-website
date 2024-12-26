@@ -48,30 +48,28 @@ const dateOptions: Intl.DateTimeFormatOptions = {
 const { Content, headings } = await render(post);
 ---
 
-<MainLayout meta={{ kind: "post", post, status }} class="flex gap-7">
+<MainLayout meta={{ kind: "post", post, status }}>
+  <div class="grid grid-cols-2 gap-8 pt-2">
+    <div class="berkeley subtitle flex flex-col">
+      <time datetime={posted.toISOString()}>
+        {posted.toLocaleDateString("en-US", dateOptions)}
+      </time>
+
+      {
+        updated ? (
+          <time datetime={updated.toISOString()}>
+            Updated {updated.toLocaleDateString("en-US", dateOptions)}
+          </time>
+        ) : null
+      }
+    </div>
+
+    <p class="subtitle col-start-2 col-end-3">{blurb}</p>
+  </div>
+
   <article class="w-full space-y-12 py-12 post:w-[calc(100%-0px)]">
     <section class="space-y-4">
-      <!-- <h1 class="text-xl">{title} <PostPublishedStatus published={published} /></h1> -->
-
       {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" class="" /> : null}
-
-      <p class="subtitle">{blurb}</p>
-
-      <div
-        class="berkeley grid grid-cols-1 border-b-thin border-sweater-9 pb-12 xs:grid-cols-2 xs:gap-6"
-      >
-        <time datetime={posted.toISOString()} class="text-sweater-5">
-          {posted.toLocaleDateString("en-US", dateOptions)}
-        </time>
-
-        {
-          updated ? (
-            <time datetime={updated.toISOString()} class="text-sweater-6">
-              Updated {updated.toLocaleDateString("en-US", dateOptions)}
-            </time>
-          ) : null
-        }
-      </div>
     </section>
 
     <section class="space-y-6">

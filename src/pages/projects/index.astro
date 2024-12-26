@@ -1,12 +1,11 @@
 ---
 import { getCollection, type CollectionEntry } from "astro:content";
-
-import { CircleX, ArrowRight } from "lucide-astro";
+import { CircleX } from "lucide-astro";
 
 import MainLayout from "@/layouts/main-layout.astro";
 import { Filters } from "@/scripts/types";
-import ProjectCover from "@/components/project-cover.astro";
 import ProjectCoverControls from "@/components/project-cover-controls.astro";
+import ProjectCard from "@/components/project-card.astro";
 
 let projects = await getCollection("projects");
 projects.sort((a, b) => a.data.order - b.data.order);
@@ -78,89 +77,15 @@ const useVideo: CollectionEntry<"projects">["id"][] = ["path-tracer", "rcw", "fi
 
   <section class="grid grid-cols-1 gap-6 [--fade-speed:40ms] sm:grid-cols-2">
     {
-      projects.map((project, idx) => {
-        const {
-          data: { name, blurb, metadata, cover },
-          id,
-        } = project;
-
-        return (
-          <a
-            href={`/projects/${id}`}
-            class="group relative h-fit animate-fade transition-opacity"
-            style={{ "--order": idx }}
-          >
-            <ProjectCover
-              id={id}
-              cover={cover}
-              useVideo={useVideo.includes(id) ? { small: true } : false}
-              class="overflow-hidden rounded-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
-            />
-
-            {import.meta.env.DEV ? (
-              <span class="pill absolute left-2.5 top-2.5 font-bold leading-none">
-                {project.data.order}
-              </span>
-            ) : null}
-
-            <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
-              <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
-                <div class="overflow-hidden text-pretty opacity-0 transition-opacity group-hover:opacity-100">
-                  <div aria-hidden="true" class="h-4" />
-
-                  <div class="flex items-center justify-between gap-4">
-                    <div>
-                      <h2>{name}</h2>
-                      <li class="flex flex-wrap gap-x-2">
-                        {metadata.tech.map((tech, idx) => (
-                          <ul class="berkeley text-sweater-5">
-                            <span>{tech}</span>
-                            {idx !== metadata.tech.length - 1 ? (
-                              <span aria-hidden="true" class="text-sweater-7">
-                                /
-                              </span>
-                            ) : null}
-                          </ul>
-                        ))}
-                      </li>
-                    </div>
-
-                    <div
-                      aria-hidden="true"
-                      class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
-                    >
-                      <ArrowRight class="shrink-0 stroke-sweater-6 transition-colors group-hover:stroke-sweater-4" />
-                    </div>
-                  </div>
-
-                  {/* <p>{blurb}</p> */}
-                  <div aria-hidden="true" class="h-4" />
-                </div>
-              </div>
-            </div>
-
-            {/* <div aria-hidden="true" class="p-4 text-transparent">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <h2>{name}</h2>
-                  <li class="flex flex-wrap gap-x-2">
-                    {metadata.tech.map((tech, idx) => (
-                      <ul class="berkeley">
-                        <span>{tech}</span>
-                        {idx !== metadata.tech.length - 1 ? <span>/</span> : null}
-                      </ul>
-                    ))}
-                  </li>
-                </div>
-
-                <div class="rounded-full p-1">
-                  <div class="size-[24px]" />
-                </div>
-              </div>
-            </div> */}
-          </a>
-        );
-      })
+      projects.map((p, idx) => (
+        <ProjectCard
+          project={p}
+          useVideoFn={(p) => (useVideo.includes(p.id) ? { small: true } : null)}
+          home={false}
+          class="animate-fade transition-opacity"
+          style={{ "--order": idx + 1 }}
+        />
+      ))
     }
   </section>
 </MainLayout>

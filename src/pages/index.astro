@@ -1,12 +1,12 @@
 ---
 import { getEntries } from "astro:content";
 import { getCollection } from "astro:content";
-
-import MainLayout from "@/layouts/main-layout.astro";
-import Link from "@/components/link.astro";
-import ProjectCoverControls from "@/components/project-cover-controls.astro";
-import ProjectCover from "@/components/project-cover.astro";
 import { ArrowRight } from "lucide-astro";
+
+import Link from "@/components/link.astro";
+import ProjectCover from "@/components/project-cover.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
+import ProjectCard from "@/components/project-card.astro";
 
 let posts = await getCollection("posts", (post) => post.data.published);
 posts = posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime()).slice(0, 3);
@@ -14,54 +14,61 @@ posts = posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime()).
 const projects = await getEntries([
   { collection: "projects", id: "mini-minecraft" },
   { collection: "projects", id: "door" },
+  { collection: "projects", id: "path-tracer" },
+  { collection: "projects", id: "rcw" },
 ]);
 ---
 
-<MainLayout
+<CommonLayout
   meta={{
     kind: "route",
     title: null,
     description: "Computer graphics student at the University of Pennsylvania.",
     ogImageParams: "Graphics programming, games, websites.",
   }}
-  useVerticalSpacing
 >
-  <section class="grid grid-cols-2 gap-x-8 gap-y-6">
-    <p class="animate-fade [--order:0]">
-      Hi! I'm a third year student in the Digital Media Design program at UPenn. I'm concurrently
-      finishing a Master's in Computer Graphics and Game Technology. I like graphics programming and
-      design.
-    </p>
+  <main class="space-y-12 py-8">
+    <section class="span-normal grid grid-cols-2 gap-x-8 gap-y-5 px-8 *:animate-fade">
+      <p class="[--order:0]">
+        Hi! I'm a third year student in the Digital Media Design program at UPenn. I'm concurrently
+        finishing a Master's in Computer Graphics and Game Technology.
+      </p>
 
-    <p class="animate-fade [--order:1]">
-      At school I co-lead our game dev club <Link href="https://pennupgrade.com" target="_blank"
-        >UPGRADE</Link
-      > and assist with teaching <Link
-        href="https://www.cis.upenn.edu/~cis4600/current/"
-        target="_blank">CIS 5600</Link
-      >, our introductory computer graphics course. Last summer I interned on the Effects team at
-      TikTok in San Jose.
-    </p>
+      <p class="[--order:1]">
+        At school I co-lead our game dev club <Link href="https://pennupgrade.com" target="_blank"
+          >UPGRADE</Link
+        > and help teach <Link href="https://www.cis.upenn.edu/~cis4600/current/" target="_blank"
+          >CIS 5600</Link
+        >, our intro graphics class. Last summer I interned on the Effects team at TikTok in San
+        Jose.
+      </p>
 
-    <p class="subtitle col-span-2 animate-fade [--order:2]">
-      In my free time I like running, making playlists, and riding SEPTA. Thanks for visiting. <span
-        aria-hidden="true"
-        class="cursor-mewo whitespace-nowrap">(〜￣▽￣)〜</span
-      >
-    </p>
-  </section>
+      <p class="subtitle [--order:2]">
+        In my free time I like running, making playlists, learning the bass, and riding SEPTA.
+      </p>
 
-  <section class="space-y-4">
-    <div
-      class="flex animate-fade items-center gap-3.5 text-[36px] font-bold leading-none [--order:1]"
-    >
-      <h2 class="cursor-default text-sweater-5">Projects</h2>
-      <a href="/projects" class="text-sweater-7 transition-colors hover:text-sweater-6">
-        View all
-      </a>
-    </div>
+      <p class="subtitle [--order:3]">
+        You can find my socials and resumé below. Thanks for stopping by. <span
+          aria-hidden="true"
+          class="cursor-mewo whitespace-nowrap">(〜￣▽￣)〜</span
+        >
+      </p>
+    </section>
 
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <section class="span-wide grid grid-cols-1 gap-8 sm:grid-cols-2">
+      {
+        projects.map((p, idx) => (
+          <ProjectCard
+            project={p}
+            useVideoFn={(p) =>
+              p.id === "mini-minecraft" || p.id === "rcw" ? { small: true } : null
+            }
+            home={true}
+            class="animate-fade transition-opacity"
+            style={{ "--order": idx }}
+          />
+        ))
+      }
       {
         projects.map(({ data: { name, metadata, cover }, id }, idx) => (
           <a
@@ -72,7 +79,7 @@ const projects = await getEntries([
             <ProjectCover
               id={id}
               cover={cover}
-              useVideo={{ small: true }}
+              useVideo={id === "mini-minecraft" || id === "rcw" ? { small: true } : null}
               class="overflow-hidden rounded-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
             />
 
@@ -113,51 +120,44 @@ const projects = await getEntries([
           </a>
         ))
       }
-    </div>
-  </section>
+    </section>
 
-  <section class="space-y-4">
-    <div
-      class="flex animate-fade items-center gap-3.5 text-[36px] font-bold leading-none [--order:2]"
-    >
-      <h2 class="cursor-default text-sweater-5">Recent posts</h2>
-      <a href="/posts" class="text-sweater-7 transition-colors hover:text-sweater-6"> View all </a>
-    </div>
+    <section class="span-normal space-y-4">
+      <ul class="flex flex-col [--fade-speed:50ms]">
+        {
+          posts.map((post, idx) => {
+            const {
+              data: { title, posted },
+              id,
+            } = post;
 
-    <ul class="flex flex-col [--fade-speed:50ms]">
-      {
-        posts.map((post, idx) => {
-          const {
-            data: { title, posted },
-            id,
-          } = post;
-
-          return (
-            <li
-              class="group animate-fade border-t-thin border-sweater-9"
-              style={{ "--order": idx + 2 }}
-            >
-              <a
-                href={`/posts/${id}`}
-                class="flex flex-col justify-between py-4 *:transition-colors xs:flex-row xs:gap-4"
+            return (
+              <li
+                class="group animate-fade border-t-thin border-sweater-9"
+                style={{ "--order": idx + 2 }}
               >
-                <h2 class="subtitle text-pretty group-hover:text-sweater-1">{title}</h2>
-
-                <time
-                  datetime={posted.toISOString()}
-                  class="berkeley text-sweater-5 group-hover:text-sweater-3"
+                <a
+                  href={`/posts/${id}`}
+                  class="flex flex-col justify-between py-4 *:transition-colors xs:flex-row xs:gap-4"
                 >
-                  {posted.toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    timeZone: "America/New_York",
-                  })}
-                </time>
-              </a>
-            </li>
-          );
-        })
-      }
-    </ul>
-  </section>
-</MainLayout>
+                  <h2 class="subtitle text-pretty group-hover:text-sweater-1">{title}</h2>
+
+                  <time
+                    datetime={posted.toISOString()}
+                    class="berkeley text-sweater-5 group-hover:text-sweater-3"
+                  >
+                    {posted.toLocaleDateString("en-US", {
+                      month: "long",
+                      day: "numeric",
+                      timeZone: "America/New_York",
+                    })}
+                  </time>
+                </a>
+              </li>
+            );
+          })
+        }
+      </ul>
+    </section>
+  </main>
+</CommonLayout>

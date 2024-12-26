@@ -3,8 +3,6 @@ import type { ComponentProps } from "astro/types";
 
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
-import ScreenSizeIndicator from "@/components/dev/screen-size-indicator.astro";
-
 import BaseLayout from "@/layouts/base-layout.astro";
 
 type Props = ComponentProps<typeof BaseLayout>;
@@ -14,6 +12,4 @@ type Props = ComponentProps<typeof BaseLayout>;
   <Header />
   <slot />
   <Footer />
-
-  <ScreenSizeIndicator />
 </BaseLayout>
