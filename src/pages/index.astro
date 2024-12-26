@@ -1,10 +1,8 @@
 ---
 import { getEntries } from "astro:content";
 import { getCollection } from "astro:content";
-import { ArrowRight } from "lucide-astro";
 
 import Link from "@/components/link.astro";
-import ProjectCover from "@/components/project-cover.astro";
 import CommonLayout from "@/layouts/common-layout.astro";
 import ProjectCard from "@/components/project-card.astro";
 
@@ -67,57 +65,6 @@ const projects = await getEntries([
             class="animate-fade transition-opacity"
             style={{ "--order": idx }}
           />
-        ))
-      }
-      {
-        projects.map(({ data: { name, metadata, cover }, id }, idx) => (
-          <a
-            href={`/projects/${id}`}
-            class="group relative h-fit animate-fade transition-opacity"
-            style={{ "--order": idx }}
-          >
-            <ProjectCover
-              id={id}
-              cover={cover}
-              useVideo={id === "mini-minecraft" || id === "rcw" ? { small: true } : null}
-              class="overflow-hidden rounded-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
-            />
-
-            <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
-              <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
-                <div class="overflow-hidden text-pretty opacity-0 transition-opacity group-hover:opacity-100">
-                  <div aria-hidden="true" class="h-4" />
-
-                  <div class="flex items-center justify-between gap-4">
-                    <div>
-                      <h2>{name}</h2>
-                      <li class="flex flex-wrap gap-x-2">
-                        {metadata.tech.map((tech, idx) => (
-                          <ul class="berkeley text-sweater-5">
-                            <span>{tech}</span>
-                            {idx !== metadata.tech.length - 1 ? (
-                              <span aria-hidden="true" class="text-sweater-7">
-                                /
-                              </span>
-                            ) : null}
-                          </ul>
-                        ))}
-                      </li>
-                    </div>
-
-                    <div
-                      aria-hidden="true"
-                      class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
-                    >
-                      <ArrowRight class="shrink-0 stroke-sweater-6 transition-colors group-hover:stroke-sweater-4" />
-                    </div>
-                  </div>
-
-                  <div aria-hidden="true" class="h-4" />
-                </div>
-              </div>
-            </div>
-          </a>
         ))
       }
     </section>
