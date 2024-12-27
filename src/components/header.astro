@@ -1,10 +1,13 @@
 ---
 const path = Astro.url.pathname;
-const links = ["/projects", "/posts"];
+const links = [
+  { href: "/projects", name: "Projects" },
+  { href: "/posts", name: "Writing" },
+];
 ---
 
 <header class="mx-auto max-w-normal pt-24">
-  <nav class="mx-8 grid grid-cols-2 gap-8 text-3xl">
+  <nav class="mx-8 grid grid-cols-2 gap-8 text-3xl font-bold">
     <div class="space-y-1 text-sweater-4">
       <a
         href="/"
@@ -28,26 +31,27 @@ const links = ["/projects", "/posts"];
 
       <a
         href="/"
-        class="block w-fit font-bold leading-none transition-colors hover:text-sweater-3 peer-hover:text-sweater-3"
+        class="block w-fit leading-none transition-colors hover:text-sweater-3 peer-hover:text-sweater-3"
       >
         Charles Wang
       </a>
     </div>
 
     <div
-      class="flex flex-col gap-1 font-bold text-sweater-6 *:flex *:w-fit *:gap-2 *:leading-none *:transition-colors"
+      class="grid grid-cols-2 items-end gap-4 text-sweater-6 *:flex *:w-fit *:gap-2 *:leading-none *:transition-colors"
     >
       {
-        links.map((link) => (
+        links.map(({ href, name }) => (
           <a
-            href={link}
+            href={href}
             class:list={[
-              "leading-none hover:text-sweater-5",
-              { "text-sweater-5": path === link },
-              { "text-sweater-7": path !== link && path !== "/" },
+              "leading-none",
+              { "hover:text-sweater-5": path === "/" },
+              { "text-sweater-5 hover:text-sweater-4": path === href },
+              { "text-sweater-7 hover:text-sweater-6": path !== href && path !== "/" },
             ]}
           >
-            Projects
+            {name}
           </a>
         ))
       }
