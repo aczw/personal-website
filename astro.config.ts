@@ -89,7 +89,7 @@ const config = defineConfig({
     }),
     mdx(),
   ],
-  output: "server",
+  output: "static",
   adapter: vercel({
     imageService: true,
     webAnalytics: {
