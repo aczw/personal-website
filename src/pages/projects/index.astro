@@ -34,9 +34,11 @@ const useVideo: CollectionEntry<"projects">["id"][] = ["path-tracer", "rcw", "fi
   useVerticalSpacing
 >
   <section class="space-y-4">
-    <h1 class="animate-fade text-xl [--order:0]">
-      All projects {isFilteredByAny ? <span class="text-sweater-6">(filtered)</span> : null}
-    </h1>
+    {
+      isFilteredByAny ? (
+        <h1 class="animate-fade text-xl text-sweater-6 [--order:0]">(filtered)</h1>
+      ) : null
+    }
 
     <div
       class="flex animate-fade items-center justify-between border-y-thin border-sweater-9 [--order:1]"

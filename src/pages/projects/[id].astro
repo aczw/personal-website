@@ -12,6 +12,7 @@ import Aside from "@/components/mdx/aside.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 import Link from "@/components/link.astro";
+import { Wrench } from "lucide-astro";
 
 // Return 404 if server request doesn't contain ID
 const { id } = Astro.params;
@@ -37,17 +38,28 @@ const { Content, headings } = await render(project);
 ---
 
 <MainLayout meta={{ kind: "project", project }}>
-  <p class="pt-2 text-sweater-2">{blurb}</p>
+  <ProjectCover
+    id={id}
+    cover={cover}
+    useVideo={{ small: false }}
+    class="mt-12 overflow-hidden rounded-xl"
+  />
 
-  <ProjectCover id={id} cover={cover} useVideo class="mt-12 overflow-hidden rounded-xl" />
+  <h1 class="pt-8 text-3xl">{name}</h1>
+
+  <p class="pt-2 text-sweater-2">{blurb}</p>
 
   <div class="mb-12 flex gap-7">
     <article class="mt-12 w-full space-y-12">
-      <section class="space-y-10 border-b-thin border-sweater-9 pb-12">
-        <div class="grid grid-cols-2 gap-x-4 gap-y-2 xs:grid-cols-3">
-          <div>
-            <h2>Tech</h2>
-            <p>{tech.sort().join(", ")}</p>
+      <section class="space-y-10">
+        <div class="grid grid-cols-2 gap-x-4 gap-y-2">
+          <div class="flex gap-4 rounded-xl bg-sweater-9 p-4">
+            <Wrench class="shrink-0" />
+
+            <div>
+              <h2>Tech</h2>
+              <p>{tech.sort().join(", ")}</p>
+            </div>
           </div>
 
           {
@@ -87,7 +99,7 @@ const { Content, headings } = await render(project);
           />
         </div>
 
-        <TableOfContents headings={headings} />
+        <!-- <TableOfContents headings={headings} /> -->
       </section>
     </article>
   </div>

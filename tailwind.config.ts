@@ -15,7 +15,7 @@ const config: Config = {
       // Account for 2rem (30px) padding on sides, so <width> + 2 * 30px
       maxWidth: {
         normal: "710px",
-        wide: "910px",
+        wide: "960px",
       },
       colors: {
         sweater: {
@@ -32,7 +32,8 @@ const config: Config = {
         },
       },
       screens: {
-        // Used for MDX headings
+        // We need to know screen size so the hashtags next to MDX headings can be shifted
+        // to the right when the screen width becomes too small
         normal: "710px",
         post: "710px",
         xs: "480px",
