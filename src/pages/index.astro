@@ -26,7 +26,7 @@ const projects = await getEntries([
     ogImageParams: "Graphics programming, games, websites.",
   }}
 >
-  <main class="space-y-12 py-8">
+  <main class="space-y-12 py-12">
     <section class="span-normal grid grid-cols-2 gap-x-8 gap-y-5 px-8 *:animate-fade">
       <p class="[--order:0]">
         Hi! I'm a third year student in the Digital Media Design program at UPenn. I'm concurrently
@@ -120,7 +120,7 @@ const projects = await getEntries([
           return (
             <a
               href={`/posts/${id}`}
-              class="group flex animate-fade flex-col justify-between border-t-2 border-sweater-9 py-4 *:transition-colors xs:flex-row xs:gap-4"
+              class="group flex animate-fade flex-col justify-between border-t-2 border-sweater-9 py-4 *:transition-colors last:border-b-2 xs:flex-row xs:gap-4"
               style={{ "--order": idx + 2 }}
             >
               <h2 class="subtitle text-pretty group-hover:text-sweater-1">{title}</h2>
