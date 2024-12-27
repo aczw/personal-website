@@ -87,9 +87,11 @@ entries.sort((a, b) => b[0] - a[0]);
                       <h2 class="break-words">
                         {title} <PostPublishedStatus published={published} />
                       </h2>
-                      <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
-                        {blurb}
-                      </p>
+                      {blurb ? (
+                        <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
+                          {blurb}
+                        </p>
+                      ) : null}
                     </div>
                   </a>
                 ))}

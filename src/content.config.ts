@@ -54,7 +54,7 @@ const posts = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      blurb: BlurbSchema,
+      blurb: BlurbSchema.optional(),
       tags: TypeSchema.optional(),
       posted: z.date(),
       updated: z.date().optional(),
