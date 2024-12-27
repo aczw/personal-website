@@ -1,9 +1,9 @@
 ---
-import { getEntry, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+import { getCollection, getEntry, render } from "astro:content";
 import { Image } from "astro:assets";
 
 import MainLayout from "@/layouts/main-layout.astro";
-
 import ProjectCover from "@/components/project-cover.astro";
 import TableOfContents from "@/components/table-of-contents.astro";
 
@@ -14,15 +14,15 @@ import H3 from "@/components/mdx/h3.astro";
 import Link from "@/components/link.astro";
 import { Wrench } from "lucide-astro";
 
-// Return 404 if server request doesn't contain ID
-const { id } = Astro.params;
-if (!id) {
-  return Astro.rewrite("/404");
-}
+export const getStaticPaths = (async () => {
+  const projects = await getCollection("projects");
+  return projects.map((project) => {
+    return { params: { id: project.id } };
+  });
+}) satisfies GetStaticPaths;
 
-// If the project doesn't exist we return a 404
-const project = await getEntry("projects", id);
-if (!project) return Astro.rewrite("/404");
+const { id } = Astro.params;
+const project = await getEntry("projects", id)!;
 
 // Destructure everything
 const {

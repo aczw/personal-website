@@ -1,9 +1,9 @@
 ---
+import type { GetStaticPaths } from "astro";
 import { Image } from "astro:assets";
 import { getEntry, render } from "astro:content";
 
 import MainLayout from "@/layouts/main-layout.astro";
-
 import PostPublishedStatus from "@/components/dev/post-published-status.astro";
 import TableOfContents from "@/components/table-of-contents.astro";
 
@@ -12,20 +12,17 @@ import Aside from "@/components/mdx/aside.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 import { validProjectCover } from "@/scripts/util";
+import { getCollection } from "astro:content";
 
-// Return 404 if server request doesn't contain ID
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("posts", (post) => post.data.published);
+  return posts.map((post) => {
+    return { params: { id: post.id } };
+  });
+}) satisfies GetStaticPaths;
+
 const { id } = Astro.params;
-if (!id) {
-  return Astro.rewrite("/404");
-}
-
-// If the current ID doesn't exist (aka the post doesn't exist), or the post
-// exists but is currently a draft, then we return a 404
-const post = await getEntry("posts", id);
-if (!post || (!import.meta.env.DEV && !post.data.published)) {
-  return Astro.rewrite("/404");
-}
-
+const post = await getEntry("posts", id)!;
 const {
   data: { title, blurb, posted, updated, cover, published },
 } = post;
