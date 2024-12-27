@@ -90,18 +90,18 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
                 <div class="flex items-center justify-between gap-4">
                   <div>
                     <h2 class="text-sweater-3">{name}</h2>
-                    <li class="flex flex-wrap gap-x-2">
+                    <ul class="flex flex-wrap gap-x-2">
                       {metadata.tech.map((tech, idx) => (
-                        <ul class="berkeley text-sweater-4">
+                        <li class="berkeley text-sweater-4">
                           {tech}
                           {idx !== metadata.tech.length - 1 ? (
                             <span aria-hidden="true" class="text-sweater-7">
                               /
                             </span>
                           ) : null}
-                        </ul>
+                        </li>
                       ))}
-                    </li>
+                    </ul>
                   </div>
 
                   <ArrowRight

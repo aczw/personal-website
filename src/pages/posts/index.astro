@@ -1,83 +1,81 @@
 ---
 import { getCollection } from "astro:content";
 
-import MainLayout from "@/layouts/main-layout.astro";
 import PostPublishedStatus from "@/components/dev/post-published-status.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
 
 let posts = await getCollection("posts", (post) => import.meta.env.DEV || post.data.published);
 posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 ---
 
-<MainLayout
+<CommonLayout
   meta={{
     kind: "route",
     title: "Posts",
     description:
-      "Writing about things I've learned, ideas I'm working on, or topics that interest me.",
+      "Random writing about stuff I've learned, things I'm working on, and interesting topics.",
     ogImageParams: "All my posts.",
   }}
-  useMinHeight
-  useVerticalSpacing
 >
-  <section class="space-y-4">
-    <div class="flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50">
-      {
-        posts.map((post, idx) => {
-          let {
-            data: { title, blurb, posted, published },
-            id,
-          } = post;
+  <main
+    class="span-normal flex flex-col py-12 [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50"
+  >
+    {
+      posts.map((post, idx) => {
+        const {
+          data: { title, blurb, posted, published },
+          id,
+        } = post;
 
-          return (
-            <a
-              href={`/posts/${id}`}
-              class="group flex animate-fade flex-col gap-4 border-y-2 border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100"
-              style={{ "--order": idx + 1 }}
+        return (
+          <a
+            href={`/posts/${id}`}
+            class="group flex animate-fade flex-col gap-4 border-y-2 border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100"
+            style={{ "--order": idx + 1 }}
+          >
+            <time
+              datetime={posted.toISOString()}
+              title={posted.toLocaleString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+                hour: "numeric",
+                minute: "numeric",
+                timeZone: "America/New_York",
+                timeZoneName: "short",
+              })}
+              class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
             >
-              <time
-                datetime={posted.toISOString()}
-                title={posted.toLocaleString("en-US", {
+              <span class="xs:hidden">
+                {posted.toLocaleDateString("en-US", {
                   month: "long",
                   day: "numeric",
                   year: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
                   timeZone: "America/New_York",
-                  timeZoneName: "short",
                 })}
-                class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
-              >
-                <span class="xs:hidden">
-                  {posted.toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                    timeZone: "America/New_York",
-                  })}
-                </span>
-                <span class="hidden xs:inline">
-                  {posted.toLocaleDateString("en-US", {
-                    month: "2-digit",
-                    day: "2-digit",
-                    year: "2-digit",
-                    timeZone: "America/New_York",
-                  })}
-                </span>
-              </time>
+              </span>
+              <span class="hidden xs:inline">
+                {posted.toLocaleDateString("en-US", {
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "2-digit",
+                  timeZone: "America/New_York",
+                })}
+              </span>
+            </time>
 
-              <div class="space-y-1.5">
-                <h2 class="break-words">
-                  <PostPublishedStatus published={published} />
-                  {title}
-                </h2>
-                <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
-                  {blurb}
-                </p>
-              </div>
-            </a>
-          );
-        })
-      }
-    </div>
-  </section>
-</MainLayout>
+            <div class="space-y-1.5">
+              <h2 class="break-words">
+                <PostPublishedStatus published={published} />
+                {title}
+              </h2>
+              <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
+                {blurb}
+              </p>
+            </div>
+          </a>
+        );
+      })
+    }
+  </main>
+</CommonLayout>
