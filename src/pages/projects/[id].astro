@@ -103,6 +103,10 @@ const { Content, headings } = await render(project);
       </section>
 
       <section class="mdx-span-normal space-y-6">
+        <TableOfContents headings={headings} />
+
+        <div class="col-[1] hidden w-[calc(175px+2rem)] bg-blue-100 min-[1180px]:block"></div>
+
         <Content
           components={{
             h2: H2,
@@ -113,8 +117,6 @@ const { Content, headings } = await render(project);
           }}
         />
       </section>
-
-      <!-- <TableOfContents headings={headings} /> -->
     </article>
   </main>
 </CommonLayout>
