@@ -32,12 +32,14 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
 >
   <main class="space-y-12 py-12">
     <section class="span-normal animate-fade [--order:0]">
-      <div class="grid grid-cols-2 items-center gap-8 border-y-2 border-sweater-9 py-4">
-        <h2 class="cursor-default leading-none text-sweater-4">
+      <div
+        class="380:flex-row 380:items-center 380:gap-4 flex flex-col gap-2.5 border-y-2 border-sweater-9 py-4 sm:gap-8"
+      >
+        <h2 class="w-fit cursor-default leading-none text-sweater-4 sm:w-1/2">
           Filter{filteredByAny ? "ed" : ""} by:
         </h2>
 
-        <div class="berkeley flex items-center gap-2.5 [--fade-speed:50ms]">
+        <div class="berkeley flex flex-wrap items-center gap-2.5 [--fade-speed:50ms] sm:w-1/2">
           {
             Filters.map((filter, idx) => {
               const filtered = filterParams[idx];
@@ -59,7 +61,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
       </div>
     </section>
 
-    <section class="span-wide grid grid-cols-1 gap-8 [--fade-speed:40ms] sm:grid-cols-2">
+    <section class="span-wide 560:grid-cols-2 grid grid-cols-1 gap-8 [--fade-speed:40ms]">
       {
         projects.map((project, idx) => {
           const {

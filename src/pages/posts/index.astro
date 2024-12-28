@@ -32,7 +32,9 @@ entries.sort((a, b) => b[0] - a[0]);
     ogImageParams: "All my posts.",
   }}
 >
-  <main class="span-normal min-h-[calc(100vh-150px-71.25px)] py-12">
+  <main
+    class="span-normal min-h-[calc(100vh-var(--header-h)-71.25px)] py-12 [--header:210px] xs:[--header:147.38px] sm:[--header:150px]"
+  >
     <div
       class="pointer-events-none space-y-12 [--fade-speed:25ms] [&_.row:not(:hover)]:hover:brightness-50"
     >
@@ -50,7 +52,7 @@ entries.sort((a, b) => b[0] - a[0]);
                 {sortedPosts.map(({ data: { title, blurb, posted, published }, id }, idx) => (
                   <a
                     href={`/posts/${id}`}
-                    class="row group flex animate-fade flex-col gap-4 border-y-2 border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100 xs:flex-row xs:gap-8"
+                    class="row 380:flex-row 380:gap-8 group flex animate-fade flex-col gap-1 border-y-2 border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100"
                     style={{ "--order": idx + 1 }}
                   >
                     <time
@@ -66,15 +68,14 @@ entries.sort((a, b) => b[0] - a[0]);
                       })}
                       class="berkeley shrink-0 text-sweater-4 transition-colors group-hover:text-sweater-3"
                     >
-                      <span class="xs:hidden">
+                      <span class="380:hidden">
                         {posted.toLocaleDateString("en-US", {
                           month: "long",
                           day: "numeric",
-                          year: "numeric",
                           timeZone: "America/New_York",
                         })}
                       </span>
-                      <span class="hidden xs:inline">
+                      <span class="380:inline hidden">
                         {posted.toLocaleDateString("en-US", {
                           month: "2-digit",
                           day: "2-digit",
@@ -85,7 +86,8 @@ entries.sort((a, b) => b[0] - a[0]);
 
                     <div class="space-y-1">
                       <h2 class="break-words">
-                        {title} <PostPublishedStatus published={published} />
+                        {title}
+                        <PostPublishedStatus published={published} />
                       </h2>
                       {blurb ? (
                         <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">

@@ -36,7 +36,9 @@ const config: Config = {
         // to the right when the screen width becomes too small
         normal: "710px",
         post: "710px",
+        "560": "560px",
         xs: "480px",
+        "380": "380px",
       },
       keyframes: {
         fade: {

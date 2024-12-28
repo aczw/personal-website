@@ -27,7 +27,9 @@ const projects = await getEntries([
   }}
 >
   <main class="space-y-12 py-12">
-    <section class="span-normal grid grid-cols-2 gap-x-8 gap-y-5 px-8 *:animate-fade">
+    <section
+      class="span-normal 560:grid-cols-2 grid grid-cols-1 gap-x-8 gap-y-5 px-8 *:animate-fade"
+    >
       <p class="[--order:0]">
         Hi! I'm a third year student in the Digital Media Design program at UPenn. I'm concurrently
         finishing a Master's in Computer Graphics and Game Technology.
@@ -49,12 +51,12 @@ const projects = await getEntries([
       <p class="subtitle [--order:3]">
         You can find my socials and resumé below. Thanks for stopping by. <span
           aria-hidden="true"
-          class="animate-pulse cursor-mewo whitespace-nowrap">(〜￣▽￣)〜</span
+          class="cursor-mewo whitespace-nowrap">(〜￣▽￣)〜</span
         >
       </p>
     </section>
 
-    <section class="span-wide grid grid-cols-1 gap-8 sm:grid-cols-2">
+    <section class="span-wide grid grid-cols-1 gap-8 xs:grid-cols-2">
       {
         projects.map((project, idx) => {
           const {
