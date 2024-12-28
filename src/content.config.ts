@@ -35,14 +35,8 @@ const projects = defineCollection({
             message: "I assume source code is hosted on GitHub!",
           })
           .optional(),
+        date: z.string(),
       }),
-      link: z
-        .object({
-          href: z.string().url(),
-          text: z.string(),
-          icon: z.enum(["ext", "play"]),
-        })
-        .optional(),
       type: TypeSchema,
       cover: ImageSchema(image),
       order: z.number(),
