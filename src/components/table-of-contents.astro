@@ -9,7 +9,7 @@ const { headings } = Astro.props;
 ---
 
 <aside
-  class="sticky -right-24 top-0 hidden h-[calc(100vh-10rem)] w-[200px] shrink-0 overflow-y-auto post:flex"
+  class="sticky -right-24 top-0 hidden h-[calc(100vh-10rem)] w-[200px] shrink-0 overflow-y-auto"
 >
   <nav class="relative w-full">
     <div aria-hidden="true" class="sticky inset-x-0 top-0 h-12 bg-gradient-to-b from-sweater-10">
@@ -17,7 +17,7 @@ const { headings } = Astro.props;
 
     <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
 
-    <div class="normal:mr-0 mr-7 flex flex-col leading-snug text-sweater-6">
+    <div class="mr-7 flex flex-col leading-snug text-sweater-6 normal:mr-0">
       <a
         href="#"
         class="mb-[0.4rem] rounded-md px-[0.4rem] py-1 leading-none text-sweater-3 transition-colors hover:bg-sweater-9 hover:text-sweater-1"

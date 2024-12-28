@@ -35,7 +35,6 @@ const config: Config = {
         // We need to know screen size so the hashtags next to MDX headings can be shifted
         // to the right when the screen width becomes too small
         normal: "710px",
-        post: "710px",
         "560": "560px",
         xs: "480px",
         "380": "380px",
