@@ -5,6 +5,7 @@
 @layer base {
   :root {
     --fade-speed: 100ms;
+    @apply [--header-h:210px] xs:[--header-h:147.38px] sm:[--header-h:150px];
   }
 
   html {
@@ -150,10 +151,14 @@
   }
 
   .span-normal {
-    @apply max-w-normal mx-auto px-8;
+    @apply mx-auto max-w-normal px-8;
   }
 
   .span-wide {
-    @apply max-w-wide mx-auto px-8;
+    @apply mx-auto max-w-wide px-8;
+  }
+
+  .span-height {
+    @apply min-h-[calc(100vh-var(--header-h)-71.25px)];
   }
 }

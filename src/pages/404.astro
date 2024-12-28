@@ -3,14 +3,14 @@ export const prerender = false;
 
 import { Image } from "astro:assets";
 
-import MainLayout from "@/layouts/main-layout.astro";
 import Link from "@/components/link.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
 
 // Set response code, just in case it wasn't obvious
 Astro.response.status = 404;
 Astro.response.statusText = "Page Not Found";
 
-let fun = [
+const fun = [
   "WFSTH",
   "pagenotfound",
   "soitgoes",
@@ -23,66 +23,65 @@ let fun = [
   "allitcosts",
 ];
 
-let pick = fun[Math.floor(Math.random() * fun.length)];
-let offset = Math.floor(Math.random() * pick.length);
-let scrambled = pick.slice(offset) + pick.slice(0, offset);
+const pick = fun[Math.floor(Math.random() * fun.length)];
+const offset = Math.floor(Math.random() * pick.length);
+const scrambled = pick.slice(offset) + pick.slice(0, offset);
 
-let requestUrl = new URL(Astro.request.url);
-let params = requestUrl.searchParams;
-const hasUwu = params.has("uwu");
+const requestUrl = new URL(Astro.request.url);
+const params = requestUrl.searchParams;
+const hasUwu = params.has("uwu") && params.get("uwu") === "true";
 ---
 
-<MainLayout
+<CommonLayout
   meta={{
     kind: "route",
     title: "404",
     description: "Sorry, this page doesn't exist.",
     ogImageParams: "Page not found.",
   }}
-  class="flex flex-col items-center justify-center"
-  useMinHeight
-  useVerticalSpacing
 >
-  {
-    hasUwu ? (
-      <Image
-        src={import("@/assets/not-found.png")}
-        alt="Page not found"
-        class="mb-16 w-[clamp(400px,80%,500px)] animate-fade [--order:0]"
-      />
-    ) : (
-      <p
-        id="scroll"
-        aria-hidden="true"
-        data-scrambled={scrambled}
-        class="w-fit animate-fade cursor-not-allowed rounded-full bg-sweater-9 px-6 py-2 font-mono text-[clamp(30px,7vw,90px)] italic text-sweater-7 [--order:0] sm:px-12"
-      >
-        {scrambled}
+  <main class="span-height flex flex-col items-center justify-center space-y-12 py-12">
+    {
+      hasUwu ? (
+        <Image
+          src={import("@/assets/not-found.png")}
+          alt="Page not found"
+          class="mb-16 w-[clamp(400px,80%,500px)] animate-fade [--order:0]"
+        />
+      ) : (
+        <p
+          id="scroll"
+          aria-hidden="true"
+          data-scrambled={scrambled}
+          class="w-fit animate-fade cursor-not-allowed rounded-full bg-sweater-9 px-6 py-2 font-mono text-[clamp(30px,7vw,90px)] italic text-sweater-7 [--order:0] sm:px-12"
+        >
+          {scrambled}
+        </p>
+      )
+    }
+
+    <section class="flex animate-fade flex-col items-center [--order:1]">
+      <p>
+        {
+          hasUwu ? (
+            <Link href="https://twitter.com/sawaratsuki1004" target="_blank">
+              {"Source."}
+            </Link>
+          ) : null
+        }
+
+        <span class="subtitle">Sorry, that's a 404. Page not found!</span>
       </p>
-    )
-  }
-
-  <section class="flex animate-fade flex-col items-center [--order:1]">
-    <p>
-      {
-        hasUwu ? (
-          <Link href="https://twitter.com/sawaratsuki1004" target="_blank">
-            {"Source."}
-          </Link>
-        ) : null
-      }
-
-      <span class="subtitle">Sorry, that's a 404. Page not found~</span>
-    </p>
-  </section>
-</MainLayout>
+    </section>
+  </main>
+</CommonLayout>
 
 <script>
   // For some reason, whitespace is added to the front and end of the word, so we can't
-  // use scroll.textContent directly at first. instead, store the scrambled word in the dataset
-  let scroll = document.getElementById("scroll");
+  // use scroll.textContent directly at first. Instead, store the scrambled word in the dataset
+  const scroll = document.getElementById("scroll");
 
-  // Scroll element is only visible if ?uwu mode is off
+  // Scroll element is only visible if ?uwu=true mode is off
   if (scroll) {
     let text = scroll.dataset["scrambled"]!;
 
