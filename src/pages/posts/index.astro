@@ -50,7 +50,7 @@ entries.sort((a, b) => b[0] - a[0]);
                 {sortedPosts.map(({ data: { title, blurb, posted, published }, id }, idx) => (
                   <a
                     href={`/posts/${id}`}
-                    class="row 380:flex-row 380:gap-8 group flex animate-fade flex-col gap-1 border-y-2 border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100"
+                    class="row group flex animate-fade flex-col gap-1 border-y-2 border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row 380:gap-8"
                     style={{ "--order": idx + 1 }}
                   >
                     <time
@@ -73,7 +73,7 @@ entries.sort((a, b) => b[0] - a[0]);
                           timeZone: "America/New_York",
                         })}
                       </span>
-                      <span class="380:inline hidden">
+                      <span class="hidden 380:inline">
                         {posted.toLocaleDateString("en-US", {
                           month: "2-digit",
                           day: "2-digit",
@@ -83,7 +83,7 @@ entries.sort((a, b) => b[0] - a[0]);
                     </time>
 
                     <div class="space-y-1">
-                      <h2 class="break-words">
+                      <h2>
                         {title}
                         <PostPublishedStatus published={published} />
                       </h2>

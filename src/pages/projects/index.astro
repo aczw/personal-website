@@ -33,7 +33,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
   <main class="space-y-12 py-12">
     <section class="span-normal animate-fade [--order:0]">
       <div
-        class="380:flex-row 380:items-center 380:gap-4 flex flex-col gap-2.5 border-y-2 border-sweater-9 py-4 sm:gap-8"
+        class="flex flex-col gap-2.5 border-y-2 border-sweater-9 py-4 380:flex-row 380:items-center 380:gap-4 sm:gap-8"
       >
         <h2 class="w-fit cursor-default leading-none text-sweater-4 sm:w-1/2">
           Filter{filteredByAny ? "ed" : ""} by:
@@ -61,7 +61,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
       </div>
     </section>
 
-    <section class="span-wide 560:grid-cols-2 grid grid-cols-1 gap-8 [--fade-speed:40ms]">
+    <section class="span-wide grid grid-cols-1 gap-8 [--fade-speed:40ms] 560:grid-cols-2">
       {
         projects.map((project, idx) => {
           const {
@@ -114,7 +114,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
                 </div>
 
                 <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
-                  <div class="overflow-hidden text-pretty opacity-0 transition-opacity group-hover:opacity-100">
+                  <div class="overflow-hidden opacity-0 transition-opacity group-hover:opacity-100">
                     <p class="pb-4">{blurb}</p>
                   </div>
                 </div>
