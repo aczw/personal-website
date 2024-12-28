@@ -12,7 +12,7 @@ const config: Config = {
       mono: ["Berkeley Mono Variable", ...defaultTheme.fontFamily.mono],
     },
     extend: {
-      // Account for 2rem (30px) padding on sides, so <width> + 2 * 30px
+      // Account for 2rem (30px, spacing scale 8) padding on sides, so <width> + 2 * 30px
       maxWidth: {
         normal: "710px",
         wide: "960px",

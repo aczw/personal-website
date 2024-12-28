@@ -24,7 +24,7 @@ const {
 const path = `/_files/${collection}/${folder}`;
 ---
 
-<video autoplay loop muted playsinline class="h-full w-full animate-fade bg-sweater-9 [--order:0]">
+<video autoplay loop muted playsinline>
   {hasWebM ? <source src={`${path}/${name}.webm`} type="video/webm" /> : null}
   <source src={`${path}/${name}.mp4`} type="video/mp4" />
 </video>

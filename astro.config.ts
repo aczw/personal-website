@@ -11,6 +11,7 @@ import { fileURLToPath } from "node:url";
 
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import rehypeUnwrapImages from "rehype-unwrap-images";
 
 const SITE_NAME = "https://charleszw.com";
 
@@ -89,6 +90,9 @@ const config = defineConfig({
     }),
     mdx(),
   ],
+  markdown: {
+    rehypePlugins: [rehypeUnwrapImages],
+  },
   output: "static",
   adapter: vercel({
     imageService: true,

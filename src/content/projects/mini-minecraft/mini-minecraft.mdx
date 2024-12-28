@@ -19,9 +19,11 @@ import { Vimeo } from "astro-embed";
 
 First, let's take a look at this snazzy ~2.5 minute showcase reel that I made ~~at 6 AM after pulling an all nighter finishing the project~~.
 
-<div class="overflow-hidden rounded-xl">
-  <Vimeo id="https://vimeo.com/893391293" posterQuality="high" params="color=9A91FE" />
-</div>
+<figure class="full-bleed">
+  <div class="overflow-hidden rounded-xl">
+    <Vimeo id="https://vimeo.com/893391293" posterQuality="max" params="color=9A91FE" />
+  </div>
+</figure>
 
 > If the embed doesn't work for some reason, here's the [direct link](https://vimeo.com/893391293).
 
@@ -77,7 +79,10 @@ Chunking our terrain helps a lot when we draw our blocks. For instance, my teamm
 
 A block has six faces. Each face uses two triangles. If we render every face of every non-`EMPTY` block of every chunk, every single frame, our GPU would catch on fire and explode. There's no point in rendering faces that are hidden by another block. The player never sees it.
 
-![Two blocks are right next to each other. The face in between does not need to be rendered.](./face-culling.png)
+<div class="full-bleed">
+  ![Two blocks are right next to each other. The face in between does not need to be
+  rendered.](./face-culling.png)
+</div>
 
 Instead, we first iterate over every block in the chunk. For each non-`EMPTY` block, we check its six neighbors, and only render a corresponding face if its neighbor is `EMPTY`.
 
@@ -97,7 +102,10 @@ std::unordered_map<Direction, Chunk*> neighbors;
 
 If you were to noclip below the ground, it now looks "hollowed out." What you're seeing below is what our caves look like... on the outside! The player is technically inside solid `STONE` right now, but it's just not being drawn.
 
-![Since we're not rendering any blocks inside the terrain, we can see snake-like caves underground.](./hollowed-caves.png)
+<div class="full-bleed">
+  ![Since we're not rendering any blocks inside the terrain, we can see snake-like caves
+  underground.](./hollowed-caves.png)
+</div>
 
 _I cannot emphasize how much this improves performance._ On my laptop, my framerate basically tripled. This was a crucial step in getting our game to run well.
 
@@ -128,17 +136,23 @@ For example, `position` takes up four floats, while `anim` only uses one.
 
 All the block textures in our game live in a 256x256 PNG sprite. Each block face texture is 16x16 pixels, so we can refer to specific textures using a coordinate system. For example, the dirt texture's lower-left corner is located at (2, 1) on our imaginary grid.
 
-![A dirt face texture at coordinate (2, 1) corresponds to (2/16, 1/16) in UV coordinates.](./block-uv.png)
+<div class="full-bleed">
+  ![A dirt face texture at coordinate (2, 1) corresponds to (2/16, 1/16) in UV
+  coordinates.](./block-uv.png)
+</div>
 
 We map a block type to the imaginary coordinate for each of its six faces.
 
-```cpp
-std::unordered_map<Block, std::unordered_map<Direction, glm::ivec2>> block_uv_map;
+<div class="full-bleed">
+  ```cpp
+  std::unordered_map<Block, std::unordered_map<Direction, glm::ivec2>> block_uv_map;
 
-// for example, this accesses the UVs for the Y_NEG face of a dirt block.
-// this is where the enums really come in handy!
-glm::ivec uv = block_uv_map[DIRT][Y_NEG];
-```
+  // for example, this accesses the UVs for the Y_NEG face of a dirt block.
+  // this is where the enums really come in handy!
+  glm::ivec uv = block_uv_map[DIRT][Y_NEG];
+
+  ```
+</div>
 
 Face textures are 1/16 of the whole sprite, so we multiply the coordinate by 1/16 to get the correct UV. Note that this only describes the lower-left corner of the block. We need to add 1/16 horizontally and vertically to get the other three corners.
 
@@ -175,7 +189,10 @@ This solves our issue because transparent blocks now have the correct fragment c
 
 If we fly really high up into the air, you'll see a circular fog that surrounds the player and slowly fades blocks into the distance.
 
-![Blocks slowly fade into the distance in a circular radius around the player.](./distance-fog.png)
+
+<div class="full-bleed">
+  ![Blocks slowly fade into the distance in a circular radius around the player.](./distance-fog.png)
+</div>
 
 In the chunk fragment shader, I obtain the player's world position and the fragment's world position. I find the distance between these two, and divide by a `max_distance` to get a value between 0.0-1.0.
 
@@ -187,13 +204,17 @@ So, what is `max_distance`? At all times, we only render a specific number of ch
 
 So, the distance fog plays a second role: to stop the player from seeing chunks appear and disappear as they move. But, it's worth it to implement for aesthetics alone, I think:
 
-![A beautiful sunrise over the desert.](./distance-fog-pretty.png)
+<div class="full-bleed">
+  ![A beautiful sunrise over the desert.](./distance-fog-pretty.png)
+</div>
 
 ## Day/night cycle, celestial objects
 
 Our engine features a day cycle. We see the sun during the day, and the moon and stars at night. Clouds are always visible. In between, sunsets and sunrises transition us nicely.
 
-![A diagram depicting what percentage of a day we spend in day, in night, and how long it takes to transition.](./day-night-cycle.png)
+<div class="full-bleed">
+  ![A diagram depicting what percentage of a day we spend in day, in night, and how long it takes to transition.](./day-night-cycle.png)
+</div>
 
 During development, I religiously followed the diagram above. It defines a single day as a range from 0.0-1.0, and specifies exact durations for transitions. For example:
 
@@ -210,7 +231,9 @@ The skybox is _not_ a cubemap. We're actually drawing to a screen space quad. To
 
 Depending on the direction of the ray, we can decide different colors to give to every single pixel. The picture below, for example, maps the literal ray direction to RGB values.
 
-![The sky is split into green, red, and black depending on the direction of the ray.](./skybox-uv.png)
+<div class="full-bleed">
+  ![The sky is split into green, red, and black depending on the direction of the ray.](./skybox-uv.png)
+</div>
 
 There's a lot we can do here. For example, map a position to a UV coordinate, and output a different color depending on the value. Or, shooting a ray out and coloring the radius around that ray a different color, up to a certain angle (like a cone). I also lerp between colors depending on the time of day.
 
@@ -221,15 +244,15 @@ Both the sun and moon are quads that rotate at a fixed distance _around_ the pla
 After drawing the sun and moon but before drawing the terrain, I reset the OpenGL depth buffer. This means that they are _always_ drawn behind blocks, no matter the player's y-coordinate.
 
 ```cpp
-// this function is called every time our scene is drawn, which is 60 times
-// a second in our engine.
+// this function is called every time our scene is drawn, which is
+// 60 times a second in our engine.
 void paint() {
   /* previous rendering stuff */
 
   sun.render();
   moon.render();
 
-  // reset depth buffer so all celestial objects are drawn behind terrain
+  // reset depth buffer so all celestial objects are drawn behind
   glClear(GL_DEPTH_BUFFER_BIT);
 
   // keep on renderin'
@@ -399,7 +422,9 @@ From there, I was able to render a single character, and then a string, which is
 
 I did have time to, however, add an in-game debug mode that shows the player's current position, as well as the current chunk (press F3 just like Minecraft):
 
-![Debug mode is turned on, and shows the current player position as (32, 158, 32) and chunk coordinate as (32, 32).](./debug-mode.png)
+<div class="full-bleed">
+  ![Debug mode is turned on, and shows the current player position as (32, 158, 32) and chunk coordinate as (32, 32).](./debug-mode.png)
+</div>
 
 This helped my teammates easily share cool structures they found for our showcase reel: just take a screenshot! I thought this was a great way to immediately start using my text system.
 

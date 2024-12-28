@@ -43,8 +43,11 @@ No ideas came to mind, and so I turned to other sources for inspiration...
 
 Recently I had been playing this game called [OLDTV](https://store.steampowered.com/app/643270/OLDTV/). The premise is that you're a gifted child sitting in front of a TV, and you're trying to switch between every single channel in the world.
 
-<figure>
-  <VideoGif content={{ collection: "projects", folder: "rcw" }} name="oldtv" />
+<figure class="full-bleed">
+  <div>
+    <VideoGif content={{ collection: "projects", folder: "rcw" }} name="oldtv" />
+  </div>
+  
   <figcaption>**OLDTV.** In-game footage. It's free on Steam, go play it.</figcaption>
 </figure>
 
@@ -82,15 +85,7 @@ With the gameplay decided, it was time to code.
 
 ## Programming the game and learning C#
 
-I will admit that RCW's code is a _little_ bit overengineered. If I were to redo everything
-today, I would definitely structure things differently (read: simplify things). But in order to
-actively learn Unity idioms and C# features, I tried out many different things throughout the
-codebase.
-
-<figure class="mx-auto flex max-w-[225px] items-end gap-4 xs:float-right xs:ml-6 xs:block xs:max-w-[150px] xs:gap-0">
-  ![Filetree of C# files for the game](rcw-files.png)
-  <figcaption>**RCW's filetree.** This is just a _little_ bit insane.</figcaption>
-</figure>
+I will admit that RCW's code is a _little_ bit overengineered. If I were to redo everything today, I would definitely structure things differently (read: simplify things). But in order to actively learn Unity idioms and C# features, I tried out many different things throughout the codebase.
 
 ### Singleton pattern
 
