@@ -43,9 +43,10 @@ entries.sort((a, b) => b[0] - a[0]);
 
           return (
             <section>
-              <h2 class="berkeley row mb-4 cursor-default leading-none text-sweater-6 transition-[filter_opacity]">
+              <h2 class="berkeley row mb-4 animate-fade cursor-default leading-none text-sweater-6 transition-[filter_opacity] [--order:0]">
                 {year}
               </h2>
+
               <div class="pointer-events-auto flex flex-col">
                 {sortedPosts.map(({ data: { title, blurb, posted, published }, id }, idx) => (
                   <a

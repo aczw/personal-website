@@ -40,12 +40,14 @@ const { Content, headings } = await render(project);
 <CommonLayout meta={{ kind: "project", project }}>
   <main class="py-12">
     <article class="space-y-12">
-      <ProjectCover
-        id={id}
-        cover={cover}
-        useVideo={{ small: false }}
-        class="span-wide overflow-hidden rounded-xl"
-      />
+      <div class="span-wide">
+        <ProjectCover
+          id={id}
+          cover={cover}
+          useVideo={{ small: false }}
+          class="overflow-hidden rounded-xl"
+        />
+      </div>
 
       <div class="span-normal space-y-1">
         <h1 class="text-3xl">{name}</h1>
