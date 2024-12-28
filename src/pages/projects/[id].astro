@@ -54,9 +54,11 @@ const { Content, headings } = await render(project);
         <p class="subtitle">{blurb}</p>
       </div>
 
-      <section class="span-normal mt-6 grid grid-cols-2 gap-4 leading-tight">
-        <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-4 py-2">
-          <Wrench class="shrink-0 stroke-sweater-3" />
+      <section
+        class="span-normal mt-6 grid grid-cols-1 gap-3 leading-tight xs:grid-cols-2 xs:gap-4"
+      >
+        <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
+          <Wrench class="hidden shrink-0 stroke-sweater-3 560:block" />
           <div>
             <h2 class="cursor-default">Tech</h2>
             <p>{tech.sort().join(", ")}</p>
@@ -65,8 +67,8 @@ const { Content, headings } = await render(project);
 
         {
           link ? (
-            <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-4 py-2">
-              <ExternalLink class="shrink-0 stroke-sweater-3" />
+            <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
+              <ExternalLink class="hidden shrink-0 stroke-sweater-3 560:block" />
               <div>
                 <h2 class="cursor-default">{link.text}</h2>
                 <Link href={link.href} target="_blank">
@@ -79,8 +81,8 @@ const { Content, headings } = await render(project);
 
         {
           sourceHref ? (
-            <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-4 py-2">
-              <FileCode class="shrink-0 stroke-sweater-3" />
+            <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
+              <FileCode class="hidden shrink-0 stroke-sweater-3 560:block" />
               <div>
                 <h2 class="cursor-default">Source</h2>
                 <Link href={sourceHref} target="_blank">
@@ -91,8 +93,8 @@ const { Content, headings } = await render(project);
           ) : null
         }
 
-        <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-4 py-2">
-          <CalendarFold class="shrink-0 stroke-sweater-3" />
+        <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
+          <CalendarFold class="hidden shrink-0 stroke-sweater-3 560:block" />
           <div>
             <h2 class="cursor-default">Date</h2>
             <p>{date}</p>
