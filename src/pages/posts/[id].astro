@@ -47,11 +47,15 @@ const { Content, headings } = await render(post);
 <CommonLayout meta={{ kind: "post", post, status }}>
   <main class="py-12">
     <article class="space-y-6">
-      <div class="span-wide">
-        {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" /> : null}
-      </div>
+      {
+        cover ? (
+          <div class="span-wide [&_+_div]:pt-6">
+            <Image src={cover.img} alt={cover.alt} loading="eager" />
+          </div>
+        ) : null
+      }
 
-      <div class="span-normal space-y-1 pt-6">
+      <div class="span-normal space-y-1">
         <h1 class="text-3xl">{title}</h1>
         {blurb ? <p class="subtitle">{blurb}</p> : null}
       </div>
