@@ -1,18 +1,17 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { Image } from "astro:assets";
-import { getEntry, render } from "astro:content";
+import { getEntry, getCollection, render } from "astro:content";
 
-import MainLayout from "@/layouts/main-layout.astro";
-import PostPublishedStatus from "@/components/dev/post-published-status.astro";
+import { validProjectCover } from "@/scripts/util";
 import TableOfContents from "@/components/table-of-contents.astro";
 
 import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
-import { validProjectCover } from "@/scripts/util";
-import { getCollection } from "astro:content";
+import CommonLayout from "@/layouts/common-layout.astro";
+import { CalendarFold, ClockArrowUp } from "lucide-astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts", (post) => post.data.published);
@@ -45,42 +44,46 @@ const dateOptions: Intl.DateTimeFormatOptions = {
 const { Content, headings } = await render(post);
 ---
 
-<MainLayout meta={{ kind: "post", post, status }}>
-  <div class="grid grid-cols-2 gap-8 pt-2">
-    <div class="berkeley subtitle flex flex-col">
-      <time datetime={posted.toISOString()}>
-        {posted.toLocaleDateString("en-US", dateOptions)}
-      </time>
+<CommonLayout meta={{ kind: "post", post, status }}>
+  <main class="py-12">
+    <article class="space-y-6">
+      <div class="span-wide">
+        {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" /> : null}
+      </div>
 
-      {
-        updated ? (
-          <time datetime={updated.toISOString()}>
-            Updated {updated.toLocaleDateString("en-US", dateOptions)}
-          </time>
-        ) : null
-      }
-    </div>
+      <div class="span-normal space-y-1 pt-6">
+        <h1 class="text-3xl">{title}</h1>
+        {blurb ? <p class="subtitle">{blurb}</p> : null}
+      </div>
 
-    <p class="subtitle col-start-2 col-end-3">{blurb}</p>
-  </div>
+      <div class="span-normal berkeley text-sweater-4">
+        <time datetime={posted.toISOString()} class="flex items-center gap-1.5">
+          <CalendarFold size={16} />
+          {posted.toLocaleDateString("en-US", dateOptions)}
+        </time>
+        {
+          updated ? (
+            <time datetime={updated.toISOString()} class="flex items-center gap-1.5">
+              <ClockArrowUp size={16} />
+              Updated {updated.toLocaleDateString("en-US", dateOptions)}
+            </time>
+          ) : null
+        }
+      </div>
 
-  <article class="w-full space-y-12 py-12 post:w-[calc(100%-0px)]">
-    <section class="space-y-4">
-      {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" class="" /> : null}
-    </section>
+      <section class="span-normal space-y-6">
+        <Content
+          components={{
+            h2: H2,
+            h3: H3,
+            blockquote: Aside,
+            a: Anchor,
+            img: Image,
+          }}
+        />
+      </section>
 
-    <section class="space-y-6">
-      <Content
-        components={{
-          h2: H2,
-          h3: H3,
-          blockquote: Aside,
-          a: Anchor,
-          img: Image,
-        }}
-      />
-    </section>
-  </article>
-
-  <!-- <TableOfContents headings={headings} /> -->
-</MainLayout>
+      <!-- <TableOfContents headings={headings} /> -->
+    </article>
+  </main>
+</CommonLayout>
