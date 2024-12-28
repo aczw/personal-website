@@ -47,7 +47,7 @@ Recently I had been playing this game called [OLDTV](https://store.steampowered.
   <div>
     <VideoGif content={{ collection: "projects", folder: "rcw" }} name="oldtv" />
   </div>
-  
+
   <figcaption>**OLDTV.** In-game footage. It's free on Steam, go play it.</figcaption>
 </figure>
 
@@ -226,7 +226,9 @@ RCW is an endless, fast-paced minigame about getting the highest score. I was th
 
 I also liked the button hover effect in [The Battle Cats](https://battlecats.club/en/series/battlecats/), which flashed bright yellow and magenta. Here, I tried to recreate it in Figma.
 
-<VideoGif content={{ collection: "projects", folder: "rcw" }} name="flashing-btns-figma" />
+<div class="full-bleed">
+  <VideoGif content={{ collection: "projects", folder: "rcw" }} name="flashing-btns-figma" />
+</div>
 
 ### Buttons buttons buttons
 
@@ -244,7 +246,10 @@ Originally I was going for a factory setting, with words coming down a sort of a
 
 One thing that may surprise you is that all the art assets were made in Figma. This includes the start screen, in-game, and game over screen, as well as all the UI.
 
-![The in-game screen, pause menu, and game over screen were all made in a single Figma file.](./figma-ingame.png)
+<div class="full-bleed">
+  ![The in-game screen, pause menu, and game over screen were all made in a single Figma
+  file.](./figma-ingame.png)
+</div>
 
 In order to animate different parts of the UI, I exported assets as individual pieces that I could put back together in Unity. This allowed me to, for instance, only animate the border around a button but not change its inside color.
 
@@ -275,7 +280,9 @@ cb.uvRect = new Rect(
 
 The other thing I'm really happy about are the button animations. When the instructions or credits button are activated, the same button is used to go back to the start screen.
 
-<VideoGif content={{ collection: "projects", folder: "rcw" }} name="main-menu-ani-btns" />
+<div class="full-bleed">
+  <VideoGif content={{ collection: "projects", folder: "rcw" }} name="main-menu-ani-btns" />
+</div>
 
 The "Go back" text slides out, and the outside border becomes a panel for the text to exist in. I spent ~~too much~~ some time getting it to feel just right. I would like to thank this [easings cheat sheet](https://easings.net/) for providing copy-and-paste animation curves.
 

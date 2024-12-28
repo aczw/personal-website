@@ -41,7 +41,7 @@
   article > .mdx-span-normal {
     & img,
     video {
-      @apply rounded-xl bg-sweater-9;
+      @apply w-full rounded-xl bg-sweater-9;
     }
 
     /* Inline code should have some padding and unique background color */

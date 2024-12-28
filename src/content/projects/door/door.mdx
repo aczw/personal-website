@@ -31,7 +31,7 @@ The natural pick for me was anything from [OMORI](https://www.omori-game.com/). 
 
 > I should mention that there will be light spoilers for the game from this point onwards. You've been warned!
 
-<div class="grid gap-4 sm:grid-cols-2">
+<div class="grid gap-4 sm:grid-cols-2 full-bleed">
   <figure>
     ![OMORI characters looking at photobook on a picnic blanket in a forest.](ca-1.png)
     <figcaption>
@@ -62,7 +62,7 @@ Homework is still homework and there were two shaders I was required to create.
 
 ### Toon shading
 
-<figure>
+<figure class="full-bleed">
   ![Screenshot of Unity Shader Graph for my toon shader](toon.png)
   <figcaption>Shader Graph for my toon shader.</figcaption>
 </figure>
@@ -77,13 +77,15 @@ What exemplifies NPR more than good ol' toon shading? I will spare you a detaile
 
 Another requirement we had to meet was to create an additional shader that animated over time. But, this was already a given for me; if you look at any in-game footage, the textures are always "shifting" around. It's a bit hard to explain, so here's a YouTube video:
 
-<div class="overflow-hidden rounded-xl">
-  <YouTube id="https://youtu.be/2D1VBDjamoA" posterQuality="high" params="start=182" />
+<div class="full-bleed">
+  <div class="overflow-hidden rounded-xl [&_lite-youtube]:max-w-none">
+    <YouTube id="https://youtu.be/2D1VBDjamoA" posterQuality="high" params="start=182" />
+  </div>
 </div>
 
 To create the drawn look as seen in-game, I drew two textures using Procreate's default pencil brushes. The lighter one emphasizes the scribbles more by being more sparse.
 
-<div class="mx-auto grid max-w-[450px] grid-cols-2 gap-4">
+<div class="mx-auto grid max-w-[500px] grid-cols-2 gap-4">
   <Image
     src={import("tex-light.png")}
     alt="White square with lighter black scribbles all over it."
@@ -100,7 +102,7 @@ The textures being black and white make them very versatile. The values can be i
 
 I can now "animate" these textures by rotating them by a random amount. To emulate the game's behavior of animating across a fixed set of sprites, I sample the UV orientation from a triangle wave that I've increased the amplitude of, and then floored so I could get staggered values that repeated infinitely.
 
-<figure class="mx-auto max-w-[400px]">
+<figure class="mx-auto max-w-[500px]">
   ![Staircase-like graph from the Graphtoy window](triwave.png)
   <figcaption>
     **Staggered triangle wave.** I used [Graphtoy](https://graphtoy.com) to figure out values before
@@ -113,8 +115,7 @@ Hopefully the image conveys my implementation visually. Each of those steps are 
 <figure>
   <VideoGif content={{ collection: "projects", folder: "door" }} name="door-anim-tex" hasWebM />
   <figcaption>
-    The green-yellow-red color scheme is for me testing out the highlight, midtone, and shadow
-    colors.
+    The green-yellow-red color scheme is for testing out the highlight, midtone, and shadow colors.
   </figcaption>
 </figure>
 
@@ -131,7 +132,9 @@ This gives us basic outlines.
 
 ![A sphere floating above a plane with black outlines.](basic-outlines.png)
 
-<figure class="float-right ml-8 hidden pb-6 xs:block">
+However, outlines in OMORI seem to be made up of three overlapping parts: a green, pink, and purple part. Zooming in on the second concept art you can see it very clearly.
+
+<figure class="mx-auto max-w-[400px]">
   <Image
     src={import("outline-example.png")}
     alt="Close-up of Mari's elbow, showcasing the multicolored outlines."
@@ -139,17 +142,11 @@ This gives us basic outlines.
   <figcaption>OMORI's unique outline style.</figcaption>
 </figure>
 
-However, outlines in OMORI seem to be made up of three overlapping parts: a green, pink, and purple part. Zooming in on the second concept art you can see it very clearly.
-
-<Image
-  src={import("outline-example.png")}
-  alt="Close-up of Mari's elbow, showcasing the multicolored outlines."
-  class="mx-auto xs:hidden"
-/>
-
 We need three outlines, so we do exactly that. Each outline has a different color and has its UVs slightly offset to give us the chromatic aberration look. I also use the Random Range node to vary the outline thickness based on screen position. Finally, I replace the solid outline with the scribble texture and animate it using the same method as the surface shader.
 
-![The same sphere and plane but now rendered using OMORI's outlines.](cool-outlines.png)
+<div class="full-bleed">
+  ![The same sphere and plane but now rendered using OMORI's outlines.](cool-outlines.png)
+</div>
 
 ## Assembling a scene
 
@@ -157,7 +154,9 @@ I found all the models on Sketchfab. They are [credited in the README here](http
 
 Speaking of laptop, I created a custom shader that specifically draws a texture to the screen geometry.
 
-![Unity scene view of the laptop screen with the shader applied.](laptop-screen.png)
+<div class="full-bleed">
+  ![Unity scene view of the laptop screen with the shader applied.](laptop-screen.png)
+</div>
 
 To prevent the door from self-shadowing and ruining the <span aria-label="aesthetic">𝓪𝓮𝓼𝓽𝓱𝓮𝓽𝓲𝓬</span>, I added a `UseShadow` shader parameter that completely turns off shadow attenuation in the main toon shader.
 
@@ -177,7 +176,10 @@ I scroll the UVs of an image in a shader that I specifically wrote for the backg
 
 Press spacebar to toggle between two different views.
 
-![Alternative scene view when spacebar is pressed. Everything becomes darker, redder, and scarier.](horror.png)
+<div class="full-bleed">
+  ![Alternative scene view when spacebar is pressed. Everything becomes darker, redder, and
+  scarier.](horror.png)
+</div>
 
 A number of changes occur:
 

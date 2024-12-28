@@ -3,9 +3,6 @@ title: Designing my own Linux login manager
 blurb: I made a SDDM theme called corners. It's simple, easy to use, and very customizable.
 posted: 2023-12-30T09:38:00.000Z
 updated: 2024-04-20T10:15:00.000Z
-cover:
-  img: sddm-theme-corners.png
-  alt: My customized login theme, featuring a light, pastel blue color scheme with a glacier wallpaper.
 
 published: true
 slug: sddm-theme-corners
@@ -13,19 +10,21 @@ slug: sddm-theme-corners
 
 import VideoGif from "@/components/video-gif.astro";
 
-Early on in my Linux journey, I was really into customizing my setup and theming _everything_. This is commonly referred to as [ricing](https://jie-fang.github.io/blog/basics-of-ricing) and there are whole [dedicated communities](https://www.reddit.com/r/unixporn/) around it.
-
-> Form over function, you could say. However, there are some really talented people that have not only customized their setup, but are also using it to be productive.
->
-> I am not that person. I love wasting time purely to make things pretty.
+While setting up my Linux environment, I became addicted to customizing my setup and theming _everything_. This is commonly referred to as [ricing](https://jie-fang.github.io/blog/basics-of-ricing) and there are whole [dedicated communities](https://www.reddit.com/r/unixporn/) around it.
 
 Having chosen [SDDM](https://github.com/sddm/sddm/) as my display manager of choice, I started looking for login themes... and didn't find anything that appealed to me. Thus `sddm-theme-corners` was born. Take a look at some example setups:
 
-![An orange color scheme featuring completely round corners and Hanako-kun.](./hanako.png)
+<div class="full-bleed grid grid-cols-1  gap-4 sm:grid-cols-2">
 
-![A very colorful background with black and white UI elements and squared corners.](./loud.png)
+![My customized login theme, featuring a light, pastel blue color scheme with a glacier wallpaper.](glacier.png)
 
-![Sunset over some buildings. UI elements are colored pink and purple.](./sky.png)
+![An orange color scheme featuring completely round corners and Hanako-kun.](hanako.png)
+
+![A very colorful background with black and white UI elements and squared corners.](loud.png)
+
+![Sunset over some buildings. UI elements are colored pink and purple.](sky.png)
+
+</div>
 
 I've made it publicly available on my GitHub. Since then, it's gotten quite a few stars and forks, and I'm glad that people are actively contributing back.
 
@@ -44,17 +43,21 @@ Common controls like power and session management are grouped together. Some the
 
 Some themes included icons for popular DEs like GNOME, KDE, Deepin, etc. I felt that it would be impossible to cover all cases, and chose a text-based list instead. Icons for sessions don't offer enough detail anyway; what if I wanted GNOME on both Xorg and Wayland?
 
-<VideoGif
-  content={{ collection: "posts", folder: "sddm-theme-corners" }}
-  name="power-session-buttons"
-/>
+<div class="full-bleed">
+  <VideoGif
+    content={{ collection: "posts", folder: "sddm-theme-corners" }}
+    name="power-session-buttons"
+  />
+</div>
 
 The user picture (if you choose to enable it) also acts as a user switcher. All it really does is prefill in the user field. The last user logged in is saved, however, and filled in for you next time.
 
-<VideoGif
-  content={{ collection: "posts", folder: "sddm-theme-corners" }}
-  name="user-picture-inputs"
-/>
+<div class="full-bleed">
+  <VideoGif
+    content={{ collection: "posts", folder: "sddm-theme-corners" }}
+    name="user-picture-inputs"
+  />
+</div>
 
 The login button is grayed out until both input fields are filled out.
 
@@ -62,10 +65,12 @@ The login button is grayed out until both input fields are filled out.
 
 Tying everything together are subtle animations that occur when popups come in and out of view. I especially like what happens when you enter an incorrect login:
 
-<VideoGif
-  content={{ collection: "posts", folder: "sddm-theme-corners" }}
-  name="incorrect-login-anim"
-/>
+<div class="full-bleed">
+  <VideoGif
+    content={{ collection: "posts", folder: "sddm-theme-corners" }}
+    name="incorrect-login-anim"
+  />
+</div>
 
 Don't like the default colors or how round everything is? I've exposed multiple config options that allow you to theme pretty much everything. You can also change the font and datetime format; however, the layout itself cannot be modified. After all, stuff in `sddm-theme-corners` should stay in the corners!
 
@@ -77,21 +82,21 @@ To get started, I looked through the default themes that SDDM provides, as well 
 
 I definitely committed some coding sins while trying to figure out how to hook everything together. I'm particularly proud of this abomination:
 
-```js
-Component.onCompleted: {
-  if (userPicture.enabled) {
-    userPicture.source = userWrapper.items.get(userList.currentIndex).model.icon;
+<div class="full-bleed">
+  ```js
+  Component.onCompleted: {
+    if (userPicture.enabled) {
+      userPicture.source = userWrapper.items.get(userList.currentIndex).model.icon;
+    }
   }
-}
-```
+  ```
+</div>
 
 I revisited this line for the write-up, and... I'm not too sure what it does. I think it updates the picture displayed when you switch users.
 
 ## Try it out!
 
-> [View source code and README.](https://github.com/aczw/sddm-theme-corners)
-
-I've been using it everyday with no complaints. I might be biased, though.
+View source code and README in my [GitHub repo](https://github.com/aczw/sddm-theme-corners). I've been using it everyday with no complaints. I might be biased, though.
 
 While SDDM is best known for being KDE's display manager, it actually works for any desktop environment. So `sddm-theme-corners` does as well! If you're on Linux and like what you see, do test it out and lemme know what you think. I've provided installation instructions for the AUR as well as manual installation.
 

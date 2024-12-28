@@ -50,7 +50,7 @@ const { Content, headings } = await render(post);
       {
         cover ? (
           <div class="span-wide [&_+_div]:pt-6">
-            <Image src={cover.img} alt={cover.alt} loading="eager" />
+            <Image src={cover.img} alt={cover.alt} loading="eager" class="rounded-xl" />
           </div>
         ) : null
       }
@@ -75,7 +75,7 @@ const { Content, headings } = await render(post);
         }
       </div>
 
-      <section class="span-normal space-y-6">
+      <section class="mdx-span-normal space-y-6">
         <Content
           components={{
             h2: H2,

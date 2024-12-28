@@ -143,16 +143,14 @@ All the block textures in our game live in a 256x256 PNG sprite. Each block face
 
 We map a block type to the imaginary coordinate for each of its six faces.
 
-<div class="full-bleed">
-  ```cpp
-  std::unordered_map<Block, std::unordered_map<Direction, glm::ivec2>> block_uv_map;
+```cpp
+using DirectionUVMap = std::unordered_map<Direction, glm::ivec2>;
+std::unordered_map<Block, DirectionUVMap> block_uv_map;
 
-  // for example, this accesses the UVs for the Y_NEG face of a dirt block.
-  // this is where the enums really come in handy!
-  glm::ivec uv = block_uv_map[DIRT][Y_NEG];
-
-  ```
-</div>
+// for example, this accesses the UVs for the Y_NEG face of a dirt block.
+// this is where the enums really come in handy!
+glm::ivec uv = block_uv_map[DIRT][Y_NEG];
+```
 
 Face textures are 1/16 of the whole sprite, so we multiply the coordinate by 1/16 to get the correct UV. Note that this only describes the lower-left corner of the block. We need to add 1/16 horizontally and vertically to get the other three corners.
 
@@ -189,9 +187,9 @@ This solves our issue because transparent blocks now have the correct fragment c
 
 If we fly really high up into the air, you'll see a circular fog that surrounds the player and slowly fades blocks into the distance.
 
-
 <div class="full-bleed">
-  ![Blocks slowly fade into the distance in a circular radius around the player.](./distance-fog.png)
+  ![Blocks slowly fade into the distance in a circular radius around the
+  player.](./distance-fog.png)
 </div>
 
 In the chunk fragment shader, I obtain the player's world position and the fragment's world position. I find the distance between these two, and divide by a `max_distance` to get a value between 0.0-1.0.
@@ -204,16 +202,15 @@ So, what is `max_distance`? At all times, we only render a specific number of ch
 
 So, the distance fog plays a second role: to stop the player from seeing chunks appear and disappear as they move. But, it's worth it to implement for aesthetics alone, I think:
 
-<div class="full-bleed">
-  ![A beautiful sunrise over the desert.](./distance-fog-pretty.png)
-</div>
+<div class="full-bleed">![A beautiful sunrise over the desert.](./distance-fog-pretty.png)</div>
 
 ## Day/night cycle, celestial objects
 
 Our engine features a day cycle. We see the sun during the day, and the moon and stars at night. Clouds are always visible. In between, sunsets and sunrises transition us nicely.
 
 <div class="full-bleed">
-  ![A diagram depicting what percentage of a day we spend in day, in night, and how long it takes to transition.](./day-night-cycle.png)
+  ![A diagram depicting what percentage of a day we spend in day, in night, and how long it takes to
+  transition.](./day-night-cycle.png)
 </div>
 
 During development, I religiously followed the diagram above. It defines a single day as a range from 0.0-1.0, and specifies exact durations for transitions. For example:
@@ -232,7 +229,8 @@ The skybox is _not_ a cubemap. We're actually drawing to a screen space quad. To
 Depending on the direction of the ray, we can decide different colors to give to every single pixel. The picture below, for example, maps the literal ray direction to RGB values.
 
 <div class="full-bleed">
-  ![The sky is split into green, red, and black depending on the direction of the ray.](./skybox-uv.png)
+  ![The sky is split into green, red, and black depending on the direction of the
+  ray.](./skybox-uv.png)
 </div>
 
 There's a lot we can do here. For example, map a position to a UV coordinate, and output a different color depending on the value. Or, shooting a ray out and coloring the radius around that ray a different color, up to a certain angle (like a cone). I also lerp between colors depending on the time of day.
@@ -423,7 +421,8 @@ From there, I was able to render a single character, and then a string, which is
 I did have time to, however, add an in-game debug mode that shows the player's current position, as well as the current chunk (press F3 just like Minecraft):
 
 <div class="full-bleed">
-  ![Debug mode is turned on, and shows the current player position as (32, 158, 32) and chunk coordinate as (32, 32).](./debug-mode.png)
+  ![Debug mode is turned on, and shows the current player position as (32, 158, 32) and chunk
+  coordinate as (32, 32).](./debug-mode.png)
 </div>
 
 This helped my teammates easily share cool structures they found for our showcase reel: just take a screenshot! I thought this was a great way to immediately start using my text system.
