@@ -18,10 +18,12 @@ import { Pause, Play } from "lucide-astro";
 <script>
   import { ProjectCover } from "@/scripts/project-cover";
 
-  // Invariants:
-  // - Only one controls button exists per page/in the DOM, otherwise this function
-  //   is called multiple times, which is bad as pause/play state is not synced between buttons.
-  // - Every single video is either paused or playing, no strays
+  /**
+   * Invariants:
+   *
+   * - Only one controls button exists per page/in the DOM, otherwise this function is called multiple times, which is bad as pause/play state is not synced between buttons.
+   * - Every single video is either paused or playing, no strays
+   */
   class ProjectCoverControls extends HTMLElement {
     #paused: boolean;
     #button: HTMLButtonElement;

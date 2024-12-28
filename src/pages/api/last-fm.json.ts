@@ -1,3 +1,5 @@
+export const prerender = false;
+
 import type { APIRoute } from "astro";
 import { z } from "astro/zod";
 import { LASTFM_API_KEY } from "astro:env/server";

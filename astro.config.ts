@@ -89,15 +89,15 @@ const config = defineConfig({
     }),
     mdx(),
   ],
-  output: "server",
+  output: "static",
   adapter: vercel({
     imageService: true,
     webAnalytics: {
       enabled: true,
     },
     includeFiles: [
-      "./public/_fonts/AtkinsonHyperlegible-Regular.ttf",
-      "./public/_fonts/AtkinsonHyperlegible-Bold.ttf",
+      "./public/_fonts/AtkinsonHyperlegible-Regular.woff",
+      "./public/_fonts/AtkinsonHyperlegible-Bold.woff",
     ],
   }),
   env: {

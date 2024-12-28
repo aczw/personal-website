@@ -23,11 +23,11 @@ if (available) {
     <Music size={15} class="inline shrink-0" />
 
     <span
-      class="line-clamp-1 hidden w-full animate-fade break-all leading-[1.1] [--order:0] xs:[display:-webkit-box]"
+      class="380:[display:-webkit-box] line-clamp-1 hidden w-full animate-fade break-all leading-[1.1] [--order:0]"
     >
       {available ? `${track.artist} — ${track.song}` : "Scrobbles"}
     </span>
-    <span class="animate-fade leading-[1.1] [--order:0] xs:hidden">
+    <span class="380:hidden animate-fade leading-[1.1] [--order:0]">
       {available && track.live ? "Scrobbling" : "Scrobbles"}
     </span>
   </a>

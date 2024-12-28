@@ -1,164 +1,148 @@
 ---
-import { getCollection, type CollectionEntry } from "astro:content";
+export const prerender = false;
 
-import { CircleX, ArrowRight } from "lucide-astro";
+import { getCollection } from "astro:content";
+import { ArrowRight, CircleX } from "lucide-astro";
 
-import MainLayout from "@/layouts/main-layout.astro";
 import { Filters } from "@/scripts/types";
+import CommonLayout from "@/layouts/common-layout.astro";
 import ProjectCover from "@/components/project-cover.astro";
-import ProjectCoverControls from "@/components/project-cover-controls.astro";
 
 let projects = await getCollection("projects");
 projects.sort((a, b) => a.data.order - b.data.order);
 
-const searchParams = Astro.url.searchParams;
-const filterParams = Filters.map((filter) => searchParams.has("filter", filter));
+const filterParams = Filters.map((filter) => Astro.url.searchParams.has("filter", filter));
+const filteredByAny = filterParams.reduce((acc, x) => acc || x);
 
-const isFilteredByAny = filterParams.reduce((acc, x) => acc || x);
-
-if (isFilteredByAny) {
+if (filteredByAny) {
   const index = filterParams.indexOf(true);
   projects = projects.filter((p) => p.data.type === Filters[index]);
 }
 
-const useVideo: CollectionEntry<"projects">["id"][] = ["path-tracer", "rcw", "fireball"];
+const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
 ---
 
-<MainLayout
+<CommonLayout
   meta={{
     kind: "route",
     title: "Projects",
-    description: "Projects I've made, mostly related to graphics, games, and web development.",
-    ogImageParams: "Projects I've done.",
+    description: "Projects mostly related to graphics and games.",
+    ogImageParams: "Graphics projects and games.",
   }}
-  useMinHeight
-  useVerticalSpacing
 >
-  <section class="space-y-4">
-    <h1 class="animate-fade text-xl [--order:0]">
-      All projects {isFilteredByAny ? <span class="text-sweater-6">(filtered)</span> : null}
-    </h1>
-
-    <div
-      class="flex animate-fade items-center justify-between border-y-thin border-sweater-9 [--order:1]"
-    >
+  <main class="space-y-12 py-12">
+    <section class="span-normal animate-fade [--order:0]">
       <div
-        class="flex flex-grow flex-wrap items-center gap-2.5 border-r-thin border-sweater-9 py-4 pr-4"
+        class="flex flex-col gap-2.5 border-y-2 border-sweater-9 py-4 380:flex-row 380:items-center 380:gap-4 sm:gap-8"
       >
-        <p class="berkeley text-sweater-4">
-          Filter{isFilteredByAny ? "ed" : ""} by:
-        </p>
+        <h2 class="w-fit cursor-default leading-none text-sweater-4 sm:w-1/2">
+          Filter{filteredByAny ? "ed" : ""} by:
+        </h2>
 
-        <div class="flex items-center gap-2.5 [--fade-speed:50ms]">
+        <div class="berkeley flex flex-wrap items-center gap-2.5 [--fade-speed:50ms] sm:w-1/2">
           {
             Filters.map((filter, idx) => {
-              const isCurrFiltered = filterParams[idx];
+              const filtered = filterParams[idx];
 
               return (
                 <a
-                  title={isCurrFiltered ? `Remove "${filter}" filter` : `Filter by "${filter}"`}
+                  title={filtered ? `Remove "${filter}" filter` : `Filter by "${filter}"`}
                   class="pill flex animate-fade items-center gap-1.5 leading-none"
-                  href={`/projects${isCurrFiltered ? "" : `?filter=${filter}`}`}
-                  data-quiet={!isCurrFiltered}
+                  href={`/projects${filtered ? "" : `?filter=${filter}`}`}
+                  data-quiet={!filtered}
                   style={{ "--order": idx + 1 }}
                 >
-                  {filter} {isCurrFiltered ? <CircleX size={16} /> : null}
+                  {filter} {filtered ? <CircleX size={16} /> : null}
                 </a>
               );
             })
           }
         </div>
       </div>
+    </section>
 
-      <div class="flex-shrink-0 py-4 pl-4">
-        <ProjectCoverControls />
-      </div>
-    </div>
-  </section>
+    <section class="span-wide grid grid-cols-1 gap-8 [--fade-speed:40ms] 560:grid-cols-2">
+      {
+        projects.map((project, idx) => {
+          const {
+            data: { name, blurb, metadata, cover },
+            id,
+          } = project;
 
-  <section class="grid grid-cols-1 gap-6 [--fade-speed:40ms] sm:grid-cols-2">
-    {
-      projects.map((project, idx) => {
-        const {
-          data: { name, blurb, metadata, cover },
-          id,
-        } = project;
+          return (
+            <a
+              href={`/projects/${id}`}
+              class="group relative h-fit animate-fade transition-opacity"
+              style={{ "--order": idx + 1 }}
+            >
+              <ProjectCover
+                id={id}
+                cover={cover}
+                useVideo={videosEnabled.includes(id) ? { small: true } : null}
+                class="overflow-hidden rounded-t-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
+              />
 
-        return (
-          <a
-            href={`/projects/${id}`}
-            class="group relative h-fit animate-fade transition-opacity"
-            style={{ "--order": idx }}
-          >
-            <ProjectCover
-              id={id}
-              cover={cover}
-              useVideo={useVideo.includes(id) ? { small: true } : false}
-              class="overflow-hidden rounded-t-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
-            />
+              {import.meta.env.DEV ? (
+                <span class="pill absolute left-2.5 top-2.5 font-bold leading-none">
+                  {project.data.order}
+                </span>
+              ) : null}
 
-            {import.meta.env.DEV ? (
-              <span class="pill absolute left-2.5 top-2.5 font-bold leading-none">
-                {project.data.order}
-              </span>
-            ) : null}
+              <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <h2>{name}</h2>
+                    <ul class="flex flex-wrap gap-x-2">
+                      {metadata.tech.map((tech, idx) => (
+                        <li class="berkeley text-sweater-4">
+                          {tech}
+                          {idx !== metadata.tech.length - 1 ? (
+                            <span aria-hidden="true" class="text-sweater-7">
+                              /
+                            </span>
+                          ) : null}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
 
-            <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <h2>{name}</h2>
-                  <li class="flex flex-wrap gap-x-2">
-                    {metadata.tech.map((tech, idx) => (
-                      <ul class="berkeley text-sweater-5">
-                        <span>{tech}</span>
-                        {idx !== metadata.tech.length - 1 ? (
-                          <span aria-hidden="true" class="text-sweater-7">
-                            /
-                          </span>
-                        ) : null}
-                      </ul>
-                    ))}
-                  </li>
+                  <ArrowRight
+                    size="34"
+                    class="shrink-0 rounded-full bg-sweater-8 stroke-sweater-5 stroke-[2.5] p-1.5 transition-colors group-hover:bg-sweater-7 group-hover:stroke-sweater-4"
+                    aria-hidden="true"
+                  />
                 </div>
 
-                <div
-                  aria-hidden="true"
-                  class="rounded-full bg-sweater-8 p-1 transition-colors group-hover:bg-sweater-7"
-                >
-                  <ArrowRight class="shrink-0 stroke-sweater-6 transition-colors group-hover:stroke-sweater-4" />
-                </div>
-              </div>
-
-              <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
-                <div class="overflow-hidden text-pretty opacity-0 transition-opacity group-hover:opacity-100">
-                  <p>{blurb}</p>
-                  <div aria-hidden="true" class="h-4" />
+                <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
+                  <div class="overflow-hidden opacity-0 transition-opacity group-hover:opacity-100">
+                    <p class="pb-4">{blurb}</p>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div aria-hidden="true" class="p-4 text-transparent">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <h2>{name}</h2>
-                  <li class="flex flex-wrap gap-x-2">
-                    {metadata.tech.map((tech, idx) => (
-                      <ul class="berkeley">
-                        <span>{tech}</span>
-                        {idx !== metadata.tech.length - 1 ? <span>/</span> : null}
-                      </ul>
-                    ))}
-                  </li>
-                </div>
+              <div aria-hidden="true" class="p-4 text-transparent">
+                <div class="flex items-center justify-between gap-4">
+                  <div>
+                    <h2>{name}</h2>
+                    <li class="flex flex-wrap gap-x-2">
+                      {metadata.tech.map((tech, idx) => (
+                        <ul class="berkeley">
+                          <span>{tech}</span>
+                          {idx !== metadata.tech.length - 1 ? <span>/</span> : null}
+                        </ul>
+                      ))}
+                    </li>
+                  </div>
 
-                <div class="rounded-full p-1">
-                  <div class="size-[24px]" />
+                  <div class="rounded-full p-1">
+                    <div class="size-[24px]" />
+                  </div>
                 </div>
               </div>
-            </div>
-          </a>
-        );
-      })
-    }
-  </section>
-</MainLayout>
+            </a>
+          );
+        })
+      }
+    </section>
+  </main>
+</CommonLayout>

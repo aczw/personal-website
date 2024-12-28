@@ -1,20 +1,15 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-type Props = Omit<HTMLAttributes<"a">, "class" | "aria-label"> & {
-  className?: string;
-};
+type Props = Omit<HTMLAttributes<"a">, "aria-label">;
 
-const { className, target, title, ...props } = Astro.props;
+const { target, title, ...props } = Astro.props;
 ---
 
 <a
   target={target}
   aria-label={title}
   title={title}
-  class:list={[
-    "w-fit text-sweater-3 underline decoration-sweater-3/50 decoration-1 underline-offset-2 transition-[color_opacity] hover:text-sweater-1 hover:decoration-sweater-2",
-    className,
-  ]}
+  class="w-fit text-sweater-3 underline decoration-sweater-3/50 decoration-1 underline-offset-2 transition-[color_opacity] hover:text-sweater-1 hover:decoration-sweater-2"
   {...props}><slot /></a
 >

@@ -1,90 +1,105 @@
 ---
 import { getCollection } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 
-import MainLayout from "@/layouts/main-layout.astro";
 import PostPublishedStatus from "@/components/dev/post-published-status.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
 
-let posts = await getCollection("posts", (post) => import.meta.env.DEV || post.data.published);
-posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
+const posts = await getCollection("posts", (post) => import.meta.env.DEV || post.data.published);
+const yearPostsMap = new Map<number, CollectionEntry<"posts">[]>();
+
+posts.forEach((post) => {
+  const year = post.data.posted.getFullYear();
+
+  if (!yearPostsMap.has(year)) {
+    yearPostsMap.set(year, [post]);
+  } else {
+    yearPostsMap.get(year)!.push(post);
+  }
+});
+
+// Sort by year
+const entries = yearPostsMap.entries().toArray();
+entries.sort((a, b) => b[0] - a[0]);
 ---
 
-<MainLayout
+<CommonLayout
   meta={{
     kind: "route",
     title: "Posts",
     description:
-      "Writing about things I've learned, ideas I'm working on, or topics that interest me.",
+      "Random writing about stuff I've learned, things I'm working on, and interesting topics.",
     ogImageParams: "All my posts.",
   }}
-  useMinHeight
-  useVerticalSpacing
 >
-  <section class="space-y-4">
-    <div class="flex animate-fade justify-between gap-14 [--order:0]">
-      <h1 class="flex-shrink-0 text-xl">All posts</h1>
-      <p class="berkeley max-w-[20ch] cursor-mewo text-right italic text-sweater-7">
-        Unfortunately I love yapping too much
-      </p>
-    </div>
-
-    <div class="flex flex-col [--fade-speed:25ms] [&>a:not(:hover)]:hover:brightness-50">
+  <main class="span-normal span-height py-12">
+    <div
+      class="pointer-events-none space-y-12 [--fade-speed:25ms] [&_.row:not(:hover)]:hover:brightness-50"
+    >
       {
-        posts.map((post, idx) => {
-          let {
-            data: { title, blurb, posted, published },
-            id,
-          } = post;
+        entries.map(([year, yearPosts]) => {
+          const sortedPosts = yearPosts;
+          sortedPosts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 
           return (
-            <a
-              href={`/posts/${id}`}
-              class="group flex animate-fade flex-col gap-4 border-y-thin border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] xs:flex-row xs:gap-8 hover:[&:not(:last-child)]:border-b-sweater-9/100"
-              style={{ "--order": idx + 1 }}
-            >
-              <time
-                datetime={posted.toISOString()}
-                title={posted.toLocaleString("en-US", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                  hour: "numeric",
-                  minute: "numeric",
-                  timeZone: "America/New_York",
-                  timeZoneName: "short",
-                })}
-                class="berkeley shrink-0 text-sweater-5 transition-colors group-hover:text-sweater-4"
-              >
-                <span class="xs:hidden">
-                  {posted.toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "numeric",
-                    year: "numeric",
-                    timeZone: "America/New_York",
-                  })}
-                </span>
-                <span class="hidden xs:inline">
-                  {posted.toLocaleDateString("en-US", {
-                    month: "2-digit",
-                    day: "2-digit",
-                    year: "2-digit",
-                    timeZone: "America/New_York",
-                  })}
-                </span>
-              </time>
+            <section>
+              <h2 class="berkeley row mb-4 cursor-default leading-none text-sweater-6 transition-[filter_opacity]">
+                {year}
+              </h2>
+              <div class="pointer-events-auto flex flex-col">
+                {sortedPosts.map(({ data: { title, blurb, posted, published }, id }, idx) => (
+                  <a
+                    href={`/posts/${id}`}
+                    class="row group flex animate-fade flex-col gap-1 border-y-2 border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row 380:gap-8"
+                    style={{ "--order": idx + 1 }}
+                  >
+                    <time
+                      datetime={posted.toISOString()}
+                      title={posted.toLocaleString("en-US", {
+                        month: "long",
+                        day: "numeric",
+                        year: "numeric",
+                        hour: "numeric",
+                        minute: "numeric",
+                        timeZone: "America/New_York",
+                        timeZoneName: "short",
+                      })}
+                      class="berkeley shrink-0 text-sweater-4 transition-colors group-hover:text-sweater-3"
+                    >
+                      <span class="380:hidden">
+                        {posted.toLocaleDateString("en-US", {
+                          month: "long",
+                          day: "numeric",
+                          timeZone: "America/New_York",
+                        })}
+                      </span>
+                      <span class="hidden 380:inline">
+                        {posted.toLocaleDateString("en-US", {
+                          month: "2-digit",
+                          day: "2-digit",
+                          timeZone: "America/New_York",
+                        })}
+                      </span>
+                    </time>
 
-              <div class="space-y-1.5">
-                <h2 class="break-words">
-                  <PostPublishedStatus published={published} />
-                  {title}
-                </h2>
-                <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
-                  {blurb}
-                </p>
+                    <div class="space-y-1">
+                      <h2>
+                        {title}
+                        <PostPublishedStatus published={published} />
+                      </h2>
+                      {blurb ? (
+                        <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
+                          {blurb}
+                        </p>
+                      ) : null}
+                    </div>
+                  </a>
+                ))}
               </div>
-            </a>
+            </section>
           );
         })
       }
     </div>
-  </section>
-</MainLayout>
+  </main>
+</CommonLayout>

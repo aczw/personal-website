@@ -5,11 +5,23 @@
 @layer base {
   :root {
     --fade-speed: 100ms;
+    @apply [--header-h:210px] xs:[--header-h:147.38px] sm:[--header-h:150px];
   }
 
   html {
     font-size: 15px;
     @apply scroll-smooth bg-sweater-10 text-sweater-1;
+  }
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+    text-wrap: pretty;
   }
 
   h1,
@@ -80,17 +92,51 @@
   }
 
   @font-face {
-    font-family: "Berkeley Mono Variable";
-    src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
-    font-weight: 100 150;
+    font-family: "Atkinson Hyperlegible";
     font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: url("/_fonts/AtkinsonHyperlegible-Regular.woff") format("woff");
+  }
+
+  @font-face {
+    font-family: "Atkinson Hyperlegible";
+    font-style: italic;
+    font-display: swap;
+    font-weight: 400;
+    src: url("/_fonts/AtkinsonHyperlegible-Italic.woff") format("woff");
+  }
+
+  @font-face {
+    font-family: "Atkinson Hyperlegible";
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: url("/_fonts/AtkinsonHyperlegible-Bold.woff") format("woff");
+  }
+
+  @font-face {
+    font-family: "Atkinson Hyperlegible";
+    font-style: italic;
+    font-display: swap;
+    font-weight: 700;
+    src: url("/_fonts/AtkinsonHyperlegible-BoldItalic.woff") format("woff");
   }
 
   @font-face {
     font-family: "Berkeley Mono Variable";
-    src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
+    font-style: normal;
+    font-display: swap;
     font-weight: 100 150;
+    src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
+  }
+
+  @font-face {
+    font-family: "Berkeley Mono Variable";
     font-style: italic;
+    font-display: swap;
+    font-weight: 100 150;
+    src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
   }
 }
 
@@ -113,5 +159,17 @@
 
   .subtitle {
     @apply text-sweater-2/85;
+  }
+
+  .span-normal {
+    @apply mx-auto max-w-normal px-8;
+  }
+
+  .span-wide {
+    @apply mx-auto max-w-wide px-8;
+  }
+
+  .span-height {
+    @apply min-h-[calc(100vh-var(--header-h)-71.25px)];
   }
 }

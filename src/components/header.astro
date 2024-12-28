@@ -1,43 +1,62 @@
 ---
-import { Box, NotebookText } from "lucide-astro";
+const path = Astro.url.pathname;
+const links = [
+  { href: "/projects", name: "Projects" },
+  { href: "/posts", name: "Writing" },
+];
 ---
 
-<header class="mx-auto max-w-content pt-6">
-  <nav class="mx-7 flex items-center justify-between border-b-thick border-sweater-8 pb-6">
-    <a href="/" class="group flex items-center gap-1">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="26"
-        height="26"
-        viewBox="0 0 25 25"
-        fill="currentColor"
-        class="fill-sweater-5 transition-[fill_transform] group-hover:rotate-[-13deg] group-hover:fill-sweater-4"
+<header class="mx-auto max-w-normal pt-24">
+  <nav
+    class="mx-8 grid grid-cols-1 grid-rows-2 text-3xl font-bold xs:grid-cols-2 xs:grid-rows-1 xs:gap-8"
+  >
+    <div class="space-y-1 text-sweater-4">
+      <a
+        href="/"
+        class="peer block w-fit transition-[fill_transform] hover:rotate-[-13deg] hover:text-sweater-3 [&:has(+_a:hover)]:rotate-[-13deg] [&:has(+_a:hover)]:text-sweater-3"
+        aria-hidden="true"
       >
-        <title>Logo</title>
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M.626.626a2.139 2.139 0 0 1 3.025 0l1.82 1.821A12.2 12.2 0 0 1 12.536.21a12.2 12.2 0 0 1 7.022 2.21L21.35.625a2.139 2.139 0 0 1 3.025 3.025L22.58 5.443a12.2 12.2 0 0 1 2.21 7.022 12.2 12.2 0 0 1-2.238 7.063l1.82 1.821a2.139 2.139 0 1 1-3.024 3.025l-1.833-1.833a12.2 12.2 0 0 1-6.981 2.18 12.2 12.2 0 0 1-7.023-2.209L3.65 24.374a2.139 2.139 0 1 1-3.025-3.025l1.862-1.861a12.2 12.2 0 0 1-2.21-7.023c0-2.594.806-5 2.181-6.981L.626 3.65a2.139 2.139 0 0 1 0-3.025ZM8.61 19.414a7.943 7.943 0 0 0 3.925 1.03 7.944 7.944 0 0 0 3.88-1.005L12.5 15.524l-3.89 3.89Zm.866-6.914-3.89 3.89a7.943 7.943 0 0 1-1.03-3.925c0-1.408.364-2.731 1.005-3.88L9.476 12.5Zm6.048 0 3.935 3.934a7.944 7.944 0 0 0 1.055-3.969 7.943 7.943 0 0 0-1.03-3.925l-3.96 3.96Zm.935-6.984L12.5 9.476 8.566 5.54a7.943 7.943 0 0 1 3.969-1.055c1.426 0 2.766.374 3.924 1.03Z"
-        ></path>
-      </svg>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="1.7rem"
+          height="1.7rem"
+          viewBox="0 0 25 25"
+          fill="currentColor"
+        >
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M.626.626a2.139 2.139 0 0 1 3.025 0l1.82 1.821A12.2 12.2 0 0 1 12.536.21a12.2 12.2 0 0 1 7.022 2.21L21.35.625a2.139 2.139 0 0 1 3.025 3.025L22.58 5.443a12.2 12.2 0 0 1 2.21 7.022 12.2 12.2 0 0 1-2.238 7.063l1.82 1.821a2.139 2.139 0 1 1-3.024 3.025l-1.833-1.833a12.2 12.2 0 0 1-6.981 2.18 12.2 12.2 0 0 1-7.023-2.209L3.65 24.374a2.139 2.139 0 1 1-3.025-3.025l1.862-1.861a12.2 12.2 0 0 1-2.21-7.023c0-2.594.806-5 2.181-6.981L.626 3.65a2.139 2.139 0 0 1 0-3.025ZM8.61 19.414a7.943 7.943 0 0 0 3.925 1.03 7.944 7.944 0 0 0 3.88-1.005L12.5 15.524l-3.89 3.89Zm.866-6.914-3.89 3.89a7.943 7.943 0 0 1-1.03-3.925c0-1.408.364-2.731 1.005-3.88L9.476 12.5Zm6.048 0 3.935 3.934a7.944 7.944 0 0 0 1.055-3.969 7.943 7.943 0 0 0-1.03-3.925l-3.96 3.96Zm.935-6.984L12.5 9.476 8.566 5.54a7.943 7.943 0 0 1 3.969-1.055c1.426 0 2.766.374 3.924 1.03Z"
+          ></path>
+        </svg>
+      </a>
 
-      <svg
-        width="84"
-        height="26"
-        fill="currentColor"
-        xmlns="http://www.w3.org/2000/svg"
-        class="fill-sweater-5 transition-colors group-hover:fill-sweater-4"
+      <a
+        href="/"
+        class="block w-fit leading-none transition-colors hover:text-sweater-3 peer-hover:text-sweater-3"
       >
-        <title>Charles Wang</title>
-        <path
-          d="M54.9658 24.6753 49.0271.920502h7.1839L59.803 17.0125 62.8681.920502h6.8965L72.8298 17.0125 76.4217.920502h7.2318L77.7148 24.6753h-7.9502L66.3164 7.62548 62.916 24.6753h-7.9502ZM25.7692 24.6753v-5.795L38.0776 6.71552H26.4397V.920502h20.977V6.71552L35.1561 18.8803h12.9311v5.795h-22.318ZM12.7647 25.25c-2.6181 0-4.83714-.5268-6.65706-1.5805-1.788-1.0536-3.16092-2.5223-4.11878-4.4061-.92592-1.9157-1.388884-4.1188-1.388884-6.6092S1.11083 7.99266 2.13254 6.14081c1.02171-1.88378 2.44253-3.33653 4.26245-4.35824C8.24685.760855 10.3701.25 12.7647.25c1.373 0 2.7299.19157 4.0709.574713 1.3729.383137 2.6341 1.037677 3.7835 1.963607 1.1814.89399 2.1392 2.12324 2.8736 3.68773l-6.0824 2.20307c-.3831-1.02171-.9578-1.7401-1.7241-2.15517-.7344-.41507-1.5645-.62261-2.4904-.62261-.8621 0-1.6922.2235-2.4905.6705-.79817.41507-1.45271 1.1175-1.96356 2.10728-.47893.98978-.71839 2.33078-.71839 4.02298 0 1.7241.25543 3.0971.76628 4.1188.51086.9898 1.14943 1.7082 1.91567 2.1552.7983.415 1.6284.6226 2.4905.6226 1.0217 0 1.8837-.1916 2.5862-.5748.7024-.415 1.2611-.9738 1.6762-1.6762l5.9387 2.1552c-.7982 1.4368-1.788 2.5862-2.9693 3.4483-1.1814.8301-2.4426 1.4208-3.7836 1.772-1.309.3512-2.6021.5268-3.8793.5268Z"
-        ></path>
-      </svg>
-    </a>
+        Charles Wang
+      </a>
+    </div>
 
-    <div class="*:pill flex items-center gap-4 *:flex *:items-center *:gap-1.5 *:leading-none">
-      <a href="/projects"><Box class="hidden xs:block" size={16} /> Projects</a>
-      <a href="/posts"><NotebookText class="hidden xs:block" size={16} /> Writing</a>
+    <div
+      class="grid grid-cols-1 grid-rows-2 gap-1 text-sweater-6 *:flex *:w-fit *:gap-2 *:leading-none *:transition-colors sm:grid-cols-2 sm:grid-rows-1 sm:items-end sm:gap-4"
+    >
+      {
+        links.map(({ href, name }) => (
+          <a
+            href={href}
+            class:list={[
+              "leading-none",
+              { "hover:text-sweater-5": path === "/" },
+              { "text-sweater-5 hover:text-sweater-4": path === href },
+              { "text-sweater-7 hover:text-sweater-6": path !== href && path !== "/" },
+            ]}
+          >
+            {name}
+          </a>
+        ))
+      }
     </div>
   </nav>
 </header>

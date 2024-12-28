@@ -2,7 +2,7 @@ import { type Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 
 const config: Config = {
-  content: ["./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}"],
+  content: ["./src/**/*.{astro,html,js,ts,md,mdx}"],
   future: {
     hoverOnlyWhenSupported: true,
   },
@@ -12,9 +12,10 @@ const config: Config = {
       mono: ["Berkeley Mono Variable", ...defaultTheme.fontFamily.mono],
     },
     extend: {
+      // Account for 2rem (30px) padding on sides, so <width> + 2 * 30px
       maxWidth: {
-        // width + 1.75rem (26.25px) on both sides, so 850px + (2 * 26.25px) = 902.5px
-        content: "902.5px",
+        normal: "710px",
+        wide: "960px",
       },
       colors: {
         sweater: {
@@ -31,13 +32,12 @@ const config: Config = {
         },
       },
       screens: {
-        content: "902.5px",
-        post: "710px",
+        // We need to know screen size so the hashtags next to MDX headings can be shifted
+        // to the right when the screen width becomes too small
+        normal: "710px",
+        "560": "560px",
         xs: "480px",
-      },
-      borderWidth: {
-        thin: "1.5px",
-        thick: "3px",
+        "380": "380px",
       },
       keyframes: {
         fade: {

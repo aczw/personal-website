@@ -1,20 +1,13 @@
 ---
 import "@/style.css";
-
-import "@fontsource/atkinson-hyperlegible/400.css";
-import "@fontsource/atkinson-hyperlegible/700.css";
-import "@fontsource/atkinson-hyperlegible/400-italic.css";
-import "@fontsource/atkinson-hyperlegible/700-italic.css";
-
 import type { MetaKind } from "@/scripts/types";
-
 import SpeedInsights from "@vercel/speed-insights/astro";
 
 interface Props {
   meta: MetaKind;
 }
 
-let { meta } = Astro.props;
+const { meta } = Astro.props;
 
 let title = "Charles Wang";
 let description: string;
@@ -31,7 +24,16 @@ switch (meta.kind) {
   case "post": {
     let { data, id } = meta.post;
     title = meta.status + data.title + " — " + title;
-    description = data.blurb;
+
+    // If the post doesn't have a blurb then just state when it was published
+    description = data.blurb
+      ? data.blurb
+      : `Posted on ${data.posted.toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric",
+          timeZone: "America/New_York",
+        })}.`;
     ogImageParams = `?post=${id}`;
     break;
   }
@@ -48,7 +50,7 @@ switch (meta.kind) {
     throw new Error("Unreachable!");
 }
 
-// see https://github.com/withastro/astro/issues/5248
+// See https://github.com/withastro/astro/issues/5248
 let canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 canonicalUrl = canonicalUrl.replace(/\/+$/, "");
 ---
@@ -85,17 +87,24 @@ canonicalUrl = canonicalUrl.replace(/\/+$/, "");
 
     <link
       rel="preload"
-      href="/_fonts/BerkeleyMonoVariable-Regular.woff2"
+      href="/_fonts/AtkinsonHyperlegible-Regular.woff"
       as="font"
-      type="font/woff2"
-      crossorigin
+      type="font/woff"
+      crossorigin="anonymous"
     />
     <link
       rel="preload"
-      href="/_fonts/BerkeleyMonoVariable-Italic.woff2"
+      href="/_fonts/AtkinsonHyperlegible-Bold.woff"
+      as="font"
+      type="font/woff"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="preload"
+      href="/_fonts/BerkeleyMonoVariable-Regular.woff2"
       as="font"
       type="font/woff2"
-      crossorigin
+      crossorigin="anonymous"
     />
 
     <title>{title}</title>
@@ -103,7 +112,7 @@ canonicalUrl = canonicalUrl.replace(/\/+$/, "");
     <SpeedInsights />
   </head>
 
-  <body>
+  <body class="relative">
     <slot />
   </body>
 </html>

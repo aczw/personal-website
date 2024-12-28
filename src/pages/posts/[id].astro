@@ -1,31 +1,27 @@
 ---
+import type { GetStaticPaths } from "astro";
 import { Image } from "astro:assets";
-import { getEntry, render } from "astro:content";
+import { getEntry, getCollection, render } from "astro:content";
 
-import MainLayout from "@/layouts/main-layout.astro";
-
-import PostPublishedStatus from "@/components/dev/post-published-status.astro";
+import { validProjectCover } from "@/scripts/util";
 import TableOfContents from "@/components/table-of-contents.astro";
 
 import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
-import { validProjectCover } from "@/scripts/util";
+import CommonLayout from "@/layouts/common-layout.astro";
+import { CalendarFold, ClockArrowUp } from "lucide-astro";
 
-// Return 404 if server request doesn't contain ID
+export const getStaticPaths = (async () => {
+  const posts = await getCollection("posts", (post) => post.data.published);
+  return posts.map((post) => {
+    return { params: { id: post.id } };
+  });
+}) satisfies GetStaticPaths;
+
 const { id } = Astro.params;
-if (!id) {
-  return Astro.rewrite("/404");
-}
-
-// If the current ID doesn't exist (aka the post doesn't exist), or the post
-// exists but is currently a draft, then we return a 404
-const post = await getEntry("posts", id);
-if (!post || (!import.meta.env.DEV && !post.data.published)) {
-  return Astro.rewrite("/404");
-}
-
+const post = await getEntry("posts", id)!;
 const {
   data: { title, blurb, posted, updated, cover, published },
 } = post;
@@ -48,44 +44,50 @@ const dateOptions: Intl.DateTimeFormatOptions = {
 const { Content, headings } = await render(post);
 ---
 
-<MainLayout meta={{ kind: "post", post, status }} class="flex gap-7">
-  <article class="w-full space-y-12 py-12 post:w-[calc(100%-200px)]">
-    <section class="space-y-4">
-      <h1 class="text-xl">{title} <PostPublishedStatus published={published} /></h1>
+<CommonLayout meta={{ kind: "post", post, status }}>
+  <main class="py-12">
+    <article class="space-y-6">
+      {
+        cover ? (
+          <div class="span-wide [&_+_div]:pt-6">
+            <Image src={cover.img} alt={cover.alt} loading="eager" />
+          </div>
+        ) : null
+      }
 
-      {cover ? <Image src={cover.img} alt={cover.alt} loading="eager" class="" /> : null}
+      <div class="span-normal space-y-1">
+        <h1 class="text-3xl">{title}</h1>
+        {blurb ? <p class="subtitle">{blurb}</p> : null}
+      </div>
 
-      <p class="subtitle">{blurb}</p>
-
-      <div
-        class="berkeley grid grid-cols-1 border-b-thin border-sweater-9 pb-12 xs:grid-cols-2 xs:gap-6"
-      >
-        <time datetime={posted.toISOString()} class="text-sweater-5">
+      <div class="span-normal berkeley text-sweater-4">
+        <time datetime={posted.toISOString()} class="flex items-center gap-1.5">
+          <CalendarFold size={16} />
           {posted.toLocaleDateString("en-US", dateOptions)}
         </time>
-
         {
           updated ? (
-            <time datetime={updated.toISOString()} class="text-sweater-6">
+            <time datetime={updated.toISOString()} class="flex items-center gap-1.5">
+              <ClockArrowUp size={16} />
               Updated {updated.toLocaleDateString("en-US", dateOptions)}
             </time>
           ) : null
         }
       </div>
-    </section>
 
-    <section class="space-y-6">
-      <Content
-        components={{
-          h2: H2,
-          h3: H3,
-          blockquote: Aside,
-          a: Anchor,
-          img: Image,
-        }}
-      />
-    </section>
-  </article>
+      <section class="span-normal space-y-6">
+        <Content
+          components={{
+            h2: H2,
+            h3: H3,
+            blockquote: Aside,
+            a: Anchor,
+            img: Image,
+          }}
+        />
+      </section>
 
-  <TableOfContents headings={headings} />
-</MainLayout>
+      <!-- <TableOfContents headings={headings} /> -->
+    </article>
+  </main>
+</CommonLayout>
