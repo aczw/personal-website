@@ -38,6 +38,8 @@ const config: Config = {
         "560": "560px",
         xs: "480px",
         "380": "380px",
+        // Calculated as follows: 900px (wide width) + 60 px (first column-gap) + 320px (TOC should have minimum 160px width) + 60px (second column-gap). This is the minimum width before everything should collapse
+        toc: "1340px",
       },
       keyframes: {
         fade: {

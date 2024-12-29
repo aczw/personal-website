@@ -95,8 +95,8 @@ enum Direction {
   X_POS, X_NEG, Z_POS, Z_NEG, Y_POS, Y_NEG
 };
 
-// this really only makes sense for X_POS, X_NEG, Z_POS, and Z_NEG, but
-// Y_POS and Y_NEG will be used later for other purposes.
+// this really only makes sense for X_POS, X_NEG, Z_POS, and Z_NEG,
+// but Y_POS and Y_NEG will be used later for other purposes.
 std::unordered_map<Direction, Chunk*> neighbors;
 ```
 

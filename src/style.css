@@ -85,10 +85,14 @@
     & figcaption {
       @apply subtitle mt-2 text-[0.9rem];
     }
+
+    & a {
+      text-wrap: pretty;
+    }
   }
 
   .mdx-span-normal > * {
-    grid-column: 3;
+    @apply toc:col-[3] col-[2];
   }
 
   @font-face {
@@ -176,17 +180,16 @@
   /* A good explanation of what's going on: https://www.joshwcomeau.com/css/full-bleed/ */
   .mdx-span-normal {
     display: grid;
-    grid-template-columns: 1fr 1fr min(650px, 100% - 8rem) 1fr 1fr;
     column-gap: 2rem;
+    /* 95px on each side because 900px (wide width) - 60px (column-gap) - 650px (normal width) = 190px space left to distribute among two columns */
+    @apply toc:grid-cols-[2fr_95px_min(650px,100%-8rem)_95px_2fr] grid-cols-[1fr_min(650px,100%-4rem)_1fr];
   }
 
   .full-bleed {
-    padding-left: theme(spacing.8);
-    padding-right: theme(spacing.8);
     width: 100%;
     margin-left: auto;
     margin-right: auto;
     max-width: theme(maxWidth.wide);
-    grid-column: 2 / 5;
+    @apply toc:col-[2_/_5] toc:px-0 col-[1_/_-1] px-8;
   }
 }

@@ -9,9 +9,12 @@ const { headings } = Astro.props;
 ---
 
 <aside
-  class="sticky top-0 col-[5] row-[1_/_200] mr-8 mt-6 hidden w-[175px] self-start min-[1180px]:block"
+  class="toc:block sticky top-0 col-[5] row-[1_/_200] hidden h-[calc(100vh-1rem)] max-w-[250px] self-start overflow-y-scroll pr-8"
 >
   <nav>
+    <div aria-hidden="true" class="sticky inset-x-0 top-0 h-8 bg-gradient-to-b from-sweater-10">
+    </div>
+
     <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
 
     <div class="mr-7 flex flex-col leading-snug text-sweater-6 normal:mr-0">
@@ -33,11 +36,11 @@ const { headings } = Astro.props;
             );
           }
 
-          // between H2 headings or if the next heading after H3 is a H2,
-          // we add spacing. else, add no spacing.
+          // Between H2 headings or if the next heading after H3 is a H2, we add spacing.
+          // Else, add no spacing.
           let spacing = 0;
           if (index !== headings.length - 1) {
-            let next = headings[index + 1];
+            const next = headings[index + 1];
             if (next.depth === 2 && (depth === 2 || depth === 3)) {
               spacing = 0.4;
             }
@@ -61,19 +64,19 @@ const { headings } = Astro.props;
 
     <div
       aria-hidden="true"
-      class="sticky inset-x-0 -bottom-[1px] h-12 bg-gradient-to-t from-sweater-10"
+      class="sticky inset-x-0 bottom-[-1px] h-12 bg-gradient-to-t from-sweater-10"
     >
     </div>
   </nav>
 </aside>
 
 <script>
-  let observer = new IntersectionObserver((entries) =>
+  const observer = new IntersectionObserver((entries) =>
     entries.forEach((entry) => {
-      let id = entry.target.id;
-      let link = document.querySelector<HTMLAnchorElement>(`nav a[href="#${id}"]`);
+      const id = entry.target.id;
+      const link = document.querySelector<HTMLAnchorElement>(`nav a[href="#${id}"]`);
 
-      let windowHeight = entry.rootBounds!.height;
+      const windowHeight = entry.rootBounds!.height;
       if (windowHeight && link) {
         if (entry.boundingClientRect.y < windowHeight) {
           link.classList.add("text-sweater-3");
