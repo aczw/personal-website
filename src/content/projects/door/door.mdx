@@ -31,7 +31,7 @@ The natural pick for me was anything from [OMORI](https://www.omori-game.com/). 
 
 > I should mention that there will be light spoilers for the game from this point onwards. You've been warned!
 
-<div class="grid gap-4 sm:grid-cols-2 full-bleed">
+<div class="grid gap-4 sm:grid-cols-2 bleed-wide">
   <figure>
     ![OMORI characters looking at photobook on a picnic blanket in a forest.](ca-1.png)
     <figcaption>
@@ -62,7 +62,7 @@ Homework is still homework and there were two shaders I was required to create.
 
 ### Toon shading
 
-<figure class="full-bleed">
+<figure class="bleed-wide">
   ![Screenshot of Unity Shader Graph for my toon shader](toon.png)
   <figcaption>Shader Graph for my toon shader.</figcaption>
 </figure>
@@ -77,7 +77,7 @@ What exemplifies NPR more than good ol' toon shading? I will spare you a detaile
 
 Another requirement we had to meet was to create an additional shader that animated over time. But, this was already a given for me; if you look at any in-game footage, the textures are always "shifting" around. It's a bit hard to explain, so here's a YouTube video:
 
-<div class="full-bleed">
+<div class="bleed-wide">
   <div class="overflow-hidden rounded-xl [&_lite-youtube]:max-w-none">
     <YouTube id="https://youtu.be/2D1VBDjamoA" posterQuality="high" params="start=182" />
   </div>
@@ -144,7 +144,7 @@ However, outlines in OMORI seem to be made up of three overlapping parts: a gree
 
 We need three outlines, so we do exactly that. Each outline has a different color and has its UVs slightly offset to give us the chromatic aberration look. I also use the Random Range node to vary the outline thickness based on screen position. Finally, I replace the solid outline with the scribble texture and animate it using the same method as the surface shader.
 
-<div class="full-bleed">
+<div class="bleed-wide">
   ![The same sphere and plane but now rendered using OMORI's outlines.](cool-outlines.png)
 </div>
 
@@ -154,7 +154,7 @@ I found all the models on Sketchfab. They are [credited in the README here](http
 
 Speaking of laptop, I created a custom shader that specifically draws a texture to the screen geometry.
 
-<div class="full-bleed">
+<div class="bleed-wide">
   ![Unity scene view of the laptop screen with the shader applied.](laptop-screen.png)
 </div>
 
@@ -176,7 +176,7 @@ I scroll the UVs of an image in a shader that I specifically wrote for the backg
 
 Press spacebar to toggle between two different views.
 
-<div class="full-bleed">
+<div class="bleed-wide">
   ![Alternative scene view when spacebar is pressed. Everything becomes darker, redder, and
   scarier.](horror.png)
 </div>

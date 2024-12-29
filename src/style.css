@@ -185,7 +185,7 @@
     @apply toc:grid-cols-[2fr_95px_min(650px,100%-8rem)_95px_2fr] grid-cols-[1fr_min(650px,100%-4rem)_1fr];
   }
 
-  .full-bleed {
+  .bleed-wide {
     width: 100%;
     margin-left: auto;
     margin-right: auto;

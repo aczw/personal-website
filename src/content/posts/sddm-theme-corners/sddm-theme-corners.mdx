@@ -14,7 +14,7 @@ While setting up my Linux environment, I became addicted to customizing my setup
 
 Having chosen [SDDM](https://github.com/sddm/sddm/) as my display manager of choice, I started looking for login themes... and didn't find anything that appealed to me. Thus `sddm-theme-corners` was born. Take a look at some example setups:
 
-<div class="full-bleed grid grid-cols-1  gap-4 sm:grid-cols-2">
+<div class="bleed-wide grid grid-cols-1  gap-4 sm:grid-cols-2">
 
 ![My customized login theme, featuring a light, pastel blue color scheme with a glacier wallpaper.](glacier.png)
 
@@ -43,7 +43,7 @@ Common controls like power and session management are grouped together. Some the
 
 Some themes included icons for popular DEs like GNOME, KDE, Deepin, etc. I felt that it would be impossible to cover all cases, and chose a text-based list instead. Icons for sessions don't offer enough detail anyway; what if I wanted GNOME on both Xorg and Wayland?
 
-<div class="full-bleed">
+<div class="bleed-wide">
   <VideoGif
     content={{ collection: "posts", folder: "sddm-theme-corners" }}
     name="power-session-buttons"
@@ -52,7 +52,7 @@ Some themes included icons for popular DEs like GNOME, KDE, Deepin, etc. I felt 
 
 The user picture (if you choose to enable it) also acts as a user switcher. All it really does is prefill in the user field. The last user logged in is saved, however, and filled in for you next time.
 
-<div class="full-bleed">
+<div class="bleed-wide">
   <VideoGif
     content={{ collection: "posts", folder: "sddm-theme-corners" }}
     name="user-picture-inputs"
@@ -65,7 +65,7 @@ The login button is grayed out until both input fields are filled out.
 
 Tying everything together are subtle animations that occur when popups come in and out of view. I especially like what happens when you enter an incorrect login:
 
-<div class="full-bleed">
+<div class="bleed-wide">
   <VideoGif
     content={{ collection: "posts", folder: "sddm-theme-corners" }}
     name="incorrect-login-anim"
@@ -82,7 +82,7 @@ To get started, I looked through the default themes that SDDM provides, as well 
 
 I definitely committed some coding sins while trying to figure out how to hook everything together. I'm particularly proud of this abomination:
 
-<div class="full-bleed">
+<div class="bleed-wide">
   ```js
   Component.onCompleted: {
     if (userPicture.enabled) {
