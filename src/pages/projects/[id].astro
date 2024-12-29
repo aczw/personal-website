@@ -39,8 +39,8 @@ const { Content, headings } = await render(project);
 
 <CommonLayout meta={{ kind: "project", project }}>
   <main class="py-12">
-    <article class="space-y-12">
-      <div class="span-wide">
+    <article>
+      <div class="span-wide mb-12">
         <ProjectCover
           id={id}
           cover={cover}
@@ -49,13 +49,13 @@ const { Content, headings } = await render(project);
         />
       </div>
 
-      <div class="span-normal space-y-1">
+      <div class="span-normal mb-12 space-y-1">
         <h1 class="text-3xl">{name}</h1>
         <p class="subtitle">{blurb}</p>
       </div>
 
       <section
-        class="span-normal mt-6 grid grid-cols-1 gap-3 leading-tight xs:grid-cols-2 xs:gap-4"
+        class="span-normal mb-6 grid grid-cols-1 gap-3 leading-tight xs:grid-cols-2 xs:gap-4"
       >
         <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
           <Wrench class="hidden shrink-0 stroke-sweater-3 560:block" />
