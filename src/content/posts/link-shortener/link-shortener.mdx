@@ -155,7 +155,7 @@ Choosing colors is hard, so I used [Randoma11y](https://go.czw.sh/Z3gWKWH) to ge
 
 Most of the frontend isn't too noteworthy, but I do want to talk about one thing. While writing the copy to clipboard functionality I noticed one tiny, small, insignificant detail. It occurred whenever I clicked on the button:
 
-<div class="full-bleed">
+<div class="bleed-wide">
   <VideoGif content={{ collection: "posts", folder: "link-shortener" }} name="copy-bad" />
 </div>
 
@@ -174,7 +174,7 @@ The key part is that both elements remain in the DOM tree; I'm just hiding one b
 
 I then attached an event listener to the button and used `setTimeout()` to revert the changes after a short duration. Now the button width remains the same:
 
-<div class="full-bleed">
+<div class="bleed-wide">
   <VideoGif content={{ collection: "posts", folder: "link-shortener" }} name="copy-good" />
 </div>
 

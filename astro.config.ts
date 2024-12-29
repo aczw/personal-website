@@ -56,6 +56,10 @@ const config = defineConfig({
       themes: ["rose-pine-moon"],
       useThemedSelectionColors: true,
 
+      frames: {
+        showCopyToClipboardButton: false,
+      },
+
       styleOverrides: {
         borderWidth: "0px",
         borderRadius: "0.5rem",

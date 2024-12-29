@@ -2,7 +2,9 @@
 import type { GetStaticPaths } from "astro";
 import { Image } from "astro:assets";
 import { getEntry, getCollection, render } from "astro:content";
+import { CalendarFold, ClockArrowUp } from "lucide-astro";
 
+import CommonLayout from "@/layouts/common-layout.astro";
 import { validProjectCover } from "@/scripts/util";
 import TableOfContents from "@/components/table-of-contents.astro";
 
@@ -10,11 +12,9 @@ import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
-import CommonLayout from "@/layouts/common-layout.astro";
-import { CalendarFold, ClockArrowUp } from "lucide-astro";
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection("posts", (post) => post.data.published);
+  const posts = await getCollection("posts", (post) => import.meta.env.DEV || post.data.published);
   return posts.map((post) => {
     return { params: { id: post.id } };
   });
@@ -46,16 +46,16 @@ const { Content, headings } = await render(post);
 
 <CommonLayout meta={{ kind: "post", post, status }}>
   <main class="py-12">
-    <article class="space-y-6">
+    <article>
       {
         cover ? (
-          <div class="span-wide [&_+_div]:pt-6">
+          <div class="span-wide mb-6 [&_+_div]:pt-6">
             <Image src={cover.img} alt={cover.alt} loading="eager" class="rounded-xl" />
           </div>
         ) : null
       }
 
-      <div class="span-normal space-y-1">
+      <div class="span-normal mb-6 space-y-1">
         <h1 class="text-3xl">{title}</h1>
         {blurb ? <p class="subtitle">{blurb}</p> : null}
       </div>
@@ -76,6 +76,8 @@ const { Content, headings } = await render(post);
       </div>
 
       <section class="mdx-span-normal space-y-6">
+        <TableOfContents headings={headings} />
+
         <Content
           components={{
             h2: H2,
@@ -86,8 +88,6 @@ const { Content, headings } = await render(post);
           }}
         />
       </section>
-
-      <!-- <TableOfContents headings={headings} /> -->
     </article>
   </main>
 </CommonLayout>

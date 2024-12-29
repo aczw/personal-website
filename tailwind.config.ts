@@ -32,12 +32,15 @@ const config: Config = {
         },
       },
       screens: {
-        // We need to know screen size so the hashtags next to MDX headings can be shifted
-        // to the right when the screen width becomes too small
         normal: "710px",
         "560": "560px",
         xs: "480px",
         "380": "380px",
+        // We need to know screen size so the hashtags next to MDX headings can be shifted
+        // to the right when the screen width becomes too small
+        heading: "760px",
+        // Calculated as follows: 900px (wide width) + 60 px (first column-gap) + 320px (TOC should have minimum 160px width) + 60px (second column-gap). This is the minimum width before everything should collapse
+        toc: "1340px",
       },
       keyframes: {
         fade: {
