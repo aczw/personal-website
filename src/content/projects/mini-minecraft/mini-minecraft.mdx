@@ -402,7 +402,7 @@ The idea is simple: map a basic set of characters to UVs on a sprite that contai
 
 The question now becomes "how do I fill this character-to-UV map in a smart way?" I mean, I only have to map 78 characters by hand, which wouldn't have been _too_ bad...
 
-Remember that in C++, `char` really just represents the [ASCII code](https://en.cppreference.com/w/cpp/language/ascii) of the characters. If we order the bitmap characters in ASCII order in our sprite, generating the map on the fly becomes really easy: just increment `c` to get to the next character! Our `glm::ivec`s correspond to coordinantes on the font sprite.
+Remember that in C++, `char` really just represents the [ASCII code](https://en.cppreference.com/w/cpp/language/ascii) of the characters. If we order the bitmap characters in ASCII order in our sprite, generating the map on the fly becomes really easy: just increment `c` to get to the next character! Our `glm::ivec`s correspond to coordinates on the font sprite.
 
 ```cpp
 std::unordered_map<char, glm::ivec2> char_uv_map;

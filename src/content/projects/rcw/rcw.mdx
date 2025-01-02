@@ -164,7 +164,7 @@ The `event` keyword prevents it from being invoked in other files. This encourag
 
 Both options cluttered up the code and made tracking things harder. With events, however, only `Rcw` needed to be accessible, things are more centralized, and C# scripts are free to subscribe to whatever they need within their own file.
 
-The additional freedom that events warranted me made me go a little crazy with separating UI stuff into their own files, I think (I mean, just take a look at the screenshot above). But it really kept things modular, and kept behaviors within their own domains. For example, this is a simplified version of the script that controls the score UI:
+The additional freedom that events warranted me made me go a little crazy with separating UI stuff into their own files, I think. But it really kept things modular, and kept behaviors within their own domains. For example, this is a simplified version of the script that controls the score UI:
 
 ```csharp title="UIScoreboard.cs"
 public class UIScoreboard : MonoBehaviour
