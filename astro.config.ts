@@ -8,7 +8,7 @@ import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 
-import { SITE_NAME } from "@/scripts/util";
+import { SITE_NAME } from "./src/scripts/util";
 
 const config = defineConfig({
   site: SITE_NAME,
