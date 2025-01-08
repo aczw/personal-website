@@ -1,53 +1,19 @@
 import { defineConfig, envField } from "astro/config";
-
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
 
-import { readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 
-const SITE_NAME = "https://charleszw.com";
-
-/**
- * Astro's sitemap integration does not include dynamic routes in the generated sitemap when
- * the site uses SSR. This function crawls the filesystem and does it manually.
- *
- * Note to self: this also includes routes that are private/drafts.
- *
- * @see https://github.com/withastro/astro/issues/3682#issuecomment-1492468918
- */
-function getContentRoutes() {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-
-  const contentPath = join(__dirname, "src", "content");
-
-  const postUrls = readdirSync(join(contentPath, "posts")).map((file) => {
-    const fileName = file.split(".")[0];
-    return `${SITE_NAME}/posts/${fileName}`;
-  });
-
-  const projectUrls = readdirSync(join(contentPath, "projects")).map((file) => {
-    const fileName = file.split(".")[0];
-    return `${SITE_NAME}/projects/${fileName}`;
-  });
-
-  return [...postUrls, ...projectUrls];
-}
+import { SITE_NAME } from "@/scripts/util";
 
 const config = defineConfig({
   site: SITE_NAME,
   integrations: [
-    sitemap({
-      customPages: getContentRoutes(),
-    }),
+    sitemap(),
     tailwind({
       applyBaseStyles: false,
     }),
