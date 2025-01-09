@@ -13,6 +13,11 @@
     @apply scroll-smooth bg-sweater-10 text-sweater-1;
   }
 
+  /* Make vertical scrollbar always visible so horizontal content doesn't jump */
+  body {
+    overflow-y: scroll;
+  }
+
   p,
   h1,
   h2,

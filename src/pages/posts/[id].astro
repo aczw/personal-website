@@ -50,7 +50,12 @@ const { Content, headings } = await render(post);
       {
         cover ? (
           <div class="span-wide mb-6 [&_+_div]:pt-6">
-            <Image src={cover.img} alt={cover.alt} loading="eager" class="rounded-xl" />
+            <Image
+              src={cover.img}
+              alt={cover.alt}
+              loading="eager"
+              class="rounded-xl bg-sweater-9"
+            />
           </div>
         ) : null
       }
