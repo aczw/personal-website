@@ -19,7 +19,8 @@
   h3,
   h4,
   h5,
-  h6 {
+  h6,
+  li {
     overflow-wrap: break-word;
     text-wrap: pretty;
   }
@@ -42,6 +43,14 @@
     & img,
     video {
       @apply w-full rounded-xl bg-sweater-9;
+    }
+
+    /* Utility to remove background for images and videos (e.g. they're transparent and we don't want to see it) */
+    & .no-bg {
+      & > img,
+      > video {
+        background-color: inherit;
+      }
     }
 
     /* Inline code should have some padding and unique background color */
@@ -89,10 +98,38 @@
     & a {
       text-wrap: pretty;
     }
+
+    /* Target auto-generated footnotes */
+    & section[data-footnotes] {
+      /* Important tag on margin-top is necessary to override space-y-6 affecting whole section */
+      @apply !mt-12 border-t-2 border-sweater-9 pt-12;
+
+      /* MDX generates a "Footnotes" heading. Make it screen reader only */
+      & > h2#footnote-label {
+        @apply sr-only;
+      }
+
+      & > ol {
+        @apply subtitle;
+
+        /* The following two selectors are to make sure back ref arrows are inline with the text */
+        & > li > p:has(> a[data-footnote-backref]) {
+          display: inline;
+        }
+
+        & a[data-footnote-backref] {
+          display: inline;
+
+          & > svg {
+            display: inline;
+          }
+        }
+      }
+    }
   }
 
   .mdx-span-normal > * {
-    @apply toc:col-[3] col-[2];
+    @apply col-[2] toc:col-[3];
   }
 
   @font-face {
@@ -182,7 +219,7 @@
     display: grid;
     column-gap: 2rem;
     /* 95px on each side because 900px (wide width) - 60px (column-gap) - 650px (normal width) = 190px space left to distribute among two columns */
-    @apply toc:grid-cols-[2fr_95px_min(650px,100%-8rem)_95px_2fr] grid-cols-[1fr_min(650px,100%-4rem)_1fr];
+    @apply grid-cols-[1fr_min(650px,100%-4rem)_1fr] toc:grid-cols-[2fr_95px_min(650px,100%-8rem)_95px_2fr];
   }
 
   .bleed-wide {
@@ -190,6 +227,6 @@
     margin-left: auto;
     margin-right: auto;
     max-width: theme(maxWidth.wide);
-    @apply toc:col-[2_/_5] toc:px-0 col-[1_/_-1] px-8;
+    @apply col-[1_/_-1] px-8 toc:col-[2_/_5] toc:px-0;
   }
 }
