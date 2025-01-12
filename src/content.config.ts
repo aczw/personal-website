@@ -51,7 +51,6 @@ const posts = defineCollection({
       blurb: BlurbSchema.optional(),
       tags: TypeSchema.optional(),
       posted: z.date(),
-      updated: z.date().optional(),
       cover: ImageSchema(image).optional(),
       published: z.boolean(),
     }),

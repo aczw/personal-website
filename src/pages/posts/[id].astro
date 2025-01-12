@@ -2,7 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import { Image } from "astro:assets";
 import { getEntry, getCollection, render } from "astro:content";
-import { CalendarFold, ClockArrowUp } from "lucide-astro";
+import { CalendarFold } from "lucide-astro";
 
 import CommonLayout from "@/layouts/common-layout.astro";
 import { validProjectCover } from "@/scripts/util";
@@ -23,7 +23,7 @@ export const getStaticPaths = (async () => {
 const { id } = Astro.params;
 const post = await getEntry("posts", id)!;
 const {
-  data: { title, blurb, posted, updated, cover, published },
+  data: { title, blurb, posted, cover, published },
 } = post;
 
 if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
@@ -65,20 +65,13 @@ const { Content, headings } = await render(post);
         {blurb ? <p class="subtitle">{blurb}</p> : null}
       </div>
 
-      <div class="span-normal berkeley text-sweater-4">
-        <time datetime={posted.toISOString()} class="flex items-center gap-1.5">
-          <CalendarFold size={16} />
-          {posted.toLocaleDateString("en-US", dateOptions)}
-        </time>
-        {
-          updated ? (
-            <time datetime={updated.toISOString()} class="flex items-center gap-1.5">
-              <ClockArrowUp size={16} />
-              Updated {updated.toLocaleDateString("en-US", dateOptions)}
-            </time>
-          ) : null
-        }
-      </div>
+      <time
+        datetime={posted.toISOString()}
+        class="span-normal berkeley flex items-center gap-1.5 text-sweater-4"
+      >
+        <CalendarFold size={16} />
+        {posted.toLocaleDateString("en-US", dateOptions)}
+      </time>
 
       <section class="mdx-span-normal space-y-6">
         <TableOfContents headings={headings} />
