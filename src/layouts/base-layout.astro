@@ -1,7 +1,9 @@
 ---
-import "@/style.css";
-import type { MetaKind } from "@/scripts/types";
+import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
+
+import type { MetaKind } from "@/scripts/types";
+import "@/style.css";
 
 interface Props {
   meta: MetaKind;
@@ -109,6 +111,13 @@ canonicalUrl = canonicalUrl.replace(/\/+$/, "");
 
     <title>{title}</title>
 
+    <script
+      is:inline
+      defer
+      src="https://cloud.umami.is/script.js"
+      data-website-id="9ccfaf2d-6989-4335-ab83-606d54cdee0f"></script>
+
+    <Analytics />
     <SpeedInsights />
   </head>
 

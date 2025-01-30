@@ -1,11 +1,11 @@
-import { defineConfig, envField } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
+import { defineConfig, envField } from "astro/config";
 
-import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 
 import { SITE_NAME } from "./src/scripts/util";
@@ -66,9 +66,6 @@ const config = defineConfig({
   output: "static",
   adapter: vercel({
     imageService: true,
-    webAnalytics: {
-      enabled: true,
-    },
     includeFiles: [
       "./public/_fonts/AtkinsonHyperlegible-Regular.woff",
       "./public/_fonts/AtkinsonHyperlegible-Bold.woff",
