@@ -1,7 +1,6 @@
 ---
 import { GET, type Track } from "@/pages/api/last-fm.json";
-
-import { Music } from "lucide-astro";
+import Music from "lucide-astro/Music";
 
 const response = await GET(Astro);
 const track = response.ok ? ((await response.json()) as Track) : null;
@@ -23,11 +22,11 @@ if (available) {
     <Music size={15} class="inline shrink-0" />
 
     <span
-      class="380:[display:-webkit-box] line-clamp-1 hidden w-full animate-fade break-all leading-[1.1] [--order:0]"
+      class="line-clamp-1 hidden w-full animate-fade break-all leading-[1.1] [--order:0] 380:[display:-webkit-box]"
     >
       {available ? `${track.artist} — ${track.song}` : "Scrobbles"}
     </span>
-    <span class="380:hidden animate-fade leading-[1.1] [--order:0]">
+    <span class="animate-fade leading-[1.1] [--order:0] 380:hidden">
       {available && track.live ? "Scrobbling" : "Scrobbles"}
     </span>
   </a>

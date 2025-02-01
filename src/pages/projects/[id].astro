@@ -1,18 +1,21 @@
 ---
 import type { GetStaticPaths } from "astro";
-import { getCollection, getEntry, render } from "astro:content";
 import { Image } from "astro:assets";
-import { CalendarFold, ExternalLink, FileCode, Wrench } from "lucide-astro";
+import { getCollection, getEntry, render } from "astro:content";
+import CalendarFold from "lucide-astro/CalendarFold";
+import ExternalLink from "lucide-astro/ExternalLink";
+import FileCode from "lucide-astro/FileCode";
+import Wrench from "lucide-astro/Wrench";
 
 import ProjectCover from "@/components/project-cover.astro";
-import CommonLayout from "@/layouts/common-layout.astro";
 import TableOfContents from "@/components/table-of-contents.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
 
+import Link from "@/components/link.astro";
 import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
-import Link from "@/components/link.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");

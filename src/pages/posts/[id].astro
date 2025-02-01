@@ -1,12 +1,12 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { Image } from "astro:assets";
-import { getEntry, getCollection, render } from "astro:content";
-import { CalendarFold } from "lucide-astro";
+import { getCollection, getEntry, render } from "astro:content";
+import CalendarFold from "lucide-astro/CalendarFold";
 
+import TableOfContents from "@/components/table-of-contents.astro";
 import CommonLayout from "@/layouts/common-layout.astro";
 import { validProjectCover } from "@/scripts/util";
-import TableOfContents from "@/components/table-of-contents.astro";
 
 import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
