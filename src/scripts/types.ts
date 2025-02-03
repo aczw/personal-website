@@ -10,4 +10,4 @@ type MetaKind =
 
 const Filters = ["graphics", "games", "art"] as const;
 
-export { type EntryKind, type MetaKind, Filters };
+export { Filters, type EntryKind, type MetaKind };

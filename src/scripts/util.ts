@@ -49,4 +49,4 @@ function getContentRoutes() {
   return [...postUrls, ...projectUrls];
 }
 
-export { SITE_NAME, validProjectCover, getContentRoutes };
+export { getContentRoutes, SITE_NAME, validProjectCover };
