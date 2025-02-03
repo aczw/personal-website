@@ -34,7 +34,7 @@ entries.sort((a, b) => b[0] - a[0]);
 >
   <main class="span-normal span-height py-12">
     <div
-      class="pointer-events-none space-y-12 [--fade-speed:25ms] [&_.row:not(:hover)]:hover:brightness-50"
+      class="pointer-events-none space-y-12 [--fade-speed:25ms] hover:[&_.row:not(:hover)]:brightness-50"
     >
       {
         entries.map(([year, yearPosts]) => {

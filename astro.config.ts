@@ -1,10 +1,10 @@
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
 import { defineConfig, envField } from "astro/config";
 
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import tailwindcss from "@tailwindcss/vite";
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 
@@ -12,11 +12,11 @@ import { SITE_NAME } from "./src/scripts/util";
 
 const config = defineConfig({
   site: SITE_NAME,
+  vite: {
+    plugins: [tailwindcss()],
+  },
   integrations: [
     sitemap(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
     astroExpressiveCode({
       plugins: [pluginCollapsibleSections()],
       themes: ["rose-pine-moon"],
@@ -76,7 +76,6 @@ const config = defineConfig({
       LASTFM_API_KEY: envField.string({ context: "server", access: "secret", optional: false }),
     },
   },
-  // See https://noahflk.com/blog/trailing-slashes-astro
   trailingSlash: "never",
   redirects: {
     "/resume": {
