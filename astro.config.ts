@@ -22,6 +22,10 @@ const config = defineConfig({
       themes: ["rose-pine-moon"],
       useThemedSelectionColors: true,
 
+      defaultProps: {
+        collapseStyle: "collapsible-auto",
+      },
+
       frames: {
         showCopyToClipboardButton: false,
       },
@@ -55,6 +59,7 @@ const config = defineConfig({
 
         collapsibleSections: {
           closedBackgroundColor: "#393552",
+          openBackgroundColorCollapsible: setAlpha("#393552", 0.4),
         },
       },
     }),
@@ -76,7 +81,6 @@ const config = defineConfig({
       LASTFM_API_KEY: envField.string({ context: "server", access: "secret", optional: false }),
     },
   },
-  // See https://noahflk.com/blog/trailing-slashes-astro
   trailingSlash: "never",
   redirects: {
     "/resume": {
