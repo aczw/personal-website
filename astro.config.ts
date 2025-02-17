@@ -33,7 +33,7 @@ const config = defineConfig({
       styleOverrides: {
         borderWidth: "0px",
         borderRadius: "0.5rem",
-        uiFontFamily: "Atkinson Hyperlegible",
+        uiFontFamily: "Atkinson Hyperlegible Next",
         uiFontSize: "1rem",
         codeFontFamily: "Berkeley Mono Variable",
         codeFontWeight: "120",
@@ -71,10 +71,7 @@ const config = defineConfig({
   output: "static",
   adapter: vercel({
     imageService: true,
-    includeFiles: [
-      "./public/_fonts/AtkinsonHyperlegible-Regular.woff",
-      "./public/_fonts/AtkinsonHyperlegible-Bold.woff",
-    ],
+    includeFiles: ["./public/_fonts/AtkHypNext-Regular.ttf", "./public/_fonts/AtkHypNext-Bold.ttf"],
   }),
   env: {
     schema: {

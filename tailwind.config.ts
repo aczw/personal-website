@@ -8,7 +8,7 @@ const config: Config = {
   },
   theme: {
     fontFamily: {
-      sans: ["Atkinson Hyperlegible", ...defaultTheme.fontFamily.sans],
+      sans: ["Atkinson Hyperlegible Next", ...defaultTheme.fontFamily.sans],
       mono: ["Berkeley Mono Variable", ...defaultTheme.fontFamily.mono],
     },
     extend: {
