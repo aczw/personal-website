@@ -12,6 +12,11 @@ import { SITE_NAME } from "./src/scripts/util";
 
 const config = defineConfig({
   site: SITE_NAME,
+  output: "static",
+  adapter: vercel({
+    imageService: true,
+    includeFiles: ["./public/_fonts/AtkHypNext-Regular.ttf", "./public/_fonts/AtkHypNext-Bold.ttf"],
+  }),
   integrations: [
     sitemap(),
     tailwind({
@@ -68,11 +73,6 @@ const config = defineConfig({
   markdown: {
     rehypePlugins: [rehypeUnwrapImages],
   },
-  output: "static",
-  adapter: vercel({
-    imageService: true,
-    includeFiles: ["./public/_fonts/AtkHypNext-Regular.ttf", "./public/_fonts/AtkHypNext-Bold.ttf"],
-  }),
   env: {
     schema: {
       LASTFM_API_KEY: envField.string({ context: "server", access: "secret", optional: false }),

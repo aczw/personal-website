@@ -3,7 +3,6 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SITE_NAME = "https://charleszw.com";
-const EPSILON = 0.01;
 
 /**
  * Checks that the cover image for my project covers have an aspect ratio of 16:10, for no real
@@ -12,7 +11,7 @@ const EPSILON = 0.01;
 function validProjectCover(width: number, height: number): boolean {
   const ratio = width / height;
 
-  if (Math.abs(ratio - 1.6) <= EPSILON) {
+  if (Math.abs(ratio - 1.6) <= 0.01) {
     return true;
   }
 
@@ -49,4 +48,4 @@ function getContentRoutes() {
   return [...postUrls, ...projectUrls];
 }
 
-export { SITE_NAME, validProjectCover, getContentRoutes };
+export { getContentRoutes, SITE_NAME, validProjectCover };

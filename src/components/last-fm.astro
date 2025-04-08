@@ -1,19 +1,18 @@
 ---
-import { GET, type Track } from "@/pages/api/last-fm.json";
+import { actions } from "astro:actions";
 import Music from "lucide-astro/Music";
 
-const response = await GET(Astro);
-const track = response.ok ? ((await response.json()) as Track) : null;
-const available = track !== null;
+const { data: track, error } = await Astro.callAction(actions.getMostRecentTrack, {});
+const available = !error;
 
 let title = null;
 if (available) {
-  title = `${track.live ? "Currently listening to" : "Last listened to"} ${track.song} by ${track.artist}`;
+  title = `${track.live ? "Currently listening to" : "Last listened to"} ${track.songName} by ${track.artist}`;
 }
 ---
 
 <a
-  href={available ? track.url : "https://www.last.fm/user/ashzw"}
+  href={available ? track.songUrl : "https://www.last.fm/user/ashzw"}
   target="_blank"
   title={title}
   class:list={["block", { "animate-pulse": available && track.live }]}
@@ -24,7 +23,7 @@ if (available) {
     <span
       class="line-clamp-1 hidden w-full animate-fade break-all leading-[1.1] [--order:0] 380:[display:-webkit-box]"
     >
-      {available ? `${track.artist} — ${track.song}` : "Scrobbles"}
+      {available ? `${track.artist} — ${track.songName}` : "Scrobbles"}
     </span>
     <span class="animate-fade leading-[1.1] [--order:0] 380:hidden">
       {available && track.live ? "Scrobbling" : "Scrobbles"}
