@@ -12,13 +12,13 @@ if (available) {
 }
 ---
 
-<div class="pill w-fit" data-quiet="true">
-  <a
-    href={available ? track.url : "https://www.last.fm/user/ashzw"}
-    target="_blank"
-    title={title}
-    class:list={["flex gap-2", { "animate-pulse": available && track.live }]}
-  >
+<a
+  href={available ? track.url : "https://www.last.fm/user/ashzw"}
+  target="_blank"
+  title={title}
+  class:list={["block", { "animate-pulse": available && track.live }]}
+>
+  <div class="pill flex w-fit gap-2" data-quiet="true">
     <Music size={15} class="inline shrink-0" />
 
     <span
@@ -29,5 +29,5 @@ if (available) {
     <span class="animate-fade leading-[1.1] [--order:0] 380:hidden">
       {available && track.live ? "Scrobbling" : "Scrobbles"}
     </span>
-  </a>
-</div>
+  </div>
+</a>
