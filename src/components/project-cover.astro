@@ -18,13 +18,13 @@ const path = `/_files/projects/${id}`;
 
 if (!validProjectCover(cover.img.width, cover.img.height)) {
   throw new Error(
-    `Error rendering ${id}: project cover images must have an aspect ratio of 16:10!`
+    `Error rendering ${id}: project cover images must have an aspect ratio of 16:10!`,
   );
 }
 ---
 
 <project-cover
-  class:list={["relative block aspect-[16/10] *:absolute *:inset-0", className]}
+  class:list={["relative block aspect-16/10 *:absolute *:inset-0", className]}
   data-use-video={useVideo ? "true" : "false"}
 >
   <Image src={cover.img} alt={cover.alt} loading="eager" class="bg-sweater-9" />

@@ -1,12 +1,12 @@
 {
   import.meta.env.DEV ? (
-    <div class="berkeley fixed bottom-5 left-5 w-fit cursor-default rounded-xl bg-sweater-8 px-4 py-2">
+    <div class="berkeley bg-sweater-8 fixed bottom-5 left-5 w-fit cursor-default rounded-xl px-4 py-2">
       <span class="hidden 2xl:inline">2XL ({">="}1536px)</span>
       <span class="hidden xl:inline 2xl:hidden">XL ({">="}1280px)</span>
       <span class="hidden lg:inline xl:hidden">LG ({">="}1024px)</span>
       <span class="hidden md:inline lg:hidden">MD ({">="}768px)</span>
       <span class="hidden sm:inline md:hidden">SM ({">="}640px)</span>
-      <span class="hidden xs:inline sm:hidden">XS ({">="}480px)</span>
+      <span class="xs:inline hidden sm:hidden">XS ({">="}480px)</span>
       <span class="xs:hidden">{"<"} 480px</span>
     </div>
   ) : null

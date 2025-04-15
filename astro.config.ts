@@ -4,6 +4,7 @@ import vercel from "@astrojs/vercel";
 import { defineConfig, envField } from "astro/config";
 
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import tailwindcss from "@tailwindcss/vite";
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 
@@ -12,6 +13,7 @@ import { SITE_NAME } from "./src/scripts/util";
 const config = defineConfig({
   site: SITE_NAME,
   output: "static",
+  trailingSlash: "never",
   adapter: vercel({
     imageService: true,
     includeFiles: ["./public/_fonts/AtkHypNext-Regular.ttf", "./public/_fonts/AtkHypNext-Bold.ttf"],
@@ -74,12 +76,14 @@ const config = defineConfig({
       LASTFM_API_KEY: envField.string({ context: "server", access: "secret", optional: false }),
     },
   },
-  trailingSlash: "never",
   redirects: {
     "/resume": {
       status: 307,
       destination: "/_files/resume.pdf",
     },
+  },
+  vite: {
+    plugins: [tailwindcss()],
   },
 });
 
