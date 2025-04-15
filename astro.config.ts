@@ -1,6 +1,5 @@
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
 import vercel from "@astrojs/vercel";
 import { defineConfig, envField } from "astro/config";
 
@@ -19,9 +18,6 @@ const config = defineConfig({
   }),
   integrations: [
     sitemap(),
-    tailwind({
-      applyBaseStyles: false,
-    }),
     astroExpressiveCode({
       plugins: [pluginCollapsibleSections()],
       themes: ["rose-pine"],
