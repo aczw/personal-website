@@ -24,7 +24,7 @@ const config = defineConfig({
     }),
     astroExpressiveCode({
       plugins: [pluginCollapsibleSections()],
-      themes: ["rose-pine-moon"],
+      themes: ["rose-pine"],
       useThemedSelectionColors: true,
 
       defaultProps: {
