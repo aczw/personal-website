@@ -14,7 +14,7 @@ import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 
 export const getStaticPaths = (async () => {
-  const posts = await getCollection("posts", (post) => import.meta.env.DEV || post.data.published);
+  const posts = await getCollection("posts");
   return posts.map((post) => {
     return { params: { id: post.id } };
   });
@@ -23,16 +23,12 @@ export const getStaticPaths = (async () => {
 const { id } = Astro.params;
 const post = await getEntry("posts", id)!;
 const {
-  data: { title, blurb, posted, cover, published },
+  data: { title, blurb, posted, cover },
 } = post;
 
 if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
-
-// Only show post status in development
-let status = published ? "[PUBLISHED] " : "[DRAFT] ";
-status = import.meta.env.DEV ? status : "";
 
 const dateOptions: Intl.DateTimeFormatOptions = {
   month: "long",
@@ -44,7 +40,7 @@ const dateOptions: Intl.DateTimeFormatOptions = {
 const { Content, headings } = await render(post);
 ---
 
-<CommonLayout meta={{ kind: "post", post, status }}>
+<CommonLayout meta={{ kind: "post", post }}>
   <main class="py-12">
     <article>
       {

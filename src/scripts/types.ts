@@ -2,7 +2,7 @@ import type { CollectionEntry } from "astro:content";
 import { z } from "astro:schema";
 
 type EntryKind =
-  | { kind: "post"; post: CollectionEntry<"posts">; status: string }
+  | { kind: "post"; post: CollectionEntry<"posts"> }
   | { kind: "project"; project: CollectionEntry<"projects"> };
 
 type MetaKind =

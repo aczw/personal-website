@@ -32,7 +32,7 @@ const { headings } = Astro.props;
 
           if (depth > 3) {
             throw new Error(
-              `Used a heading level greater than H3 in this content. Maybe we should support it now?`,
+              `Used a heading level greater than H3 in this content. Maybe we should support it now?`
             );
           }
 
@@ -88,7 +88,7 @@ const { headings } = Astro.props;
           link.classList.remove("text-sweater-3");
         }
       }
-    }),
+    })
   );
 
   document.querySelectorAll("h2[id], h3[id]").forEach((heading) => observer.observe(heading));

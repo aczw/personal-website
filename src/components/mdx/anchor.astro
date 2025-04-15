@@ -1,4 +1,17 @@
 ---
+/**
+ * Couple of things going on:
+ *
+ * - If the link is normal, then this collapses to <Link target="_blank"><slot /></Link>
+ * - If the link is related to footnotes (so either the footnote itself or the back ref), then
+ *   we remove target="_blank" because we don't want to open a new tab
+ * - If the link is the footnote itself, then we disable underline, add "[]" brackets, and add
+ *   some scroll top margin
+ * - If the link is the back ref, we replace everything with the arrow icon
+ *
+ * Essentially we've hijacked MDX's HTML output to replace it with our own.
+ */
+
 import type { HTMLAttributes } from "astro/types";
 import Undo2 from "lucide-astro/Undo2";
 
@@ -6,14 +19,6 @@ import Link from "@/components/link.astro";
 
 type Props = Omit<HTMLAttributes<"a">, "target" | "class">;
 
-// Couple of things going on:
-// - If the link is normal, then this collapses to <Link target="_blank"><slot /></Link>
-// - If the link is related to footnotes (so either the footnote itself or the back ref), then
-//   we remove target="_blank" because we don't want to open a new tab
-// - If the link is the footnote itself, then we disable underline, add "[]" brackets, and add
-//   some scroll top margin
-// - If the link is the back ref, we replace everything with the arrow icon
-// Essentially we've hijacked MDX's HTML output to replace it with our own.
 const href = Astro.props.href as string;
 const isFootnoteRelated = href.startsWith("#user-content-fn");
 const isFootnote = href.startsWith("#user-content-fn-");

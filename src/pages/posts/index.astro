@@ -1,11 +1,10 @@
 ---
-import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
 
-import PostPublishedStatus from "@/components/dev/post-published-status.astro";
 import CommonLayout from "@/layouts/common-layout.astro";
 
-const posts = await getCollection("posts", (post) => import.meta.env.DEV || post.data.published);
+const posts = await getCollection("posts");
 const yearPostsMap = new Map<number, CollectionEntry<"posts">[]>();
 
 posts.forEach((post) => {
@@ -48,7 +47,7 @@ entries.sort((a, b) => b[0] - a[0]);
               </h2>
 
               <div class="pointer-events-auto flex flex-col">
-                {sortedPosts.map(({ data: { title, blurb, posted, published }, id }, idx) => (
+                {sortedPosts.map(({ data: { title, blurb, posted }, id }, idx) => (
                   <a
                     href={`/posts/${id}`}
                     class="row group flex animate-fade flex-col gap-1 border-y-2 border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row 380:gap-8"
@@ -84,10 +83,7 @@ entries.sort((a, b) => b[0] - a[0]);
                     </time>
 
                     <div class="space-y-1">
-                      <h2>
-                        {title}
-                        <PostPublishedStatus published={published} />
-                      </h2>
+                      <h2>{title}</h2>
                       {blurb ? (
                         <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
                           {blurb}

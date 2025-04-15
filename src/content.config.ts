@@ -1,6 +1,6 @@
-import { defineCollection, z, type ImageFunction } from "astro:content";
-import { glob } from "astro/loaders";
 import { Filters } from "@/scripts/types";
+import { glob } from "astro/loaders";
+import { defineCollection, z, type ImageFunction } from "astro:content";
 
 const TypeSchema = z.enum(Filters);
 
@@ -52,7 +52,6 @@ const posts = defineCollection({
       tags: TypeSchema.optional(),
       posted: z.date(),
       cover: ImageSchema(image).optional(),
-      published: z.boolean(),
     }),
 });
 

@@ -2,6 +2,7 @@
 import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 
+import ScreenSizeIndicator from "@/components/dev/screen-size-indicator.astro";
 import type { MetaKind } from "@/scripts/types";
 import "@/style.css";
 
@@ -25,7 +26,7 @@ switch (meta.kind) {
 
   case "post": {
     let { data, id } = meta.post;
-    title = meta.status + data.title + " — " + title;
+    title = data.title + " — " + title;
 
     // If the post doesn't have a blurb then just state when it was published
     description = data.blurb
@@ -123,5 +124,6 @@ canonicalUrl = canonicalUrl.replace(/\/+$/, "");
 
   <body>
     <slot />
+    <ScreenSizeIndicator />
   </body>
 </html>

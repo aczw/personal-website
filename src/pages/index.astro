@@ -6,7 +6,7 @@ import Link from "@/components/link.astro";
 import ProjectCover from "@/components/project-cover.astro";
 import CommonLayout from "@/layouts/common-layout.astro";
 
-let posts = await getCollection("posts", (post) => post.data.published);
+let posts = await getCollection("posts");
 posts = posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime()).slice(0, 3);
 
 const projects = await getEntries([
