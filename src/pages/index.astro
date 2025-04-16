@@ -27,7 +27,7 @@ const projects = await getEntries([
 >
   <main class="space-y-12 py-12">
     <section
-      class="span-normal *:animate-fade 560:grid-cols-2 grid grid-cols-1 gap-x-8 gap-y-5 px-8"
+      class="span-normal *:animate-fade-in 560:grid-cols-2 gap-x-space px-space grid grid-cols-1 gap-y-5"
     >
       <p class="[--order:0]">
         Hi! I'm a third year student in the Digital Media Design program at UPenn. I'm concurrently
@@ -50,12 +50,13 @@ const projects = await getEntries([
       <p class="subtitle [--order:3]">
         You can find my socials and resumé below. Thanks for stopping by. <span
           aria-hidden="true"
-          class="cursor-mewo whitespace-nowrap">(〜￣▽￣)〜</span
+          class="cursor-[url('/src/assets/mewo.webp')_32_32,_not-allowed] whitespace-nowrap"
+          >(〜￣▽￣)〜</span
         >
       </p>
     </section>
 
-    <section class="span-wide xs:grid-cols-2 grid grid-cols-1 gap-8">
+    <section class="span-wide 480:grid-cols-2 gap-space grid grid-cols-1">
       {
         projects.map((project, idx) => {
           const {
@@ -66,7 +67,7 @@ const projects = await getEntries([
           return (
             <a
               href={`/projects/${id}`}
-              class="group animate-fade relative h-fit transition-opacity"
+              class="group animate-fade-in relative h-fit transition-opacity"
               style={{ "--order": idx + 1 }}
             >
               <ProjectCover
@@ -121,7 +122,7 @@ const projects = await getEntries([
           return (
             <a
               href={`/posts/${id}`}
-              class="group animate-fade border-sweater-9 xs:flex-row xs:gap-4 flex flex-col justify-between border-t-2 py-4 *:transition-colors last:border-b-2"
+              class="group animate-fade-in border-sweater-9 480:flex-row 480:gap-4 flex flex-col justify-between border-t-2 py-4 *:transition-colors last:border-b-2"
               style={{ "--order": idx + 2 }}
             >
               <h2 class="subtitle group-hover:text-sweater-1">{title}</h2>

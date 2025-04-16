@@ -1,0 +1,131 @@
+@utility bleed-wide {
+  width: 100%;
+  max-width: var(--container-wide);
+  margin-left: auto;
+  margin-right: auto;
+  padding-inline: var(--spacing-space);
+  grid-column: 1 / -1;
+
+  @variant toc {
+    grid-column: 2 / 5;
+    padding-inline: 0px;
+  }
+}
+
+/* A good explanation of what's going on: https://www.joshwcomeau.com/css/full-bleed/ */
+@utility mdx-span-normal {
+  display: grid;
+  column-gap: var(--spacing-space);
+  grid-template-columns: 1fr min(var(--normal-w), 100% - 2 * var(--spacing-space)) 1fr;
+
+  /* The 95px is calculated as follows: <wide width> - <pair of column-gap spacing> - <normal width> = 190px. We then split it evenly across both sides */
+  @variant toc {
+    grid-template-columns: 2fr 95px min(var(--normal-w), 100% - 4 * var(--spacing-space)) 95px 2fr;
+  }
+}
+
+@layer base {
+  /* Only style elements rendered from MDX */
+  article > .mdx-span-normal {
+    /* This is in the base layer so that other utilities can override it */
+    & > * {
+      grid-column: 2;
+
+      @variant toc {
+        grid-column: 3;
+      }
+    }
+
+    & img,
+    video {
+      @apply bg-sweater-9 w-full rounded-xl;
+    }
+
+    /* Utility to remove background for images and videos (e.g. they're transparent and we don't want to see it) */
+    & .no-bg {
+      & > img,
+      > video {
+        background-color: inherit;
+      }
+    }
+
+    /* Inline code should have some padding and unique background color */
+    & code {
+      @apply bg-sweater-9 rounded-md px-1 py-0.5 break-words;
+
+      font-size: 13px;
+      font-weight: 100;
+    }
+
+    /* Treat inline code differently inside callouts (but this way utilities can still override it) */
+    & aside {
+      & code {
+        @apply bg-sweater-8;
+      }
+    }
+
+    & del {
+      @apply text-sweater-6 cursor-not-allowed line-through;
+    }
+
+    & li {
+      @apply pl-2.5 break-words;
+    }
+
+    & ul,
+    ol {
+      @apply ml-5 list-outside space-y-2;
+
+      ::marker {
+        @apply text-sweater-4 tabular-nums;
+      }
+    }
+
+    & ul {
+      list-style-type: "➔";
+    }
+
+    & ol {
+      list-style-type: decimal;
+    }
+
+    /* Only select <figure> elements not from the Expressive Code library */
+    & figcaption {
+      @apply subtitle mt-2;
+
+      font-size: 0.9rem;
+    }
+
+    & a {
+      text-wrap: pretty;
+    }
+
+    /* Target auto-generated footnotes */
+    & section[data-footnotes] {
+      /* Important tag on margin-top is necessary to override space-y-6 affecting whole section */
+      @apply border-sweater-9 mt-12! border-t-2 pt-12;
+
+      /* MDX generates a "Footnotes" heading. Make it screen reader only */
+      & > h2#footnote-label {
+        @apply sr-only;
+      }
+
+      & > ol {
+        @apply subtitle;
+
+        /* The following two selectors are to make sure back ref arrows are inline with the text */
+        & > li > p:has(> a[data-footnote-backref]) {
+          display: inline;
+        }
+
+        & a[data-footnote-backref] {
+          display: inline;
+
+          & > svg {
+            display: inline;
+          }
+        }
+      }
+    }
+  }
+}

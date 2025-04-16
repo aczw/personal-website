@@ -42,7 +42,7 @@ entries.sort((a, b) => b[0] - a[0]);
 
           return (
             <section>
-              <h2 class="berkeley row animate-fade text-sweater-6 mb-4 cursor-default leading-none transition-[filter_opacity] [--order:0]">
+              <h2 class="berkeley row animate-fade-in text-sweater-6 mb-4 cursor-default leading-none transition-[filter_opacity] [--order:0]">
                 {year}
               </h2>
 
@@ -50,7 +50,7 @@ entries.sort((a, b) => b[0] - a[0]);
                 {sortedPosts.map(({ data: { title, blurb, posted }, id }, idx) => (
                   <a
                     href={`/posts/${id}`}
-                    class="row group animate-fade border-b-sweater-9/0 border-t-sweater-9 last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row 380:gap-8 flex flex-col gap-1 border-y-2 py-4 transition-[filter_opacity]"
+                    class="row group animate-fade-in border-b-sweater-9/0 border-t-sweater-9 last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row 380:gap-space flex flex-col gap-1 border-y-2 py-4 transition-[filter_opacity]"
                     style={{ "--order": idx + 1 }}
                   >
                     <time

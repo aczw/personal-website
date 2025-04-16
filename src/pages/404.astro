@@ -46,21 +46,21 @@ const hasUwu = params.has("uwu") && params.get("uwu") === "true";
         <Image
           src={import("@/assets/not-found.png")}
           alt="Page not found"
-          class="animate-fade mb-16 w-[clamp(400px,80%,500px)] [--order:0]"
+          class="animate-fade-in mb-16 w-[clamp(400px,80%,500px)] [--order:0]"
         />
       ) : (
         <p
           id="scroll"
           aria-hidden="true"
           data-scrambled={scrambled}
-          class="animate-fade bg-sweater-9 text-sweater-7 w-fit cursor-not-allowed rounded-full px-6 py-2 font-mono text-[clamp(30px,7vw,90px)] italic [--order:0] sm:px-12"
+          class="animate-fade-in bg-sweater-9 text-sweater-7 w-fit cursor-not-allowed rounded-full px-6 py-2 font-mono text-[clamp(30px,7vw,90px)] italic [--order:0] sm:px-12"
         >
           {scrambled}
         </p>
       )
     }
 
-    <section class="animate-fade flex flex-col items-center [--order:1]">
+    <section class="animate-fade-in flex flex-col items-center [--order:1]">
       <p>
         {
           hasUwu ? (

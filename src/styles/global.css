@@ -1,19 +1,77 @@
 @import "tailwindcss";
+@import "./animations.css";
+@import "./fonts.css";
+@import "./mdx.css";
 
-@config '../../tailwind.config.ts';
+@theme {
+  /* No good way of referencing default theme. See https://github.com/tailwindlabs/tailwindcss/discussions/15253 */
+  --font-sans: "Atkinson Hyperlegible", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono: "Berkeley Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+
+  /* This is 8 * 0.25rem = 30px, because I consider 1rem = 15px */
+  --spacing-space: --spacing(8);
+
+  --color-sweater-1: #eae9ff;
+  --color-sweater-2: #d6d3ff;
+  --color-sweater-3: #c3bdff;
+  --color-sweater-4: #ada6ff;
+  --color-sweater-5: #9a91fe;
+  --color-sweater-6: #6b62cb;
+  --color-sweater-7: #484390;
+  --color-sweater-8: #312d65;
+  --color-sweater-9: #1d193d;
+  --color-sweater-10: #0a0919;
+
+  /* Accounts for padding on left and right sides */
+  --container-normal: calc(var(--normal-w) + 2 * var(--spacing-space));
+  --container-wide: calc(var(--wide-w) + 2 * var(--spacing-space));
+
+  /* Terrible names, but these don't really represent anything and are just good values by themselves */
+  --breakpoint-380: 380px;
+  --breakpoint-480: 480px;
+  --breakpoint-560: 560px;
+
+  /* Used for shifting the hashtag icons next to MDX headings to the right side when screen width becomes too small */
+  --breakpoint-heading: 760px;
+
+  /* Calculated by summing up the following:
+   *
+   * - Wide width aka --wide-w
+   * - First pair of column-gap using --spacing-space
+   * - 320px. TOC has minimum 160px width, reflected on other side as well
+   * - Second pair of column-gap using --spacing-space
+   * 
+   * This is the minimum width before the TOC disappears and grid collapses to mobile.
+   */
+  --breakpoint-toc: 1340px;
+
+  /* Calculated the same way as --container-normal */
+  --breakpoint-normal: 710px;
+}
 
 @utility pill {
   @apply bg-sweater-4 text-sweater-9 hover:bg-sweater-3 rounded-full px-3 py-1.5 transition-colors;
 
+  @variant hover {
+    @apply bg-sweater-3;
+  }
+
   &[data-quiet="true"] {
-    @apply bg-sweater-9 text-sweater-4 hover:bg-sweater-8 hover:text-sweater-3;
+    @apply bg-sweater-9 text-sweater-4;
+
+    @variant hover {
+      @apply bg-sweater-8 text-sweater-3;
+    }
   }
 }
 
 @utility berkeley {
+  @apply font-mono;
+
   font-size: 13.5px;
   font-weight: 120;
-  @apply font-mono;
 }
 
 @utility subtitle {
@@ -29,34 +87,33 @@
 }
 
 @utility span-height {
-  @apply min-h-[calc(100vh-var(--header-h)-71.25px)];
-}
-
-@utility mdx-span-normal {
-  /* A good explanation of what's going on: https://www.joshwcomeau.com/css/full-bleed/ */
-  display: grid;
-  column-gap: 2rem;
-  /* 95px on each side because 900px (wide width) - 60px (column-gap) - 650px (normal width) = 190px space left to distribute among two columns */
-  @apply toc:grid-cols-[2fr_95px_min(650px,100%-8rem)_95px_2fr] grid-cols-[1fr_min(650px,100%-4rem)_1fr];
-}
-
-@utility bleed-wide {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: var(--container-wide);
-  @apply toc:col-[2_/_5] toc:px-0 col-[1_/_-1] px-8;
+  min-height: calc(100vh - var(--header-h) - var(--footer-h));
 }
 
 @layer base {
+  /* Expose common and global values to everyone */
   :root {
     --fade-speed: 100ms;
-    @apply xs:[--header-h:147.38px] [--header-h:210px] sm:[--header-h:150px];
+
+    --normal-w: 650px;
+    --wide-w: 900px;
+
+    --header-h: 210px;
+    --footer-h: 71.25px;
+
+    @variant 480 {
+      --header-h: 147.38px;
+    }
+
+    @variant sm {
+      --header-h: 150px;
+    }
   }
 
   html {
-    font-size: 15px;
     @apply bg-sweater-10 text-sweater-1 scroll-smooth;
+
+    font-size: 15px;
   }
 
   /* Make vertical scrollbar always visible so horizontal content doesn't jump */
@@ -86,148 +143,6 @@
   }
 
   img {
-    @apply italic;
-  }
-
-  /* Only style elements rendered from MDX */
-  article > .mdx-span-normal {
-    & img,
-    video {
-      @apply bg-sweater-9 w-full rounded-xl;
-    }
-
-    /* Utility to remove background for images and videos (e.g. they're transparent and we don't want to see it) */
-    & .no-bg {
-      & > img,
-      > video {
-        background-color: inherit;
-      }
-    }
-
-    /* Inline code should have some padding and unique background color */
-    & code {
-      @apply bg-sweater-9 rounded-md px-1 py-0.5 text-[13px] font-[100] break-words;
-    }
-
-    /* Treat inline code differently inside callouts (but this way utilities can still override it) */
-    & aside {
-      & code {
-        @apply bg-sweater-8;
-      }
-    }
-
-    & del {
-      @apply text-sweater-6 cursor-not-allowed line-through;
-    }
-
-    & li {
-      @apply pl-2.5 break-words;
-    }
-
-    & ul,
-    ol {
-      @apply ml-5 list-outside space-y-2;
-
-      ::marker {
-        @apply text-sweater-4 tabular-nums;
-      }
-    }
-
-    & ul {
-      list-style-type: "➔";
-    }
-
-    & ol {
-      list-style-type: decimal;
-    }
-
-    /* Only select <figure> elements not from the Expressive Code library */
-    & figcaption {
-      @apply subtitle mt-2 text-[0.9rem];
-    }
-
-    & a {
-      text-wrap: pretty;
-    }
-
-    /* Target auto-generated footnotes */
-    & section[data-footnotes] {
-      /* Important tag on margin-top is necessary to override space-y-6 affecting whole section */
-      @apply border-sweater-9 mt-12! border-t-2 pt-12;
-
-      /* MDX generates a "Footnotes" heading. Make it screen reader only */
-      & > h2#footnote-label {
-        @apply sr-only;
-      }
-
-      & > ol {
-        @apply subtitle;
-
-        /* The following two selectors are to make sure back ref arrows are inline with the text */
-        & > li > p:has(> a[data-footnote-backref]) {
-          display: inline;
-        }
-
-        & a[data-footnote-backref] {
-          display: inline;
-
-          & > svg {
-            display: inline;
-          }
-        }
-      }
-    }
-  }
-
-  .mdx-span-normal > * {
-    @apply toc:col-3 col-2;
-  }
-
-  @font-face {
-    font-family: "Atkinson Hyperlegible Next";
-    font-style: normal;
-    font-weight: normal;
-    font-display: swap;
-    src: url("/_fonts/AtkHypNext-Regular.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "Atkinson Hyperlegible Next";
     font-style: italic;
-    font-weight: normal;
-    font-display: swap;
-    src: url("/_fonts/AtkHypNext-RegularItalic.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "Atkinson Hyperlegible Next";
-    font-style: normal;
-    font-weight: bold;
-    font-display: swap;
-    src: url("/_fonts/AtkHypNext-Bold.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "Atkinson Hyperlegible Next";
-    font-style: italic;
-    font-weight: bold;
-    font-display: swap;
-    src: url("/_fonts/AtkHypNext-BoldItalic.woff2") format("woff2");
-  }
-
-  @font-face {
-    font-family: "Berkeley Mono Variable";
-    font-style: normal;
-    font-display: swap;
-    font-weight: 100 150;
-    src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
-  }
-
-  @font-face {
-    font-family: "Berkeley Mono Variable";
-    font-style: italic;
-    font-display: swap;
-    font-weight: 100 150;
-    src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
   }
 }
