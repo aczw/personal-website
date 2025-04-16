@@ -122,14 +122,14 @@ const projects = await getEntries([
           return (
             <a
               href={`/posts/${id}`}
-              class="group animate-fade-in border-sweater-9 480:flex-row 480:gap-4 flex flex-col justify-between border-t-2 py-4 *:transition-colors last:border-b-2"
+              class="group animate-fade-in border-sweater-9 480:flex-row 480:gap-space flex flex-col justify-between border-t-2 py-4 *:transition-colors last:border-b-2"
               style={{ "--order": idx + 2 }}
             >
               <h2 class="subtitle group-hover:text-sweater-1">{title}</h2>
 
               <time
                 datetime={posted.toISOString()}
-                class="berkeley text-sweater-5 group-hover:text-sweater-3"
+                class="berkeley text-sweater-5 group-hover:text-sweater-3 shrink-0"
               >
                 {posted.toLocaleDateString("en-US", {
                   month: "long",
