@@ -91,9 +91,22 @@
 
     /* Only select <figure> elements not from the Expressive Code library */
     & figcaption {
-      @apply subtitle mt-2;
+      @apply subtitle mx-auto mt-2 *:inline;
 
+      max-width: var(--normal-w);
       font-size: 0.9rem;
+
+      /* Render a little arrow before the caption */
+      &::before {
+        @apply translate-y-[calc(var(--spacing)*0.6)] scale-90;
+
+        content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkNmQzZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodC1pY29uIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodCI+PHBvbHlsaW5lIHBvaW50cz0iMTUgMTAgMjAgMTUgMTUgMjAiLz48cGF0aCBkPSJNNCA0djdhNCA0IDAgMCAwIDQgNGgxMiIvPjwvc3ZnPg==");
+
+        display: inline-block;
+        padding-right: 3.5px;
+        font-weight: bold;
+        opacity: 85%;
+      }
     }
 
     & a {
@@ -103,7 +116,7 @@
     /* Target auto-generated footnotes */
     & section[data-footnotes] {
       /* Important tag on margin-top is necessary to override space-y-6 affecting whole section */
-      @apply border-sweater-9 mt-12! border-t-2 pt-12;
+      @apply border-sweater-9 mt-6! border-t-2 pt-12;
 
       /* MDX generates a "Footnotes" heading. Make it screen reader only */
       & > h2#footnote-label {
@@ -126,6 +139,11 @@
           }
         }
       }
+    }
+
+    /* Override hardcoded 720px max width on <lite-youtube> element */
+    & lite-youtube {
+      max-width: none !important;
     }
   }
 }

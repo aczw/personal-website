@@ -9,11 +9,9 @@ const { headings } = Astro.props;
 ---
 
 <aside
-  class="toc:block pr-space sticky top-0 col-5 row-[1_/_200] hidden h-[calc(100vh-1rem)] max-w-[250px] self-start overflow-y-auto"
+  class="toc:block pr-space sticky top-6 col-5 row-[1_/_200] hidden h-[calc(100vh-1rem)] max-w-[250px] self-start overflow-y-auto"
 >
   <nav>
-    <div aria-hidden="true" class="from-sweater-10 sticky inset-x-0 top-0 h-6 bg-linear-to-b"></div>
-
     <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
 
     <div class="text-sweater-6 normal:mr-0 mr-7 flex flex-col leading-snug">
@@ -48,11 +46,7 @@ const { headings } = Astro.props;
           return (
             <a
               href={`#${slug}`}
-              class:list={[
-                "hover:bg-sweater-9 hover:text-sweater-2 rounded-md py-1 pr-[0.4rem] leading-none transition-colors",
-                // Make footnote link screen reader only
-                { "sr-only": slug === "footnote-label" },
-              ]}
+              class="hover:bg-sweater-9 hover:text-sweater-2 rounded-md py-1 pr-[0.4rem] leading-none transition-colors"
               style={{
                 paddingLeft: `${(depth - 2) * 1.5 + 0.4}rem`,
                 marginBottom: `${spacing}rem`,
