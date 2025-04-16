@@ -1,0 +1,12 @@
+@utility animate-fade-in {
+  animation: fade-in 0.4s ease-out calc(var(--order) * var(--fade-speed)) backwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

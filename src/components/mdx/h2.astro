@@ -7,21 +7,21 @@ type Props = HTMLAttributes<"h2">;
 let { id, ...props } = Astro.props;
 ---
 
-<h2 id={id} class="w-fit text-lg first:scroll-mt-9 [&:not(:first-child)]:pt-9" {...props}>
+<h2 id={id} class="w-fit text-lg not-first:pt-9 first:scroll-mt-9" {...props}>
   <a
     href={`#${id}`}
-    class="group relative flex items-center gap-1.5 rounded-r-lg pr-2 transition-colors hover:bg-sweater-9 heading:-ml-3 heading:pl-3"
+    class="group hover:bg-sweater-9 heading:-ml-3 heading:pl-3 relative flex items-center gap-1.5 rounded-r-lg pr-2 transition-colors"
   >
     <slot />
 
     <Hash
       size={16}
-      class="stroke-transparent transition-colors group-hover:stroke-sweater-5 heading:absolute heading:-left-3"
+      class="group-hover:stroke-sweater-5 heading:absolute heading:-left-3 stroke-transparent transition-colors"
       aria-hidden="true"
     />
     <div
       aria-hidden="true"
-      class="absolute -left-2 z-[-1] size-[26px] rounded-l-lg transition-colors group-hover:bg-sweater-9 heading:-left-4"
+      class="group-hover:bg-sweater-9 heading:-left-4 absolute -left-2 z-[-1] size-[26px] rounded-l-lg transition-colors"
     >
     </div>
   </a>

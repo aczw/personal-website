@@ -33,7 +33,7 @@ entries.sort((a, b) => b[0] - a[0]);
 >
   <main class="span-normal span-height py-12">
     <div
-      class="pointer-events-none space-y-12 [--fade-speed:25ms] [&_.row:not(:hover)]:hover:brightness-50"
+      class="pointer-events-none space-y-12 [--fade-speed:25ms] hover:[&_.row:not(:hover)]:brightness-50"
     >
       {
         entries.map(([year, yearPosts]) => {
@@ -42,7 +42,7 @@ entries.sort((a, b) => b[0] - a[0]);
 
           return (
             <section>
-              <h2 class="berkeley row mb-4 animate-fade cursor-default leading-none text-sweater-6 transition-[filter_opacity] [--order:0]">
+              <h2 class="berkeley row animate-fade-in text-sweater-6 mb-4 cursor-default leading-none transition-[filter_opacity] [--order:0]">
                 {year}
               </h2>
 
@@ -50,7 +50,7 @@ entries.sort((a, b) => b[0] - a[0]);
                 {sortedPosts.map(({ data: { title, blurb, posted }, id }, idx) => (
                   <a
                     href={`/posts/${id}`}
-                    class="row group flex animate-fade flex-col gap-1 border-y-2 border-b-sweater-9/0 border-t-sweater-9 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row 380:gap-8"
+                    class="row group animate-fade-in border-b-sweater-9/0 border-t-sweater-9 last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row 380:gap-space flex flex-col gap-1 border-y-2 py-4 transition-[filter_opacity]"
                     style={{ "--order": idx + 1 }}
                   >
                     <time
@@ -64,7 +64,7 @@ entries.sort((a, b) => b[0] - a[0]);
                         timeZone: "America/New_York",
                         timeZoneName: "short",
                       })}
-                      class="berkeley shrink-0 text-sweater-4 transition-colors group-hover:text-sweater-3"
+                      class="berkeley text-sweater-4 group-hover:text-sweater-3 shrink-0 transition-colors"
                     >
                       <span class="380:hidden">
                         {posted.toLocaleDateString("en-US", {
@@ -73,7 +73,7 @@ entries.sort((a, b) => b[0] - a[0]);
                           timeZone: "America/New_York",
                         })}
                       </span>
-                      <span class="hidden 380:inline">
+                      <span class="380:inline hidden">
                         {posted.toLocaleDateString("en-US", {
                           month: "2-digit",
                           day: "2-digit",
@@ -85,7 +85,7 @@ entries.sort((a, b) => b[0] - a[0]);
                     <div class="space-y-1">
                       <h2>{title}</h2>
                       {blurb ? (
-                        <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
+                        <p class="subtitle group-hover:text-sweater-1 transition-[color_opacity] group-hover:opacity-100">
                           {blurb}
                         </p>
                       ) : null}

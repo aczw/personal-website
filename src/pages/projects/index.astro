@@ -32,11 +32,11 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
   }}
 >
   <main class="space-y-12 py-12">
-    <section class="span-normal animate-fade [--order:0]">
+    <section class="span-normal animate-fade-in [--order:0]">
       <div
-        class="flex flex-col gap-2.5 border-y-2 border-sweater-9 py-4 380:flex-row 380:items-center 380:gap-4 sm:gap-8"
+        class="border-sweater-9 380:flex-row 380:items-center 380:gap-4 sm:gap-space flex flex-col gap-2.5 border-y-2 py-4"
       >
-        <h2 class="w-fit cursor-default leading-none text-sweater-4 sm:w-1/2">
+        <h2 class="text-sweater-4 w-fit cursor-default leading-none sm:w-1/2">
           Filter{filteredByAny ? "ed" : ""} by:
         </h2>
 
@@ -48,7 +48,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
               return (
                 <a
                   title={filtered ? `Remove "${filter}" filter` : `Filter by "${filter}"`}
-                  class="pill flex animate-fade items-center gap-1.5 leading-none"
+                  class="pill animate-fade-in flex items-center gap-1.5 leading-none"
                   href={`/projects${filtered ? "" : `?filter=${filter}`}`}
                   data-quiet={!filtered}
                   style={{ "--order": idx + 1 }}
@@ -62,7 +62,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
       </div>
     </section>
 
-    <section class="span-wide grid grid-cols-1 gap-8 [--fade-speed:40ms] 560:grid-cols-2">
+    <section class="span-wide 560:grid-cols-2 gap-space grid grid-cols-1 [--fade-speed:40ms]">
       {
         projects.map((project, idx) => {
           const {
@@ -73,7 +73,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
           return (
             <a
               href={`/projects/${id}`}
-              class="group relative h-fit animate-fade transition-opacity"
+              class="group animate-fade-in relative h-fit transition-opacity"
               style={{ "--order": idx + 1 }}
             >
               <ProjectCover
@@ -84,12 +84,12 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
               />
 
               {import.meta.env.DEV ? (
-                <span class="pill absolute left-2.5 top-2.5 font-bold leading-none">
+                <span class="pill absolute top-2.5 left-2.5 leading-none font-bold">
                   {project.data.order}
                 </span>
               ) : null}
 
-              <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
+              <div class="bg-sweater-9 group-hover:bg-sweater-8 absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl">
                 <div class="flex items-center justify-between gap-4">
                   <div>
                     <h2>{name}</h2>
@@ -109,7 +109,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
 
                   <ArrowRight
                     size="34"
-                    class="shrink-0 rounded-full bg-sweater-8 stroke-sweater-5 stroke-[2.5] p-1.5 transition-colors group-hover:bg-sweater-7 group-hover:stroke-sweater-4"
+                    class="bg-sweater-8 stroke-sweater-5 group-hover:bg-sweater-7 group-hover:stroke-sweater-4 shrink-0 rounded-full stroke-[2.5] p-1.5 transition-colors"
                     aria-hidden="true"
                   />
                 </div>

@@ -9,18 +9,17 @@ const { headings } = Astro.props;
 ---
 
 <aside
-  class="sticky top-0 col-[5] row-[1_/_200] hidden h-[calc(100vh-1rem)] max-w-[250px] self-start overflow-y-auto pr-8 toc:block"
+  class="toc:block pr-space sticky top-0 col-5 row-[1_/_200] hidden h-[calc(100vh-1rem)] max-w-[250px] self-start overflow-y-auto"
 >
   <nav>
-    <div aria-hidden="true" class="sticky inset-x-0 top-0 h-6 bg-gradient-to-b from-sweater-10">
-    </div>
+    <div aria-hidden="true" class="from-sweater-10 sticky inset-x-0 top-0 h-6 bg-linear-to-b"></div>
 
     <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
 
-    <div class="mr-7 flex flex-col leading-snug text-sweater-6 normal:mr-0">
+    <div class="text-sweater-6 normal:mr-0 mr-7 flex flex-col leading-snug">
       <a
         href="#"
-        class="mb-[0.4rem] rounded-md px-[0.4rem] py-1 leading-none text-sweater-3 transition-colors hover:bg-sweater-9 hover:text-sweater-1"
+        class="text-sweater-3 hover:bg-sweater-9 hover:text-sweater-1 mb-[0.4rem] rounded-md px-[0.4rem] py-1 leading-none transition-colors"
         >(Back to top!)</a
       >
 
@@ -32,7 +31,7 @@ const { headings } = Astro.props;
 
           if (depth > 3) {
             throw new Error(
-              `Used a heading level greater than H3 in this content. Maybe we should support it now?`
+              `Used a heading level greater than H3 in this content. Maybe we should support it now?`,
             );
           }
 
@@ -50,7 +49,7 @@ const { headings } = Astro.props;
             <a
               href={`#${slug}`}
               class:list={[
-                "rounded-md py-1 pr-[0.4rem] leading-none transition-colors hover:bg-sweater-9 hover:text-sweater-2",
+                "hover:bg-sweater-9 hover:text-sweater-2 rounded-md py-1 pr-[0.4rem] leading-none transition-colors",
                 // Make footnote link screen reader only
                 { "sr-only": slug === "footnote-label" },
               ]}
@@ -68,7 +67,7 @@ const { headings } = Astro.props;
 
     <div
       aria-hidden="true"
-      class="sticky inset-x-0 bottom-[-1px] h-12 bg-gradient-to-t from-sweater-10"
+      class="from-sweater-10 sticky inset-x-0 bottom-[-1px] h-12 bg-linear-to-t"
     >
     </div>
   </nav>
@@ -88,7 +87,7 @@ const { headings } = Astro.props;
           link.classList.remove("text-sweater-3");
         }
       }
-    })
+    }),
   );
 
   document.querySelectorAll("h2[id], h3[id]").forEach((heading) => observer.observe(heading));
