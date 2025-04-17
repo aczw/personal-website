@@ -1,6 +1,10 @@
 ---
 import { getCollection, getEntries } from "astro:content";
 import ArrowRight from "lucide-astro/ArrowRight";
+import Github from "lucide-astro/Github";
+import Linkedin from "lucide-astro/Linkedin";
+import Mail from "lucide-astro/Mail";
+import ScrollText from "lucide-astro/ScrollText";
 
 import Link from "@/components/link.astro";
 import ProjectCover from "@/components/project-cover.astro";
@@ -27,14 +31,16 @@ const projects = await getEntries([
 >
   <main class="space-y-12 py-12">
     <section
-      class="span-normal *:animate-fade-in 560:grid-cols-2 gap-x-space px-space grid grid-cols-1 gap-y-5"
+      class="span-normal *:animate-fade-in 480:grid-cols-2 gap-x-space px-space grid grid-cols-1 gap-y-5"
     >
-      <p class="[--order:0]">
-        Hi! I'm a third year student in the Digital Media Design program at UPenn. I'm concurrently
-        finishing a Master's degree in Computer Graphics and Game Technology.
+      <p class="480:col-span-2 560:col-span-1 [--order:0]">
+        Hi! I'm a third year student in the Digital Media Design program at UPenn. <span
+          class="480:inline hidden"
+          >I'm concurrently finishing a Master's degree in Computer Graphics and Game Technology.</span
+        >
       </p>
 
-      <p class="[--order:1]">
+      <p class="480:col-span-2 560:col-span-1 [--order:1]">
         At school I co-lead our game dev club <Link href="https://pennupgrade.com" target="_blank"
           >UPGRADE</Link
         > and help teach <Link href="https://www.cis.upenn.edu/~cis4600/current/" target="_blank"
@@ -47,13 +53,42 @@ const projects = await getEntries([
         In my free time I like running, making playlists, learning the bass, and riding SEPTA.
       </p>
 
-      <p class="subtitle [--order:3]">
+      <p class="subtitle 480:block hidden [--order:3]">
         You can find my socials and resumé below. Thanks for stopping by. <span
           aria-hidden="true"
           class="cursor-[url('/src/assets/mewo.webp')_32_32,_not-allowed] whitespace-nowrap"
           >(〜￣▽￣)〜</span
         >
       </p>
+
+      <div
+        class="480:col-span-2 480:gap-x-space *:animate-fade-in col-span-1 grid grid-cols-2 gap-x-4 gap-y-4 pt-4.5 sm:grid-cols-4"
+      >
+        <a
+          href="/_files/resume.pdf"
+          target="_blank"
+          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 berkeley flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:1]"
+          >Resume <ScrollText size={18} /></a
+        >
+        <a
+          href="https://www.linkedin.com/in/zwcharl/"
+          target="_blank"
+          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 berkeley flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:2]"
+          >LinkedIn <Linkedin size={18} /></a
+        >
+        <a
+          href="https://www.github.com/aczw"
+          target="_blank"
+          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 berkeley flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:3]"
+          >GitHub <Github size={18} /></a
+        >
+        <a
+          href="mailto:zwcharl@gmail.com"
+          target="_blank"
+          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 berkeley flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:4]"
+          >Email <Mail size={18} /></a
+        >
+      </div>
     </section>
 
     <section class="span-wide 480:grid-cols-2 gap-space grid grid-cols-1">
