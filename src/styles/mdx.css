@@ -141,9 +141,17 @@
       }
     }
 
-    /* Override hardcoded 720px max width on <lite-youtube> element */
+    /* Override hardcoded 720px max width on lite-youtube element */
     & lite-youtube {
       max-width: none !important;
+    }
+
+    & hr {
+      /* Apply extra spacing to the top and bottom of the line */
+      @apply !mt-6 !mb-12;
+
+      border-width: 1.5px;
+      color: var(--color-sweater-8);
     }
   }
 }
