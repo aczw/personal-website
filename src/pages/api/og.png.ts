@@ -1,15 +1,13 @@
 export const prerender = false;
 
+import { Resvg } from "@resvg/resvg-js";
 import type { APIRoute } from "astro";
 import { getEntry } from "astro:content";
-
 import { readFileSync } from "node:fs";
-
-import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { html } from "satori-html";
 
-type ContentKind =
+type Content =
   | { kind: "route"; heading: string }
   | { kind: "post"; title: string; date: Date }
   | { kind: "project"; name: string; tags: string };
@@ -22,7 +20,7 @@ const GET: APIRoute = async ({ request }) => {
   const maybePost = params.get("post");
   const maybeProject = params.get("project");
 
-  let content: ContentKind = { kind: "route", heading: "" };
+  let content: Content = { kind: "route", heading: "" };
   if (maybeHeading) {
     content = { kind: "route", heading: maybeHeading };
   } else if (maybePost) {
@@ -39,6 +37,11 @@ const GET: APIRoute = async ({ request }) => {
         tags: project.data.metadata.tech.sort().join(", "),
       };
     }
+  } else {
+    throw new Response(null, {
+      status: 500,
+      statusText: "Invalid content kind received",
+    });
   }
 
   const logo = `<svg
@@ -65,9 +68,9 @@ const GET: APIRoute = async ({ request }) => {
       ${
         content.kind === "route"
           ? `${logo} <span tw="text-8xl text-[#9A91FE] font-bold">Charles Wang</span>`
-          : `<span tw="text-[#C3BDFF] mb-3.5 font-bold text-7xl">${c.kind === "post" ? c.title : c.kind === "project" ? `Project — ${c.name}` : "UNREACHABLE"}</span>
+          : `<span tw="text-[#C3BDFF] mb-3.5 font-bold text-7xl text-pretty">${c.kind === "post" ? c.title : c.kind === "project" ? `Project — ${c.name}` : "UNREACHABLE"}</span>
           
-          <span tw="text-[#D6D3FF] mb-3.5 text-6xl">${c.kind === "post" ? c.date.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "America/New_York" }) : c.kind === "project" ? `Made with ${c.tags}` : "UNREACHABLE"}</span>`
+          <span tw="text-[#D6D3FF] mb-3.5 text-pretty text-6xl">${c.kind === "post" ? c.date.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "America/New_York" }) : c.kind === "project" ? `Built with ${c.tags}` : "UNREACHABLE"}</span>`
       }
     </div>
 
