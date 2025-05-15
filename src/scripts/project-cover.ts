@@ -1,53 +1,59 @@
-class ProjectCover extends HTMLElement {
-  externallyPaused: boolean;
+type ProjectCoverKind =
+  | { hasVideo: true; video: HTMLVideoElement; wrapper: HTMLDivElement }
+  | { hasVideo: false };
 
-  #hasVideo: boolean;
-  #video: HTMLVideoElement | undefined;
-  #wrapper: HTMLDivElement | undefined;
+class ProjectCover extends HTMLElement {
+  readonly kind: ProjectCoverKind;
+  externallyPaused: boolean;
 
   constructor() {
     super();
 
     this.externallyPaused = false;
+    this.kind = { hasVideo: false };
 
-    // Note: data-* values automatically become camel case, so the key is
+    // data-* values automatically become camel case, so the key is
     // actually "useVideo" not "use-video"
-    this.#hasVideo = this.dataset["useVideo"] === "true";
+    if (this.dataset["useVideo"] === "true") {
+      const videoElt = this.querySelector("video");
+      const wrapperDivElt = this.querySelector("div");
 
-    if (this.#hasVideo) {
-      this.#video = this.querySelector("video")!;
-      this.#wrapper = this.querySelector("div")!;
+      if (!videoElt || !wrapperDivElt) {
+        throw new Error(
+          "ProjectCover claims to has video but doesn't contain video or wrapper div element",
+        );
+      }
+
+      this.kind = { hasVideo: true, video: videoElt, wrapper: wrapperDivElt };
     }
   }
 
   connectedCallback() {
-    if (!this.#hasVideo) return;
+    if (!this.kind.hasVideo) return;
 
-    // Unless the video is already able to be played to the end without buffering, we attach
-    // an event listener that displays and plays the video only when it's able to
-    if (this.#video!.readyState !== HTMLMediaElement.HAVE_ENOUGH_DATA) {
-      this.#video!.addEventListener("canplaythrough", () => this.playVideo());
+    if (this.kind.video.readyState !== HTMLMediaElement.HAVE_ENOUGH_DATA) {
+      this.kind.video.addEventListener("canplaythrough", () => this.playVideo());
     } else {
       this.playVideo();
     }
   }
 
   playVideo() {
-    if (!this.#hasVideo) return;
+    if (!this.kind.hasVideo) return;
 
     // User may have chosen to pause all videos on the page externally using the
     // ProjectCoverControls button. We respect that choice here and don't play this video
     if (this.externallyPaused) return;
 
-    this.#video!.play();
-    this.#wrapper!.style.opacity = "100";
+    this.kind.video.play();
+    this.kind.wrapper.style.opacity = "100";
   }
 
   pauseVideo() {
-    if (!this.#hasVideo) return;
+    if (!this.kind.hasVideo) return;
 
-    this.#video!.pause();
-    this.#wrapper!.style.opacity = "0";
+    this.kind.video.pause();
+    this.kind.wrapper.style.opacity = "0";
   }
 }
 

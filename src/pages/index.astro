@@ -1,14 +1,13 @@
 ---
 import { getCollection, getEntries } from "astro:content";
+import Link from "@/components/link.astro";
+import ProjectCover from "@/components/project-cover.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
 import ArrowRight from "lucide-astro/ArrowRight";
 import Github from "lucide-astro/Github";
 import Linkedin from "lucide-astro/Linkedin";
 import Mail from "lucide-astro/Mail";
 import ScrollText from "lucide-astro/ScrollText";
-
-import Link from "@/components/link.astro";
-import ProjectCover from "@/components/project-cover.astro";
-import CommonLayout from "@/layouts/common-layout.astro";
 
 let posts = await getCollection("posts");
 posts = posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime()).slice(0, 3);

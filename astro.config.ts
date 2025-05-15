@@ -1,13 +1,11 @@
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
-import { defineConfig, envField } from "astro/config";
-
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import tailwindcss from "@tailwindcss/vite";
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
+import { defineConfig, envField } from "astro/config";
 import rehypeUnwrapImages from "rehype-unwrap-images";
-
 import { SITE_NAME } from "./src/scripts/util";
 
 const config = defineConfig({

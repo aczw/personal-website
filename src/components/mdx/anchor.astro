@@ -12,14 +12,18 @@
  * Essentially we've hijacked MDX's HTML output to replace it with our own.
  */
 
+import Link from "@/components/link.astro";
 import type { HTMLAttributes } from "astro/types";
 import Undo2 from "lucide-astro/Undo2";
 
-import Link from "@/components/link.astro";
-
 type Props = Omit<HTMLAttributes<"a">, "target" | "class">;
 
-const href = Astro.props.href as string;
+const href = Astro.props.href;
+
+if (!href || typeof href !== "string") {
+  throw new Error('"href" attribute doesn\'t exist on anchor or we mistakenly passed in a URL.');
+}
+
 const isFootnoteRelated = href.startsWith("#user-content-fn");
 const isFootnote = href.startsWith("#user-content-fn-");
 const isBackRef = href.startsWith("#user-content-fnref-");
@@ -34,8 +38,9 @@ const isBackRef = href.startsWith("#user-content-fnref-");
     isBackRef ? (
       <Undo2 size={15} />
     ) : isFootnote ? (
-      /* prettier-ignore */
-      <>[<slot />]</>
+      <>
+        [<slot />]
+      </>
     ) : (
       <slot />
     )

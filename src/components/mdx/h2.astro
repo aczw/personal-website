@@ -1,10 +1,10 @@
 ---
-import { type HTMLAttributes } from "astro/types";
+import type { HTMLAttributes } from "astro/types";
 import Hash from "lucide-astro/Hash";
 
 type Props = HTMLAttributes<"h2">;
 
-let { id, ...props } = Astro.props;
+const { id, ...props } = Astro.props;
 ---
 
 <h2 id={id} class="w-fit text-lg not-first:pt-9 first:scroll-mt-9" {...props}>

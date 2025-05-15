@@ -1,9 +1,8 @@
 ---
-import Analytics from "@vercel/analytics/astro";
-import SpeedInsights from "@vercel/speed-insights/astro";
-
 import ScreenSizeIndicator from "@/components/dev/screen-size-indicator.astro";
 import type { MetaKind } from "@/scripts/types";
+import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
 
 import "@/styles/global.css";
 
@@ -19,15 +18,15 @@ let ogImageParams: string;
 
 switch (meta.kind) {
   case "route": {
-    title = (meta.title ? meta.title + " — " : "") + title;
+    title = (meta.title ? `${meta.title} — ` : "") + title;
     description = meta.description;
     ogImageParams = `?heading=${encodeURIComponent(meta.ogImageParams)}`;
     break;
   }
 
   case "post": {
-    let { data, id } = meta.post;
-    title = data.title + " — " + title;
+    const { data, id } = meta.post;
+    title = `${data.title} — ${title}`;
 
     // If the post doesn't have a blurb then just state when it was published
     description = data.blurb
@@ -43,8 +42,8 @@ switch (meta.kind) {
   }
 
   case "project": {
-    let { data, id } = meta.project;
-    title = data.name + " — " + title;
+    const { data, id } = meta.project;
+    title = `${data.name} — ${title}`;
     description = data.blurb;
     ogImageParams = `?project=${id}`;
     break;

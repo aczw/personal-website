@@ -1,24 +1,25 @@
 ---
 import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
-
 import CommonLayout from "@/layouts/common-layout.astro";
 
 const posts = await getCollection("posts");
-const yearPostsMap = new Map<number, CollectionEntry<"posts">[]>();
+const yearToPostsMap = new Map<number, CollectionEntry<"posts">[]>();
 
-posts.forEach((post) => {
+// Group posts together by publish year
+for (const post of posts) {
   const year = post.data.posted.getFullYear();
+  const maybePosts = yearToPostsMap.get(year);
 
-  if (!yearPostsMap.has(year)) {
-    yearPostsMap.set(year, [post]);
+  if (maybePosts) {
+    yearToPostsMap.set(year, [...maybePosts, post]);
   } else {
-    yearPostsMap.get(year)!.push(post);
+    yearToPostsMap.set(year, [post]);
   }
-});
+}
 
-// Sort by year
-const entries = yearPostsMap.entries().toArray();
+// Sort each group of posts by publish year
+const entries = yearToPostsMap.entries().toArray();
 entries.sort((a, b) => b[0] - a[0]);
 ---
 

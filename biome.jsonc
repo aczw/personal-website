@@ -5,6 +5,9 @@
     "clientKind": "git",
     "useIgnoreFile": true
   },
+  "files": {
+    "ignore": [".astro"]
+  },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -16,7 +19,12 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "complexity": {
+        // Signals intent when we intentionally access via index. It means we didn't explicitly
+        // define the property on the object.
+        "useLiteralKeys": "off"
+      }
     }
   },
   "css": {
@@ -26,7 +34,14 @@
   },
   "overrides": [
     {
-      "include": ["*.astro"]
+      "include": ["*.astro"],
+      "linter": {
+        "rules": {
+          "style": {
+            "useImportType": "off"
+          }
+        }
+      }
     }
   ]
 }
