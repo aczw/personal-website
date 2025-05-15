@@ -29,17 +29,13 @@
     "tailwindcss": "^4.1.6"
   },
   "devDependencies": {
-    "@types/eslint": "^8.56.12",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@biomejs/biome": "1.9.4",
     "@typescript-eslint/parser": "^7.18.0",
-    "eslint": "^8.57.1",
     "eslint-plugin-astro": "^0.34.0",
-    "eslint-plugin-mdx": "^3.4.1",
-    "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript": "^5.8.3"
   },
   "trustedDependencies": [
+    "@biomejs/biome",
     "@tailwindcss/oxide",
     "@vercel/speed-insights",
     "esbuild",
