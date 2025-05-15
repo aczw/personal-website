@@ -35,18 +35,26 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
       <div
         class="border-sweater-9 380:flex-row 380:items-center sm:gap-space 380:gap-4 flex flex-col gap-2.5 border-y-2 py-4"
       >
-        <h2 class="text-sweater-4 w-fit shrink-0 cursor-default leading-none sm:w-1/2 sm:shrink">
+        <h2
+          class="text-sweater-4 w-fit shrink-0 cursor-default leading-none sm:w-1/2 sm:shrink"
+        >
           Filter{filteredByAny ? "ed" : ""} by:
         </h2>
 
-        <div class="berkeley flex flex-wrap items-center gap-2.5 [--fade-speed:50ms] sm:w-1/2">
+        <div
+          class="berkeley flex flex-wrap items-center gap-2.5 [--fade-speed:50ms] sm:w-1/2"
+        >
           {
             Filters.map((filter, idx) => {
               const filtered = filterParams[idx];
 
               return (
                 <a
-                  title={filtered ? `Remove "${filter}" filter` : `Filter by "${filter}"`}
+                  title={
+                    filtered
+                      ? `Remove "${filter}" filter`
+                      : `Filter by "${filter}"`
+                  }
                   class="pill animate-fade-in flex items-center gap-1.5 leading-none"
                   href={`/projects${filtered ? "" : `?filter=${filter}`}`}
                   data-quiet={!filtered}
@@ -61,7 +69,9 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
       </div>
     </section>
 
-    <section class="span-wide 560:grid-cols-2 gap-space grid grid-cols-1 [--fade-speed:40ms]">
+    <section
+      class="span-wide 560:grid-cols-2 gap-space grid grid-cols-1 [--fade-speed:40ms]"
+    >
       {
         projects.map((project, idx) => {
           const {
@@ -128,7 +138,9 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
                       {metadata.tech.map((tech, idx) => (
                         <ul class="berkeley">
                           <span>{tech}</span>
-                          {idx !== metadata.tech.length - 1 ? <span>/</span> : null}
+                          {idx !== metadata.tech.length - 1 ? (
+                            <span>/</span>
+                          ) : null}
                         </ul>
                       ))}
                     </li>

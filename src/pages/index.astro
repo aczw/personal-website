@@ -33,22 +33,24 @@ const projects = await getEntries([
       class="span-normal *:animate-fade-in 480:grid-cols-2 gap-x-space px-space grid grid-cols-1 gap-y-5"
     >
       <p class="480:col-span-2 560:col-span-1 [--order:0]">
-        Hi! I'm a fourth year student in the Digital Media Design program at UPenn. <span
-          class="480:inline hidden"
-          >I'm concurrently finishing a Master's in Computer Graphics and Game Technology.</span
+        Hi! I'm a fourth year student in the Digital Media Design program at
+        UPenn. <span class="480:inline hidden"
+          >I'm concurrently finishing a Master's in Computer Graphics and Game
+          Technology.</span
         >
       </p>
 
       <p class="480:col-span-2 560:col-span-1 [--order:1]">
-        At school I'm part of UPGRADE, our game dev club, and help TA our intro graphics class. This
-        summer I'm interning at Snap to help work on their game engine. <Link
-          href="/now"
-          class="hidden">Here's some other stuff I'm doing now.</Link
+        At school I'm part of UPGRADE, our game dev club, and help TA our intro
+        graphics class. This summer I'm interning at Snap to help work on their
+        game engine. <Link href="/now" class="hidden"
+          >Here's some other stuff I'm doing now.</Link
         >
       </p>
 
       <p class="subtitle [--order:2]">
-        In my free time I like running, making playlists, reading, and riding SEPTA.
+        In my free time I like running, making playlists, reading, and riding
+        SEPTA.
       </p>
 
       <p class="subtitle 480:block hidden [--order:3]">
@@ -106,7 +108,11 @@ const projects = await getEntries([
               <ProjectCover
                 id={id}
                 cover={cover}
-                useVideo={id === "mini-minecraft" || id === "rcw" ? { small: true } : null}
+                useVideo={
+                  id === "mini-minecraft" || id === "rcw"
+                    ? { small: true }
+                    : null
+                }
                 class="overflow-hidden rounded-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
               />
 
