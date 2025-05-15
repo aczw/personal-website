@@ -6,6 +6,7 @@
     "useIgnoreFile": true
   },
   "files": {
+    // For some reason Biome is still accessing even though it's in my .gitignore
     "ignore": [".astro"]
   },
   "formatter": {
