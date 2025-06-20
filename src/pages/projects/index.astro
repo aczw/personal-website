@@ -2,11 +2,13 @@
 export const prerender = false;
 
 import { getCollection } from "astro:content";
+
+import ArrowRight from "lucide-astro/ArrowRight";
+import CircleX from "lucide-astro/CircleX";
+
 import ProjectCover from "@/components/project-cover.astro";
 import CommonLayout from "@/layouts/common-layout.astro";
 import { Filters } from "@/scripts/types";
-import ArrowRight from "lucide-astro/ArrowRight";
-import CircleX from "lucide-astro/CircleX";
 
 let projects = await getCollection("projects");
 projects.sort((a, b) => a.data.order - b.data.order);

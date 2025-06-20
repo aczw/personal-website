@@ -1,6 +1,7 @@
-import { type ImageFunction, defineCollection, z } from "astro:content";
-import { Filters } from "@/scripts/types";
+import { defineCollection, type ImageFunction, z } from "astro:content";
 import { glob } from "astro/loaders";
+
+import { Filters } from "@/scripts/types";
 
 const TypeSchema = z.enum(Filters);
 

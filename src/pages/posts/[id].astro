@@ -1,6 +1,10 @@
 ---
 import { Image } from "astro:assets";
 import { getCollection, getEntry, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+
+import CalendarFold from "lucide-astro/CalendarFold";
+
 import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
 import H2 from "@/components/mdx/h2.astro";
@@ -8,8 +12,6 @@ import H3 from "@/components/mdx/h3.astro";
 import TableOfContents from "@/components/table-of-contents.astro";
 import CommonLayout from "@/layouts/common-layout.astro";
 import { validProjectCover } from "@/scripts/util";
-import type { GetStaticPaths } from "astro";
-import CalendarFold from "lucide-astro/CalendarFold";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");

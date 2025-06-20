@@ -12,9 +12,11 @@
  * Essentially we've hijacked MDX's HTML output to replace it with our own.
  */
 
-import Link from "@/components/link.astro";
 import type { HTMLAttributes } from "astro/types";
+
 import Undo2 from "lucide-astro/Undo2";
+
+import Link from "@/components/link.astro";
 
 type Props = Omit<HTMLAttributes<"a">, "target" | "class">;
 
