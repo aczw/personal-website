@@ -17,6 +17,10 @@ const config = defineConfig({
     imageService: true,
     includeFiles: ["./public/_fonts/AtkHypNext-Regular.ttf", "./public/_fonts/AtkHypNext-Bold.ttf"],
   }),
+  image: {
+    responsiveStyles: true,
+    layout: "constrained",
+  },
   integrations: [
     sitemap(),
     astroExpressiveCode({
