@@ -5,13 +5,8 @@
 @import "./mdx.css";
 
 @theme {
-  /* No good way of referencing default theme. See https://github.com/tailwindlabs/tailwindcss/discussions/15253 */
-  --font-sans:
-    "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-mono:
-    "Maple Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
-    "Courier New", monospace;
+  --font-sans: "Atkinson Hyperlegible Next";
+  --font-mono: "Maple Mono";
 
   /* Monospace text should be a little smaller than display text. Otherwise it looks too large. */
   --text-mono: 0.85rem;
