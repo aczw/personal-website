@@ -3,6 +3,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const SITE_NAME = "https://charleszw.com";
+const CDN_URL = "https://cdn.charleszw.com";
 
 /**
  * Checks that the cover image for my project covers have an aspect ratio of 16:10, for no real
@@ -48,4 +49,4 @@ function getContentRoutes() {
   return [...postUrls, ...projectUrls];
 }
 
-export { getContentRoutes, SITE_NAME, validProjectCover };
+export { SITE_NAME, CDN_URL, getContentRoutes, validProjectCover };

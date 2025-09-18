@@ -4,7 +4,7 @@ import type { CollectionEntry } from "astro:content";
 import type { z } from "astro/zod";
 
 import type { ImageSchema } from "@/content.config";
-import { validProjectCover } from "@/scripts/util";
+import { CDN_URL, validProjectCover } from "@/scripts/util";
 
 interface Props {
   id: CollectionEntry<"projects">["id"];
@@ -14,7 +14,7 @@ interface Props {
 }
 
 const { id, cover, class: className, useVideo } = Astro.props;
-const path = `/_files/projects/${id}`;
+const path = `${CDN_URL}/projects/${id}`;
 
 if (!validProjectCover(cover.img.width, cover.img.height)) {
   throw new Error(
