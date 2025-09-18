@@ -15,7 +15,11 @@ const config = defineConfig({
   trailingSlash: "never",
   adapter: vercel({
     imageService: true,
-    includeFiles: ["./public/_fonts/AtkHypNext-Regular.ttf", "./public/_fonts/AtkHypNext-Bold.ttf"],
+    // Required for OG image generation
+    includeFiles: [
+      "./public/_files/fonts/og/AtkHypNext-Regular.ttf",
+      "./public/_files/fonts/og/AtkHypNext-Bold.ttf",
+    ],
   }),
   image: {
     responsiveStyles: true,

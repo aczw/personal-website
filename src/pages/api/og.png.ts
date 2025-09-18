@@ -84,13 +84,13 @@ const GET: APIRoute = async ({ request }) => {
     fonts: [
       {
         name: "Atkinson Hyperlegible Next",
-        data: readFileSync(`${process.cwd()}/public/_fonts/AtkHypNext-Regular.ttf`),
+        data: readFileSync(`${process.cwd()}/public/_files/fonts/og/AtkHypNext-Regular.ttf`),
         style: "normal",
         weight: 400,
       },
       {
         name: "Atkinson Hyperlegible Next",
-        data: readFileSync(`${process.cwd()}/public/_fonts/AtkHypNext-Bold.ttf`),
+        data: readFileSync(`${process.cwd()}/public/_files/fonts/og/AtkHypNext-Bold.ttf`),
         style: "normal",
         weight: 700,
       },
