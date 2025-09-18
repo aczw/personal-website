@@ -11,26 +11,26 @@
   },
   "dependencies": {
     "@astrojs/check": "0.9.4",
-    "@astrojs/mdx": "4.3.0",
-    "@astrojs/sitemap": "3.4.1",
-    "@astrojs/vercel": "8.2.0",
-    "@expressive-code/plugin-collapsible-sections": "^0.41.2",
+    "@astrojs/mdx": "4.3.5",
+    "@astrojs/sitemap": "3.6.0",
+    "@astrojs/vercel": "8.2.7",
+    "@expressive-code/plugin-collapsible-sections": "^0.41.3",
     "@resvg/resvg-js": "^2.6.2",
-    "@tailwindcss/vite": "^4.1.10",
+    "@tailwindcss/vite": "^4.1.13",
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
-    "astro": "5.10.0",
-    "astro-embed": "^0.9.0",
-    "astro-expressive-code": "^0.41.2",
-    "lucide-astro": "^0.518.0",
+    "astro": "5.13.8",
+    "astro-embed": "^0.9.1",
+    "astro-expressive-code": "^0.41.3",
+    "lucide-astro": "^0.544.0",
     "rehype-unwrap-images": "^1.0.0",
-    "satori": "^0.15.2",
+    "satori": "^0.18.3",
     "satori-html": "^0.3.2",
-    "tailwindcss": "^4.1.10"
+    "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.0.0",
-    "typescript": "^5.8.3"
+    "@biomejs/biome": "2.2.4",
+    "typescript": "^5.9.2"
   },
   "trustedDependencies": [
     "@biomejs/biome",
