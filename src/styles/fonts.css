@@ -46,4 +46,20 @@
     font-display: swap;
     src: url("/_files/fonts/Hermit-RegularItalic.woff2") format("woff2");
   }
+
+  @font-face {
+    font-family: "Hermit";
+    font-style: normal;
+    font-weight: bold;
+    font-display: swap;
+    src: url("/_files/fonts/Hermit-Bold.woff2") format("woff2");
+  }
+
+  @font-face {
+    font-family: "Hermit";
+    font-style: italic;
+    font-weight: bold;
+    font-display: swap;
+    src: url("/_files/fonts/Hermit-BoldItalic.woff2") format("woff2");
+  }
 }
