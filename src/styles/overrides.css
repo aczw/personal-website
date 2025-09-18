@@ -1,0 +1,5 @@
+/* biome-ignore-all lint/complexity/noImportantStyles: this file contains overrides for CSS, usually from packages that I can't control */
+
+.expressive-code pre > code {
+  font-feature-settings: var(--font-mono--font-feature-settings) !important;
+}

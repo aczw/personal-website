@@ -3,10 +3,12 @@
 @import "./animations.css";
 @import "./fonts.css";
 @import "./mdx.css";
+@import "./overrides.css";
 
 @theme {
   --font-sans: "Atkinson Hyperlegible Next";
   --font-mono: "Maple Mono";
+  --font-mono--font-feature-settings: "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";
 
   /* Monospace text should be a little smaller than display text. Otherwise it looks too large. */
   --text-mono: 0.85rem;
