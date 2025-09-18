@@ -5,9 +5,7 @@
     "clientKind": "git",
     "useIgnoreFile": true
   },
-  "files": {
-    "includes": ["**"]
-  },
+  "files": { "includes": ["**"] },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
@@ -15,9 +13,7 @@
   },
   "assist": {
     "actions": {
-      "source": {
-        "organizeImports": "on"
-      }
+      "source": { "organizeImports": "on" }
     }
   },
   "linter": {
@@ -38,9 +34,7 @@
     }
   },
   "css": {
-    "formatter": {
-      "enabled": true
-    }
+    "formatter": { "enabled": true }
   },
   // Recommended by docs: https://biomejs.dev/internals/language-support/#html-super-languages-support
   "overrides": [

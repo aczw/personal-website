@@ -1,6 +1,8 @@
 ---
 import type { CollectionEntry } from "astro:content";
+
 import { getCollection } from "astro:content";
+
 import CommonLayout from "@/layouts/common-layout.astro";
 
 const posts = await getCollection("posts");

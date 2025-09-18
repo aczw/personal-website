@@ -1,4 +1,5 @@
 import type { CollectionEntry } from "astro:content";
+
 import { z } from "astro:schema";
 
 type EntryKind =
