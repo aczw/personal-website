@@ -44,7 +44,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
         </h2>
 
         <div
-          class="berkeley flex flex-wrap items-center gap-2.5 [--fade-speed:50ms] sm:w-1/2"
+          class="hermit flex flex-wrap items-center gap-2.5 [--fade-speed:50ms] sm:w-1/2"
         >
           {
             Filters.map((filter, idx) => {
@@ -106,7 +106,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
                     <h2>{name}</h2>
                     <ul class="flex flex-wrap gap-x-2">
                       {metadata.tech.map((tech, idx) => (
-                        <li class="berkeley text-sweater-4">
+                        <li class="hermit text-sweater-4">
                           {tech}
                           {idx !== metadata.tech.length - 1 ? (
                             <span aria-hidden="true" class="text-sweater-7">
@@ -138,7 +138,7 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
                     <h2>{name}</h2>
                     <li class="flex flex-wrap gap-x-2">
                       {metadata.tech.map((tech, idx) => (
-                        <ul class="berkeley">
+                        <ul class="hermit">
                           <span>{tech}</span>
                           {idx !== metadata.tech.length - 1 ? (
                             <span>/</span>

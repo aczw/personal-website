@@ -45,7 +45,7 @@ const config = defineConfig({
         borderRadius: "0.5rem",
         uiFontFamily: "Atkinson Hyperlegible Next",
         uiFontSize: "1rem",
-        codeFontFamily: "Berkeley Mono Variable",
+        codeFontFamily: "Hermit",
         codeFontWeight: "120",
         codeFontSize: "13px",
 

@@ -32,18 +32,18 @@
   }
 
   @font-face {
-    font-family: "Berkeley Mono Variable";
+    font-family: "Hermit";
     font-style: normal;
+    font-weight: normal;
     font-display: swap;
-    font-weight: 100 150;
-    src: url("/_files/fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
+    src: url("/_files/fonts/Hermit-Regular.woff2") format("woff2");
   }
 
   @font-face {
-    font-family: "Berkeley Mono Variable";
+    font-family: "Hermit";
     font-style: italic;
+    font-weight: normal;
     font-display: swap;
-    font-weight: 100 150;
-    src: url("/_files/fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
+    src: url("/_files/fonts/Hermit-RegularItalic.woff2") format("woff2");
   }
 }

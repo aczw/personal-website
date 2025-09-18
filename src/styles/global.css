@@ -5,10 +5,12 @@
 
 @theme {
   /* No good way of referencing default theme. See https://github.com/tailwindlabs/tailwindcss/discussions/15253 */
-  --font-sans: "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --font-mono: "Berkeley Mono Variable", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", "Courier New", monospace;
+  --font-sans:
+    "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono:
+    "Hermit", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 
   /* This is 8 * 0.25rem = 30px, because I consider 1rem = 15px */
   --spacing-space: --spacing(8);
@@ -67,11 +69,10 @@
   }
 }
 
-@utility berkeley {
+@utility hermit {
   @apply font-mono;
 
-  font-size: 13.5px;
-  font-weight: 120;
+  font-size: 13px;
 }
 
 @utility subtitle {

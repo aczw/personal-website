@@ -69,25 +69,25 @@ const projects = await getEntries([
         <a
           href="/_files/resume.pdf"
           target="_blank"
-          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 berkeley flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:1]"
+          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 hermit flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:1]"
           >Resume <ScrollText size={18} /></a
         >
         <a
           href="https://www.linkedin.com/in/zwcharl/"
           target="_blank"
-          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 berkeley flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:2]"
+          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 hermit flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:2]"
           >LinkedIn <Linkedin size={18} /></a
         >
         <a
           href="https://www.github.com/aczw"
           target="_blank"
-          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 berkeley flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:3]"
+          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 hermit flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:3]"
           >GitHub <Github size={18} /></a
         >
         <a
           href="mailto:zwcharl@gmail.com"
           target="_blank"
-          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 berkeley flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:4]"
+          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 hermit flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:4]"
           >Email <Mail size={18} /></a
         >
       </div>
@@ -126,7 +126,7 @@ const projects = await getEntries([
                         <h2 class="text-sweater-3">{name}</h2>
                         <ul class="flex flex-wrap gap-x-2">
                           {metadata.tech.map((tech, idx) => (
-                            <li class="berkeley text-sweater-4">
+                            <li class="hermit text-sweater-4">
                               {tech}
                               {idx !== metadata.tech.length - 1 ? (
                                 <span aria-hidden="true" class="text-sweater-7">
@@ -170,7 +170,7 @@ const projects = await getEntries([
 
               <time
                 datetime={posted.toISOString()}
-                class="berkeley text-sweater-5 group-hover:text-sweater-3 shrink-0"
+                class="hermit text-sweater-5 group-hover:text-sweater-3 shrink-0"
               >
                 <span class="480:hidden">Posted on </span>
                 {posted.toLocaleDateString("en-US", {
