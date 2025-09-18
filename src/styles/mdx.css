@@ -53,7 +53,7 @@
     & code {
       @apply bg-sweater-9 rounded-md px-1 py-0.5 break-words;
 
-      font-size: 13px;
+      font-size: var(--text-mono);
       font-weight: 100;
     }
 
@@ -141,8 +141,8 @@
       }
     }
 
-    /* Override hardcoded 720px max width on lite-youtube element */
     & lite-youtube {
+      /* biome-ignore lint/complexity/noImportantStyles: override hardcoded 720px max width on lite-youtube element  */
       max-width: none !important;
     }
 

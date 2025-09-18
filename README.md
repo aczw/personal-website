@@ -6,4 +6,4 @@ Hi! This is the source code for my website. I wanted my own little corner of the
 
 ## Colophon
 
-My main display font is Atkinson Hyperlegible Next, and the monospace font is Hermit. All icons are provided by Lucide. Static images and other small files are directly hosted on the site, but I use BunnyCDN to store my videos. Vercel is my deployment platform.
+My main display font is Atkinson Hyperlegible Next, and the monospace font is Maple Mono. All icons are provided by Lucide. Static images and other small files are directly hosted on the site, but I use BunnyCDN to store my videos. Vercel is my deployment platform.

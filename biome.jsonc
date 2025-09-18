@@ -32,7 +32,8 @@
       // Disabled because Biome doesn't understand Tailwind syntax in CSS files.
       "suspicious": {
         "noUnknownAtRules": "off",
-        "noDuplicateCustomProperties": "off"
+        "noDuplicateCustomProperties": "off",
+        "noDuplicateProperties": "off"
       }
     }
   },

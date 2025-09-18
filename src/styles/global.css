@@ -1,4 +1,5 @@
 @import "tailwindcss";
+
 @import "./animations.css";
 @import "./fonts.css";
 @import "./mdx.css";
@@ -9,8 +10,11 @@
     "Atkinson Hyperlegible Next", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-mono:
-    "Hermit", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Maple Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
+
+  /* Monospace text should be a little smaller than display text. Otherwise it looks too large. */
+  --text-mono: 0.85rem;
 
   /* This is 8 * 0.25rem = 30px, because I consider 1rem = 15px */
   --spacing-space: --spacing(8);
@@ -69,10 +73,10 @@
   }
 }
 
-@utility hermit {
+@utility maple {
   @apply font-mono;
 
-  font-size: 13px;
+  font-size: var(--text-mono);
 }
 
 @utility subtitle {

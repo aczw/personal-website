@@ -32,34 +32,34 @@
   }
 
   @font-face {
-    font-family: "Hermit";
+    font-family: "Maple Mono";
     font-style: normal;
     font-weight: normal;
     font-display: swap;
-    src: url("/_files/fonts/Hermit-Regular.woff2") format("woff2");
+    src: url("/_files/fonts/MapleMono-Regular.woff2") format("woff2");
   }
 
   @font-face {
-    font-family: "Hermit";
+    font-family: "Maple Mono";
     font-style: italic;
     font-weight: normal;
     font-display: swap;
-    src: url("/_files/fonts/Hermit-RegularItalic.woff2") format("woff2");
+    src: url("/_files/fonts/MapleMono-RegularItalic.woff2") format("woff2");
   }
 
   @font-face {
-    font-family: "Hermit";
+    font-family: "Maple Mono";
     font-style: normal;
     font-weight: bold;
     font-display: swap;
-    src: url("/_files/fonts/Hermit-Bold.woff2") format("woff2");
+    src: url("/_files/fonts/MapleMono-Bold.woff2") format("woff2");
   }
 
   @font-face {
-    font-family: "Hermit";
+    font-family: "Maple Mono";
     font-style: italic;
     font-weight: bold;
     font-display: swap;
-    src: url("/_files/fonts/Hermit-BoldItalic.woff2") format("woff2");
+    src: url("/_files/fonts/MapleMono-BoldItalic.woff2") format("woff2");
   }
 }

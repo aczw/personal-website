@@ -45,9 +45,8 @@ const config = defineConfig({
         borderRadius: "0.5rem",
         uiFontFamily: "Atkinson Hyperlegible Next",
         uiFontSize: "1rem",
-        codeFontFamily: "Hermit",
-        codeFontWeight: "120",
-        codeFontSize: "13px",
+        codeFontFamily: "Maple Mono",
+        codeFontSize: "0.85rem",
 
         frames: {
           editorActiveTabBackground: ({ theme }) => theme.colors["editor.background"],
