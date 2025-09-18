@@ -8,6 +8,8 @@
 @theme {
   --font-sans: "Atkinson Hyperlegible Next";
   --font-mono: "Maple Mono";
+
+  /* See https://font.subf.dev/en/playground for what each value means */
   --font-mono--font-feature-settings: "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";
 
   /* Monospace text should be a little smaller than display text. Otherwise it looks too large. */
