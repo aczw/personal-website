@@ -1,13 +1,12 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.0.0/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
   "vcs": {
-    "enabled": false,
+    "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
   "files": {
-    // For some reason Biome is still accessing even though it's in my .gitignore
-    "includes": ["**", "!**/.astro"]
+    "includes": ["**"]
   },
   "formatter": {
     "enabled": true,
@@ -26,9 +25,14 @@
     "rules": {
       "recommended": true,
       "complexity": {
-        // Signals intent when we intentionally access via index. It means we didn't explicitly
-        // define the property on the object.
+        // This signals intent when we intentionally access via index. It means
+        // we didn't explicitly define the property on the object.
         "useLiteralKeys": "off"
+      },
+      // Disabled because Biome doesn't understand Tailwind syntax in CSS files.
+      "suspicious": {
+        "noUnknownAtRules": "off",
+        "noDuplicateCustomProperties": "off"
       }
     }
   },
@@ -37,13 +41,19 @@
       "enabled": true
     }
   },
+  // Recommended by docs: https://biomejs.dev/internals/language-support/#html-super-languages-support
   "overrides": [
     {
-      "includes": ["**/*.astro"],
+      "includes": ["**/*.svelte", "**/*.astro", "**/*.vue"],
       "linter": {
         "rules": {
           "style": {
+            "useConst": "off",
             "useImportType": "off"
+          },
+          "correctness": {
+            "noUnusedVariables": "off",
+            "noUnusedImports": "off"
           }
         }
       }
