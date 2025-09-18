@@ -1,36 +1,3 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.organizeImports.biome": "explicit"
-  },
-  // Keep CSS files associated with .css (not Tailwind CSS) and simply ignore unknown @rules.
-  // This way Biome can correct format CSS file
-  "css.lint.unknownAtRules": "ignore",
-  "tailwindCSS.rootFontSize": 15,
-  "[json]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[astro]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[tailwindcss]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
-  "[css]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  }
+  "tailwindCSS.rootFontSize": 15, 
 }
