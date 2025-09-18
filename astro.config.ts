@@ -46,13 +46,13 @@ const config = defineConfig({
         uiFontFamily: "Atkinson Hyperlegible Next",
         uiFontSize: "1rem",
         codeFontFamily: "Maple Mono",
-        codeFontSize: "0.85rem",
+        codeFontSize: "var(--text-mono)",
 
         frames: {
           editorActiveTabBackground: ({ theme }) => theme.colors["editor.background"],
-          editorActiveTabForeground: "#C3BDFF",
+          editorActiveTabForeground: "var(--color-sweater-3)",
           editorActiveTabIndicatorHeight: "2px",
-          editorActiveTabIndicatorTopColor: "#C3BDFF",
+          editorActiveTabIndicatorTopColor: "var(--color-sweater-3)",
           editorTabBarBackground: ({ theme }) => setAlpha(theme.colors["editor.background"], 0.5),
           editorTabBorderRadius: "0.3rem",
           shadowColor: "transparent",
