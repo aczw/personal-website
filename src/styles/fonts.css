@@ -4,7 +4,7 @@
     font-style: normal;
     font-weight: normal;
     font-display: swap;
-    src: url("/_fonts/AtkHypNext-Regular.woff2") format("woff2");
+    src: url("/_files/fonts/AtkHypNext-Regular.woff2") format("woff2");
   }
 
   @font-face {
@@ -12,7 +12,7 @@
     font-style: italic;
     font-weight: normal;
     font-display: swap;
-    src: url("/_fonts/AtkHypNext-RegularItalic.woff2") format("woff2");
+    src: url("/_files/fonts/AtkHypNext-RegularItalic.woff2") format("woff2");
   }
 
   @font-face {
@@ -20,7 +20,7 @@
     font-style: normal;
     font-weight: bold;
     font-display: swap;
-    src: url("/_fonts/AtkHypNext-Bold.woff2") format("woff2");
+    src: url("/_files/fonts/AtkHypNext-Bold.woff2") format("woff2");
   }
 
   @font-face {
@@ -28,7 +28,7 @@
     font-style: italic;
     font-weight: bold;
     font-display: swap;
-    src: url("/_fonts/AtkHypNext-BoldItalic.woff2") format("woff2");
+    src: url("/_files/fonts/AtkHypNext-BoldItalic.woff2") format("woff2");
   }
 
   @font-face {
@@ -36,7 +36,7 @@
     font-style: normal;
     font-display: swap;
     font-weight: 100 150;
-    src: url("/_fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
+    src: url("/_files/fonts/BerkeleyMonoVariable-Regular.woff2") format("woff2-variations");
   }
 
   @font-face {
@@ -44,6 +44,6 @@
     font-style: italic;
     font-display: swap;
     font-weight: 100 150;
-    src: url("/_fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
+    src: url("/_files/fonts/BerkeleyMonoVariable-Italic.woff2") format("woff2-variations");
   }
 }
