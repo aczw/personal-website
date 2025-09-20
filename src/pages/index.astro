@@ -57,14 +57,53 @@ const projects = await getEntries([
           <h1 class="cursor-default text-3xl leading-none font-bold">Charles Wang</h1>
         </div>
 
-        <nav class="grid grid-cols-2 *:p-pad">
-          <a
-            href="/projects"
-            class="border-r-(length:--border-w) border-dashed border-border-secondary">Projects</a
-          >
+        <nav
+          class="grid grid-cols-2 divide-x-(length:--border-w) divide-dashed divide-border-secondary *:p-pad"
+        >
+          <a href="/projects">Projects</a>
           <a href="/posts">Writing</a>
         </nav>
       </header>
+
+      <main class="mt-pad-2 space-y-pad-2">
+        <section class="grid-line-before grid-line-after relative">
+          <div class="grid grid-cols-2 gap-pad-2 p-pad">
+            <p>
+              Hi! I'm a fourth year student in the Digital Media Design program at UPenn. I'm
+              concurrently finishing a Master's in Computer Graphics and Game Technology.
+            </p>
+            <p>
+              I'm part of UPGRADE, our game dev club, and help TA our intro graphics class.
+              Previously, I've interned at Snap and TikTok to help work on their rendering engines.
+            </p>
+            <p class="subtitle">
+              In my free time I like running, making playlists, reading manga, and riding SEPTA.
+            </p>
+            <p class="subtitle">
+              You can find my socials and resumé below. Thanks for stopping by. <span
+                aria-hidden="true"
+                class="whitespace-nowrap">(〜￣▽￣)〜</span
+              >
+            </p>
+          </div>
+
+          <div
+            class="col-span-2 grid grid-cols-4 divide-x-(length:--border-w) divide-dashed divide-border-secondary border-t-(length:--border-w) border-dashed border-border-secondary"
+          >
+            <a href="/_files/resume.pdf" target="_blank" class="p-pad">Resume</a>
+            <a href="https://www.linkedin.com/in/zwcharl/" target="_blank" class="p-pad">LinkedIn</a
+            >
+            <a href="https://www.github.com/aczw" target="_blank" class="p-pad">GitHub</a>
+            <a href="mailto:zwcharl@gmail.com" target="_blank" class="p-pad">Email</a>
+          </div>
+        </section>
+
+        <section class="grid-line-before grid-line-after relative">Projects</section>
+
+        <section class="grid-line-before grid-line-after relative">Writing</section>
+      </main>
+
+      <footer class="grid-line-before relative mt-pad-2 pb-6 sm:pb-12">Footer</footer>
     </div>
   </div>
 </BaseLayout>
