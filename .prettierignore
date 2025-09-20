@@ -1,0 +1,3 @@
+# MDX 3 is not officially supported yet.
+# See: https://marketplace.visualstudio.com/items?itemName=unifiedjs.vscode-mdx#prettier
+*.mdx
