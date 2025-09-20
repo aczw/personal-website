@@ -35,9 +35,9 @@ const projects = await getEntries([
     <div
       class="mx-auto max-w-normal border-x-(length:--border-w) border-border-primary pt-6 sm:pt-12"
     >
-      <header class="grid-line-before grid-line-after relative">
+      <header class="grid-line-before grid-line-after relative grid grid-cols-1 480:grid-cols-2">
         <div
-          class="space-y-1 border-b-(length:--border-w) border-dashed border-border-secondary px-pad pt-[calc(1.4*var(--spacing-pad))] pb-pad text-sweater-4"
+          class="space-y-1 border-b-(length:--border-w) border-dashed border-border-secondary px-pad pt-[calc(1.4*var(--spacing-pad))] pb-pad text-sweater-4 480:border-b-0"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -58,10 +58,10 @@ const projects = await getEntries([
         </div>
 
         <nav
-          class="grid grid-cols-2 divide-x-(length:--border-w) divide-dashed divide-border-secondary *:p-pad"
+          class="grid grid-cols-2 divide-x-(length:--border-w) divide-dashed divide-border-secondary border-dashed border-border-secondary text-xl leading-none font-bold text-sweater-2 *:flex *:items-center *:p-pad *:transition-colors *:hover:bg-border-primary *:hover:text-sweater-1 480:grid-cols-1 480:divide-x-0 480:divide-y-(length:--border-w) 480:border-l-(length:--border-w) 480:text-lg"
         >
-          <a href="/projects">Projects</a>
-          <a href="/posts">Writing</a>
+          <a href="/projects"><span>Graphics, games, art</span></a>
+          <a href="/posts"><span>Writing</span></a>
         </nav>
       </header>
 
@@ -77,7 +77,7 @@ const projects = await getEntries([
               game dev club, and am part of the <Link
                 href="https://cg.cis.upenn.edu/"
                 target="_blank">CG@Penn</Link
-              > student board. Previously I interned at Snap and TikTok to work on their rendering engines.
+              > student board. Previously I interned at Snap and TikTok to work on their graphics engines.
             </p>
             <p class="col-span-2 subtitle 480:col-span-1">
               In my free time I like running, making playlists, reading manga, and riding SEPTA.
