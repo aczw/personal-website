@@ -15,8 +15,8 @@
   /* Monospace text should be a little smaller than display text. Otherwise it looks too large. */
   --text-mono: 0.85rem;
 
-  /* This is 3 * 0.25rem = 0.75rem = 11.25px (1rem = 15px) */
   --spacing-space: --spacing(8);
+  /* This is 2.5 * 0.25rem = 0.625rem = 9.375px (1rem = 15px) */
   --spacing-pad: --spacing(2.5);
   --spacing-pad-2: calc(var(--spacing-pad) * 2);
 
@@ -31,8 +31,8 @@
   --color-sweater-9: #1d193d;
   --color-sweater-10: #0a0919;
 
-  --color-border-primary: --alpha(var(--color-sweater-9) / 70%);
-  --color-border-secondary: --alpha(var(--color-sweater-9) / 55%);
+  --color-border-primary: --alpha(var(--color-sweater-9) / 75%);
+  --color-border-secondary: --alpha(var(--color-sweater-9) / 65%);
 
   /* Accounts for padding and border width on left and right sides */
   --container-normal: calc(var(--normal-w) + 2 * var(--spacing-pad) + 2 * var(--border-w));
@@ -67,7 +67,7 @@
     --fade-speed: 100ms;
 
     --border-w: 2px;
-    --normal-w: 650px;
+    --normal-w: 800px;
     --wide-w: 900px;
 
     --header-h: 210px;

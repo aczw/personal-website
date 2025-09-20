@@ -68,18 +68,21 @@ const projects = await getEntries([
       <main class="mt-pad-2 space-y-pad-2">
         <section class="grid-line-before grid-line-after relative">
           <div class="grid grid-cols-2 gap-pad-2 p-pad">
-            <p>
+            <p class="col-span-2 560:col-span-1">
               Hi! I'm a fourth year student in the Digital Media Design program at UPenn. I'm
               concurrently finishing a Master's in Computer Graphics and Game Technology.
             </p>
-            <p>
-              I'm part of UPGRADE, our game dev club, and help TA our intro graphics class.
-              Previously, I've interned at Snap and TikTok to help work on their rendering engines.
+            <p class="col-span-2 560:col-span-1">
+              I help run <Link href="https://pennupgrade.com/" target="_blank">UPGRADE</Link>, our
+              game dev club, and am part of the <Link
+                href="https://cg.cis.upenn.edu/"
+                target="_blank">CG@Penn</Link
+              > student board. Previously I interned at Snap and TikTok to work on their rendering engines.
             </p>
-            <p class="subtitle">
+            <p class="col-span-2 subtitle 480:col-span-1">
               In my free time I like running, making playlists, reading manga, and riding SEPTA.
             </p>
-            <p class="subtitle">
+            <p class="hidden subtitle 480:block">
               You can find my socials and resumé below. Thanks for stopping by. <span
                 aria-hidden="true"
                 class="whitespace-nowrap">(〜￣▽￣)〜</span
