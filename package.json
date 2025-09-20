@@ -29,7 +29,6 @@
     "tailwindcss": "^4.1.13"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.2.4",
     "@eslint/js": "^9.36.0",
     "@types/bun": "^1.2.22",
     "@typescript-eslint/parser": "^8.44.0",
@@ -43,7 +42,6 @@
     "typescript-eslint": "^8.44.0"
   },
   "trustedDependencies": [
-    "@biomejs/biome",
     "@tailwindcss/oxide",
     "@vercel/speed-insights",
     "esbuild",
