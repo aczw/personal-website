@@ -38,6 +38,14 @@ export const server = {
         recenttracks: { track },
       } = result.data;
       const firstTrack = track[0];
+
+      if (!firstTrack) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Did not find any recent tracks.",
+        });
+      }
+
       const { name, artist, url } = firstTrack;
 
       return {

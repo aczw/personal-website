@@ -16,24 +16,21 @@ if (available) {
   href={available ? track.songUrl : "https://www.last.fm/user/ashzw"}
   target="_blank"
   title={title}
-  class="pill relative flex w-fit"
+  class="relative flex w-fit pill"
   data-quiet="true"
   data-live={available && track.live ? "true" : "false"}
 >
   <div
-    class:list={[
-      "relative z-10 flex w-fit gap-2",
-      { "animate-pulse": available && track.live },
-    ]}
+    class:list={["relative z-10 flex w-fit gap-2", { "animate-pulse": available && track.live }]}
   >
     <Music size={15} class="inline shrink-0" />
 
     <span
-      class="animate-fade-in 380:[display:-webkit-box] line-clamp-1 hidden w-full leading-[1.1] break-all [--order:0]"
+      class="line-clamp-1 hidden w-full animate-fade-in leading-[1.1] break-all [--order:0] 380:[display:-webkit-box]"
     >
       {available ? `${track.artist} — ${track.songName}` : "Scrobbles"}
     </span>
-    <span class="animate-fade-in 380:hidden leading-[1.1] [--order:0]">
+    <span class="animate-fade-in leading-[1.1] [--order:0] 380:hidden">
       {available && track.live ? "Scrobbling" : "Scrobbles"}
     </span>
   </div>
@@ -97,7 +94,7 @@ if (available) {
 
     setInterval(() => {
       const index = Math.round(Math.random() * (iconList.length - 1));
-      const icon = createIcon(iconList[index]);
+      const icon = createIcon(iconList[index]!);
 
       icon.dataset["leftRate"] = (Math.random() * 1.4 + 0.3).toString();
       live.push(icon);

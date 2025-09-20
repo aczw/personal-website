@@ -49,16 +49,16 @@ const { Content, headings } = await render(post);
   <main class="py-12">
     <article>
       {
-        cover ? (
+        cover ?
           <div class="span-wide mb-6 [&_+_div]:pt-6">
             <Image
               src={cover.img}
               alt={cover.alt}
               loading="eager"
-              class="bg-sweater-9 rounded-xl"
+              class="rounded-xl bg-sweater-9"
             />
           </div>
-        ) : null
+        : null
       }
 
       <div class="span-normal mb-6 space-y-1">
@@ -68,7 +68,7 @@ const { Content, headings } = await render(post);
 
       <time
         datetime={posted.toISOString()}
-        class="span-normal maple text-sweater-4 mb-6 flex items-center gap-1.5"
+        class="span-normal mb-6 flex items-center gap-1.5 maple text-sweater-4"
       >
         <CalendarFold size={16} />
         {posted.toLocaleDateString("en-US", dateOptions)}

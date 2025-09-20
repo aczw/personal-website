@@ -57,7 +57,7 @@
 }
 
 @utility pill {
-  @apply bg-sweater-4 text-sweater-9 hover:bg-sweater-3 rounded-full px-3 py-1.5 transition-colors;
+  @apply rounded-full bg-sweater-4 px-3 py-1.5 text-sweater-9 transition-colors hover:bg-sweater-3;
 
   @variant hover {
     @apply bg-sweater-3;
@@ -83,11 +83,11 @@
 }
 
 @utility span-normal {
-  @apply max-w-normal mx-auto px-8;
+  @apply mx-auto max-w-normal px-8;
 }
 
 @utility span-wide {
-  @apply max-w-wide mx-auto px-8;
+  @apply mx-auto max-w-wide px-8;
 }
 
 @utility span-height {
@@ -115,7 +115,7 @@
   }
 
   html {
-    @apply bg-sweater-10 text-sweater-1 scroll-smooth;
+    @apply scroll-smooth bg-sweater-10 text-sweater-1;
 
     font-size: 15px;
   }
@@ -143,7 +143,7 @@
   h4,
   h5,
   h6 {
-    @apply text-sweater-2 font-bold;
+    @apply font-bold text-sweater-2;
   }
 
   img {

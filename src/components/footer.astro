@@ -8,14 +8,14 @@ import LastFm from "@/components/last-fm.astro";
 import Link from "@/components/link.astro";
 ---
 
-<footer class="max-w-normal mx-auto pb-12">
-  <div class="maple mx-space gap-space flex items-center justify-between">
+<footer class="mx-auto max-w-normal pb-12">
+  <div class="mx-space flex items-center justify-between gap-space maple">
     <div class="w-1/2">
       <LastFm server:defer>
         <a
           href="https://www.last.fm/user/ashzw"
           target="_blank"
-          class="pill flex w-fit gap-2 leading-[1.1]"
+          class="flex w-fit gap-2 pill leading-[1.1]"
           data-quiet="true"
           slot="fallback"
         >
@@ -25,23 +25,17 @@ import Link from "@/components/link.astro";
     </div>
 
     <div class="flex w-1/2 items-center justify-end gap-3">
-      <Link href="/_files/resume.pdf" target="_blank" title="Resume"
-        ><ScrollText size={24} /></Link
-      >
+      <Link href="/_files/resume.pdf" target="_blank" title="Resume"><ScrollText size={24} /></Link>
 
-      <Link
-        href="https://www.linkedin.com/in/zwcharl/"
-        target="_blank"
-        title="LinkedIn"><Linkedin size={24} /></Link
+      <Link href="https://www.linkedin.com/in/zwcharl/" target="_blank" title="LinkedIn"
+        ><Linkedin size={24} /></Link
       >
 
       <Link href="https://www.github.com/aczw" target="_blank" title="GitHub"
         ><Github size={24} /></Link
       >
 
-      <Link href="mailto:zwcharl@gmail.com" title="Email"
-        ><Mail size={24} /></Link
-      >
+      <Link href="mailto:zwcharl@gmail.com" title="Email"><Mail size={24} /></Link>
     </div>
   </div>
 </footer>

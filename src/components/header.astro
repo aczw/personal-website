@@ -6,14 +6,14 @@ const links = [
 ];
 ---
 
-<header class="max-w-normal mx-auto pt-24">
+<header class="mx-auto max-w-normal pt-24">
   <nav
-    class="480:grid-cols-2 480:grid-rows-1 480:gap-space mx-space grid grid-cols-1 grid-rows-2 text-3xl font-bold"
+    class="mx-space grid grid-cols-1 grid-rows-2 text-3xl font-bold 480:grid-cols-2 480:grid-rows-1 480:gap-space"
   >
-    <div class="text-sweater-4 space-y-1">
+    <div class="space-y-1 text-sweater-4">
       <a
         href="/"
-        class="peer hover:text-sweater-3 [&:has(+_a:hover)]:text-sweater-3 block w-fit transition-[fill_transform] hover:rotate-[-13deg] [&:has(+_a:hover)]:rotate-[-13deg]"
+        class="peer block w-fit transition-[fill_transform] hover:rotate-[-13deg] hover:text-sweater-3 [&:has(+_a:hover)]:rotate-[-13deg] [&:has(+_a:hover)]:text-sweater-3"
         aria-hidden="true"
       >
         <svg
@@ -33,14 +33,14 @@ const links = [
 
       <a
         href="/"
-        class="hover:text-sweater-3 peer-hover:text-sweater-3 block w-fit leading-none transition-colors"
+        class="block w-fit leading-none transition-colors peer-hover:text-sweater-3 hover:text-sweater-3"
       >
         Charles Wang
       </a>
     </div>
 
     <div
-      class="text-sweater-6 grid grid-cols-1 grid-rows-2 gap-1 *:flex *:w-fit *:gap-2 *:leading-none *:transition-colors sm:grid-cols-2 sm:grid-rows-1 sm:items-end sm:gap-4"
+      class="grid grid-cols-1 grid-rows-2 gap-1 text-sweater-6 *:flex *:w-fit *:gap-2 *:leading-none *:transition-colors sm:grid-cols-2 sm:grid-rows-1 sm:items-end sm:gap-4"
     >
       {
         links.map(({ href, name }) => (
@@ -51,8 +51,7 @@ const links = [
               { "hover:text-sweater-5": path === "/" },
               { "text-sweater-5 hover:text-sweater-4": path === href },
               {
-                "text-sweater-7 hover:text-sweater-6":
-                  path !== href && path !== "/",
+                "text-sweater-7 hover:text-sweater-6": path !== href && path !== "/",
               },
             ]}
           >

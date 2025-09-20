@@ -45,7 +45,7 @@ class ProjectCover extends HTMLElement {
     // ProjectCoverControls button. We respect that choice here and don't play this video
     if (this.externallyPaused) return;
 
-    this.kind.video.play();
+    this.kind.video.play().catch((error) => console.error(error));
     this.kind.wrapper.style.opacity = "100";
   }
 

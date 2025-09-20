@@ -38,7 +38,7 @@ const GET: APIRoute = async ({ request }) => {
       };
     }
   } else {
-    throw new Response(null, {
+    return new Response(null, {
       status: 500,
       statusText: "Invalid content kind received",
     });
@@ -61,21 +61,33 @@ const GET: APIRoute = async ({ request }) => {
 
   // So the markup looks a little cleaner/easier to read
   const c = content;
-  const markup = html(`<div
-    tw="h-full text-[16px] w-full bg-[#0A0919] flex flex-col justify-between p-20"
+  const markup = html` <div
+    tw="flex h-full w-full flex-col justify-between bg-[#0A0919] p-20 text-[16px]"
   >
     <div tw="flex flex-col">
-      ${
-        content.kind === "route"
-          ? `${logo} <span tw="text-8xl text-[#9A91FE] font-bold">Charles Wang</span>`
-          : `<span tw="text-[#C3BDFF] mb-3.5 font-bold text-7xl text-pretty">${c.kind === "post" ? c.title : c.kind === "project" ? `Project — ${c.name}` : "UNREACHABLE"}</span>
+      ${content.kind === "route" ?
+        `${logo} <span tw="text-8xl text-[#9A91FE] font-bold">Charles Wang</span>`
+      : `<span tw="text-[#C3BDFF] mb-3.5 font-bold text-7xl text-pretty">${
+          c.kind === "post" ? c.title
+          : c.kind === "project" ? `Project — ${c.name}`
+          : "UNREACHABLE"
+        }</span>
           
-          <span tw="text-[#D6D3FF] mb-3.5 text-pretty text-6xl">${c.kind === "post" ? c.date.toLocaleString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "America/New_York" }) : c.kind === "project" ? `Built with ${c.tags}` : "UNREACHABLE"}</span>`
-      }
+          <span tw="text-[#D6D3FF] mb-3.5 text-pretty text-6xl">${
+            c.kind === "post" ?
+              c.date.toLocaleString("en-US", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+                timeZone: "America/New_York",
+              })
+            : c.kind === "project" ? `Built with ${c.tags}`
+            : "UNREACHABLE"
+          }</span>`}
     </div>
 
-    <div tw="text-7xl flex flex-col text-[#D6D3FF]">${c.kind === "route" ? c.heading : logo}</div>
-  </div>`);
+    <div tw="flex flex-col text-7xl text-[#D6D3FF]">${c.kind === "route" ? c.heading : logo}</div>
+  </div>` as React.ReactNode;
 
   const svg = await satori(markup, {
     width: 1280,
@@ -104,8 +116,9 @@ const GET: APIRoute = async ({ request }) => {
   });
 
   const image = resvg.render();
+  const pngBuffer = image.asPng().buffer as ArrayBuffer;
 
-  return new Response(image.asPng(), {
+  return new Response(pngBuffer, {
     headers: {
       "Content-Type": "image/png",
       "Cache-Control": "public, no-transform, max-age=604800" /* One week */,

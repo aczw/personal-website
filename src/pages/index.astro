@@ -32,30 +32,28 @@ const projects = await getEntries([
 >
   <main class="space-y-12 py-12">
     <section
-      class="span-normal *:animate-fade-in 480:grid-cols-2 gap-x-space px-space grid grid-cols-1 gap-y-5"
+      class="span-normal grid grid-cols-1 gap-x-space gap-y-5 px-space *:animate-fade-in 480:grid-cols-2"
     >
-      <p class="480:col-span-2 560:col-span-1 [--order:0]">
-        Hi! I'm a fourth year student in the Digital Media Design program at
-        UPenn. <span class="480:inline hidden"
-          >I'm concurrently finishing a Master's in Computer Graphics and Game
-          Technology.</span
+      <p class="[--order:0] 480:col-span-2 560:col-span-1">
+        Hi! I'm a fourth year student in the Digital Media Design program at UPenn. <span
+          class="hidden 480:inline"
+          >I'm concurrently finishing a Master's in Computer Graphics and Game Technology.</span
         >
       </p>
 
-      <p class="480:col-span-2 560:col-span-1 [--order:1]">
-        At school I'm part of UPGRADE, our game dev club, and help TA our intro
-        graphics class. This summer I'm interning at Snap to help work on their
-        game engine. <Link href="/now" class="hidden"
-          >Here's some other stuff I'm doing now.</Link
+      <p class="[--order:1] 480:col-span-2 560:col-span-1">
+        At school I'm part of UPGRADE, our game dev club, and help TA our intro graphics class. This
+        summer I'm interning at Snap to help work on their game engine. <Link
+          href="/now"
+          class="hidden">Here's some other stuff I'm doing now.</Link
         >
       </p>
 
       <p class="subtitle [--order:2]">
-        In my free time I like running, making playlists, reading, and riding
-        SEPTA.
+        In my free time I like running, making playlists, reading, and riding SEPTA.
       </p>
 
-      <p class="subtitle 480:block hidden [--order:3]">
+      <p class="hidden subtitle [--order:3] 480:block">
         You can find my socials and resumé below. Thanks for stopping by. <span
           aria-hidden="true"
           class="whitespace-nowrap">(〜￣▽￣)〜</span
@@ -63,36 +61,36 @@ const projects = await getEntries([
       </p>
 
       <div
-        class="480:col-span-2 480:gap-x-space *:animate-fade-in col-span-1 grid grid-cols-2 gap-x-4 gap-y-4 pt-4.5 sm:grid-cols-4"
+        class="col-span-1 grid grid-cols-2 gap-x-4 gap-y-4 pt-4.5 *:animate-fade-in 480:col-span-2 480:gap-x-space sm:grid-cols-4"
       >
         <a
           href="/_files/resume.pdf"
           target="_blank"
-          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 maple flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:1]"
+          class="flex items-center justify-between rounded-lg bg-sweater-9 px-3.5 py-2 maple text-sweater-3 transition-colors [--order:1] hover:bg-sweater-8"
           >Resume <ScrollText size={18} /></a
         >
         <a
           href="https://www.linkedin.com/in/zwcharl/"
           target="_blank"
-          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 maple flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:2]"
+          class="flex items-center justify-between rounded-lg bg-sweater-9 px-3.5 py-2 maple text-sweater-3 transition-colors [--order:2] hover:bg-sweater-8"
           >LinkedIn <Linkedin size={18} /></a
         >
         <a
           href="https://www.github.com/aczw"
           target="_blank"
-          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 maple flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:3]"
+          class="flex items-center justify-between rounded-lg bg-sweater-9 px-3.5 py-2 maple text-sweater-3 transition-colors [--order:3] hover:bg-sweater-8"
           >GitHub <Github size={18} /></a
         >
         <a
           href="mailto:zwcharl@gmail.com"
           target="_blank"
-          class="bg-sweater-9 text-sweater-3 hover:bg-sweater-8 maple flex items-center justify-between rounded-lg px-3.5 py-2 transition-colors [--order:4]"
+          class="flex items-center justify-between rounded-lg bg-sweater-9 px-3.5 py-2 maple text-sweater-3 transition-colors [--order:4] hover:bg-sweater-8"
           >Email <Mail size={18} /></a
         >
       </div>
     </section>
 
-    <section class="span-wide 480:grid-cols-2 gap-space grid grid-cols-1">
+    <section class="span-wide grid grid-cols-1 gap-space 480:grid-cols-2">
       {
         projects.map((project, idx) => {
           const {
@@ -103,21 +101,17 @@ const projects = await getEntries([
           return (
             <a
               href={`/projects/${id}`}
-              class="group animate-fade-in relative h-fit transition-opacity"
+              class="group relative h-fit animate-fade-in transition-opacity"
               style={{ "--order": idx + 1 }}
             >
               <ProjectCover
                 id={id}
                 cover={cover}
-                useVideo={
-                  id === "mini-minecraft" || id === "rcw"
-                    ? { small: true }
-                    : null
-                }
+                useVideo={id === "mini-minecraft" || id === "rcw" ? { small: true } : null}
                 class="overflow-hidden rounded-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
               />
 
-              <div class="bg-sweater-9 absolute inset-x-0 bottom-0 rounded-xl">
+              <div class="absolute inset-x-0 bottom-0 rounded-xl bg-sweater-9">
                 <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
                   <div class="overflow-hidden">
                     <div class="flex items-center justify-between gap-4 p-4">
@@ -127,11 +121,11 @@ const projects = await getEntries([
                           {metadata.tech.map((tech, idx) => (
                             <li class="maple text-sweater-4">
                               {tech}
-                              {idx !== metadata.tech.length - 1 ? (
+                              {idx !== metadata.tech.length - 1 ?
                                 <span aria-hidden="true" class="text-sweater-7">
                                   /
                                 </span>
-                              ) : null}
+                              : null}
                             </li>
                           ))}
                         </ul>
@@ -139,7 +133,7 @@ const projects = await getEntries([
 
                       <ArrowRight
                         size="34"
-                        class="bg-sweater-8 stroke-sweater-5 shrink-0 rounded-full stroke-[2.5] p-1.5"
+                        class="shrink-0 rounded-full bg-sweater-8 stroke-sweater-5 stroke-[2.5] p-1.5"
                       />
                     </div>
                   </div>
@@ -162,14 +156,14 @@ const projects = await getEntries([
           return (
             <a
               href={`/posts/${id}`}
-              class="group animate-fade-in border-sweater-9 480:flex-row 480:gap-space flex flex-col justify-between border-t-2 py-4 *:transition-colors last:border-b-2"
+              class="group flex animate-fade-in flex-col justify-between border-t-2 border-sweater-9 py-4 *:transition-colors last:border-b-2 480:flex-row 480:gap-space"
               style={{ "--order": idx + 2 }}
             >
-              <h2 class="480:subtitle group-hover:text-sweater-1">{title}</h2>
+              <h2 class="group-hover:text-sweater-1 480:subtitle">{title}</h2>
 
               <time
                 datetime={posted.toISOString()}
-                class="maple text-sweater-5 group-hover:text-sweater-3 shrink-0"
+                class="shrink-0 maple text-sweater-5 group-hover:text-sweater-3"
               >
                 <span class="480:hidden">Posted on </span>
                 {posted.toLocaleDateString("en-US", {

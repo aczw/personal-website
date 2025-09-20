@@ -9,24 +9,22 @@ const { headings } = Astro.props;
 ---
 
 <aside
-  class="toc:block pr-space sticky top-6 col-5 row-[1_/_200] hidden h-[calc(100vh-1rem)] max-w-[250px] self-start overflow-y-auto"
+  class="sticky top-6 col-5 row-[1_/_200] hidden h-[calc(100vh-1rem)] max-w-[250px] self-start overflow-y-auto pr-space toc:block"
 >
   <nav>
     <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
 
-    <div class="text-sweater-6 normal:mr-0 mr-7 flex flex-col leading-snug">
+    <div class="mr-7 flex flex-col leading-snug text-sweater-6 normal:mr-0">
       <a
         href="#"
-        class="text-sweater-3 hover:bg-sweater-9 hover:text-sweater-1 mb-[0.4rem] rounded-md px-[0.4rem] py-1 leading-none transition-colors"
+        class="mb-[0.4rem] rounded-md px-[0.4rem] py-1 leading-none text-sweater-3 transition-colors hover:bg-sweater-9 hover:text-sweater-1"
         >(Back to top!)</a
       >
 
       {
         headings.map(({ depth, slug, text }, index) => {
           if (depth === 1) {
-            throw new Error(
-              `No MDX heading should be H1! Check whether the content contains any.`,
-            );
+            throw new Error(`No MDX heading should be H1! Check whether the content contains any.`);
           }
 
           if (depth > 3) {
@@ -40,7 +38,7 @@ const { headings } = Astro.props;
           let spacing = 0;
           if (index !== headings.length - 1) {
             const next = headings[index + 1];
-            if (next.depth === 2 && (depth === 2 || depth === 3)) {
+            if (next?.depth === 2 && (depth === 2 || depth === 3)) {
               spacing = 0.4;
             }
           }
@@ -48,7 +46,7 @@ const { headings } = Astro.props;
           return (
             <a
               href={`#${slug}`}
-              class="hover:bg-sweater-9 hover:text-sweater-2 rounded-md py-1 pr-[0.4rem] leading-none transition-colors"
+              class="rounded-md py-1 pr-[0.4rem] leading-none transition-colors hover:bg-sweater-9 hover:text-sweater-2"
               style={{
                 paddingLeft: `${(depth - 2) * 1.5 + 0.4}rem`,
                 marginBottom: `${spacing}rem`,
@@ -63,7 +61,7 @@ const { headings } = Astro.props;
 
     <div
       aria-hidden="true"
-      class="from-sweater-10 sticky inset-x-0 bottom-[-1px] h-12 bg-linear-to-t"
+      class="sticky inset-x-0 bottom-[-1px] h-12 bg-linear-to-t from-sweater-10"
     >
     </div>
   </nav>
@@ -73,9 +71,7 @@ const { headings } = Astro.props;
   const observer = new IntersectionObserver((entries) =>
     entries.forEach((entry) => {
       const id = entry.target.id;
-      const link = document.querySelector<HTMLAnchorElement>(
-        `nav a[href="#${id}"]`,
-      );
+      const link = document.querySelector<HTMLAnchorElement>(`nav a[href="#${id}"]`);
 
       const windowHeight = entry.rootBounds!.height;
       if (windowHeight && link) {
@@ -88,7 +84,5 @@ const { headings } = Astro.props;
     }),
   );
 
-  document
-    .querySelectorAll("h2[id], h3[id]")
-    .forEach((heading) => observer.observe(heading));
+  document.querySelectorAll("h2[id], h3[id]").forEach((heading) => observer.observe(heading));
 </script>

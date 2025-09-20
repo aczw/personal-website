@@ -37,14 +37,11 @@ const isBackRef = href.startsWith("#user-content-fnref-");
   noUnderline={isFootnote}
   {...Astro.props}
   >{
-    isBackRef ? (
-      <Undo2 size={15} />
-    ) : isFootnote ? (
+    isBackRef ? <Undo2 size={15} />
+    : isFootnote ?
       <>
         [<slot />]
       </>
-    ) : (
-      <slot />
-    )
+    : <slot />
   }</Link
 >

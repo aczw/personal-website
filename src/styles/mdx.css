@@ -38,7 +38,7 @@
 
     & img,
     video {
-      @apply bg-sweater-9 w-full rounded-xl;
+      @apply w-full rounded-xl bg-sweater-9;
     }
 
     /* Utility to remove background for images and videos (e.g. they're transparent and we don't want to see it) */
@@ -51,7 +51,7 @@
 
     /* Inline code should have some padding and unique background color */
     & code {
-      @apply bg-sweater-9 rounded-md px-1 py-0.5 break-words;
+      @apply rounded-md bg-sweater-9 px-1 py-0.5 break-words;
 
       font-size: var(--text-mono);
       font-weight: 100;
@@ -65,7 +65,7 @@
     }
 
     & del {
-      @apply text-sweater-6 cursor-not-allowed line-through;
+      @apply cursor-not-allowed text-sweater-6 line-through;
     }
 
     & li {
@@ -91,7 +91,7 @@
 
     /* Only select <figure> elements not from the Expressive Code library */
     & figcaption {
-      @apply subtitle mx-auto mt-2 *:inline;
+      @apply mx-auto mt-2 subtitle *:inline;
 
       max-width: var(--normal-w);
       font-size: 0.9rem;
@@ -116,7 +116,7 @@
     /* Target auto-generated footnotes */
     & section[data-footnotes] {
       /* Important tag on margin-top is necessary to override space-y-6 affecting whole section */
-      @apply border-sweater-9 mt-6! border-t-2 pt-12;
+      @apply mt-6! border-t-2 border-sweater-9 pt-12;
 
       /* MDX generates a "Footnotes" heading. Make it screen reader only */
       & > h2#footnote-label {

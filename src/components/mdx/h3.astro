@@ -11,18 +11,18 @@ const { id, ...props } = Astro.props;
 <h3 id={id} class="w-fit scroll-mt-6" {...props}>
   <a
     href={`#${id}`}
-    class="group hover:bg-sweater-9 heading:-ml-3 heading:pl-3 relative flex items-center gap-1.5 rounded-r-lg pr-2 transition-colors"
+    class="group relative flex items-center gap-1.5 rounded-r-lg pr-2 transition-colors hover:bg-sweater-9 heading:-ml-3 heading:pl-3"
   >
     <slot />
 
     <Hash
       size={14}
-      class="group-hover:stroke-sweater-5 heading:absolute heading:-left-3 stroke-transparent transition-colors"
+      class="stroke-transparent transition-colors group-hover:stroke-sweater-5 heading:absolute heading:-left-3"
       aria-hidden="true"
     />
     <div
       aria-hidden="true"
-      class="group-hover:bg-sweater-9 heading:-left-4 absolute -left-2 z-[-1] size-[23px] rounded-l-lg transition-colors"
+      class="absolute -left-2 z-[-1] size-[23px] rounded-l-lg transition-colors group-hover:bg-sweater-9 heading:-left-4"
     >
     </div>
   </a>
