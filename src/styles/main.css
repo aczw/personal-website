@@ -15,8 +15,9 @@
   /* Monospace text should be a little smaller than display text. Otherwise it looks too large. */
   --text-mono: 0.85rem;
 
-  /* This is 8 * 0.25rem = 30px, because I consider 1rem = 15px */
+  /* This is 3 * 0.25rem = 0.75rem = 11.25px (1rem = 15px) */
   --spacing-space: --spacing(8);
+  --spacing-pad: --spacing(2.5);
 
   --color-sweater-1: #eae9ff;
   --color-sweater-2: #d6d3ff;
@@ -29,8 +30,11 @@
   --color-sweater-9: #1d193d;
   --color-sweater-10: #0a0919;
 
-  /* Accounts for padding on left and right sides */
-  --container-normal: calc(var(--normal-w) + 2 * var(--spacing-space));
+  --color-border-primary: --alpha(var(--color-sweater-9) / 70%);
+  --color-border-secondary: --alpha(var(--color-sweater-9) / 55%);
+
+  /* Accounts for padding and border width on left and right sides */
+  --container-normal: calc(var(--normal-w) + 2 * var(--spacing-pad) + 2 * var(--border-w));
   --container-wide: calc(var(--wide-w) + 2 * var(--spacing-space));
 
   /* Terrible names, but these don't really represent anything and are just good values by themselves */
@@ -56,49 +60,12 @@
   --breakpoint-normal: 710px;
 }
 
-@utility pill {
-  @apply rounded-full bg-sweater-4 px-3 py-1.5 text-sweater-9 transition-colors hover:bg-sweater-3;
-
-  @variant hover {
-    @apply bg-sweater-3;
-  }
-
-  &[data-quiet="true"] {
-    @apply bg-sweater-9 text-sweater-4;
-
-    @variant hover {
-      @apply bg-sweater-8 text-sweater-3;
-    }
-  }
-}
-
-@utility maple {
-  @apply font-mono;
-
-  font-size: var(--text-mono);
-}
-
-@utility subtitle {
-  @apply text-sweater-2/85;
-}
-
-@utility span-normal {
-  @apply mx-auto max-w-normal px-8;
-}
-
-@utility span-wide {
-  @apply mx-auto max-w-wide px-8;
-}
-
-@utility span-height {
-  min-height: calc(100vh - var(--header-h) - var(--footer-h));
-}
-
 @layer base {
   /* Expose common and global values to everyone */
   :root {
     --fade-speed: 100ms;
 
+    --border-w: 2px;
     --normal-w: 650px;
     --wide-w: 900px;
 
@@ -137,16 +104,75 @@
     text-wrap: pretty;
   }
 
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply font-bold text-sweater-2;
-  }
-
   img {
     font-style: italic;
   }
+}
+
+@utility grid-line-before {
+  &::before {
+    content: var(--tw-content);
+
+    position: absolute;
+    top: 0px;
+    left: -100vw;
+
+    height: var(--border-w);
+    width: 200vw;
+
+    background-color: var(--color-border-primary);
+  }
+}
+
+@utility grid-line-after {
+  &::after {
+    content: var(--tw-content);
+
+    position: absolute;
+    bottom: 0px;
+    left: -100vw;
+
+    height: var(--border-w);
+    width: 200vw;
+
+    background-color: var(--color-border-primary);
+  }
+}
+
+@utility pill {
+  @apply rounded-full bg-sweater-4 px-3 py-1.5 text-sweater-9 transition-colors hover:bg-sweater-3;
+
+  @variant hover {
+    @apply bg-sweater-3;
+  }
+
+  &[data-quiet="true"] {
+    @apply bg-sweater-9 text-sweater-4;
+
+    @variant hover {
+      @apply bg-sweater-8 text-sweater-3;
+    }
+  }
+}
+
+@utility maple {
+  @apply font-mono;
+
+  font-size: var(--text-mono);
+}
+
+@utility subtitle {
+  @apply text-sweater-2/85;
+}
+
+@utility span-normal {
+  @apply mx-auto max-w-normal px-8;
+}
+
+@utility span-wide {
+  @apply mx-auto max-w-wide px-8;
+}
+
+@utility span-height {
+  min-height: calc(100vh - var(--header-h) - var(--footer-h));
 }
