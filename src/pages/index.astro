@@ -14,33 +14,23 @@ import { getEntries } from "astro:content";
 import ProjectCover from "@/components/project-cover.astro";
 
 const socials: LinkWithIcon[] = [
-  {
-    href: "/_files/resume.pdf",
-    label: "Resume",
-    icon: FileUserIcon,
-  },
+  { href: "/_files/resume.pdf", label: "Resume", icon: FileUserIcon },
   {
     href: "https://linkedin.com/in/zwcharl",
     label: "LinkedIn",
     icon: LinkedinIcon,
   },
-  {
-    href: "https://github.com/aczw",
-    label: "GitHub",
-    icon: GithubIcon,
-  },
-  {
-    href: "mailto:zwcharl@gmail.com",
-    label: "Email",
-    icon: MailIcon,
-  },
+  { href: "https://github.com/aczw", label: "GitHub", icon: GithubIcon },
+  { href: "mailto:zwcharl@gmail.com", label: "Email", icon: MailIcon },
 ];
 
+// Stuff below assumes this will only ever have 4 entries
 const projects = await getEntries([
   { collection: "projects", id: "mini-minecraft" },
-  { collection: "projects", id: "door" },
-  { collection: "projects", id: "path-tracer" },
   { collection: "projects", id: "rcw" },
+
+  { collection: "projects", id: "path-tracer" },
+  { collection: "projects", id: "door" },
 ]);
 ---
 
@@ -54,11 +44,11 @@ const projects = await getEntries([
 >
   <div class="w-screen overflow-x-clip px-pad">
     <div
-      class="mx-auto max-w-normal space-y-pad-2 border-x-(length:--border-w) border-line-bright pt-6 sm:pt-12"
+      class="mx-auto max-w-normal space-y-6 border-x-(length:--border-w) border-line-bright pt-6 sm:pt-12"
     >
       <Header />
 
-      <main class="space-y-pad-2">
+      <main class="space-y-6">
         <section class="grid-line-before grid-line-after relative">
           <div class="grid grid-cols-2 gap-pad-2 p-pad">
             <p class="col-span-2 560:col-span-1">
@@ -106,21 +96,41 @@ const projects = await getEntries([
         </section>
 
         <section
-          class="grid-line-before grid-line-after relative grid grid-cols-1 gap-pad-2 480:grid-cols-2"
+          class="grid-line-before grid-line-after relative grid grid-cols-1 480:grid-cols-2"
         >
           {
-            projects.map(({ data: { name, metadata, cover }, id }) => (
-              <a href={`/projects/${id}`}>
-                <ProjectCover
-                  id={id}
-                  cover={cover}
-                  useVideo={
-                    id === "mini-minecraft" || id === "rcw" ?
-                      { small: true }
-                    : null
-                  }
-                />
-              </a>
+            projects.map(({ data: { name, metadata, cover }, id }, index) => (
+              <div
+                class="p-[calc(var(--spacing-pad)+2px)]"
+                class:list={[
+                  "group border-dashed border-line-dark",
+                  // Gives top row of videos a bottom border
+                  index < 2 ? "border-b-(length:--border-w)" : null,
+                  // Gives all videos on the left a border
+                  index % 2 === 0 ? "480:border-r-(length:--border-w)" : null,
+                  // Adds bottom border to second-to-last video (for mobile)
+                  index === projects.length - 2 ?
+                    "border-b-(length:--border-w) 480:border-b-0"
+                  : null,
+                ]}
+              >
+                <a href={`/projects/${id}`}>
+                  <h2 class="rounded-t-lg bg-sweater-9 p-pad leading-tight font-bold text-sweater-3 transition-colors group-hover:bg-sweater-8">
+                    {name}
+                  </h2>
+
+                  <ProjectCover
+                    id={id}
+                    cover={cover}
+                    useVideo={
+                      id === "mini-minecraft" || id === "door" ?
+                        { small: true }
+                      : null
+                    }
+                    class="overflow-hidden rounded-b-lg"
+                  />
+                </a>
+              </div>
             ))
           }
         </section>
