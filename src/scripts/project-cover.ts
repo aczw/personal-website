@@ -1,5 +1,10 @@
 type ProjectCoverKind =
-  | { hasVideo: true; video: HTMLVideoElement; wrapper: HTMLDivElement }
+  | {
+      hasVideo: true;
+      video: HTMLVideoElement;
+      image: HTMLImageElement;
+      wrapper: HTMLDivElement;
+    }
   | { hasVideo: false };
 
 class ProjectCover extends HTMLElement {
@@ -16,6 +21,7 @@ class ProjectCover extends HTMLElement {
     // actually "useVideo" not "use-video"
     if (this.dataset["useVideo"] === "true") {
       const videoElt = this.querySelector("video");
+      const imageElt = this.querySelector("img");
       const wrapperDivElt = this.querySelector("div");
 
       if (!videoElt || !wrapperDivElt) {
@@ -24,19 +30,34 @@ class ProjectCover extends HTMLElement {
         );
       }
 
-      this.kind = { hasVideo: true, video: videoElt, wrapper: wrapperDivElt };
+      if (!imageElt) throw new Error("No image detected?? Somehow???");
+
+      this.kind = {
+        hasVideo: true,
+        video: videoElt,
+        image: imageElt,
+        wrapper: wrapperDivElt,
+      };
     }
   }
 
   connectedCallback() {
     if (!this.kind.hasVideo) return;
 
-    if (this.kind.video.readyState !== HTMLMediaElement.HAVE_ENOUGH_DATA) {
-      this.kind.video.addEventListener("canplaythrough", () =>
-        this.playVideo(),
-      );
-    } else {
+    const image = this.kind.image;
+
+    const onReady = (image: HTMLImageElement) => {
       this.playVideo();
+
+      setTimeout(() => {
+        image.remove();
+      }, 1000);
+    };
+
+    if (this.kind.video.readyState !== HTMLMediaElement.HAVE_ENOUGH_DATA) {
+      this.kind.video.addEventListener("canplaythrough", () => onReady(image));
+    } else {
+      onReady(image);
     }
   }
 

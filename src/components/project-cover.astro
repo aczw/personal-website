@@ -27,7 +27,12 @@ if (!validProjectCover(cover.img.width, cover.img.height)) {
   class:list={["relative block aspect-16/10 *:absolute *:inset-0", className]}
   data-use-video={useVideo ? "true" : "false"}
 >
-  <Image src={cover.img} alt={cover.alt} loading="eager" class="bg-sweater-9" />
+  <Image
+    src={cover.img}
+    alt={cover.alt}
+    loading="eager"
+    class:list={["bg-sweater-9", useVideo ? "scale-[0.995]" : null]}
+  />
 
   {
     useVideo ?

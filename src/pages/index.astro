@@ -10,6 +10,8 @@ import Header from "@/components/header.astro";
 import Link from "@/components/link.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import type { LinkWithIcon } from "@/scripts/types";
+import { getEntries } from "astro:content";
+import ProjectCover from "@/components/project-cover.astro";
 
 const socials: LinkWithIcon[] = [
   {
@@ -33,6 +35,13 @@ const socials: LinkWithIcon[] = [
     icon: MailIcon,
   },
 ];
+
+const projects = await getEntries([
+  { collection: "projects", id: "mini-minecraft" },
+  { collection: "projects", id: "door" },
+  { collection: "projects", id: "path-tracer" },
+  { collection: "projects", id: "rcw" },
+]);
 ---
 
 <BaseLayout
@@ -45,11 +54,11 @@ const socials: LinkWithIcon[] = [
 >
   <div class="w-screen overflow-x-clip px-pad">
     <div
-      class="mx-auto max-w-normal border-x-(length:--border-w) border-line-bright pt-6 sm:pt-12"
+      class="mx-auto max-w-normal space-y-pad-2 border-x-(length:--border-w) border-line-bright pt-6 sm:pt-12"
     >
       <Header />
 
-      <main class="mt-pad-2 space-y-pad-2">
+      <main class="space-y-pad-2">
         <section class="grid-line-before grid-line-after relative">
           <div class="grid grid-cols-2 gap-pad-2 p-pad">
             <p class="col-span-2 560:col-span-1">
@@ -79,7 +88,7 @@ const socials: LinkWithIcon[] = [
           </div>
 
           <div
-            class="col-span-2 grid grid-cols-4 divide-x-(length:--border-w) divide-dashed divide-line-dark border-t-(length:--border-w) border-dashed border-line-dark font-bold text-sweater-3"
+            class="col-span-1 grid grid-cols-2 divide-x-(length:--border-w) divide-y-(length:--border-w) divide-dashed divide-line-dark border-t-(length:--border-w) border-dashed border-line-dark font-bold text-sweater-3 480:grid-cols-4 480:divide-y-0 560:col-span-2"
           >
             {
               socials.map(({ href, label, icon: Icon }) => (
@@ -89,15 +98,31 @@ const socials: LinkWithIcon[] = [
                   class="flex items-center justify-between p-pad transition-colors hover:bg-line-bright hover:text-sweater-1"
                 >
                   <span>{label}</span>
-                  <Icon size={20} />
+                  <Icon size={18} class="stroke-sweater-6" />
                 </a>
               ))
             }
           </div>
         </section>
 
-        <section class="grid-line-before grid-line-after relative">
-          Projects
+        <section
+          class="grid-line-before grid-line-after relative grid grid-cols-1 gap-pad-2 480:grid-cols-2"
+        >
+          {
+            projects.map(({ data: { name, metadata, cover }, id }) => (
+              <a href={`/projects/${id}`}>
+                <ProjectCover
+                  id={id}
+                  cover={cover}
+                  useVideo={
+                    id === "mini-minecraft" || id === "rcw" ?
+                      { small: true }
+                    : null
+                  }
+                />
+              </a>
+            ))
+          }
         </section>
 
         <section class="grid-line-before grid-line-after relative">
