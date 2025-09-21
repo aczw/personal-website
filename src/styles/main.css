@@ -115,7 +115,7 @@
 
 @utility grid-line-before {
   &::before {
-    content: var(--tw-content);
+    content: "";
 
     position: absolute;
     top: 0px;
@@ -130,7 +130,7 @@
 
 @utility grid-line-after {
   &::after {
-    content: var(--tw-content);
+    content: "";
 
     position: absolute;
     bottom: 0px;
