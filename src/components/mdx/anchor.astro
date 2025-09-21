@@ -14,7 +14,7 @@
 
 import type { HTMLAttributes } from "astro/types";
 
-import Undo2 from "lucide-astro/Undo2";
+import { Undo2Icon } from "@lucide/astro";
 
 import Link from "@/components/link.astro";
 
@@ -39,7 +39,7 @@ const isBackRef = href.startsWith("#user-content-fnref-");
   noUnderline={isFootnote}
   {...Astro.props}
   >{
-    isBackRef ? <Undo2 size={15} />
+    isBackRef ? <Undo2Icon size={15} />
     : isFootnote ?
       <>
         [<slot />]

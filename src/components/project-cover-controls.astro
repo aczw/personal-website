@@ -1,6 +1,5 @@
 ---
-import Pause from "lucide-astro/Pause";
-import Play from "lucide-astro/Play";
+import { PauseIcon, PlayIcon } from "@lucide/astro";
 ---
 
 <project-cover-controls class="motion-reduce:hidden">
@@ -10,9 +9,9 @@ import Play from "lucide-astro/Play";
     data-quiet="true"
   >
     <span id="play" class="absolute inset-x-0" style={{ opacity: "0" }}>
-      Play <Play size={16} class="inline-flex" />
+      Play <PlayIcon size={16} class="inline-flex" />
     </span>
-    <span id="pause">Pause <Pause size={16} class="inline-flex" /></span>
+    <span id="pause">Pause <PauseIcon size={16} class="inline-flex" /></span>
   </button>
 </project-cover-controls>
 

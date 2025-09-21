@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import { getCollection, getEntry, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 
-import CalendarFold from "lucide-astro/CalendarFold";
+import { CalendarFoldIcon } from "@lucide/astro";
 
 import Anchor from "@/components/mdx/anchor.astro";
 import Aside from "@/components/mdx/aside.astro";
@@ -70,7 +70,7 @@ const { Content, headings } = await render(post);
         datetime={posted.toISOString()}
         class="span-normal mb-6 flex items-center gap-1.5 maple text-sweater-4"
       >
-        <CalendarFold size={16} />
+        <CalendarFoldIcon size={16} />
         {posted.toLocaleDateString("en-US", dateOptions)}
       </time>
 

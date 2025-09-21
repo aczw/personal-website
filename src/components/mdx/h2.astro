@@ -1,7 +1,7 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import Hash from "lucide-astro/Hash";
+import { HashIcon } from "@lucide/astro";
 
 type Props = HTMLAttributes<"h2">;
 
@@ -15,7 +15,7 @@ const { id, ...props } = Astro.props;
   >
     <slot />
 
-    <Hash
+    <HashIcon
       size={16}
       class="stroke-transparent transition-colors group-hover:stroke-sweater-5 heading:absolute heading:-left-3"
       aria-hidden="true"

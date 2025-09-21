@@ -3,10 +3,12 @@ import { Image } from "astro:assets";
 import { getCollection, getEntry, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 
-import CalendarFold from "lucide-astro/CalendarFold";
-import ExternalLink from "lucide-astro/ExternalLink";
-import FileCode from "lucide-astro/FileCode";
-import Wrench from "lucide-astro/Wrench";
+import {
+  CalendarFold,
+  ExternalLink,
+  FileCode,
+  WrenchIcon,
+} from "@lucide/astro";
 
 import Link from "@/components/link.astro";
 import Anchor from "@/components/mdx/anchor.astro";
@@ -67,7 +69,7 @@ const { Content, headings } = await render(project);
         <div
           class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4"
         >
-          <Wrench class="hidden shrink-0 stroke-sweater-3 560:block" />
+          <WrenchIcon class="hidden shrink-0 stroke-sweater-3 560:block" />
           <div>
             <h2 class="cursor-default">Tech</h2>
             <p>{tech.sort().join(", ")}</p>
