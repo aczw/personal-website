@@ -22,6 +22,13 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       name: z.string(),
+      subtitle: z
+        .string()
+        .refine((subtitle) => subtitle.length <= 40, {
+          message:
+            "Subtitle should be extremely short. Use a blurb for longer content.",
+        })
+        .optional(),
       blurb: BlurbSchema,
       metadata: z.object({
         tech: z.string().array(),
@@ -35,7 +42,7 @@ const projects = defineCollection({
           .string()
           .url()
           .refine((url) => url.startsWith("https://github.com/"), {
-            message: "I assume source code is hosted on GitHub!",
+            message: "Source code is assumed to be hosted on GitHub",
           })
           .optional(),
         date: z.string(),

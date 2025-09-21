@@ -99,39 +99,47 @@ const projects = await getEntries([
           class="grid-line-before grid-line-after relative grid grid-cols-1 480:grid-cols-2"
         >
           {
-            projects.map(({ data: { name, metadata, cover }, id }, index) => (
-              <div
-                class="p-[calc(var(--spacing-pad)+2px)]"
-                class:list={[
-                  "group border-dashed border-line-dark",
-                  // Gives top row of videos a bottom border
-                  index < 2 ? "border-b-(length:--border-w)" : null,
-                  // Gives all videos on the left a border
-                  index % 2 === 0 ? "480:border-r-(length:--border-w)" : null,
-                  // Adds bottom border to second-to-last video (for mobile)
-                  index === projects.length - 2 ?
-                    "border-b-(length:--border-w) 480:border-b-0"
-                  : null,
-                ]}
-              >
-                <a href={`/projects/${id}`}>
-                  <h2 class="rounded-t-lg bg-sweater-9 p-pad leading-tight font-bold text-sweater-3 transition-colors group-hover:bg-sweater-8">
-                    {name}
-                  </h2>
+            projects.map(
+              ({ data: { name, subtitle, metadata, cover }, id }, index) => (
+                <div
+                  class="p-[calc(var(--spacing-pad)+2px)]"
+                  class:list={[
+                    "group border-dashed border-line-dark",
+                    // Gives top row of videos a bottom border
+                    index < 2 ? "border-b-(length:--border-w)" : null,
+                    // Gives all videos on the left a border
+                    index % 2 === 0 ? "480:border-r-(length:--border-w)" : null,
+                    // Adds bottom border to second-to-last video (for mobile)
+                    index === projects.length - 2 ?
+                      "border-b-(length:--border-w) 480:border-b-0"
+                    : null,
+                  ]}
+                >
+                  <a href={`/projects/${id}`}>
+                    <h2 class="rounded-t-lg bg-sweater-9 p-pad leading-tight text-sweater-3 transition-colors group-hover:bg-sweater-8">
+                      <span class="font-bold">{name}</span>
+                      {subtitle ?
+                        <>
+                          <span class="text-sweater-6">/</span>
+                          <span class="text-sweater-3/85">{subtitle}</span>
+                        </>
+                      : null}
+                    </h2>
 
-                  <ProjectCover
-                    id={id}
-                    cover={cover}
-                    useVideo={
-                      id === "mini-minecraft" || id === "door" ?
-                        { small: true }
-                      : null
-                    }
-                    class="overflow-hidden rounded-b-lg"
-                  />
-                </a>
-              </div>
-            ))
+                    <ProjectCover
+                      id={id}
+                      cover={cover}
+                      useVideo={
+                        id === "mini-minecraft" || id === "door" ?
+                          { small: true }
+                        : null
+                      }
+                      class="overflow-hidden rounded-b-lg"
+                    />
+                  </a>
+                </div>
+              ),
+            )
           }
         </section>
 
