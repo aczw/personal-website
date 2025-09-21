@@ -33,7 +33,7 @@
   --color-sweater-10: #0a0919;
 
   --color-line-bright: --alpha(var(--color-sweater-9) / 85%);
-  --color-line-dark: --alpha(var(--color-sweater-9) / 70%);
+  --color-line-dark: --alpha(var(--color-sweater-9) / 75%);
 
   /* Accounts for padding and border width on left and right sides */
   --container-normal: calc(

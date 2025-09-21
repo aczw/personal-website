@@ -82,6 +82,7 @@ const socials = getSocials();
         socials.map(({ href, label, icon: Icon }, index) => (
           <a
             href={href}
+            target="_blank"
             class:list={[
               "group flex items-center justify-between p-pad transition-colors hover:bg-line-bright",
               // Render dashed lines

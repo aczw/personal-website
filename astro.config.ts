@@ -7,10 +7,10 @@ import { defineConfig, envField } from "astro/config";
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 
-import { SITE_NAME } from "./src/scripts/util";
+import { SITE_URL } from "./src/scripts/util";
 
 const config = defineConfig({
-  site: SITE_NAME,
+  site: SITE_URL,
   output: "static",
   trailingSlash: "never",
   adapter: vercel({

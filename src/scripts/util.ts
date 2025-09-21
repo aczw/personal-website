@@ -2,12 +2,16 @@ import { readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const SITE_NAME = "https://charleszw.com";
-const CDN_URL = "https://cdn.charleszw.com";
+/**
+ * This value is used in astro.config.ts, which unfortunately means it can't
+ * share a file with functions that deal with Astro components/JSX syntax,
+ * e.g. constants.ts. Therefore it's defined in this file instead.
+ */
+const SITE_URL = "https://charleszw.com";
 
 /**
- * Checks that the cover image for my project covers have an aspect ratio of 16:10, for no real
- * reason other than consistency and aesthetics
+ * Checks that the cover image for my project covers have an aspect ratio of
+ * 16:10, for no real reason other than consistency and aesthetics
  */
 function validProjectCover(width: number, height: number): boolean {
   const ratio = width / height;
@@ -24,6 +28,33 @@ function validProjectCover(width: number, height: number): boolean {
  */
 function stripEndingSlash(path: string) {
   return path.replace(/\/+$/, "");
+}
+
+/**
+ * @returns Full month, day, year.
+ */
+function getShortDateFormatting(date: Date) {
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "America/New_York",
+  });
+}
+
+/**
+ * @returns Full month, day, year, 12-hour time with timezone.
+ */
+function getFullDateFormatting(date: Date) {
+  return date.toLocaleString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    timeZone: "America/New_York",
+    timeZoneName: "short",
+  });
 }
 
 /**
@@ -45,21 +76,22 @@ function getContentRoutes() {
 
   const postUrls = readdirSync(join(contentPath, "posts")).map((file) => {
     const fileName = file.split(".")[0];
-    return `${SITE_NAME}/posts/${fileName}`;
+    return `${SITE_URL}/posts/${fileName}`;
   });
 
   const projectUrls = readdirSync(join(contentPath, "projects")).map((file) => {
     const fileName = file.split(".")[0];
-    return `${SITE_NAME}/projects/${fileName}`;
+    return `${SITE_URL}/projects/${fileName}`;
   });
 
   return [...postUrls, ...projectUrls];
 }
 
 export {
-  SITE_NAME,
-  CDN_URL,
+  SITE_URL,
   getContentRoutes,
   validProjectCover,
   stripEndingSlash,
+  getShortDateFormatting,
+  getFullDateFormatting,
 };

@@ -5,6 +5,8 @@ import {
   MailIcon,
 } from "@lucide/astro";
 
+const CDN_URL = "https://cdn.charleszw.com";
+
 function getSocials() {
   return [
     { href: "/_files/resume.pdf", label: "Resume", icon: FileUserIcon },
@@ -18,4 +20,4 @@ function getSocials() {
   ];
 }
 
-export { getSocials };
+export { CDN_URL, getSocials };

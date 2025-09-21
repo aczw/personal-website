@@ -1,11 +1,14 @@
 export const prerender = false;
 
+import type { APIRoute } from "astro";
 import { getEntry } from "astro:content";
+
 import { readFileSync } from "node:fs";
 import { Resvg } from "@resvg/resvg-js";
-import type { APIRoute } from "astro";
 import satori from "satori";
 import { html } from "satori-html";
+
+import { getShortDateFormatting } from "@/scripts/util";
 
 type Content =
   | { kind: "route"; heading: string }
@@ -79,13 +82,7 @@ const GET: APIRoute = async ({ request }) => {
           }</span>
           
           <span tw="text-[#D6D3FF] mb-3.5 text-pretty text-6xl">${
-            c.kind === "post" ?
-              c.date.toLocaleString("en-US", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-                timeZone: "America/New_York",
-              })
+            c.kind === "post" ? getShortDateFormatting(c.date)
             : c.kind === "project" ? `Built with ${c.tags}`
             : "UNREACHABLE"
           }</span>`

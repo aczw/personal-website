@@ -1,10 +1,10 @@
 ---
 import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
-import type { MetaKind } from "@/scripts/types";
 
+import type { MetaKind } from "@/scripts/types";
 import "@/styles/main.css";
-import { stripEndingSlash } from "@/scripts/util";
+import { getShortDateFormatting, stripEndingSlash } from "@/scripts/util";
 
 interface Props {
   meta: MetaKind;
@@ -32,12 +32,7 @@ switch (meta.kind) {
     description =
       data.blurb ?
         data.blurb
-      : `Posted on ${data.posted.toLocaleDateString("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-          timeZone: "America/New_York",
-        })}.`;
+      : `Posted on ${getShortDateFormatting(data.posted)}.`;
     ogImageParams = `?post=${id}`;
     break;
   }
@@ -132,7 +127,7 @@ const canonicalUrl = stripEndingSlash(url);
     <slot />
 
     {
-      !import.meta.env.DEV ?
+      import.meta.env.DEV ?
         <div
           aria-hidden="true"
           class="fixed bottom-5 left-5 w-fit cursor-default rounded-xl bg-sweater-8 px-4 py-2 maple"

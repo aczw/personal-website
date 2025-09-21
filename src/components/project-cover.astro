@@ -4,7 +4,8 @@ import type { CollectionEntry } from "astro:content";
 import type { z } from "astro/zod";
 import type { ImageSchema } from "@/content.config";
 
-import { CDN_URL, validProjectCover } from "@/scripts/util";
+import { CDN_URL } from "@/scripts/constants";
+import { validProjectCover } from "@/scripts/util";
 
 interface Props {
   id: CollectionEntry<"projects">["id"];

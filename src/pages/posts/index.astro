@@ -4,6 +4,7 @@ import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 
 import CommonLayout from "@/layouts/common-layout.astro";
+import { getFullDateFormatting } from "@/scripts/util";
 
 const posts = await getCollection("posts");
 const yearToPostsMap = new Map<number, CollectionEntry<"posts">[]>();
@@ -61,15 +62,7 @@ entries.sort((a, b) => b[0] - a[0]);
                     >
                       <time
                         datetime={posted.toISOString()}
-                        title={posted.toLocaleString("en-US", {
-                          month: "long",
-                          day: "numeric",
-                          year: "numeric",
-                          hour: "numeric",
-                          minute: "numeric",
-                          timeZone: "America/New_York",
-                          timeZoneName: "short",
-                        })}
+                        title={getFullDateFormatting(posted)}
                         class="shrink-0 maple text-sweater-4 transition-colors group-hover:text-sweater-3"
                       >
                         <span class="380:hidden">

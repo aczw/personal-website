@@ -11,7 +11,7 @@ import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 import TableOfContents from "@/components/table-of-contents.astro";
 import CommonLayout from "@/layouts/common-layout.astro";
-import { validProjectCover } from "@/scripts/util";
+import { getShortDateFormatting, validProjectCover } from "@/scripts/util";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -34,13 +34,6 @@ const {
 if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
-
-const dateOptions: Intl.DateTimeFormatOptions = {
-  month: "long",
-  day: "numeric",
-  year: "numeric",
-  timeZone: "America/New_York",
-};
 
 const { Content, headings } = await render(post);
 ---
@@ -71,7 +64,7 @@ const { Content, headings } = await render(post);
         class="span-normal mb-6 flex items-center gap-1.5 maple text-sweater-4"
       >
         <CalendarFoldIcon size={16} />
-        {posted.toLocaleDateString("en-US", dateOptions)}
+        {getShortDateFormatting(posted)}
       </time>
 
       <section class="mdx-span-normal space-y-6">
