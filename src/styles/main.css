@@ -32,8 +32,8 @@
   --color-sweater-9: #1d193d;
   --color-sweater-10: #0a0919;
 
-  --color-border-primary: --alpha(var(--color-sweater-9) / 75%);
-  --color-border-secondary: --alpha(var(--color-sweater-9) / 65%);
+  --color-line-bright: --alpha(var(--color-sweater-9) / 85%);
+  --color-line-dark: --alpha(var(--color-sweater-9) / 65%);
 
   /* Accounts for padding and border width on left and right sides */
   --container-normal: calc(
@@ -124,7 +124,7 @@
     height: var(--border-w);
     width: 200vw;
 
-    background-color: var(--color-border-primary);
+    background-color: var(--color-line-bright);
   }
 }
 
@@ -139,7 +139,7 @@
     height: var(--border-w);
     width: 200vw;
 
-    background-color: var(--color-border-primary);
+    background-color: var(--color-line-bright);
   }
 }
 

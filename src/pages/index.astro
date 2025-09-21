@@ -1,7 +1,38 @@
 ---
+import {
+  FileUserIcon,
+  GithubIcon,
+  LinkedinIcon,
+  MailIcon,
+} from "@lucide/astro";
+
 import Header from "@/components/header.astro";
 import Link from "@/components/link.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
+import type { LinkWithIcon } from "@/scripts/types";
+
+const socials: LinkWithIcon[] = [
+  {
+    href: "/_files/resume.pdf",
+    label: "Resume",
+    icon: FileUserIcon,
+  },
+  {
+    href: "https://linkedin.com/in/zwcharl",
+    label: "LinkedIn",
+    icon: LinkedinIcon,
+  },
+  {
+    href: "https://github.com/aczw",
+    label: "GitHub",
+    icon: GithubIcon,
+  },
+  {
+    href: "mailto:zwcharl@gmail.com",
+    label: "Email",
+    icon: MailIcon,
+  },
+];
 ---
 
 <BaseLayout
@@ -14,7 +45,7 @@ import BaseLayout from "@/layouts/base-layout.astro";
 >
   <div class="w-screen overflow-x-clip px-pad">
     <div
-      class="mx-auto max-w-normal border-x-(length:--border-w) border-border-primary pt-6 sm:pt-12"
+      class="mx-auto max-w-normal border-x-(length:--border-w) border-line-bright pt-6 sm:pt-12"
     >
       <Header />
 
@@ -48,21 +79,20 @@ import BaseLayout from "@/layouts/base-layout.astro";
           </div>
 
           <div
-            class="col-span-2 grid grid-cols-4 divide-x-(length:--border-w) divide-dashed divide-border-secondary border-t-(length:--border-w) border-dashed border-border-secondary"
+            class="col-span-2 grid grid-cols-4 divide-x-(length:--border-w) divide-dashed divide-line-dark border-t-(length:--border-w) border-dashed border-line-dark font-bold text-sweater-3"
           >
-            <a href="/_files/resume.pdf" target="_blank" class="p-pad">Resume</a
-            >
-            <a
-              href="https://www.linkedin.com/in/zwcharl/"
-              target="_blank"
-              class="p-pad">LinkedIn</a
-            >
-            <a href="https://www.github.com/aczw" target="_blank" class="p-pad"
-              >GitHub</a
-            >
-            <a href="mailto:zwcharl@gmail.com" target="_blank" class="p-pad"
-              >Email</a
-            >
+            {
+              socials.map(({ href, label, icon: Icon }) => (
+                <a
+                  href={href}
+                  target="_blank"
+                  class="flex items-center justify-between p-pad transition-colors hover:bg-line-bright hover:text-sweater-1"
+                >
+                  <span>{label}</span>
+                  <Icon size={20} />
+                </a>
+              ))
+            }
           </div>
         </section>
 

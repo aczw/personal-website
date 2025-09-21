@@ -1,6 +1,7 @@
 import type { CollectionEntry } from "astro:content";
-
 import { z } from "astro:schema";
+
+import { type Icon as IconType } from "@lucide/astro";
 
 type EntryKind =
   | { kind: "post"; post: CollectionEntry<"posts"> }
@@ -14,6 +15,12 @@ type MetaKind =
       ogImageParams: string;
     }
   | EntryKind;
+
+type LinkWithIcon = {
+  href: string;
+  label: string;
+  icon: typeof IconType;
+};
 
 const Filters = ["graphics", "games", "art"] as const;
 
@@ -62,4 +69,10 @@ const LastFmSchema = z.object({
   }),
 });
 
-export { Filters, LastFmSchema, type EntryKind, type MetaKind };
+export {
+  Filters,
+  LastFmSchema,
+  type EntryKind,
+  type MetaKind,
+  type LinkWithIcon,
+};
