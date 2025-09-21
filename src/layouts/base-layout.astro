@@ -4,6 +4,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import type { MetaKind } from "@/scripts/types";
 
 import "@/styles/main.css";
+import { stripEndingSlash } from "@/scripts/util";
 
 interface Props {
   meta: MetaKind;
@@ -53,9 +54,8 @@ switch (meta.kind) {
     throw new Error("Unreachable!");
 }
 
-// See https://github.com/withastro/astro/issues/5248
-let canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
-canonicalUrl = canonicalUrl.replace(/\/+$/, "");
+const url = new URL(Astro.url.pathname, Astro.site).toString();
+const canonicalUrl = stripEndingSlash(url);
 ---
 
 <!doctype html>
@@ -132,7 +132,7 @@ canonicalUrl = canonicalUrl.replace(/\/+$/, "");
     <slot />
 
     {
-      import.meta.env.DEV ?
+      !import.meta.env.DEV ?
         <div
           aria-hidden="true"
           class="fixed bottom-5 left-5 w-fit cursor-default rounded-xl bg-sweater-8 px-4 py-2 maple"

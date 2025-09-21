@@ -1,6 +1,7 @@
 ---
 import { actions } from "astro:actions";
-import Music from "lucide-astro/Music";
+
+import { MusicIcon } from "@lucide/astro";
 
 const { data: track, error } = await Astro.callAction(
   actions.getMostRecentTrack,
@@ -19,7 +20,7 @@ if (available) {
   href={available ? track.songUrl : "https://www.last.fm/user/ashzw"}
   target="_blank"
   title={title}
-  class="relative flex w-fit pill"
+  class="relative flex pill"
   data-quiet="true"
   data-live={available && track.live ? "true" : "false"}
 >
@@ -29,7 +30,7 @@ if (available) {
       { "animate-pulse": available && track.live },
     ]}
   >
-    <Music size={15} class="inline shrink-0" />
+    <MusicIcon size={15} class="inline shrink-0" />
 
     <span
       class="line-clamp-1 hidden w-full animate-fade-in leading-[1.1] break-all [--order:0] 380:[display:-webkit-box]"
