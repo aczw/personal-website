@@ -1,26 +1,6 @@
 ---
-import { getCollection, getEntries } from "astro:content";
-
-import ArrowRight from "lucide-astro/ArrowRight";
-import Github from "lucide-astro/Github";
-import Linkedin from "lucide-astro/Linkedin";
-import Mail from "lucide-astro/Mail";
-import ScrollText from "lucide-astro/ScrollText";
-
 import Link from "@/components/link.astro";
-import ProjectCover from "@/components/project-cover.astro";
-import CommonLayout from "@/layouts/common-layout.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
-
-let posts = await getCollection("posts");
-posts = posts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime()).slice(0, 3);
-
-const projects = await getEntries([
-  { collection: "projects", id: "mini-minecraft" },
-  { collection: "projects", id: "door" },
-  { collection: "projects", id: "path-tracer" },
-  { collection: "projects", id: "rcw" },
-]);
 ---
 
 <BaseLayout
@@ -35,7 +15,9 @@ const projects = await getEntries([
     <div
       class="mx-auto max-w-normal border-x-(length:--border-w) border-border-primary pt-6 sm:pt-12"
     >
-      <header class="grid-line-before grid-line-after relative grid grid-cols-1 480:grid-cols-2">
+      <header
+        class="grid-line-before grid-line-after relative grid grid-cols-1 480:grid-cols-2"
+      >
         <div
           class="space-y-1 border-b-(length:--border-w) border-dashed border-border-secondary px-pad pt-[calc(1.4*var(--spacing-pad))] pb-pad text-sweater-4 480:border-b-0"
         >
@@ -54,7 +36,9 @@ const projects = await getEntries([
             ></path>
           </svg>
 
-          <h1 class="cursor-default text-3xl leading-none font-bold">Charles Wang</h1>
+          <h1 class="cursor-default text-3xl leading-none font-bold">
+            Charles Wang
+          </h1>
         </div>
 
         <nav
@@ -69,18 +53,22 @@ const projects = await getEntries([
         <section class="grid-line-before grid-line-after relative">
           <div class="grid grid-cols-2 gap-pad-2 p-pad">
             <p class="col-span-2 560:col-span-1">
-              Hi! I'm a fourth year student in the Digital Media Design program at UPenn. I'm
-              concurrently finishing a Master's in Computer Graphics and Game Technology.
+              Hi! I'm a fourth year student in the Digital Media Design program
+              at UPenn. I'm concurrently finishing a Master's in Computer
+              Graphics and Game Technology.
             </p>
             <p class="col-span-2 560:col-span-1">
-              I help run <Link href="https://pennupgrade.com/" target="_blank">UPGRADE</Link>, our
-              game dev club, and am part of the <Link
+              I help run <Link href="https://pennupgrade.com/" target="_blank"
+                >UPGRADE</Link
+              >, our game dev club, and am part of the <Link
                 href="https://cg.cis.upenn.edu/"
                 target="_blank">CG@Penn</Link
-              > student board. Previously I interned at Snap and TikTok to work on their graphics engines.
+              > student board. Previously I interned at Snap and TikTok to work on
+              their graphics engines.
             </p>
             <p class="col-span-2 subtitle 480:col-span-1">
-              In my free time I like running, making playlists, reading manga, and riding SEPTA.
+              In my free time I like running, making playlists, reading manga,
+              and riding SEPTA.
             </p>
             <p class="hidden subtitle 480:block">
               You can find my socials and resumé below. Thanks for stopping by. <span
@@ -93,20 +81,34 @@ const projects = await getEntries([
           <div
             class="col-span-2 grid grid-cols-4 divide-x-(length:--border-w) divide-dashed divide-border-secondary border-t-(length:--border-w) border-dashed border-border-secondary"
           >
-            <a href="/_files/resume.pdf" target="_blank" class="p-pad">Resume</a>
-            <a href="https://www.linkedin.com/in/zwcharl/" target="_blank" class="p-pad">LinkedIn</a
+            <a href="/_files/resume.pdf" target="_blank" class="p-pad">Resume</a
             >
-            <a href="https://www.github.com/aczw" target="_blank" class="p-pad">GitHub</a>
-            <a href="mailto:zwcharl@gmail.com" target="_blank" class="p-pad">Email</a>
+            <a
+              href="https://www.linkedin.com/in/zwcharl/"
+              target="_blank"
+              class="p-pad">LinkedIn</a
+            >
+            <a href="https://www.github.com/aczw" target="_blank" class="p-pad"
+              >GitHub</a
+            >
+            <a href="mailto:zwcharl@gmail.com" target="_blank" class="p-pad"
+              >Email</a
+            >
           </div>
         </section>
 
-        <section class="grid-line-before grid-line-after relative">Projects</section>
+        <section class="grid-line-before grid-line-after relative">
+          Projects
+        </section>
 
-        <section class="grid-line-before grid-line-after relative">Writing</section>
+        <section class="grid-line-before grid-line-after relative">
+          Writing
+        </section>
       </main>
 
-      <footer class="grid-line-before relative mt-pad-2 pb-6 sm:pb-12">Footer</footer>
+      <footer class="grid-line-before relative mt-pad-2 pb-6 sm:pb-12">
+        Footer
+      </footer>
     </div>
   </div>
 </BaseLayout>

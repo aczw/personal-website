@@ -23,7 +23,9 @@ type Props = Omit<HTMLAttributes<"a">, "target" | "class">;
 const href = Astro.props.href;
 
 if (!href || typeof href !== "string") {
-  throw new Error('"href" attribute doesn\'t exist on anchor or we mistakenly passed in a URL.');
+  throw new Error(
+    '"href" attribute doesn\'t exist on anchor or we mistakenly passed in a URL.',
+  );
 }
 
 const isFootnoteRelated = href.startsWith("#user-content-fn");

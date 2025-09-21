@@ -10,7 +10,8 @@
   --font-mono: "Maple Mono";
 
   /* See https://font.subf.dev/en/playground for what each value means */
-  --font-mono--font-feature-settings: "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";
+  --font-mono--font-feature-settings:
+    "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";
 
   /* Monospace text should be a little smaller than display text. Otherwise it looks too large. */
   --text-mono: 0.85rem;
@@ -35,7 +36,9 @@
   --color-border-secondary: --alpha(var(--color-sweater-9) / 65%);
 
   /* Accounts for padding and border width on left and right sides */
-  --container-normal: calc(var(--normal-w) + 2 * var(--spacing-pad) + 2 * var(--border-w));
+  --container-normal: calc(
+    var(--normal-w) + 2 * var(--spacing-pad) + 2 * var(--border-w)
+  );
   --container-wide: calc(var(--wide-w) + 2 * var(--spacing-space));
 
   /* Terrible names, but these don't really represent anything and are just good values by themselves */

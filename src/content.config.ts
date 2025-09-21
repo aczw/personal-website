@@ -7,7 +7,8 @@ import { Filters } from "@/scripts/types";
 const TypeSchema = z.enum(Filters);
 
 const BlurbSchema = z.string().refine((blurb) => blurb.length <= 190, {
-  message: "Blurb should be 190 characters or less (so it looks nice on the home screen).",
+  message:
+    "Blurb should be 190 characters or less (so it looks nice on the home screen).",
 });
 
 const ImageSchema = (image: ImageFunction) =>

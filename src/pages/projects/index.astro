@@ -13,7 +13,9 @@ import { Filters } from "@/scripts/types";
 let projects = await getCollection("projects");
 projects.sort((a, b) => a.data.order - b.data.order);
 
-const filterParams = Filters.map((filter) => Astro.url.searchParams.has("filter", filter));
+const filterParams = Filters.map((filter) =>
+  Astro.url.searchParams.has("filter", filter),
+);
 const filteredByAny = filterParams.reduce((acc, x) => acc || x);
 
 if (filteredByAny) {
@@ -37,18 +39,26 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
       <div
         class="flex flex-col gap-2.5 border-y-2 border-sweater-9 py-4 380:flex-row 380:items-center 380:gap-4 sm:gap-space"
       >
-        <h2 class="w-fit shrink-0 cursor-default leading-none text-sweater-4 sm:w-1/2 sm:shrink">
+        <h2
+          class="w-fit shrink-0 cursor-default leading-none text-sweater-4 sm:w-1/2 sm:shrink"
+        >
           Filter{filteredByAny ? "ed" : ""} by:
         </h2>
 
-        <div class="flex flex-wrap items-center gap-2.5 maple [--fade-speed:50ms] sm:w-1/2">
+        <div
+          class="flex flex-wrap items-center gap-2.5 maple [--fade-speed:50ms] sm:w-1/2"
+        >
           {
             Filters.map((filter, idx) => {
               const filtered = filterParams[idx];
 
               return (
                 <a
-                  title={filtered ? `Remove "${filter}" filter` : `Filter by "${filter}"`}
+                  title={
+                    filtered ?
+                      `Remove "${filter}" filter`
+                    : `Filter by "${filter}"`
+                  }
                   class="flex animate-fade-in items-center gap-1.5 pill leading-none"
                   href={`/projects${filtered ? "" : `?filter=${filter}`}`}
                   data-quiet={!filtered}
@@ -66,7 +76,9 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
       </div>
     </section>
 
-    <section class="span-wide grid grid-cols-1 gap-space [--fade-speed:40ms] 560:grid-cols-2">
+    <section
+      class="span-wide grid grid-cols-1 gap-space [--fade-speed:40ms] 560:grid-cols-2"
+    >
       {
         projects.map((project, idx) => {
           const {

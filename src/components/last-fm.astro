@@ -2,7 +2,10 @@
 import { actions } from "astro:actions";
 import Music from "lucide-astro/Music";
 
-const { data: track, error } = await Astro.callAction(actions.getMostRecentTrack, {});
+const { data: track, error } = await Astro.callAction(
+  actions.getMostRecentTrack,
+  {},
+);
 const available = !error;
 
 let title = null;
@@ -21,7 +24,10 @@ if (available) {
   data-live={available && track.live ? "true" : "false"}
 >
   <div
-    class:list={["relative z-10 flex w-fit gap-2", { "animate-pulse": available && track.live }]}
+    class:list={[
+      "relative z-10 flex w-fit gap-2",
+      { "animate-pulse": available && track.live },
+    ]}
   >
     <Music size={15} class="inline shrink-0" />
 

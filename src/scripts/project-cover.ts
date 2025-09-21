@@ -32,7 +32,9 @@ class ProjectCover extends HTMLElement {
     if (!this.kind.hasVideo) return;
 
     if (this.kind.video.readyState !== HTMLMediaElement.HAVE_ENOUGH_DATA) {
-      this.kind.video.addEventListener("canplaythrough", () => this.playVideo());
+      this.kind.video.addEventListener("canplaythrough", () =>
+        this.playVideo(),
+      );
     } else {
       this.playVideo();
     }

@@ -49,11 +49,13 @@ const config = defineConfig({
         codeFontSize: "var(--text-mono)",
 
         frames: {
-          editorActiveTabBackground: ({ theme }) => theme.colors["editor.background"],
+          editorActiveTabBackground: ({ theme }) =>
+            theme.colors["editor.background"],
           editorActiveTabForeground: "var(--color-sweater-3)",
           editorActiveTabIndicatorHeight: "2px",
           editorActiveTabIndicatorTopColor: "var(--color-sweater-3)",
-          editorTabBarBackground: ({ theme }) => setAlpha(theme.colors["editor.background"], 0.5),
+          editorTabBarBackground: ({ theme }) =>
+            setAlpha(theme.colors["editor.background"], 0.5),
           editorTabBorderRadius: "0.3rem",
           shadowColor: "transparent",
         },
@@ -79,7 +81,11 @@ const config = defineConfig({
   },
   env: {
     schema: {
-      LASTFM_API_KEY: envField.string({ context: "server", access: "secret", optional: false }),
+      LASTFM_API_KEY: envField.string({
+        context: "server",
+        access: "secret",
+        optional: false,
+      }),
     },
   },
   redirects: {

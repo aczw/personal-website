@@ -16,11 +16,15 @@
 @utility mdx-span-normal {
   display: grid;
   column-gap: var(--spacing-space);
-  grid-template-columns: 1fr min(var(--normal-w), 100% - 2 * var(--spacing-space)) 1fr;
+  grid-template-columns:
+    1fr min(var(--normal-w), 100% - 2 * var(--spacing-space))
+    1fr;
 
   /* The 95px is calculated as follows: <wide width> - <pair of column-gap spacing> - <normal width> = 190px. We then split it evenly across both sides */
   @variant toc {
-    grid-template-columns: 2fr 95px min(var(--normal-w), 100% - 4 * var(--spacing-space)) 95px 2fr;
+    grid-template-columns:
+      2fr 95px min(var(--normal-w), 100% - 4 * var(--spacing-space))
+      95px 2fr;
   }
 }
 

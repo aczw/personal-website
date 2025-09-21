@@ -41,7 +41,9 @@ entries.sort((a, b) => b[0] - a[0]);
       {
         entries.map(([year, yearPosts]) => {
           const sortedPosts = yearPosts;
-          sortedPosts.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
+          sortedPosts.sort(
+            (a, b) => b.data.posted.getTime() - a.data.posted.getTime(),
+          );
 
           return (
             <section>
@@ -50,51 +52,53 @@ entries.sort((a, b) => b[0] - a[0]);
               </h2>
 
               <div class="pointer-events-auto flex flex-col">
-                {sortedPosts.map(({ data: { title, blurb, posted }, id }, idx) => (
-                  <a
-                    href={`/posts/${id}`}
-                    class="row group flex animate-fade-in flex-col gap-1 border-y-2 border-t-sweater-9 border-b-sweater-9/0 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row 380:gap-space"
-                    style={{ "--order": idx + 1 }}
-                  >
-                    <time
-                      datetime={posted.toISOString()}
-                      title={posted.toLocaleString("en-US", {
-                        month: "long",
-                        day: "numeric",
-                        year: "numeric",
-                        hour: "numeric",
-                        minute: "numeric",
-                        timeZone: "America/New_York",
-                        timeZoneName: "short",
-                      })}
-                      class="shrink-0 maple text-sweater-4 transition-colors group-hover:text-sweater-3"
+                {sortedPosts.map(
+                  ({ data: { title, blurb, posted }, id }, idx) => (
+                    <a
+                      href={`/posts/${id}`}
+                      class="row group flex animate-fade-in flex-col gap-1 border-y-2 border-t-sweater-9 border-b-sweater-9/0 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row 380:gap-space"
+                      style={{ "--order": idx + 1 }}
                     >
-                      <span class="380:hidden">
-                        {posted.toLocaleDateString("en-US", {
+                      <time
+                        datetime={posted.toISOString()}
+                        title={posted.toLocaleString("en-US", {
                           month: "long",
                           day: "numeric",
+                          year: "numeric",
+                          hour: "numeric",
+                          minute: "numeric",
                           timeZone: "America/New_York",
+                          timeZoneName: "short",
                         })}
-                      </span>
-                      <span class="hidden 380:inline">
-                        {posted.toLocaleDateString("en-US", {
-                          month: "2-digit",
-                          day: "2-digit",
-                          timeZone: "America/New_York",
-                        })}
-                      </span>
-                    </time>
+                        class="shrink-0 maple text-sweater-4 transition-colors group-hover:text-sweater-3"
+                      >
+                        <span class="380:hidden">
+                          {posted.toLocaleDateString("en-US", {
+                            month: "long",
+                            day: "numeric",
+                            timeZone: "America/New_York",
+                          })}
+                        </span>
+                        <span class="hidden 380:inline">
+                          {posted.toLocaleDateString("en-US", {
+                            month: "2-digit",
+                            day: "2-digit",
+                            timeZone: "America/New_York",
+                          })}
+                        </span>
+                      </time>
 
-                    <div class="space-y-1">
-                      <h2>{title}</h2>
-                      {blurb ?
-                        <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
-                          {blurb}
-                        </p>
-                      : null}
-                    </div>
-                  </a>
-                ))}
+                      <div class="space-y-1">
+                        <h2>{title}</h2>
+                        {blurb ?
+                          <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
+                            {blurb}
+                          </p>
+                        : null}
+                      </div>
+                    </a>
+                  ),
+                )}
               </div>
             </section>
           );

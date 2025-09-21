@@ -26,7 +26,11 @@ const GET: APIRoute = async ({ request }) => {
   } else if (maybePost) {
     const post = await getEntry("posts", maybePost);
     if (post) {
-      content = { kind: "post", title: post.data.title, date: post.data.posted };
+      content = {
+        kind: "post",
+        title: post.data.title,
+        date: post.data.posted,
+      };
     }
   } else if (maybeProject) {
     const project = await getEntry("projects", maybeProject);
@@ -97,13 +101,17 @@ const GET: APIRoute = async ({ request }) => {
     fonts: [
       {
         name: "Atkinson Hyperlegible Next",
-        data: readFileSync(`${process.cwd()}/public/_files/fonts/og/AtkHypNext-Regular.ttf`),
+        data: readFileSync(
+          `${process.cwd()}/public/_files/fonts/og/AtkHypNext-Regular.ttf`,
+        ),
         style: "normal",
         weight: 400,
       },
       {
         name: "Atkinson Hyperlegible Next",
-        data: readFileSync(`${process.cwd()}/public/_files/fonts/og/AtkHypNext-Bold.ttf`),
+        data: readFileSync(
+          `${process.cwd()}/public/_files/fonts/og/AtkHypNext-Bold.ttf`,
+        ),
         style: "normal",
         weight: 700,
       },

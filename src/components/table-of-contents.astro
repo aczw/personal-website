@@ -24,7 +24,9 @@ const { headings } = Astro.props;
       {
         headings.map(({ depth, slug, text }, index) => {
           if (depth === 1) {
-            throw new Error(`No MDX heading should be H1! Check whether the content contains any.`);
+            throw new Error(
+              `No MDX heading should be H1! Check whether the content contains any.`,
+            );
           }
 
           if (depth > 3) {
@@ -71,7 +73,9 @@ const { headings } = Astro.props;
   const observer = new IntersectionObserver((entries) =>
     entries.forEach((entry) => {
       const id = entry.target.id;
-      const link = document.querySelector<HTMLAnchorElement>(`nav a[href="#${id}"]`);
+      const link = document.querySelector<HTMLAnchorElement>(
+        `nav a[href="#${id}"]`,
+      );
 
       const windowHeight = entry.rootBounds!.height;
       if (windowHeight && link) {
@@ -84,5 +88,7 @@ const { headings } = Astro.props;
     }),
   );
 
-  document.querySelectorAll("h2[id], h3[id]").forEach((heading) => observer.observe(heading));
+  document
+    .querySelectorAll("h2[id], h3[id]")
+    .forEach((heading) => observer.observe(heading));
 </script>

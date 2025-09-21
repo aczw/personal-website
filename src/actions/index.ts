@@ -52,7 +52,10 @@ export const server = {
         songName: name,
         artist: artist["#text"],
         songUrl: url,
-        live: firstTrack["@attr"] ? firstTrack["@attr"].nowplaying === "true" : false,
+        live:
+          firstTrack["@attr"] ?
+            firstTrack["@attr"].nowplaying === "true"
+          : false,
       };
     },
   }),

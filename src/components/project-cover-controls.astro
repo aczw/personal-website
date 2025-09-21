@@ -37,7 +37,9 @@ import Play from "lucide-astro/Play";
 
       this.#paused = false;
       this.#button = this.querySelector("button")!;
-      this.#projectCovers = Array.from(document.querySelectorAll<ProjectCover>("project-cover"))!;
+      this.#projectCovers = Array.from(
+        document.querySelectorAll<ProjectCover>("project-cover"),
+      )!;
       this.#pause = this.querySelector<HTMLSpanElement>("#pause")!;
       this.#play = this.querySelector<HTMLSpanElement>("#play")!;
     }

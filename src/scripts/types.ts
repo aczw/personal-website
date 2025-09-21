@@ -7,7 +7,12 @@ type EntryKind =
   | { kind: "project"; project: CollectionEntry<"projects"> };
 
 type MetaKind =
-  | { kind: "route"; title: string | null; description: string; ogImageParams: string }
+  | {
+      kind: "route";
+      title: string | null;
+      description: string;
+      ogImageParams: string;
+    }
   | EntryKind;
 
 const Filters = ["graphics", "games", "art"] as const;
