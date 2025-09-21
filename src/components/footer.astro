@@ -3,7 +3,8 @@ import { CircleArrowUpIcon, MapPinIcon, MusicIcon } from "@lucide/astro";
 
 import LastFm from "@/components/last-fm.astro";
 import Link from "@/components/link.astro";
-import { getSocials, stripEndingSlash } from "@/scripts/util";
+import { stripEndingSlash } from "@/scripts/util";
+import { getSocials } from "@/scripts/constants";
 
 const path = stripEndingSlash(Astro.url.pathname);
 const sections = path

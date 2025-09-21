@@ -2,15 +2,6 @@ import { readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import {
-  FileUserIcon,
-  LinkedinIcon,
-  GithubIcon,
-  MailIcon,
-} from "@lucide/astro";
-
-import type { LinkWithIcon } from "@/scripts/types";
-
 const SITE_NAME = "https://charleszw.com";
 const CDN_URL = "https://cdn.charleszw.com";
 
@@ -33,19 +24,6 @@ function validProjectCover(width: number, height: number): boolean {
  */
 function stripEndingSlash(path: string) {
   return path.replace(/\/+$/, "");
-}
-
-function getSocials(): LinkWithIcon[] {
-  return [
-    { href: "/_files/resume.pdf", label: "Resume", icon: FileUserIcon },
-    {
-      href: "https://linkedin.com/in/zwcharl",
-      label: "LinkedIn",
-      icon: LinkedinIcon,
-    },
-    { href: "https://github.com/aczw", label: "GitHub", icon: GithubIcon },
-    { href: "mailto:zwcharl@gmail.com", label: "Email", icon: MailIcon },
-  ];
 }
 
 /**
@@ -84,5 +62,4 @@ export {
   getContentRoutes,
   validProjectCover,
   stripEndingSlash,
-  getSocials,
 };
