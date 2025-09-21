@@ -12,6 +12,7 @@ import BaseLayout from "@/layouts/base-layout.astro";
 import type { LinkWithIcon } from "@/scripts/types";
 import { getEntries } from "astro:content";
 import ProjectCover from "@/components/project-cover.astro";
+import { meta } from "@eslint/js";
 
 const socials: LinkWithIcon[] = [
   { href: "/_files/resume.pdf", label: "Resume", icon: FileUserIcon },
@@ -44,11 +45,11 @@ const projects = await getEntries([
 >
   <div class="overflow-x-clip px-pad">
     <div
-      class="mx-auto max-w-normal space-y-6 border-x-(length:--border-w) border-line-bright pt-6 sm:pt-12"
+      class="mx-auto max-w-normal space-y-6 border-x-(length:--border-w) border-line-bright pt-6 sm:space-y-12 sm:pt-12"
     >
       <Header />
 
-      <main class="space-y-6">
+      <main class="space-y-6 sm:space-y-12">
         <section class="grid-line-before grid-line-after relative">
           <div class="grid grid-cols-2 gap-pad-2 p-pad">
             <p class="col-span-2 560:col-span-1">
@@ -96,15 +97,18 @@ const projects = await getEntries([
         </section>
 
         <section
-          class="grid-line-before grid-line-after relative grid grid-cols-1 480:grid-cols-2"
+          class="grid-line-before grid-line-after relative grid grid-cols-1 560:grid-cols-2"
         >
           {
             projects.map(
-              ({ data: { name, subtitle, metadata, cover }, id }, index) => (
+              (
+                { data: { name, subtitle, blurb, metadata, cover }, id },
+                index,
+              ) => (
                 <div
                   class="p-[calc(var(--spacing-pad)+2px)]"
                   class:list={[
-                    "group border-dashed border-line-dark",
+                    "border-dashed border-line-dark",
                     // Gives top row of videos a bottom border
                     index < 2 ? "border-b-(length:--border-w)" : null,
                     // Gives all videos on the left a border
@@ -115,27 +119,56 @@ const projects = await getEntries([
                     : null,
                   ]}
                 >
-                  <a href={`/projects/${id}`}>
+                  <a href={`/projects/${id}`} class="group">
                     <h2 class="rounded-t-lg bg-sweater-9 p-pad leading-tight text-sweater-3 transition-colors group-hover:bg-sweater-8">
                       <span class="font-bold">{name}</span>
                       {subtitle ?
                         <>
-                          <span class="text-sweater-6">/</span>
-                          <span class="text-sweater-3/85">{subtitle}</span>
+                          <span aria-hidden="true" class="text-sweater-6">
+                            /
+                          </span>
+                          <span class="text-sweater-5">{subtitle}</span>
                         </>
                       : null}
                     </h2>
 
-                    <ProjectCover
-                      id={id}
-                      cover={cover}
-                      useVideo={
-                        id === "mini-minecraft" || id === "door" ?
-                          { small: true }
-                        : null
-                      }
-                      class="overflow-hidden rounded-b-lg"
-                    />
+                    <div class="relative overflow-hidden rounded-b-lg">
+                      <ProjectCover
+                        id={id}
+                        cover={cover}
+                        useVideo={
+                          id === "mini-minecraft" || id === "door" ?
+                            { small: true }
+                          : null
+                        }
+                      />
+
+                      <div class="absolute inset-0 transition-colors group-hover:bg-sweater-9/80">
+                        <div class="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
+                          <div class="flex min-h-0 flex-col gap-pad bg-sweater-9 px-pad transition-colors group-hover:bg-sweater-8">
+                            <p class="hidden subtitle 380:block 560:hidden sm:block">
+                              {blurb}
+                            </p>
+
+                            <ul class="flex flex-wrap gap-x-1 pb-pad text-sweater-5">
+                              {metadata.tech.map((tech, index) => (
+                                <li class="text-sm">
+                                  {tech}
+                                  {index !== metadata.tech.length - 1 ?
+                                    <span
+                                      aria-hidden="true"
+                                      class="font-sans font-normal text-sweater-6"
+                                    >
+                                      /
+                                    </span>
+                                  : null}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </a>
                 </div>
               ),
