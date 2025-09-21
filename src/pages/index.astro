@@ -12,6 +12,7 @@ import BaseLayout from "@/layouts/base-layout.astro";
 import type { LinkWithIcon } from "@/scripts/types";
 import { getEntries } from "astro:content";
 import ProjectCover from "@/components/project-cover.astro";
+import { getCollection } from "astro:content";
 
 const socials: LinkWithIcon[] = [
   { href: "/_files/resume.pdf", label: "Resume", icon: FileUserIcon },
@@ -32,6 +33,11 @@ const projects = await getEntries([
   { collection: "projects", id: "path-tracer" },
   { collection: "projects", id: "door" },
 ]);
+
+let posts = await getCollection("posts");
+posts = posts
+  .sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime())
+  .slice(0, 3);
 ---
 
 <BaseLayout
@@ -105,9 +111,10 @@ const projects = await getEntries([
                 index,
               ) => (
                 <div
-                  class="p-[calc(var(--spacing-pad)+2px)]"
                   class:list={[
-                    "border-dashed border-line-dark",
+                    "border-dashed border-line-dark transition-colors hover:bg-sweater-9/40",
+                    // Adding some additional padding for optical alignment
+                    "p-[calc(var(--spacing-pad)+2px)]",
                     // Gives top row of videos a bottom border
                     index < 2 ? "border-b-(length:--border-w)" : null,
                     // Gives all videos on the left a border
@@ -120,7 +127,9 @@ const projects = await getEntries([
                 >
                   <a href={`/projects/${id}`} class="group">
                     <h2 class="rounded-t-lg bg-sweater-9 p-pad leading-tight text-sweater-3 transition-colors group-hover:bg-sweater-8">
-                      <span class="font-bold">{name}</span>
+                      <span class="font-bold transition-colors group-hover:text-sweater-1">
+                        {name}
+                      </span>
                       {subtitle ?
                         <>
                           <span aria-hidden="true" class="text-sweater-6">
@@ -176,7 +185,39 @@ const projects = await getEntries([
         </section>
 
         <section class="grid-line-before grid-line-after relative">
-          Writing
+          {
+            posts.map(({ data: { title, blurb, posted }, id, body }) => (
+              <a
+                href={`/posts/${id}`}
+                class="group flex flex-col-reverse justify-between border-dashed border-line-dark p-pad transition-colors not-last:border-b-(length:--border-w) hover:bg-line-bright 480:flex-row 480:gap-16"
+              >
+                <div>
+                  <h2 class="leading-snug font-bold text-sweater-3 transition-colors group-hover:text-sweater-1">
+                    {title}
+                  </h2>
+                  {blurb ?
+                    <p class="hidden subtitle 560:block">{blurb}</p>
+                  : body ?
+                    <p class="hidden subtitle 560:block">
+                      “<span class="italic">{body.slice(0, 70)}...</span>”
+                    </p>
+                  : null}
+                </div>
+
+                <time
+                  datetime={posted.toISOString()}
+                  class="shrink-0 text-sweater-5"
+                >
+                  <span class="480:hidden">Posted on</span>
+                  {posted.toLocaleDateString("en-US", {
+                    month: "long",
+                    day: "numeric",
+                    timeZone: "America/New_York",
+                  })}
+                </time>
+              </a>
+            ))
+          }
         </section>
       </main>
 

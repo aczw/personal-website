@@ -14,7 +14,7 @@
     "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";
 
   /* Monospace text should be a little smaller than display text. Otherwise it looks too large. */
-  --text-mono: 0.85rem;
+  --text-mono: 0.87rem;
 
   --spacing-space: --spacing(8);
   /* This is 2.5 * 0.25rem = 0.625rem = 9.375px (1rem = 15px) */
