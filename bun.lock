@@ -9,6 +9,7 @@
         "@astrojs/sitemap": "3.6.0",
         "@astrojs/vercel": "8.2.7",
         "@expressive-code/plugin-collapsible-sections": "^0.41.3",
+        "@lucide/astro": "^0.544.0",
         "@resvg/resvg-js": "^2.6.2",
         "@tailwindcss/vite": "^4.1.13",
         "@vercel/analytics": "^1.5.0",
@@ -16,7 +17,6 @@
         "astro": "5.13.9",
         "astro-embed": "^0.9.1",
         "astro-expressive-code": "^0.41.3",
-        "lucide-astro": "^0.544.0",
         "rehype-unwrap-images": "^1.0.0",
         "satori": "^0.18.3",
         "satori-html": "^0.3.2",
@@ -269,6 +269,8 @@
     "@jridgewell/sourcemap-codec": ["@jridgewell/sourcemap-codec@1.5.5", "", {}, "sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og=="],
 
     "@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.31", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.1.0", "@jridgewell/sourcemap-codec": "^1.4.14" } }, "sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw=="],
+
+    "@lucide/astro": ["@lucide/astro@0.544.0", "", { "peerDependencies": { "astro": "^4 || ^5" } }, "sha512-A1OMIplo44RLQ5MefvXOMwHOnR1w/Dvk7q7W0LlKYwwV8pfBavU0nQecyb2rPkIt9dLTd4XfBUFRKCE+1r5gjA=="],
 
     "@mapbox/node-pre-gyp": ["@mapbox/node-pre-gyp@2.0.0", "", { "dependencies": { "consola": "^3.2.3", "detect-libc": "^2.0.0", "https-proxy-agent": "^7.0.5", "node-fetch": "^2.6.7", "nopt": "^8.0.0", "semver": "^7.5.3", "tar": "^7.4.0" }, "bin": { "node-pre-gyp": "bin/node-pre-gyp" } }, "sha512-llMXd39jtP0HpQLVI37Bf1m2ADlEb35GYSh1SDSLsBhR+5iCxiNGlT31yqbNtVHygHAtMy6dWFERpU2JgufhPg=="],
 
@@ -991,8 +993,6 @@
     "longest-streak": ["longest-streak@3.1.0", "", {}, "sha512-9Ri+o0JYgehTaVBBDoMqIl8GXtbWg711O3srftcHhZ0dqnETqLaoIK0x17fUw9rFSlK/0NlsKe0Ahhyl5pXE2g=="],
 
     "lru-cache": ["lru-cache@10.4.3", "", {}, "sha512-JNAzZcXrCt42VGLuYz0zfAzDfAvJWW6AfYlDBQyDV5DClI2m5sAmK+OIO7s59XfsRsWHp02jAJrRadPRGTt6SQ=="],
-
-    "lucide-astro": ["lucide-astro@0.544.0", "", { "peerDependencies": { "astro": ">=2.7.1" } }, "sha512-cBhuoKbYCKOPk+4qEuA9um+H41I1ZPAo7BwAhQrpg/2BAe8Qm8nhotZxDJFDRbnMlqmVKb7vGjteVUHGxCFHOQ=="],
 
     "magic-string": ["magic-string@0.30.19", "", { "dependencies": { "@jridgewell/sourcemap-codec": "^1.5.5" } }, "sha512-2N21sPY9Ws53PZvsEpVtNuSW+ScYbQdp4b9qUaL+9QkHUrGFKo56Lg9Emg5s9V/qrtNBmiR01sYhUOwu3H+VOw=="],
 
