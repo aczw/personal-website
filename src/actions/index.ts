@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from "astro:actions";
 import { LASTFM_API_KEY } from "astro:env/server";
-import { LastFmSchema } from "@/scripts/types";
+
+import { LastFmSchema } from "@/scripts/schema";
 
 export const server = {
   getMostRecentTrack: defineAction({
