@@ -48,27 +48,60 @@ const enabledVideos = ["path-tracer", "pbr-renderer", "fireball", "door"];
             <div class="grid grid-cols-1 560:grid-cols-2">
               {projects
                 .filter((project) => project.data.type === category)
-                .map(({ id, data: { cover } }, index) => (
-                  <div
-                    class:list={[
-                      "border-dashed border-line-dark p-[calc(var(--spacing-pad)+2px)] transition-colors hover:bg-sweater-9/40",
-                      index % 2 === 0 ? "border-r-(length:--border-w)" : null,
-                      index < projects.length - 2 ?
-                        "border-b-(length:--border-w)"
-                      : null,
-                    ]}
-                  >
-                    <a href={`/projects/${id}`}>
-                      <ProjectCover
-                        id={id}
-                        cover={cover}
-                        useVideo={
-                          enabledVideos.includes(id) ? { small: true } : null
-                        }
-                      />
-                    </a>
-                  </div>
-                ))}
+                .map(
+                  (
+                    { id, data: { name, subtitle, metadata, cover } },
+                    index,
+                  ) => (
+                    <div
+                      class:list={[
+                        "border-dashed border-line-dark p-[calc(var(--spacing-pad)+2px)] transition-colors hover:bg-sweater-9/40",
+                        index % 2 === 0 ?
+                          "560:border-r-(length:--border-w)"
+                        : null,
+                        index < projects.length - 2 ?
+                          "border-b-(length:--border-w)"
+                        : null,
+                      ]}
+                    >
+                      <a href={`/projects/${id}`} class="group block">
+                        <ProjectCover
+                          id={id}
+                          cover={cover}
+                          useVideo={
+                            enabledVideos.includes(id) ? { small: true } : null
+                          }
+                          class="overflow-hidden rounded-t-lg"
+                        />
+
+                        <div class="rounded-b-lg bg-sweater-9 p-pad transition-colors group-hover:bg-sweater-8">
+                          <h3 class="font-bold text-sweater-3 transition-colors group-hover:text-sweater-1">
+                            {name}
+                          </h3>
+                          <p class="subtitle">
+                            {subtitle ? subtitle : metadata.date}
+                          </p>
+
+                          <ul class="flex flex-wrap gap-x-2 maple text-sweater-5">
+                            {metadata.tech.map((tech, index) => (
+                              <li>
+                                {tech}
+                                {index !== metadata.tech.length - 1 ?
+                                  <span
+                                    aria-hidden="true"
+                                    class="font-sans text-sweater-6"
+                                  >
+                                    /
+                                  </span>
+                                : null}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </a>
+                    </div>
+                  ),
+                )}
             </div>
           </section>
         );
