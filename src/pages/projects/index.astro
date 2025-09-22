@@ -1,28 +1,23 @@
 ---
-export const prerender = false;
-
 import { getCollection } from "astro:content";
 
-import { CircleX, ArrowRight } from "@lucide/astro";
+import {
+  ImageIcon,
+  JoystickIcon,
+  ShapesIcon,
+  type Icon as IconType,
+} from "@lucide/astro";
 
 import ProjectCover from "@/components/project-cover.astro";
 import CommonLayout from "@/layouts/common-layout.astro";
-import { Filters } from "@/scripts/types";
+import { PROJECT_CATEGORIES } from "@/scripts/constants";
 
 let projects = await getCollection("projects");
 projects.sort((a, b) => a.data.order - b.data.order);
 
-const filterParams = Filters.map((filter) =>
-  Astro.url.searchParams.has("filter", filter),
-);
-const filteredByAny = filterParams.reduce((acc, x) => acc || x);
+const icons: (typeof IconType)[] = [ImageIcon, JoystickIcon, ShapesIcon];
 
-if (filteredByAny) {
-  const index = filterParams.indexOf(true);
-  projects = projects.filter((p) => p.data.type === Filters[index]);
-}
-
-const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
+const enabledVideos = ["path-tracer", "pbr-renderer", "fireball", "door"];
 ---
 
 <CommonLayout
@@ -33,134 +28,51 @@ const videosEnabled = ["path-tracer", "pbr-renderer", "fireball", "door"];
     ogImageParams: "Graphics projects and games.",
   }}
 >
-  <main class="space-y-12 py-12">
-    <section class="span-normal animate-fade-in [--order:0]">
-      <div
-        class="flex flex-col gap-2.5 border-y-2 border-sweater-9 py-4 380:flex-row 380:items-center 380:gap-4 sm:gap-space"
-      >
-        <h2
-          class="w-fit shrink-0 cursor-default leading-none text-sweater-4 sm:w-1/2 sm:shrink"
-        >
-          Filter{filteredByAny ? "ed" : ""} by:
-        </h2>
+  <main class="space-y-6 sm:space-y-12">
+    {
+      PROJECT_CATEGORIES.map((category, index) => {
+        const Icon = icons[index]!;
 
-        <div
-          class="flex flex-wrap items-center gap-2.5 maple [--fade-speed:50ms] sm:w-1/2"
-        >
-          {
-            Filters.map((filter, idx) => {
-              const filtered = filterParams[idx];
-
-              return (
-                <a
-                  title={
-                    filtered ?
-                      `Remove "${filter}" filter`
-                    : `Filter by "${filter}"`
-                  }
-                  class="flex animate-fade-in items-center gap-1.5 pill leading-none"
-                  href={`/projects${filtered ? "" : `?filter=${filter}`}`}
-                  data-quiet={!filtered}
-                  style={{ "--order": idx + 1 }}
-                >
-                  {filter}{" "}
-                  {filtered ?
-                    <CircleX size={16} />
-                  : null}
-                </a>
-              );
-            })
-          }
-        </div>
-      </div>
-    </section>
-
-    <section
-      class="span-wide grid grid-cols-1 gap-space [--fade-speed:40ms] 560:grid-cols-2"
-    >
-      {
-        projects.map((project, idx) => {
-          const {
-            data: { name, blurb, metadata, cover },
-            id,
-          } = project;
-
-          return (
-            <a
-              href={`/projects/${id}`}
-              class="group relative h-fit animate-fade-in transition-opacity"
-              style={{ "--order": idx + 1 }}
-            >
-              <ProjectCover
-                id={id}
-                cover={cover}
-                useVideo={videosEnabled.includes(id) ? { small: true } : null}
-                class="overflow-hidden rounded-t-xl transition group-hover:scale-[0.93] group-hover:opacity-50"
-              />
-
-              {import.meta.env.DEV ?
-                <span class="absolute top-2.5 left-2.5 pill leading-none font-bold">
-                  {project.data.order}
-                </span>
-              : null}
-
-              <div class="absolute inset-x-0 bottom-0 space-y-4 rounded-b-xl bg-sweater-9 px-4 pt-4 transition-[background-color_border-radius] group-hover:rounded-t-xl group-hover:bg-sweater-8">
-                <div class="flex items-center justify-between gap-4">
-                  <div>
-                    <h2>{name}</h2>
-                    <ul class="flex flex-wrap gap-x-2">
-                      {metadata.tech.map((tech, idx) => (
-                        <li class="maple text-sweater-4">
-                          {tech}
-                          {idx !== metadata.tech.length - 1 ?
-                            <span aria-hidden="true" class="text-sweater-7">
-                              /
-                            </span>
-                          : null}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  <ArrowRight
-                    size="34"
-                    class="shrink-0 rounded-full bg-sweater-8 stroke-sweater-5 stroke-[2.5] p-1.5 transition-colors group-hover:bg-sweater-7 group-hover:stroke-sweater-4"
-                    aria-hidden="true"
-                  />
-                </div>
-
-                <div class="grid grid-rows-[0fr] transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
-                  <div class="overflow-hidden opacity-0 transition-opacity group-hover:opacity-100">
-                    <p class="pb-4">{blurb}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div aria-hidden="true" class="p-4 text-transparent">
-                <div class="flex items-center justify-between gap-4">
-                  <div>
-                    <h2>{name}</h2>
-                    <li class="flex flex-wrap gap-x-2">
-                      {metadata.tech.map((tech, idx) => (
-                        <ul class="maple">
-                          <span>{tech}</span>
-                          {idx !== metadata.tech.length - 1 ?
-                            <span>/</span>
-                          : null}
-                        </ul>
-                      ))}
-                    </li>
-                  </div>
-
-                  <div class="rounded-full p-1">
-                    <div class="size-[24px]" />
-                  </div>
-                </div>
-              </div>
+        return (
+          <section class="grid-line-before grid-line-after relative">
+            <a href={`#${category}`} class="group">
+              <h2
+                id={category}
+                class="flex items-center justify-between border-b-(length:--border-w) border-dashed border-line-dark p-[calc(var(--spacing-pad)+2px)] font-bold text-sweater-5/80 transition-colors group-hover:bg-line-dark group-hover:text-sweater-4"
+              >
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+                <Icon size={18} class="stroke-sweater-6" />
+              </h2>
             </a>
-          );
-        })
-      }
-    </section>
+
+            <div class="grid grid-cols-1 560:grid-cols-2">
+              {projects
+                .filter((project) => project.data.type === category)
+                .map(({ id, data: { cover } }, index) => (
+                  <div
+                    class:list={[
+                      "border-dashed border-line-dark p-[calc(var(--spacing-pad)+2px)] transition-colors hover:bg-sweater-9/40",
+                      index % 2 === 0 ? "border-r-(length:--border-w)" : null,
+                      index < projects.length - 2 ?
+                        "border-b-(length:--border-w)"
+                      : null,
+                    ]}
+                  >
+                    <a href={`/projects/${id}`}>
+                      <ProjectCover
+                        id={id}
+                        cover={cover}
+                        useVideo={
+                          enabledVideos.includes(id) ? { small: true } : null
+                        }
+                      />
+                    </a>
+                  </div>
+                ))}
+            </div>
+          </section>
+        );
+      })
+    }
   </main>
 </CommonLayout>

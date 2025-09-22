@@ -6,6 +6,7 @@ import {
 } from "@lucide/astro";
 
 const CDN_URL = "https://cdn.charleszw.com";
+const PROJECT_CATEGORIES = ["graphics", "games", "art"] as const;
 
 function getSocials() {
   return [
@@ -20,4 +21,4 @@ function getSocials() {
   ];
 }
 
-export { CDN_URL, getSocials };
+export { CDN_URL, PROJECT_CATEGORIES, getSocials };
