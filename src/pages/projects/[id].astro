@@ -37,6 +37,7 @@ if (!project) {
 const {
   data: {
     name,
+    subtitle,
     blurb,
     metadata: { tech, link, sourceHref, date },
     cover,
@@ -47,85 +48,122 @@ const { Content, headings } = await render(project);
 ---
 
 <MainLayout meta={{ kind: "project", project }}>
-  <article>
-    <div class="span-wide mb-12">
+  <section class="grid-line-before grid-line-after relative">
+    <div
+      class:list={[
+        "grid grid-cols-1 border-b-(length:--border-w) border-dashed border-line-dark",
+        subtitle ? "480:grid-cols-2" : null,
+      ]}
+    >
+      <h1
+        class:list={[
+          "text-2xl leading-[1.3] font-bold text-sweater-2",
+          subtitle ?
+            "border-dashed border-line-dark px-pad pt-pad 480:border-r-(length:--border-w) 480:pb-pad 480:leading-tight"
+          : "p-pad",
+        ]}
+      >
+        {name}
+      </h1>
+
+      {
+        subtitle ?
+          <p class="flex items-start px-pad pb-pad font-mono text-sm leading-tight text-sweater-5/80 480:pt-pad sm:text-base">
+            {subtitle}
+          </p>
+        : null
+      }
+    </div>
+
+    <div class="p-pad">
       <ProjectCover
         id={id}
         cover={cover}
         useVideo={{ small: false }}
-        class="overflow-hidden rounded-xl"
+        class="overflow-hidden rounded-lg"
       />
     </div>
+  </section>
 
-    <div class="span-normal mb-12 space-y-1">
-      <h1 class="text-3xl">{name}</h1>
-      <p class="subtitle">{blurb}</p>
-    </div>
-
-    <section
-      class="span-normal mb-6 grid grid-cols-1 gap-3 leading-tight 480:grid-cols-2 480:gap-4"
+  <section
+    class="grid-line-before grid-line-after relative grid grid-cols-1 md:grid-cols-2"
+  >
+    <p
+      class="grid-line-before border-b-(length:--border-w) border-dashed border-line-dark p-pad subtitle md:border-r-(length:--border-w) md:border-b-0"
     >
-      <div
-        class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4"
-      >
-        <WrenchIcon class="hidden shrink-0 stroke-sweater-3 560:block" />
+      {blurb}
+    </p>
+
+    <div class="grid grid-cols-1 *:p-pad 480:grid-cols-2">
+      <div class="flex items-center gap-4 rounded-xl px-3 py-2 560:px-4">
         <div>
           <h2 class="cursor-default">Tech</h2>
           <p>{tech.sort().join(", ")}</p>
         </div>
+        <WrenchIcon
+          size={18}
+          class="hidden shrink-0 stroke-sweater-6 560:block"
+        />
       </div>
 
       {
         link ?
-          <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
-            <ExternalLink class="hidden shrink-0 stroke-sweater-3 560:block" />
+          <div class="flex items-center gap-4 rounded-xl px-3 py-2 560:px-4">
             <div>
               <h2 class="cursor-default">{link.text}</h2>
               <Link href={link.href} target="_blank">
                 {link.href.substring(8) /* Remove the https:// in front */}
               </Link>
             </div>
+            <ExternalLink
+              size={18}
+              class="hidden shrink-0 stroke-sweater-6 560:block"
+            />
           </div>
         : null
       }
 
       {
         sourceHref ?
-          <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
-            <FileCode class="hidden shrink-0 stroke-sweater-3 560:block" />
+          <div class="flex items-center gap-4 rounded-xl px-3 py-2 560:px-4">
             <div>
               <h2 class="cursor-default">Source</h2>
               <Link href={sourceHref} target="_blank">
                 GitHub repo
               </Link>
             </div>
+            <FileCode
+              size={18}
+              class="hidden shrink-0 stroke-sweater-6 560:block"
+            />
           </div>
         : null
       }
 
-      <div
-        class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4"
-      >
-        <CalendarFold class="hidden shrink-0 stroke-sweater-3 560:block" />
+      <div class="flex items-center gap-4 rounded-xl px-3 py-2 560:px-4">
         <div>
           <h2 class="cursor-default">Date</h2>
           <p>{date}</p>
         </div>
+        <CalendarFold
+          size={18}
+          class="hidden shrink-0 stroke-sweater-6 560:block"
+        />
       </div>
-    </section>
+    </div>
+  </section>
 
-    <section class="mdx-span-normal space-y-6">
-      <TableOfContents headings={headings} />
+  <article class="grid-line-before grid-line-after relative p-pad">
+    <TableOfContents headings={headings} />
 
-      <Content
-        components={{
-          h2: H2,
-          h3: H3,
-          blockquote: Aside,
-          a: Anchor,
-          img: Image,
-        }}
-      />
-    </section>
+    <Content
+      components={{
+        h2: H2,
+        h3: H3,
+        blockquote: Aside,
+        a: Anchor,
+        img: Image,
+      }}
+    />
   </article>
 </MainLayout>
