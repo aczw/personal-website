@@ -17,7 +17,7 @@ import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 import ProjectCover from "@/components/project-cover.astro";
 import TableOfContents from "@/components/table-of-contents.astro";
-import CommonLayout from "@/layouts/common-layout.astro";
+import MainLayout from "@/layouts/main-layout.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -46,88 +46,86 @@ const {
 const { Content, headings } = await render(project);
 ---
 
-<CommonLayout meta={{ kind: "project", project }}>
-  <main class="py-12">
-    <article>
-      <div class="span-wide mb-12">
-        <ProjectCover
-          id={id}
-          cover={cover}
-          useVideo={{ small: false }}
-          class="overflow-hidden rounded-xl"
-        />
-      </div>
+<MainLayout meta={{ kind: "project", project }}>
+  <article>
+    <div class="span-wide mb-12">
+      <ProjectCover
+        id={id}
+        cover={cover}
+        useVideo={{ small: false }}
+        class="overflow-hidden rounded-xl"
+      />
+    </div>
 
-      <div class="span-normal mb-12 space-y-1">
-        <h1 class="text-3xl">{name}</h1>
-        <p class="subtitle">{blurb}</p>
-      </div>
+    <div class="span-normal mb-12 space-y-1">
+      <h1 class="text-3xl">{name}</h1>
+      <p class="subtitle">{blurb}</p>
+    </div>
 
-      <section
-        class="span-normal mb-6 grid grid-cols-1 gap-3 leading-tight 480:grid-cols-2 480:gap-4"
+    <section
+      class="span-normal mb-6 grid grid-cols-1 gap-3 leading-tight 480:grid-cols-2 480:gap-4"
+    >
+      <div
+        class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4"
       >
-        <div
-          class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4"
-        >
-          <WrenchIcon class="hidden shrink-0 stroke-sweater-3 560:block" />
-          <div>
-            <h2 class="cursor-default">Tech</h2>
-            <p>{tech.sort().join(", ")}</p>
-          </div>
+        <WrenchIcon class="hidden shrink-0 stroke-sweater-3 560:block" />
+        <div>
+          <h2 class="cursor-default">Tech</h2>
+          <p>{tech.sort().join(", ")}</p>
         </div>
+      </div>
 
-        {
-          link ?
-            <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
-              <ExternalLink class="hidden shrink-0 stroke-sweater-3 560:block" />
-              <div>
-                <h2 class="cursor-default">{link.text}</h2>
-                <Link href={link.href} target="_blank">
-                  {link.href.substring(8) /* Remove the https:// in front */}
-                </Link>
-              </div>
+      {
+        link ?
+          <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
+            <ExternalLink class="hidden shrink-0 stroke-sweater-3 560:block" />
+            <div>
+              <h2 class="cursor-default">{link.text}</h2>
+              <Link href={link.href} target="_blank">
+                {link.href.substring(8) /* Remove the https:// in front */}
+              </Link>
             </div>
-          : null
-        }
-
-        {
-          sourceHref ?
-            <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
-              <FileCode class="hidden shrink-0 stroke-sweater-3 560:block" />
-              <div>
-                <h2 class="cursor-default">Source</h2>
-                <Link href={sourceHref} target="_blank">
-                  GitHub repo
-                </Link>
-              </div>
-            </div>
-          : null
-        }
-
-        <div
-          class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4"
-        >
-          <CalendarFold class="hidden shrink-0 stroke-sweater-3 560:block" />
-          <div>
-            <h2 class="cursor-default">Date</h2>
-            <p>{date}</p>
           </div>
+        : null
+      }
+
+      {
+        sourceHref ?
+          <div class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4">
+            <FileCode class="hidden shrink-0 stroke-sweater-3 560:block" />
+            <div>
+              <h2 class="cursor-default">Source</h2>
+              <Link href={sourceHref} target="_blank">
+                GitHub repo
+              </Link>
+            </div>
+          </div>
+        : null
+      }
+
+      <div
+        class="flex items-center gap-4 rounded-xl bg-sweater-9 px-3 py-2 560:px-4"
+      >
+        <CalendarFold class="hidden shrink-0 stroke-sweater-3 560:block" />
+        <div>
+          <h2 class="cursor-default">Date</h2>
+          <p>{date}</p>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section class="mdx-span-normal space-y-6">
-        <TableOfContents headings={headings} />
+    <section class="mdx-span-normal space-y-6">
+      <TableOfContents headings={headings} />
 
-        <Content
-          components={{
-            h2: H2,
-            h3: H3,
-            blockquote: Aside,
-            a: Anchor,
-            img: Image,
-          }}
-        />
-      </section>
-    </article>
-  </main>
-</CommonLayout>
+      <Content
+        components={{
+          h2: H2,
+          h3: H3,
+          blockquote: Aside,
+          a: Anchor,
+          img: Image,
+        }}
+      />
+    </section>
+  </article>
+</MainLayout>

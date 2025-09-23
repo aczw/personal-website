@@ -1,0 +1,12 @@
+---
+import type { ComponentProps } from "astro/types";
+
+import type BaseLayout from "@/layouts/base-layout.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
+
+type Props = ComponentProps<typeof BaseLayout>;
+---
+
+<CommonLayout {...Astro.props}>
+  <main class="space-y-6 sm:space-y-12"><slot /></main>
+</CommonLayout>

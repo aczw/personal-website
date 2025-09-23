@@ -4,8 +4,8 @@ import { getCollection, getEntries } from "astro:content";
 import Link from "@/components/link.astro";
 import ProjectCover from "@/components/project-cover.astro";
 import { getSocials } from "@/scripts/constants";
-import CommonLayout from "@/layouts/common-layout.astro";
 import { getFullDateFormatting } from "@/scripts/util";
+import MainLayout from "@/layouts/main-layout.astro";
 
 const socials = getSocials();
 
@@ -23,7 +23,7 @@ posts = posts
   .slice(0, 3);
 ---
 
-<CommonLayout
+<MainLayout
   meta={{
     kind: "route",
     title: null,
@@ -31,168 +31,166 @@ posts = posts
     ogImageParams: "Graphics programming, games, art, and websites.",
   }}
 >
-  <main class="space-y-6 sm:space-y-12">
-    <section class="grid-line-before grid-line-after relative">
-      <div class="grid grid-cols-2 gap-pad-2 p-pad">
-        <p class="col-span-2 560:col-span-1">
-          Hi! I'm a fourth year student in the Digital Media Design program at
-          UPenn. I'm concurrently finishing a Master's in Computer Graphics and
-          Game Technology.
-        </p>
-        <p class="col-span-2 560:col-span-1">
-          I help run <Link href="https://pennupgrade.com/" target="_blank"
-            >UPGRADE</Link
-          >, our game dev club, and am part of the <Link
-            href="https://cg.cis.upenn.edu/"
-            target="_blank">CG@Penn</Link
-          > student board. Previously I interned at Snap and TikTok to work on their
-          graphics engines.
-        </p>
-        <p class="col-span-2 subtitle 480:col-span-1">
-          In my free time I like running, making playlists, reading manga, and
-          riding SEPTA.
-        </p>
-        <p class="hidden subtitle 480:block">
-          You can find my socials and resumé below. Thanks for stopping by. <span
-            aria-hidden="true"
-            class="whitespace-nowrap">(〜￣▽￣)〜</span
-          >
-        </p>
-      </div>
+  <section class="grid-line-before grid-line-after relative">
+    <div class="grid grid-cols-2 gap-pad-2 p-pad">
+      <p class="col-span-2 560:col-span-1">
+        Hi! I'm a fourth year student in the Digital Media Design program at
+        UPenn. I'm concurrently finishing a Master's in Computer Graphics and
+        Game Technology.
+      </p>
+      <p class="col-span-2 560:col-span-1">
+        I help run <Link href="https://pennupgrade.com/" target="_blank"
+          >UPGRADE</Link
+        >, our game dev club, and am part of the <Link
+          href="https://cg.cis.upenn.edu/"
+          target="_blank">CG@Penn</Link
+        > student board. Previously I interned at Snap and TikTok to work on their
+        graphics engines.
+      </p>
+      <p class="col-span-2 subtitle 480:col-span-1">
+        In my free time I like running, making playlists, reading manga, and
+        riding SEPTA.
+      </p>
+      <p class="hidden subtitle 480:block">
+        You can find my socials and resumé below. Thanks for stopping by. <span
+          aria-hidden="true"
+          class="whitespace-nowrap">(〜￣▽￣)〜</span
+        >
+      </p>
+    </div>
 
-      <div
-        class="col-span-1 grid grid-cols-2 divide-x-(length:--border-w) divide-y-(length:--border-w) divide-dashed divide-line-dark border-t-(length:--border-w) border-dashed border-line-dark font-bold text-sweater-3 480:grid-cols-4 480:divide-y-0 560:col-span-2"
-      >
-        {
-          socials.map(({ href, label, icon: Icon }) => (
-            <a
-              href={href}
-              target="_blank"
-              class="flex items-center justify-between p-pad transition-colors hover:bg-line-bright hover:text-sweater-1"
-            >
-              <span>{label}</span>
-              <Icon size={18} class="stroke-sweater-6" />
-            </a>
-          ))
-        }
-      </div>
-    </section>
-
-    <section
-      class="grid-line-before grid-line-after relative grid grid-cols-1 560:grid-cols-2"
+    <div
+      class="col-span-1 grid grid-cols-2 divide-x-(length:--border-w) divide-y-(length:--border-w) divide-dashed divide-line-dark border-t-(length:--border-w) border-dashed border-line-dark font-bold text-sweater-3 480:grid-cols-4 480:divide-y-0 560:col-span-2"
     >
       {
-        projects.map(
-          ({ data: { name, subtitle, blurb, metadata, cover }, id }, index) => (
-            <div
-              class:list={[
-                "border-dashed border-line-dark transition-colors hover:bg-sweater-9/40",
-                // Adding some additional padding for optical alignment
-                "p-[calc(var(--spacing-pad)+2px)]",
-                // Gives top row of videos a bottom border
-                index < 2 ? "border-b-(length:--border-w)" : null,
-                // Gives all videos on the left a border
-                index % 2 === 0 ? "480:border-r-(length:--border-w)" : null,
-                // Adds bottom border to second-to-last video (for mobile)
-                index === projects.length - 2 ?
-                  "border-b-(length:--border-w) 480:border-b-0"
-                : null,
-              ]}
-            >
-              <a href={`/projects/${id}`} class="group">
-                <h2 class="rounded-t-lg bg-sweater-9 p-pad leading-tight text-sweater-3 transition-colors group-hover:bg-sweater-8">
-                  <span class="font-bold transition-colors group-hover:text-sweater-1">
-                    {name}
-                  </span>
-                  {subtitle ?
-                    <>
-                      <span aria-hidden="true" class="text-sweater-6">
-                        /
-                      </span>
-                      <span class="text-sweater-5">{subtitle}</span>
-                    </>
-                  : null}
-                </h2>
-
-                <div class="relative overflow-hidden rounded-b-lg">
-                  <ProjectCover
-                    id={id}
-                    cover={cover}
-                    useVideo={
-                      id === "mini-minecraft" || id === "door" ?
-                        { small: true }
-                      : null
-                    }
-                  />
-
-                  <div class="absolute inset-0 transition-colors group-hover:bg-sweater-9/80">
-                    <div class="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
-                      <div class="flex min-h-0 flex-col gap-pad bg-sweater-9 px-pad transition-colors group-hover:bg-sweater-8">
-                        <p class="hidden subtitle 380:block 560:hidden sm:block">
-                          {blurb}
-                        </p>
-
-                        <ul class="flex flex-wrap gap-x-2 pb-pad maple text-sweater-5">
-                          {metadata.tech.map((tech, index) => (
-                            <li class="text-sm">
-                              {tech}
-                              {index !== metadata.tech.length - 1 ?
-                                <span
-                                  aria-hidden="true"
-                                  class="font-sans font-normal text-sweater-6"
-                                >
-                                  /
-                                </span>
-                              : null}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </div>
-          ),
-        )
-      }
-    </section>
-
-    <section class="grid-line-before grid-line-after relative">
-      {
-        posts.map(({ data: { title, blurb, posted }, id, body }) => (
+        socials.map(({ href, label, icon: Icon }) => (
           <a
-            href={`/posts/${id}`}
-            class="group flex flex-col-reverse justify-between border-dashed border-line-dark p-pad transition-colors not-last:border-b-(length:--border-w) hover:bg-line-bright 480:flex-row 480:gap-16"
+            href={href}
+            target="_blank"
+            class="flex items-center justify-between p-pad transition-colors hover:bg-line-bright hover:text-sweater-1"
           >
-            <div>
-              <h2 class="leading-snug font-bold text-sweater-3 transition-colors group-hover:text-sweater-1">
-                {title}
-              </h2>
-              {blurb ?
-                <p class="hidden subtitle 560:block">{blurb}</p>
-              : body ?
-                <p class="hidden subtitle 560:block">
-                  “<span class="italic">{body.slice(0, 70)}...</span>”
-                </p>
-              : null}
-            </div>
-
-            <time
-              datetime={posted.toISOString()}
-              title={getFullDateFormatting(posted)}
-              class="shrink-0 maple text-sweater-5"
-            >
-              <span class="480:hidden">Posted on</span>
-              {posted.toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                timeZone: "America/New_York",
-              })}
-            </time>
+            <span>{label}</span>
+            <Icon size={18} class="stroke-sweater-6" />
           </a>
         ))
       }
-    </section>
-  </main>
-</CommonLayout>
+    </div>
+  </section>
+
+  <section
+    class="grid-line-before grid-line-after relative grid grid-cols-1 560:grid-cols-2"
+  >
+    {
+      projects.map(
+        ({ data: { name, subtitle, blurb, metadata, cover }, id }, index) => (
+          <div
+            class:list={[
+              "border-dashed border-line-dark transition-colors hover:bg-sweater-9/40",
+              // Adding some additional padding for optical alignment
+              "p-[calc(var(--spacing-pad)+2px)]",
+              // Gives top row of videos a bottom border
+              index < 2 ? "border-b-(length:--border-w)" : null,
+              // Gives all videos on the left a border
+              index % 2 === 0 ? "480:border-r-(length:--border-w)" : null,
+              // Adds bottom border to second-to-last video (for mobile)
+              index === projects.length - 2 ?
+                "border-b-(length:--border-w) 480:border-b-0"
+              : null,
+            ]}
+          >
+            <a href={`/projects/${id}`} class="group">
+              <h2 class="rounded-t-lg bg-sweater-9 p-pad leading-tight text-sweater-3 transition-colors group-hover:bg-sweater-8">
+                <span class="font-bold transition-colors group-hover:text-sweater-1">
+                  {name}
+                </span>
+                {subtitle ?
+                  <>
+                    <span aria-hidden="true" class="text-sweater-6">
+                      /
+                    </span>
+                    <span class="text-sweater-5">{subtitle}</span>
+                  </>
+                : null}
+              </h2>
+
+              <div class="relative overflow-hidden rounded-b-lg">
+                <ProjectCover
+                  id={id}
+                  cover={cover}
+                  useVideo={
+                    id === "mini-minecraft" || id === "door" ?
+                      { small: true }
+                    : null
+                  }
+                />
+
+                <div class="absolute inset-0 transition-colors group-hover:bg-sweater-9/80">
+                  <div class="grid grid-rows-[0fr] overflow-hidden transition-[grid-template-rows] group-hover:grid-rows-[1fr]">
+                    <div class="flex min-h-0 flex-col gap-pad bg-sweater-9 px-pad transition-colors group-hover:bg-sweater-8">
+                      <p class="hidden subtitle 380:block 560:hidden sm:block">
+                        {blurb}
+                      </p>
+
+                      <ul class="flex flex-wrap gap-x-2 pb-pad maple text-sweater-5">
+                        {metadata.tech.map((tech, index) => (
+                          <li class="text-sm">
+                            {tech}
+                            {index !== metadata.tech.length - 1 ?
+                              <span
+                                aria-hidden="true"
+                                class="font-sans font-normal text-sweater-6"
+                              >
+                                /
+                              </span>
+                            : null}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        ),
+      )
+    }
+  </section>
+
+  <section class="grid-line-before grid-line-after relative">
+    {
+      posts.map(({ data: { title, blurb, posted }, id, body }) => (
+        <a
+          href={`/posts/${id}`}
+          class="group flex flex-col-reverse justify-between border-dashed border-line-dark p-pad transition-colors not-last:border-b-(length:--border-w) hover:bg-line-bright 480:flex-row 480:gap-16"
+        >
+          <div>
+            <h2 class="leading-snug font-bold text-sweater-3 transition-colors group-hover:text-sweater-1">
+              {title}
+            </h2>
+            {blurb ?
+              <p class="hidden subtitle 560:block">{blurb}</p>
+            : body ?
+              <p class="hidden subtitle 560:block">
+                “<span class="italic">{body.slice(0, 70)}...</span>”
+              </p>
+            : null}
+          </div>
+
+          <time
+            datetime={posted.toISOString()}
+            title={getFullDateFormatting(posted)}
+            class="shrink-0 maple text-sweater-5"
+          >
+            <span class="480:hidden">Posted on</span>
+            {posted.toLocaleDateString("en-US", {
+              month: "long",
+              day: "numeric",
+              timeZone: "America/New_York",
+            })}
+          </time>
+        </a>
+      ))
+    }
+  </section>
+</MainLayout>
