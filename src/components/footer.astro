@@ -1,16 +1,8 @@
 ---
-import { CircleArrowUpIcon, MapPinIcon, MusicIcon } from "@lucide/astro";
+import { ArrowUpToLineIcon, MusicIcon } from "@lucide/astro";
 
 import LastFm from "@/components/last-fm.astro";
-import Link from "@/components/link.astro";
-import { stripEndingSlash } from "@/scripts/util";
 import { getSocials } from "@/scripts/constants";
-
-const path = stripEndingSlash(Astro.url.pathname);
-const sections = path
-  .split("/")
-  .filter((section) => section.length > 0)
-  .slice(0, -1);
 
 const socials = getSocials();
 ---
@@ -20,38 +12,9 @@ const socials = getSocials();
     class="grid grid-cols-1 border-b-(length:--border-w) border-dashed border-line-dark 480:grid-cols-2"
   >
     <div
-      class:list={[
-        "border-b-(length:--border-w) border-dashed border-line-dark 480:border-r-(length:--border-w) 480:border-b-0",
-        path !== "" ? "flex items-center justify-between p-pad maple" : null,
-      ]}
+      aria-hidden="true"
+      class="border-b-(length:--border-w) border-dashed border-line-dark 480:border-r-(length:--border-w) 480:border-b-0"
     >
-      {
-        path !== "" ?
-          <>
-            <div class="flex items-center gap-2">
-              <Link href="/">~</Link>
-
-              {sections.map((section, index) => {
-                let href = "";
-                for (let i = 0; i < index + 1; ++i) {
-                  href += "/" + sections[index];
-                }
-
-                return (
-                  <>
-                    <span class="cursor-default text-sweater-6">/</span>
-                    <Link href={href}>{section}</Link>
-                  </>
-                );
-              })}
-
-              <span class="cursor-default text-sweater-6">/ here</span>
-            </div>
-
-            <MapPinIcon size={18} class="stroke-sweater-6" />
-          </>
-        : null
-      }
     </div>
 
     <a
@@ -59,11 +22,11 @@ const socials = getSocials();
       class="group flex items-center justify-between p-pad transition-colors hover:bg-line-dark"
     >
       <span
-        class="translate-y-0.5 font-bold text-sweater-5/80 transition-colors group-hover:text-sweater-4"
+        class="translate-y-0.5 font-bold text-link-secondary transition-colors group-hover:text-link-secondary-hover"
       >
         Back to top
       </span>
-      <CircleArrowUpIcon size={18} class="stroke-sweater-6" />
+      <ArrowUpToLineIcon size={18} class="stroke-icon" />
     </a>
   </div>
 
@@ -91,10 +54,10 @@ const socials = getSocials();
               index % 2 === 0 ? "border-r-(length:--border-w)" : null,
             ]}
           >
-            <span class="font-bold text-sweater-3 transition-colors group-hover:text-sweater-1">
+            <span class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
               {label}
             </span>
-            <Icon size={18} class="stroke-sweater-6" />
+            <Icon size={18} class="stroke-icon" />
           </a>
         ))
       }

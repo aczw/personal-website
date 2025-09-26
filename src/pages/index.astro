@@ -136,36 +136,38 @@ posts = posts
 
   <section class="grid-line-before grid-line-after relative">
     {
-      posts.map(({ data: { title, blurb, posted }, id, body }) => (
+      posts.map(({ data: { title, posted }, id }) => (
         <a
           href={`/posts/${id}`}
-          class="group flex flex-col-reverse justify-between border-dashed border-line-dark p-pad transition-colors not-last:border-b-(length:--border-w) hover:bg-line-bright 480:flex-row 480:gap-16"
+          class="group flex border-dashed border-line-dark transition-colors not-last:border-b-(length:--border-w) hover:bg-line-bright"
         >
-          <div>
+          <div class="flex grow flex-col-reverse justify-between p-pad 480:flex-row 480:gap-pad-2">
             <h2 class="leading-snug font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
               {title}
             </h2>
-            {blurb ?
-              <p class="hidden subtitle 560:block">{blurb}</p>
-            : body ?
-              <p class="hidden subtitle 560:block">
-                “<span class="italic">{body.slice(0, 70)}...</span>”
-              </p>
-            : null}
+
+            <time
+              datetime={posted.toISOString()}
+              title={getFullDateFormatting(posted)}
+              class="shrink-0 leading-snug text-link-secondary 560:group-hover:hidden"
+            >
+              <span class="480:hidden">Posted</span>
+              {posted.toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                timeZone: "America/New_York",
+              })}
+            </time>
+            <div
+              aria-hidden="true"
+              title={getFullDateFormatting(posted)}
+              class="hidden maple text-link-secondary-hover 560:group-hover:block"
+            >{`/posts/${id}`}</div>
           </div>
 
-          <time
-            datetime={posted.toISOString()}
-            title={getFullDateFormatting(posted)}
-            class="shrink-0 maple text-sweater-5"
-          >
-            <span class="480:hidden">Posted on</span>
-            {posted.toLocaleDateString("en-US", {
-              month: "long",
-              day: "numeric",
-              timeZone: "America/New_York",
-            })}
-          </time>
+          <div class="py-pad pr-pad pl-pad 480:pl-0">
+            <CircleArrowRightIcon size={18} class="stroke-icon" />
+          </div>
         </a>
       ))
     }
