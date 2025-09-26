@@ -168,7 +168,7 @@ const wideProjects: string[] = ["pbr-renderer", "path-tracer"];
                     </div>
                   : <div
                       class:list={[
-                        "border-dashed border-line-dark p-[calc(var(--spacing-pad)+2px)] transition-colors hover:bg-sweater-9/50",
+                        "border-dashed border-line-dark p-pad transition-colors hover:bg-sweater-9/50 480:p-0 480:hover:bg-line-dark 560:p-pad 560:hover:bg-sweater-9/50",
                         totalCells - numElapsedCells !== 0 ?
                           "border-b-(length:--border-w)"
                         : null,
@@ -178,22 +178,27 @@ const wideProjects: string[] = ["pbr-renderer", "path-tracer"];
                       ]}
                       data-cells={numElapsedCells}
                     >
-                      <a href={`/projects/${id}`} class="group block">
-                        <ProjectCover
-                          id={id}
-                          cover={cover}
-                          useVideo={
-                            withVideos.includes(id) ? { small: true } : null
-                          }
-                          class="overflow-hidden rounded-t-lg"
-                        />
+                      <a
+                        href={`/projects/${id}`}
+                        class="group grid grid-cols-1 480:grid-cols-2 560:grid-cols-1"
+                      >
+                        <div class="border-dashed border-line-dark 480:border-r-(length:--border-w) 480:p-pad 560:border-r-0 560:p-0">
+                          <ProjectCover
+                            id={id}
+                            cover={cover}
+                            useVideo={
+                              withVideos.includes(id) ? { small: true } : null
+                            }
+                            class="overflow-hidden rounded-t-lg 480:rounded-b-lg 560:rounded-b-none"
+                          />
+                        </div>
 
-                        <div class="rounded-b-lg bg-sweater-9 p-pad transition-colors group-hover:bg-sweater-8">
-                          <h3 class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                        <div class="rounded-b-lg bg-sweater-9 transition-colors group-hover:bg-sweater-8 480:bg-transparent 480:group-hover:bg-transparent 560:bg-sweater-9 560:group-hover:bg-sweater-8">
+                          <h3 class="border-dashed border-line-dark px-pad pt-pad leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:border-b-(length:--border-w) 480:pb-pad 480:text-lg 560:border-b-0 560:pb-0 560:text-base">
                             {name}
                           </h3>
 
-                          <ul class="flex flex-wrap gap-x-2 text-link-secondary">
+                          <ul class="flex flex-wrap gap-x-2 px-pad pb-pad text-link-secondary 480:pt-pad 480:pb-0 480:text-subtitle 560:pt-0 560:pb-pad 560:text-link-secondary">
                             {techList.map((tech, techIndex) => (
                               <li>
                                 {tech}
@@ -208,6 +213,10 @@ const wideProjects: string[] = ["pbr-renderer", "path-tracer"];
                               </li>
                             ))}
                           </ul>
+
+                          <p class="hidden px-pad pb-pad text-subtitle 480:block 560:hidden">
+                            {date}
+                          </p>
                         </div>
                       </a>
                     </div>;
