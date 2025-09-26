@@ -45,13 +45,13 @@ const links: Link[] = [
     </a>
 
     <div
-      class="grid grid-cols-2 divide-x-(length:--border-w) divide-dashed divide-line-dark border-dashed border-line-dark text-xl leading-none font-bold text-sweater-3 480:grid-cols-1 480:divide-x-0 480:divide-y-(length:--border-w) 480:border-l-(length:--border-w) 480:text-lg"
+      class="grid grid-cols-2 divide-x-(length:--border-w) divide-dashed divide-line-dark border-dashed border-line-dark text-xl leading-none font-bold text-link-primary 480:grid-cols-1 480:divide-x-0 480:divide-y-(length:--border-w) 480:border-l-(length:--border-w) 480:text-lg"
     >
       {
         links.map(({ href, label, labelSmall, icon: Icon }) => (
           <a
             href={href}
-            class="group flex items-center justify-between p-pad transition-colors hover:bg-line-bright hover:text-sweater-1"
+            class="group flex items-center justify-between p-pad transition-colors hover:bg-line-bright hover:text-link-primary-hover"
           >
             <span class:list={[labelSmall ? "hidden 480:inline" : null]}>
               {label}
@@ -60,8 +60,8 @@ const links: Link[] = [
               <span class="480:hidden">{labelSmall}</span>
             : null}
 
-            <Icon size={18} class="stroke-sweater-6 group-hover:hidden" />
-            <span class="hidden h-[18px] items-center maple font-normal text-sweater-5/90 group-hover:flex">
+            <Icon size={18} class="stroke-icon group-hover:hidden" />
+            <span class="hidden h-[18px] items-center maple font-normal text-link-secondary group-hover:flex group-hover:text-link-secondary-hover">
               {href}
             </span>
           </a>

@@ -16,11 +16,11 @@
   /* Monospace text should be a little smaller than display text. Otherwise it looks too large. */
   --text-mono: 0.87rem;
 
-  --spacing-space: --spacing(8);
   /* This is 2.5 * 0.25rem = 0.625rem = 9.375px (1rem = 15px) */
   --spacing-pad: --spacing(2.5);
   --spacing-pad-2: calc(var(--spacing-pad) * 2);
 
+  /* Primitives */
   --color-sweater-1: #eae9ff;
   --color-sweater-2: #d6d3ff;
   --color-sweater-3: #c3bdff;
@@ -34,6 +34,13 @@
 
   --color-line-bright: --alpha(var(--color-sweater-9) / 85%);
   --color-line-dark: --alpha(var(--color-sweater-9) / 75%);
+
+  --color-link-primary: var(--color-sweater-3);
+  --color-link-primary-hover: var(--color-sweater-1);
+  --color-link-secondary: --alpha(var(--color-sweater-5) / 90%);
+  --color-link-secondary-hover: var(--color-sweater-4);
+
+  --color-icon: var(--color-sweater-6);
 
   /* Accounts for padding and border width on left and right sides */
   --container-normal: calc(
@@ -49,7 +56,7 @@
   /* Used for shifting the hashtag icons next to MDX headings to the right side when screen width becomes too small */
   --breakpoint-heading: 760px;
 
-  /* Calculated by summing up the following:
+  /* CSS variables can't be referenced in breakpoint theme variables, so we have to hand calculate them. This was resolved by summing up the following:
    *
    * - Wide width aka --wide-w
    * - First pair of column-gap using --spacing-space
@@ -57,11 +64,13 @@
    * - Second pair of column-gap using --spacing-space
    * 
    * This is the minimum width before the TOC disappears and grid collapses to mobile.
+   * 
+   * Also see https://github.com/tailwindlabs/tailwindcss/discussions/15113.
    */
   --breakpoint-toc: 1340px;
 
-  /* Calculated the same way as --container-normal */
-  --breakpoint-normal: 710px;
+  /* Start with --container-normal, then add 2 * --spacing-pad for the additional padding outside the vertical grid lines. */
+  --breakpoint-normal: 860.25px;
 }
 
 @layer base {
@@ -72,17 +81,6 @@
     --border-w: 2px;
     --normal-w: 800px;
     --wide-w: 900px;
-
-    --header-h: 210px;
-    --footer-h: 71.25px;
-
-    @variant 480 {
-      --header-h: 147.38px;
-    }
-
-    @variant sm {
-      --header-h: 150px;
-    }
   }
 
   html {
