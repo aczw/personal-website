@@ -32,6 +32,8 @@
   --color-sweater-9: #1d193d;
   --color-sweater-10: #0a0919;
 
+  --color-subtitle: --alpha(var(--color-sweater-2) / 85%);
+
   --color-line-bright: --alpha(var(--color-sweater-9) / 85%);
   --color-line-dark: --alpha(var(--color-sweater-9) / 75%);
 
@@ -161,10 +163,6 @@
   @apply font-mono;
 
   font-size: var(--text-mono);
-}
-
-@utility subtitle {
-  @apply text-sweater-2/85;
 }
 
 @utility span-normal {

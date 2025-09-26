@@ -38,8 +38,8 @@ const projects = defineCollection({
         date: z.string(),
       }),
       type: ProjectCategoriesSchema,
-      cover: ImageSchema(image),
       order: z.number(),
+      cover: ImageSchema(image),
     }),
 });
 

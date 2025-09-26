@@ -1,3 +1,6 @@
+import type { PROJECT_CATEGORIES } from "@/scripts/constants";
+import type { CollectionEntry } from "astro:content";
+
 import { readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -57,6 +60,20 @@ function getFullDateFormatting(date: Date) {
   });
 }
 
+function getProjectsInCategory(
+  projects: CollectionEntry<"projects">[],
+  category: (typeof PROJECT_CATEGORIES)[number],
+  sort = true,
+) {
+  const filtered = projects.filter((project) => project.data.type === category);
+
+  if (sort) {
+    return filtered.sort((a, b) => a.data.order - b.data.order);
+  } else {
+    return filtered;
+  }
+}
+
 /**
  * Astro's sitemap integration does not include dynamic routes in the generated sitemap when
  * the site uses SSR. This function crawls the filesystem and does it manually.
@@ -94,4 +111,5 @@ export {
   stripEndingSlash,
   getShortDateFormatting,
   getFullDateFormatting,
+  getProjectsInCategory,
 };

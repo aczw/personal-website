@@ -95,7 +95,7 @@
 
     /* Only select <figure> elements not from the Expressive Code library */
     & figcaption {
-      @apply mx-auto mt-2 subtitle *:inline;
+      @apply mx-auto mt-2 text-subtitle *:inline;
 
       max-width: var(--normal-w);
       font-size: 0.9rem;
@@ -128,7 +128,7 @@
       }
 
       & > ol {
-        @apply subtitle;
+        @apply text-subtitle;
 
         /* The following two selectors are to make sure back ref arrows are inline with the text */
         & > li > p:has(> a[data-footnote-backref]) {

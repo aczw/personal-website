@@ -10,14 +10,20 @@ import {
 
 import ProjectCover from "@/components/project-cover.astro";
 import { PROJECT_CATEGORIES } from "@/scripts/constants";
+import { getProjectsInCategory } from "@/scripts/util";
 import MainLayout from "@/layouts/main-layout.astro";
 
-let projects = await getCollection("projects");
-projects.sort((a, b) => a.data.order - b.data.order);
-
+const projects = await getCollection("projects");
 const icons: (typeof IconType)[] = [ImageIcon, JoystickIcon, ShapesIcon];
 
-const enabledVideos = ["path-tracer", "pbr-renderer", "fireball", "door"];
+const withVideos: string[] = [
+  "path-tracer",
+  "pbr-renderer",
+  "fireball",
+  "door",
+];
+
+const wideProjects: string[] = ["pbr-renderer", "path-tracer"];
 ---
 
 <MainLayout
@@ -29,15 +35,21 @@ const enabledVideos = ["path-tracer", "pbr-renderer", "fireball", "door"];
   }}
 >
   {
-    PROJECT_CATEGORIES.map((category, index) => {
-      const Icon = icons[index]!;
+    PROJECT_CATEGORIES.map((category, categoryIndex) => {
+      const Icon = icons[categoryIndex]!;
+      const projectsInCategory = getProjectsInCategory(projects, category);
+
+      const totalCells = projectsInCategory.reduce(
+        (sum, { id }) => (wideProjects.includes(id) ? sum + 2 : sum + 1),
+        0,
+      );
 
       return (
         <section class="grid-line-before grid-line-after relative">
           <a href={`#${category}`} class="group">
             <h2
               id={category}
-              class="flex items-center justify-between border-b-(length:--border-w) border-dashed border-line-dark p-[calc(var(--spacing-pad)+2px)] font-bold text-link-secondary transition-colors group-hover:bg-line-dark group-hover:text-link-secondary-hover"
+              class="flex items-center justify-between border-b-(length:--border-w) border-dashed border-line-dark p-[calc(var(--spacing-pad)+2px)] text-lg font-bold text-link-secondary transition-colors group-hover:bg-line-dark group-hover:text-link-secondary-hover"
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
               <Icon size={18} class="stroke-icon" />
@@ -45,56 +57,162 @@ const enabledVideos = ["path-tracer", "pbr-renderer", "fireball", "door"];
           </a>
 
           <div class="grid grid-cols-1 560:grid-cols-2">
-            {projects
-              .filter((project) => project.data.type === category)
-              .map(
-                ({ id, data: { name, subtitle, metadata, cover } }, index) => (
-                  <div
-                    class:list={[
-                      "border-dashed border-line-dark p-[calc(var(--spacing-pad)+2px)] transition-colors hover:bg-sweater-9/40",
-                      index % 2 === 0 ?
-                        "560:border-r-(length:--border-w)"
-                      : null,
-                      index < projects.length - 2 ?
-                        "border-b-(length:--border-w)"
-                      : null,
-                    ]}
-                  >
-                    <a href={`/projects/${id}`} class="group block">
-                      <ProjectCover
-                        id={id}
-                        cover={cover}
-                        useVideo={
-                          enabledVideos.includes(id) ? { small: true } : null
-                        }
-                        class="overflow-hidden rounded-t-lg"
-                      />
+            {projectsInCategory.map(
+              (
+                {
+                  id,
+                  data: {
+                    name,
+                    blurb,
+                    metadata: { tech: techList, date },
+                    cover,
+                  },
+                },
+                projectIndex,
+              ) => {
+                const numElapsedCells = projectsInCategory.reduce(
+                  (sum, { id }, projectInCategoryIndex) => {
+                    if (projectInCategoryIndex > projectIndex) {
+                      return sum;
+                    }
 
-                      <div class="rounded-b-lg bg-sweater-9 p-pad transition-colors group-hover:bg-sweater-8">
-                        <h3 class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                          {name}
-                        </h3>
+                    if (wideProjects.includes(id)) {
+                      return sum + 2;
+                    } else {
+                      return sum + 1;
+                    }
+                  },
+                  0,
+                );
 
-                        <ul class="flex flex-wrap gap-x-2 text-link-secondary">
-                          {metadata.tech.map((tech, index) => (
-                            <li>
-                              {tech}
-                              {index !== metadata.tech.length - 1 ?
-                                <span
-                                  aria-hidden="true"
-                                  class="text-sweater-6/70"
-                                >
-                                  /
-                                </span>
-                              : null}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    </a>
-                  </div>
-                ),
-              )}
+                return wideProjects.includes(id) ?
+                    <div
+                      class:list={[
+                        "group col-span-1 border-dashed border-line-dark p-pad transition-colors hover:bg-sweater-9/50 480:p-0 480:hover:bg-line-dark 560:col-span-2",
+                        projectIndex < projectsInCategory.length - 2 ?
+                          "border-b-(length:--border-w)"
+                        : null,
+                      ]}
+                    >
+                      <a
+                        href={`/projects/${id}`}
+                        class="grid grid-cols-1 480:grid-cols-2"
+                      >
+                        <div class="border-r-(length:--border-w) border-dashed border-line-dark 480:p-pad">
+                          <ProjectCover
+                            id={id}
+                            cover={cover}
+                            useVideo={
+                              withVideos.includes(id) ? { small: true } : null
+                            }
+                            class="overflow-hidden rounded-t-lg 480:rounded-b-lg"
+                          />
+                        </div>
+
+                        <div class="flex flex-col *:border-dashed *:border-line-dark normal:grid normal:grid-cols-1 normal:grid-rows-4">
+                          <div class="bg-sweater-9 px-pad pt-pad transition-colors group-hover:bg-sweater-8 480:space-y-1 480:border-b-(length:--border-w) 480:bg-transparent 480:pb-pad 480:group-hover:bg-transparent 560:border-b-0 normal:row-span-2 sm:border-b-(length:--border-w)">
+                            <h3 class="leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:text-lg">
+                              {name}
+                            </h3>
+                            <p class="hidden 560:block">{blurb}</p>
+                          </div>
+
+                          <div class="hidden border-b-(length:--border-w) p-pad normal:block">
+                            <p class="font-bold text-sweater-3/85 transition-colors group-hover:text-link-secondary-hover">
+                              Tech used
+                            </p>
+                            <ul class="flex flex-wrap gap-x-1.5 text-subtitle">
+                              {techList.map((tech, techIndex) => (
+                                <li>
+                                  {tech}
+                                  {techIndex !== techList.length - 1 ?
+                                    <span
+                                      aria-hidden="true"
+                                      class="text-sweater-6/70"
+                                    >
+                                      /
+                                    </span>
+                                  : null}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+
+                          <div class="hidden p-pad normal:block">
+                            <p class="font-bold text-sweater-3/85 transition-colors group-hover:text-link-secondary-hover">
+                              Date
+                            </p>
+                            <p class="text-subtitle">{date}</p>
+                          </div>
+
+                          <div class="rounded-b-lg bg-sweater-9 px-pad pb-pad transition-colors group-hover:bg-sweater-8 480:bg-transparent 480:pt-pad 480:group-hover:bg-transparent 560:hidden normal:hidden! sm:block">
+                            <ul class="flex flex-wrap gap-x-1.5 text-link-secondary 480:text-subtitle">
+                              {techList.map((tech, techIndex) => (
+                                <li>
+                                  {tech}
+                                  {techIndex !== techList.length - 1 ?
+                                    <span
+                                      aria-hidden="true"
+                                      class="text-sweater-6/70"
+                                    >
+                                      /
+                                    </span>
+                                  : null}
+                                </li>
+                              ))}
+                            </ul>
+                            <p class="hidden text-subtitle 480:block">{date}</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  : <div
+                      class:list={[
+                        "border-dashed border-line-dark p-[calc(var(--spacing-pad)+2px)] transition-colors hover:bg-sweater-9/50",
+                        totalCells - numElapsedCells !== 0 ?
+                          "border-b-(length:--border-w)"
+                        : null,
+                        numElapsedCells % 2 === 1 ?
+                          "560:border-r-(length:--border-w)"
+                        : null,
+                      ]}
+                      data-cells={numElapsedCells}
+                    >
+                      <a href={`/projects/${id}`} class="group block">
+                        <ProjectCover
+                          id={id}
+                          cover={cover}
+                          useVideo={
+                            withVideos.includes(id) ? { small: true } : null
+                          }
+                          class="overflow-hidden rounded-t-lg"
+                        />
+
+                        <div class="rounded-b-lg bg-sweater-9 p-pad transition-colors group-hover:bg-sweater-8">
+                          <h3 class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                            {name}
+                          </h3>
+
+                          <ul class="flex flex-wrap gap-x-2 text-link-secondary">
+                            {techList.map((tech, techIndex) => (
+                              <li>
+                                {tech}
+                                {techIndex !== techList.length - 1 ?
+                                  <span
+                                    aria-hidden="true"
+                                    class="text-sweater-6/70"
+                                  >
+                                    /
+                                  </span>
+                                : null}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </a>
+                    </div>;
+              },
+            )}
           </div>
         </section>
       );

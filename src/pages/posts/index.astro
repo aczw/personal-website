@@ -57,7 +57,7 @@ entries.sort((a, b) => b[0] - a[0]);
                   ({ data: { title, blurb, posted }, id }, idx) => (
                     <a
                       href={`/posts/${id}`}
-                      class="row group flex animate-fade-in flex-col gap-1 border-y-2 border-t-sweater-9 border-b-sweater-9/0 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row 380:gap-space"
+                      class="row group 380:gap-space flex animate-fade-in flex-col gap-1 border-y-2 border-t-sweater-9 border-b-sweater-9/0 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row"
                       style={{ "--order": idx + 1 }}
                     >
                       <time
@@ -84,7 +84,7 @@ entries.sort((a, b) => b[0] - a[0]);
                       <div class="space-y-1">
                         <h2>{title}</h2>
                         {blurb ?
-                          <p class="subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
+                          <p class="text-subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
                             {blurb}
                           </p>
                         : null}
