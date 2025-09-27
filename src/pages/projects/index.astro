@@ -12,6 +12,8 @@ import ProjectCover from "@/components/project-cover.astro";
 import { PROJECT_CATEGORIES } from "@/scripts/constants";
 import { getProjectsInCategory } from "@/scripts/util";
 import MainLayout from "@/layouts/main-layout.astro";
+import TechList from "@/components/tech-list.astro";
+import ContentDate from "@/components/content-date.astro";
 
 const projects = await getCollection("projects");
 const icons: (typeof IconType)[] = [ImageIcon, JoystickIcon, ShapesIcon];
@@ -64,7 +66,7 @@ const wideProjects: string[] = ["pbr-renderer", "path-tracer"];
                   data: {
                     name,
                     blurb,
-                    metadata: { tech: techList, date },
+                    metadata: { tech, date },
                     cover,
                   },
                 },
@@ -121,47 +123,27 @@ const wideProjects: string[] = ["pbr-renderer", "path-tracer"];
                             <p class="font-bold text-sweater-3/85 transition-colors group-hover:text-link-secondary-hover">
                               Tech used
                             </p>
-                            <ul class="flex flex-wrap gap-x-1.5 text-subtitle">
-                              {techList.map((tech, techIndex) => (
-                                <li>
-                                  {tech}
-                                  {techIndex !== techList.length - 1 ?
-                                    <span
-                                      aria-hidden="true"
-                                      class="text-sweater-6/70"
-                                    >
-                                      /
-                                    </span>
-                                  : null}
-                                </li>
-                              ))}
-                            </ul>
+
+                            <TechList tech={tech} class="text-subtitle" />
                           </div>
 
                           <div class="hidden p-pad normal:block">
                             <p class="font-bold text-sweater-3/85 transition-colors group-hover:text-link-secondary-hover">
                               Date
                             </p>
-                            <p class="text-subtitle">{date}</p>
+                            <ContentDate date={date} class="text-subtitle" />
                           </div>
 
                           <div class="rounded-b-lg bg-sweater-9 px-pad pb-pad transition-colors group-hover:bg-sweater-8 480:bg-transparent 480:pt-pad 480:group-hover:bg-transparent 560:hidden normal:hidden! sm:block">
-                            <ul class="flex flex-wrap gap-x-1.5 text-link-secondary 480:text-subtitle">
-                              {techList.map((tech, techIndex) => (
-                                <li>
-                                  {tech}
-                                  {techIndex !== techList.length - 1 ?
-                                    <span
-                                      aria-hidden="true"
-                                      class="text-sweater-6/70"
-                                    >
-                                      /
-                                    </span>
-                                  : null}
-                                </li>
-                              ))}
-                            </ul>
-                            <p class="hidden text-subtitle 480:block">{date}</p>
+                            <TechList
+                              tech={tech}
+                              class="text-link-secondary 480:text-subtitle"
+                            />
+
+                            <ContentDate
+                              date={date}
+                              class="hidden text-subtitle 480:block"
+                            />
                           </div>
                         </div>
                       </a>
@@ -198,25 +180,15 @@ const wideProjects: string[] = ["pbr-renderer", "path-tracer"];
                             {name}
                           </h3>
 
-                          <ul class="flex flex-wrap gap-x-2 px-pad pb-pad text-link-secondary 480:pt-pad 480:pb-0 480:text-subtitle 560:pt-0 560:pb-pad 560:text-link-secondary">
-                            {techList.map((tech, techIndex) => (
-                              <li>
-                                {tech}
-                                {techIndex !== techList.length - 1 ?
-                                  <span
-                                    aria-hidden="true"
-                                    class="text-sweater-6/70"
-                                  >
-                                    /
-                                  </span>
-                                : null}
-                              </li>
-                            ))}
-                          </ul>
+                          <TechList
+                            tech={tech}
+                            class="px-pad pb-pad text-link-secondary 480:pt-pad 480:pb-0 480:text-subtitle 560:pt-0 560:pb-pad 560:text-link-secondary"
+                          />
 
-                          <p class="hidden px-pad pb-pad text-subtitle 480:block 560:hidden">
-                            {date}
-                          </p>
+                          <ContentDate
+                            date={date}
+                            class="hidden px-pad pb-pad text-subtitle 480:block 560:hidden"
+                          />
                         </div>
                       </a>
                     </div>;

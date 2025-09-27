@@ -1,0 +1,27 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"li"> & {
+  tech: string[];
+};
+
+const { tech: techList, class: className, ...props } = Astro.props;
+---
+
+<ul class:list={["flex flex-wrap gap-x-1", className]} {...props}>
+  {
+    techList.map((tech, index) => (
+      <li class="leading-snug">
+        {tech}
+        {index !== techList.length - 1 ?
+          <span
+            aria-hidden="true"
+            class="cursor-default text-sweater-6/80 select-none"
+          >
+            /
+          </span>
+        : null}
+      </li>
+    ))
+  }
+</ul>

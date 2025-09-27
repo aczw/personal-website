@@ -1,6 +1,13 @@
 import type { CollectionEntry } from "astro:content";
+import type { z } from "astro/zod";
 
 import { type Icon as IconType } from "@lucide/astro";
+
+import type {
+  DateSchema,
+  RangedDateSchema,
+  SimpleDateSchema,
+} from "@/scripts/schema";
 
 type EntryKind =
   | { kind: "post"; post: CollectionEntry<"posts"> }
@@ -21,4 +28,15 @@ type LinkWithIcon = {
   icon: typeof IconType;
 };
 
-export { type EntryKind, type MetaKind, type LinkWithIcon };
+type SimpleDate = z.infer<typeof SimpleDateSchema>;
+type RangedDate = z.infer<typeof RangedDateSchema>;
+type ContentDateType = z.infer<typeof DateSchema>;
+
+export type {
+  EntryKind,
+  MetaKind,
+  LinkWithIcon,
+  SimpleDate,
+  RangedDate,
+  ContentDateType,
+};

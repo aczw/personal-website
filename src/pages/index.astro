@@ -60,22 +60,24 @@ posts = posts
       </p>
     </div>
 
-    <div
+    <ul
       class="col-span-1 grid grid-cols-2 divide-x-(length:--border-w) divide-y-(length:--border-w) divide-dashed divide-line-dark border-t-(length:--border-w) border-dashed border-line-dark font-bold text-link-primary 480:grid-cols-4 480:divide-y-0 560:col-span-2"
     >
       {
         socials.map(({ href, label, icon: Icon }) => (
-          <a
-            href={href}
-            target="_blank"
-            class="flex items-center justify-between p-pad transition-colors hover:bg-line-bright hover:text-link-primary-hover"
-          >
-            <span>{label}</span>
-            <Icon size={18} class="stroke-icon" />
-          </a>
+          <li>
+            <a
+              href={href}
+              target="_blank"
+              class="flex items-center justify-between p-pad transition-colors hover:bg-line-bright hover:text-link-primary-hover"
+            >
+              <span>{label}</span>
+              <Icon size={18} class="stroke-icon" />
+            </a>
+          </li>
         ))
       }
-    </div>
+    </ul>
   </section>
 
   <section

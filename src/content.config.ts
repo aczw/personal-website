@@ -3,8 +3,12 @@ import { glob } from "astro/loaders";
 
 import {
   BlurbSchema,
+  DateSchema,
   ImageSchema,
+  LinkSchema,
   ProjectCategoriesSchema,
+  SourceHrefSchema,
+  TechSchema,
 } from "@/scripts/schema";
 
 const projects = defineCollection({
@@ -21,21 +25,10 @@ const projects = defineCollection({
         .optional(),
       blurb: BlurbSchema,
       metadata: z.object({
-        tech: z.string().array(),
-        link: z
-          .object({
-            href: z.string().url(),
-            text: z.string(),
-          })
-          .optional(),
-        sourceHref: z
-          .string()
-          .url()
-          .refine((url) => url.startsWith("https://github.com/"), {
-            message: "Source code is assumed to be hosted on GitHub",
-          })
-          .optional(),
-        date: z.string(),
+        tech: TechSchema,
+        link: LinkSchema.optional(),
+        sourceHref: SourceHrefSchema.optional(),
+        date: DateSchema,
       }),
       type: ProjectCategoriesSchema,
       order: z.number(),

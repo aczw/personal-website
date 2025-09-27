@@ -1,0 +1,37 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import type { ContentDateType, RangedDate, SimpleDate } from "@/scripts/types";
+
+type Props = HTMLAttributes<"p"> & {
+  date: ContentDateType;
+};
+
+type DateKind =
+  | { kind: "simple"; date: SimpleDate }
+  | { kind: "ranged"; date: RangedDate };
+
+function getDateKind(date: ContentDateType): DateKind {
+  if (typeof date === "object" && date !== null && "from" in date) {
+    return { kind: "ranged", date };
+  } else {
+    return { kind: "simple", date };
+  }
+}
+
+const { date, ...props } = Astro.props;
+
+const dateKind = getDateKind(date);
+---
+
+<p {...props}>
+  {
+    dateKind.kind === "simple" ?
+      dateKind.date
+    : <>
+        {dateKind.date.from}{" "}
+        <span class="cursor-default text-sweater-6/80 select-none">—</span>{" "}
+        {dateKind.date.to}
+      </>
+  }
+</p>

@@ -1,9 +1,10 @@
-import type { PROJECT_CATEGORIES } from "@/scripts/constants";
 import type { CollectionEntry } from "astro:content";
 
 import { readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+
+import type { PROJECT_CATEGORIES } from "@/scripts/constants";
 
 /**
  * This value is used in astro.config.ts, which unfortunately means it can't
@@ -11,6 +12,36 @@ import { fileURLToPath } from "node:url";
  * e.g. constants.ts. Therefore it's defined in this file instead.
  */
 const SITE_URL = "https://charleszw.com";
+
+/**
+ * Astro's sitemap integration does not include dynamic routes in the generated sitemap when
+ * the site uses SSR. This function crawls the filesystem and does it manually.
+ *
+ * Note: this also includes routes that are private/drafts, because it does not check frontmatter.
+ *
+ * Note: currently unused because projects and posts are statically generated since v5.0.0. Check
+ * file paths before using.
+ *
+ * @see https://github.com/withastro/astro/issues/3682#issuecomment-1492468918
+ */
+function getContentRoutes() {
+  const __filename = fileURLToPath(import.meta.url);
+  const __dirname = dirname(__filename);
+
+  const contentPath = join(__dirname, "src", "content");
+
+  const postUrls = readdirSync(join(contentPath, "posts")).map((file) => {
+    const fileName = file.split(".")[0];
+    return `${SITE_URL}/posts/${fileName}`;
+  });
+
+  const projectUrls = readdirSync(join(contentPath, "projects")).map((file) => {
+    const fileName = file.split(".")[0];
+    return `${SITE_URL}/projects/${fileName}`;
+  });
+
+  return [...postUrls, ...projectUrls];
+}
 
 /**
  * Checks that the cover image for my project covers have an aspect ratio of
@@ -72,36 +103,6 @@ function getProjectsInCategory(
   } else {
     return filtered;
   }
-}
-
-/**
- * Astro's sitemap integration does not include dynamic routes in the generated sitemap when
- * the site uses SSR. This function crawls the filesystem and does it manually.
- *
- * Note: this also includes routes that are private/drafts, because it does not check frontmatter.
- *
- * Note: currently unused because projects and posts are statically generated since v5.0.0. Check
- * file paths before using.
- *
- * @see https://github.com/withastro/astro/issues/3682#issuecomment-1492468918
- */
-function getContentRoutes() {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-
-  const contentPath = join(__dirname, "src", "content");
-
-  const postUrls = readdirSync(join(contentPath, "posts")).map((file) => {
-    const fileName = file.split(".")[0];
-    return `${SITE_URL}/posts/${fileName}`;
-  });
-
-  const projectUrls = readdirSync(join(contentPath, "projects")).map((file) => {
-    const fileName = file.split(".")[0];
-    return `${SITE_URL}/projects/${fileName}`;
-  });
-
-  return [...postUrls, ...projectUrls];
 }
 
 export {
