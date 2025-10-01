@@ -1,4 +1,5 @@
 ---
+import { ArrowUpToLineIcon } from "@lucide/astro";
 import type { MarkdownHeading } from "astro";
 
 interface Props {
@@ -6,65 +7,57 @@ interface Props {
 }
 
 const { headings } = Astro.props;
+
+headings.forEach(({ depth, text }) => {
+  if (depth === 1 || depth > 3) {
+    throw new Error(`Heading "${text}" has depth ${depth}`);
+  }
+});
 ---
 
-<aside
-  class="sticky top-6 col-5 row-[1_/_200] hidden h-[calc(100vh-1rem)] max-w-[250px] self-start overflow-y-auto pr-space toc:block"
->
+<aside class="sticky top-0 hidden h-screen grow overflow-y-auto normal:block">
   <nav>
-    <h2 class="mb-1.5 pl-[0.35rem] text-xl">Contents</h2>
-
-    <div class="mr-7 flex flex-col leading-snug text-sweater-6 normal:mr-0">
-      <a
-        href="#"
-        class="mb-[0.4rem] rounded-md px-[0.4rem] py-1 leading-none text-sweater-3 transition-colors hover:bg-sweater-9 hover:text-sweater-1"
-        >(Back to top!)</a
+    <a
+      href="#content-begin"
+      class="group flex flex-col border-b-(length:--border-w) border-dashed border-line-dark p-pad transition-colors hover:bg-line-dark"
+    >
+      <span
+        class="text-lg leading-snug font-bold text-link-primary transition-colors group-hover:text-link-primary-hover"
+        >Sections</span
       >
 
+      <span
+        class="flex items-center justify-between leading-none text-link-secondary transition-colors group-hover:text-link-secondary-hover"
+      >
+        Back to top <ArrowUpToLineIcon size={18} class="stroke-icon" />
+      </span>
+    </a>
+
+    <div class="flex flex-col text-link-secondary">
       {
         headings.map(({ depth, slug, text }, index) => {
-          if (depth === 1) {
-            throw new Error(
-              `No MDX heading should be H1! Check whether the content contains any.`,
-            );
-          }
-
-          if (depth > 3) {
-            throw new Error(
-              `Used a heading level greater than H3 in this content. Maybe we should support it now?`,
-            );
-          }
-
-          // Between H2 headings or if the next heading after H3 is a H2, we add spacing.
-          // Else, add no spacing.
-          let spacing = 0;
-          if (index !== headings.length - 1) {
-            const next = headings[index + 1];
-            if (next?.depth === 2 && (depth === 2 || depth === 3)) {
-              spacing = 0.4;
-            }
-          }
-
           return (
             <a
               href={`#${slug}`}
-              class="rounded-md py-1 pr-[0.4rem] leading-none transition-colors hover:bg-sweater-9 hover:text-sweater-2"
-              style={{
-                paddingLeft: `${(depth - 2) * 1.5 + 0.4}rem`,
-                marginBottom: `${spacing}rem`,
-              }}
+              class:list={[
+                "pr-pad leading-[1.1] transition-colors hover:text-link-primary data-seen:text-link-primary data-seen:hover:text-link-primary-hover",
+
+                index === 0 ? "pt-pad"
+                : depth === 2 ? "pt-[calc(var(--spacing-pad)/1.6)]"
+                : "pt-0.5",
+
+                headings[index + 1]?.depth === 2 ?
+                  "pb-[calc(var(--spacing-pad)/1.6)]"
+                : "pb-0.5",
+
+                depth === 2 ? "pl-pad" : "pl-pad-2",
+              ]}
             >
               {text}
             </a>
           );
         })
       }
-    </div>
-
-    <div
-      aria-hidden="true"
-      class="sticky inset-x-0 bottom-[-1px] h-12 bg-linear-to-t from-sweater-10"
-    >
     </div>
   </nav>
 </aside>
@@ -80,9 +73,9 @@ const { headings } = Astro.props;
       const windowHeight = entry.rootBounds!.height;
       if (windowHeight && link) {
         if (entry.boundingClientRect.y < windowHeight) {
-          link.classList.add("text-sweater-3");
+          link.dataset["seen"] = "";
         } else {
-          link.classList.remove("text-sweater-3");
+          delete link.dataset["seen"];
         }
       }
     }),

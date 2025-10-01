@@ -26,7 +26,7 @@ import type {
 import type { ContentDateType } from "@/scripts/types";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
-import MdxLayout from "@/layouts/mdx-layout.astro";
+import ContentLayout from "@/layouts/content-layout.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -66,7 +66,7 @@ type MetadataKind =
     }
   | { kind: "date"; data: ContentDateType; icon: typeof IconType };
 
-// Make my life easier to iterate through the metadata
+// Make my life easier by iterating through the metadata
 let metadata: MetadataKind[] = [
   { kind: "tech", data: tech, icon: WrenchIcon },
   { kind: "date", data: date, icon: CalendarFoldIcon },
@@ -83,127 +83,125 @@ if (sourceHref) {
 const { Content, headings } = await render(project);
 ---
 
-<MdxLayout meta={{ kind: "project", project }}>
-  <div
-    class="mx-auto max-w-normal space-y-6 border-x-(length:--border-w) border-line-bright sm:space-y-12"
-  >
-    <section class="grid-line-before grid-line-after relative">
-      <div class="p-pad">
-        <ProjectCover
-          id={id}
-          cover={cover}
-          useVideo={{ small: false }}
-          class="overflow-hidden rounded-lg"
-        />
-      </div>
-    </section>
-
-    <section class="grid-line-before grid-line-after relative">
-      <div
-        class="grid grid-cols-1 space-y-1.5 border-b-(length:--border-w) border-dashed border-line-dark sm:grid-cols-2 sm:space-y-0"
-      >
-        <div
-          class="border-dashed border-line-dark px-pad pt-pad sm:border-r-(length:--border-w) sm:pb-pad"
-        >
-          <h1 class="text-2xl leading-tight font-bold text-sweater-2">
-            {name}
-          </h1>
-
-          {
-            subtitle ?
-              <p class="text-xl leading-tight text-sweater-2 sm:text-2xl sm:text-subtitle">
-                {subtitle}
-              </p>
-            : null
-          }
-        </div>
-
-        <p class="px-pad pb-pad sm:pt-pad sm:text-subtitle">
-          {blurb}
-        </p>
-      </div>
-
-      <ul class="grid grid-cols-1 560:grid-cols-2 normal:grid-cols-4!">
-        {
-          metadata.map(({ kind, data, icon: Icon }, index) => (
-            <li
-              class:list={[
-                "group col-span-1 flex justify-between gap-pad border-dashed border-line-dark",
-                metadata.length === 2 ? "normal:col-span-2" : null,
-
-                // Two metadata
-                metadata.length === 2 && index === 0 ?
-                  "border-b-(length:--border-w) 560:border-r-(length:--border-w) 560:border-b-0"
-                : null,
-
-                // Four metadata
-                metadata.length > 2 && index % 2 === 0 ?
-                  "560:border-r-(length:--border-w)"
-                : null,
-                metadata.length > 2 && index < 2 ?
-                  "border-b-(length:--border-w) normal:border-r-(length:--border-w) normal:border-b-0"
-                : null,
-                metadata.length > 2 && index === 2 ?
-                  "border-b-(length:--border-w) 560:border-b-0"
-                : null,
-
-                kind === "tech" || kind === "date" ? "p-pad" : null,
-              ]}
-            >
-              {kind === "tech" || kind === "date" ?
-                <>
-                  <div>
-                    <p class="font-bold break-all text-sweater-2/85">
-                      {kind === "tech" ? "Tech" : "Date"}
-                    </p>
-
-                    {kind === "tech" ?
-                      <TechList tech={data} />
-                    : <ContentDate date={data} />}
-                  </div>
-
-                  <Icon size={18} class="shrink-0 stroke-icon" />
-                </>
-              : <a
-                  href={kind === "link" ? data.href : data}
-                  target="_blank"
-                  title={kind === "link" ? data.href : data}
-                  class="flex grow justify-between gap-pad p-pad transition-colors group-hover:bg-line-dark"
-                >
-                  <div>
-                    <p class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                      {kind === "link" ? data.text : "Source code"}
-                    </p>
-
-                    <p class="break-all text-link-secondary">
-                      {kind === "link" ?
-                        /* Substring removes the https:// in front */
-                        data.href.substring(8).split("/")[0]!
-                      : "Visit GitHub"}
-                    </p>
-                  </div>
-
-                  <Icon size={18} class="shrink-0 stroke-icon" />
-                </a>
-              }
-            </li>
-          ))
-        }
-      </ul>
-    </section>
-  </div>
-
-  <article class="grid-line-before grid-line-after relative mdx-content p-pad">
-    <!-- <TableOfContents headings={headings} /> -->
-
-    <Content
-      components={{
-        h2: H2,
-        h3: H3,
-        blockquote: Aside,
-        a: Anchor,
-        img: Image,
-      }}
+<ContentLayout meta={{ kind: "project", project }}>
+  <section class="grid-line-before grid-line-after relative p-pad">
+    <ProjectCover
+      id={id}
+      cover={cover}
+      useVideo={{ small: false }}
+      class="overflow-hidden rounded-lg"
     />
-  </article>
-</MdxLayout>
+  </section>
+
+  <section id="content-begin" class="grid-line-before grid-line-after relative">
+    <div
+      class="grid grid-cols-1 space-y-1.5 border-b-(length:--border-w) border-dashed border-line-dark sm:grid-cols-2 sm:space-y-0"
+    >
+      <div
+        class="border-dashed border-line-dark px-pad pt-pad sm:border-r-(length:--border-w) sm:pb-pad"
+      >
+        <h1 class="text-2xl leading-tight font-bold text-sweater-2">
+          {name}
+        </h1>
+
+        {
+          subtitle ?
+            <p class="text-xl leading-tight text-sweater-2 sm:text-2xl sm:text-subtitle">
+              {subtitle}
+            </p>
+          : null
+        }
+      </div>
+
+      <p class="px-pad pb-pad sm:pt-pad sm:text-subtitle">
+        {blurb}
+      </p>
+    </div>
+
+    <ul class="grid grid-cols-1 560:grid-cols-2 normal:grid-cols-4!">
+      {
+        metadata.map(({ kind, data, icon: Icon }, index) => (
+          <li
+            class:list={[
+              "group col-span-1 flex justify-between gap-pad border-dashed border-line-dark",
+              metadata.length === 2 ? "normal:col-span-2" : null,
+
+              // Two metadata
+              metadata.length === 2 && index === 0 ?
+                "border-b-(length:--border-w) 560:border-r-(length:--border-w) 560:border-b-0"
+              : null,
+
+              // Four metadata
+              metadata.length > 2 && index % 2 === 0 ?
+                "560:border-r-(length:--border-w)"
+              : null,
+              metadata.length > 2 && index < 2 ?
+                "border-b-(length:--border-w) normal:border-r-(length:--border-w) normal:border-b-0"
+              : null,
+              metadata.length > 2 && index === 2 ?
+                "border-b-(length:--border-w) 560:border-b-0"
+              : null,
+
+              kind === "tech" || kind === "date" ? "p-pad" : null,
+            ]}
+          >
+            {kind === "tech" || kind === "date" ?
+              <>
+                <div>
+                  <p class="font-bold break-all text-sweater-2/85">
+                    {kind === "tech" ? "Tech" : "Date"}
+                  </p>
+
+                  {kind === "tech" ?
+                    <TechList tech={data} />
+                  : <ContentDate date={data} />}
+                </div>
+
+                <Icon size={18} class="shrink-0 stroke-icon" />
+              </>
+            : <a
+                href={kind === "link" ? data.href : data}
+                target="_blank"
+                title={kind === "link" ? data.href : data}
+                class="flex grow justify-between gap-pad p-pad transition-colors group-hover:bg-line-dark"
+              >
+                <div>
+                  <p class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                    {kind === "link" ? data.text : "Source code"}
+                  </p>
+
+                  <p class="break-all text-link-secondary">
+                    {kind === "link" ?
+                      /* Substring removes the https:// in front */
+                      data.href.substring(8).split("/")[0]!
+                    : "Visit GitHub"}
+                  </p>
+                </div>
+
+                <Icon size={18} class="shrink-0 stroke-icon" />
+              </a>
+            }
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="grid-line-before grid-line-after relative flex">
+    <div
+      class="max-w-(--content-w) space-y-pad-2 border-r-(length:--border-w) border-dashed border-line-dark p-pad"
+    >
+      <Content
+        components={{
+          h2: H2,
+          h3: H3,
+          blockquote: Aside,
+          a: Anchor,
+          img: Image,
+        }}
+      />
+    </div>
+
+    <TableOfContents headings={headings} />
+  </section>
+</ContentLayout>

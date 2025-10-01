@@ -1,45 +1,24 @@
-@utility bleed-wide {
-  width: 100%;
-  max-width: var(--container-wide);
-  margin-left: auto;
-  margin-right: auto;
-  padding-inline: var(--spacing-space);
-  grid-column: 1 / -1;
-
-  @variant toc {
-    grid-column: 2 / 5;
-    padding-inline: 0px;
-  }
-}
-
 /* A good explanation of what's going on: https://www.joshwcomeau.com/css/full-bleed/ */
-@utility mdx-content {
+@utility content-grid {
   display: grid;
-  column-gap: var(--spacing-space);
   grid-template-columns:
-    1fr min(var(--normal-w), 100% - 2 * var(--spacing-space))
+    1fr
+    min(
+      /* Take into account the width taken up by padding and the borders */
+        calc(var(--normal-w) + 2 * var(--spacing-pad) + 2 * var(--border-w)),
+      100%
+    )
     1fr;
-
-  /* The 95px is calculated as follows: <wide width> - <pair of column-gap spacing> - <normal width> = 190px. We then split it evenly across both sides */
-  @variant toc {
-    grid-template-columns:
-      2fr 95px min(var(--normal-w), 100% - 4 * var(--spacing-space))
-      95px 2fr;
-  }
 }
 
+/* This is in the base layer so that other utilities can override it */
 @layer base {
+  :root {
+    --content-w: calc(600px + 2 * var(--spacing-pad) + var(--border-w));
+  }
+
   /* Only style elements rendered from MDX */
-  article.mdx-content {
-    /* This is in the base layer so that other utilities can override it */
-    & > * {
-      grid-column: 2;
-
-      @variant toc {
-        grid-column: 3;
-      }
-    }
-
+  .content-grid {
     & img,
     video {
       @apply w-full rounded-xl bg-sweater-9;
@@ -78,7 +57,7 @@
 
     & ul,
     ol {
-      @apply ml-5 list-outside space-y-2;
+      @apply ml-5 list-outside space-y-1.5;
 
       ::marker {
         @apply text-sweater-4 tabular-nums;
