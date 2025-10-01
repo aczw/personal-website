@@ -1,0 +1,122 @@
+@layer components {
+  :root {
+    --content-w: 600px;
+  }
+
+  /* Only style elements rendered from MDX */
+  .content {
+    @apply *:px-pad;
+
+    /* All media should have rounded corners. */
+    img,
+    video {
+      @apply rounded-lg;
+    }
+
+    /* However, direct media needs to have its padding and width manually
+     * adjusted, otherwise the border radius won't work. */
+    > img,
+    video {
+      @apply mx-auto px-0;
+
+      width: calc(100% - var(--spacing-pad));
+    }
+
+    /* Inline code should have some padding and unique background color */
+    code {
+      @apply rounded-md bg-sweater-9 px-1.5 py-0.5 break-words;
+
+      font-size: var(--text-mono);
+    }
+
+    /* Treat inline code differently inside callouts */
+    aside {
+      code {
+        @apply bg-sweater-8;
+      }
+    }
+
+    del {
+      @apply cursor-not-allowed text-sweater-6 line-through;
+    }
+
+    ul {
+      @apply ml-pad-2 list-outside space-y-1;
+
+      list-style-type: "➔";
+    }
+
+    ol {
+      @apply ml-pad-2 list-outside space-y-0.5;
+
+      list-style-type: decimal;
+    }
+
+    li {
+      @apply pl-2;
+
+      &::marker {
+        @apply text-sweater-4;
+      }
+    }
+
+    /* Only select <figure> elements not from the Expressive Code library */
+    figcaption {
+      @apply mx-auto mt-1 text-sm text-subtitle *:inline;
+
+      /* Draw a little arrow before the caption */
+      &::before {
+        @apply scale-90;
+
+        content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkNmQzZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodC1pY29uIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodCI+PHBvbHlsaW5lIHBvaW50cz0iMTUgMTAgMjAgMTUgMTUgMjAiLz48cGF0aCBkPSJNNCA0djdhNCA0IDAgMCAwIDQgNGgxMiIvPjwvc3ZnPg==");
+
+        translate: 0px calc(var(--spacing) * 0.6);
+        display: inline-block;
+        padding-right: 3.5px;
+        opacity: 90%;
+      }
+    }
+
+    /* Style the last element in the content only if there are footnotes */
+    :is(& > *) {
+      &:nth-last-child(2):has(+ section[data-footnotes]) {
+        @apply mb-6! border-b-(length:--border-w) border-dashed border-line-dark pb-pad;
+
+        @variant sm {
+          @apply mb-12!;
+        }
+      }
+    }
+
+    /* Target auto-generated footnotes */
+    section[data-footnotes] {
+      @apply border-t-(length:--border-w) border-dashed border-line-dark pt-pad;
+
+      /* MDX generates a "Footnotes" heading. Make it screen reader only */
+      > h2#footnote-label {
+        @apply sr-only;
+      }
+
+      > ol {
+        @apply space-y-1.5 text-subtitle;
+
+        /* The following two selectors are to make sure back ref arrows are 
+         * inline with the text */
+        > li > p:has(> a[data-footnote-backref]) {
+          display: inline;
+        }
+
+        a[data-footnote-backref] {
+          display: inline;
+
+          > svg {
+            @apply -translate-y-0.5;
+
+            stroke-width: 3px;
+            display: inline;
+          }
+        }
+      }
+    }
+  }
+}

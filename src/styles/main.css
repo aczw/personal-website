@@ -2,7 +2,7 @@
 
 @import "./animations.css";
 @import "./fonts.css";
-@import "./mdx.css";
+@import "./content.css";
 @import "./overrides.css";
 
 @theme {
@@ -50,6 +50,9 @@
     var(--normal-w) + 2 * var(--spacing-pad) + 2 * var(--border-w)
   );
 
+  /* When the table of contents should completely collapse. */
+  --breakpoint-toc: 700px;
+
   /* Terrible names, but these don't really represent anything and are
    * just good values by themselves */
   --breakpoint-380: 380px;
@@ -89,13 +92,14 @@
   }
 
   p,
+  a,
+  li,
   h1,
   h2,
   h3,
   h4,
   h5,
-  h6,
-  li {
+  h6 {
     overflow-wrap: break-word;
     text-wrap: pretty;
   }

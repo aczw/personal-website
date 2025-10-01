@@ -1,5 +1,9 @@
-/* biome-ignore-all lint/complexity/noImportantStyles: this file contains overrides for CSS, usually from packages that I can't control */
-
+/* Force EC code blocks to use my Maple Mono settings */
 .expressive-code pre > code {
   font-feature-settings: var(--font-mono--font-feature-settings) !important;
+}
+
+/* Override hardcoded 720px max width on lite-youtube custom element */
+lite-youtube {
+  max-width: none !important;
 }

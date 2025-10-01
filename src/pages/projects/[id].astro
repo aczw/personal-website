@@ -187,9 +187,11 @@ const { Content, headings } = await render(project);
     </ul>
   </section>
 
-  <section class="grid-line-before grid-line-after relative flex">
+  <section
+    class="grid-line-before grid-line-after relative grid w-full grid-cols-1 toc:grid-cols-[minmax(0px,3fr)_1fr]"
+  >
     <div
-      class="max-w-(--content-w) space-y-pad-2 border-r-(length:--border-w) border-dashed border-line-dark p-pad"
+      class="content space-y-pad-2 border-dashed border-line-dark py-pad toc:border-r-(length:--border-w)"
     >
       <Content
         components={{
