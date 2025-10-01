@@ -2,10 +2,7 @@
 import { ChevronRightIcon } from "@lucide/astro";
 ---
 
-<aside
-  class="flex gap-pad border-y-(length:--border-w) border-dashed border-line-dark bg-sweater-9/30 py-pad text-subtitle"
-  {...Astro.props}
->
-  <ChevronRightIcon size={18} class="shrink-0 stroke-icon" />
-  <div class="space-y-pad-2"><slot /></div>
+<aside class="flex gap-pad text-subtitle" {...Astro.props}>
+  <ChevronRightIcon aria-hidden="true" size={18} class="shrink-0 stroke-icon" />
+  <div class="space-y-pad"><slot /></div>
 </aside>

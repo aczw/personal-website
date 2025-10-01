@@ -19,7 +19,7 @@
     video {
       @apply mx-auto px-0;
 
-      width: calc(100% - var(--spacing-pad));
+      width: calc(100% - 2 * var(--spacing-pad));
     }
 
     /* Inline code should have some padding and unique background color */
@@ -27,13 +27,6 @@
       @apply rounded-md bg-sweater-9 px-1.5 py-0.5 break-words;
 
       font-size: var(--text-mono);
-    }
-
-    /* Treat inline code differently inside callouts */
-    aside {
-      code {
-        @apply bg-sweater-8;
-      }
     }
 
     del {
