@@ -104,7 +104,8 @@
     text-wrap: pretty;
   }
 
-  img {
+  img,
+  video {
     font-style: italic;
   }
 }

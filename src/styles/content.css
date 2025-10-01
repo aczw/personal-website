@@ -7,16 +7,16 @@
   .content {
     @apply *:px-pad;
 
-    /* All media should have rounded corners. */
+    /* In general, all media should have full width. */
     img,
     video {
-      @apply rounded-lg;
+      @apply w-full rounded-lg;
     }
 
-    /* However, direct media needs to have its padding and width manually
+    /* Direct media needs to have its padding and width manually
      * adjusted, otherwise the border radius won't work. */
     > img,
-    video {
+    > video {
       @apply mx-auto px-0;
 
       width: calc(100% - 2 * var(--spacing-pad));
@@ -49,13 +49,13 @@
       @apply pl-2;
 
       &::marker {
-        @apply text-sweater-4;
+        @apply text-sweater-5;
       }
     }
 
     /* Only select <figure> elements not from the Expressive Code library */
     figcaption {
-      @apply mx-auto mt-1 text-sm text-subtitle *:inline;
+      @apply mt-1 text-sm text-subtitle *:inline;
 
       /* Draw a little arrow before the caption */
       &::before {
@@ -78,6 +78,13 @@
         @variant sm {
           @apply mb-12!;
         }
+      }
+
+      /* If the next element is a heading/starts a new section, decrease the
+       * padding before it */
+      &:has(+ h2[id]),
+      &:has(+ h3[id]) {
+        @apply mb-pad!;
       }
     }
 

@@ -9,13 +9,12 @@ const { id, ...props } = Astro.props;
 ---
 
 <h3
-  class="border-y-(length:--border-w) border-dashed border-line-dark px-0 font-bold text-link-primary transition-colors hover:bg-line-dark hover:text-link-primary-hover"
   id={id}
+  class="border-t-(length:--border-w) border-dashed border-line-dark pt-pad leading-snug font-bold text-link-primary transition-colors hover:text-link-primary-hover"
   {...props}
 >
-  <a href={`#${id}`} class="flex items-center justify-between gap-pad p-pad">
+  <a href={`#${id}`} class="flex items-center justify-between gap-pad">
     <slot />
-
-    <HashIcon size={18} class="stroke-icon" aria-hidden="true" />
+    <HashIcon size={16} class="stroke-icon" aria-hidden="true" />
   </a>
 </h3>
