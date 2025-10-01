@@ -18,7 +18,7 @@
     > img,
     > video,
     > lite-vimeo,
-    lite-youtube {
+    > lite-youtube {
       @apply mx-auto px-0;
 
       width: calc(100% - 2 * var(--spacing-pad));
