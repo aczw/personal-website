@@ -19,9 +19,7 @@ order: 5
 slug: fireball
 ---
 
-When I saw the next homework for our Procedural Graphics class was to make a "procedural fireball," I instantly knew where to get inspiration from: [Jibaku Shounen Hanako-kun](https://anilist.co/manga/98842/ToiletBound-Hanakokun/).
-
-> I refuse to call it by its English name. If you see it you'll understand too.
+When I saw the next homework for our Procedural Graphics class was to make a "procedural fireball," I instantly knew where to get inspiration from: _Jibaku Shounen Hanako-kun_.[^1]
 
 <figure class="mx-auto max-w-[350px]">
   ![Hanako-kun with his hakujoudai floating around.](hanako-ref.png)
@@ -43,3 +41,5 @@ Vertex positions are displaced over time, and the tail is animated using another
 The fireball is made up of two primary colors. Lambert shading is calculated by taking the dot product of the surface normal with the camera direction, so the geometry facing the screen is always lit up.
 
 The glowing ring expands and shrinks in size over time, and I use a sawtooth function to make it pulse. I also smoothly interpolate the outer edge of the ring, giving us a gradient.
+
+[^1]: I refuse to call it by its English name. If you see it you'll understand too.

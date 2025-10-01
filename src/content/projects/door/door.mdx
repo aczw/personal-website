@@ -20,9 +20,8 @@ cover:
 slug: door
 ---
 
-import VideoGif from "@/components/video-gif.astro";
 import { YouTube } from "astro-embed";
-import { Image } from "astro:assets";
+import VideoGif from "@/components/video-gif.astro";
 
 For one of the homeworks of our procedural graphics class, CIS 5660, we were to create a stylized scene mimicking some concept art that we pick out. In particular, we focused on using Unity Renderer Features to achieve non-photorealistic rendering (NPR).
 
@@ -32,7 +31,7 @@ The natural pick for me was anything from [OMORI](https://www.omori-game.com/). 
 
 > I should mention that there will be light spoilers for the game from this point onwards.
 
-<div class="grid gap-4 sm:grid-cols-2 bleed-wide">
+<div class="grid gap-pad sm:grid-cols-2">
   <figure>
     ![OMORI characters looking at photobook on a picnic blanket in a forest.](ca-1.png)
     <figcaption>
@@ -63,7 +62,7 @@ Homework is still homework and there were two shaders I was required to create.
 
 ### Toon shading
 
-<figure class="bleed-wide">
+<figure>
   ![Screenshot of Unity Shader Graph for my toon shader](toon.png)
   <figcaption>Shader Graph for my toon shader.</figcaption>
 </figure>
@@ -78,23 +77,18 @@ What exemplifies NPR more than good ol' toon shading? I will spare you a detaile
 
 Another requirement we had to meet was to create an additional shader that animated over time. But, this was already a given for me; if you look at any in-game footage, the textures are always "shifting" around. It's a bit hard to explain, so here's a YouTube video:
 
-<div class="bleed-wide">
-  <div class="overflow-hidden rounded-xl">
-    <YouTube id="https://youtu.be/2D1VBDjamoA" posterQuality="high" params="start=182" />
-  </div>
-</div>
+<YouTube
+  id="https://youtu.be/2D1VBDjamoA"
+  posterQuality="high"
+  params="start=182"
+  class="rounded-lg"
+/>
 
 To create the drawn look as seen in-game, I drew two textures using Procreate's default pencil brushes. The lighter one emphasizes the scribbles more by being more sparse.
 
-<div class="mx-auto grid max-w-[500px] grid-cols-2 gap-4">
-  <Image
-    src={import("tex-light.png")}
-    alt="White square with lighter black scribbles all over it."
-  />
-  <Image
-    src={import("tex-heavy.png")}
-    alt="White square with heavier black scribbles all over it."
-  />
+<div class="mx-auto grid max-w-[500px] grid-cols-2 gap-pad">
+  ![White square with lighter black scribbles all over it.](tex-light.png)
+  ![White square with heavier black scribbles all over it.](tex-heavy.png)
 </div>
 
 The textures being black and white make them very versatile. The values can be interpreted literally and used to multiply by another color, or interpreted as booleans: black (0) for false, and true for everything else.
@@ -106,17 +100,22 @@ I can now "animate" these textures by rotating them by a random amount. To emula
 <figure class="mx-auto max-w-[500px]">
   ![Staircase-like graph from the Graphtoy window](triwave.png)
   <figcaption>
-    **Staggered triangle wave.** I used [Graphtoy](https://graphtoy.com) to figure out values before
-    programming it.
+    **Staggered triangle wave.** I used [Graphtoy](https://graphtoy.com) to
+    figure out values before programming it.
   </figcaption>
 </figure>
 
 Hopefully the image conveys my implementation visually. Each of those steps are a value I plug into my UV rotation. That results in this final output:
 
 <figure>
-  <VideoGif content={{ collection: "projects", folder: "door" }} name="door-anim-tex" hasWebM />
+  <VideoGif
+    content={{ collection: "projects", folder: "door" }}
+    name="door-anim-tex"
+    hasWebM
+  />
   <figcaption>
-    The green-yellow-red color scheme is for testing out the highlight, midtone, and shadow colors.
+    The green-yellow-red color scheme is for testing out the highlight, midtone,
+    and shadow colors.
   </figcaption>
 </figure>
 
@@ -136,18 +135,14 @@ This gives us basic outlines.
 However, outlines in OMORI seem to be made up of three overlapping parts: a green, pink, and purple part. Zooming in on the second concept art you can see it very clearly.
 
 <figure class="mx-auto max-w-[400px]">
-  <Image
-    src={import("outline-example.png")}
-    alt="Close-up of Mari's elbow, showcasing the multicolored outlines."
-  />
+  ![Close-up of Mari's elbow, showcasing the multicolored
+  outlines.](outline-example.png)
   <figcaption>OMORI's unique outline style.</figcaption>
 </figure>
 
 We need three outlines, so we do exactly that. Each outline has a different color and has its UVs slightly offset to give us the chromatic aberration look. I also use the Random Range node to vary the outline thickness based on screen position. Finally, I replace the solid outline with the scribble texture and animate it using the same method as the surface shader.
 
-<div class="bleed-wide">
-  ![The same sphere and plane but now rendered using OMORI's outlines.](cool-outlines.png)
-</div>
+![The same sphere and plane but now rendered using OMORI's outlines.](cool-outlines.png)
 
 ## Assembling a scene
 
@@ -155,9 +150,7 @@ I found all the models on Sketchfab. They are [credited in the README here](http
 
 Speaking of laptop, I created a custom shader that specifically draws a texture to the screen geometry.
 
-<div class="bleed-wide">
-  ![Unity scene view of the laptop screen with the shader applied.](laptop-screen.png)
-</div>
+![Unity scene view of the laptop screen with the shader applied.](laptop-screen.png)
 
 To prevent the door from self-shadowing and ruining the <span aria-label="aesthetic">𝓪𝓮𝓼𝓽𝓱𝓮𝓽𝓲𝓬</span>, I added a `UseShadow` shader parameter that completely turns off shadow attenuation in the main toon shader.
 
@@ -177,10 +170,7 @@ I scroll the UVs of an image in a shader that I specifically wrote for the backg
 
 Press spacebar to toggle between two different views.
 
-<div class="bleed-wide">
-  ![Alternative scene view when spacebar is pressed. Everything becomes darker, redder, and
-  scarier.](horror.png)
-</div>
+![Alternative scene view when spacebar is pressed. Everything becomes darker, redder, and scarier.](horror.png)
 
 A number of changes occur:
 
@@ -188,7 +178,7 @@ A number of changes occur:
 - Similarly, the turntable camera rotates faster and in the opposite direction.
 - The subtle white vignette around the screen border gets replaced. Instead, I use the scribble texture from before as an interpolation value between a pure red color and the scene color. This gives it the "veiny" look. It is also animated.
 - I change the door's material to a modified version of the surface shader: the animation speed is cranked up.
-- The laptop screen displays... [something else](https://github.com/aczw/hw04-stylization/blob/main/Assets/Textures/othermari.jpg). IYKYK.
+- The laptop screen displays... [something else](https://github.com/aczw/hw04-stylization/blob/main/Assets/Textures/othermari.jpg).
 
 ### Web build
 

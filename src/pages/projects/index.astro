@@ -9,7 +9,7 @@ import {
 } from "@lucide/astro";
 
 import ProjectCover from "@/components/project-cover.astro";
-import { PROJECT_CATEGORIES } from "@/scripts/constants";
+import { DISABLED_PROJECTS, PROJECT_CATEGORIES } from "@/scripts/constants";
 import { getProjectsInCategory } from "@/scripts/util";
 import MainLayout from "@/layouts/main-layout.astro";
 import TechList from "@/components/tech-list.astro";
@@ -25,7 +25,7 @@ const withVideos: string[] = [
   "door",
 ];
 
-const wideProjects: string[] = ["pbr-renderer", "path-tracer"];
+const wideProjects: string[] = ["pbr-renderer", "path-tracer", "rcw"];
 ---
 
 <MainLayout
@@ -39,7 +39,10 @@ const wideProjects: string[] = ["pbr-renderer", "path-tracer"];
   {
     PROJECT_CATEGORIES.map((category, categoryIndex) => {
       const Icon = icons[categoryIndex]!;
-      const projectsInCategory = getProjectsInCategory(projects, category);
+      const projectsInCategory = getProjectsInCategory(
+        projects,
+        category,
+      ).filter((project) => !DISABLED_PROJECTS.includes(project.id));
 
       const totalCells = projectsInCategory.reduce(
         (sum, { id }) => (wideProjects.includes(id) ? sum + 2 : sum + 1),

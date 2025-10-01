@@ -27,12 +27,15 @@ import type { ContentDateType } from "@/scripts/types";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import ContentLayout from "@/layouts/content-layout.astro";
+import { DISABLED_PROJECTS } from "@/scripts/constants";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
-  return projects.map((project) => {
-    return { params: { id: project.id } };
-  });
+  return projects
+    .filter((project) => !DISABLED_PROJECTS.includes(project.id))
+    .map((project) => {
+      return { params: { id: project.id } };
+    });
 }) satisfies GetStaticPaths;
 
 const { id } = Astro.params;

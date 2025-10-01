@@ -22,6 +22,8 @@ const VALID_MONTHS = [
   "December",
 ];
 
+const DISABLED_PROJECTS = ["dgdg", "deth", "tanks"];
+
 function getSocials() {
   return [
     { href: "/_files/resume.pdf", label: "Resume", icon: FileUserIcon },
@@ -35,4 +37,10 @@ function getSocials() {
   ];
 }
 
-export { CDN_URL, PROJECT_CATEGORIES, VALID_MONTHS, getSocials };
+export {
+  CDN_URL,
+  PROJECT_CATEGORIES,
+  VALID_MONTHS,
+  DISABLED_PROJECTS,
+  getSocials,
+};

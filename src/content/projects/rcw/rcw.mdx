@@ -30,9 +30,7 @@ In this post I wanted to talk a little about how I approached coding, designing,
 
 ## Overview
 
-In Random Color Words (RCW) you are constantly trying to pair the correct combination of colors and words together. Both of these are randomly generated at the start of each round.
-
-> Incredibly creative name for a game, I know. That's why I like calling it RCW instead.
+In Random Color Words (RCW)[^1] you are constantly trying to pair the correct combination of colors and words together. Both of these are randomly generated at the start of each round.
 
 I saw this project as a way to involve myself with every part of a game development cycle. This led to me getting my hands dirty with things other than programming, like the audio and UI. And being new to... well, everything, I focused my attention on simple but _polished_ and _fleshed out_ results. And hopefully, the game's fun to play as well.
 
@@ -46,12 +44,11 @@ No ideas came to mind, and so I turned to other sources for inspiration...
 
 Recently I had been playing this game called [OLDTV](https://store.steampowered.com/app/643270/OLDTV/). The premise is that you're a gifted child sitting in front of a TV, and you're trying to switch between every single channel in the world.
 
-<figure class="bleed-wide">
-  <div>
-    <VideoGif content={{ collection: "projects", folder: "rcw" }} name="oldtv" />
-  </div>
-
-  <figcaption>**OLDTV.** In-game footage. It's free on Steam, go play it.</figcaption>
+<figure>
+  <VideoGif content={{ collection: "projects", folder: "rcw" }} name="oldtv" />
+  <figcaption>
+    **OLDTV.** In-game footage. It's free on Steam, go play it.
+  </figcaption>
 </figure>
 
 But uh, you're not exactly pressing next on the TV remote. What's happening here?
@@ -61,8 +58,9 @@ But uh, you're not exactly pressing next on the TV remote. What's happening here
 Essentially, each round we're given a color word, and a word color—uh, that's just as confusing. Actually, lemme restart. Ignore the game for a sec—let's just consider these two words below.
 
 <figure>
-  ![There are two words and both spell out 'purple.' The one on the left is colored purple, and the
-  one on the right is colored red.](purple-comparison.png)
+  ![There are two words and both spell out 'purple.' The one on the left is
+  colored purple, and the one on the right is colored
+  red.](purple-comparison.png)
   <figcaption>**Purple.** Purple.</figcaption>
 </figure>
 
@@ -132,7 +130,9 @@ public class Audio : MonoBehaviour
 ```csharp
 public void OnPointerEnter(PointerEventData eventData)
 {
-    Audio.Instance.sfxSource.PlayOneShot(AudioClips.Instance.buttonHover);
+    Audio.Instance.sfxSource.PlayOneShot(
+      AudioClips.Instance.buttonHover
+    );
 }
 ```
 
@@ -229,9 +229,10 @@ RCW is an endless, fast-paced minigame about getting the highest score. I was th
 
 I also liked the button hover effect in [The Battle Cats](https://battlecats.club/en/series/battlecats/), which flashed bright yellow and magenta. Here, I tried to recreate it in Figma.
 
-<div class="bleed-wide">
-  <VideoGif content={{ collection: "projects", folder: "rcw" }} name="flashing-btns-figma" />
-</div>
+<VideoGif
+  content={{ collection: "projects", folder: "rcw" }}
+  name="flashing-btns-figma"
+/>
 
 ### Buttons buttons buttons
 
@@ -249,16 +250,13 @@ Originally I was going for a factory setting, with words coming down a sort of a
 
 One thing that may surprise you is that all the art assets were made in Figma. This includes the start screen, in-game, and game over screen, as well as all the UI.
 
-<div class="bleed-wide">
-  ![The in-game screen, pause menu, and game over screen were all made in a single Figma
-  file.](./figma-ingame.png)
-</div>
+![The in-game screen, pause menu, and game over screen were all made in a single Figma file.](figma-ingame.png)
 
 In order to animate different parts of the UI, I exported assets as individual pieces that I could put back together in Unity. This allowed me to, for instance, only animate the border around a button but not change its inside color.
 
 I kept most things grayscale so that I could reuse the asset. In Unity, I simply colored each instance differently.
 
-![Each UI component is split into different parts and don't have color so I can set them in Unity and animate fading between colors.](./separated-ui.png)
+![Each UI component is split into different parts and don't have color so I can set them in Unity and animate fading between colors.](separated-ui.png)
 
 > In hindsight, I could also have done this with the 3-2-1 stoplight. When it became active, just overlay the glow on top to make it brighter.
 
@@ -274,18 +272,20 @@ The checkerboard on the start screen randomly zooms and changes colors every fiv
 // this would all go in Update()
 var length = Mathf.Lerp(2, 10, Mathf.PingPong(Time.time * 0.05f, 1));
 var speed = Random.Range(0.1f, 0.8f);
+var offset = new Vector2(speed * _x, speed * _y);
 
 cb.uvRect = new Rect(
-    cb.uvRect.position + new Vector2(speed * _x, speed * _y) * Time.deltaTime,
+    cb.uvRect.position + offset * Time.deltaTime,
     new Vector2(length, length)
 );
 ```
 
 The other thing I'm really happy about are the button animations. When the instructions or credits button are activated, the same button is used to go back to the start screen.
 
-<div class="bleed-wide">
-  <VideoGif content={{ collection: "projects", folder: "rcw" }} name="main-menu-ani-btns" />
-</div>
+<VideoGif
+  content={{ collection: "projects", folder: "rcw" }}
+  name="main-menu-ani-btns"
+/>
 
 The "Go back" text slides out, and the outside border becomes a panel for the text to exist in. I spent ~~too much~~ some time getting it to feel just right. I would like to thank this [easings cheat sheet](https://easings.net/) for providing copy-and-paste animation curves.
 
@@ -299,3 +299,5 @@ How would I update this game in the future? The current gameplay loop is a blata
 - **Levels.** When your score reaches a certain threshold, new challenges appear. Old stuff is swapped out. Maybe add a way to continue from a certain level after losing.
 
 ...but for now, I'll just enjoy the current results. Thanks for reading!
+
+[^1]: Incredibly creative name, I know.
