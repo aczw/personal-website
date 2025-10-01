@@ -13,7 +13,7 @@
 }
 
 /* A good explanation of what's going on: https://www.joshwcomeau.com/css/full-bleed/ */
-@utility mdx-span-normal {
+@utility mdx-content {
   display: grid;
   column-gap: var(--spacing-space);
   grid-template-columns:
@@ -30,7 +30,7 @@
 
 @layer base {
   /* Only style elements rendered from MDX */
-  article > .mdx-span-normal {
+  article.mdx-content {
     /* This is in the base layer so that other utilities can override it */
     & > * {
       grid-column: 2;
