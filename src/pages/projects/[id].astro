@@ -1,6 +1,5 @@
 ---
-import { Image } from "astro:assets";
-import { getCollection, getEntry, render } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import type { z } from "astro/zod";
 
@@ -12,12 +11,7 @@ import {
   type Icon as IconType,
 } from "@lucide/astro";
 
-import Anchor from "@/components/mdx/anchor.astro";
-import Aside from "@/components/mdx/aside.astro";
-import H2 from "@/components/mdx/h2.astro";
-import H3 from "@/components/mdx/h3.astro";
 import ProjectCover from "@/components/project-cover.astro";
-import TableOfContents from "@/components/table-of-contents.astro";
 import type {
   LinkSchema,
   SourceHrefSchema,
@@ -28,6 +22,8 @@ import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import ContentLayout from "@/layouts/content-layout.astro";
 import { DISABLED_PROJECTS } from "@/scripts/constants";
+import { validProjectCover } from "@/scripts/util";
+import ContentWithToc from "@/components/content-with-toc.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -54,6 +50,10 @@ const {
     cover,
   },
 } = project;
+
+if (!validProjectCover(cover.img.width, cover.img.height)) {
+  throw new Error("Cover images must have an aspect ratio of 16:10!");
+}
 
 type MetadataKind =
   | {
@@ -82,8 +82,6 @@ if (link) {
 if (sourceHref) {
   metadata.push({ kind: "sourceHref", data: sourceHref, icon: FileCodeIcon });
 }
-
-const { Content, headings } = await render(project);
 ---
 
 <ContentLayout meta={{ kind: "project", project }}>
@@ -190,23 +188,5 @@ const { Content, headings } = await render(project);
     </ul>
   </section>
 
-  <section
-    class="grid-line-before grid-line-after relative grid w-full grid-cols-1 toc:grid-cols-[minmax(0px,3fr)_1fr]"
-  >
-    <div
-      class="content space-y-pad-2 border-dashed border-line-dark py-pad toc:border-r-(length:--border-w)"
-    >
-      <Content
-        components={{
-          h2: H2,
-          h3: H3,
-          blockquote: Aside,
-          a: Anchor,
-          img: Image,
-        }}
-      />
-    </div>
-
-    <TableOfContents headings={headings} />
-  </section>
+  <ContentWithToc entry={project} />
 </ContentLayout>

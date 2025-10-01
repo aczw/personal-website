@@ -1,17 +1,13 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection, getEntry, render } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import type { GetStaticPaths } from "astro";
 
 import { CalendarFoldIcon } from "@lucide/astro";
 
-import Anchor from "@/components/mdx/anchor.astro";
-import Aside from "@/components/mdx/aside.astro";
-import H2 from "@/components/mdx/h2.astro";
-import H3 from "@/components/mdx/h3.astro";
-import TableOfContents from "@/components/table-of-contents.astro";
-import CommonLayout from "@/layouts/common-layout.astro";
 import { getShortDateFormatting, validProjectCover } from "@/scripts/util";
+import ContentLayout from "@/layouts/content-layout.astro";
+import ContentWithToc from "@/components/content-with-toc.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -34,52 +30,39 @@ const {
 if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
-
-const { Content, headings } = await render(post);
 ---
 
-<CommonLayout meta={{ kind: "post", post }}>
-  <main class="py-12">
-    <article>
-      {
-        cover ?
-          <div class="span-wide mb-6 [&_+_div]:pt-6">
-            <Image
-              src={cover.img}
-              alt={cover.alt}
-              loading="eager"
-              class="rounded-xl bg-sweater-9"
-            />
-          </div>
-        : null
-      }
-
-      <div class="span-normal mb-6 space-y-1">
-        <h1 class="text-3xl">{title}</h1>
-        {blurb ? <p class="text-subtitle">{blurb}</p> : null}
-      </div>
-
-      <time
-        datetime={posted.toISOString()}
-        class="span-normal mb-6 flex items-center gap-1.5 maple text-sweater-4"
-      >
-        <CalendarFoldIcon size={16} />
-        {getShortDateFormatting(posted)}
-      </time>
-
-      <section class="mdx-span-normal space-y-6">
-        <TableOfContents headings={headings} />
-
-        <Content
-          components={{
-            h2: H2,
-            h3: H3,
-            blockquote: Aside,
-            a: Anchor,
-            img: Image,
-          }}
+<ContentLayout meta={{ kind: "post", post }}>
+  {
+    cover ?
+      <section class="grid-line-before grid-line-after relative p-pad">
+        <Image
+          src={cover.img}
+          alt={cover.alt}
+          loading="eager"
+          class="rounded-lg bg-sweater-9"
         />
       </section>
-    </article>
-  </main>
-</CommonLayout>
+    : null
+  }
+
+  <section
+    id="content-begin"
+    class="grid-line-before grid-line-after relative p-pad"
+  >
+    <div class="span-normal mb-6 space-y-1">
+      <h1 class="text-3xl">{title}</h1>
+      {blurb ? <p class="text-subtitle">{blurb}</p> : null}
+    </div>
+
+    <time
+      datetime={posted.toISOString()}
+      class="span-normal flex items-center gap-1.5 maple text-sweater-4"
+    >
+      <CalendarFoldIcon size={16} />
+      {getShortDateFormatting(posted)}
+    </time>
+  </section>
+
+  <ContentWithToc entry={post} />
+</ContentLayout>

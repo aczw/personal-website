@@ -1,0 +1,38 @@
+---
+import {
+  render,
+  type CollectionEntry,
+  type CollectionKey,
+} from "astro:content";
+
+import Anchor from "@/components/mdx/anchor.astro";
+import Aside from "@/components/mdx/aside.astro";
+import H2 from "@/components/mdx/h2.astro";
+import H3 from "@/components/mdx/h3.astro";
+import TableOfContents from "@/components/table-of-contents.astro";
+
+interface Props {
+  entry: CollectionEntry<CollectionKey>;
+}
+
+const { Content, headings } = await render(Astro.props.entry);
+---
+
+<section
+  class="grid-line-before grid-line-after relative grid w-full grid-cols-1 toc:grid-cols-[minmax(0px,3fr)_1fr]"
+>
+  <div
+    class="content space-y-pad-2 border-dashed border-line-dark py-pad toc:border-r-(length:--border-w)"
+  >
+    <Content
+      components={{
+        h2: H2,
+        h3: H3,
+        blockquote: Aside,
+        a: Anchor,
+      }}
+    />
+  </div>
+
+  <TableOfContents headings={headings} />
+</section>
