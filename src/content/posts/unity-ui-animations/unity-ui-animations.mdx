@@ -1,5 +1,5 @@
 ---
-title: Unity UI animations 
+title: Unity UI animations
 blurb: Or, how I accidentally wrote my own tweening library
 posted: 2025-04-15T20:39:15-04
 
@@ -126,12 +126,13 @@ To control the duration, we first must specify one. Let’s say we want this ani
 
 The for loop above defines the animation in terms of frame count, but as we’ve mentioned earlier this is not ideal.[^2] Instead we will want to query how much _time_ has passed since the last frame, and increment our elapsed time by that amount. This value is accessible via `Time.deltaTime`.
 
-<figure class="bleed-wide">
-  ![Diagram depicting a smaller Time.deltaTime value for higher framerates and vice versa for lower
-  framerates.](framerate-deltatime.png)
+<figure>
+  ![Diagram depicting a smaller Time.deltaTime value for higher framerates and
+  vice versa for lower framerates.](framerate-deltatime.png)
   <figcaption>
-    The higher the frame rate, the smaller `deltaTime` is. This means the animation will take the
-    same amount of time regardless of how terrible your computer is.
+    The higher the frame rate, the smaller `deltaTime` is. This means the
+    animation will take the same amount of time regardless of how terrible your
+    computer is.
   </figcaption>
 </figure>
 
@@ -345,15 +346,12 @@ public void MoveTenXUnits(float duration) {
 
 Beautiful. We’ve come a long way, haven’t we? Although in this example we did lose the ability to change the easing curve, it would be trivial to add another function parameter to customize that behavior.
 
-At this point, functionality-wise there’s not much separating our own utilities from actual tweening libraries like [LeanTween](https://dentedpixel.com/LeanTweenDocumentation/classes/LeanTween.html) or [DOTween](https://dotween.demigiant.com/). However, I will say that I did not take into account performance while writing these, nor have I tested them at scale. If you’re calling these functions hundreds or thousands of times, you probably _should_ move on from `Animate()` and just use one of the tweening libraries above. They offer a much larger API surface and I’m sure they’re more performant as well.
+At this point, functionality-wise there’s not much separating our own utilities from real tweening libraries like [LeanTween](https://dentedpixel.com/LeanTweenDocumentation/classes/LeanTween.html) or [DOTween](https://dotween.demigiant.com/). However, I did not consider performance while writing these, nor have I tested them at scale.
 
-<figure>
-  ![This post is 2,751 words long.](ui-animations-word-count.png)
-  <figcaption>**Word count stats.** Cooked.</figcaption>
-</figure>
-
-Anyway, I did not expect to write ~2700 words about this 14-line function, but here we are. Please reach out if you spot any mistakes or have any suggestions.
+If you’re calling these functions hundreds or thousands of times, you probably _should_ move on from `Animate()` and just use one of the tweening libraries above. They offer a much larger API surface and I’m sure they’re more performant as well.
 
 [^1]: Not me realizing for the first time while writing this that Unity is using the British spelling for behavior. What.
+
 [^2]: Imagine a laptop running at 30 FPS while another PC runs at 60 FPS. Our animation would take twice as long to finish on the laptop because each frame takes up a longer duration in the second—this is probably not what we want.
+
 [^3]: TIL the word “interpolant” which is used in the Unity docs for [`Vector3.Lerp`](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Vector3.Lerp.html).

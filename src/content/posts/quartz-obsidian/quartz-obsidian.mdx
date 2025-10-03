@@ -15,7 +15,9 @@ First on the backlog of projects I wanted to check out over winter break is Quar
 - 100% Obsidian compatibility, including wikilinks, callouts, and file embeds
 - LaTeX support via KaTeX or MathJax
 
-Quartz turns your local Obsidian vault into a fully-fledged, functional website. Compared to Obsidian Publish, it’s free and you get to customize many more things. This post documents my experience with Quartz and how I got it to work with my vault. Up to date as of v4.4.0.
+Quartz turns your local Obsidian vault into a fully-fledged, functional website. Compared to Obsidian Publish, it’s free and you get to customize many more things. This post documents my experience with Quartz and how I got it to work with my vault.
+
+> Up to date as of v4.4.0.
 
 ## Basic setup and workflow
 
@@ -44,22 +46,26 @@ Since every link in my vault uses the shortest path possible—plus, none of my 
 This is thanks to Quartz’s Obsidian support. Make sure to set the markdownLinkResolution option to shortest for the CrawlLinks plugin, like so:
 
 ```ts title="quartz.config.ts"
-transformers: [
-    /* ...other plugins... */
-    Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
-],
+const config: QuartzConfig = {
+  /* ...other stuff... */
+  plugins: {
+    transformers: [Plugin.CrawlLinks({ markdownLinkResolution: "shortest" })],
+  },
+};
 ```
 
 Since I’ll be making copies of my notes, the file creation date on disk will not be accurate. Fortunately, I keep track of when each note was created and modified via frontmatter within the note itself. I tell Quartz to use and display that instead.
 
-```ts title="quartz.config.ts" {3-5}
-transformers: [
-    /* ...other plugins... */
-    Plugin.CreatedModifiedDate({
-        priority: ["frontmatter"],
-    }),
-    Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
-],
+```ts title="quartz.config.ts" ins={5}
+const config: QuartzConfig = {
+  /* ...other stuff... */
+  plugins: {
+    transformers: [
+      Plugin.CreatedModifiedDate({ priority: ["frontmatter"] }),
+      Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
+    ],
+  },
+};
 ```
 
 ### Styling
@@ -68,19 +74,18 @@ Most of the time was spent on making things look ✨*pretty*✨
 
 I customized Quartz to use the same color scheme as this website. I also created a light mode version,[^3] and honestly I think it looks even better than dark:
 
-<div class="bleed-wide">
-  ![Homepage of the my Quartz site, displayed in light purple colors.](quartz-light.png)
-</div>
+![Homepage of the my Quartz site, displayed in light purple colors.](quartz-light.png)
 
 Currently I’m using my go-to fonts (Atkinson Hyperlegible and Berkeley Mono), but why limit myself? I might give the [Geist family](https://vercel.com/font) a spin.
 
 It’s a bit hard to make out in the screenshot, but I also made a cute little icon! It’s inspired by the in game location of the same name and all the towers you see while playing.
 
-<figure class="no-bg">
+<figure>
   ![Diagram showing how the icon's main tower graphic comes from OMORI, the
   game.](otherworld-icon-ref.png)
   <figcaption>
-    **References for the icon.** Sorry, this feels like a shitty YouTube thumbnail.
+    **References for the icon.** Sorry, this feels like a shitty YouTube
+    thumbnail.
   </figcaption>
 </figure>
 
@@ -108,11 +113,14 @@ error: script "quartz" exited with code 1
 
 Oops. Looking at the error, this one’s on me. It states we’re trying to _literally_ run the file, which unfortunately doesn’t work on Windows because it doesn’t recognize the shebang present at the top of this file. The solution was to prepend `bun run` to the script so that Windows knows which executable to use.
 
-```json title="package.json" ins={2} del={3}
-"scripts": {
+```json title="package.json" ins={4} del={5}
+{
+  /* ...etc... */
+  "scripts": {
     "quartz": "bun run ./quartz/bootstrap-cli.mjs",
-    "quartz": "./quartz/bootstrap-cli.mjs",
-},
+    "quartz": "./quartz/bootstrap-cli.mjs"
+  }
+}
 ```
 
 Now `quartz` is a valid script name that Bun can run, so e.g. `bun quartz build --serve` works flawlessly. Still not sure what’s going on with `bunx` though.
@@ -230,7 +238,11 @@ I can reference all sorts of other reasons that people have written about, like 
 So, I encourage you to publish your own notes. Feel free to reach out if you have, or if you found mine helpful.
 
 [^1]: One neat side effect is that my GitHub contribution graph looks absolutely stacked, when in reality it’s mostly just commits to my vault. If you still judge people based on their graphs given [how easy it is to manipulate](https://github.com/gelstudios/gitfiti), then more power to me!
+
 [^2]: My dependence on GitHub grows stronger by the day. I can’t wait to graduate and have to pay for Pro and be hit with charges on things I didn’t know existed.
+
 [^3]: Which this site currently doesn’t have (and probably should have).
+
 [^4]: Probably me. By the way, I’ve added footnotes support to this site, as you’ve probably noticed. I apologize for abusing them in this post. I’ll stop when the novelty wears off.
+
 [^5]: They’re not.
