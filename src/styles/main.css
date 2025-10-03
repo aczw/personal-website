@@ -59,10 +59,6 @@
   --breakpoint-480: 480px;
   --breakpoint-560: 560px;
 
-  /* Used for shifting the hashtag icons next to MDX headings to the
-   * right side when screen width becomes too small */
-  --breakpoint-heading: 760px;
-
   /* CSS variables can't be referenced in breakpoint theme variables, so we 
    * have to hand calculate them.
    * 
@@ -140,6 +136,7 @@
   }
 }
 
+/* Currently the only place where this is used is in the LastFm component. */
 @utility pill {
   @apply rounded-full bg-sweater-4 px-3 py-1.5 text-sweater-9 transition-colors hover:bg-sweater-3;
 
