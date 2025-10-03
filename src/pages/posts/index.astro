@@ -1,32 +1,16 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
-import { getCollection } from "astro:content";
-
-import CommonLayout from "@/layouts/common-layout.astro";
 import { getFullDateFormatting } from "@/scripts/util";
+import MainLayout from "@/layouts/main-layout.astro";
 
 const posts = await getCollection("posts");
-const yearToPostsMap = new Map<number, CollectionEntry<"posts">[]>();
-
-// Group posts together by publish year
-for (const post of posts) {
-  const year = post.data.posted.getFullYear();
-  const maybePosts = yearToPostsMap.get(year);
-
-  if (maybePosts) {
-    yearToPostsMap.set(year, [...maybePosts, post]);
-  } else {
-    yearToPostsMap.set(year, [post]);
-  }
-}
-
-// Sort each group of posts by publish year
-const entries = yearToPostsMap.entries().toArray();
-entries.sort((a, b) => b[0] - a[0]);
+const sortedPosts = posts.sort(
+  (a, b) => b.data.posted.getTime() - a.data.posted.getTime(),
+);
 ---
 
-<CommonLayout
+<MainLayout
   meta={{
     kind: "route",
     title: "Posts",
@@ -35,72 +19,31 @@ entries.sort((a, b) => b[0] - a[0]);
     ogImageParams: "All my posts.",
   }}
 >
-  <main class="span-normal span-height py-12">
-    <div
-      class="pointer-events-none space-y-12 [--fade-speed:25ms] hover:[&_.row:not(:hover)]:brightness-50"
-    >
-      {
-        entries.map(([year, yearPosts]) => {
-          const sortedPosts = yearPosts;
-          sortedPosts.sort(
-            (a, b) => b.data.posted.getTime() - a.data.posted.getTime(),
-          );
+  <section class="grid-line-before grid-line-after relative flex flex-col">
+    {
+      sortedPosts.map(({ data: { title, blurb, posted, cover }, id }) => (
+        <a
+          href={`/posts/${id}`}
+          class="group grid grid-cols-4 border-dashed border-line-dark transition-colors not-last:border-b-(length:--border-w) hover:bg-line-dark"
+        >
+          <time class="col-1 flex border-r-(length:--border-w) border-dashed border-line-dark text-link-secondary">
+            <span class="border-r-(length:--border-w) border-dashed border-line-dark p-pad">
+              {posted.getFullYear()}
+            </span>
+            <span class="p-pad text-link-secondary transition-colors group-hover:text-link-secondary-hover">
+              {posted.toLocaleDateString("en-US", {
+                month: "long",
+                day: "numeric",
+                timeZone: "America/New_York",
+              })}
+            </span>
+          </time>
 
-          return (
-            <section>
-              <h2 class="row mb-4 animate-fade-in cursor-default maple leading-none text-sweater-6 transition-[filter_opacity] [--order:0]">
-                {year}
-              </h2>
-
-              <div class="pointer-events-auto flex flex-col">
-                {sortedPosts.map(
-                  ({ data: { title, blurb, posted }, id, body }, idx) => (
-                    <a
-                      href={`/posts/${id}`}
-                      class="row group 380:gap-space flex animate-fade-in flex-col gap-1 border-y-2 border-t-sweater-9 border-b-sweater-9/0 py-4 transition-[filter_opacity] last:border-b-sweater-9 hover:border-b-sweater-9/100 380:flex-row"
-                      style={{ "--order": idx + 1 }}
-                    >
-                      <time
-                        datetime={posted.toISOString()}
-                        title={getFullDateFormatting(posted)}
-                        class="shrink-0 maple text-sweater-4 transition-colors group-hover:text-sweater-3"
-                      >
-                        <span class="380:hidden">
-                          {posted.toLocaleDateString("en-US", {
-                            month: "long",
-                            day: "numeric",
-                            timeZone: "America/New_York",
-                          })}
-                        </span>
-                        <span class="hidden 380:inline">
-                          {posted.toLocaleDateString("en-US", {
-                            month: "2-digit",
-                            day: "2-digit",
-                            timeZone: "America/New_York",
-                          })}
-                        </span>
-                      </time>
-
-                      <div class="space-y-1">
-                        <h2>{title}</h2>
-                        {blurb ?
-                          <p class="text-subtitle transition-[color_opacity] group-hover:text-sweater-1 group-hover:opacity-100">
-                            {blurb}
-                          </p>
-                        : body ?
-                          <p class="hidden text-subtitle 560:block">
-                            “<span class="italic">{body.slice(0, 70)}...</span>”
-                          </p>
-                        : null}
-                      </div>
-                    </a>
-                  ),
-                )}
-              </div>
-            </section>
-          );
-        })
-      }
-    </div>
-  </main>
-</CommonLayout>
+          <span class="col-span-3 p-pad font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+            {title}
+          </span>
+        </a>
+      ))
+    }
+  </section>
+</MainLayout>
