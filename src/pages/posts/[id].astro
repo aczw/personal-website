@@ -5,7 +5,11 @@ import type { GetStaticPaths } from "astro";
 
 import { CalendarFoldIcon } from "@lucide/astro";
 
-import { getShortDateFormatting, validProjectCover } from "@/scripts/util";
+import {
+  getFullDateFormatting,
+  getShortDateFormatting,
+  validProjectCover,
+} from "@/scripts/util";
 import ContentLayout from "@/layouts/content-layout.astro";
 import ContentWithToc from "@/components/content-with-toc.astro";
 
@@ -46,22 +50,33 @@ if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
     : null
   }
 
-  <section
-    id="content-begin"
-    class="grid-line-before grid-line-after relative p-pad"
-  >
-    <div class="span-normal mb-6 space-y-1">
-      <h1 class="text-3xl">{title}</h1>
+  <section id="content-begin" class="grid-line-before grid-line-after relative">
+    <div
+      class="space-y-1 border-b-(length:--border-w) border-dashed border-line-dark p-pad"
+    >
+      <h1 class="text-2xl leading-tight font-bold text-sweater-2">
+        {title}
+      </h1>
+
       {blurb ? <p class="text-subtitle">{blurb}</p> : null}
     </div>
 
-    <time
-      datetime={posted.toISOString()}
-      class="span-normal flex items-center gap-1.5 maple text-sweater-4"
-    >
-      <CalendarFoldIcon size={16} />
-      {getShortDateFormatting(posted)}
-    </time>
+    <div class="flex items-center">
+      <p
+        class="shrink-0 border-r-(length:--border-w) border-dashed border-line-dark p-pad font-bold text-subtitle"
+      >
+        Posted on
+      </p>
+
+      <time
+        datetime={posted.toISOString()}
+        title={getFullDateFormatting(posted)}
+        class="flex grow items-center justify-between gap-pad p-pad"
+      >
+        {getShortDateFormatting(posted)}
+        <CalendarFoldIcon size={18} class="shrink-0 stroke-icon" />
+      </time>
+    </div>
   </section>
 
   <ContentWithToc entry={post} />
