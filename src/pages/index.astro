@@ -4,7 +4,10 @@ import { getCollection, getEntries } from "astro:content";
 import Link from "@/components/link.astro";
 import ProjectCover from "@/components/project-cover.astro";
 import { getSocials } from "@/scripts/constants";
-import { getFullDateFormatting } from "@/scripts/util";
+import {
+  getFullDateFormatting,
+  getMonthYearDateFormatting,
+} from "@/scripts/util";
 import MainLayout from "@/layouts/main-layout.astro";
 import { CircleArrowRightIcon } from "@lucide/astro";
 
@@ -154,11 +157,7 @@ posts = posts
               class="shrink-0 leading-snug text-link-secondary 560:group-hover:hidden"
             >
               <span class="480:hidden">Posted</span>
-              {posted.toLocaleDateString("en-US", {
-                month: "long",
-                day: "numeric",
-                timeZone: "America/New_York",
-              })}
+              {getMonthYearDateFormatting(posted)}
             </time>
             <div
               aria-hidden="true"

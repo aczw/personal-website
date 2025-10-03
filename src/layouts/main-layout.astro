@@ -8,5 +8,9 @@ type Props = ComponentProps<typeof BaseLayout>;
 ---
 
 <CommonLayout {...Astro.props}>
-  <main class="space-y-6 sm:space-y-12"><slot /></main>
+  <main
+    class="min-h-[calc(100vh-45px-120.688px-180.5px-45px)] space-y-6 sm:min-h-[calc(100vh-90px-81.188px-178.5px-90px)] sm:space-y-12"
+  >
+    <slot />
+  </main>
 </CommonLayout>

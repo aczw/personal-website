@@ -91,6 +91,17 @@ function getFullDateFormatting(date: Date) {
   });
 }
 
+/**
+ * @returns Just the (full) month and year.
+ */
+function getMonthYearDateFormatting(date: Date) {
+  return date.toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    timeZone: "America/New_York",
+  });
+}
+
 function getProjectsInCategory(
   projects: CollectionEntry<"projects">[],
   category: (typeof PROJECT_CATEGORIES)[number],
@@ -112,5 +123,6 @@ export {
   stripEndingSlash,
   getShortDateFormatting,
   getFullDateFormatting,
+  getMonthYearDateFormatting,
   getProjectsInCategory,
 };
