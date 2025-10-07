@@ -13,6 +13,10 @@
       @apply w-full rounded-lg;
     }
 
+    img {
+      cursor: zoom-in;
+    }
+
     /* Direct media needs to have its padding and width manually
      * adjusted, otherwise the border radius won't work. */
     > img,

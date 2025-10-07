@@ -9,4 +9,15 @@ type Props = ComponentProps<typeof BaseLayout>;
 
 <CommonLayout {...Astro.props}>
   <main><article class="space-y-6 sm:space-y-12"><slot /></article></main>
+
+  <dialog
+    class="fixed top-1/2 left-1/2 mb-0 w-full max-w-[calc(1100px+2*var(--spacing-pad))] transform-[translate(-50%,-50%)] bg-transparent outline-0 backdrop:bg-sweater-10/85"
+  >
+    <div class="p-pad">
+      <img
+        loading="eager"
+        class="mx-auto max-h-[80vh] cursor-zoom-out rounded-lg select-none"
+      />
+    </div>
+  </dialog>
 </CommonLayout>

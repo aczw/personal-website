@@ -34,3 +34,43 @@ const { content: Content, headings } = Astro.props;
 
   <TableOfContents headings={headings} />
 </section>
+
+<script>
+  const dialogElt = document.querySelector("dialog");
+  const dialogImgElt =
+    document.querySelector<HTMLImageElement>("dialog > div > img");
+
+  /**
+   * @see https://cassidoo.co/post/html-dialog-on-image-click
+   */
+  function makeMediaZoomable() {
+    if (!dialogElt || !dialogImgElt) {
+      console.error("Dialog and/or dialog image not found!");
+      return;
+    }
+
+    // Only activate on desktop
+    if (!window.matchMedia("(hover: hover)").matches) return;
+
+    document.querySelectorAll(".content img").forEach((elt) => {
+      elt.addEventListener("click", () => {
+        const imgElt = elt as HTMLImageElement;
+        dialogImgElt.src = imgElt.src;
+        dialogElt.showModal();
+      });
+    });
+
+    document.addEventListener("keydown", (ev) => {
+      if (ev.key === "Escape") {
+        dialogImgElt.src = "";
+      }
+    });
+
+    dialogElt.addEventListener("click", () => {
+      dialogElt.close();
+      dialogImgElt.src = "";
+    });
+  }
+
+  makeMediaZoomable();
+</script>
