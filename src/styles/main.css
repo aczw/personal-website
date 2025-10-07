@@ -81,6 +81,11 @@
 
     font-size: 15px;
     scrollbar-gutter: stable;
+
+    &::selection {
+      background-color: var(--color-sweater-8);
+      color: var(--color-sweater-2);
+    }
   }
 
   /* Make vertical scrollbar always visible so horizontal content
@@ -113,6 +118,10 @@
   img,
   video {
     font-style: italic;
+
+    &::selection {
+      background-color: var(--color-sweater-5);
+    }
   }
 }
 
