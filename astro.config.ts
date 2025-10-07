@@ -1,11 +1,17 @@
+import { defineConfig, envField } from "astro/config";
+
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
-import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig, envField } from "astro/config";
+
+import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import rehypeUnwrapImages from "rehype-unwrap-images";
+
+import getReadingTime from "reading-time";
+import { toString } from "mdast-util-to-string";
 
 import { SITE_URL } from "./src/scripts/util";
 
@@ -78,6 +84,16 @@ const config = defineConfig({
   ],
   markdown: {
     rehypePlugins: [rehypeUnwrapImages],
+    remarkPlugins: [
+      () =>
+        // Adapted from https://docs.astro.build/en/recipes/reading-time
+        function (tree, { data }) {
+          const textOnPage = toString(tree);
+          const readingTime = getReadingTime(textOnPage);
+
+          data.astro!.frontmatter!["stats"] = readingTime;
+        },
+    ],
   },
   env: {
     schema: {

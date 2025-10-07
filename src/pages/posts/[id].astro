@@ -1,9 +1,9 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection, getEntry } from "astro:content";
+import { getCollection, getEntry, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 
-import { CalendarFoldIcon } from "@lucide/astro";
+import { BookOpenIcon, CalendarFoldIcon } from "@lucide/astro";
 
 import {
   getFullDateFormatting,
@@ -34,6 +34,10 @@ const {
 if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
+
+const { Content, headings, remarkPluginFrontmatter } = await render(post);
+
+const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
 ---
 
 <ContentLayout meta={{ kind: "post", post }}>
@@ -61,23 +65,55 @@ if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
       {blurb ? <p class="text-subtitle">{blurb}</p> : null}
     </div>
 
-    <div class="flex items-center">
-      <p
-        class="shrink-0 border-r-(length:--border-w) border-dashed border-line-dark p-pad font-bold text-subtitle"
+    <div class="grid grid-cols-1 480:grid-cols-2">
+      <div
+        class="flex border-b-(length:--border-w) border-dashed border-line-dark 480:border-r-(length:--border-w) 480:border-b-0"
       >
-        Posted on
-      </p>
+        <div
+          class="flex grow flex-row 480:flex-col sm:flex-row sm:items-center"
+        >
+          <p
+            class="shrink-0 border-r-(length:--border-w) border-dashed border-line-dark px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
+          >
+            Posted on
+          </p>
 
-      <time
-        datetime={posted.toISOString()}
-        title={getFullDateFormatting(posted)}
-        class="flex grow items-center justify-between gap-pad p-pad"
-      >
-        {getShortDateFormatting(posted)}
-        <CalendarFoldIcon size={18} class="shrink-0 stroke-icon" />
-      </time>
+          <time
+            datetime={posted.toISOString()}
+            title={getFullDateFormatting(posted)}
+            class="grow px-pad pt-pad pb-pad 480:pt-0 sm:pt-pad"
+          >
+            {getShortDateFormatting(posted)}
+          </time>
+        </div>
+
+        <div class="p-pad">
+          <CalendarFoldIcon size={18} class="shrink-0 stroke-icon" />
+        </div>
+      </div>
+
+      <div class="flex">
+        <div
+          class="flex grow flex-row 480:flex-col sm:flex-row sm:items-center"
+        >
+          <p
+            class="shrink-0 border-r-(length:--border-w) border-dashed border-line-dark px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
+          >
+            Read time
+          </p>
+
+          <p class="grow px-pad pt-pad pb-pad 480:pt-0 sm:pt-pad">
+            {numMinutes}
+            {numMinutes > 1 ? "minutes" : "minute"}
+          </p>
+        </div>
+
+        <div class="p-pad">
+          <BookOpenIcon size={18} class="shrink-0 stroke-icon" />
+        </div>
+      </div>
     </div>
   </section>
 
-  <ContentWithToc entry={post} />
+  <ContentWithToc content={Content} headings={headings} />
 </ContentLayout>

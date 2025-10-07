@@ -1,5 +1,5 @@
 ---
-import { getCollection, getEntry } from "astro:content";
+import { getCollection, getEntry, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 import type { z } from "astro/zod";
 
@@ -82,6 +82,8 @@ if (link) {
 if (sourceHref) {
   metadata.push({ kind: "sourceHref", data: sourceHref, icon: FileCodeIcon });
 }
+
+const { Content, headings } = await render(project);
 ---
 
 <ContentLayout meta={{ kind: "project", project }}>
@@ -132,7 +134,7 @@ if (sourceHref) {
                 "border-b-(length:--border-w) 560:border-r-(length:--border-w) 560:border-b-0"
               : null,
 
-              // Four metadata
+              // Greater than two metadata
               metadata.length > 2 && index % 2 === 0 ?
                 "560:border-r-(length:--border-w)"
               : null,
@@ -188,5 +190,5 @@ if (sourceHref) {
     </ul>
   </section>
 
-  <ContentWithToc entry={project} />
+  <ContentWithToc content={Content} headings={headings} />
 </ContentLayout>
