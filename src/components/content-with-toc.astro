@@ -44,31 +44,41 @@ const { content: Content, headings } = Astro.props;
    * @see https://cassidoo.co/post/html-dialog-on-image-click
    */
   function makeMediaZoomable() {
+    // Only activate on desktop
+    if (!window.matchMedia("(hover: hover)").matches) return;
+
     if (!dialogElt || !dialogImgElt) {
       console.error("Dialog and/or dialog image not found!");
       return;
     }
 
-    // Only activate on desktop
-    if (!window.matchMedia("(hover: hover)").matches) return;
+    // Add a click listener to images that are zoomable (true by default)
+    document
+      .querySelectorAll(".content img:not([data-no-zoom])")
+      .forEach((elt) => {
+        elt.addEventListener("click", () => {
+          const imgElt = elt as HTMLImageElement;
 
-    document.querySelectorAll(".content img").forEach((elt) => {
-      elt.addEventListener("click", () => {
-        const imgElt = elt as HTMLImageElement;
-        dialogImgElt.src = imgElt.src;
-        dialogElt.showModal();
+          dialogImgElt.src = imgElt.src;
+          dialogImgElt.srcset = imgElt.srcset;
+          dialogImgElt.alt = imgElt.alt;
+          dialogElt.showModal();
+        });
       });
-    });
 
     document.addEventListener("keydown", (ev) => {
       if (ev.key === "Escape") {
         dialogImgElt.src = "";
+        dialogImgElt.srcset = "";
+        dialogImgElt.alt = "";
       }
     });
 
     dialogElt.addEventListener("click", () => {
       dialogElt.close();
       dialogImgElt.src = "";
+      dialogImgElt.srcset = "";
+      dialogImgElt.alt = "";
     });
   }
 
