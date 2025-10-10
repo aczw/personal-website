@@ -18,14 +18,16 @@ import ContentDate from "@/components/content-date.astro";
 const projects = await getCollection("projects");
 const icons: (typeof IconType)[] = [ImageIcon, JoystickIcon, ShapesIcon];
 
-const withVideos: string[] = ["pbr-renderer", "fireball", "door", "cuda-boids"];
-
-const wideProjects: string[] = [
+const withVideos: string[] = [
   "pbr-renderer",
+  "fireball",
+  "door",
   "cuda-boids",
   "path-tracer",
-  "rcw",
+  "cuda-path-tracer",
 ];
+
+const wideProjects: string[] = ["cuda-path-tracer", "door", "rcw"];
 ---
 
 <MainLayout
