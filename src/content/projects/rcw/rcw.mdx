@@ -22,6 +22,7 @@ order: 3
 slug: rcw
 ---
 
+import { Image } from "astro:assets";
 import VideoGif from "@/components/video-gif.astro";
 
 I've always wanted to make games, and so this summer I took the plunge and decided to start learning Unity. The end result is this quick-n'-dirty game that I made in a month or so. More than anything, this was a learning experience to get my feet wet; you'll find that none of the stuff here is very original or game-changing, but that's okay.
@@ -58,9 +59,11 @@ But uh, you're not exactly pressing next on the TV remote. What's happening here
 Essentially, each round we're given a color word, and a word color—uh, that's just as confusing. Actually, lemme restart. Ignore the game for a sec—let's just consider these two words below.
 
 <figure>
-  ![There are two words and both spell out 'purple.' The one on the left is
-  colored purple, and the one on the right is colored
-  red.](purple-comparison.png)
+  <Image
+    src={import("./purple-comparison.png")}
+    alt="There are two words and both spell out 'purple.' The one on the left is colored purple, and the one on the right is colored red."
+    data-no-zoom=""
+  />
   <figcaption>**Purple.** Purple.</figcaption>
 </figure>
 
