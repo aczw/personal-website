@@ -15,20 +15,22 @@
     src: url("/_files/fonts/AtkHypNext-RegularItalic.woff2") format("woff2");
   }
 
+  /* Pretend semibold is bold because it looks better */
   @font-face {
     font-family: "Atkinson Hyperlegible Next";
     font-style: normal;
     font-weight: bold;
     font-display: swap;
-    src: url("/_files/fonts/AtkHypNext-Bold.woff2") format("woff2");
+    src: url("/_files/fonts/AtkHypNext-SemiBold.woff2") format("woff2");
   }
 
+  /* Pretend semibold is bold because it looks better */
   @font-face {
     font-family: "Atkinson Hyperlegible Next";
     font-style: italic;
     font-weight: bold;
     font-display: swap;
-    src: url("/_files/fonts/AtkHypNext-BoldItalic.woff2") format("woff2");
+    src: url("/_files/fonts/AtkHypNext-SemiBoldItalic.woff2") format("woff2");
   }
 
   @font-face {

@@ -24,7 +24,7 @@ const config = defineConfig({
     // Required for OG image generation
     includeFiles: [
       "./public/_files/fonts/og/AtkHypNext-Regular.ttf",
-      "./public/_files/fonts/og/AtkHypNext-Bold.ttf",
+      "./public/_files/fonts/og/AtkHypNext-SemiBold.ttf",
     ],
   }),
   image: {
