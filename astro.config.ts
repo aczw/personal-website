@@ -10,7 +10,7 @@ import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-s
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 
 import remarkMath from "remark-math";
-import rehypeMathjax from "rehype-mathjax";
+import rehypeMathjax from "rehype-mathjax/chtml";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 import getReadingTime from "reading-time";
 import { toString } from "mdast-util-to-string";
@@ -85,7 +85,19 @@ const config = defineConfig({
     mdx(),
   ],
   markdown: {
-    rehypePlugins: [rehypeUnwrapImages, rehypeMathjax],
+    rehypePlugins: [
+      rehypeUnwrapImages,
+      [
+        rehypeMathjax,
+        {
+          chtml: {
+            scale: 1.1,
+            fontURL:
+              "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+          },
+        },
+      ],
+    ],
     remarkPlugins: [
       remarkMath,
       () =>
