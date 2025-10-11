@@ -8,8 +8,10 @@ import tailwindcss from "@tailwindcss/vite";
 
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
-import rehypeUnwrapImages from "rehype-unwrap-images";
 
+import remarkMath from "remark-math";
+import rehypeMathjax from "rehype-mathjax";
+import rehypeUnwrapImages from "rehype-unwrap-images";
 import getReadingTime from "reading-time";
 import { toString } from "mdast-util-to-string";
 
@@ -83,15 +85,18 @@ const config = defineConfig({
     mdx(),
   ],
   markdown: {
-    rehypePlugins: [rehypeUnwrapImages],
+    rehypePlugins: [rehypeUnwrapImages, rehypeMathjax],
     remarkPlugins: [
+      remarkMath,
       () =>
         // Adapted from https://docs.astro.build/en/recipes/reading-time
         function (tree, { data }) {
           const textOnPage = toString(tree);
           const readingTime = getReadingTime(textOnPage);
 
-          data.astro!.frontmatter!["stats"] = readingTime;
+          // @ts-expect-error: Astro object is guaranteed to exist
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          data.astro.frontmatter.stats = readingTime;
         },
     ],
   },
