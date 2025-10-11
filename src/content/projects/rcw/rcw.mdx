@@ -46,7 +46,10 @@ No ideas came to mind, and so I turned to other sources for inspiration...
 Recently I had been playing this game called [OLDTV](https://store.steampowered.com/app/643270/OLDTV/). The premise is that you're a gifted child sitting in front of a TV, and you're trying to switch between every single channel in the world.
 
 <figure>
-  <VideoGif content={{ collection: "projects", folder: "rcw" }} name="oldtv" />
+  <VideoGif
+    content={{ collection: "projects", folder: frontmatter.slug }}
+    name="oldtv"
+  />
   <figcaption>
     **OLDTV.** In-game footage. It's free on Steam, go play it.
   </figcaption>
@@ -233,7 +236,7 @@ RCW is an endless, fast-paced minigame about getting the highest score. I was th
 I also liked the button hover effect in [The Battle Cats](https://battlecats.club/en/series/battlecats/), which flashed bright yellow and magenta. Here, I tried to recreate it in Figma.
 
 <VideoGif
-  content={{ collection: "projects", folder: "rcw" }}
+  content={{ collection: "projects", folder: frontmatter.slug }}
   name="flashing-btns-figma"
 />
 
@@ -286,7 +289,7 @@ cb.uvRect = new Rect(
 The other thing I'm really happy about are the button animations. When the instructions or credits button are activated, the same button is used to go back to the start screen.
 
 <VideoGif
-  content={{ collection: "projects", folder: "rcw" }}
+  content={{ collection: "projects", folder: frontmatter.slug }}
   name="main-menu-ani-btns"
 />
 
