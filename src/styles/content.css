@@ -120,7 +120,7 @@
 
     /* Target auto-generated footnotes */
     section[data-footnotes] {
-      @apply border-t-(length:--border-w) border-dashed border-line-dark pt-pad;
+      @apply mb-0! border-t-(length:--border-w) border-dashed border-line-dark pt-pad;
 
       /* MDX generates a "Footnotes" heading. Make it screen reader only */
       > h2#footnote-label {
