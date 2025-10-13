@@ -123,9 +123,9 @@ I hope visitors to the site will know it exists! I do change the cursor to a lit
 
 Some other notable additions I wanted to highlight.
 
-The site now has a light color scheme and supports light mode. Officially.[^4] This took some reconfiguring of CSS variables and discovering hardcoded color styles, and in general took longer than I'd like to admit.
+The site now has a light color scheme.[^4] This took some reconfiguring of CSS variables/discovering hardcoded color styles, and in general took longer than I'd like to admit.
 
-I learned recently you can style selected text and media via the `::selection` pseudo-element, so I've do<span class="bg-sweater-8 text-sweater-2 not-dark:bg-sweater-2 not-dark:text-sweater-8">ne just that like you can see here. Not e</span>verything [is fully supported on all browsers](https://developer.mozilla.org/en-US/docs/Web/CSS/::selection#browser_compatibility) but this is purely visual and should gracefully fall back to defaults.
+I learned recently you can style selected text and media via the `::selection` pseudo-element, so I've do<span class="bg-sweater-8 text-sweater-2 not-dark:bg-sweater-2 not-dark:text-sweater-8">ne just that like you can see here. Not e</span>verything [is fully supported on all browsers](https://developer.mozilla.org/en-US/docs/Web/CSS/::selection#browser_compatibility) (notably, WebKit on iOS devices) but this is purely visual and should gracefully fall back to defaults.
 
 [^1]: One day I'll revisit it and incorporate it in some other way because I do find merit in having a changelog and seeing all your updates laid out like that.
 
@@ -133,4 +133,4 @@ I learned recently you can style selected text and media via the `::selection` p
 
 [^3]: Now I get to use the very official-looking `cdn.charleszw.com` URL for everything, which makes me feel important.
 
-[^4]: My `<meta name="color-scheme">` always claimed it did, which I'm sure threw off some user agents. My bad.
+[^4]: Officially. My `<meta name="color-scheme">` always claimed it did, which I'm sure threw off some user agents. My bad.
