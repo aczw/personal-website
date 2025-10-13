@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 import type { PROJECT_CATEGORIES } from "@/scripts/constants";
+import type { ContentDateType, DateKind } from "@/scripts/types";
 
 /**
  * This value is used in astro.config.ts, which unfortunately means it can't
@@ -116,6 +117,14 @@ function getProjectsInCategory(
   }
 }
 
+function getDateKind(date: ContentDateType): DateKind {
+  if (typeof date === "object" && date !== null && "from" in date) {
+    return { kind: "ranged", date };
+  } else {
+    return { kind: "simple", date };
+  }
+}
+
 export {
   SITE_URL,
   getContentRoutes,
@@ -125,4 +134,5 @@ export {
   getFullDateFormatting,
   getMonthYearDateFormatting,
   getProjectsInCategory,
+  getDateKind,
 };
