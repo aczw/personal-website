@@ -50,9 +50,9 @@ const LastFmSchema = z.object({
 
 const ProjectCategoriesSchema = z.enum(PROJECT_CATEGORIES);
 
-const BlurbSchema = z.string().refine((blurb) => blurb.length <= 190, {
+const BlurbSchema = z.string().refine((blurb) => blurb.length <= 170, {
   message:
-    "Blurb should be 190 characters or less (so it looks nice on the home screen).",
+    "Blurb should be 170 characters or less (so it looks nice in previews).",
 });
 
 const ImageSchema = (image: ImageFunction) =>

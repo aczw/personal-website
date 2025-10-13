@@ -107,9 +107,10 @@ const GET: APIRoute = async ({ request }) => {
       {
         name: "Atkinson Hyperlegible Next",
         data: readFileSync(
-          `${process.cwd()}/public/_files/fonts/og/AtkHypNext-Bold.ttf`,
+          `${process.cwd()}/public/_files/fonts/og/AtkHypNext-SemiBold.ttf`,
         ),
         style: "normal",
+        // Pretend semibold is bold because it looks better
         weight: 700,
       },
     ],

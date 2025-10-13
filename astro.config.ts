@@ -8,8 +8,10 @@ import tailwindcss from "@tailwindcss/vite";
 
 import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
-import rehypeUnwrapImages from "rehype-unwrap-images";
 
+import remarkMath from "remark-math";
+import rehypeMathjax from "rehype-mathjax/chtml";
+import rehypeUnwrapImages from "rehype-unwrap-images";
 import getReadingTime from "reading-time";
 import { toString } from "mdast-util-to-string";
 
@@ -24,7 +26,7 @@ const config = defineConfig({
     // Required for OG image generation
     includeFiles: [
       "./public/_files/fonts/og/AtkHypNext-Regular.ttf",
-      "./public/_files/fonts/og/AtkHypNext-Bold.ttf",
+      "./public/_files/fonts/og/AtkHypNext-SemiBold.ttf",
     ],
   }),
   image: {
@@ -83,15 +85,30 @@ const config = defineConfig({
     mdx(),
   ],
   markdown: {
-    rehypePlugins: [rehypeUnwrapImages],
+    rehypePlugins: [
+      rehypeUnwrapImages,
+      [
+        rehypeMathjax,
+        {
+          chtml: {
+            scale: 1.1,
+            fontURL:
+              "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+          },
+        },
+      ],
+    ],
     remarkPlugins: [
+      remarkMath,
       () =>
         // Adapted from https://docs.astro.build/en/recipes/reading-time
         function (tree, { data }) {
           const textOnPage = toString(tree);
           const readingTime = getReadingTime(textOnPage);
 
-          data.astro!.frontmatter!["stats"] = readingTime;
+          // @ts-expect-error: Astro object is guaranteed to exist
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          data.astro.frontmatter.stats = readingTime;
         },
     ],
   },

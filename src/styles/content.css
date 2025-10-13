@@ -13,7 +13,7 @@
       @apply w-full rounded-lg;
     }
 
-    img {
+    img:not([data-no-zoom]) {
       cursor: zoom-in;
     }
 
@@ -76,6 +76,30 @@
       }
     }
 
+    table {
+      @apply border-y-(length:--border-w) border-dashed border-line-dark;
+
+      width: 100%;
+
+      thead {
+        @apply border-b-(length:--border-w) border-dashed border-line-dark bg-sweater-9/70 font-bold text-sweater-2;
+
+        th {
+          @apply px-pad not-last:border-r-(length:--border-w) not-last:border-dashed not-last:border-line-dark;
+        }
+      }
+
+      tbody {
+        tr {
+          @apply not-last:border-b-(length:--border-w) not-last:border-dashed not-last:border-line-dark even:bg-sweater-9/35;
+
+          td {
+            @apply px-pad leading-snug not-last:border-r-(length:--border-w) not-last:border-dashed not-last:border-line-dark;
+          }
+        }
+      }
+    }
+
     /* Style the last element in the content only if there are footnotes */
     :is(& > *) {
       &:nth-last-child(2):has(+ section[data-footnotes]) {
@@ -96,7 +120,7 @@
 
     /* Target auto-generated footnotes */
     section[data-footnotes] {
-      @apply border-t-(length:--border-w) border-dashed border-line-dark pt-pad;
+      @apply mb-0! border-t-(length:--border-w) border-dashed border-line-dark pt-pad;
 
       /* MDX generates a "Footnotes" heading. Make it screen reader only */
       > h2#footnote-label {

@@ -1,0 +1,56 @@
+<div class="mx-pad space-y-pad rounded-lg bg-sweater-9 py-pad">
+  <div class="flex justify-between gap-pad">
+    <p class="text-lg font-bold">Break everything!</p>
+    <button
+      id="reset-button"
+      class="cursor-pointer text-link-primary transition-colors hover:text-link-primary-hover"
+      >Reset</button
+    >
+  </div>
+
+  <div class="space-y-0.5">
+    <div class="flex items-center justify-between gap-pad">
+      <label for="spacing-slider"
+        >Padding (<span class="maple">--spacing-pad</span>)</label
+      ><p id="spacing-value" class="">9.4px</p>
+    </div>
+    <div class="flex items-center">
+      <input
+        id="spacing-slider"
+        type="range"
+        value="9.375"
+        min="0"
+        max="50"
+        step="0.1"
+        class="w-full"
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+  const body = document.body;
+
+  const spacingSlider =
+    document.querySelector<HTMLInputElement>("#spacing-slider");
+  const spacingValue =
+    document.querySelector<HTMLParagraphElement>("#spacing-value");
+
+  function updateSliderValue() {
+    if (!spacingSlider || !spacingValue) {
+      console.error("Spacing slider/value not found!");
+      return;
+    }
+
+    spacingValue.textContent = `${spacingSlider.value}px`;
+    spacingSlider.addEventListener("input", (event) => {
+      const target = event.target as HTMLInputElement;
+      const spacing = `${target.value}px`;
+
+      spacingValue.textContent = spacing;
+      body.style.setProperty("--spacing-pad", spacing);
+    });
+  }
+
+  updateSliderValue();
+</script>

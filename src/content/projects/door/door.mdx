@@ -13,13 +13,14 @@ metadata:
   sourceHref: https://github.com/aczw/hw04-stylization
   date: November 2024
 type: graphics
-order: 3
+order: 4
 cover:
   img: door.png
   alt: A slightly open white door is floating above a picnic blanket that has food, a laptop, and a basket on it. The background is purple.
 slug: door
 ---
 
+import { Image } from "astro:assets";
 import { YouTube } from "astro-embed";
 import VideoGif from "@/components/video-gif.astro";
 
@@ -109,7 +110,7 @@ Hopefully the image conveys my implementation visually. Each of those steps are 
 
 <figure>
   <VideoGif
-    content={{ collection: "projects", folder: "door" }}
+    content={{ collection: "projects", folder: frontmatter.slug }}
     name="door-anim-tex"
     hasWebM
   />
@@ -135,8 +136,12 @@ This gives us basic outlines.
 However, outlines in OMORI seem to be made up of three overlapping parts: a green, pink, and purple part. Zooming in on the second concept art you can see it very clearly.
 
 <figure class="mx-auto max-w-[400px]">
-  ![Close-up of Mari's elbow, showcasing the multicolored
-  outlines.](outline-example.png)
+  <Image
+    src={import("./outline-example.png")}
+    alt="Close-up of Mari's elbow, showcasing the multicolored
+  outlines."
+    data-no-zoom=""
+  />
   <figcaption>OMORI's unique outline style.</figcaption>
 </figure>
 

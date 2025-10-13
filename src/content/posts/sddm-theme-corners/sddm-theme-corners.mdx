@@ -39,14 +39,14 @@ Common controls like power and session management are grouped together. Some the
 Some themes included icons for popular DEs like GNOME, KDE, Deepin, etc. I felt that it would be impossible to cover all cases, and chose a text-based list instead. Icons for sessions don't offer enough detail anyway; what if I wanted GNOME on both Xorg and Wayland?
 
 <VideoGif
-  content={{ collection: "posts", folder: "sddm-theme-corners" }}
+  content={{ collection: "posts", folder: frontmatter.slug }}
   name="power-session-buttons"
 />
 
 The user picture (if you choose to enable it) also acts as a user switcher. All it really does is prefill in the user field. The last user logged in is saved, however, and filled in for you next time.
 
 <VideoGif
-  content={{ collection: "posts", folder: "sddm-theme-corners" }}
+  content={{ collection: "posts", folder: frontmatter.slug }}
   name="user-picture-inputs"
 />
 
@@ -57,7 +57,7 @@ The login button is grayed out until both input fields are filled out.
 Tying everything together are subtle animations that occur when popups come in and out of view. I especially like what happens when you enter an incorrect login:
 
 <VideoGif
-  content={{ collection: "posts", folder: "sddm-theme-corners" }}
+  content={{ collection: "posts", folder: frontmatter.slug }}
   name="incorrect-login-anim"
 />
 
