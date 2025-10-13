@@ -1,6 +1,7 @@
 import { ActionError, defineAction } from "astro:actions";
 import { LASTFM_API_KEY } from "astro:env/server";
-import { LastFmSchema } from "@/scripts/types";
+
+import { LastFmSchema } from "@/scripts/schema";
 
 export const server = {
   getMostRecentTrack: defineAction({
@@ -38,13 +39,24 @@ export const server = {
         recenttracks: { track },
       } = result.data;
       const firstTrack = track[0];
+
+      if (!firstTrack) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Did not find any recent tracks.",
+        });
+      }
+
       const { name, artist, url } = firstTrack;
 
       return {
         songName: name,
         artist: artist["#text"],
         songUrl: url,
-        live: firstTrack["@attr"] ? firstTrack["@attr"].nowplaying === "true" : false,
+        live:
+          firstTrack["@attr"] ?
+            firstTrack["@attr"].nowplaying === "true"
+          : false,
       };
     },
   }),

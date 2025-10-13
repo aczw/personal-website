@@ -2,8 +2,9 @@
 import { Image } from "astro:assets";
 import type { CollectionEntry } from "astro:content";
 import type { z } from "astro/zod";
-
 import type { ImageSchema } from "@/content.config";
+
+import { CDN_URL } from "@/scripts/constants";
 import { validProjectCover } from "@/scripts/util";
 
 interface Props {
@@ -14,7 +15,7 @@ interface Props {
 }
 
 const { id, cover, class: className, useVideo } = Astro.props;
-const path = `/_files/projects/${id}`;
+const path = `${CDN_URL}/projects/${id}`;
 
 if (!validProjectCover(cover.img.width, cover.img.height)) {
   throw new Error(
@@ -27,10 +28,15 @@ if (!validProjectCover(cover.img.width, cover.img.height)) {
   class:list={["relative block aspect-16/10 *:absolute *:inset-0", className]}
   data-use-video={useVideo ? "true" : "false"}
 >
-  <Image src={cover.img} alt={cover.alt} loading="eager" class="bg-sweater-9" />
+  <Image
+    src={cover.img}
+    alt={cover.alt}
+    loading="eager"
+    class:list={["bg-sweater-9", useVideo ? "scale-[0.995]" : null]}
+  />
 
   {
-    useVideo ? (
+    useVideo ?
       <div
         style={{ opacity: 0 }}
         class="transition-opacity will-change-[opacity] motion-reduce:hidden"
@@ -51,7 +57,7 @@ if (!validProjectCover(cover.img.width, cover.img.height)) {
           <source src={`${path}/cover.mp4`} type="video/mp4" />
         </video>
       </div>
-    ) : null
+    : null
   }
 </project-cover>
 

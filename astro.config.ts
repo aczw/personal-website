@@ -1,21 +1,33 @@
+import { defineConfig, envField } from "astro/config";
+
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
-import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
-import tailwindcss from "@tailwindcss/vite";
-import { defineConfig, envField } from "astro/config";
-import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
-import rehypeUnwrapImages from "rehype-unwrap-images";
 
-import { SITE_NAME } from "./src/scripts/util";
+import tailwindcss from "@tailwindcss/vite";
+
+import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
+import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
+
+import remarkMath from "remark-math";
+import rehypeMathjax from "rehype-mathjax/chtml";
+import rehypeUnwrapImages from "rehype-unwrap-images";
+import getReadingTime from "reading-time";
+import { toString } from "mdast-util-to-string";
+
+import { SITE_URL } from "./src/scripts/util";
 
 const config = defineConfig({
-  site: SITE_NAME,
+  site: SITE_URL,
   output: "static",
   trailingSlash: "never",
   adapter: vercel({
     imageService: true,
-    includeFiles: ["./public/_fonts/AtkHypNext-Regular.ttf", "./public/_fonts/AtkHypNext-Bold.ttf"],
+    // Required for OG image generation
+    includeFiles: [
+      "./public/_files/fonts/og/AtkHypNext-Regular.ttf",
+      "./public/_files/fonts/og/AtkHypNext-SemiBold.ttf",
+    ],
   }),
   image: {
     responsiveStyles: true,
@@ -25,8 +37,10 @@ const config = defineConfig({
     sitemap(),
     astroExpressiveCode({
       plugins: [pluginCollapsibleSections()],
-      themes: ["rose-pine"],
+      themes: ["rose-pine", "rose-pine-dawn"],
+
       useThemedSelectionColors: true,
+      cascadeLayer: "ec",
 
       defaultProps: {
         collapseStyle: "collapsible-auto",
@@ -38,45 +52,57 @@ const config = defineConfig({
 
       styleOverrides: {
         borderWidth: "0px",
-        borderRadius: "0.5rem",
+        borderRadius: "var(--radius-lg)",
         uiFontFamily: "Atkinson Hyperlegible Next",
         uiFontSize: "1rem",
-        codeFontFamily: "Berkeley Mono Variable",
-        codeFontWeight: "120",
-        codeFontSize: "13px",
+        codeFontFamily: "Maple Mono",
+        codeFontSize: "var(--text-mono)",
 
         frames: {
-          editorActiveTabBackground: ({ theme }) => theme.colors["editor.background"],
-          editorActiveTabForeground: "#C3BDFF",
-          editorActiveTabIndicatorHeight: "2px",
-          editorActiveTabIndicatorTopColor: "#C3BDFF",
-          editorTabBarBackground: ({ theme }) => setAlpha(theme.colors["editor.background"], 0.5),
-          editorTabBorderRadius: "0.3rem",
+          editorActiveTabBackground: ({ theme }) =>
+            theme.colors["editor.background"],
+          editorTabBarBackground: ({ theme }) =>
+            setAlpha(theme.colors["editor.background"], 0.5),
           shadowColor: "transparent",
-        },
-
-        textMarkers: {
-          markBackground: ({ resolveSetting }) =>
-            `lch(23.59% 18.75 ${resolveSetting("textMarkers.markHue")} / ${resolveSetting("textMarkers.backgroundOpacity")})`,
-          markBorderColor: ({ resolveSetting }) =>
-            `lch(23.59% 18.75 ${resolveSetting("textMarkers.markHue")} / ${resolveSetting("textMarkers.borderOpacity")})`,
-          markHue: "293.7",
-        },
-
-        collapsibleSections: {
-          closedBackgroundColor: "#393552",
-          openBackgroundColorCollapsible: setAlpha("#393552", 0.4),
         },
       },
     }),
     mdx(),
   ],
   markdown: {
-    rehypePlugins: [rehypeUnwrapImages],
+    rehypePlugins: [
+      rehypeUnwrapImages,
+      [
+        rehypeMathjax,
+        {
+          chtml: {
+            scale: 1.1,
+            fontURL:
+              "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+          },
+        },
+      ],
+    ],
+    remarkPlugins: [
+      remarkMath,
+      () =>
+        // Adapted from https://docs.astro.build/en/recipes/reading-time
+        function (tree, { data }) {
+          const textOnPage = toString(tree);
+          const readingTime = getReadingTime(textOnPage);
+
+          // @ts-expect-error: Astro object is guaranteed to exist
+          data.astro.frontmatter.stats = readingTime;
+        },
+    ],
   },
   env: {
     schema: {
-      LASTFM_API_KEY: envField.string({ context: "server", access: "secret", optional: false }),
+      LASTFM_API_KEY: envField.string({
+        context: "server",
+        access: "secret",
+        optional: false,
+      }),
     },
   },
   redirects: {

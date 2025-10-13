@@ -14,7 +14,7 @@
 
 import type { HTMLAttributes } from "astro/types";
 
-import Undo2 from "lucide-astro/Undo2";
+import { Undo2Icon } from "@lucide/astro";
 
 import Link from "@/components/link.astro";
 
@@ -23,7 +23,9 @@ type Props = Omit<HTMLAttributes<"a">, "target" | "class">;
 const href = Astro.props.href;
 
 if (!href || typeof href !== "string") {
-  throw new Error('"href" attribute doesn\'t exist on anchor or we mistakenly passed in a URL.');
+  throw new Error(
+    '"href" attribute doesn\'t exist on anchor or we mistakenly passed in a URL.',
+  );
 }
 
 const isFootnoteRelated = href.startsWith("#user-content-fn");
@@ -37,14 +39,11 @@ const isBackRef = href.startsWith("#user-content-fnref-");
   noUnderline={isFootnote}
   {...Astro.props}
   >{
-    isBackRef ? (
-      <Undo2 size={15} />
-    ) : isFootnote ? (
+    isBackRef ? <Undo2Icon size={15} />
+    : isFootnote ?
       <>
         [<slot />]
       </>
-    ) : (
-      <slot />
-    )
+    : <slot />
   }</Link
 >

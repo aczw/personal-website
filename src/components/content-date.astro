@@ -1,0 +1,26 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+import type { ContentDateType } from "@/scripts/types";
+import { getDateKind } from "@/scripts/util";
+
+type Props = HTMLAttributes<"p"> & {
+  date: ContentDateType;
+};
+
+const { date, ...props } = Astro.props;
+
+const dateKind = getDateKind(date);
+---
+
+<p {...props}>
+  {
+    dateKind.kind === "simple" ?
+      dateKind.date
+    : <>
+        {dateKind.date.from}{" "}
+        <span class="cursor-default text-sweater-6/80 select-none">—</span>{" "}
+        {dateKind.date.to}
+      </>
+  }
+</p>

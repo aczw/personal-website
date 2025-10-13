@@ -1,48 +1,82 @@
 ---
-import Github from "lucide-astro/Github";
-import Linkedin from "lucide-astro/Linkedin";
-import Mail from "lucide-astro/Mail";
-import Music from "lucide-astro/Music";
-import ScrollText from "lucide-astro/ScrollText";
+import { ArrowUpToLineIcon, MusicIcon } from "@lucide/astro";
 
 import LastFm from "@/components/last-fm.astro";
-import Link from "@/components/link.astro";
+import { getSocials } from "@/scripts/constants";
+
+const socials = getSocials();
 ---
 
-<footer class="max-w-normal mx-auto pb-12">
-  <div class="berkeley mx-space gap-space flex items-center justify-between">
-    <div class="w-1/2">
+<footer class="grid-line-before relative">
+  <div
+    class="grid grid-cols-1 border-b-(length:--border-w) border-dashed border-line-dark 480:grid-cols-2"
+  >
+    <div
+      aria-hidden="true"
+      class="border-b-(length:--border-w) border-dashed border-line-dark 480:border-r-(length:--border-w) 480:border-b-0"
+    >
+    </div>
+
+    <a
+      href="#"
+      class="group flex items-center justify-between p-pad transition-colors hover:bg-line-dark"
+    >
+      <span
+        class="translate-y-0.5 font-bold text-link-secondary transition-colors group-hover:text-link-secondary-hover"
+      >
+        Back to top
+      </span>
+      <ArrowUpToLineIcon size={18} class="stroke-icon" />
+    </a>
+  </div>
+
+  <div
+    class="grid grid-cols-1 grid-rows-[auto_auto] *:border-dashed *:border-line-dark 480:grid-cols-2"
+  >
+    <div
+      aria-hidden="true"
+      class="hidden border-r-(length:--border-w) border-b-(length:--border-w) 480:block"
+    >
+    </div>
+
+    <div
+      class="grid grid-cols-2 border-b-(length:--border-w) *:border-dashed *:border-line-dark"
+    >
+      {
+        socials.map(({ href, label, icon: Icon }, index) => (
+          <a
+            href={href}
+            target="_blank"
+            class:list={[
+              "group flex items-center justify-between p-pad transition-colors hover:bg-line-bright",
+              // Render dashed lines
+              index < 2 ? "border-b-(length:--border-w)" : null,
+              index % 2 === 0 ? "border-r-(length:--border-w)" : null,
+            ]}
+          >
+            <span class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+              {label}
+            </span>
+            <Icon size={18} class="stroke-icon" />
+          </a>
+        ))
+      }
+    </div>
+
+    <div
+      class="grid-line-after px-pad pt-pad pb-3.5 maple leading-none 480:border-r-(length:--border-w)"
+    >
       <LastFm server:defer>
         <a
           href="https://www.last.fm/user/ashzw"
           target="_blank"
-          class="pill flex w-fit gap-2 leading-[1.1]"
+          class="flex gap-2 pill"
           data-quiet="true"
           slot="fallback"
         >
-          <Music size={15} class="inline" /> Scrobbles
+          <MusicIcon size={15} class="inline" /> Scrobbles
         </a>
       </LastFm>
-    </div>
-
-    <div class="flex w-1/2 items-center justify-end gap-3">
-      <Link href="/_files/resume.pdf" target="_blank" title="Resume"
-        ><ScrollText size={24} /></Link
-      >
-
-      <Link
-        href="https://www.linkedin.com/in/zwcharl/"
-        target="_blank"
-        title="LinkedIn"><Linkedin size={24} /></Link
-      >
-
-      <Link href="https://www.github.com/aczw" target="_blank" title="GitHub"
-        ><Github size={24} /></Link
-      >
-
-      <Link href="mailto:zwcharl@gmail.com" title="Email"
-        ><Mail size={24} /></Link
-      >
     </div>
   </div>
 </footer>

@@ -1,0 +1,113 @@
+<div
+  class="mx-pad space-y-pad rounded-lg bg-sweater-9 py-pad not-dark:bg-sweater-2"
+>
+  <div class="flex justify-between gap-pad">
+    <p class="text-lg font-bold">Break everything!</p>
+    <button
+      id="reset-button"
+      class="cursor-pointer text-link-primary transition-colors hover:text-link-primary-hover"
+      >Reset</button
+    >
+  </div>
+
+  <div class="space-y-0.5">
+    <div class="flex items-center justify-between gap-pad">
+      <label for="spacing-slider"
+        >Padding (<span class="maple">--spacing-pad</span>)</label
+      ><p id="spacing-value" class="">9.4px</p>
+    </div>
+    <div class="flex items-center">
+      <input
+        id="spacing-slider"
+        type="range"
+        value="9.375"
+        min="0"
+        max="100"
+        step="0.1"
+        class="w-full"
+      />
+    </div>
+  </div>
+
+  <div class="space-y-0.5">
+    <div class="flex items-center justify-between gap-pad">
+      <label for="border-slider"
+        >Border width (<span class="maple">--border-w</span>)</label
+      ><p id="border-value" class="">9.4px</p>
+    </div>
+    <div class="flex items-center">
+      <input
+        id="border-slider"
+        type="range"
+        value="2"
+        min="0"
+        max="25"
+        step="1"
+        class="w-full"
+      />
+    </div>
+  </div>
+</div>
+
+<script>
+  const body = document.body;
+
+  const spacingSlider =
+    document.querySelector<HTMLInputElement>("#spacing-slider");
+  const spacingValue =
+    document.querySelector<HTMLParagraphElement>("#spacing-value");
+
+  const borderSlider =
+    document.querySelector<HTMLInputElement>("#border-slider");
+  const borderValue =
+    document.querySelector<HTMLParagraphElement>("#border-value");
+
+  const resetBtn = document.querySelector<HTMLButtonElement>("#reset-button");
+
+  function updateSliderValue() {
+    if (!spacingSlider || !spacingValue) {
+      console.error("Spacing slider/value not found!");
+      return;
+    }
+
+    if (!borderSlider || !borderValue) {
+      console.error("Border width slider/value not found!");
+      return;
+    }
+
+    if (!resetBtn) {
+      console.error("Reset button not found!");
+      return;
+    }
+
+    spacingValue.textContent = `${spacingSlider.value}px`;
+    spacingSlider.addEventListener("input", (event) => {
+      const target = event.target as HTMLInputElement;
+      const spacing = `${target.value}px`;
+
+      spacingValue.textContent = spacing;
+      body.style.setProperty("--spacing-pad", spacing);
+    });
+
+    borderValue.textContent = `${borderSlider.value}px`;
+    borderSlider.addEventListener("input", (event) => {
+      const target = event.target as HTMLInputElement;
+      const borderWidth = `${target.value}px`;
+
+      borderValue.textContent = borderWidth;
+      body.style.setProperty("--border-w", borderWidth);
+    });
+
+    resetBtn.addEventListener("click", () => {
+      body.style.removeProperty("--spacing-pad");
+      spacingSlider.value = "9.375";
+      spacingValue.textContent = `${spacingSlider.value}px`;
+
+      body.style.removeProperty("--border-w");
+      borderSlider.value = "2";
+      borderValue.textContent = `${borderSlider.value}px`;
+    });
+  }
+
+  updateSliderValue();
+</script>

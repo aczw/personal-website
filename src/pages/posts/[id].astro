@@ -3,15 +3,15 @@ import { Image } from "astro:assets";
 import { getCollection, getEntry, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
 
-import CalendarFold from "lucide-astro/CalendarFold";
+import { BookOpenIcon, CalendarFoldIcon } from "@lucide/astro";
 
-import Anchor from "@/components/mdx/anchor.astro";
-import Aside from "@/components/mdx/aside.astro";
-import H2 from "@/components/mdx/h2.astro";
-import H3 from "@/components/mdx/h3.astro";
-import TableOfContents from "@/components/table-of-contents.astro";
-import CommonLayout from "@/layouts/common-layout.astro";
-import { validProjectCover } from "@/scripts/util";
+import {
+  getFullDateFormatting,
+  getShortDateFormatting,
+  validProjectCover,
+} from "@/scripts/util";
+import ContentLayout from "@/layouts/content-layout.astro";
+import ContentWithToc from "@/components/content-with-toc.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -35,58 +35,87 @@ if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 
-const dateOptions: Intl.DateTimeFormatOptions = {
-  month: "long",
-  day: "numeric",
-  year: "numeric",
-  timeZone: "America/New_York",
-};
+const { Content, headings, remarkPluginFrontmatter } = await render(post);
 
-const { Content, headings } = await render(post);
+const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
 ---
 
-<CommonLayout meta={{ kind: "post", post }}>
-  <main class="py-12">
-    <article>
-      {
-        cover ? (
-          <div class="span-wide mb-6 [&_+_div]:pt-6">
-            <Image
-              src={cover.img}
-              alt={cover.alt}
-              loading="eager"
-              class="bg-sweater-9 rounded-xl"
-            />
-          </div>
-        ) : null
-      }
-
-      <div class="span-normal mb-6 space-y-1">
-        <h1 class="text-3xl">{title}</h1>
-        {blurb ? <p class="subtitle">{blurb}</p> : null}
-      </div>
-
-      <time
-        datetime={posted.toISOString()}
-        class="span-normal berkeley text-sweater-4 mb-6 flex items-center gap-1.5"
-      >
-        <CalendarFold size={16} />
-        {posted.toLocaleDateString("en-US", dateOptions)}
-      </time>
-
-      <section class="mdx-span-normal space-y-6">
-        <TableOfContents headings={headings} />
-
-        <Content
-          components={{
-            h2: H2,
-            h3: H3,
-            blockquote: Aside,
-            a: Anchor,
-            img: Image,
-          }}
+<ContentLayout meta={{ kind: "post", post }}>
+  {
+    cover ?
+      <section class="grid-line-before grid-line-after relative p-pad">
+        <Image
+          src={cover.img}
+          alt={cover.alt}
+          loading="eager"
+          class="rounded-lg bg-sweater-9 not-dark:bg-sweater-2"
         />
       </section>
-    </article>
-  </main>
-</CommonLayout>
+    : null
+  }
+
+  <section id="content-begin" class="grid-line-before grid-line-after relative">
+    <div
+      class="space-y-1 border-b-(length:--border-w) border-dashed border-line-dark p-pad"
+    >
+      <h1
+        class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
+      >
+        {title}
+      </h1>
+
+      {blurb ? <p class="text-subtitle">{blurb}</p> : null}
+    </div>
+
+    <div class="grid grid-cols-1 480:grid-cols-2">
+      <div
+        class="flex border-b-(length:--border-w) border-dashed border-line-dark 480:border-r-(length:--border-w) 480:border-b-0"
+      >
+        <div
+          class="flex grow flex-row 480:flex-col sm:flex-row sm:items-center"
+        >
+          <p
+            class="shrink-0 border-r-(length:--border-w) border-dashed border-line-dark px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
+          >
+            Posted on
+          </p>
+
+          <time
+            datetime={posted.toISOString()}
+            title={getFullDateFormatting(posted)}
+            class="grow px-pad pt-pad pb-pad 480:pt-0 sm:pt-pad"
+          >
+            {getShortDateFormatting(posted)}
+          </time>
+        </div>
+
+        <div class="p-pad">
+          <CalendarFoldIcon size={18} class="shrink-0 stroke-icon" />
+        </div>
+      </div>
+
+      <div class="flex">
+        <div
+          class="flex grow flex-row 480:flex-col sm:flex-row sm:items-center"
+        >
+          <p
+            class="shrink-0 border-r-(length:--border-w) border-dashed border-line-dark px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
+          >
+            Read time
+          </p>
+
+          <p class="grow px-pad pt-pad pb-pad 480:pt-0 sm:pt-pad">
+            {numMinutes}
+            {numMinutes > 1 ? "minutes" : "minute"}
+          </p>
+        </div>
+
+        <div class="p-pad">
+          <BookOpenIcon size={18} class="shrink-0 stroke-icon" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <ContentWithToc content={Content} headings={headings} />
+</ContentLayout>

@@ -8,10 +8,10 @@ metadata:
     - GLSL
   date: April 2024
 type: graphics
+order: 5
 cover:
   img: pbr-renderer.png
   alt: A model of an old-fashioned gun is set against a backdrop of a lake.
-order: 4
 slug: pbr-renderer
 ---
 
@@ -37,18 +37,20 @@ The following are screenshots and a video of different models interacting with t
 
 Here is the PBR shader with the albedo set to purple. The left/top image has metallicness turned to zero while the right/bottom has it set to full. Both have a roughness of ~0.25.
 
-<div class="bleed-wide 480:grid-cols-2 grid grid-cols-1 gap-4">
-  ![Zero metallicness, a little roughness](sphere-no-metallic.png) ![Full metallicness, more
-  roughness](sphere-full-metallic.png)
+<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+  ![Zero metallicness, a little roughness](sphere-no-metallic.png) ![Full
+  metallicness, more roughness](sphere-full-metallic.png)
 </div>
 
 ### Model with albedo texture
 
 For models that have an inherent texture, we sample its albedo from that texture and include it during the final lighting calculations. We also do the same for metallicness, roughness, etc.
 
-<div class="bleed-wide">
-  <VideoGif content={{ collection: "projects", folder: "pbr-renderer" }} name="model-ibl" hasWebM />
-</div>
+<VideoGif
+  content={{ collection: "projects", folder: frontmatter.slug }}
+  name="model-ibl"
+  hasWebM
+/>
 
 As you can see, we're getting pretty good performance! My laptop has a 120 Hz screen and the renderer is dropping no frames (the recording is limited to 60 FPS unfortunately).
 
@@ -56,7 +58,7 @@ As you can see, we're getting pretty good performance! My laptop has a 120 Hz sc
 
 The obsidian block model in particular also has a displacement/normal map. Here it is set to zero and one, respectively.
 
-<div class="bleed-wide 480:grid-cols-2 grid grid-cols-1 gap-4">
-  ![Zero displacement on black obsidian block](obsd-none.png) ![Full displacement of obsidian
-  block.](obsd-some.png)
+<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+  ![Zero displacement on black obsidian block](obsd-none.png) ![Full
+  displacement of obsidian block.](obsd-some.png)
 </div>

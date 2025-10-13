@@ -9,7 +9,13 @@ type Props = ComponentProps<typeof BaseLayout>;
 ---
 
 <BaseLayout {...Astro.props}>
-  <Header />
-  <slot />
-  <Footer />
+  <div class="overflow-x-clip px-pad">
+    <div
+      class="mx-auto max-w-normal space-y-6 border-x-(length:--border-w) border-line-bright py-6 sm:space-y-12 sm:py-12"
+    >
+      <Header />
+      <slot />
+      <Footer />
+    </div>
+  </div>
 </BaseLayout>

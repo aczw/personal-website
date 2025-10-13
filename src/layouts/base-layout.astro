@@ -2,10 +2,9 @@
 import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 
-import ScreenSizeIndicator from "@/components/dev/screen-size-indicator.astro";
 import type { MetaKind } from "@/scripts/types";
-
-import "@/styles/global.css";
+import "@/styles/main.css";
+import { getShortDateFormatting, stripEndingSlash } from "@/scripts/util";
 
 interface Props {
   meta: MetaKind;
@@ -30,14 +29,10 @@ switch (meta.kind) {
     title = `${data.title} — ${title}`;
 
     // If the post doesn't have a blurb then just state when it was published
-    description = data.blurb
-      ? data.blurb
-      : `Posted on ${data.posted.toLocaleDateString("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric",
-          timeZone: "America/New_York",
-        })}.`;
+    description =
+      data.blurb ?
+        data.blurb
+      : `Posted on ${getShortDateFormatting(data.posted)}.`;
     ogImageParams = `?post=${id}`;
     break;
   }
@@ -54,9 +49,8 @@ switch (meta.kind) {
     throw new Error("Unreachable!");
 }
 
-// See https://github.com/withastro/astro/issues/5248
-let canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
-canonicalUrl = canonicalUrl.replace(/\/+$/, "");
+const url = new URL(Astro.url.pathname, Astro.site).toString();
+const canonicalUrl = stripEndingSlash(url);
 ---
 
 <!doctype html>
@@ -97,21 +91,21 @@ canonicalUrl = canonicalUrl.replace(/\/+$/, "");
 
     <link
       rel="preload"
-      href="/_fonts/AtkHypNext-Regular.woff2"
+      href="/_files/fonts/AtkHypNext-Regular.woff2"
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
     />
     <link
       rel="preload"
-      href="/_fonts/AtkHypNext-Bold.woff2"
+      href="/_files/fonts/AtkHypNext-SemiBold.woff2"
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
     />
     <link
       rel="preload"
-      href="/_fonts/BerkeleyMonoVariable-Regular.woff2"
+      href="/_files/fonts/MapleMono-Regular.woff2"
       as="font"
       type="font/woff2"
       crossorigin="anonymous"
@@ -131,6 +125,22 @@ canonicalUrl = canonicalUrl.replace(/\/+$/, "");
 
   <body>
     <slot />
-    <ScreenSizeIndicator />
+
+    {
+      import.meta.env.DEV ?
+        <div
+          aria-hidden="true"
+          class="fixed bottom-5 left-5 z-9999 w-fit cursor-default rounded-xl bg-sweater-8 px-4 py-2 maple not-dark:bg-sweater-3"
+        >
+          <span class="hidden 2xl:inline">2XL ({">="}1536px)</span>
+          <span class="hidden xl:inline 2xl:hidden">XL ({">="}1280px)</span>
+          <span class="hidden lg:inline xl:hidden">LG ({">="}1024px)</span>
+          <span class="hidden md:inline lg:hidden">MD ({">="}768px)</span>
+          <span class="hidden sm:inline md:hidden">SM ({">="}640px)</span>
+          <span class="hidden 480:inline sm:hidden">XS ({">="}480px)</span>
+          <span class="480:hidden">{"<"} 480px</span>
+        </div>
+      : null
+    }
   </body>
 </html>

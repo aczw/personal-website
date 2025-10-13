@@ -1,46 +1,38 @@
-import { defineCollection, type ImageFunction, z } from "astro:content";
+import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
-import { Filters } from "@/scripts/types";
-
-const TypeSchema = z.enum(Filters);
-
-const BlurbSchema = z.string().refine((blurb) => blurb.length <= 190, {
-  message: "Blurb should be 190 characters or less (so it looks nice on the home screen).",
-});
-
-const ImageSchema = (image: ImageFunction) =>
-  z.object({
-    img: image(),
-    alt: z.string(),
-  });
+import {
+  BlurbSchema,
+  DateSchema,
+  ImageSchema,
+  LinkSchema,
+  ProjectCategoriesSchema,
+  SourceHrefSchema,
+  TechSchema,
+} from "@/scripts/schema";
 
 const projects = defineCollection({
   loader: glob({ pattern: "**/*.mdx", base: "./src/content/projects" }),
   schema: ({ image }) =>
     z.object({
       name: z.string(),
+      subtitle: z
+        .string()
+        .refine((subtitle) => subtitle.length <= 40, {
+          message:
+            "Subtitle should be extremely short. Use a blurb for longer content.",
+        })
+        .optional(),
       blurb: BlurbSchema,
       metadata: z.object({
-        tech: z.string().array(),
-        link: z
-          .object({
-            href: z.string().url(),
-            text: z.string(),
-          })
-          .optional(),
-        sourceHref: z
-          .string()
-          .url()
-          .refine((url) => url.startsWith("https://github.com/"), {
-            message: "I assume source code is hosted on GitHub!",
-          })
-          .optional(),
-        date: z.string(),
+        tech: TechSchema,
+        link: LinkSchema.optional(),
+        sourceHref: SourceHrefSchema.optional(),
+        date: DateSchema,
       }),
-      type: TypeSchema,
-      cover: ImageSchema(image),
+      type: ProjectCategoriesSchema,
       order: z.number(),
+      cover: ImageSchema(image),
     }),
 });
 
@@ -50,7 +42,7 @@ const posts = defineCollection({
     z.object({
       title: z.string(),
       blurb: BlurbSchema.optional(),
-      tags: TypeSchema.optional(),
+      tags: ProjectCategoriesSchema.optional(),
       posted: z.date(),
       cover: ImageSchema(image).optional(),
     }),

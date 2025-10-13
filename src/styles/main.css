@@ -1,0 +1,201 @@
+@import "tailwindcss";
+
+@import "./animations.css";
+@import "./fonts.css";
+@import "./content.css";
+@import "./overrides.css";
+
+@theme {
+  --font-sans: "Atkinson Hyperlegible Next";
+  --font-mono: "Maple Mono";
+
+  /* See https://font.subf.dev/en/playground for what each value means */
+  --font-mono--font-feature-settings:
+    "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";
+
+  /* Monospace text should be a little smaller than display text. Otherwise
+   * it looks too large. */
+  --text-mono: 0.87rem;
+
+  /* This is 2.5 * 0.25rem = 0.625rem = 9.375px (1rem = 15px) */
+  --spacing-pad: --spacing(2.5);
+  --spacing-pad-2: calc(var(--spacing-pad) * 2);
+
+  /* Primitives */
+  --color-sweater-1: #eae9ff;
+  --color-sweater-2: #d6d3ff;
+  --color-sweater-3: #c3bdff;
+  --color-sweater-4: #ada6ff;
+  --color-sweater-5: #9a91fe;
+  --color-sweater-6: #6b62cb;
+  --color-sweater-7: #484390;
+  --color-sweater-8: #312d65;
+  --color-sweater-9: #1d193d;
+  --color-sweater-10: #0a0919;
+
+  --color-subtitle: --alpha(var(--subtitle) / 85%);
+
+  --color-line-bright: --alpha(var(--line) / 85%);
+  --color-line-dark: --alpha(var(--line) / 70%);
+
+  --color-link-primary: var(--link-primary);
+  --color-link-primary-hover: var(--link-primary-hover);
+  --color-link-secondary: var(--link-secondary);
+  --color-link-secondary-hover: var(--link-secondary-hover);
+
+  --color-icon: var(--icon);
+
+  /* Accounts for padding and border width on left and right sides */
+  --container-normal: calc(
+    var(--normal-w) + 2 * var(--spacing-pad) + 2 * var(--border-w)
+  );
+
+  /* When the table of contents should completely collapse. */
+  --breakpoint-toc: 700px;
+
+  /* Terrible names, but these don't really represent anything and are
+   * just good values by themselves */
+  --breakpoint-380: 380px;
+  --breakpoint-480: 480px;
+  --breakpoint-560: 560px;
+
+  /* CSS variables can't be referenced in breakpoint theme variables, so we 
+   * have to hand calculate them.
+   * 
+   * This was calculated by starting with --container-normal, then adding
+   * (2 * --spacing-pad) for the additional padding outside the vertical
+   * grid lines.
+   *
+   * Also see https://github.com/tailwindlabs/tailwindcss/discussions/15113. */
+  --breakpoint-normal: 860.25px;
+}
+
+@layer base {
+  :root {
+    --border-w: 2px;
+    --normal-w: 800px;
+
+    --subtitle: var(--color-sweater-2);
+    --line: var(--color-sweater-9);
+
+    --link-primary: var(--color-sweater-3);
+    --link-primary-hover: var(--color-sweater-1);
+    --link-secondary: --alpha(var(--color-sweater-5) / 90%);
+    --link-secondary-hover: var(--color-sweater-4);
+
+    --icon: var(--color-sweater-6);
+
+    @variant not-dark {
+      --subtitle: var(--color-sweater-8);
+      --line: --alpha(var(--color-sweater-2) / 70%);
+
+      --link-primary: var(--color-sweater-7);
+      --link-primary-hover: var(--color-sweater-10);
+      --link-secondary: --alpha(var(--color-sweater-6) / 90%);
+      --link-secondary-hover: var(--color-sweater-7);
+
+      --icon: var(--color-sweater-5);
+    }
+  }
+
+  html {
+    @apply scroll-smooth bg-sweater-10 text-sweater-1;
+
+    font-size: 15px;
+    scrollbar-gutter: stable;
+
+    &::selection {
+      background-color: var(--color-sweater-8);
+      color: var(--color-sweater-2);
+    }
+
+    @variant not-dark {
+      @apply bg-sweater-1 text-sweater-10;
+
+      &::selection {
+        background-color: var(--color-sweater-2);
+        color: var(--color-sweater-8);
+      }
+    }
+  }
+
+  /* Make vertical scrollbar always visible so horizontal content
+   * doesn't jump */
+  body {
+    overflow-y: scroll;
+
+    /* This usually causes the whole page to shift because it also
+     * removes scrollbars, but we set scrollbar-gutter above. However, this
+     * causes there to be a gap on the right edge of the screen. I am
+     * hoping the dialog backdrop masks this... */
+    &:has(dialog[open]) {
+      overflow: hidden;
+    }
+  }
+
+  p,
+  a,
+  li,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+  }
+
+  img,
+  video {
+    font-style: italic;
+
+    &::selection {
+      background-color: var(--color-sweater-5);
+    }
+
+    @variant not-dark {
+      &::selection {
+        background-color: var(--color-sweater-2);
+      }
+    }
+  }
+}
+
+@utility grid-line-before {
+  &::before {
+    content: "";
+
+    position: absolute;
+    top: 0px;
+    left: -100vw;
+    z-index: 10;
+
+    height: var(--border-w);
+    width: 200vw;
+
+    background-color: var(--color-line-bright);
+  }
+}
+
+@utility grid-line-after {
+  &::after {
+    content: "";
+
+    position: absolute;
+    bottom: 0px;
+    left: -100vw;
+    z-index: 10;
+
+    height: var(--border-w);
+    width: 200vw;
+
+    background-color: var(--color-line-bright);
+  }
+}
+
+@utility maple {
+  @apply font-mono;
+
+  font-size: var(--text-mono);
+}

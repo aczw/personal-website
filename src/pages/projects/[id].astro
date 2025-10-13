@@ -1,27 +1,37 @@
 ---
-import { Image } from "astro:assets";
 import { getCollection, getEntry, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
+import type { z } from "astro/zod";
 
-import CalendarFold from "lucide-astro/CalendarFold";
-import ExternalLink from "lucide-astro/ExternalLink";
-import FileCode from "lucide-astro/FileCode";
-import Wrench from "lucide-astro/Wrench";
+import {
+  CalendarFoldIcon,
+  ExternalLinkIcon,
+  FileCodeIcon,
+  WrenchIcon,
+  type Icon as IconType,
+} from "@lucide/astro";
 
-import Link from "@/components/link.astro";
-import Anchor from "@/components/mdx/anchor.astro";
-import Aside from "@/components/mdx/aside.astro";
-import H2 from "@/components/mdx/h2.astro";
-import H3 from "@/components/mdx/h3.astro";
 import ProjectCover from "@/components/project-cover.astro";
-import TableOfContents from "@/components/table-of-contents.astro";
-import CommonLayout from "@/layouts/common-layout.astro";
+import type {
+  LinkSchema,
+  SourceHrefSchema,
+  TechSchema,
+} from "@/scripts/schema";
+import type { ContentDateType } from "@/scripts/types";
+import TechList from "@/components/tech-list.astro";
+import ContentDate from "@/components/content-date.astro";
+import ContentLayout from "@/layouts/content-layout.astro";
+import { DISABLED_PROJECTS } from "@/scripts/constants";
+import { validProjectCover } from "@/scripts/util";
+import ContentWithToc from "@/components/content-with-toc.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
-  return projects.map((project) => {
-    return { params: { id: project.id } };
-  });
+  return projects
+    .filter((project) => !DISABLED_PROJECTS.includes(project.id))
+    .map((project) => {
+      return { params: { id: project.id } };
+    });
 }) satisfies GetStaticPaths;
 
 const { id } = Astro.params;
@@ -31,101 +41,154 @@ if (!project) {
   throw new Error(`No project with id "${id}" found in collection."`);
 }
 
-// Destructure everything
 const {
   data: {
     name,
+    subtitle,
     blurb,
     metadata: { tech, link, sourceHref, date },
     cover,
   },
 } = project;
 
+if (!validProjectCover(cover.img.width, cover.img.height)) {
+  throw new Error("Cover images must have an aspect ratio of 16:10!");
+}
+
+type MetadataKind =
+  | {
+      kind: "tech";
+      data: z.infer<typeof TechSchema>;
+      icon: typeof IconType;
+    }
+  | { kind: "link"; data: z.infer<typeof LinkSchema>; icon: typeof IconType }
+  | {
+      kind: "sourceHref";
+      data: z.infer<typeof SourceHrefSchema>;
+      icon: typeof IconType;
+    }
+  | { kind: "date"; data: ContentDateType; icon: typeof IconType };
+
+// Make my life easier by iterating through the metadata
+let metadata: MetadataKind[] = [
+  { kind: "tech", data: tech, icon: WrenchIcon },
+  { kind: "date", data: date, icon: CalendarFoldIcon },
+];
+
+if (link) {
+  metadata.push({ kind: "link", data: link, icon: ExternalLinkIcon });
+}
+
+if (sourceHref) {
+  metadata.push({ kind: "sourceHref", data: sourceHref, icon: FileCodeIcon });
+}
+
 const { Content, headings } = await render(project);
 ---
 
-<CommonLayout meta={{ kind: "project", project }}>
-  <main class="py-12">
-    <article>
-      <div class="span-wide mb-12">
-        <ProjectCover
-          id={id}
-          cover={cover}
-          useVideo={{ small: false }}
-          class="overflow-hidden rounded-xl"
-        />
-      </div>
+<ContentLayout meta={{ kind: "project", project }}>
+  <section class="grid-line-before grid-line-after relative p-pad">
+    <ProjectCover
+      id={id}
+      cover={cover}
+      useVideo={{ small: false }}
+      class="overflow-hidden rounded-lg"
+    />
+  </section>
 
-      <div class="span-normal mb-12 space-y-1">
-        <h1 class="text-3xl">{name}</h1>
-        <p class="subtitle">{blurb}</p>
-      </div>
-
-      <section
-        class="span-normal 480:grid-cols-2 480:gap-4 mb-6 grid grid-cols-1 gap-3 leading-tight"
+  <section id="content-begin" class="grid-line-before grid-line-after relative">
+    <div
+      class="grid grid-cols-1 space-y-1.5 border-b-(length:--border-w) border-dashed border-line-dark sm:grid-cols-2 sm:space-y-0"
+    >
+      <div
+        class="border-dashed border-line-dark px-pad pt-pad sm:border-r-(length:--border-w) sm:pb-pad"
       >
-        <div
-          class="bg-sweater-9 560:px-4 flex items-center gap-4 rounded-xl px-3 py-2"
+        <h1
+          class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
         >
-          <Wrench class="stroke-sweater-3 560:block hidden shrink-0" />
-          <div>
-            <h2 class="cursor-default">Tech</h2>
-            <p>{tech.sort().join(", ")}</p>
-          </div>
-        </div>
+          {name}
+        </h1>
 
         {
-          link ? (
-            <div class="bg-sweater-9 560:px-4 flex items-center gap-4 rounded-xl px-3 py-2">
-              <ExternalLink class="stroke-sweater-3 560:block hidden shrink-0" />
-              <div>
-                <h2 class="cursor-default">{link.text}</h2>
-                <Link href={link.href} target="_blank">
-                  {link.href.substring(8) /* Remove the https:// in front */}
-                </Link>
-              </div>
-            </div>
-          ) : null
+          subtitle ?
+            <p class="text-2xl leading-tight text-subtitle">{subtitle}</p>
+          : null
         }
+      </div>
 
-        {
-          sourceHref ? (
-            <div class="bg-sweater-9 560:px-4 flex items-center gap-4 rounded-xl px-3 py-2">
-              <FileCode class="stroke-sweater-3 560:block hidden shrink-0" />
-              <div>
-                <h2 class="cursor-default">Source</h2>
-                <Link href={sourceHref} target="_blank">
-                  GitHub repo
-                </Link>
-              </div>
-            </div>
-          ) : null
-        }
+      <p class="px-pad pb-pad sm:pt-pad sm:text-subtitle">
+        {blurb}
+      </p>
+    </div>
 
-        <div
-          class="bg-sweater-9 560:px-4 flex items-center gap-4 rounded-xl px-3 py-2"
-        >
-          <CalendarFold class="stroke-sweater-3 560:block hidden shrink-0" />
-          <div>
-            <h2 class="cursor-default">Date</h2>
-            <p>{date}</p>
-          </div>
-        </div>
-      </section>
+    <ul class="grid grid-cols-1 560:grid-cols-2 normal:grid-cols-4!">
+      {
+        metadata.map(({ kind, data, icon: Icon }, index) => (
+          <li
+            class:list={[
+              "group col-span-1 flex justify-between gap-pad border-dashed border-line-dark",
+              metadata.length === 2 ? "normal:col-span-2" : null,
 
-      <section class="mdx-span-normal space-y-6">
-        <TableOfContents headings={headings} />
+              // Two metadata
+              metadata.length === 2 && index === 0 ?
+                "border-b-(length:--border-w) 560:border-r-(length:--border-w) 560:border-b-0"
+              : null,
 
-        <Content
-          components={{
-            h2: H2,
-            h3: H3,
-            blockquote: Aside,
-            a: Anchor,
-            img: Image,
-          }}
-        />
-      </section>
-    </article>
-  </main>
-</CommonLayout>
+              // Greater than two metadata
+              metadata.length > 2 && index % 2 === 0 ?
+                "560:border-r-(length:--border-w)"
+              : null,
+              metadata.length > 2 && index < 2 ?
+                "border-b-(length:--border-w) normal:border-r-(length:--border-w) normal:border-b-0"
+              : null,
+              metadata.length > 2 && index === 2 ?
+                "border-b-(length:--border-w) 560:border-b-0"
+              : null,
+
+              kind === "tech" || kind === "date" ? "p-pad" : null,
+            ]}
+          >
+            {kind === "tech" || kind === "date" ?
+              <>
+                <div>
+                  <p class="font-bold break-all text-subtitle">
+                    {kind === "tech" ? "Tech" : "Date"}
+                  </p>
+
+                  {kind === "tech" ?
+                    <TechList tech={data} />
+                  : <ContentDate date={data} />}
+                </div>
+
+                <Icon size={18} class="shrink-0 stroke-icon" />
+              </>
+            : <a
+                href={kind === "link" ? data.href : data}
+                target="_blank"
+                title={kind === "link" ? data.href : data}
+                class="flex grow justify-between gap-pad p-pad transition-colors group-hover:bg-line-dark"
+              >
+                <div>
+                  <p class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                    {kind === "link" ? data.text : "Source code"}
+                  </p>
+
+                  <p class="break-all text-link-secondary">
+                    {kind === "link" ?
+                      /* Substring removes the https:// in front */
+                      data.href.substring(8).split("/")[0]!
+                    : "Visit GitHub"}
+                  </p>
+                </div>
+
+                <Icon size={18} class="shrink-0 stroke-icon" />
+              </a>
+            }
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <ContentWithToc content={Content} headings={headings} />
+</ContentLayout>

@@ -1,59 +1,47 @@
 import type { CollectionEntry } from "astro:content";
-import { z } from "astro:schema";
+import type { z } from "astro/zod";
+
+import { type Icon as IconType } from "@lucide/astro";
+
+import type {
+  DateSchema,
+  RangedDateSchema,
+  SimpleDateSchema,
+} from "@/scripts/schema";
 
 type EntryKind =
   | { kind: "post"; post: CollectionEntry<"posts"> }
   | { kind: "project"; project: CollectionEntry<"projects"> };
 
 type MetaKind =
-  | { kind: "route"; title: string | null; description: string; ogImageParams: string }
+  | {
+      kind: "route";
+      title: string | null;
+      description: string;
+      ogImageParams: string;
+    }
   | EntryKind;
 
-const Filters = ["graphics", "games", "art"] as const;
+type LinkWithIcon = {
+  href: string;
+  label: string;
+  icon: typeof IconType;
+};
 
-const LastFmSchema = z.object({
-  recenttracks: z.object({
-    track: z.array(
-      z.object({
-        artist: z.object({
-          mbid: z.string(),
-          "#text": z.string(),
-        }),
-        streamable: z.string(),
-        image: z.array(
-          z.object({
-            size: z.enum(["small", "medium", "large", "extralarge"]),
-            "#text": z.string(),
-          }),
-        ),
-        mbid: z.string(),
-        album: z.object({
-          mbid: z.string(),
-          "#text": z.string(),
-        }),
-        name: z.string(),
-        "@attr": z
-          .object({
-            nowplaying: z.enum(["true", "false"]),
-          })
-          .optional(),
-        url: z.string(),
-        date: z
-          .object({
-            uts: z.string(),
-            "#text": z.string(),
-          })
-          .optional(),
-      }),
-    ),
-    "@attr": z.object({
-      user: z.string(),
-      totalPages: z.string(),
-      page: z.string(),
-      perPage: z.string(),
-      total: z.string(),
-    }),
-  }),
-});
+type SimpleDate = z.infer<typeof SimpleDateSchema>;
+type RangedDate = z.infer<typeof RangedDateSchema>;
+type ContentDateType = z.infer<typeof DateSchema>;
 
-export { Filters, LastFmSchema, type EntryKind, type MetaKind };
+type DateKind =
+  | { kind: "simple"; date: SimpleDate }
+  | { kind: "ranged"; date: RangedDate };
+
+export type {
+  EntryKind,
+  MetaKind,
+  LinkWithIcon,
+  SimpleDate,
+  RangedDate,
+  ContentDateType,
+  DateKind,
+};
