@@ -2,7 +2,7 @@
   "name": "personal-website",
   "author": "Charles Wang <zwcharl@gmail.com> (https://charleszw.com)",
   "type": "module",
-  "version": "5.2.0",
+  "version": "6.0.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
