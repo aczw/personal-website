@@ -37,8 +37,10 @@ const config = defineConfig({
     sitemap(),
     astroExpressiveCode({
       plugins: [pluginCollapsibleSections()],
-      themes: ["rose-pine"],
+      themes: ["rose-pine", "rose-pine-dawn"],
+
       useThemedSelectionColors: true,
+      cascadeLayer: "ec",
 
       defaultProps: {
         collapseStyle: "collapsible-auto",
@@ -50,7 +52,7 @@ const config = defineConfig({
 
       styleOverrides: {
         borderWidth: "0px",
-        borderRadius: "0.5rem",
+        borderRadius: "var(--radius-lg)",
         uiFontFamily: "Atkinson Hyperlegible Next",
         uiFontSize: "1rem",
         codeFontFamily: "Maple Mono",
@@ -59,26 +61,9 @@ const config = defineConfig({
         frames: {
           editorActiveTabBackground: ({ theme }) =>
             theme.colors["editor.background"],
-          editorActiveTabForeground: "var(--color-sweater-3)",
-          editorActiveTabIndicatorHeight: "2px",
-          editorActiveTabIndicatorTopColor: "var(--color-sweater-3)",
           editorTabBarBackground: ({ theme }) =>
             setAlpha(theme.colors["editor.background"], 0.5),
-          editorTabBorderRadius: "0.3rem",
           shadowColor: "transparent",
-        },
-
-        textMarkers: {
-          markBackground: ({ resolveSetting }) =>
-            `lch(23.59% 18.75 ${resolveSetting("textMarkers.markHue")} / ${resolveSetting("textMarkers.backgroundOpacity")})`,
-          markBorderColor: ({ resolveSetting }) =>
-            `lch(23.59% 18.75 ${resolveSetting("textMarkers.markHue")} / ${resolveSetting("textMarkers.borderOpacity")})`,
-          markHue: "293.7",
-        },
-
-        collapsibleSections: {
-          closedBackgroundColor: "#393552",
-          openBackgroundColorCollapsible: setAlpha("#393552", 0.4),
         },
       },
     }),
@@ -107,7 +92,6 @@ const config = defineConfig({
           const readingTime = getReadingTime(textOnPage);
 
           // @ts-expect-error: Astro object is guaranteed to exist
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           data.astro.frontmatter.stats = readingTime;
         },
     ],

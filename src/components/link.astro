@@ -13,7 +13,7 @@ const { target, title, class: className, noUnderline, ...props } = Astro.props;
   aria-label={title}
   title={title}
   class:list={[
-    "w-fit text-link-primary decoration-sweater-2/50 decoration-1 underline-offset-3 transition-[color_opacity] hover:text-link-primary-hover hover:decoration-sweater-2/90",
+    "w-fit text-link-primary decoration-sweater-2/50 decoration-1 underline-offset-3 transition-[color_opacity] not-dark:decoration-sweater-6/40 hover:text-link-primary-hover hover:decoration-sweater-2/90 not-dark:hover:decoration-sweater-10/70",
     { underline: noUnderline !== true },
     className,
   ]}

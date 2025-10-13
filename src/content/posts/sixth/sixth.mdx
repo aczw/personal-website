@@ -14,14 +14,13 @@ I wanted to write a little about the sixth redesign of my website, v6. I've trie
 
 It's embarrassing but I'm always thinking about how I want to update my website design. As a result I've been collecting a number of inspirations since v5 which I've put in this Are.na channel.[^2]
 
-<div className="mx-pad overflow-hidden rounded-lg px-0">
-  <iframe
-    width="100%"
-    height="450px"
-    src="https://www.are.na/czw/charleszw-com-v6/embed"
-    title="inspo and vibes"
-  ></iframe>
-</div>
+<iframe
+  width="100%"
+  height="450px"
+  style={{ borderRadius: "var(--radius-lg)", overflow: "hidden" }}
+  src="https://www.are.na/czw/charleszw-com-v6/embed"
+  title="inspo and vibes"
+></iframe>
 
 A lot of these blocks emphasize text, structure, and subtlety—stuff that looks simple, but hopefully makes you think _hmmm_, but how did they actually make that? I wanted more polish and personality to shine through.
 
@@ -120,8 +119,18 @@ Nowadays, I rely a lot on HTML data attributes. For instance, I wanted to make c
 
 I hope visitors to the site will know it exists! I do change the cursor to a little magnifying glass, and I feel like it's a semi-common pattern across sites, but who knows. I'm chronically online so I've picked up on all the common Patterns.
 
+## Special mentions
+
+Some other notable additions I wanted to highlight.
+
+The site now has a light color scheme and supports light mode. Officially.[^4] This took some reconfiguring of CSS variables and discovering hardcoded color styles, and in general took longer than I'd like to admit.
+
+I learned recently you can style selected text and media via the `::selection` pseudo-element, so I've do<span class="bg-sweater-8 text-sweater-2 not-dark:bg-sweater-2 not-dark:text-sweater-8">ne just that like you can see here. Not e</span>verything [is fully supported on all browsers](https://developer.mozilla.org/en-US/docs/Web/CSS/::selection#browser_compatibility) but this is purely visual and should gracefully fall back to defaults.
+
 [^1]: One day I'll revisit it and incorporate it in some other way because I do find merit in having a changelog and seeing all your updates laid out like that.
 
 [^2]: I'm still experimenting with Are.na. I understand why they charge $70/year for Premium, I just don't know if I'm ready for that yet.
 
 [^3]: Now I get to use the very official-looking `cdn.charleszw.com` URL for everything, which makes me feel important.
+
+[^4]: My `<meta name="color-scheme">` always claimed it did, which I'm sure threw off some user agents. My bad.

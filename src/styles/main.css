@@ -33,17 +33,17 @@
   --color-sweater-9: #1d193d;
   --color-sweater-10: #0a0919;
 
-  --color-subtitle: --alpha(var(--color-sweater-2) / 85%);
+  --color-subtitle: --alpha(var(--subtitle) / 85%);
 
-  --color-line-bright: --alpha(var(--color-sweater-9) / 85%);
-  --color-line-dark: --alpha(var(--color-sweater-9) / 75%);
+  --color-line-bright: --alpha(var(--line) / 85%);
+  --color-line-dark: --alpha(var(--line) / 70%);
 
-  --color-link-primary: var(--color-sweater-3);
-  --color-link-primary-hover: var(--color-sweater-1);
-  --color-link-secondary: --alpha(var(--color-sweater-5) / 90%);
-  --color-link-secondary-hover: var(--color-sweater-4);
+  --color-link-primary: var(--link-primary);
+  --color-link-primary-hover: var(--link-primary-hover);
+  --color-link-secondary: var(--link-secondary);
+  --color-link-secondary-hover: var(--link-secondary-hover);
 
-  --color-icon: var(--color-sweater-6);
+  --color-icon: var(--icon);
 
   /* Accounts for padding and border width on left and right sides */
   --container-normal: calc(
@@ -74,6 +74,28 @@
   :root {
     --border-w: 2px;
     --normal-w: 800px;
+
+    --subtitle: var(--color-sweater-2);
+    --line: var(--color-sweater-9);
+
+    --link-primary: var(--color-sweater-3);
+    --link-primary-hover: var(--color-sweater-1);
+    --link-secondary: --alpha(var(--color-sweater-5) / 90%);
+    --link-secondary-hover: var(--color-sweater-4);
+
+    --icon: var(--color-sweater-6);
+
+    @variant not-dark {
+      --subtitle: var(--color-sweater-8);
+      --line: --alpha(var(--color-sweater-2) / 70%);
+
+      --link-primary: var(--color-sweater-7);
+      --link-primary-hover: var(--color-sweater-10);
+      --link-secondary: --alpha(var(--color-sweater-6) / 90%);
+      --link-secondary-hover: var(--color-sweater-7);
+
+      --icon: var(--color-sweater-5);
+    }
   }
 
   html {
@@ -85,6 +107,15 @@
     &::selection {
       background-color: var(--color-sweater-8);
       color: var(--color-sweater-2);
+    }
+
+    @variant not-dark {
+      @apply bg-sweater-1 text-sweater-10;
+
+      &::selection {
+        background-color: var(--color-sweater-2);
+        color: var(--color-sweater-8);
+      }
     }
   }
 
@@ -122,6 +153,12 @@
     &::selection {
       background-color: var(--color-sweater-5);
     }
+
+    @variant not-dark {
+      &::selection {
+        background-color: var(--color-sweater-2);
+      }
+    }
   }
 }
 
@@ -154,23 +191,6 @@
     width: 200vw;
 
     background-color: var(--color-line-bright);
-  }
-}
-
-/* Currently the only place where this is used is in the LastFm component. */
-@utility pill {
-  @apply rounded-full bg-sweater-4 px-3 py-1.5 text-sweater-9 transition-colors hover:bg-sweater-3;
-
-  @variant hover {
-    @apply bg-sweater-3;
-  }
-
-  &[data-quiet="true"] {
-    @apply bg-sweater-9 text-sweater-4;
-
-    @variant hover {
-      @apply bg-sweater-8 text-sweater-3;
-    }
   }
 }
 

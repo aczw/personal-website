@@ -90,7 +90,7 @@ posts = posts
       projects.map(({ data: { name, subtitle, cover }, id }, index) => (
         <div
           class:list={[
-            "border-dashed border-line-dark transition-colors hover:bg-sweater-9/50",
+            "border-dashed border-line-dark transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50",
             // Adding some additional padding for optical alignment
             "p-[calc(var(--spacing-pad)+2px)]",
             // Gives top row of videos a bottom border
@@ -104,7 +104,7 @@ posts = posts
           ]}
         >
           <a href={`/projects/${id}`} class="group flex h-full flex-col">
-            <h2 class="grow justify-between rounded-t-lg bg-sweater-9 p-pad leading-tight text-link-primary transition-colors group-hover:flex group-hover:bg-sweater-8">
+            <h2 class="grow justify-between rounded-t-lg bg-sweater-9 p-pad leading-tight text-link-primary transition-colors not-dark:bg-sweater-2 group-hover:flex group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3">
               <span class="font-bold transition-colors group-hover:text-link-primary-hover">
                 {name}
               </span>
@@ -113,7 +113,7 @@ posts = posts
                 <>
                   <span
                     aria-hidden="true"
-                    class="text-sweater-6/70 group-hover:hidden"
+                    class="text-sweater-6/70 not-dark:text-sweater-4/70 group-hover:hidden"
                   >
                     /
                   </span>

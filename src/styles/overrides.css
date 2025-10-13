@@ -1,9 +1,30 @@
-/* Force EC code blocks to use my Maple Mono settings */
-.expressive-code pre > code {
-  font-feature-settings: var(--font-mono--font-feature-settings) !important;
-}
+:root {
+  --ec-tm-markBrdCol: --alpha(var(--color-sweater-2) / 30%);
+  --ec-tm-markBg: --alpha(var(--color-sweater-2) / 10%);
 
-/* Override hardcoded 720px max width on lite-youtube custom element */
-lite-youtube {
-  max-width: none !important;
+  /* Taken from Rosé Pine palette */
+  --ec-tm-insBg: --alpha(#9ccfd8 / 25%);
+  --ec-tm-insBrdCol: --alpha(#9ccfd8 / 50%);
+  --ec-tm-insDiffIndCol: --alpha(#9ccfd8 / 65%);
+  --ec-tm-delBg: --alpha(#eb6f92 / 25%);
+  --ec-tm-delBrdCol: --alpha(#eb6f92 / 50%);
+  --ec-tm-delDiffIndCol: --alpha(#eb6f92 / 65%);
+
+  @variant not-dark {
+    --ec-tm-markBrdCol: --alpha(var(--color-sweater-9) / 30%);
+    --ec-tm-markBg: --alpha(var(--color-sweater-9) / 10%);
+
+    /* Taken from Rosé Pine Dawn palette */
+    --ec-tm-insBg: --alpha(#56949f / 25%);
+    --ec-tm-insBrdCol: --alpha(#56949f / 50%);
+    --ec-tm-insDiffIndCol: --alpha(#56949f / 65%);
+    --ec-tm-delBg: --alpha(#b4637a / 25%);
+    --ec-tm-delBrdCol: --alpha(#b4637a / 50%);
+    --ec-tm-delDiffIndCol: --alpha(#b4637a / 65%);
+  }
+
+  /* Force EC code blocks to use my Maple Mono settings */
+  .expressive-code pre > code {
+    font-feature-settings: var(--font-mono--font-feature-settings) !important;
+  }
 }

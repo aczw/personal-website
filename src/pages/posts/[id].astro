@@ -48,7 +48,7 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
           src={cover.img}
           alt={cover.alt}
           loading="eager"
-          class="rounded-lg bg-sweater-9"
+          class="rounded-lg bg-sweater-9 not-dark:bg-sweater-2"
         />
       </section>
     : null
@@ -58,7 +58,9 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
     <div
       class="space-y-1 border-b-(length:--border-w) border-dashed border-line-dark p-pad"
     >
-      <h1 class="text-2xl leading-tight font-bold text-sweater-2">
+      <h1
+        class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
+      >
         {title}
       </h1>
 
