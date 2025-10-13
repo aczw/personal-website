@@ -12,16 +12,18 @@ I wanted to write a little about the sixth redesign of my website, v6. I've trie
 
 ## Influence
 
-It's embarrassing but I'm always thinking about how I want to update my website design. As a result I've collected a number of inspirations since v5 which I've put together in this Are.na channel.[^2]
+It's embarrassing but I'm always thinking about how I want to update my website design. As a result I've been collecting a number of inspirations since v5 which I've put in this Are.na channel.[^2]
 
-<iframe
-  width="100%"
-  height="450px"
-  src="https://www.are.na/czw/charleszw-com-v6/embed"
-  title="inspo and vibes"
-></iframe>
+<div className="mx-pad overflow-hidden rounded-lg px-0">
+  <iframe
+    width="100%"
+    height="450px"
+    src="https://www.are.na/czw/charleszw-com-v6/embed"
+    title="inspo and vibes"
+  ></iframe>
+</div>
 
-A lot of these blocks emphasize text, structure, and veiled complexity—stuff that looks simple, but hopefully makes you think _hmmm_, but how did they actually do that? I've learned that the simplest stuff often requires the most planning.
+A lot of these blocks emphasize text, structure, and subtlety—stuff that looks simple, but hopefully makes you think _hmmm_, but how did they actually make that? I wanted more polish and personality to shine through.
 
 ### Grids
 
@@ -37,11 +39,24 @@ I've experimented with grid layouts since the beginning of this site. Here's wha
   </figcaption>
 </figure>
 
-Something about its conformity, rigidity, and formality makes sense to me and is very pleasing. And it has its benefits. Multiple times in development I've faced a design issue and instead of creating some bespoke solution, I've realized that I can just use the grid.
+Something about its conformity, rigidity, and formality makes sense to me and is very pleasing. I like the uniformity it brings. Your eyes are guided by the, well, guide lines, to the main content.
 
-Just follow the grid. Follow The Grid.
+It has other benefits! Multiple times in development I've faced a design issue and instead of creating some bespoke solution, I've realized that I can just use the grid. Just follow the grid. Follow The Grid.
 
-## Configuration
+<figure>
+  ![A sketch of geometric shapes with red and black lines, dashed and
+  full.](intro-arch.png)
+  <figcaption>
+    **Sketches from my intro architecture class.** Rhino 3D is one of the
+    modeling software of all time.
+  </figcaption>
+</figure>
+
+While writing this post it reminded of something else: it's like if you drew something but never erased the sketch lines. I took an introductory architecture class, and these lines heavily remind me of the axonometric projections and paraline drawings we had to do. Just employing all kinds of parallel lines of different weights and strokes.
+
+Anyway. I like grids and using them and following them.
+
+## Grid spacing, border width
 
 A cool thing about Tailwind 4 is that everything is just a CSS variable. From early on I defined the grid spacing and border width using them, via <span class="whitespace-nowrap">`--spacing-pad`</span> and <span class="whitespace-nowrap">`--border-w`</span> respectively, so now I can just update one variable and see changes reflected through the whole site.
 
@@ -49,7 +64,21 @@ Here's a little gadget that lets you do just that.
 
 <SpacingBorderWidthGadget />
 
-With bigger values everything breaks, but the hope is that everything breaks _consistently_ because I used the CSS variable.
+With bigger values everything breaks, but the hope is that everything breaks _consistently_ because I only used the variables.
+
+## Video CDN
+
+Up until now, videos on this site have been served out of my `public` folder. As I add more videos, though, I had a feeling my hosting provider wasn't going to be very happy.
+
+I decided to switch to an actual CDN. I had heard good things about [bunny.net](https://bunny.net/cdn), so I gave them a chance. Setup was easy and quick, and there were no problems transferring everything over.[^3]
+
+You may be wondering how much I'm paying. In the past I was piggybacking off of my host's very generous free tier, but that generosity would quickly disappear if I ever went over the bandwidth limits.
+
+![Out of the $50 of trial credit given to me, my total trial usage is $0.30.](bunny-pricing.png)
+
+Out of the $50 of trial credits they gave me, so far I've used 30 cents, so I don't think cost will be a concern. Keep in mind this is after a month of usage.
+
+Moving videos to a CDN also made my website build times drop by like 10 seconds, which is always nice.
 
 ## Zooming
 
@@ -94,3 +123,5 @@ I hope visitors to the site will know it exists! I do change the cursor to a lit
 [^1]: One day I'll revisit it and incorporate it in some other way because I do find merit in having a changelog and seeing all your updates laid out like that.
 
 [^2]: I'm still experimenting with Are.na. I understand why they charge $70/year for Premium, I just don't know if I'm ready for that yet.
+
+[^3]: Now I get to use the very official-looking `cdn.charleszw.com` URL for everything, which makes me feel important.
