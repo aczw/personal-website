@@ -22,7 +22,7 @@ const VALID_MONTHS = [
   "December",
 ];
 
-const DISABLED_PROJECTS = ["dgdg", "deth", "tanks"];
+const DISABLED_PROJECTS = ["dgdg", "deth"];
 
 function getSocials() {
   return [
