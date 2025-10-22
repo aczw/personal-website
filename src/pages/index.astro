@@ -21,6 +21,8 @@ const projects = await getEntries([
   { collection: "projects", id: "door" },
 ]);
 
+const showSubtitles = ["mini-minecraft", "door"];
+
 let posts = await getCollection("posts");
 posts = posts
   .sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime())
@@ -110,7 +112,7 @@ posts = posts
                 {name}
               </span>
 
-              {subtitle ?
+              {subtitle && showSubtitles.includes(id) ?
                 <>
                   <span
                     aria-hidden="true"
@@ -124,11 +126,13 @@ posts = posts
                 </>
               : null}
 
-              <span class="hidden maple text-link-secondary-hover normal:group-hover:inline">{`/projects/${id}`}</span>
-              <CircleArrowRightIcon
-                size={18}
-                class="hidden stroke-link-secondary-hover group-hover:block normal:hidden normal:group-hover:hidden"
-              />
+              <div class="hidden items-center gap-pad text-link-secondary-hover group-hover:flex">
+                <span class="hidden 480:inline">Explore</span>
+                <CircleArrowRightIcon
+                  size={18}
+                  class="stroke-link-secondary-hover"
+                />
+              </div>
             </h2>
 
             <div class="grow-0 overflow-hidden rounded-b-lg">
