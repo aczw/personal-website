@@ -18,16 +18,15 @@ import ContentDate from "@/components/content-date.astro";
 const projects = await getCollection("projects");
 const icons: (typeof IconType)[] = [ImageIcon, JoystickIcon, ShapesIcon];
 
-const withVideos: string[] = [
-  "pbr-renderer",
-  "fireball",
-  "door",
-  "cuda-boids",
-  "path-tracer",
+const wideProjects: string[] = [
   "cuda-path-tracer",
+  "door",
+  "pbr-renderer",
+  "rcw",
 ];
 
-const wideProjects: string[] = ["cuda-path-tracer", "door", "rcw"];
+// Wide projects should always play their video.
+const withVideos: string[] = [...wideProjects, "fireball"];
 ---
 
 <MainLayout
