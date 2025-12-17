@@ -18,7 +18,9 @@ const { content: Content, headings } = Astro.props;
 ---
 
 <section
-  class="grid-line-before grid-line-after relative grid w-full grid-cols-1 toc:grid-cols-[minmax(0px,3fr)_1fr]"
+  id="content-toc"
+  class="grid-line-before grid-line-after relative grid w-full grid-cols-1 data-[collapsed=false]:[--toc-w:1fr] data-[collapsed=true]:[--toc-w:calc(2*var(--spacing-pad)+18px)] toc:grid-cols-[minmax(0px,3fr)_var(--toc-w)]"
+  data-collapsed="false"
 >
   <div
     class="content space-y-pad-2 border-dashed border-line-dark py-pad toc:border-r-(length:--border-w)"

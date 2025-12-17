@@ -1,6 +1,11 @@
 ---
-import { ArrowUpToLineIcon } from "@lucide/astro";
 import type { MarkdownHeading } from "astro";
+
+import {
+  ArrowUpToLineIcon,
+  PanelRightCloseIcon,
+  PanelRightOpenIcon,
+} from "@lucide/astro";
 
 interface Props {
   headings: MarkdownHeading[];
@@ -19,23 +24,41 @@ headings.forEach(({ depth, text }) => {
 
 <aside class="sticky top-0 hidden h-screen overflow-y-auto toc:block">
   <nav>
-    <a
-      href="#content-begin"
-      class="group sticky inset-x-0 top-0 flex flex-col border-b-(length:--border-w) border-dashed border-line-dark bg-sweater-10 p-pad transition-colors not-dark:bg-sweater-1 hover:bg-sweater-9 not-dark:hover:bg-sweater-2"
+    <div class="sticky inset-x-0 top-0">
+      <a
+        href="#content-begin"
+        title="Go back to top"
+        class="flex items-center justify-between border-b-(length:--border-w) border-dashed border-line-dark bg-sweater-10 p-pad leading-none font-bold text-link-secondary transition-colors not-dark:bg-sweater-1 hover:bg-sweater-9 hover:text-link-secondary-hover not-dark:hover:bg-sweater-2"
+      >
+        <span id="back-to-top">Back to top</span>
+        <ArrowUpToLineIcon size={18} class="stroke-icon" />
+      </a>
+
+      <button
+        id="collapse-toc"
+        class="flex w-full items-center justify-between border-b-(length:--border-w) border-dashed border-line-dark bg-sweater-10 p-pad leading-none font-bold text-link-secondary transition-colors not-dark:bg-sweater-1 hover:cursor-pointer hover:bg-sweater-9 hover:text-link-secondary-hover not-dark:hover:bg-sweater-2"
+      >
+        Collapse <PanelRightCloseIcon size={18} class="stroke-icon" />
+      </button>
+    </div>
+
+    <button
+      id="expand-toc"
+      title="Expand table of contents"
+      class="flex h-[calc(100vh-2*var(--spacing-pad)-18px-var(--border-w))] flex-col items-center p-pad text-lg leading-none font-bold text-link-secondary transition-colors hover:cursor-pointer hover:bg-sweater-9 hover:text-link-secondary-hover not-dark:hover:bg-sweater-2"
+      hidden=""
     >
-      <span
-        class="text-lg leading-snug font-bold text-link-primary transition-colors group-hover:text-link-primary-hover"
-        >Sections</span
-      >
-
-      <span
-        class="flex items-center justify-between leading-none text-link-secondary transition-colors group-hover:text-link-secondary-hover"
-      >
-        Back to top <ArrowUpToLineIcon size={18} class="stroke-icon" />
+      <PanelRightOpenIcon size={18} class="mb-pad stroke-icon" />
+      <span style="writing-mode: vertical-rl;text-orientation: mixed;">
+        Contents
       </span>
-    </a>
+    </button>
 
-    <div class="flex flex-col text-link-secondary">
+    <div id="toc-headings" class="flex flex-col text-link-secondary">
+      <p class="p-pad text-lg leading-none font-bold text-link-primary">
+        Contents
+      </p>
+
       {
         headings.map(({ depth, slug, text }, index) => {
           return (
@@ -70,6 +93,7 @@ headings.forEach(({ depth, text }) => {
       );
 
       const windowHeight = entry.rootBounds!.height;
+
       if (windowHeight && link) {
         if (entry.boundingClientRect.y < windowHeight) {
           link.dataset["seen"] = "";
@@ -83,4 +107,37 @@ headings.forEach(({ depth, text }) => {
   document
     .querySelectorAll("h2[id], h3[id], h4[id]")
     .forEach((heading) => observer.observe(heading));
+
+  function addCollapsibleToc() {
+    const contentToc = document.getElementById("content-toc")!;
+    const backToTopText = document.getElementById("back-to-top")!;
+    const tocHeadings = document.getElementById("toc-headings")!;
+
+    const collapseTocBtn = document.getElementById("collapse-toc")!;
+    const expandTocBtn = document.getElementById("expand-toc")!;
+
+    // Invariant: collapse TOC button is only shown when we're
+    // currently not collapsed
+    collapseTocBtn.addEventListener("click", () => {
+      contentToc.dataset["collapsed"] = "true";
+      backToTopText.setAttribute("hidden", "");
+      tocHeadings.setAttribute("hidden", "");
+
+      expandTocBtn.removeAttribute("hidden");
+      collapseTocBtn.setAttribute("hidden", "");
+    });
+
+    // Invariant: expand TOC button is only shown when we're
+    // currently collapsed
+    expandTocBtn.addEventListener("click", () => {
+      contentToc.dataset["collapsed"] = "false";
+      backToTopText.removeAttribute("hidden");
+      tocHeadings.removeAttribute("hidden");
+
+      collapseTocBtn.removeAttribute("hidden");
+      expandTocBtn.setAttribute("hidden", "");
+    });
+  }
+
+  addCollapsibleToc();
 </script>
