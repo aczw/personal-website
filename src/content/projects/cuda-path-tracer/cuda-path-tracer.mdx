@@ -64,7 +64,7 @@ Instead, we can guarantee the final ray destination by shooting the _initial_ ra
 Described by James Kajiya in his 1986 SIGGRAPH paper, the rendering equation can be written in the form
 
 $$
-L_o(\omega_o)=L_e+\int_{\Omega}f(\omega_o,\omega_i)L_i(\omega_i)(\omega_i\cdot\vec{n})\space\text{d}\omega_i
+L_o(\omega_o)=L_e+\int_\Omega f(\omega_o,\omega_i)L_i(\omega_i)(\omega_i\cdot\vec{n})\space\text{d}\omega_i
 $$
 
 I know, the math symbols spooked me too at first, but the components actually represent pretty simple ideas. This equation tells us how to calculate the light traveling on an outgoing ray direction $\omega_o$ at some particular point.
@@ -207,7 +207,7 @@ We will combine them both later to create dielectrics.
 
 First, complete reflection.
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="grid grid-cols-1 gap-pad 480:grid-cols-2 bleed">
   <figure>
     ![](renders/perf-spec-dielectric/pure_reflection-800x800-5000.png)
     <figcaption>800×800 / 5000 samples</figcaption>
@@ -232,8 +232,8 @@ First, IORs are always defined relative to _something_.[^4] At a given intersect
 /// Tracks which side of the geometry the intersection is at.
 enum class Surface : char { Inside, Outside };
 
-// GLSL/GLM refract expects the IOR ratio to be incident over target, so
-// we treat the default as us starting from inside the material
+// GLSL/GLM refract expects the IOR ratio to be incident over target,
+// so we treat the default as us starting from inside the material
 if (isect.surface == Surface::Outside) {
   eta = 1.f / eta;
 }
@@ -245,7 +245,7 @@ Second, there are cases where the incident angle is so large that a refraction a
 
 Keeping these two things in mind, we can get transmission working.
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="grid grid-cols-1 gap-pad 480:grid-cols-2 bleed">
   <figure>
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.0.png)
     <figcaption>800×800 / 5000 samples / IOR 1.0</figcaption>
@@ -268,7 +268,7 @@ To make our path tracing a little easier (and to piggyback off of the wonders of
 
 What should the probability be? A simple solution is to set it to 50/50. However, this wouldn't result in an accurate physical render because we're not considering the Fresnel coefficients that dictate how much light is reflected and refracted at an intersection.
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="grid grid-cols-1 gap-pad 480:grid-cols-2 bleed">
   <figure>
     ![](fresnel-half-half.png)
     <figcaption>800×800 / 3000 samples / IOR 1.55</figcaption>
@@ -305,16 +305,14 @@ In real life, calculating the reflectance term requires solving the [Fresnel equ
 
 Schlick's paper claims that the approximation runs _almost 32 times faster_ than the physical equations. Is this true? To test this, I also implemented the equations and ran the glass spheres scene from above 10 times, averaging the frame rate.
 
-<figure class="px-0">
-  <div class="overflow-x-auto">
+<figure>
 
-|  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | Average |
-| --: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| **Schlick** | 61.367 | 61.240 | 61.370 | 61.344 | 61.373 | 61.311 | 61.376 | 61.220 | 61.051 | 61.280 | **61.293** |
-| **Real** | 61.256 | 61.187 | 61.317 | 61.200 | 61.339 | 61.279 | 61.271 | 60.928 | 61.224 | 61.196 | **61.220** |
+|    Type     | Average (frames per second) |
+| :---------: | :-------------------------: |
+| **Schlick** |           61.293            |
+|  **Real**   |           61.220            |
 
-  </div>
-  <figcaption class="px-pad">Frames per second (FPS), higher is better</figcaption>
+  <figcaption class="px-pad">Higher is better</figcaption>
 </figure>
 
 Schlick appears to be 0.119% faster, which is not significant enough to make a claim about anything. I am not sure why I'm not getting more drastic results. My best guess is that my testing environment is flawed or biased in some manner.
@@ -338,7 +336,7 @@ segment.ray = {
 
 I got this idea while watching Sebastian Lague's [Coding Adventure: Ray Tracing](https://www.youtube.com/watch?v=Qz0KTGYJtUk) video. Well, how ~~bad~~ good is it?
 
-<figure>
+<figure class="bleed">
   ![](renders/roughness_test-1200x800-5000.png)
   <figcaption>
     1200×800 / 5000 samples / Roughness, left to right: 0.0, 0.2, 0.45, 0.65,
@@ -375,14 +373,14 @@ x += uniform_01(rng);
 
 That's it! We add a random value between $[0.0,1.0)$ so that the ray direction generated will never be the same for a given pixel.
 
-<figure>
+<figure class="bleed">
   <div class="grid grid-cols-2 gap-pad">
     ![](stochastic-on.png) ![](stochastic-on-detail.png)
   </div>
   <figcaption>__Stochastic sampling.__ 1000×1000 / 10k samples</figcaption>
 </figure>
 
-<figure>
+<figure class="bleed">
   <div class="grid grid-cols-2 gap-pad">
     ![](stochastic-off.png) ![](stochastic-off-detail.png)
   </div>
@@ -426,7 +424,7 @@ ray.direction = glm::normalize(focus - ray.origin);
 
 With that, we get DOF!
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="grid grid-cols-1 gap-pad 480:grid-cols-2 bleed">
   <figure>
     ![](renders/dof/dof-800x800-5000-12-bunny.png)
     <figcaption>800×800 / 5000 samples / 12 depth </figcaption>
@@ -480,7 +478,7 @@ A mesh is just a giant list of triangles that encompass it. Since the primitives
 
 My first implementation was simple and naive. For each triangle in the mesh, we perform a ray-triangle intersection test. If successful, we calculate intersection terms and return early. However, this logic is incorrect because it may not necesarily return the intersection with the _smallest_ `t` value.
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="grid grid-cols-1 gap-pad 480:grid-cols-2 bleed">
   <figure>
     ![](not-taking-t-min.png)
     <figcaption>Not taking the minimum `t` value</figcaption>
@@ -505,7 +503,7 @@ Running Nsight Systems on my executable confirms this. In terms of CUDA operatio
 
 If we show the kernel operations in the Events View and sort by duration, we can also see that `kernel::find_intersections` takes up all the spots at the top of the list, meaning it makes up the bulk of our compute time.
 
-<figure>
+<figure class="bleed">
   ![](nsight-isect-longest.png)
   <figcaption>Intersections all the way down</figcaption>
 </figure>
@@ -602,7 +600,9 @@ Instead, we have to maintain a _stack_ of nodes that we haven't processed. Then,
 
 So, how much do BVHs improve performance?
 
+<div class="bleed">
 ![](graphs/isect-culling.png)
+</div>
 
 _The bottom line is that without BVHs I simply could not run certain scenes_. Anything above roughly 3,000 triangles would simply take too long to converge to a passable image. For the Stanford bunny and Stanford dragon, loading the scene made my program crash, so I've assigned them a FPS of zero.
 
@@ -635,7 +635,7 @@ By grouping paths with the same materials together, they all benefit from the ca
 
 Here are some failed renders that I thought looked pretty cool.
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="grid grid-cols-1 gap-pad 480:grid-cols-2 bleed">
   <figure>
     ![](bloopers/cornell.2025-09-23_00-10-10z.3978samp.png)
     <figcaption>The seed for my random number generator was off</figcaption>
