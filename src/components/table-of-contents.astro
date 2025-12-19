@@ -73,7 +73,9 @@ headings.forEach(({ depth, text }) => {
                   "pb-[calc(var(--spacing-pad)/1.6)]"
                 : "pb-0.5",
               ]}
-              style={{ paddingLeft: `calc(${depth - 1} * var(--spacing-pad))` }}
+              style={{
+                paddingLeft: `calc(${2 * depth - 3} * var(--spacing-pad))`,
+              }}
             >
               {text}
             </a>
