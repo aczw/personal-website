@@ -116,13 +116,13 @@ headings.forEach(({ depth, text }) => {
   const collapseTocBtn = document.getElementById("collapse-toc")!;
   const expandTocBtn = document.getElementById("expand-toc")!;
 
-  collapseTocBtn.addEventListener(
-    "click",
-    () => (contentToc.dataset["collapsed"] = "true"),
-  );
+  collapseTocBtn.addEventListener("click", () => {
+    contentToc.dataset["collapsed"] = "true";
+    window.localStorage.setItem("collapsed-toc", "true");
+  });
 
-  expandTocBtn.addEventListener(
-    "click",
-    () => (contentToc.dataset["collapsed"] = "false"),
-  );
+  expandTocBtn.addEventListener("click", () => {
+    contentToc.dataset["collapsed"] = "false";
+    window.localStorage.setItem("collapsed-toc", "false");
+  });
 </script>

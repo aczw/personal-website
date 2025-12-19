@@ -41,16 +41,16 @@ const { content: Content, headings, defaultCollapsedToc } = Astro.props;
 </section>
 
 <script>
-  const dialogElt = document.querySelector("dialog");
-  const dialogImgElt =
-    document.querySelector<HTMLImageElement>("dialog > div > img");
-
   /**
    * @see https://cassidoo.co/post/html-dialog-on-image-click
    */
   function makeMediaZoomable() {
     // Only activate on desktop
     if (!window.matchMedia("(hover: hover)").matches) return;
+
+    const dialogElt = document.querySelector("dialog");
+    const dialogImgElt =
+      document.querySelector<HTMLImageElement>("dialog > div > img");
 
     if (!dialogElt || !dialogImgElt) {
       console.error("Dialog and/or dialog image not found!");
@@ -88,4 +88,15 @@ const { content: Content, headings, defaultCollapsedToc } = Astro.props;
   }
 
   makeMediaZoomable();
+
+  function setCollapsedTocFromLocalStorage() {
+    const value = window.localStorage.getItem("collapsed-toc");
+
+    if (value) {
+      const section = document.getElementById("content-toc")!;
+      section.dataset["collapsed"] = value;
+    }
+  }
+
+  setCollapsedTocFromLocalStorage();
 </script>
