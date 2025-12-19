@@ -30,13 +30,15 @@ headings.forEach(({ depth, text }) => {
         title="Go back to top"
         class="flex items-center justify-between border-b-(length:--border-w) border-dashed border-line-dark bg-sweater-10 p-pad leading-none font-bold text-link-secondary transition-colors not-dark:bg-sweater-1 hover:bg-sweater-9 hover:text-link-secondary-hover not-dark:hover:bg-sweater-2"
       >
-        <span id="back-to-top">Back to top</span>
+        <span class="group-data-[collapsed=true]/content-toc:hidden"
+          >Back to top</span
+        >
         <ArrowUpToLineIcon size={18} class="stroke-icon" />
       </a>
 
       <button
         id="collapse-toc"
-        class="flex w-full items-center justify-between border-b-(length:--border-w) border-dashed border-line-dark bg-sweater-10 p-pad leading-none font-bold text-link-secondary transition-colors not-dark:bg-sweater-1 hover:cursor-pointer hover:bg-sweater-9 hover:text-link-secondary-hover not-dark:hover:bg-sweater-2"
+        class="flex w-full items-center justify-between border-b-(length:--border-w) border-dashed border-line-dark bg-sweater-10 p-pad leading-none font-bold text-link-secondary transition-colors not-dark:bg-sweater-1 group-data-[collapsed=true]/content-toc:hidden hover:cursor-pointer hover:bg-sweater-9 hover:text-link-secondary-hover not-dark:hover:bg-sweater-2"
       >
         Collapse <PanelRightCloseIcon size={18} class="stroke-icon" />
       </button>
@@ -45,8 +47,7 @@ headings.forEach(({ depth, text }) => {
     <button
       id="expand-toc"
       title="Expand table of contents"
-      class="flex h-[calc(100vh-2*var(--spacing-pad)-18px-var(--border-w))] flex-col items-center p-pad text-lg leading-none font-bold text-link-secondary transition-colors hover:cursor-pointer hover:bg-sweater-9 hover:text-link-secondary-hover not-dark:hover:bg-sweater-2"
-      hidden=""
+      class="flex h-[calc(100vh-2*var(--spacing-pad)-18px-var(--border-w))] flex-col items-center p-pad text-lg leading-none font-bold text-link-secondary transition-colors group-data-[collapsed=false]/content-toc:hidden hover:cursor-pointer hover:bg-sweater-9 hover:text-link-secondary-hover not-dark:hover:bg-sweater-2"
     >
       <PanelRightOpenIcon size={18} class="mb-pad stroke-icon" />
       <span style="writing-mode: vertical-rl;text-orientation: mixed;">
@@ -54,7 +55,9 @@ headings.forEach(({ depth, text }) => {
       </span>
     </button>
 
-    <div id="toc-headings" class="flex flex-col text-link-secondary">
+    <div
+      class="flex flex-col text-link-secondary group-data-[collapsed=true]/content-toc:hidden"
+    >
       <p class="p-pad text-lg leading-none font-bold text-link-primary">
         Contents
       </p>
@@ -110,36 +113,17 @@ headings.forEach(({ depth, text }) => {
     .querySelectorAll("h2[id], h3[id], h4[id]")
     .forEach((heading) => observer.observe(heading));
 
-  function addCollapsibleToc() {
-    const contentToc = document.getElementById("content-toc")!;
-    const backToTopText = document.getElementById("back-to-top")!;
-    const tocHeadings = document.getElementById("toc-headings")!;
+  const contentToc = document.getElementById("content-toc")!;
+  const collapseTocBtn = document.getElementById("collapse-toc")!;
+  const expandTocBtn = document.getElementById("expand-toc")!;
 
-    const collapseTocBtn = document.getElementById("collapse-toc")!;
-    const expandTocBtn = document.getElementById("expand-toc")!;
+  collapseTocBtn.addEventListener(
+    "click",
+    () => (contentToc.dataset["collapsed"] = "true"),
+  );
 
-    // Invariant: collapse TOC button is only shown when we're
-    // currently not collapsed
-    collapseTocBtn.addEventListener("click", () => {
-      contentToc.dataset["collapsed"] = "true";
-      backToTopText.setAttribute("hidden", "");
-      tocHeadings.setAttribute("hidden", "");
-
-      expandTocBtn.removeAttribute("hidden");
-      collapseTocBtn.setAttribute("hidden", "");
-    });
-
-    // Invariant: expand TOC button is only shown when we're
-    // currently collapsed
-    expandTocBtn.addEventListener("click", () => {
-      contentToc.dataset["collapsed"] = "false";
-      backToTopText.removeAttribute("hidden");
-      tocHeadings.removeAttribute("hidden");
-
-      collapseTocBtn.removeAttribute("hidden");
-      expandTocBtn.setAttribute("hidden", "");
-    });
-  }
-
-  addCollapsibleToc();
+  expandTocBtn.addEventListener(
+    "click",
+    () => (contentToc.dataset["collapsed"] = "false"),
+  );
 </script>
