@@ -12,15 +12,16 @@ import TableOfContents from "@/components/table-of-contents.astro";
 interface Props {
   content: AstroComponentFactory;
   headings: MarkdownHeading[];
+  defaultCollapsedToc: boolean;
 }
 
-const { content: Content, headings } = Astro.props;
+const { content: Content, headings, defaultCollapsedToc } = Astro.props;
 ---
 
 <section
   id="content-toc"
   class="group/content-toc grid-line-before grid-line-after relative grid w-full grid-cols-1 data-[collapsed=false]:[--toc-w:1fr] data-[collapsed=true]:[--toc-w:calc(2*var(--spacing-pad)+18px)] toc:grid-cols-[minmax(0px,3fr)_var(--toc-w)]"
-  data-collapsed="false"
+  data-collapsed={defaultCollapsedToc ? "true" : "false"}
 >
   <div
     class="content grid grid-cols-1 gap-y-pad-2 border-dashed border-line-dark py-pad group-data-[collapsed=true]/content-toc:grid-cols-[1fr_minmax(0px,var(--resolved-collapsed-content-w))_1fr] group-data-[collapsed=true]/content-toc:*:col-2 toc:border-r-(length:--border-w)"

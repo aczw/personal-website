@@ -28,7 +28,7 @@ if (!post) {
 }
 
 const {
-  data: { title, blurb, posted, cover },
+  data: { title, blurb, posted, cover, toc },
 } = post;
 
 if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
@@ -117,5 +117,9 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
     </div>
   </section>
 
-  <ContentWithToc content={Content} headings={headings} />
+  <ContentWithToc
+    content={Content}
+    headings={headings}
+    defaultCollapsedToc={toc ? toc.defaultCollapsed : false}
+  />
 </ContentLayout>

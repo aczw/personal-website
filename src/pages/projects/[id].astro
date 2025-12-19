@@ -48,6 +48,7 @@ const {
     blurb,
     metadata: { tech, link, sourceHref, date },
     cover,
+    toc,
   },
 } = project;
 
@@ -190,5 +191,9 @@ const { Content, headings } = await render(project);
     </ul>
   </section>
 
-  <ContentWithToc content={Content} headings={headings} />
+  <ContentWithToc
+    content={Content}
+    headings={headings}
+    defaultCollapsedToc={toc ? toc.defaultCollapsed : false}
+  />
 </ContentLayout>

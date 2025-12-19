@@ -33,6 +33,9 @@ const projects = defineCollection({
       type: ProjectCategoriesSchema,
       order: z.number(),
       cover: ImageSchema(image),
+      toc: z.object({
+        defaultCollapsed: z.boolean()
+      }).optional()
     }),
 });
 
@@ -45,6 +48,9 @@ const posts = defineCollection({
       tags: ProjectCategoriesSchema.optional(),
       posted: z.date(),
       cover: ImageSchema(image).optional(),
+      toc: z.object({
+        defaultCollapsed: z.boolean()
+      }).optional()
     }),
 });
 

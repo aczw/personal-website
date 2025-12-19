@@ -13,10 +13,9 @@ interface Props {
 
 const { headings } = Astro.props;
 
-const MAX_HEADING_DEPTH = 4;
-
 headings.forEach(({ depth, text }) => {
-  if (depth === 1 || depth > MAX_HEADING_DEPTH) {
+  // Current max heading depth is 3 (i.e. H3).
+  if (depth === 1 || depth > 4) {
     throw new Error(`Heading "${text}" has depth ${depth}`);
   }
 });
