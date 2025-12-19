@@ -125,7 +125,7 @@ In each execution of the loop, until we've reached the max number of samples:
 
 One of my first new additions to the base code is adding a Lambertian diffuse shading model. What makes this model great is how easy it is to conceptualize and implement.
 
-<figure class="mx-auto max-w-[450px]">
+<figure class="mx-auto max-w-120">
   ![An eye is looking at a hemisphere centered at the intersection between the
   surface normal and the outgoing direction.](pbrt-diffuse.png)
   <figcaption>
@@ -139,11 +139,7 @@ The Lambertian BRDF says that for an outgoing ray $\omega_o$, the scattering of 
 
 After adding it, obviously I had to test this material out on the classics.
 
-<div class="hidden [@media(hover:hover)]:block">
-  > Tip: try clicking on an image to enlarge it!
-</div>
-
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="grid grid-cols-1 gap-pad 480:grid-cols-2 bleed">
   <figure>
     ![](renders/diffuse/sphere-800x800-5000.png)
     <figcaption>800×800 / 5000 samples</figcaption>
@@ -191,7 +187,7 @@ segment.ray = {
 
 What's the opposite of the diffuse shading model? I... don't know the answer, but collapsing from an infinite set of $\omega_i$ to a _discrete_ set of possibilities sounds right to me.
 
-<figure class="mx-auto max-w-[450px]">
+<figure class="mx-auto max-w-120">
   ![An eye is looking at a hemisphere centered at the intersection between the
   surface normal and the outgoing direction. There is a strip of geometry that
   is pointing in the direction of reflection of the outgoing
