@@ -1,10 +1,13 @@
 @layer components {
-  :root {
-    --content-w: 600px;
-  }
-
   /* Only style elements rendered from MDX */
   .content {
+    /* Prose width when TOC is collapsed. 593px is chosen to imitate the
+     * current content width when TOC is expanded. */
+    --collapsed-content-w: 593px;
+    --resolved-collapsed-content-w: calc(
+      var(--collapsed-content-w) + var(--spacing-pad-2)
+    );
+
     @apply *:px-pad;
 
     /* In general, all media should have full width. */
@@ -29,7 +32,7 @@
 
     /* Inline code should have some padding and unique background color */
     code {
-      @apply rounded-md bg-sweater-9 px-1.5 py-0.5 break-words;
+      @apply rounded-md bg-sweater-9 px-1.5 py-0.5 wrap-break-word;
 
       font-size: var(--text-mono);
 
