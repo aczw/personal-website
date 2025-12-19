@@ -67,10 +67,10 @@ headings.forEach(({ depth, text }) => {
               class:list={[
                 "pr-pad leading-[1.1] transition-colors first:pt-pad last:pb-pad hover:text-link-primary data-seen:text-link-primary data-seen:hover:text-link-primary-hover",
 
-                depth === 2 ? "pt-[calc(var(--spacing-pad)/1.6)]" : "pt-0.5",
+                depth === 2 ? "pt-[calc(var(--spacing-pad)*0.65)]" : "pt-0.5",
 
                 headings[index + 1]?.depth === 2 ?
-                  "pb-[calc(var(--spacing-pad)/1.6)]"
+                  "pb-[calc(var(--spacing-pad)*0.65)]"
                 : "pb-0.5",
               ]}
               style={{
