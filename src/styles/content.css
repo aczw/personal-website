@@ -118,24 +118,6 @@
       }
     }
 
-    /* Style the last element in the content only if there are footnotes */
-    :is(& > *) {
-      &:nth-last-child(2):has(+ section[data-footnotes]) {
-        @apply mb-6! border-b-(length:--border-w) border-dashed border-line-dark pb-pad;
-
-        @variant sm {
-          @apply mb-12!;
-        }
-      }
-
-      /* If the next element starts a new section, decrease the
-       * padding before it */
-      &:has(+ h2[id]),
-      &:has(+ h3[id]) {
-        @apply mb-pad!;
-      }
-    }
-
     /* Target auto-generated footnotes */
     section[data-footnotes] {
       @apply mb-0! border-t-(length:--border-w) border-dashed border-line-dark pt-pad;

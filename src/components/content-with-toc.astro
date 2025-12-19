@@ -23,7 +23,7 @@ const { content: Content, headings } = Astro.props;
   data-collapsed="false"
 >
   <div
-    class="content grid grid-cols-1 gap-y-pad-2 border-dashed border-line-dark py-pad group-data-[collapsed=true]/content-toc:grid-cols-[1fr_var(--resolved-collapsed-content-w)_1fr] group-data-[collapsed=true]/content-toc:*:col-2 toc:border-r-(length:--border-w)"
+    class="content grid grid-cols-1 gap-y-pad-2 border-dashed border-line-dark py-pad group-data-[collapsed=true]/content-toc:grid-cols-[1fr_minmax(0px,var(--resolved-collapsed-content-w))_1fr] group-data-[collapsed=true]/content-toc:*:col-2 toc:border-r-(length:--border-w)"
   >
     <Content
       components={{
