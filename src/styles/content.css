@@ -120,7 +120,12 @@
 
     /* Target auto-generated footnotes */
     section[data-footnotes] {
-      @apply mb-0! border-t-(length:--border-w) border-dashed border-line-dark pt-pad;
+      /* The max width when the TOC is collapsed has to take into account the 
+       * width of the list marker and the padding in between.
+       *
+       * Also, list markers aren't considered in the overall element width. 
+       * Therefore, we disable the global left padding and add our own below. */
+      @apply col-span-full! grid grid-cols-subgrid border-t-(length:--border-w) border-dashed border-line-dark pt-pad-2 pl-0! *:col-2;
 
       /* MDX generates a "Footnotes" heading. Make it screen reader only */
       > h2#footnote-label {
@@ -129,6 +134,11 @@
 
       > ol {
         @apply space-y-1.5 text-subtitle;
+
+        > li {
+          /* Add custom left padding so list markers are aligned to edge. */
+          @apply ml-pad;
+        }
 
         /* The following two selectors are to make sure back ref arrows are 
          * inline with the text */
