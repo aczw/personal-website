@@ -24,7 +24,7 @@ const links: Link[] = [
   <nav class="grid grid-cols-1 480:grid-cols-2">
     <a
       href="/"
-      class="h-full space-y-1 border-b-(length:--border-w) border-dashed border-line-dark px-pad pt-[calc(1.5*var(--spacing-pad))] pb-pad text-sweater-5 transition-colors not-dark:text-sweater-6 hover:bg-line-dark hover:text-sweater-3 not-dark:hover:text-sweater-7 480:border-b-0"
+      class="group h-full space-y-1 border-b-(length:--border-w) border-dashed border-line-dark px-pad pt-[calc(1.5*var(--spacing-pad))] pb-pad text-sweater-5 transition-colors not-dark:text-sweater-6 hover:bg-line-dark hover:text-sweater-3 not-dark:hover:text-sweater-7 480:border-b-0"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -33,6 +33,7 @@ const links: Link[] = [
         viewBox="0 0 25 25"
         fill="currentColor"
         aria-hidden="true"
+        class="transition-transform group-hover:-rotate-13"
       >
         <path
           fill-rule="evenodd"
@@ -45,7 +46,7 @@ const links: Link[] = [
     </a>
 
     <div
-      class="grid grid-cols-2 divide-x-(length:--border-w) divide-dashed divide-line-dark border-dashed border-line-dark text-xl leading-none font-bold text-link-primary 480:grid-cols-1 480:divide-x-0 480:divide-y-(length:--border-w) 480:border-l-(length:--border-w) 480:text-lg"
+      class="grid grid-cols-2 divide-x-(--border-w) divide-dashed divide-line-dark border-dashed border-line-dark text-xl leading-none font-bold text-link-primary 480:grid-cols-1 480:divide-x-0 480:divide-y-(--border-w) 480:border-l-(length:--border-w) 480:text-lg"
     >
       {
         links.map(({ href, label, labelSmall, icon: Icon }) => (

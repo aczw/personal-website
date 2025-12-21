@@ -35,8 +35,8 @@
 
   --color-subtitle: --alpha(var(--subtitle) / 85%);
 
-  --color-line-bright: --alpha(var(--line) / 85%);
-  --color-line-dark: --alpha(var(--line) / 70%);
+  --color-line-bright: --alpha(var(--line) / 75%);
+  --color-line-dark: --alpha(var(--line) / 60%);
 
   --color-link-primary: var(--link-primary);
   --color-link-primary-hover: var(--link-primary-hover);
@@ -67,20 +67,20 @@
    * grid lines.
    *
    * Also see https://github.com/tailwindlabs/tailwindcss/discussions/15113. */
-  --breakpoint-normal: 860.25px;
+  --breakpoint-normal: 1060.25px;
 }
 
 @layer base {
   :root {
     --border-w: 2px;
-    --normal-w: 800px;
+    --normal-w: 1000px;
 
     --subtitle: var(--color-sweater-2);
     --line: var(--color-sweater-9);
 
     --link-primary: var(--color-sweater-3);
     --link-primary-hover: var(--color-sweater-1);
-    --link-secondary: --alpha(var(--color-sweater-5) / 90%);
+    --link-secondary: var(--color-sweater-5);
     --link-secondary-hover: var(--color-sweater-4);
 
     --icon: var(--color-sweater-6);
@@ -91,7 +91,7 @@
 
       --link-primary: var(--color-sweater-7);
       --link-primary-hover: var(--color-sweater-10);
-      --link-secondary: --alpha(var(--color-sweater-6) / 90%);
+      --link-secondary: var(--color-sweater-6);
       --link-secondary-hover: var(--color-sweater-7);
 
       --icon: var(--color-sweater-5);
