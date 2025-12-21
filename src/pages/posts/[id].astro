@@ -12,6 +12,7 @@ import {
 } from "@/scripts/util";
 import ContentLayout from "@/layouts/content-layout.astro";
 import ContentWithToc from "@/components/content-with-toc.astro";
+import GridSection from "@/components/grid-section.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -43,14 +44,14 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
 <ContentLayout meta={{ kind: "post", post }}>
   {
     cover ?
-      <section class="grid-line-before grid-line-after relative p-pad">
+      <GridSection class="p-pad">
         <Image
           src={cover.img}
           alt={cover.alt}
           loading="eager"
           class="rounded-lg bg-sweater-9 not-dark:bg-sweater-2"
         />
-      </section>
+      </GridSection>
     : null
   }
 

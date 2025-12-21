@@ -10,6 +10,7 @@ import {
 } from "@/scripts/util";
 import MainLayout from "@/layouts/main-layout.astro";
 import { CircleArrowRightIcon } from "@lucide/astro";
+import GridSection from "@/components/grid-section.astro";
 
 const socials = getSocials();
 
@@ -38,7 +39,7 @@ posts = posts
       "Computer graphics student at the University of Pennsylvania.",
   }}
 >
-  <section class="grid-line-before grid-line-after relative">
+  <GridSection>
     <div class="grid grid-cols-2 gap-pad-2 p-pad">
       <p class="col-span-2 560:col-span-1">
         Hi! I'm a fourth year student in the Digital Media Design program at
@@ -67,7 +68,7 @@ posts = posts
     </div>
 
     <ul
-      class="col-span-1 grid grid-cols-2 divide-x-(length:--border-w) divide-y-(length:--border-w) divide-dashed divide-line-dark border-t-(length:--border-w) border-dashed border-line-dark font-bold text-link-primary 480:grid-cols-4 480:divide-y-0 560:col-span-2"
+      class="col-span-1 grid grid-cols-2 divide-x-(--border-w) divide-y-(--border-w) divide-dashed divide-line-dark border-t-(length:--border-w) border-dashed border-line-dark font-bold text-link-primary 480:grid-cols-4 480:divide-y-0 560:col-span-2"
     >
       {
         socials.map(({ href, label, icon: Icon }) => (
@@ -84,11 +85,9 @@ posts = posts
         ))
       }
     </ul>
-  </section>
+  </GridSection>
 
-  <section
-    class="grid-line-before grid-line-after relative grid grid-cols-1 560:grid-cols-2"
-  >
+  <GridSection class="grid grid-cols-1 560:grid-cols-2">
     {
       projects.map(({ data: { name, subtitle, cover }, id }, index) => (
         <div
@@ -142,9 +141,9 @@ posts = posts
         </div>
       ))
     }
-  </section>
+  </GridSection>
 
-  <section class="grid-line-before grid-line-after relative">
+  <GridSection>
     {
       posts.map(({ data: { title, posted }, id }) => (
         <a
@@ -177,5 +176,5 @@ posts = posts
         </a>
       ))
     }
-  </section>
+  </GridSection>
 </MainLayout>

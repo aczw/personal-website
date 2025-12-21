@@ -24,6 +24,7 @@ import ContentLayout from "@/layouts/content-layout.astro";
 import { DISABLED_PROJECTS } from "@/scripts/constants";
 import { validProjectCover } from "@/scripts/util";
 import ContentWithToc from "@/components/content-with-toc.astro";
+import GridSection from "@/components/grid-section.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -87,14 +88,14 @@ const { Content, headings } = await render(project);
 ---
 
 <ContentLayout meta={{ kind: "project", project }}>
-  <section class="grid-line-before grid-line-after relative p-pad">
+  <GridSection class="p-pad">
     <ProjectCover
       id={id}
       cover={cover}
       useVideo={{ small: false }}
       class="overflow-hidden rounded-lg"
     />
-  </section>
+  </GridSection>
 
   <section id="introduction" class="grid-line-before grid-line-after relative">
     <div

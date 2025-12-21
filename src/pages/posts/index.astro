@@ -8,6 +8,7 @@ import {
   getMonthYearDateFormatting,
 } from "@/scripts/util";
 import MainLayout from "@/layouts/main-layout.astro";
+import GridSection from "@/components/grid-section.astro";
 
 const posts = await getCollection("posts");
 const sortedPosts = posts.sort(
@@ -24,7 +25,7 @@ const sortedPosts = posts.sort(
     ogImageParams: "Random ramblings on stuff I've been doing.",
   }}
 >
-  <section class="grid-line-before grid-line-after relative flex flex-col">
+  <GridSection class="flex flex-col">
     {
       sortedPosts.map(({ data: { title, blurb, posted }, id, body }, index) => {
         let isSubsequentPostInYear = false;
@@ -106,5 +107,5 @@ const sortedPosts = posts.sort(
         );
       })
     }
-  </section>
+  </GridSection>
 </MainLayout>
