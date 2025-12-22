@@ -2,8 +2,6 @@
 import { getCollection, getEntries } from "astro:content";
 
 import Link from "@/components/link.astro";
-import ProjectCover from "@/components/project-cover.astro";
-import { getSocials } from "@/scripts/constants";
 import {
   getFullDateFormatting,
   getMonthYearDateFormatting,
@@ -11,13 +9,12 @@ import {
 import MainLayout from "@/layouts/main-layout.astro";
 import { CircleArrowRightIcon } from "@lucide/astro";
 import GridSection from "@/components/grid-section.astro";
-
-const socials = getSocials();
+import TechList from "@/components/tech-list.astro";
 
 // Stuff below assumes this will only ever have 4 entries
 const projects = await getEntries([
   { collection: "projects", id: "mini-minecraft" },
-  { collection: "projects", id: "cuda-path-tracer" },
+  { collection: "projects", id: "pbr-renderer" },
   { collection: "projects", id: "webgpu-clustered" },
   { collection: "projects", id: "door" },
 ]);
@@ -40,111 +37,45 @@ posts = posts
   }}
 >
   <GridSection class="p-pad">
-    <div class="h-[325px] bg-sweater-9">Test</div>
+    <div class="h-80 bg-sweater-9">Test</div>
   </GridSection>
 
-  <GridSection>
-    <div class="grid grid-cols-2 gap-pad-2 p-pad">
-      <p class="col-span-2 560:col-span-1">
-        Hi! I'm a fourth year student in the Digital Media Design program at
-        UPenn. I'm concurrently finishing a Master's in Computer Graphics and
-        Game Technology.
+  <GridSection class="grid grid-cols-2">
+    <div
+      class="space-y-pad-2 border-r-(length:--border-w) border-dashed border-line-dark p-pad"
+    >
+      <p>
+        Hi! I'm a fourth year student in the Digital Media Design major at
+        UPenn. I'm interested in computer graphics, game engine development, and
+        real-time rendering.
       </p>
-      <p class="col-span-2 560:col-span-1">
+      <p>
         I help run <Link href="https://pennupgrade.com/" target="_blank"
           >UPGRADE</Link
         >, our game dev club, and am part of the <Link
           href="https://cg.cis.upenn.edu/"
           target="_blank">CG@Penn</Link
-        > student board. Previously I interned at Snap and TikTok to work on their
-        graphics engines.
-      </p>
-      <p class="col-span-2 text-subtitle 480:col-span-1">
-        In my free time I like running, making playlists, reading manga, and
-        riding SEPTA.
-      </p>
-      <p class="hidden text-subtitle 480:block">
-        You can find my socials and resumé below. Thanks for stopping by. <span
-          aria-hidden="true"
-          class="whitespace-nowrap">(〜￣▽￣)〜</span
-        >
+        > student board. Previously I was at Snap and TikTok.
       </p>
     </div>
 
-    <ul
-      class="col-span-1 grid grid-cols-2 divide-x-(--border-w) divide-y-(--border-w) divide-dashed divide-line-dark border-t-(length:--border-w) border-dashed border-line-dark font-bold text-link-primary 480:grid-cols-4 480:divide-y-0 560:col-span-2"
-    >
-      {
-        socials.map(({ href, label, icon: Icon }) => (
-          <li>
-            <a
-              href={href}
-              target="_blank"
-              class="flex items-center justify-between p-pad transition-colors hover:bg-line-bright hover:text-link-primary-hover"
-            >
-              <span>{label}</span>
-              <Icon size={18} class="stroke-icon" />
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </GridSection>
-
-  <GridSection class="grid grid-cols-1 560:grid-cols-2">
-    {
-      projects.map(({ data: { name, subtitle, cover }, id }, index) => (
-        <div
-          class:list={[
-            "border-dashed border-line-dark transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50",
-            // Adding some additional padding for optical alignment
-            "p-[calc(var(--spacing-pad)+2px)]",
-            // Gives top row of videos a bottom border
-            index < 2 ? "border-b-(length:--border-w)" : null,
-            // Gives all videos on the left a border
-            index % 2 === 0 ? "480:border-r-(length:--border-w)" : null,
-            // Adds bottom border to second-to-last video (for mobile)
-            index === projects.length - 2 ?
-              "border-b-(length:--border-w) 480:border-b-0"
-            : null,
-          ]}
+    <div class="space-y-pad-2 p-pad">
+      <p class="text-subtitle">
+        I love making and designing things. For fun I like to run, create
+        playlists, read manga, and ride SEPTA. I strongly believe in shared
+        spaces and self-expression on the web.
+      </p>
+      <p class="text-subtitle">
+        You can find ways to reach me and my resumé below. Thanks for stopping
+        by!! <span
+          aria-hidden="true"
+          class="group whitespace-nowrap hover:cursor-not-allowed"
+          >(〜<span class="group-hover:hidden">￣▽￣)〜</span><span
+            class="hidden group-hover:inline">⦻▽⦻)〜</span
+          ></span
         >
-          <a href={`/projects/${id}`} class="group flex h-full flex-col">
-            <h2 class="grow justify-between rounded-t-lg bg-sweater-9 p-pad leading-tight text-link-primary transition-colors not-dark:bg-sweater-2 group-hover:flex group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3">
-              <span class="font-bold transition-colors group-hover:text-link-primary-hover">
-                {name}
-              </span>
-
-              {subtitle && showSubtitles.includes(id) ?
-                <>
-                  <span
-                    aria-hidden="true"
-                    class="text-sweater-6/70 not-dark:text-sweater-4/70 group-hover:hidden"
-                  >
-                    /
-                  </span>
-                  <span class="text-link-secondary group-hover:hidden">
-                    {subtitle}
-                  </span>
-                </>
-              : null}
-
-              <div class="hidden items-center gap-pad text-link-secondary-hover group-hover:flex">
-                <span class="hidden 480:inline">Read</span>
-                <CircleArrowRightIcon
-                  size={18}
-                  class="stroke-link-secondary-hover"
-                />
-              </div>
-            </h2>
-
-            <div class="grow-0 overflow-hidden rounded-b-lg">
-              <ProjectCover id={id} cover={cover} useVideo={{ small: true }} />
-            </div>
-          </a>
-        </div>
-      ))
-    }
+      </p>
+    </div>
   </GridSection>
 
   <GridSection>
