@@ -18,7 +18,7 @@ let ogImageParams: string;
 
 switch (meta.kind) {
   case "route": {
-    title = (meta.title ? `${meta.title} — ` : "") + title;
+    title = (meta.title ? `${meta.title} / ` : "") + title;
     description = meta.description;
     ogImageParams = `?heading=${encodeURIComponent(meta.ogImageParams)}`;
     break;
@@ -26,7 +26,7 @@ switch (meta.kind) {
 
   case "post": {
     const { data, id } = meta.post;
-    title = `${data.title} — ${title}`;
+    title = `${data.title} / ${title}`;
 
     // If the post doesn't have a blurb then just state when it was published
     description =
@@ -39,7 +39,7 @@ switch (meta.kind) {
 
   case "project": {
     const { data, id } = meta.project;
-    title = `${data.name} — ${title}`;
+    title = `${data.name} / ${title}`;
     description = data.blurb;
     ogImageParams = `?project=${id}`;
     break;
