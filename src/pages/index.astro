@@ -40,16 +40,16 @@ posts = posts
     <div class="h-80 bg-sweater-9">Test</div>
   </GridSection>
 
-  <GridSection class="grid grid-cols-2">
+  <GridSection class="grid grid-cols-1 sm:grid-cols-2">
     <div
-      class="space-y-pad-2 border-r-(length:--border-w) border-dashed border-line-dark p-pad"
+      class="grid grid-cols-4 space-y-pad-2 border-b-(length:--border-w) border-dashed border-line-dark p-pad sm:border-r-(length:--border-w) sm:border-b-0"
     >
-      <p>
+      <p class="col-span-full 480:col-span-3 sm:col-span-full">
         Hi! I'm a fourth year student in the Digital Media Design major at
         UPenn. I'm interested in computer graphics, game engine development, and
         real-time rendering.
       </p>
-      <p>
+      <p class="col-span-full 480:col-span-3 sm:col-span-full">
         I help run <Link href="https://pennupgrade.com/" target="_blank"
           >UPGRADE</Link
         >, our game dev club, and am part of the <Link
@@ -59,15 +59,16 @@ posts = posts
       </p>
     </div>
 
-    <div class="space-y-pad-2 p-pad">
-      <p class="text-subtitle">
+    <div class="grid grid-cols-4 space-y-pad-2 p-pad">
+      <p class="col-span-full text-subtitle 480:col-span-3 sm:col-span-full">
         I love making and designing things. For fun I like to run, create
         playlists, read manga, and ride SEPTA. I strongly believe in shared
         spaces and self-expression on the web.
       </p>
-      <p class="text-subtitle">
-        You can find ways to reach me and my resumé below. Thanks for stopping
-        by!! <span
+      <p class="col-span-full text-subtitle 480:col-span-3 sm:col-span-full">
+        <span class="hidden 480:inline"
+          >You can find ways to reach me and my resumé below.
+        </span>Thanks for stopping by!! <span
           aria-hidden="true"
           class="group whitespace-nowrap hover:cursor-not-allowed"
           >(〜<span class="group-hover:hidden">￣▽￣)〜</span><span
