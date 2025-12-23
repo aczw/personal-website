@@ -10,6 +10,7 @@ import MainLayout from "@/layouts/main-layout.astro";
 import { CircleArrowRightIcon } from "@lucide/astro";
 import GridSection from "@/components/grid-section.astro";
 import TechList from "@/components/tech-list.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
 
 // Stuff below assumes this will only ever have 4 entries
 const projects = await getEntries([
@@ -27,7 +28,7 @@ posts = posts
   .slice(0, 3);
 ---
 
-<MainLayout
+<BaseLayout
   meta={{
     kind: "route",
     title: null,
@@ -36,81 +37,28 @@ posts = posts
       "Computer graphics student at the University of Pennsylvania.",
   }}
 >
-  <GridSection class="p-pad">
-    <div class="h-80 bg-sweater-9">Test</div>
-  </GridSection>
+  <div class="fixed bottom-0 left-0 space-y-pad-2 bg-sweater-8 p-pad-2">
+    <header>
+      <h1>Charles Wang</h1>
 
-  <GridSection class="grid grid-cols-1 560:grid-cols-2">
-    <div
-      class="space-y-pad-2 border-b-(length:--border-w) border-dashed border-line-dark p-pad sm:border-r-(length:--border-w) sm:border-b-0"
-    >
-      <p>
-        Hi! I'm a fourth year student in the Digital Media Design major at
-        UPenn. I'm interested in computer graphics, game engine development, and
-        real-time rendering.
-      </p>
-      <p>
-        I help run <Link href="https://pennupgrade.com/" target="_blank"
-          >UPGRADE</Link
-        >, our game dev club, and am part of the <Link
-          href="https://cg.cis.upenn.edu/"
-          target="_blank">CG@Penn</Link
-        > student board. Previously I was at Snap.
-      </p>
-    </div>
+      <nav class="grid grid-cols-2">
+        <a href="/projects">Portfolio</a>
+        <a href="/posts">Posts</a>
+        <a href="/fun">Stream</a>
+        <a href="/about">About</a>
+      </nav>
+    </header>
 
-    <div class="space-y-pad-2 p-pad">
-      <p class="text-subtitle">
-        I love making and designing things. For fun I like to run, create
-        playlists, read manga, and ride SEPTA. I strongly believe in shared
-        spaces and self-expression on the web.
-      </p>
-      <p class="text-subtitle">
-        <span class="hidden 480:inline"
-          >You can find ways to reach me and my resumé below.
-        </span>Thanks for visiting!! <span
-          aria-hidden="true"
-          class="group whitespace-nowrap hover:cursor-not-allowed"
-          >(〜<span class="group-hover:hidden">￣▽￣)〜</span><span
-            class="hidden group-hover:inline">⦻⦻▽⦻⦻)〜</span
-          ></span
-        >
-      </p>
-    </div>
-  </GridSection>
+    <main>
+      <canvas
+        class="pointer-events-none fixed inset-0 -z-1 h-screen w-screen bg-sweater-8"
+      ></canvas>
 
-  <GridSection>
-    {
-      posts.map(({ data: { title, posted }, id }) => (
-        <a
-          href={`/posts/${id}`}
-          class="group flex border-dashed border-line-dark transition-colors not-last:border-b-(length:--border-w) hover:bg-line-bright"
-        >
-          <div class="flex grow flex-col-reverse justify-between p-pad 480:flex-row 480:gap-pad-2">
-            <h2 class="leading-snug font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-              {title}
-            </h2>
+      <p>Now playing: Mini Minecraft</p>
+    </main>
 
-            <time
-              datetime={posted.toISOString()}
-              title={getFullDateFormatting(posted)}
-              class="shrink-0 leading-snug text-link-secondary 560:group-hover:hidden"
-            >
-              <span class="480:hidden">Posted</span>
-              {getMonthYearDateFormatting(posted)}
-            </time>
-            <div
-              aria-hidden="true"
-              title={getFullDateFormatting(posted)}
-              class="hidden maple text-link-secondary-hover 560:group-hover:block"
-            >{`/posts/${id}`}</div>
-          </div>
-
-          <div class="py-pad pr-pad pl-pad 480:pl-0">
-            <CircleArrowRightIcon size={18} class="stroke-icon" />
-          </div>
-        </a>
-      ))
-    }
-  </GridSection>
-</MainLayout>
+    <footer>
+      <a>Email</a>
+    </footer>
+  </div>
+</BaseLayout>

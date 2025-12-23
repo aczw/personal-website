@@ -5,6 +5,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 import type { MetaKind } from "@/scripts/types";
 import "@/styles/main.css";
 import { getShortDateFormatting, stripEndingSlash } from "@/scripts/util";
+import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
 
 interface Props {
   meta: MetaKind;
@@ -150,22 +151,6 @@ const canonicalUrl = stripEndingSlash(url);
 
   <body>
     <slot />
-
-    {
-      import.meta.env.DEV ?
-        <div
-          aria-hidden="true"
-          class="fixed bottom-5 left-5 z-9999 w-fit cursor-default rounded-xl bg-sweater-8 px-4 py-2 maple not-dark:bg-sweater-3"
-        >
-          <span class="hidden 2xl:inline">2XL ({">="}1536px)</span>
-          <span class="hidden xl:inline 2xl:hidden">XL ({">="}1280px)</span>
-          <span class="hidden lg:inline xl:hidden">LG ({">="}1024px)</span>
-          <span class="hidden md:inline lg:hidden">MD ({">="}768px)</span>
-          <span class="hidden sm:inline md:hidden">SM ({">="}640px)</span>
-          <span class="hidden 480:inline sm:hidden">XS ({">="}480px)</span>
-          <span class="480:hidden">{"<"} 480px</span>
-        </div>
-      : null
-    }
+    <ScreenSizeIndicator />
   </body>
 </html>
