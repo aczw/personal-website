@@ -1,10 +1,7 @@
-import type { CollectionEntry } from "astro:content";
-
 import { readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import type { PROJECT_CATEGORIES } from "@/scripts/constants";
 import type { ContentDateType, DateKind } from "@/scripts/types";
 
 /**
@@ -103,20 +100,6 @@ function getMonthYearDateFormatting(date: Date) {
   });
 }
 
-function getProjectsInCategory(
-  projects: CollectionEntry<"projects">[],
-  category: (typeof PROJECT_CATEGORIES)[number],
-  sort = true,
-) {
-  const filtered = projects.filter((project) => project.data.type === category);
-
-  if (sort) {
-    return filtered.sort((a, b) => a.data.order - b.data.order);
-  } else {
-    return filtered;
-  }
-}
-
 function getDateKind(date: ContentDateType): DateKind {
   if (typeof date === "object" && date !== null && "from" in date) {
     return { kind: "ranged", date };
@@ -133,6 +116,5 @@ export {
   getShortDateFormatting,
   getFullDateFormatting,
   getMonthYearDateFormatting,
-  getProjectsInCategory,
   getDateKind,
 };

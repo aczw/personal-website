@@ -1,7 +1,7 @@
 import type { ImageFunction } from "astro:content";
 import { z } from "astro:schema";
 
-import { PROJECT_CATEGORIES, VALID_MONTHS } from "@/scripts/constants";
+import { VALID_MONTHS } from "@/scripts/constants";
 
 const LastFmSchema = z.object({
   recenttracks: z.object({
@@ -48,8 +48,6 @@ const LastFmSchema = z.object({
   }),
 });
 
-const ProjectCategoriesSchema = z.enum(PROJECT_CATEGORIES);
-
 const BlurbSchema = z.string().refine((blurb) => blurb.length <= 170, {
   message:
     "Blurb should be 170 characters or less (so it looks nice in previews).",
@@ -60,8 +58,6 @@ const ImageSchema = (image: ImageFunction) =>
     img: image(),
     alt: z.string(),
   });
-
-const TechSchema = z.string().array();
 
 const LinkSchema = z.object({
   href: z.string().url(),
@@ -123,10 +119,8 @@ const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 
 export {
   LastFmSchema,
-  ProjectCategoriesSchema,
   BlurbSchema,
   ImageSchema,
-  TechSchema,
   LinkSchema,
   SourceHrefSchema,
   SimpleDateSchema,

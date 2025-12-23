@@ -1,31 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 
-import {
-  ImageIcon,
-  JoystickIcon,
-  ShapesIcon,
-  type Icon as IconType,
-} from "@lucide/astro";
-
 import ProjectCover from "@/components/project-cover.astro";
-import { DISABLED_PROJECTS, PROJECT_CATEGORIES } from "@/scripts/constants";
-import { getProjectsInCategory } from "@/scripts/util";
+import { DISABLED_PROJECTS, WIDE_PROJECTS } from "@/scripts/constants";
 import MainLayout from "@/layouts/main-layout.astro";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import GridSection from "@/components/grid-section.astro";
-
-const projects = await getCollection("projects");
-const icons: (typeof IconType)[] = [ImageIcon, JoystickIcon, ShapesIcon];
-
-const wideProjects: string[] = [
-  "cuda-path-tracer",
-  "door",
-  "pbr-renderer",
-  "catanks",
-  "rcw",
-];
 
 const withVideos: string[] = [
   "cuda-path-tracer",
@@ -33,6 +14,15 @@ const withVideos: string[] = [
   "cuda-boids",
   "catanks",
 ];
+
+const projects = (await getCollection("projects"))
+  .filter((project) => !DISABLED_PROJECTS.includes(project.id))
+  .sort((a, b) => a.data.order - b.data.order);
+
+const totalCells = projects.reduce(
+  (sum, { id }) => (WIDE_PROJECTS.includes(id) ? sum + 2 : sum + 1),
+  0,
+);
 ---
 
 <MainLayout
@@ -44,169 +34,144 @@ const withVideos: string[] = [
     ogImageParams: "Graphics programming, games, and sometimes art.",
   }}
 >
-  {
-    PROJECT_CATEGORIES.map((category, categoryIndex) => {
-      const Icon = icons[categoryIndex]!;
-      const projectsInCategory = getProjectsInCategory(
-        projects,
-        category,
-      ).filter((project) => !DISABLED_PROJECTS.includes(project.id));
-
-      const totalCells = projectsInCategory.reduce(
-        (sum, { id }) => (wideProjects.includes(id) ? sum + 2 : sum + 1),
-        0,
-      );
-
-      return (
-        <GridSection>
-          <a href={`#${category}`} class="group">
-            <h2
-              id={category}
-              class="flex items-center justify-between border-b-(length:--border-w) border-dashed border-line-dark p-[calc(var(--spacing-pad)+2px)] text-lg font-bold text-link-secondary transition-colors group-hover:bg-line-dark group-hover:text-link-secondary-hover"
-            >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
-              <Icon size={18} class="stroke-icon" />
-            </h2>
-          </a>
-
-          <div class="grid grid-cols-1 560:grid-cols-2">
-            {projectsInCategory.map(
-              (
-                {
-                  id,
-                  data: {
-                    name,
-                    blurb,
-                    metadata: { tech, date },
-                    cover,
-                  },
-                },
-                projectIndex,
-              ) => {
-                const numElapsedCells = projectsInCategory.reduce(
-                  (sum, { id }, projectInCategoryIndex) => {
-                    if (projectInCategoryIndex > projectIndex) {
-                      return sum;
-                    }
-
-                    if (wideProjects.includes(id)) {
-                      return sum + 2;
-                    } else {
-                      return sum + 1;
-                    }
-                  },
-                  0,
-                );
-
-                return wideProjects.includes(id) ?
-                    <div
-                      class:list={[
-                        "col-span-1 border-dashed border-line-dark p-pad transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50 480:p-0 480:hover:bg-line-dark 560:col-span-2",
-                        projectIndex < projectsInCategory.length - 1 ?
-                          "border-b-(length:--border-w)"
-                        : null,
-                      ]}
-                    >
-                      <a
-                        href={`/projects/${id}`}
-                        class="group grid grid-cols-1 480:grid-cols-2"
-                      >
-                        <div class="border-dashed border-line-dark 480:border-r-(length:--border-w) 480:p-pad">
-                          <ProjectCover
-                            id={id}
-                            cover={cover}
-                            useVideo={
-                              withVideos.includes(id) ? { small: true } : null
-                            }
-                            class="overflow-hidden rounded-t-lg 480:rounded-b-lg"
-                          />
-                        </div>
-
-                        <div class="flex flex-col *:border-dashed *:border-line-dark normal:grid normal:grid-cols-1 normal:grid-rows-4">
-                          <div class="bg-sweater-9 px-pad pt-pad transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:space-y-1 480:border-b-(length:--border-w) 480:bg-transparent 480:pb-pad 480:group-hover:bg-transparent 560:border-b-0 normal:row-span-2 sm:border-b-(length:--border-w)">
-                            <h3 class="leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:text-lg">
-                              {name}
-                            </h3>
-                            <p class="hidden 560:block">{blurb}</p>
-                          </div>
-
-                          <div class="hidden border-b-(length:--border-w) p-pad normal:block">
-                            <p class="font-bold text-sweater-3/85 transition-colors not-dark:text-sweater-7/85 group-hover:text-link-primary">
-                              Tech used
-                            </p>
-
-                            <TechList tech={tech} class="text-subtitle" />
-                          </div>
-
-                          <div class="hidden p-pad normal:block">
-                            <p class="font-bold text-sweater-3/85 transition-colors not-dark:text-sweater-7/85 group-hover:text-link-primary">
-                              Date
-                            </p>
-                            <ContentDate date={date} class="text-subtitle" />
-                          </div>
-
-                          <div class="rounded-b-lg bg-sweater-9 px-pad pb-pad transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:bg-transparent 480:pt-pad 480:group-hover:bg-transparent 560:hidden normal:hidden! sm:block">
-                            <TechList
-                              tech={tech}
-                              class="text-link-secondary 480:text-subtitle"
-                            />
-
-                            <ContentDate
-                              date={date}
-                              class="hidden text-subtitle 480:block"
-                            />
-                          </div>
-                        </div>
-                      </a>
-                    </div>
-                  : <div
-                      class:list={[
-                        "border-dashed border-line-dark p-pad transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50 480:p-0 480:hover:bg-line-dark 560:p-pad 560:hover:bg-sweater-9/50 560:not-dark:hover:bg-sweater-2/50",
-                        totalCells - numElapsedCells !== 0 ?
-                          "border-b-(length:--border-w)"
-                        : null,
-                        numElapsedCells % 2 === 1 ?
-                          "560:border-r-(length:--border-w)"
-                        : null,
-                      ]}
-                    >
-                      <a
-                        href={`/projects/${id}`}
-                        class="group grid grid-cols-1 480:grid-cols-2 560:grid-cols-1"
-                      >
-                        <div class="border-dashed border-line-dark 480:border-r-(length:--border-w) 480:p-pad 560:border-r-0 560:p-0">
-                          <ProjectCover
-                            id={id}
-                            cover={cover}
-                            useVideo={
-                              withVideos.includes(id) ? { small: true } : null
-                            }
-                            class="overflow-hidden rounded-t-lg 480:rounded-b-lg 560:rounded-b-none"
-                          />
-                        </div>
-
-                        <div class="rounded-b-lg bg-sweater-9 transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:bg-transparent 480:group-hover:bg-transparent 560:bg-sweater-9 560:not-dark:bg-sweater-2 560:group-hover:bg-sweater-8 560:not-dark:group-hover:bg-sweater-3">
-                          <h3 class="border-dashed border-line-dark px-pad pt-pad leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:border-b-(length:--border-w) 480:pb-pad 480:text-lg 560:border-b-0 560:pb-0 560:text-base">
-                            {name}
-                          </h3>
-
-                          <TechList
-                            tech={tech}
-                            class="px-pad pb-pad text-link-secondary 480:pt-pad 480:pb-0 480:text-subtitle 560:pt-0 560:pb-pad 560:text-link-secondary"
-                          />
-
-                          <ContentDate
-                            date={date}
-                            class="hidden px-pad pb-pad text-subtitle 480:block 560:hidden"
-                          />
-                        </div>
-                      </a>
-                    </div>;
+  <GridSection>
+    <div class="grid grid-cols-1 560:grid-cols-2">
+      {
+        projects.map(
+          (
+            {
+              id,
+              data: {
+                name,
+                blurb,
+                metadata: { tech, date },
+                cover,
               },
-            )}
-          </div>
-        </GridSection>
-      );
-    })
-  }
+            },
+            index,
+          ) => {
+            const numElapsedCells = projects.reduce(
+              (sum, { id }, projectInCategoryIndex) => {
+                if (projectInCategoryIndex > index) {
+                  return sum;
+                }
+
+                if (WIDE_PROJECTS.includes(id)) {
+                  return sum + 2;
+                } else {
+                  return sum + 1;
+                }
+              },
+              0,
+            );
+
+            return WIDE_PROJECTS.includes(id) ?
+                <div
+                  class:list={[
+                    "col-span-1 border-dashed border-line-dark p-pad transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50 480:p-0 480:hover:bg-line-dark 560:col-span-2",
+                    index < projects.length - 1 ?
+                      "border-b-(length:--border-w)"
+                    : null,
+                  ]}
+                >
+                  <a
+                    href={`/projects/${id}`}
+                    class="group grid grid-cols-1 480:grid-cols-2"
+                  >
+                    <div class="border-dashed border-line-dark 480:border-r-(length:--border-w) 480:p-pad">
+                      <ProjectCover
+                        id={id}
+                        cover={cover}
+                        useVideo={
+                          withVideos.includes(id) ? { small: true } : null
+                        }
+                        class="overflow-hidden rounded-t-lg 480:rounded-b-lg"
+                      />
+                    </div>
+
+                    <div class="flex flex-col *:border-dashed *:border-line-dark normal:grid normal:grid-cols-1 normal:grid-rows-4">
+                      <div class="bg-sweater-9 px-pad pt-pad transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:space-y-1 480:border-b-(length:--border-w) 480:bg-transparent 480:pb-pad 480:group-hover:bg-transparent 560:border-b-0 normal:row-span-2 sm:border-b-(length:--border-w)">
+                        <h3 class="leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:text-lg">
+                          {name}
+                        </h3>
+                        <p class="hidden 560:block">{blurb}</p>
+                      </div>
+
+                      <div class="hidden border-b-(length:--border-w) p-pad normal:block">
+                        <p class="font-bold text-sweater-3/85 transition-colors not-dark:text-sweater-7/85 group-hover:text-link-primary">
+                          Tech used
+                        </p>
+
+                        <TechList tech={tech} class="text-subtitle" />
+                      </div>
+
+                      <div class="hidden p-pad normal:block">
+                        <p class="font-bold text-sweater-3/85 transition-colors not-dark:text-sweater-7/85 group-hover:text-link-primary">
+                          Date
+                        </p>
+                        <ContentDate date={date} class="text-subtitle" />
+                      </div>
+
+                      <div class="rounded-b-lg bg-sweater-9 px-pad pb-pad transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:bg-transparent 480:pt-pad 480:group-hover:bg-transparent 560:hidden normal:hidden! sm:block">
+                        <TechList
+                          tech={tech}
+                          class="text-link-secondary 480:text-subtitle"
+                        />
+
+                        <ContentDate
+                          date={date}
+                          class="hidden text-subtitle 480:block"
+                        />
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              : <div
+                  class:list={[
+                    "border-dashed border-line-dark p-pad transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50 480:p-0 480:hover:bg-line-dark 560:p-pad 560:hover:bg-sweater-9/50 560:not-dark:hover:bg-sweater-2/50",
+                    totalCells - numElapsedCells !== 0 ?
+                      "border-b-(length:--border-w)"
+                    : null,
+                    numElapsedCells % 2 === 1 ?
+                      "560:border-r-(length:--border-w)"
+                    : null,
+                  ]}
+                >
+                  <a
+                    href={`/projects/${id}`}
+                    class="group grid grid-cols-1 480:grid-cols-2 560:grid-cols-1"
+                  >
+                    <div class="border-dashed border-line-dark 480:border-r-(length:--border-w) 480:p-pad 560:border-r-0 560:p-0">
+                      <ProjectCover
+                        id={id}
+                        cover={cover}
+                        useVideo={
+                          withVideos.includes(id) ? { small: true } : null
+                        }
+                        class="overflow-hidden rounded-t-lg 480:rounded-b-lg 560:rounded-b-none"
+                      />
+                    </div>
+
+                    <div class="rounded-b-lg bg-sweater-9 transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:bg-transparent 480:group-hover:bg-transparent 560:bg-sweater-9 560:not-dark:bg-sweater-2 560:group-hover:bg-sweater-8 560:not-dark:group-hover:bg-sweater-3">
+                      <h3 class="border-dashed border-line-dark px-pad pt-pad leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:border-b-(length:--border-w) 480:pb-pad 480:text-lg 560:border-b-0 560:pb-0 560:text-base">
+                        {name}
+                      </h3>
+
+                      <TechList
+                        tech={tech}
+                        class="px-pad pb-pad text-link-secondary 480:pt-pad 480:pb-0 480:text-subtitle 560:pt-0 560:pb-pad 560:text-link-secondary"
+                      />
+
+                      <ContentDate
+                        date={date}
+                        class="hidden px-pad pb-pad text-subtitle 480:block 560:hidden"
+                      />
+                    </div>
+                  </a>
+                </div>;
+          },
+        )
+      }
+    </div>
+  </GridSection>
 </MainLayout>

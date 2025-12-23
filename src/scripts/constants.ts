@@ -1,7 +1,5 @@
 const CDN_URL = "https://cdn.charleszw.com";
 
-const PROJECT_CATEGORIES = ["graphics", "games", "art"] as const;
-
 const VALID_MONTHS = [
   "January",
   "February",
@@ -17,6 +15,20 @@ const VALID_MONTHS = [
   "December",
 ];
 
-const DISABLED_PROJECTS = ["dgdg", "deth"];
+const DISABLED_PROJECTS = [
+  "dgdg",
+  "deth",
+  "fireball",
+  "moore-chair",
+  "webgpu-clustered",
+  "glsl-path-tracer",
+];
+const WIDE_PROJECTS = [
+  "cuda-path-tracer",
+  "door",
+  "pbr-renderer",
+  "catanks",
+  "rcw",
+];
 
-export { CDN_URL, PROJECT_CATEGORIES, VALID_MONTHS, DISABLED_PROJECTS };
+export { CDN_URL, VALID_MONTHS, DISABLED_PROJECTS, WIDE_PROJECTS };
