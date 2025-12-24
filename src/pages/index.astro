@@ -60,9 +60,10 @@ posts = posts
         {
           projects.map(({ id, data: { name, metadata } }, index) => (
             <a
-              hidden={index !== 0 ? true : undefined}
               data-project-id={id}
+              data-playing={index === 0 ? "" : null}
               href={`/projects/${id}`}
+              class="hidden data-playing:inline"
             >
               <h3>{name}</h3>
               <TechList tech={metadata.tech} />
@@ -70,6 +71,7 @@ posts = posts
           ))
         }
       </Fragment>
+      <p>Progress: <span id="progress-value">0</span></p>
     </main>
 
     <footer>
@@ -82,7 +84,7 @@ posts = posts
   import vertSource from "@/scripts/shaders/no-op.vert.glsl?raw";
   import fragSource from "@/scripts/shaders/dither.frag.glsl?raw";
 
-  import { CDN_URL } from "@/scripts/constants";
+  import { CDN_URL, HOMEPAGE_PROJECTS } from "@/scripts/constants";
 
   const run = () => {
     const canvas = document.getElementById("dither") as HTMLCanvasElement;
@@ -188,19 +190,46 @@ posts = posts
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
-    let video = document.createElement("video");
-    video.crossOrigin = "anonymous";
-    video.preload = "auto";
-    video.src = `${CDN_URL}/projects/mini-minecraft/cover-small.webm`;
-    video.muted = true;
-    video.loop = true;
-    video.play();
+    const nowPlayingAnchors: HTMLAnchorElement[] = [];
+    const videos: HTMLVideoElement[] = HOMEPAGE_PROJECTS.map((id) => {
+      const element = document.querySelector(`[data-project-id="${id}"]`)!;
+      nowPlayingAnchors.push(element as HTMLAnchorElement);
+
+      const newVideo = document.createElement("video");
+      newVideo.crossOrigin = "anonymous";
+      newVideo.preload = "auto";
+      newVideo.src = `${CDN_URL}/projects/${id}/cover.mp4`;
+      newVideo.muted = true;
+
+      return newVideo;
+    });
+
+    let currVideo = videos[0]!;
+    currVideo.play();
+
+    videos.forEach((video, index) => {
+      video.addEventListener("ended", () => {
+        const nextIndex = index === videos.length - 1 ? 0 : index + 1;
+        currVideo = videos[nextIndex]!;
+        currVideo.play();
+        video.currentTime = 0;
+
+        delete nowPlayingAnchors[index]!.dataset["playing"];
+        nowPlayingAnchors[nextIndex]!.dataset["playing"] = "";
+      });
+    });
+
+    const progressValueElt = document.getElementById("progress-value")!;
 
     const draw = (
       _: DOMHighResTimeStamp,
       metadata: VideoFrameCallbackMetadata,
     ) => {
       resizeToDisplaySize();
+
+      const progress =
+        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0;
+      progressValueElt.innerText = progress.toFixed(2);
 
       gl.clearColor(0.0, 0.0, 0.0, 0.0);
       gl.clear(gl.COLOR_BUFFER_BIT);
@@ -217,15 +246,15 @@ posts = posts
         gl.RGBA,
         gl.RGBA,
         gl.UNSIGNED_BYTE,
-        video,
+        currVideo,
       );
 
       gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 
-      video.requestVideoFrameCallback(draw);
+      currVideo.requestVideoFrameCallback(draw);
     };
 
-    video.requestVideoFrameCallback(draw);
+    currVideo.requestVideoFrameCallback(draw);
   };
 
   run();
