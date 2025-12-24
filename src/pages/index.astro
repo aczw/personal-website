@@ -216,6 +216,7 @@ posts = posts
       newVideo.preload = "auto";
       newVideo.src = `${CDN_URL}/projects/${id}/cover.mp4`;
       newVideo.muted = true;
+      newVideo.playsInline = true;
 
       return newVideo;
     });
