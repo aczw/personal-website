@@ -11,6 +11,7 @@ import { CircleArrowRightIcon } from "@lucide/astro";
 import GridSection from "@/components/grid-section.astro";
 import TechList from "@/components/tech-list.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
+import { CDN_URL } from "@/scripts/constants";
 
 // Stuff below assumes this will only ever have 4 entries
 const projects = await getEntries([
@@ -50,15 +51,6 @@ posts = posts
     </header>
 
     <main>
-      <video
-        hidden
-        src="https://mdn.github.io/shared-assets/videos/flower.mp4"
-        preload="auto"
-        autoplay
-        playsinline
-        muted
-        loop></video>
-
       <canvas
         id="dither"
         class="pointer-events-none fixed inset-0 -z-1 h-screen w-screen"
@@ -74,6 +66,8 @@ posts = posts
 </BaseLayout>
 
 <script>
+  import { CDN_URL } from "@/scripts/constants";
+
   const run = () => {
     const canvas = document.getElementById("dither") as HTMLCanvasElement;
     const gl = canvas.getContext("webgl2");
@@ -97,15 +91,17 @@ posts = posts
     `;
 
     const fragSource = `#version 300 es
-    
     precision highp float;
+
+    uniform sampler2D u_video_frame;
 
     in vec2 f_uv;
 
     out vec4 out_color;
 
     void main() {
-      out_color = vec4(f_uv, 0.0, 1.0);
+      vec4 video_color = texture(u_video_frame, f_uv);
+      out_color = vec4(video_color.rgb, 1.0);
     }
     `;
 
@@ -142,6 +138,7 @@ posts = posts
     // TODO: replace with hardcoded layout locations?
     const positionAttrLoc = gl.getAttribLocation(program, "v_position");
     const uvAttrLoc = gl.getAttribLocation(program, "v_uv");
+    const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
 
     const positionBuf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuf);
@@ -183,7 +180,7 @@ posts = posts
     /**
      * @see https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
      */
-    const resizeToDisplaySize = (canvas: HTMLCanvasElement) => {
+    const resizeToDisplaySize = () => {
       const displayWidth = canvas.clientWidth;
       const displayHeight = canvas.clientHeight;
 
@@ -191,18 +188,57 @@ posts = posts
       if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
         canvas.width = displayWidth;
         canvas.height = displayHeight;
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
       }
     };
 
-    resizeToDisplaySize(canvas);
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    const videoFrameTexture = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0 + 0);
+    gl.bindTexture(gl.TEXTURE_2D, videoFrameTexture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
-    gl.clearColor(0.0, 0.0, 0.0, 0.0);
-    gl.clear(gl.COLOR_BUFFER_BIT);
+    let video = document.createElement("video");
+    video.crossOrigin = "anonymous";
+    video.preload = "auto";
+    video.src = `${CDN_URL}/projects/mini-minecraft/cover-small.webm`;
+    video.muted = true;
+    video.loop = true;
+    video.play();
 
-    gl.useProgram(program);
-    gl.bindVertexArray(vao);
-    gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
+    const draw = (
+      _: DOMHighResTimeStamp,
+      metadata: VideoFrameCallbackMetadata,
+    ) => {
+      resizeToDisplaySize();
+
+      gl.clearColor(0.0, 0.0, 0.0, 0.0);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+
+      gl.useProgram(program);
+      gl.bindVertexArray(vao);
+
+      gl.activeTexture(gl.TEXTURE0 + 0);
+      gl.bindTexture(gl.TEXTURE_2D, videoFrameTexture);
+      gl.uniform1i(videoFrameUnifLoc, 0);
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        video,
+      );
+
+      console.log("draw:", metadata.mediaTime);
+      gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
+
+      video.requestVideoFrameCallback(draw);
+    };
+
+    video.requestVideoFrameCallback(draw);
   };
 
   run();
