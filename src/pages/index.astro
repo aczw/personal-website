@@ -223,6 +223,14 @@ posts = posts
     let currVideo = videos[0]!;
     currVideo.play();
 
+    // Automatically start playing current video if the user switched tabs and
+    // switched back (browsers pause the video in the background)
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible") {
+        currVideo.play();
+      }
+    });
+
     videos.forEach((video, index) => {
       video.addEventListener("ended", () => {
         const nextIndex = index === videos.length - 1 ? 0 : index + 1;
