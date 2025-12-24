@@ -61,9 +61,9 @@ posts = posts
           projects.map(({ id, data: { name, metadata } }, index) => (
             <a
               data-project-id={id}
-              data-playing={index === 0 ? "" : null}
+              data-playing={index === 0 ? "true" : "false"}
               href={`/projects/${id}`}
-              class="hidden data-playing:inline"
+              class="hidden data-[playing=true]:inline"
             >
               <h3>{name}</h3>
               <TechList tech={metadata.tech} />
@@ -230,8 +230,8 @@ posts = posts
         currVideo.play();
         video.currentTime = 0;
 
-        delete nowPlayingAnchors[index]!.dataset["playing"];
-        nowPlayingAnchors[nextIndex]!.dataset["playing"] = "";
+        nowPlayingAnchors[index]!.dataset["playing"] = "false";
+        nowPlayingAnchors[nextIndex]!.dataset["playing"] = "true";
       });
     });
 
