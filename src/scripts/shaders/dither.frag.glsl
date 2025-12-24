@@ -8,6 +8,8 @@ in vec2 f_uv;
 out vec4 out_color;
 
 void main() {
-  vec4 video_color = texture(u_video_frame, f_uv);
-  out_color = vec4(video_color.rgb, 1.0f);
+  vec2 flipped_uv = vec2(f_uv.x, 1.0f - f_uv.y);
+  vec4 video_color = texture(u_video_frame, flipped_uv);
+
+  out_color = vec4(1.0f - video_color.rgb, 1.0f);
 }
