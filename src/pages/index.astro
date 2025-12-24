@@ -51,7 +51,8 @@ posts = posts
 
     <main>
       <canvas
-        class="pointer-events-none fixed inset-0 -z-1 h-screen w-screen bg-sweater-8"
+        id="dither"
+        class="pointer-events-none fixed inset-0 -z-1 h-screen w-screen"
       ></canvas>
 
       <p>Now playing: Mini Minecraft</p>
@@ -62,3 +63,110 @@ posts = posts
     </footer>
   </div>
 </BaseLayout>
+
+<script>
+  const run = () => {
+    const canvas = document.getElementById("dither") as HTMLCanvasElement;
+    const gl = canvas.getContext("webgl2");
+
+    if (!gl) {
+      console.log("No WebGL 2 context found");
+      return;
+    }
+
+    const vertSource = `#version 300 es
+
+    in vec4 v_position;
+
+    void main() {
+      gl_Position = v_position;
+    }
+    `;
+
+    const fragSource = `#version 300 es
+    
+    precision highp float;
+
+    out vec4 out_color;
+
+    void main() {
+      out_color = vec4(1.0, 0.0, 0.5, 1.0);
+    }
+    `;
+
+    const createShader = (type: GLenum, source: string) => {
+      const shader = gl.createShader(type)!;
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
+
+      if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
+
+      // Otherwise, an error occurred
+      console.log("Error compiling shader:", gl.getShaderInfoLog(shader));
+      gl.deleteShader(shader);
+
+      return null;
+    };
+
+    const vertShader = createShader(gl.VERTEX_SHADER, vertSource);
+    const fragShader = createShader(gl.FRAGMENT_SHADER, fragSource);
+
+    if (!vertShader || !fragShader) return;
+
+    const program = gl.createProgram();
+    gl.attachShader(program, vertShader);
+    gl.attachShader(program, fragShader);
+    gl.linkProgram(program);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.log("Error linking program:", gl.getProgramInfoLog(program));
+      gl.deleteProgram(program);
+      return;
+    }
+
+    // TODO: replace with hardcoded layout locations?
+    const positionAttrLoc = gl.getAttribLocation(program, "v_position");
+
+    const positionBuf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuf);
+    gl.bufferData(
+      gl.ARRAY_BUFFER,
+      new Float32Array([0.0, 0.0, 0.0, 0.5, 0.7, 0.0]),
+      gl.STATIC_DRAW,
+    );
+
+    const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+
+    gl.enableVertexAttribArray(positionAttrLoc);
+    // Attributes default to [0, 0, 0, 1] so we can get away with
+    // setting size to just 2
+    gl.vertexAttribPointer(positionAttrLoc, 2, gl.FLOAT, false, 0, 0);
+
+    /**
+     * @see https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+     */
+    const resizeToDisplaySize = (canvas: HTMLCanvasElement) => {
+      const displayWidth = canvas.clientWidth;
+      const displayHeight = canvas.clientHeight;
+
+      // Check if canvas needs to be resized
+      if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+        canvas.width = displayWidth;
+        canvas.height = displayHeight;
+      }
+    };
+
+    resizeToDisplaySize(canvas);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
+    gl.useProgram(program);
+    gl.bindVertexArray(vao);
+    gl.drawArrays(gl.TRIANGLES, 0, 3);
+  };
+
+  run();
+</script>
