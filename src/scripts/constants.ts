@@ -15,6 +15,15 @@ const VALID_MONTHS = [
   "December",
 ];
 
+/**
+ * Order matters! Project videos will be played in the order defined here.
+ */
+const HOMEPAGE_PROJECTS = [
+  "mini-minecraft",
+  "cuda-path-tracer",
+  "webgpu-clustered",
+  "door",
+];
 const DISABLED_PROJECTS = [
   "dgdg",
   "deth",
@@ -31,4 +40,10 @@ const WIDE_PROJECTS = [
   "rcw",
 ];
 
-export { CDN_URL, VALID_MONTHS, DISABLED_PROJECTS, WIDE_PROJECTS };
+export {
+  CDN_URL,
+  VALID_MONTHS,
+  HOMEPAGE_PROJECTS,
+  DISABLED_PROJECTS,
+  WIDE_PROJECTS,
+};

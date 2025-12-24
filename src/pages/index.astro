@@ -11,17 +11,16 @@ import { CircleArrowRightIcon } from "@lucide/astro";
 import GridSection from "@/components/grid-section.astro";
 import TechList from "@/components/tech-list.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
-import { CDN_URL } from "@/scripts/constants";
+import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 
-// Stuff below assumes this will only ever have 4 entries
-const projects = await getEntries([
-  { collection: "projects", id: "mini-minecraft" },
-  { collection: "projects", id: "pbr-renderer" },
-  { collection: "projects", id: "webgpu-clustered" },
-  { collection: "projects", id: "door" },
-]);
-
-const showSubtitles = ["mini-minecraft", "door"];
+const projects = await getEntries(
+  HOMEPAGE_PROJECTS.map((id) => {
+    return {
+      collection: "projects" as const,
+      id,
+    };
+  }),
+);
 
 let posts = await getCollection("posts");
 posts = posts
@@ -38,6 +37,11 @@ posts = posts
       "Computer graphics student at the University of Pennsylvania.",
   }}
 >
+  <canvas
+    id="dither"
+    aria-hidden="true"
+    class="pointer-events-none fixed inset-0 h-screen w-screen"></canvas>
+
   <div class="fixed bottom-0 left-0 space-y-pad-2 bg-sweater-8 p-pad-2">
     <header>
       <h1>Charles Wang</h1>
@@ -51,12 +55,21 @@ posts = posts
     </header>
 
     <main>
-      <canvas
-        id="dither"
-        class="pointer-events-none fixed inset-0 -z-1 h-screen w-screen"
-      ></canvas>
-
-      <p>Now playing: Mini Minecraft</p>
+      <h2>Now playing</h2>
+      <Fragment>
+        {
+          projects.map(({ id, data: { name, metadata } }, index) => (
+            <a
+              hidden={index !== 0 ? true : undefined}
+              data-project-id={id}
+              href={`/projects/${id}`}
+            >
+              <h3>{name}</h3>
+              <TechList tech={metadata.tech} />
+            </a>
+          ))
+        }
+      </Fragment>
     </main>
 
     <footer>
@@ -207,7 +220,6 @@ posts = posts
         video,
       );
 
-      console.log("draw:", metadata.mediaTime);
       gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 
       video.requestVideoFrameCallback(draw);
