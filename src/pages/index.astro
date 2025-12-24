@@ -71,7 +71,22 @@ posts = posts
           ))
         }
       </Fragment>
-      <p>Progress: <span id="progress-value">0</span></p>
+
+      <div
+        id="progress-bar"
+        aria-label="Video progress"
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow="0"
+        class="h-2 w-full overflow-hidden rounded-full bg-sweater-9"
+      >
+        <div
+          id="progress-value"
+          class="h-full w-full origin-left bg-sweater-5"
+          style="transform:scaleX(0.6);"
+        >
+        </div>
+      </div>
     </main>
 
     <footer>
@@ -85,6 +100,7 @@ posts = posts
   import fragSource from "@/scripts/shaders/dither.frag.glsl?raw";
 
   import { CDN_URL, HOMEPAGE_PROJECTS } from "@/scripts/constants";
+  import { saturate } from "@/scripts/util";
 
   const run = () => {
     const canvas = document.getElementById("dither") as HTMLCanvasElement;
@@ -219,6 +235,7 @@ posts = posts
       });
     });
 
+    const progressBarElt = document.getElementById("progress-bar")!;
     const progressValueElt = document.getElementById("progress-value")!;
 
     const draw = (
@@ -227,9 +244,14 @@ posts = posts
     ) => {
       resizeToDisplaySize();
 
-      const progress =
-        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0;
-      progressValueElt.innerText = progress.toFixed(2);
+      const progress = saturate(
+        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0,
+      );
+      progressBarElt.setAttribute(
+        "aria-valuenow",
+        Math.round(progress * 100).toString(),
+      );
+      progressValueElt.style.transform = `scaleX(${progress})`;
 
       gl.clearColor(0.0, 0.0, 0.0, 0.0);
       gl.clear(gl.COLOR_BUFFER_BIT);
