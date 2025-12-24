@@ -1,9 +1,9 @@
 ---
-import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 
-import type { MetaKind } from "@/scripts/types";
 import "@/styles/main.css";
+
+import type { MetaKind } from "@/scripts/types";
 import { getShortDateFormatting, stripEndingSlash } from "@/scripts/util";
 import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
 
@@ -145,7 +145,6 @@ const canonicalUrl = stripEndingSlash(url);
       src="https://cloud.umami.is/script.js"
       data-website-id="9ccfaf2d-6989-4335-ab83-606d54cdee0f"></script>
 
-    <Analytics />
     <SpeedInsights />
   </head>
 
