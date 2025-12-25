@@ -11,7 +11,7 @@ import { CircleArrowRightIcon } from "@lucide/astro";
 import GridSection from "@/components/grid-section.astro";
 import TechList from "@/components/tech-list.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
-import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
+import { CDN_URL, HOMEPAGE_PROJECTS } from "@/scripts/constants";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -37,6 +37,21 @@ posts = posts
       "Computer graphics student at the University of Pennsylvania.",
   }}
 >
+  <Fragment slot="preload">
+    {
+      projects.map(({ id }, index) => (
+        <link
+          rel="preload"
+          href={`${CDN_URL}/projects/${id}/cover.mp4`}
+          as="video"
+          type="video/mp4"
+          fetchpriority={index === 0 ? "high" : "low"}
+          crossorigin="anonymous"
+        />
+      ))
+    }
+  </Fragment>
+
   <canvas
     id="dither"
     aria-hidden="true"
