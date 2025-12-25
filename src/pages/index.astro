@@ -120,8 +120,9 @@ posts = posts
   import vertSource from "@/scripts/shaders/no-op.vert.glsl?raw";
   import fragSource from "@/scripts/shaders/dither.frag.glsl?raw";
 
-  import { CDN_URL, HOMEPAGE_PROJECTS } from "@/scripts/constants";
+  import { CDN_URL, HOMEPAGE_PROJECTS, DitherMode } from "@/scripts/constants";
   import { saturate } from "@/scripts/util";
+  import type { PaneParameters } from "@/scripts/types";
 
   const run = () => {
     const canvas = document.getElementById("dither") as HTMLCanvasElement;
@@ -168,6 +169,7 @@ posts = posts
 
     const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
     const dimensionUnifLoc = gl.getUniformLocation(program, "u_dimension");
+    const ditherModeUnifLoc = gl.getUniformLocation(program, "u_dither_mode");
 
     // This only needs to be called once because we never switch shaders
     gl.useProgram(program);
@@ -293,14 +295,12 @@ posts = posts
       .getElementById("play-pause")!
       .addEventListener("click", () => alert("todo"));
 
-    type PaneParameters = {
-      canvasSize: string;
-      backend: "WebGL 2" | "WebGPU";
-    };
-
     const paneParams: PaneParameters = {
       canvasSize: "0×0",
       backend: "WebGL 2",
+      dither: {
+        mode: DitherMode.ORDERED,
+      },
     };
 
     const pane = new Pane({
@@ -317,8 +317,8 @@ posts = posts
       rows: 2,
     }) as FpsGraphBladeApi;
 
-    // Dynamically adjust FPS bounds
     fpsGraph.on("tick", (ev) => {
+      // Dynamically adjust FPS max bound
       if (ev.target.fps && ev.target.fps > ev.target.max) {
         ev.target.max = ev.target.fps;
       }
@@ -328,11 +328,25 @@ posts = posts
       readonly: true,
       label: "Dimension",
     });
-
     pane.addBinding(paneParams, "backend", {
       readonly: true,
       label: "Backend",
     });
+
+    const dithering = pane.addFolder({
+      title: "Dithering",
+    });
+    dithering
+      .addBinding(paneParams.dither, "mode", {
+        label: "Mode",
+        options: {
+          "Noise-based": DitherMode.NOISE,
+          Ordered: DitherMode.ORDERED,
+        },
+      })
+      .on("change", (ev) => gl.uniform1i(ditherModeUnifLoc, ev.value));
+    // Send initial value to shader
+    gl.uniform1i(ditherModeUnifLoc, paneParams.dither.mode);
 
     /**
      * @see https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
@@ -352,10 +366,7 @@ posts = posts
       }
     };
 
-    const draw = (
-      now: DOMHighResTimeStamp,
-      metadata: VideoFrameCallbackMetadata,
-    ) => {
+    const draw: VideoFrameRequestCallback = () => {
       fpsGraph.begin();
 
       resizeToDisplaySize();

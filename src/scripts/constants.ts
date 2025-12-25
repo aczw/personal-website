@@ -40,10 +40,16 @@ const WIDE_PROJECTS = [
   "rcw",
 ];
 
+const DitherMode = {
+  NOISE: 0,
+  ORDERED: 1,
+} as const;
+
 export {
   CDN_URL,
   VALID_MONTHS,
   HOMEPAGE_PROJECTS,
   DISABLED_PROJECTS,
   WIDE_PROJECTS,
+  DitherMode,
 };

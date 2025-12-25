@@ -8,6 +8,7 @@ import type {
   RangedDateSchema,
   SimpleDateSchema,
 } from "@/scripts/schema";
+import type { DitherMode } from "@/scripts/constants";
 
 type EntryKind =
   | { kind: "post"; post: CollectionEntry<"posts"> }
@@ -36,6 +37,16 @@ type DateKind =
   | { kind: "simple"; date: SimpleDate }
   | { kind: "ranged"; date: RangedDate };
 
+type DitherMode = (typeof DitherMode)[keyof typeof DitherMode];
+
+type PaneParameters = {
+  canvasSize: string;
+  backend: "WebGL 2" | "WebGPU";
+  dither: {
+    mode: DitherMode;
+  };
+};
+
 export type {
   EntryKind,
   MetaKind,
@@ -44,4 +55,6 @@ export type {
   RangedDate,
   ContentDateType,
   DateKind,
+  DitherMode,
+  PaneParameters,
 };

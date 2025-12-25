@@ -3,6 +3,7 @@ precision highp float;
 
 uniform sampler2D u_video_frame;
 uniform ivec2 u_dimension;
+uniform int u_dither_mode;
 
 in vec2 f_uv;
 
@@ -64,7 +65,17 @@ void main() {
 
   vec4 video_color = texture(u_video_frame, uv);
   float luminance = to_luminance(video_color.rgb);
-  vec3 final_color = ordered_dither(luminance);
+
+  vec3 final_color = vec3(0.0f);
+  switch (u_dither_mode) {
+    case 0:
+      final_color = noise_dither(uv, luminance);
+      break;
+
+    case 1:
+      final_color = ordered_dither(luminance);
+      break;
+  }
 
   out_color = vec4(final_color, 1.0f);
 }
