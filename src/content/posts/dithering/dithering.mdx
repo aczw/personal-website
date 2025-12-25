@@ -27,3 +27,6 @@ outline
 - `requestVideoFrameCallback()`: https://web.dev/articles/requestvideoframecallback-rvfc, https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement/requestVideoFrameCallback
 - passing video texture to GPU: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_textures_in_WebGL
   - turns out `gl.texImage2D` can take a `HTMLVideoElement` as the source, which to me is an incredible integration of the classic OpenGL API with web technology. like, in hindsight, _obviously_ this should work, duh! https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_textures_in_WebGL
+- after seemingly getting it to work on desktop, it was time to fix all the broken things on iOS, as usual.
+  - first, turns out iOS will immediately full screen play videos on page load unless you add playsInline, so i did that
+  - with iOS 26, safari has completely altered the tab bar. i do agree it looks much better, but it also means we can't use display fixed anymore because just covering the viewport isn't enough anymore: _show picture_. instead im probably going to have to do some stupif shit to fix this idk man
