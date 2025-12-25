@@ -13,6 +13,7 @@
         "@lucide/astro": "^0.561.0",
         "@resvg/resvg-js": "^2.6.2",
         "@tailwindcss/vite": "^4.1.18",
+        "@tweakpane/plugin-essentials": "^0.2.1",
         "@vercel/speed-insights": "^1.3.1",
         "astro": "5.16.6",
         "astro-expressive-code": "^0.41.5",
@@ -400,6 +401,8 @@
     "@tailwindcss/vite": ["@tailwindcss/vite@4.1.18", "", { "dependencies": { "@tailwindcss/node": "4.1.18", "@tailwindcss/oxide": "4.1.18", "tailwindcss": "4.1.18" }, "peerDependencies": { "vite": "^5.2.0 || ^6 || ^7" } }, "sha512-jVA+/UpKL1vRLg6Hkao5jldawNmRo7mQYrZtNHMIVpLfLhDml5nMRUo/8MwoX2vNXvnaXNNMedrMfMugAVX1nA=="],
 
     "@tweakpane/core": ["@tweakpane/core@2.0.5", "", {}, "sha512-punBgD5rKCF5vcNo6BsSOXiDR/NSs9VM7SG65QSLJIxfRaGgj54ree9zQW6bO3pNFf3AogiGgaNODUVQRk9YqQ=="],
+
+    "@tweakpane/plugin-essentials": ["@tweakpane/plugin-essentials@0.2.1", "", { "peerDependencies": { "tweakpane": "^4.0.0" } }, "sha512-VbFU1/uD+CJNFQdfLXUOLjeG5HyUZH97Ox9CxmyVetg1hqjVun3C83HAGFULyhKzl8tSgii8jr304r8QpdHwzQ=="],
 
     "@types/bun": ["@types/bun@1.3.4", "", { "dependencies": { "bun-types": "1.3.4" } }, "sha512-EEPTKXHP+zKGPkhRLv+HI0UEX8/o+65hqARxLy8Ov5rIxMBPNTjeZww00CIihrIQGEQBYg+0roO5qOnS/7boGA=="],
 

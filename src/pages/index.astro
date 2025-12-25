@@ -114,6 +114,8 @@ posts = posts
 
 <script>
   import { Pane } from "tweakpane";
+  import * as TpEssentialsPlugin from "@tweakpane/plugin-essentials";
+  import type { FpsGraphBladeApi } from "@tweakpane/plugin-essentials";
 
   import vertSource from "@/scripts/shaders/no-op.vert.glsl?raw";
   import fragSource from "@/scripts/shaders/dither.frag.glsl?raw";
@@ -301,6 +303,37 @@ posts = posts
       backend: "WebGL 2",
     };
 
+    const pane = new Pane({
+      title: "Configuration",
+      expanded: true,
+    });
+    pane.registerPlugin(TpEssentialsPlugin);
+
+    const fpsGraph = pane.addBlade({
+      view: "fpsgraph",
+      label: "FPS",
+      min: 0,
+      max: 100,
+      rows: 2,
+    }) as FpsGraphBladeApi;
+
+    // Dynamically adjust FPS bounds
+    fpsGraph.on("tick", (ev) => {
+      if (ev.target.fps && ev.target.fps > ev.target.max) {
+        ev.target.max = ev.target.fps;
+      }
+    });
+
+    pane.addBinding(paneParams, "canvasSize", {
+      readonly: true,
+      label: "Dimension",
+    });
+
+    pane.addBinding(paneParams, "backend", {
+      readonly: true,
+      label: "Backend",
+    });
+
     /**
      * @see https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
      */
@@ -323,6 +356,8 @@ posts = posts
       now: DOMHighResTimeStamp,
       metadata: VideoFrameCallbackMetadata,
     ) => {
+      fpsGraph.begin();
+
       resizeToDisplaySize();
 
       const progress = saturate(
@@ -348,25 +383,12 @@ posts = posts
 
       gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 
+      fpsGraph.end();
+
       currVideo.requestVideoFrameCallback(draw);
     };
 
     currVideo.requestVideoFrameCallback(draw);
-
-    const pane = new Pane({
-      title: "Configuration",
-      expanded: true,
-    });
-
-    pane.addBinding(paneParams, "canvasSize", {
-      readonly: true,
-      label: "Dimension",
-    });
-
-    pane.addBinding(paneParams, "backend", {
-      readonly: true,
-      label: "Backend",
-    });
   };
 
   run();
