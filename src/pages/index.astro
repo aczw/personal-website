@@ -213,6 +213,7 @@ posts = posts
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.uniform1i(videoFrameUnifLoc, 0);
 
     const nowPlayingAnchors: HTMLAnchorElement[] = [];
     const alreadyLoadedVideos = new WeakSet<HTMLVideoElement>();
@@ -268,7 +269,6 @@ posts = posts
     // switched back (browsers pause the video in the background)
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "visible" && currVideo.paused) {
-        console.log("previously paused, now unpaused");
         currVideo.play();
       }
     });
@@ -306,7 +306,7 @@ posts = posts
     };
 
     const draw = (
-      _: DOMHighResTimeStamp,
+      now: DOMHighResTimeStamp,
       metadata: VideoFrameCallbackMetadata,
     ) => {
       resizeToDisplaySize();
@@ -323,9 +323,6 @@ posts = posts
       gl.clearColor(0.0, 0.0, 0.0, 0.0);
       gl.clear(gl.COLOR_BUFFER_BIT);
 
-      gl.activeTexture(gl.TEXTURE0 + 0);
-      gl.bindTexture(gl.TEXTURE_2D, videoFrameTexture);
-      gl.uniform1i(videoFrameUnifLoc, 0);
       gl.texImage2D(
         gl.TEXTURE_2D,
         0,
