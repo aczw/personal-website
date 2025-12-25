@@ -19,6 +19,10 @@ const int ORDERED_PIXEL_SIZE = 4;
 const int NUM_QUANTIZED_COLORS = 16;
 const int UV_PIXEL_SIZE = 36;
 
+const vec3 SWEATER_10 = vec3(0.0392156862745098f, 0.03529411764705882f, 0.09803921568627451f);
+const vec3 SWEATER_8 = vec3(0.19215686274509805f, 0.17647058823529413f, 0.396078431372549f);
+const vec3 SWEATER_7 = vec3(0.2823529411764706f, 0.2627450980392157f, 0.5647058823529412f);
+
 /// See https://stackoverflow.com/questions/12964279/whats-the-origin-of-this-glsl-rand-one-liner.
 float random(vec2 x) {
   return fract(sin(dot(x, vec2(12.9898f, 78.233f))) * 42758.5453f);
@@ -76,6 +80,8 @@ void main() {
       final_color = ordered_dither(luminance);
       break;
   }
+
+  final_color = vec3(mix(SWEATER_10, SWEATER_8, final_color.r));
 
   out_color = vec4(final_color, 1.0f);
 }
