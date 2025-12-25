@@ -113,6 +113,8 @@ posts = posts
 </BaseLayout>
 
 <script>
+  import { Pane } from "tweakpane";
+
   import vertSource from "@/scripts/shaders/no-op.vert.glsl?raw";
   import fragSource from "@/scripts/shaders/dither.frag.glsl?raw";
 
@@ -289,6 +291,16 @@ posts = posts
       .getElementById("play-pause")!
       .addEventListener("click", () => alert("todo"));
 
+    type PaneParameters = {
+      canvasSize: string;
+      backend: "WebGL 2" | "WebGPU";
+    };
+
+    const paneParams: PaneParameters = {
+      canvasSize: "0×0",
+      backend: "WebGL 2",
+    };
+
     /**
      * @see https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
      */
@@ -300,8 +312,10 @@ posts = posts
       if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
         canvas.width = displayWidth;
         canvas.height = displayHeight;
+
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.uniform2i(dimensionUnifLoc, gl.canvas.width, gl.canvas.height);
+        paneParams.canvasSize = `${gl.canvas.width}×${gl.canvas.height}`;
       }
     };
 
@@ -338,6 +352,21 @@ posts = posts
     };
 
     currVideo.requestVideoFrameCallback(draw);
+
+    const pane = new Pane({
+      title: "Configuration",
+      expanded: true,
+    });
+
+    pane.addBinding(paneParams, "canvasSize", {
+      readonly: true,
+      label: "Dimension",
+    });
+
+    pane.addBinding(paneParams, "backend", {
+      readonly: true,
+      label: "Backend",
+    });
   };
 
   run();
