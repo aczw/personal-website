@@ -144,7 +144,9 @@ posts = posts
     // TODO: replace with hardcoded layout locations?
     const positionAttrLoc = gl.getAttribLocation(program, "v_position");
     const uvAttrLoc = gl.getAttribLocation(program, "v_uv");
+
     const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
+    const dimensionUnifLoc = gl.getUniformLocation(program, "u_dimension");
 
     const positionBuf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuf);
@@ -182,21 +184,6 @@ posts = posts
     gl.bindBuffer(gl.ARRAY_BUFFER, uvBuf);
     gl.enableVertexAttribArray(uvAttrLoc);
     gl.vertexAttribPointer(uvAttrLoc, 2, gl.FLOAT, false, 0, 0);
-
-    /**
-     * @see https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
-     */
-    const resizeToDisplaySize = () => {
-      const displayWidth = canvas.clientWidth;
-      const displayHeight = canvas.clientHeight;
-
-      // Check if canvas needs to be resized
-      if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-        canvas.width = displayWidth;
-        canvas.height = displayHeight;
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-      }
-    };
 
     const videoFrameTexture = gl.createTexture();
     gl.activeTexture(gl.TEXTURE0 + 0);
@@ -276,6 +263,22 @@ posts = posts
 
     const progressBarElt = document.getElementById("progress-bar")!;
     const progressValueElt = document.getElementById("progress-value")!;
+
+    /**
+     * @see https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+     */
+    const resizeToDisplaySize = () => {
+      const displayWidth = canvas.clientWidth;
+      const displayHeight = canvas.clientHeight;
+
+      // Check if canvas needs to be resized
+      if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
+        canvas.width = displayWidth;
+        canvas.height = displayHeight;
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.uniform2i(dimensionUnifLoc, gl.canvas.width, gl.canvas.height);
+      }
+    };
 
     const draw = (
       _: DOMHighResTimeStamp,
