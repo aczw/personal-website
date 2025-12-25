@@ -1,0 +1,13 @@
+---
+title: Dithering
+posted: 2025-12-24T21:09:00.000-05
+
+slug: dithering
+---
+
+outline
+
+- check all commits prefixed with "webgpu:"
+- i had many video buffering issues at first. i did two things to fix them
+  - first, i originally tried loading all videos at once. this caused the current video to stutter because there were multiple network connections at once. now, on video transition, it plays the next video, and only starts preloading the next next one. _show code_
+  - second, i simply decreased the video file sizes. i didn't have a consistent set of formats for each video. all of them had at least a mp4, but this resulted in 10-20 MB videos. i took some time to add missing format versions for all videos, including a WebM version and a "smaller" MP4 video with a lower resolution. decreasing the amount of data needed to be fetched is the most direct way of dealing with buffering issues.

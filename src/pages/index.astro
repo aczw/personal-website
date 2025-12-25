@@ -207,6 +207,7 @@ posts = posts
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
     const nowPlayingAnchors: HTMLAnchorElement[] = [];
+    const alreadyLoadedVideos = new WeakSet<HTMLVideoElement>();
     const videos: HTMLVideoElement[] = HOMEPAGE_PROJECTS.map((id) => {
       const element = document.querySelector(`[data-project-id="${id}"]`)!;
       nowPlayingAnchors.push(element as HTMLAnchorElement);
@@ -216,28 +217,57 @@ posts = posts
       newVideo.preload = "auto";
       newVideo.src = `${CDN_URL}/projects/${id}/cover.mp4`;
       newVideo.muted = true;
+      // Prevents video from auto playing in fullscreen on page load on iOS
+      // (even though we've never attached it to the DOM)
       newVideo.playsInline = true;
 
       return newVideo;
     });
 
-    let currVideo = videos[0]!;
-    currVideo.play();
+    // Ready the first video for playing
+    let currVideo: HTMLVideoElement;
+    alreadyLoadedVideos.add(videos[0]!);
+
+    /**
+     * Assumes we have more than one video. Come on. Otherwise it's boring
+     */
+    const transitionToNextVideo = (currentIndex: number): number => {
+      const getNextIndex = (currentIndex: number) => {
+        return currentIndex === videos.length - 1 ? 0 : currentIndex + 1;
+      };
+
+      const nextIndex = getNextIndex(currentIndex);
+      currVideo = videos[nextIndex]!;
+      currVideo.play();
+
+      // Reset current video to the beginning for the next play
+      videos[currentIndex]!.currentTime = 0;
+
+      // Start preloading next next video if we haven't done it before
+      const nextNextVideo = videos[getNextIndex(nextIndex)]!;
+      if (!alreadyLoadedVideos.has(nextNextVideo)) {
+        nextNextVideo.load();
+        alreadyLoadedVideos.add(nextNextVideo);
+      }
+
+      return nextIndex;
+    };
+
+    // Transitions to index 0 aka plays the first video
+    transitionToNextVideo(videos.length - 1);
 
     // Automatically start playing current video if the user switched tabs and
     // switched back (browsers pause the video in the background)
     document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible") {
+      if (document.visibilityState === "visible" && currVideo.paused) {
+        console.log("previously paused, now unpaused");
         currVideo.play();
       }
     });
 
     videos.forEach((video, index) => {
       video.addEventListener("ended", () => {
-        const nextIndex = index === videos.length - 1 ? 0 : index + 1;
-        currVideo = videos[nextIndex]!;
-        currVideo.play();
-        video.currentTime = 0;
+        const nextIndex = transitionToNextVideo(index);
 
         nowPlayingAnchors[index]!.dataset["playing"] = "false";
         nowPlayingAnchors[nextIndex]!.dataset["playing"] = "true";
