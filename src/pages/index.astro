@@ -37,21 +37,6 @@ posts = posts
       "Computer graphics student at the University of Pennsylvania.",
   }}
 >
-  <Fragment slot="preload">
-    {
-      projects.map(({ id }, index) => (
-        <link
-          rel="preload"
-          href={`${CDN_URL}/projects/${id}/cover.mp4`}
-          as="video"
-          type="video/mp4"
-          fetchpriority={index === 0 ? "high" : "low"}
-          crossorigin="anonymous"
-        />
-      ))
-    }
-  </Fragment>
-
   <canvas
     id="dither"
     aria-hidden="true"
