@@ -4,6 +4,7 @@ precision highp float;
 uniform sampler2D u_video_frame;
 uniform ivec2 u_dimension;
 uniform int u_dither_mode;
+uniform int u_uv_pixel_size;
 
 in vec2 f_uv;
 
@@ -17,7 +18,6 @@ const float ORDERED_BIAS = 0.0f;
 const int ORDERED_PIXEL_SIZE = 4;
 
 const int NUM_QUANTIZED_COLORS = 16;
-const int UV_PIXEL_SIZE = 36;
 
 const vec3 SWEATER_10 = vec3(0.0392156862745098f, 0.03529411764705882f, 0.09803921568627451f);
 const vec3 SWEATER_8 = vec3(0.19215686274509805f, 0.17647058823529413f, 0.396078431372549f);
@@ -64,7 +64,7 @@ vec3 ordered_dither(float luminance) {
 
 void main() {
   vec2 flipped_uv = vec2(f_uv.x, 1.0f - f_uv.y);
-  vec2 normalized_pixel_size = vec2(UV_PIXEL_SIZE) / vec2(u_dimension);
+  vec2 normalized_pixel_size = vec2(u_uv_pixel_size) / vec2(u_dimension);
   vec2 uv = normalized_pixel_size * floor(flipped_uv / normalized_pixel_size);
 
   vec4 video_color = texture(u_video_frame, uv);

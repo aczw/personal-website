@@ -44,6 +44,7 @@ type PaneParameters = {
   backend: "WebGL 2" | "WebGPU";
   dither: {
     mode: DitherMode;
+    uvPixelSize: number;
   };
 };
 

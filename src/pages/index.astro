@@ -6,12 +6,11 @@ import {
   getFullDateFormatting,
   getMonthYearDateFormatting,
 } from "@/scripts/util";
-import MainLayout from "@/layouts/main-layout.astro";
 import { CircleArrowRightIcon } from "@lucide/astro";
 import GridSection from "@/components/grid-section.astro";
 import TechList from "@/components/tech-list.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
-import { CDN_URL, HOMEPAGE_PROJECTS } from "@/scripts/constants";
+import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -170,6 +169,10 @@ posts = posts
     const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
     const dimensionUnifLoc = gl.getUniformLocation(program, "u_dimension");
     const ditherModeUnifLoc = gl.getUniformLocation(program, "u_dither_mode");
+    const uvPixelSizeUnifLoc = gl.getUniformLocation(
+      program,
+      "u_uv_pixel_size",
+    );
 
     // This only needs to be called once because we never switch shaders
     gl.useProgram(program);
@@ -296,10 +299,11 @@ posts = posts
       .addEventListener("click", () => alert("todo"));
 
     const paneParams: PaneParameters = {
-      canvasSize: "0×0",
+      canvasSize: `${gl.canvas.width}×${gl.canvas.height}`,
       backend: "WebGL 2",
       dither: {
         mode: DitherMode.ORDERED,
+        uvPixelSize: 36,
       },
     };
 
@@ -336,6 +340,7 @@ posts = posts
     const dithering = pane.addFolder({
       title: "Dithering",
     });
+
     dithering
       .addBinding(paneParams.dither, "mode", {
         label: "Mode",
@@ -345,31 +350,32 @@ posts = posts
         },
       })
       .on("change", (ev) => gl.uniform1i(ditherModeUnifLoc, ev.value));
-    // Send initial value to shader
     gl.uniform1i(ditherModeUnifLoc, paneParams.dither.mode);
 
-    /**
-     * @see https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
-     */
-    const resizeToDisplaySize = () => {
-      const displayWidth = canvas.clientWidth;
-      const displayHeight = canvas.clientHeight;
+    dithering
+      .addBinding(paneParams.dither, "uvPixelSize", {
+        label: "Pixel size",
+        min: 1,
+        step: 1,
+      })
+      .on("change", (ev) => gl.uniform1i(uvPixelSizeUnifLoc, ev.value));
+    gl.uniform1i(uvPixelSizeUnifLoc, paneParams.dither.uvPixelSize);
 
-      // Check if canvas needs to be resized
-      if (canvas.width !== displayWidth || canvas.height !== displayHeight) {
-        canvas.width = displayWidth;
-        canvas.height = displayHeight;
+    const draw: VideoFrameRequestCallback = () => {
+      fpsGraph.begin();
+
+      // Check if canvas needs to be resized. See https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+      if (
+        canvas.width !== canvas.clientWidth ||
+        canvas.height !== canvas.clientHeight
+      ) {
+        canvas.width = canvas.clientWidth;
+        canvas.height = canvas.clientHeight;
 
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.uniform2i(dimensionUnifLoc, gl.canvas.width, gl.canvas.height);
         paneParams.canvasSize = `${gl.canvas.width}×${gl.canvas.height}`;
       }
-    };
-
-    const draw: VideoFrameRequestCallback = () => {
-      fpsGraph.begin();
-
-      resizeToDisplaySize();
 
       const progress = saturate(
         currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0,
