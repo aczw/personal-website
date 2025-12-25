@@ -23,3 +23,7 @@ outline
     />
     ```
     link preload for my video, but this behavior seems to be inconsistent and is at least disabled on Chromium for now. See [here](https://chromium-review.googlesource.com/c/chromium/src/+/1440522) and [here](https://issues.chromium.org/issues/40632962) for details.
+- I wanted to achieve the effect [seen here](https://dithering.niccolofanton.dev), where it seems like the dithering is applied on top of a pixelization pass. Fortunately, we actually don't need two separate render passes. I realized that just like how we can offset the UV sample values, we can do the same for the pixel sample values for the Bayer matrix. Currently, it's hardcoded to check every pixel because we use `gl_FragCoord.xy` directly. We can define a separate pixel size for just the Bayer matrix instead.
+- `requestVideoFrameCallback()`: https://web.dev/articles/requestvideoframecallback-rvfc, https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement/requestVideoFrameCallback
+- passing video texture to GPU: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_textures_in_WebGL
+  - turns out `gl.texImage2D` can take a `HTMLVideoElement` as the source, which to me is an incredible integration of the classic OpenGL API with web technology. like, in hindsight, _obviously_ this should work, duh! https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_textures_in_WebGL
