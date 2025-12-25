@@ -148,6 +148,9 @@ posts = posts
     const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
     const dimensionUnifLoc = gl.getUniformLocation(program, "u_dimension");
 
+    // This only needs to be called once because we never switch shaders
+    gl.useProgram(program);
+
     const positionBuf = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuf);
     gl.bufferData(
@@ -165,6 +168,7 @@ posts = posts
     );
 
     const vao = gl.createVertexArray();
+    // We only ever use one VAO so binding it here sets it for the rest of time
     gl.bindVertexArray(vao);
 
     const indexBuf = gl.createBuffer();
@@ -297,9 +301,6 @@ posts = posts
 
       gl.clearColor(0.0, 0.0, 0.0, 0.0);
       gl.clear(gl.COLOR_BUFFER_BIT);
-
-      gl.useProgram(program);
-      gl.bindVertexArray(vao);
 
       gl.activeTexture(gl.TEXTURE0 + 0);
       gl.bindTexture(gl.TEXTURE_2D, videoFrameTexture);
