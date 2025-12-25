@@ -55,38 +55,55 @@ posts = posts
     </header>
 
     <main>
-      <h2>Now playing</h2>
-      <Fragment>
+      <section class="border-(length:--border-w) border-line-bright">
+        <div
+          class="flex border-b-(length:--border-w) border-dashed border-line-dark leading-none"
+        >
+          <h2
+            class="grow border-r-(length:--border-w) border-dashed border-line-dark p-pad"
+          >
+            Now playing
+          </h2>
+          <button
+            id="play-pause"
+            class="bottom shrink-0 p-pad transition-colors hover:bg-red-50"
+          >
+            Pause
+          </button>
+        </div>
+
         {
           projects.map(({ id, data: { name, metadata } }, index) => (
             <a
               data-project-id={id}
               data-playing={index === 0 ? "true" : "false"}
               href={`/projects/${id}`}
-              class="hidden data-[playing=true]:inline"
+              class="hidden border-b-(length:--border-w) border-dashed border-line-dark p-pad transition-colors hover:bg-red-50 data-[playing=true]:block"
             >
               <h3>{name}</h3>
               <TechList tech={metadata.tech} />
             </a>
           ))
         }
-      </Fragment>
 
-      <div
-        id="progress-bar"
-        aria-label="Video progress"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-valuenow="0"
-        class="h-2 w-full overflow-hidden rounded-full bg-sweater-9"
-      >
-        <div
-          id="progress-value"
-          class="h-full w-full origin-left bg-sweater-5"
-          style="transform:scaleX(0.6);"
-        >
+        <div class="p-pad">
+          <div
+            id="progress-bar"
+            aria-label="Video progress"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            class="h-2 w-full overflow-hidden rounded-full bg-sweater-9"
+          >
+            <div
+              id="progress-value"
+              class="h-full w-full origin-left bg-sweater-5"
+              style="transform:scaleX(0.6);"
+            >
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
     </main>
 
     <footer>
@@ -267,6 +284,10 @@ posts = posts
 
     const progressBarElt = document.getElementById("progress-bar")!;
     const progressValueElt = document.getElementById("progress-value")!;
+
+    document
+      .getElementById("play-pause")!
+      .addEventListener("click", () => alert("todo"));
 
     /**
      * @see https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
