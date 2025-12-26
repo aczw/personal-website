@@ -124,9 +124,10 @@ posts = posts
     HOMEPAGE_PROJECTS,
     DitherMode,
     BayerMatrixSize,
+    DEFAULT_DITHER_SETTINGS,
   } from "@/scripts/constants";
   import { saturate } from "@/scripts/util";
-  import type { DitherParameters } from "@/scripts/types";
+  import type { DitherSettings, Dither } from "@/scripts/types";
 
   const run = () => {
     const canvas = document.getElementById("dither") as HTMLCanvasElement;
@@ -145,7 +146,7 @@ posts = posts
       if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
 
       // Otherwise, an error occurred
-      console.log("Error compiling shader:", gl.getShaderInfoLog(shader));
+      console.error("Error compiling shader:", gl.getShaderInfoLog(shader));
       gl.deleteShader(shader);
 
       return null;
@@ -162,7 +163,7 @@ posts = posts
     gl.linkProgram(program);
 
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.log("Error linking program:", gl.getProgramInfoLog(program));
+      console.error("Error linking program:", gl.getProgramInfoLog(program));
       gl.deleteProgram(program);
       return;
     }
@@ -172,7 +173,7 @@ posts = posts
     const uvAttrLoc = gl.getAttribLocation(program, "v_uv");
 
     const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
-    const dimensionUnifLoc = gl.getUniformLocation(program, "u_dimension");
+    const dimensionsUnifLoc = gl.getUniformLocation(program, "u_dimensions");
     const ditherModeUnifLoc = gl.getUniformLocation(program, "u_dither_mode");
     const uvPixelSizeUnifLoc = gl.getUniformLocation(
       program,
@@ -318,37 +319,14 @@ posts = posts
       .getElementById("play-pause")!
       .addEventListener("click", () => alert("todo"));
 
-    const settings: DitherParameters = {
-      canvasSize: `${gl.canvas.width}×${gl.canvas.height}`,
+    const dither: Dither = {
+      canvasSize: `0×0`,
       backend: "WebGL 2",
-      color: {
-        // Corresponds to CSS var(--color-sweater-10)
-        a: {
-          r: 0.0392156862745098,
-          g: 0.03529411764705882,
-          b: 0.09803921568627451,
-        },
-        // Corresponds to CSS var(--color-sweater-8)
-        b: {
-          r: 0.19215686274509805,
-          g: 0.17647058823529413,
-          b: 0.396078431372549,
-        },
-      },
-      dither: {
-        mode: DitherMode.ORDERED,
-        uvPixelSize: 32,
-        numQuantizedColors: 5,
-        bias: 0.0,
-        ordered: {
-          bayerMatrixSize: BayerMatrixSize.EIGHT_BY_EIGHT,
-          ditheredSize: 4,
-        },
-      },
+      ...structuredClone(DEFAULT_DITHER_SETTINGS),
     };
 
     const pane = new Pane({
-      title: "Configuration",
+      title: "Info",
       expanded: true,
     });
     pane.registerPlugin(TpEssentialsPlugin);
@@ -368,21 +346,43 @@ posts = posts
       }
     });
 
-    pane.addBinding(settings, "canvasSize", {
+    pane.addBinding(dither, "canvasSize", {
       readonly: true,
-      label: "Dimension",
+      label: "Dimensions",
     });
-    pane.addBinding(settings, "backend", {
+    pane.addBinding(dither, "backend", {
       readonly: true,
       label: "Backend",
     });
 
-    const dithering = pane.addFolder({
-      title: "Dithering",
+    const tab = pane.addTab({
+      pages: [{ title: "Configuration" }, { title: "Presets" }],
     });
+    const settings = tab.pages[0]!;
+    const presets = tab.pages[1]!;
 
-    dithering
-      .addBinding(settings.dither, "mode", {
+    // Set initial values
+    gl.uniform1i(ditherModeUnifLoc, dither.general.mode);
+    gl.uniform1i(uvPixelSizeUnifLoc, dither.general.uvPixelSize);
+    gl.uniform1i(numQuantizedColorsUnifLoc, dither.general.numQuantizedColors);
+    gl.uniform1f(biasUnifLoc, dither.general.bias);
+    gl.uniform3f(
+      colorAUnifLoc,
+      dither.color.a.r,
+      dither.color.a.g,
+      dither.color.a.b,
+    );
+    gl.uniform3f(
+      colorBUnifLoc,
+      dither.color.b.r,
+      dither.color.b.g,
+      dither.color.b.b,
+    );
+    gl.uniform1i(bayerMatrixSizeUnifLoc, dither.ordered.bayerMatrixSize);
+    gl.uniform1i(orderedDitherSizeUnifLoc, dither.ordered.ditheredSize);
+
+    settings
+      .addBinding(dither.general, "mode", {
         label: "Mode",
         options: {
           "Noise-based": DitherMode.NOISE,
@@ -394,41 +394,37 @@ posts = posts
         orderedSettings.forEach((blade) => (blade.hidden = isHidden));
         gl.uniform1i(ditherModeUnifLoc, ev.value);
       });
-    gl.uniform1i(ditherModeUnifLoc, settings.dither.mode);
 
-    dithering
-      .addBinding(settings.dither, "uvPixelSize", {
+    settings
+      .addBinding(dither.general, "uvPixelSize", {
         label: "Pixel size",
         min: 1,
         step: 1,
       })
       .on("change", (ev) => gl.uniform1i(uvPixelSizeUnifLoc, ev.value));
-    gl.uniform1i(uvPixelSizeUnifLoc, settings.dither.uvPixelSize);
 
-    dithering
-      .addBinding(settings.dither, "numQuantizedColors", {
+    settings
+      .addBinding(dither.general, "numQuantizedColors", {
         label: "Color count",
         min: 2,
         max: 32,
         step: 1,
       })
       .on("change", (ev) => gl.uniform1i(numQuantizedColorsUnifLoc, ev.value));
-    gl.uniform1i(numQuantizedColorsUnifLoc, settings.dither.numQuantizedColors);
 
-    dithering
-      .addBinding(settings.dither, "bias", {
+    settings
+      .addBinding(dither.general, "bias", {
         label: "Bias",
         min: -1.0,
         max: 1.0,
         step: 0.01,
       })
       .on("change", (ev) => gl.uniform1f(biasUnifLoc, ev.value));
-    gl.uniform1f(biasUnifLoc, settings.dither.bias);
 
-    dithering.addBlade({ view: "separator" });
+    settings.addBlade({ view: "separator" });
 
-    dithering
-      .addBinding(settings.color, "a", {
+    settings
+      .addBinding(dither.color, "a", {
         label: "Color A",
         color: { type: "float" },
         picker: "inline",
@@ -436,15 +432,9 @@ posts = posts
       .on("change", ({ value: { r, g, b } }) =>
         gl.uniform3f(colorAUnifLoc, r, g, b),
       );
-    gl.uniform3f(
-      colorAUnifLoc,
-      settings.color.a.r,
-      settings.color.a.g,
-      settings.color.a.b,
-    );
 
-    dithering
-      .addBinding(settings.color, "b", {
+    settings
+      .addBinding(dither.color, "b", {
         label: "Color B",
         color: { type: "float" },
         picker: "inline",
@@ -452,18 +442,12 @@ posts = posts
       .on("change", ({ value: { r, g, b } }) =>
         gl.uniform3f(colorBUnifLoc, r, g, b),
       );
-    gl.uniform3f(
-      colorBUnifLoc,
-      settings.color.b.r,
-      settings.color.b.g,
-      settings.color.b.b,
-    );
 
     // Not hidden by default
     const orderedSettings: BladeApi[] = [
-      dithering.addBlade({ view: "separator" }),
-      dithering
-        .addBinding(settings.dither.ordered, "bayerMatrixSize", {
+      settings.addBlade({ view: "separator" }),
+      settings
+        .addBinding(dither.ordered, "bayerMatrixSize", {
           label: "Bayer matrix",
           options: {
             "2×2": BayerMatrixSize.TWO_BY_TWO,
@@ -472,22 +456,36 @@ posts = posts
           },
         })
         .on("change", (ev) => gl.uniform1i(bayerMatrixSizeUnifLoc, ev.value)),
-      dithering
-        .addBinding(settings.dither.ordered, "ditheredSize", {
+      settings
+        .addBinding(dither.ordered, "ditheredSize", {
           label: "Dither size",
           min: 1,
           step: 1,
         })
         .on("change", (ev) => gl.uniform1i(orderedDitherSizeUnifLoc, ev.value)),
     ];
-    gl.uniform1i(
-      bayerMatrixSizeUnifLoc,
-      settings.dither.ordered.bayerMatrixSize,
-    );
-    gl.uniform1i(
-      orderedDitherSizeUnifLoc,
-      settings.dither.ordered.ditheredSize,
-    );
+
+    const applyDitherSettings = (d: Dither, newSettings: DitherSettings) => {
+      d.general.mode = newSettings.general.mode;
+      d.general.uvPixelSize = newSettings.general.uvPixelSize;
+      d.general.numQuantizedColors = newSettings.general.numQuantizedColors;
+      d.general.bias = newSettings.general.bias;
+
+      d.color.a = newSettings.color.a;
+      d.color.b = newSettings.color.b;
+
+      d.ordered.bayerMatrixSize = newSettings.ordered.bayerMatrixSize;
+      d.ordered.ditheredSize = newSettings.ordered.ditheredSize;
+    };
+
+    presets
+      .addButton({
+        title: "Reset to default",
+      })
+      .on("click", () => {
+        applyDitherSettings(dither, DEFAULT_DITHER_SETTINGS);
+        settings.refresh();
+      });
 
     const draw: VideoFrameRequestCallback = () => {
       fpsGraph.begin();
@@ -501,8 +499,8 @@ posts = posts
         canvas.height = canvas.clientHeight;
 
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-        gl.uniform2i(dimensionUnifLoc, gl.canvas.width, gl.canvas.height);
-        settings.canvasSize = `${gl.canvas.width}×${gl.canvas.height}`;
+        gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
+        dither.canvasSize = `${gl.canvas.width}×${gl.canvas.height}`;
       }
 
       const progress = saturate(

@@ -2,7 +2,7 @@
 precision highp float;
 
 uniform sampler2D u_video_frame;
-uniform ivec2 u_dimension;
+uniform ivec2 u_dimensions;
 
 uniform int u_dither_mode;
 uniform int u_uv_pixel_size;
@@ -83,7 +83,7 @@ float ordered_dither(float luminance) {
 
 void main() {
   vec2 flipped_uv = vec2(f_uv.x, 1.0f - f_uv.y);
-  vec2 normalized_pixel_size = vec2(u_uv_pixel_size) / vec2(u_dimension);
+  vec2 normalized_pixel_size = vec2(u_uv_pixel_size) / vec2(u_dimensions);
   vec2 uv = normalized_pixel_size * floor(flipped_uv / normalized_pixel_size);
 
   vec4 video_color = texture(u_video_frame, uv);

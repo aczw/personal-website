@@ -39,24 +39,29 @@ type DateKind =
 
 type Color = { r: number; g: number; b: number };
 
-type DitherParameters = {
+type DitherInformation = {
   canvasSize: string;
   backend: "WebGL 2" | "WebGPU";
-  color: {
-    a: Color;
-    b: Color;
-  };
-  dither: {
+};
+
+type DitherSettings = {
+  general: {
     mode: (typeof DitherMode)[keyof typeof DitherMode];
     uvPixelSize: number;
     numQuantizedColors: number;
     bias: number;
-    ordered: {
-      bayerMatrixSize: (typeof BayerMatrixSize)[keyof typeof BayerMatrixSize];
-      ditheredSize: number;
-    };
+  };
+  color: {
+    a: Color;
+    b: Color;
+  };
+  ordered: {
+    bayerMatrixSize: (typeof BayerMatrixSize)[keyof typeof BayerMatrixSize];
+    ditheredSize: number;
   };
 };
+
+type Dither = DitherInformation & DitherSettings;
 
 export type {
   EntryKind,
@@ -66,5 +71,6 @@ export type {
   RangedDate,
   ContentDateType,
   DateKind,
-  DitherParameters,
+  DitherSettings,
+  Dither,
 };
