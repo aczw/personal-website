@@ -37,9 +37,15 @@ type DateKind =
   | { kind: "simple"; date: SimpleDate }
   | { kind: "ranged"; date: RangedDate };
 
+type Color = { r: number; g: number; b: number };
+
 type DitherParameters = {
   canvasSize: string;
   backend: "WebGL 2" | "WebGPU";
+  color: {
+    a: Color;
+    b: Color;
+  };
   dither: {
     mode: (typeof DitherMode)[keyof typeof DitherMode];
     uvPixelSize: number;
