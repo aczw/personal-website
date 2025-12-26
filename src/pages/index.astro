@@ -469,28 +469,33 @@ posts = posts
         .on("change", (ev) => gl.uniform1i(orderedDitherSizeUnifLoc, ev.value)),
     ];
 
-    const applyDitherSettings = (d: Dither, newSettings: DitherSettings) => {
-      d.general.mode = newSettings.general.mode;
-      d.general.uvPixelSize = newSettings.general.uvPixelSize;
-      d.general.numQuantizedColors = newSettings.general.numQuantizedColors;
-      d.general.bias = newSettings.general.bias;
+    DITHER_PRESETS.forEach(
+      (
+        {
+          general: { mode, uvPixelSize, numQuantizedColors, bias },
+          color: { a, b },
+          ordered: { bayerMatrixSize, ditheredSize },
+        },
+        index,
+      ) =>
+        presets
+          .addButton({
+            title: index !== 0 ? index.toString() : "Reset to default",
+          })
+          .on("click", () => {
+            dither.general.mode = mode;
+            dither.general.uvPixelSize = uvPixelSize;
+            dither.general.numQuantizedColors = numQuantizedColors;
+            dither.general.bias = bias;
 
-      d.color.a = newSettings.color.a;
-      d.color.b = newSettings.color.b;
+            dither.color.a = a;
+            dither.color.b = b;
 
-      d.ordered.bayerMatrixSize = newSettings.ordered.bayerMatrixSize;
-      d.ordered.ditheredSize = newSettings.ordered.ditheredSize;
-    };
+            dither.ordered.bayerMatrixSize = bayerMatrixSize;
+            dither.ordered.ditheredSize = ditheredSize;
 
-    DITHER_PRESETS.forEach((preset, index) =>
-      presets
-        .addButton({
-          title: index !== 0 ? index.toString() : "Reset to default",
-        })
-        .on("click", () => {
-          applyDitherSettings(dither, preset);
-          settings.refresh();
-        }),
+            settings.refresh();
+          }),
     );
 
     const draw: VideoFrameRequestCallback = () => {
