@@ -30,4 +30,10 @@ outline
 - after seemingly getting it to work on desktop, it was time to fix all the broken things on iOS, as usual.
   - first, turns out iOS will immediately full screen play videos on page load unless you add playsInline, so i did that
   - with iOS 26, safari has completely altered the tab bar. i do agree it looks much better, but it also means we can't use display fixed anymore because just covering the viewport isn't enough anymore: _show picture_. instead im probably going to have to do some stupif shit to fix this idk man
-- we can make some simplifications. first, we never bother with colored dithering and only work with grayscale values. therefore, we can treat the dithered value as an interpolation value `t` that we use to sample our true color palette.
+- we can make some simplifications/optimizations in the shader.
+  - first, we never bother with colored dithering and only work with grayscale values. therefore, we can treat the dithered value as an interpolation value `t` that we use to sample our true color palette.
+  - originally i was working with many, hardcoded `const` variables within the shader. this made iteration faster, but i wanted to expose them in the configuration pane, so i started converting them to uniforms.
+    - one of these is the Bayer matrix size for ordered dithering. I support 2×2, 4×4, and 8×8, so I used a switch case for this: _show code_. however, seeing those 6 modulo operations got me a little worried.[^1] Since we're performing integer modulo and we're using powers of two, the modulo operations can be replaced with simple, efficient bitwise ANDs: _show code_.
+    - intuitively, we're collapsing a big integer to be within the range $[0, m-1]$, where $m$ is the modulus. and since $m$ is a power of two, this means we only care about the first, first 2, and first 3 least significant bits respectively. therefore we can AND the remaining bits away.
+
+[^1]: Theoretically the GLSL compiler generates a jump table for switch statements, meaning only 2 of the 6 modulo operations are performed per execution.

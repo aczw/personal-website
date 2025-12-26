@@ -45,6 +45,12 @@ const DitherMode = {
   ORDERED: 1,
 } as const;
 
+const BayerMatrixSize = {
+  TWO_BY_TWO: 0,
+  FOUR_BY_FOUR: 1,
+  EIGHT_BY_EIGHT: 2,
+} as const;
+
 export {
   CDN_URL,
   VALID_MONTHS,
@@ -52,4 +58,5 @@ export {
   DISABLED_PROJECTS,
   WIDE_PROJECTS,
   DitherMode,
+  BayerMatrixSize,
 };

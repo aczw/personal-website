@@ -8,7 +8,7 @@ import type {
   RangedDateSchema,
   SimpleDateSchema,
 } from "@/scripts/schema";
-import type { DitherMode } from "@/scripts/constants";
+import type { DitherMode, BayerMatrixSize } from "@/scripts/constants";
 
 type EntryKind =
   | { kind: "post"; post: CollectionEntry<"posts"> }
@@ -45,6 +45,9 @@ type DitherParameters = {
     uvPixelSize: number;
     numQuantizedColors: number;
     bias: number;
+    ordered: {
+      bayerMatrixSize: (typeof BayerMatrixSize)[keyof typeof BayerMatrixSize];
+    };
   };
 };
 

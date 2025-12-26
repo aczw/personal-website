@@ -112,14 +112,19 @@ posts = posts
 </BaseLayout>
 
 <script>
-  import { Pane } from "tweakpane";
+  import { Pane, type BladeApi } from "tweakpane";
   import * as TpEssentialsPlugin from "@tweakpane/plugin-essentials";
   import type { FpsGraphBladeApi } from "@tweakpane/plugin-essentials";
 
   import vertSource from "@/scripts/shaders/no-op.vert.glsl?raw";
   import fragSource from "@/scripts/shaders/dither.frag.glsl?raw";
 
-  import { CDN_URL, HOMEPAGE_PROJECTS, DitherMode } from "@/scripts/constants";
+  import {
+    CDN_URL,
+    HOMEPAGE_PROJECTS,
+    DitherMode,
+    BayerMatrixSize,
+  } from "@/scripts/constants";
   import { saturate } from "@/scripts/util";
   import type { DitherParameters } from "@/scripts/types";
 
@@ -178,6 +183,10 @@ posts = posts
       "u_num_quantized_colors",
     );
     const biasUnifLoc = gl.getUniformLocation(program, "u_bias");
+    const bayerMatrixSizeUnifLoc = gl.getUniformLocation(
+      program,
+      "u_bayer_matrix_size",
+    );
 
     // This only needs to be called once because we never switch shaders
     gl.useProgram(program);
@@ -311,6 +320,9 @@ posts = posts
         uvPixelSize: 32,
         numQuantizedColors: 5,
         bias: 0.0,
+        ordered: {
+          bayerMatrixSize: BayerMatrixSize.EIGHT_BY_EIGHT,
+        },
       },
     };
 
@@ -356,7 +368,11 @@ posts = posts
           Ordered: DitherMode.ORDERED,
         },
       })
-      .on("change", (ev) => gl.uniform1i(ditherModeUnifLoc, ev.value));
+      .on("change", (ev) => {
+        const isHidden = ev.value === DitherMode.NOISE;
+        orderedSettings.forEach((blade) => (blade.hidden = isHidden));
+        gl.uniform1i(ditherModeUnifLoc, ev.value);
+      });
     gl.uniform1i(ditherModeUnifLoc, settings.dither.mode);
 
     dithering
@@ -388,7 +404,24 @@ posts = posts
       .on("change", (ev) => gl.uniform1f(biasUnifLoc, ev.value));
     gl.uniform1f(biasUnifLoc, settings.dither.bias);
 
-    dithering.addBlade({ view: "separator" });
+    // Not hidden by default
+    const orderedSettings: BladeApi[] = [
+      dithering.addBlade({ view: "separator" }),
+      dithering
+        .addBinding(settings.dither.ordered, "bayerMatrixSize", {
+          label: "Bayer matrix",
+          options: {
+            "2×2": BayerMatrixSize.TWO_BY_TWO,
+            "4×4": BayerMatrixSize.FOUR_BY_FOUR,
+            "8×8": BayerMatrixSize.EIGHT_BY_EIGHT,
+          },
+        })
+        .on("change", (ev) => gl.uniform1i(bayerMatrixSizeUnifLoc, ev.value)),
+    ];
+    gl.uniform1i(
+      bayerMatrixSizeUnifLoc,
+      settings.dither.ordered.bayerMatrixSize,
+    );
 
     const draw: VideoFrameRequestCallback = () => {
       fpsGraph.begin();
