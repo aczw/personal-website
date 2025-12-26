@@ -3,8 +3,10 @@ precision highp float;
 
 uniform sampler2D u_video_frame;
 uniform ivec2 u_dimension;
+
 uniform int u_dither_mode;
 uniform int u_uv_pixel_size;
+uniform int u_num_quantized_colors;
 
 in vec2 f_uv;
 
@@ -16,8 +18,6 @@ const float BAYER_MATRIX_8[64] = float[64](0.0f / 64.0f, 48.0f / 64.0f, 12.0f / 
 
 const float ORDERED_BIAS = 0.0f;
 const int ORDERED_PIXEL_SIZE = 4;
-
-const int NUM_QUANTIZED_COLORS = 16;
 
 const vec3 SWEATER_10 = vec3(0.0392156862745098f, 0.03529411764705882f, 0.09803921568627451f);
 const vec3 SWEATER_8 = vec3(0.19215686274509805f, 0.17647058823529413f, 0.396078431372549f);
@@ -35,7 +35,7 @@ float to_luminance(vec3 color) {
 
 /// See https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web/#shades-of-gray-and-colors.
 float quantize(float value) {
-  float num_colors = float(NUM_QUANTIZED_COLORS);
+  float num_colors = float(u_num_quantized_colors);
   return floor(value * (num_colors - 1.0f) + 0.5f) / (num_colors - 1.0f);
 }
 

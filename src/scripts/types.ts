@@ -37,14 +37,13 @@ type DateKind =
   | { kind: "simple"; date: SimpleDate }
   | { kind: "ranged"; date: RangedDate };
 
-type DitherMode = (typeof DitherMode)[keyof typeof DitherMode];
-
-type PaneParameters = {
+type DitherParameters = {
   canvasSize: string;
   backend: "WebGL 2" | "WebGPU";
   dither: {
-    mode: DitherMode;
+    mode: (typeof DitherMode)[keyof typeof DitherMode];
     uvPixelSize: number;
+    numQuantizedColors: number;
   };
 };
 
@@ -56,6 +55,5 @@ export type {
   RangedDate,
   ContentDateType,
   DateKind,
-  DitherMode,
-  PaneParameters,
+  DitherParameters,
 };

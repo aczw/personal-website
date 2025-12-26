@@ -121,7 +121,7 @@ posts = posts
 
   import { CDN_URL, HOMEPAGE_PROJECTS, DitherMode } from "@/scripts/constants";
   import { saturate } from "@/scripts/util";
-  import type { PaneParameters } from "@/scripts/types";
+  import type { DitherParameters } from "@/scripts/types";
 
   const run = () => {
     const canvas = document.getElementById("dither") as HTMLCanvasElement;
@@ -172,6 +172,10 @@ posts = posts
     const uvPixelSizeUnifLoc = gl.getUniformLocation(
       program,
       "u_uv_pixel_size",
+    );
+    const numQuantizedColorsUnifLoc = gl.getUniformLocation(
+      program,
+      "u_num_quantized_colors",
     );
 
     // This only needs to be called once because we never switch shaders
@@ -298,12 +302,13 @@ posts = posts
       .getElementById("play-pause")!
       .addEventListener("click", () => alert("todo"));
 
-    const paneParams: PaneParameters = {
+    const settings: DitherParameters = {
       canvasSize: `${gl.canvas.width}×${gl.canvas.height}`,
       backend: "WebGL 2",
       dither: {
         mode: DitherMode.ORDERED,
-        uvPixelSize: 36,
+        uvPixelSize: 32,
+        numQuantizedColors: 5,
       },
     };
 
@@ -328,11 +333,11 @@ posts = posts
       }
     });
 
-    pane.addBinding(paneParams, "canvasSize", {
+    pane.addBinding(settings, "canvasSize", {
       readonly: true,
       label: "Dimension",
     });
-    pane.addBinding(paneParams, "backend", {
+    pane.addBinding(settings, "backend", {
       readonly: true,
       label: "Backend",
     });
@@ -342,7 +347,7 @@ posts = posts
     });
 
     dithering
-      .addBinding(paneParams.dither, "mode", {
+      .addBinding(settings.dither, "mode", {
         label: "Mode",
         options: {
           "Noise-based": DitherMode.NOISE,
@@ -350,16 +355,26 @@ posts = posts
         },
       })
       .on("change", (ev) => gl.uniform1i(ditherModeUnifLoc, ev.value));
-    gl.uniform1i(ditherModeUnifLoc, paneParams.dither.mode);
+    gl.uniform1i(ditherModeUnifLoc, settings.dither.mode);
 
     dithering
-      .addBinding(paneParams.dither, "uvPixelSize", {
+      .addBinding(settings.dither, "uvPixelSize", {
         label: "Pixel size",
         min: 1,
         step: 1,
       })
       .on("change", (ev) => gl.uniform1i(uvPixelSizeUnifLoc, ev.value));
-    gl.uniform1i(uvPixelSizeUnifLoc, paneParams.dither.uvPixelSize);
+    gl.uniform1i(uvPixelSizeUnifLoc, settings.dither.uvPixelSize);
+
+    dithering
+      .addBinding(settings.dither, "numQuantizedColors", {
+        label: "Color count",
+        min: 2,
+        max: 32,
+        step: 1,
+      })
+      .on("change", (ev) => gl.uniform1i(numQuantizedColorsUnifLoc, ev.value));
+    gl.uniform1i(numQuantizedColorsUnifLoc, settings.dither.numQuantizedColors);
 
     const draw: VideoFrameRequestCallback = () => {
       fpsGraph.begin();
@@ -374,7 +389,7 @@ posts = posts
 
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.uniform2i(dimensionUnifLoc, gl.canvas.width, gl.canvas.height);
-        paneParams.canvasSize = `${gl.canvas.width}×${gl.canvas.height}`;
+        settings.canvasSize = `${gl.canvas.width}×${gl.canvas.height}`;
       }
 
       const progress = saturate(
