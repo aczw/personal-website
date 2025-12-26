@@ -388,6 +388,8 @@ posts = posts
       .on("change", (ev) => gl.uniform1f(biasUnifLoc, ev.value));
     gl.uniform1f(biasUnifLoc, settings.dither.bias);
 
+    dithering.addBlade({ view: "separator" });
+
     const draw: VideoFrameRequestCallback = () => {
       fpsGraph.begin();
 

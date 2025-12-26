@@ -41,10 +41,12 @@ float quantize(float value) {
 
 /// See https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web/#a-first-pass-at-dithering-in-react-three-fiber.
 float noise_dither(vec2 uv, float luminance) {
-  if (luminance < random(uv) + u_bias) {
+  float final = quantize(luminance + u_bias);
+
+  if (final < random(uv)) {
     return 0.0f;
   } else {
-    return 1.0f;
+    return final;
   }
 }
 
