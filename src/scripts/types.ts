@@ -47,6 +47,7 @@ type DitherParameters = {
     bias: number;
     ordered: {
       bayerMatrixSize: (typeof BayerMatrixSize)[keyof typeof BayerMatrixSize];
+      ditheredSize: number;
     };
   };
 };

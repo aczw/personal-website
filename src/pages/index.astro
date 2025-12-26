@@ -187,6 +187,10 @@ posts = posts
       program,
       "u_bayer_matrix_size",
     );
+    const orderedDitherSizeUnifLoc = gl.getUniformLocation(
+      program,
+      "u_ordered_dither_size",
+    );
 
     // This only needs to be called once because we never switch shaders
     gl.useProgram(program);
@@ -322,6 +326,7 @@ posts = posts
         bias: 0.0,
         ordered: {
           bayerMatrixSize: BayerMatrixSize.EIGHT_BY_EIGHT,
+          ditheredSize: 4,
         },
       },
     };
@@ -417,10 +422,21 @@ posts = posts
           },
         })
         .on("change", (ev) => gl.uniform1i(bayerMatrixSizeUnifLoc, ev.value)),
+      dithering
+        .addBinding(settings.dither.ordered, "ditheredSize", {
+          label: "Dither size",
+          min: 1,
+          step: 1,
+        })
+        .on("change", (ev) => gl.uniform1i(orderedDitherSizeUnifLoc, ev.value)),
     ];
     gl.uniform1i(
       bayerMatrixSizeUnifLoc,
       settings.dither.ordered.bayerMatrixSize,
+    );
+    gl.uniform1i(
+      orderedDitherSizeUnifLoc,
+      settings.dither.ordered.ditheredSize,
     );
 
     const draw: VideoFrameRequestCallback = () => {
