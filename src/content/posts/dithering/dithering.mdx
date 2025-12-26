@@ -30,3 +30,4 @@ outline
 - after seemingly getting it to work on desktop, it was time to fix all the broken things on iOS, as usual.
   - first, turns out iOS will immediately full screen play videos on page load unless you add playsInline, so i did that
   - with iOS 26, safari has completely altered the tab bar. i do agree it looks much better, but it also means we can't use display fixed anymore because just covering the viewport isn't enough anymore: _show picture_. instead im probably going to have to do some stupif shit to fix this idk man
+- we can make some simplifications. first, we never bother with colored dithering and only work with grayscale values. therefore, we can treat the dithered value as an interpolation value `t` that we use to sample our true color palette.

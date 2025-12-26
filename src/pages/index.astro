@@ -250,6 +250,14 @@ posts = posts
     let currVideo!: HTMLVideoElement;
     alreadyLoadedVideos.add(videos[0]!);
 
+    // Automatically start playing current video if the user switched tabs and
+    // switched back (browsers pause the video in the background)
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && currVideo.paused) {
+        currVideo.play();
+      }
+    });
+
     /**
      * Assumes we have more than one video. Come on. Otherwise it's boring
      */
@@ -277,14 +285,6 @@ posts = posts
 
     // Transitions to index 0 aka plays the first video
     transitionToNextVideo(videos.length - 1);
-
-    // Automatically start playing current video if the user switched tabs and
-    // switched back (browsers pause the video in the background)
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible" && currVideo.paused) {
-        currVideo.play();
-      }
-    });
 
     videos.forEach((video, index) => {
       video.addEventListener("ended", () => {

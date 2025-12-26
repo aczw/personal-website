@@ -40,24 +40,21 @@ float quantize(float value) {
 }
 
 /// See https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web/#a-first-pass-at-dithering-in-react-three-fiber.
-vec3 noise_dither(vec2 uv, float luminance) {
+float noise_dither(vec2 uv, float luminance) {
   if (luminance < random(uv)) {
-    return vec3(0.0f);
+    return 0.0f;
   } else {
-    return vec3(1.0f);
+    return 1.0f;
   }
 }
 
-vec3 ordered_dither(float luminance) {
+float ordered_dither(float luminance) {
   vec2 pixel = vec2(ORDERED_PIXEL_SIZE) * floor(gl_FragCoord.xy / vec2(ORDERED_PIXEL_SIZE));
   ivec2 index = ivec2(int(pixel.x) % 8, int(pixel.y) % 8);
   float threshold = BAYER_MATRIX_8[index.y * 8 + index.x] + ORDERED_BIAS;
 
-  vec3 final = vec3(luminance);
-  final += threshold;
-  final.r = quantize(final.r);
-  final.g = quantize(final.g);
-  final.b = quantize(final.b);
+  float final = luminance + threshold;
+  final = quantize(final);
 
   return final;
 }
@@ -70,18 +67,17 @@ void main() {
   vec4 video_color = texture(u_video_frame, uv);
   float luminance = to_luminance(video_color.rgb);
 
-  vec3 final_color = vec3(0.0f);
+  float t = 0.0f;
   switch (u_dither_mode) {
     case 0:
-      final_color = noise_dither(uv, luminance);
+      t = noise_dither(uv, luminance);
       break;
 
     case 1:
-      final_color = ordered_dither(luminance);
+      t = ordered_dither(luminance);
       break;
   }
 
-  final_color = vec3(mix(SWEATER_10, SWEATER_8, final_color.r));
-
+  vec3 final_color = vec3(mix(SWEATER_10, SWEATER_8, t));
   out_color = vec4(final_color, 1.0f);
 }
