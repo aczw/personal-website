@@ -44,6 +44,7 @@ type DitherParameters = {
     mode: (typeof DitherMode)[keyof typeof DitherMode];
     uvPixelSize: number;
     numQuantizedColors: number;
+    bias: number;
   };
 };
 

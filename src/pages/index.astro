@@ -177,6 +177,7 @@ posts = posts
       program,
       "u_num_quantized_colors",
     );
+    const biasUnifLoc = gl.getUniformLocation(program, "u_bias");
 
     // This only needs to be called once because we never switch shaders
     gl.useProgram(program);
@@ -309,6 +310,7 @@ posts = posts
         mode: DitherMode.ORDERED,
         uvPixelSize: 32,
         numQuantizedColors: 5,
+        bias: 0.0,
       },
     };
 
@@ -375,6 +377,16 @@ posts = posts
       })
       .on("change", (ev) => gl.uniform1i(numQuantizedColorsUnifLoc, ev.value));
     gl.uniform1i(numQuantizedColorsUnifLoc, settings.dither.numQuantizedColors);
+
+    dithering
+      .addBinding(settings.dither, "bias", {
+        label: "Bias",
+        min: -1.0,
+        max: 1.0,
+        step: 0.01,
+      })
+      .on("change", (ev) => gl.uniform1f(biasUnifLoc, ev.value));
+    gl.uniform1f(biasUnifLoc, settings.dither.bias);
 
     const draw: VideoFrameRequestCallback = () => {
       fpsGraph.begin();
