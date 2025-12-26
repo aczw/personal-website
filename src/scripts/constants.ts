@@ -1,4 +1,9 @@
-import type { DitherSettings } from "@/scripts/types";
+import {
+  BayerMatrixSize,
+  DitherMode,
+  type Color,
+  type DitherSettings,
+} from "@/scripts/dither/types";
 
 const CDN_URL = "https://cdn.charleszw.com";
 
@@ -42,16 +47,23 @@ const WIDE_PROJECTS = [
   "rcw",
 ];
 
-const DitherMode = {
-  NOISE: 0,
-  ORDERED: 1,
-} as const;
+/**
+ * Corresponds to CSS var(--color-sweater-8).
+ */
+const SWEATER_8: Color = {
+  r: 0.19215686274509805,
+  g: 0.17647058823529413,
+  b: 0.396078431372549,
+};
 
-const BayerMatrixSize = {
-  TWO_BY_TWO: 0,
-  FOUR_BY_FOUR: 1,
-  EIGHT_BY_EIGHT: 2,
-} as const;
+/**
+ * Corresponds to CSS var(--color-sweater-10).
+ */
+const SWEATER_10: Color = {
+  r: 0.0392156862745098,
+  g: 0.03529411764705882,
+  b: 0.09803921568627451,
+};
 
 const DEFAULT_DITHER_SETTINGS: DitherSettings = {
   general: {
@@ -61,18 +73,8 @@ const DEFAULT_DITHER_SETTINGS: DitherSettings = {
     bias: 0.0,
   },
   color: {
-    // Corresponds to CSS var(--color-sweater-10)
-    a: {
-      r: 0.0392156862745098,
-      g: 0.03529411764705882,
-      b: 0.09803921568627451,
-    },
-    // Corresponds to CSS var(--color-sweater-8)
-    b: {
-      r: 0.19215686274509805,
-      g: 0.17647058823529413,
-      b: 0.396078431372549,
-    },
+    a: SWEATER_10,
+    b: SWEATER_8,
   },
   ordered: {
     bayerMatrixSize: BayerMatrixSize.EIGHT_BY_EIGHT,
@@ -86,7 +88,7 @@ export {
   HOMEPAGE_PROJECTS,
   DISABLED_PROJECTS,
   WIDE_PROJECTS,
-  DitherMode,
-  BayerMatrixSize,
+  SWEATER_8,
+  SWEATER_10,
   DEFAULT_DITHER_SETTINGS,
 };

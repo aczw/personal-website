@@ -116,18 +116,22 @@ posts = posts
   import * as TpEssentialsPlugin from "@tweakpane/plugin-essentials";
   import type { FpsGraphBladeApi } from "@tweakpane/plugin-essentials";
 
-  import vertSource from "@/scripts/shaders/no-op.vert.glsl?raw";
-  import fragSource from "@/scripts/shaders/dither.frag.glsl?raw";
+  import vertSource from "@/shaders/no-op.vert.glsl?raw";
+  import fragSource from "@/shaders/dither.frag.glsl?raw";
 
   import {
     CDN_URL,
     HOMEPAGE_PROJECTS,
-    DitherMode,
-    BayerMatrixSize,
     DEFAULT_DITHER_SETTINGS,
   } from "@/scripts/constants";
   import { saturate } from "@/scripts/util";
-  import type { DitherSettings, Dither } from "@/scripts/types";
+  import {
+    DitherMode,
+    BayerMatrixSize,
+    type DitherSettings,
+    type Dither,
+  } from "@/scripts/dither/types";
+  import { DITHER_PRESETS } from "@/scripts/dither/presets";
 
   const run = () => {
     const canvas = document.getElementById("dither") as HTMLCanvasElement;
@@ -478,14 +482,16 @@ posts = posts
       d.ordered.ditheredSize = newSettings.ordered.ditheredSize;
     };
 
-    presets
-      .addButton({
-        title: "Reset to default",
-      })
-      .on("click", () => {
-        applyDitherSettings(dither, DEFAULT_DITHER_SETTINGS);
-        settings.refresh();
-      });
+    DITHER_PRESETS.forEach((preset, index) =>
+      presets
+        .addButton({
+          title: index !== 0 ? index.toString() : "Reset to default",
+        })
+        .on("click", () => {
+          applyDitherSettings(dither, preset);
+          settings.refresh();
+        }),
+    );
 
     const draw: VideoFrameRequestCallback = () => {
       fpsGraph.begin();

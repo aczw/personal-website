@@ -8,7 +8,6 @@ import type {
   RangedDateSchema,
   SimpleDateSchema,
 } from "@/scripts/schema";
-import type { DitherMode, BayerMatrixSize } from "@/scripts/constants";
 
 type EntryKind =
   | { kind: "post"; post: CollectionEntry<"posts"> }
@@ -37,32 +36,6 @@ type DateKind =
   | { kind: "simple"; date: SimpleDate }
   | { kind: "ranged"; date: RangedDate };
 
-type Color = { r: number; g: number; b: number };
-
-type DitherInformation = {
-  canvasSize: string;
-  backend: "WebGL 2" | "WebGPU";
-};
-
-type DitherSettings = {
-  general: {
-    mode: (typeof DitherMode)[keyof typeof DitherMode];
-    uvPixelSize: number;
-    numQuantizedColors: number;
-    bias: number;
-  };
-  color: {
-    a: Color;
-    b: Color;
-  };
-  ordered: {
-    bayerMatrixSize: (typeof BayerMatrixSize)[keyof typeof BayerMatrixSize];
-    ditheredSize: number;
-  };
-};
-
-type Dither = DitherInformation & DitherSettings;
-
 export type {
   EntryKind,
   MetaKind,
@@ -71,6 +44,4 @@ export type {
   RangedDate,
   ContentDateType,
   DateKind,
-  DitherSettings,
-  Dither,
 };
