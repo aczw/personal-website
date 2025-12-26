@@ -128,7 +128,6 @@ posts = posts
   import {
     DitherMode,
     BayerMatrixSize,
-    type DitherSettings,
     type Dither,
   } from "@/scripts/dither/types";
   import { DITHER_PRESETS } from "@/scripts/dither/presets";
@@ -335,20 +334,28 @@ posts = posts
     });
     pane.registerPlugin(TpEssentialsPlugin);
 
-    const fpsGraph = pane.addBlade({
+    const drawFpsGraph = pane.addBlade({
       view: "fpsgraph",
       label: "FPS",
       min: 0,
-      max: 100,
+      max: 120,
       rows: 2,
     }) as FpsGraphBladeApi;
 
-    fpsGraph.on("tick", (ev) => {
+    drawFpsGraph.on("tick", (ev) => {
       // Dynamically adjust FPS max bound
       if (ev.target.fps && ev.target.fps > ev.target.max) {
-        ev.target.max = ev.target.fps;
+        ev.target.max = ev.target.fps + 60;
       }
     });
+
+    const videoFpsGraph = pane.addBlade({
+      view: "fpsgraph",
+      label: "Video",
+      min: 0,
+      max: 120,
+      rows: 1,
+    }) as FpsGraphBladeApi;
 
     pane.addBinding(dither, "canvasSize", {
       readonly: true,
@@ -365,26 +372,6 @@ posts = posts
     const settings = tab.pages[0]!;
     const presets = tab.pages[1]!;
 
-    // Set initial values
-    gl.uniform1i(ditherModeUnifLoc, dither.general.mode);
-    gl.uniform1i(uvPixelSizeUnifLoc, dither.general.uvPixelSize);
-    gl.uniform1i(numQuantizedColorsUnifLoc, dither.general.numQuantizedColors);
-    gl.uniform1f(biasUnifLoc, dither.general.bias);
-    gl.uniform3f(
-      colorAUnifLoc,
-      dither.color.a.r,
-      dither.color.a.g,
-      dither.color.a.b,
-    );
-    gl.uniform3f(
-      colorBUnifLoc,
-      dither.color.b.r,
-      dither.color.b.g,
-      dither.color.b.b,
-    );
-    gl.uniform1i(bayerMatrixSizeUnifLoc, dither.ordered.bayerMatrixSize);
-    gl.uniform1i(orderedDitherSizeUnifLoc, dither.ordered.ditheredSize);
-
     settings
       .addBinding(dither.general, "mode", {
         label: "Mode",
@@ -396,77 +383,58 @@ posts = posts
       .on("change", (ev) => {
         const isHidden = ev.value === DitherMode.NOISE;
         orderedSettings.forEach((blade) => (blade.hidden = isHidden));
-        gl.uniform1i(ditherModeUnifLoc, ev.value);
       });
 
-    settings
-      .addBinding(dither.general, "uvPixelSize", {
-        label: "Pixel size",
-        min: 1,
-        step: 1,
-      })
-      .on("change", (ev) => gl.uniform1i(uvPixelSizeUnifLoc, ev.value));
+    settings.addBinding(dither.general, "uvPixelSize", {
+      label: "Pixel size",
+      min: 1,
+      step: 1,
+    });
 
-    settings
-      .addBinding(dither.general, "numQuantizedColors", {
-        label: "Color count",
-        min: 2,
-        max: 32,
-        step: 1,
-      })
-      .on("change", (ev) => gl.uniform1i(numQuantizedColorsUnifLoc, ev.value));
+    settings.addBinding(dither.general, "numQuantizedColors", {
+      label: "Color count",
+      min: 2,
+      max: 32,
+      step: 1,
+    });
 
-    settings
-      .addBinding(dither.general, "bias", {
-        label: "Bias",
-        min: -1.0,
-        max: 1.0,
-        step: 0.01,
-      })
-      .on("change", (ev) => gl.uniform1f(biasUnifLoc, ev.value));
+    settings.addBinding(dither.general, "bias", {
+      label: "Bias",
+      min: -1.0,
+      max: 1.0,
+      step: 0.01,
+    });
 
     settings.addBlade({ view: "separator" });
 
-    settings
-      .addBinding(dither.color, "a", {
-        label: "Color A",
-        color: { type: "float" },
-        picker: "inline",
-      })
-      .on("change", ({ value: { r, g, b } }) =>
-        gl.uniform3f(colorAUnifLoc, r, g, b),
-      );
+    settings.addBinding(dither.color, "a", {
+      label: "Color A",
+      color: { type: "float" },
+      picker: "inline",
+    });
 
-    settings
-      .addBinding(dither.color, "b", {
-        label: "Color B",
-        color: { type: "float" },
-        picker: "inline",
-      })
-      .on("change", ({ value: { r, g, b } }) =>
-        gl.uniform3f(colorBUnifLoc, r, g, b),
-      );
+    settings.addBinding(dither.color, "b", {
+      label: "Color B",
+      color: { type: "float" },
+      picker: "inline",
+    });
 
     // Not hidden by default
     const orderedSettings: BladeApi[] = [
       settings.addBlade({ view: "separator" }),
-      settings
-        .addBinding(dither.ordered, "bayerMatrixSize", {
-          label: "Bayer matrix",
-          options: {
-            "2×2": BayerMatrixSize.TWO_BY_TWO,
-            "4×4": BayerMatrixSize.FOUR_BY_FOUR,
-            "8×8": BayerMatrixSize.EIGHT_BY_EIGHT,
-          },
-        })
-        .on("change", (ev) => gl.uniform1i(bayerMatrixSizeUnifLoc, ev.value)),
-      settings
-        .addBinding(dither.ordered, "ditheredSize", {
-          label: "Dither size",
-          min: 1,
-          step: 1,
-        })
-        .on("change", (ev) => gl.uniform1i(orderedDitherSizeUnifLoc, ev.value)),
+      settings.addBinding(dither.ordered, "bayerMatrixSize", {
+        label: "Bayer matrix",
+        options: {
+          "2×2": BayerMatrixSize.TWO_BY_TWO,
+          "4×4": BayerMatrixSize.FOUR_BY_FOUR,
+          "8×8": BayerMatrixSize.EIGHT_BY_EIGHT,
+        },
+      }),
+      settings.addBinding(dither.ordered, "ditheredSize", {
+        label: "Dither size",
+        min: 1,
+        step: 1,
+      }),
     ];
 
     DITHER_PRESETS.forEach(
@@ -498,10 +466,41 @@ posts = posts
           }),
     );
 
-    const draw: VideoFrameRequestCallback = () => {
-      fpsGraph.begin();
+    // The rate at which the current video updates (usually <= 60 FPS) is
+    // usually slower than the screen's refresh rate. To prevent expensive
+    // CPU-to-GPU texture copies of the same video data, we do it in this loop
+    const onVideoFrameUpdate: VideoFrameRequestCallback = () => {
+      videoFpsGraph.begin();
 
-      // Check if canvas needs to be resized. See https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+      const progress = saturate(
+        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0,
+      );
+      progressBarElt.setAttribute(
+        "aria-valuenow",
+        Math.round(progress * 100).toString(),
+      );
+      progressValueElt.style.transform = `scaleX(${progress})`;
+
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        currVideo,
+      );
+
+      videoFpsGraph.end();
+      currVideo.requestVideoFrameCallback(onVideoFrameUpdate);
+    };
+    currVideo.requestVideoFrameCallback(onVideoFrameUpdate);
+
+    // On the other hand, uniform changes and resize events can occur at any
+    // time and can't wait for the video, which often updates slower
+    const draw: FrameRequestCallback = () => {
+      drawFpsGraph.begin();
+
+      // See https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
       if (
         canvas.width !== canvas.clientWidth ||
         canvas.height !== canvas.clientHeight
@@ -514,35 +513,37 @@ posts = posts
         dither.canvasSize = `${gl.canvas.width}×${gl.canvas.height}`;
       }
 
-      const progress = saturate(
-        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0,
-      );
-      progressBarElt.setAttribute(
-        "aria-valuenow",
-        Math.round(progress * 100).toString(),
-      );
-      progressValueElt.style.transform = `scaleX(${progress})`;
-
       gl.clearColor(0.0, 0.0, 0.0, 0.0);
       gl.clear(gl.COLOR_BUFFER_BIT);
 
-      gl.texImage2D(
-        gl.TEXTURE_2D,
-        0,
-        gl.RGBA,
-        gl.RGBA,
-        gl.UNSIGNED_BYTE,
-        currVideo,
+      gl.uniform1i(ditherModeUnifLoc, dither.general.mode);
+      gl.uniform1i(uvPixelSizeUnifLoc, dither.general.uvPixelSize);
+      gl.uniform1i(
+        numQuantizedColorsUnifLoc,
+        dither.general.numQuantizedColors,
       );
+      gl.uniform1f(biasUnifLoc, dither.general.bias);
+      gl.uniform3f(
+        colorAUnifLoc,
+        dither.color.a.r,
+        dither.color.a.g,
+        dither.color.a.b,
+      );
+      gl.uniform3f(
+        colorBUnifLoc,
+        dither.color.b.r,
+        dither.color.b.g,
+        dither.color.b.b,
+      );
+      gl.uniform1i(bayerMatrixSizeUnifLoc, dither.ordered.bayerMatrixSize);
+      gl.uniform1i(orderedDitherSizeUnifLoc, dither.ordered.ditheredSize);
 
       gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 
-      fpsGraph.end();
-
-      currVideo.requestVideoFrameCallback(draw);
+      drawFpsGraph.end();
+      requestAnimationFrame(draw);
     };
-
-    currVideo.requestVideoFrameCallback(draw);
+    requestAnimationFrame(draw);
   };
 
   run();
