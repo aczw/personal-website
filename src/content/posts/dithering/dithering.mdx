@@ -35,5 +35,33 @@ outline
   - originally i was working with many, hardcoded `const` variables within the shader. this made iteration faster, but i wanted to expose them in the configuration pane, so i started converting them to uniforms.
     - one of these is the Bayer matrix size for ordered dithering. I support 2×2, 4×4, and 8×8, so I used a switch case for this: _show code_. however, seeing those 6 modulo operations got me a little worried.[^1] Since we're performing integer modulo and we're using powers of two, the modulo operations can be replaced with simple, efficient bitwise ANDs: _show code_.
     - intuitively, we're collapsing a big integer to be within the range $[0, m-1]$, where $m$ is the modulus. and since $m$ is a power of two, this means we only care about the first, first 2, and first 3 least significant bits respectively. therefore we can AND the remaining bits away.
+- during development I heavily relied on Tweakpane to quickly adjust shader uniforms on the fly. i figured, why limit this inspector to myself? The panel now ships with the live site, allowing you to adjust everything from the colors to the dither algorithm used.
+  - Another thing I built for myself while testing were these presets that you could toggle between that would set the dither settings for you with one press of a button. I've exposed that under the "Presets" tab in the panel.
+  - The idea of presets additionally got me thinking... what if there was a dark mode and light mode preset? And then I could toggle between them if the user's system appearance changed!
+    - So now on page load, we first check what color scheme the user prefers, and loads the corresponding initial dither settings.
+    - We also add an event listener to update the dither palette on the fly when the user's system theme changes.
+      ```ts
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+      const dither: Dither = {
+        canvasSize: `0×0`,
+        backend: "WebGL 2",
+        ...structuredClone(
+          prefersDark.matches ?
+            DEFAULT_DARK_DITHER_SETTINGS
+          : DEFAULT_LIGHT_DITHER_SETTINGS,
+        ),
+      };
+
+      prefersDark.addEventListener("change", (ev) =>
+        applyDitherSettings(
+          dither,
+          ev.matches ?
+            DEFAULT_DARK_DITHER_SETTINGS
+          : DEFAULT_LIGHT_DITHER_SETTINGS,
+        ),
+      );
+      ```
+    - This makes the canvas match the CSS color scheme, which I think looks and feels really good.
 
 [^1]: Theoretically the GLSL compiler generates a jump table for switch statements, meaning only 2 of the 6 modulo operations are performed per execution.

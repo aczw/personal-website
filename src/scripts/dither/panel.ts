@@ -7,7 +7,7 @@ import {
   DitherMode,
   type Dither,
 } from "@/scripts/dither/types";
-import { DITHER_PRESETS } from "@/scripts/dither/presets";
+import { applyDitherSettings, DITHER_PRESETS } from "@/scripts/dither/presets";
 
 type PanelFpsGraphs = {
   draw: FpsGraphBladeApi;
@@ -134,34 +134,17 @@ function initializePanel(dither: Dither, container: HTMLElement): Panel {
     ];
   }
 
-  DITHER_PRESETS.forEach(
-    (
-      {
-        general: { mode, uvPixelSize, numQuantizedColors, bias },
-        color: { a, b },
-        ordered: { bayerMatrixSize, ditheredSize },
-      },
-      index,
-    ) =>
-      presets
-        .addButton({
-          title: index !== 0 ? index.toString() : "Reset to default",
-        })
-        .on("click", () => {
-          dither.general.mode = mode;
-          dither.general.uvPixelSize = uvPixelSize;
-          dither.general.numQuantizedColors = numQuantizedColors;
-          dither.general.bias = bias;
+  DITHER_PRESETS.forEach((preset, index) => {
+    const title =
+      index > 1 ? `${index - 1}`
+      : index === 1 ? "Default light mode"
+      : "Default dark mode";
 
-          dither.color.a = a;
-          dither.color.b = b;
-
-          dither.ordered.bayerMatrixSize = bayerMatrixSize;
-          dither.ordered.ditheredSize = ditheredSize;
-
-          settings.refresh();
-        }),
-  );
+    presets.addButton({ title }).on("click", () => {
+      applyDitherSettings(dither, preset);
+      settings.refresh();
+    });
+  });
 
   return { pane, fpsGraphs: { draw, video } };
 }

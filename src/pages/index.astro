@@ -1,24 +1,16 @@
 ---
-import { getCollection, getEntries } from "astro:content";
+import { getEntries } from "astro:content";
 
-import Link from "@/components/link.astro";
 import {
-  getFullDateFormatting,
-  getMonthYearDateFormatting,
-} from "@/scripts/util";
-import {
-  CircleArrowRightIcon,
   BoxesIcon,
   ScrollTextIcon,
   WavesIcon,
   InfoIcon,
   SquareArrowRightIcon,
-  PauseIcon,
   SquareMousePointerIcon,
   SquareDashedMousePointerIcon,
 } from "@lucide/astro";
-import GridSection from "@/components/grid-section.astro";
-import TechList from "@/components/tech-list.astro";
+
 import BaseLayout from "@/layouts/base-layout.astro";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 import ContentDate from "@/components/content-date.astro";
@@ -31,11 +23,6 @@ const projects = await getEntries(
     };
   }),
 );
-
-let posts = await getCollection("posts");
-posts = posts
-  .sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime())
-  .slice(0, 3);
 ---
 
 <BaseLayout
@@ -99,7 +86,11 @@ posts = posts
     </section>
 
     <section hidden id="panel-container">
-      <div id="panel-border-wrapper" class="bordered"></div>
+      <div
+        id="panel-border-wrapper"
+        class="border-r-(length:--border-w) border-b-(length:--border-w) border-style"
+      >
+      </div>
     </section>
 
     <section class="space-y-pad">
@@ -183,6 +174,7 @@ posts = posts
   import { saturate } from "@/scripts/util";
   import { type Dither } from "@/scripts/dither/types";
   import { initializePanel, type Panel } from "@/scripts/dither/panel";
+  import { applyDitherSettings } from "@/scripts/dither/presets";
 
   const run = () => {
     const canvas = document.getElementById("dither") as HTMLCanvasElement;
@@ -366,9 +358,6 @@ posts = posts
       });
     });
 
-    const progressBarElt = document.getElementById("progress-bar")!;
-    const progressValueElt = document.getElementById("progress-value")!;
-
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
     const dither: Dither = {
@@ -380,6 +369,15 @@ posts = posts
         : DEFAULT_LIGHT_DITHER_SETTINGS,
       ),
     };
+
+    prefersDark.addEventListener("change", (ev) =>
+      applyDitherSettings(
+        dither,
+        ev.matches ?
+          DEFAULT_DARK_DITHER_SETTINGS
+        : DEFAULT_LIGHT_DITHER_SETTINGS,
+      ),
+    );
 
     const panelContainerElt = document.getElementById("panel-container")!;
     const navElt = document.getElementById("nav")!;
@@ -407,6 +405,9 @@ posts = posts
         navElt.setAttribute("hidden", "");
       }
     });
+
+    const progressBarElt = document.getElementById("progress-bar")!;
+    const progressValueElt = document.getElementById("progress-value")!;
 
     // The rate at which the current video updates (usually <= 60 FPS) is
     // usually slower than the screen's refresh rate. To prevent expensive
