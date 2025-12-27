@@ -1,7 +1,9 @@
 import {
   DEFAULT_DARK_DITHER_SETTINGS,
   DEFAULT_LIGHT_DITHER_SETTINGS,
+  SWEATER_1,
   SWEATER_10,
+  SWEATER_3,
   SWEATER_8,
 } from "@/scripts/constants";
 import {
@@ -17,6 +19,22 @@ const DITHER_PRESETS: DitherSettings[] = [
   {
     general: {
       mode: DitherMode.ORDERED,
+      uvPixelSize: 1,
+      numQuantizedColors: 32,
+      bias: 0.0,
+    },
+    color: {
+      a: SWEATER_10,
+      b: SWEATER_1,
+    },
+    ordered: {
+      bayerMatrixSize: BayerMatrixSize.EIGHT_BY_EIGHT,
+      ditheredSize: 1,
+    },
+  },
+  {
+    general: {
+      mode: DitherMode.ORDERED,
       uvPixelSize: 16,
       numQuantizedColors: 3,
       bias: 0.02,
@@ -28,6 +46,22 @@ const DITHER_PRESETS: DitherSettings[] = [
     ordered: {
       bayerMatrixSize: BayerMatrixSize.FOUR_BY_FOUR,
       ditheredSize: 2,
+    },
+  },
+  {
+    general: {
+      mode: DitherMode.ORDERED,
+      uvPixelSize: 32,
+      numQuantizedColors: 5,
+      bias: -0.08,
+    },
+    color: {
+      a: SWEATER_3,
+      b: SWEATER_1,
+    },
+    ordered: {
+      bayerMatrixSize: BayerMatrixSize.EIGHT_BY_EIGHT,
+      ditheredSize: 4,
     },
   },
 ];

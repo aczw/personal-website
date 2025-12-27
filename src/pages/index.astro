@@ -37,7 +37,8 @@ const projects = await getEntries(
   <canvas
     id="dither"
     aria-hidden="true"
-    class="pointer-events-none fixed inset-0 h-screen w-screen"></canvas>
+    class="pointer-events-none fixed inset-0 h-screen w-screen transition-opacity duration-1200 ease-in-out"
+    style="opacity: 0;"></canvas>
 
   <main
     class="fixed inset-x-pad bottom-pad flex flex-col gap-pad *:overflow-hidden *:rounded-lg *:bg-sweater-10 *:p-pad *:leading-none *:not-dark:bg-sweater-1 480:right-auto 480:bottom-15 480:left-15 480:items-end *:480:w-[325px] md:flex-row"
@@ -436,7 +437,12 @@ const projects = await getEntries(
       panel?.fpsGraphs.video.end();
       currVideo.requestVideoFrameCallback(onVideoFrameUpdate);
     };
-    currVideo.requestVideoFrameCallback(onVideoFrameUpdate);
+
+    currVideo.requestVideoFrameCallback((now, metadata) => {
+      console.log("first frame ready!!");
+      canvas.style.opacity = "1";
+      onVideoFrameUpdate(now, metadata);
+    });
 
     // On the other hand, uniform changes and resize events can occur at any
     // time and can't wait for the video, which often updates slower

@@ -86,8 +86,8 @@ const SWEATER_10: Color = {
 const DEFAULT_DARK_DITHER_SETTINGS: DitherSettings = {
   general: {
     mode: DitherMode.ORDERED,
-    uvPixelSize: 32,
-    numQuantizedColors: 5,
+    uvPixelSize: 48,
+    numQuantizedColors: 6,
     bias: -0.08,
   },
   color: {
@@ -103,8 +103,8 @@ const DEFAULT_DARK_DITHER_SETTINGS: DitherSettings = {
 const DEFAULT_LIGHT_DITHER_SETTINGS: DitherSettings = {
   general: {
     mode: DitherMode.ORDERED,
-    uvPixelSize: 32,
-    numQuantizedColors: 5,
+    uvPixelSize: 48,
+    numQuantizedColors: 6,
     bias: 0.0,
   },
   color: {
