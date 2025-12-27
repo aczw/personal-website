@@ -105,8 +105,12 @@ const projects = await getEntries(
               class="group hidden border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line data-[playing=true]:flex"
             >
               <div class="grow space-y-pad">
-                <p class="animate-pulse maple text-xs text-subtitle uppercase">
-                  Now playing
+                <p
+                  id="video-status"
+                  data-status={index === 0 ? "loading" : "ready"}
+                  class="maple text-xs text-subtitle uppercase data-[status=loading]:animate-pulse"
+                >
+                  {index === 0 ? "Please wait" : "Now playing"}
                 </p>
 
                 <div class="space-y-1">
@@ -439,7 +443,10 @@ const projects = await getEntries(
     };
 
     currVideo.requestVideoFrameCallback((now, metadata) => {
-      console.log("first frame ready!!");
+      const videoStatus = document.getElementById("video-status")!;
+      videoStatus.innerText = "Now playing";
+      videoStatus.dataset["status"] = "ready";
+
       canvas.style.opacity = "1";
       onVideoFrameUpdate(now, metadata);
     });
