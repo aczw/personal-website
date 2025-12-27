@@ -14,6 +14,7 @@ import {
 import BaseLayout from "@/layouts/base-layout.astro";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 import ContentDate from "@/components/content-date.astro";
+import MusicIndicator from "@/components/music-indicator.astro";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -41,7 +42,7 @@ const projects = await getEntries(
     style="opacity: 0;"></canvas>
 
   <main
-    class="fixed inset-x-pad bottom-pad flex flex-col gap-pad *:overflow-hidden *:rounded-lg *:bg-sweater-10 *:p-pad *:leading-none *:not-dark:bg-sweater-1 480:right-auto 480:bottom-15 480:left-15 480:items-end *:480:w-[325px] md:flex-row"
+    class="fixed inset-x-pad bottom-pad flex flex-col gap-pad *:rounded-lg *:bg-sweater-10 *:p-pad *:leading-none *:not-dark:bg-sweater-1 480:right-auto 480:bottom-15 480:left-15 480:items-end *:480:w-[325px] md:flex-row"
   >
     <section id="nav" class="space-y-pad">
       <h1 class="cursor-default space-y-0.5 bordered p-pad">
@@ -82,7 +83,11 @@ const projects = await getEntries(
         <a href="/extra" class="border-r-(length:--border-w) border-style">
           Extra <WavesIcon size={18} class="stroke-icon" />
         </a>
-        <a href="/about">About <InfoIcon size={18} class="stroke-icon" /></a>
+        <a href="/about">
+          About <MusicIndicator server:defer>
+            <InfoIcon slot="fallback" size={18} class="stroke-icon" />
+          </MusicIndicator>
+        </a>
       </nav>
     </section>
 
@@ -99,10 +104,12 @@ const projects = await getEntries(
         {
           projects.map(({ id, data: { name, metadata } }, index) => (
             <a
-              data-project-id={id}
-              data-playing={index === 0 ? "true" : "false"}
               href={`/projects/${id}`}
               class="group hidden border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line data-[playing=true]:flex"
+              data-project-id={id}
+              data-playing={index === 0 ? "true" : "false"}
+              data-umami-event="homepage-project-showcase"
+              data-umami-event-id={id}
             >
               <div class="grow space-y-pad">
                 <p
@@ -150,6 +157,7 @@ const projects = await getEntries(
         id="toggle-panel"
         class="group hidden w-full items-center justify-between gap-pad bordered p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover 480:flex"
         data-state="closed"
+        data-umami-event="toggle-panel-button"
       >
         <span class="hidden group-data-[state=open]:contents">
           Close panel <SquareDashedMousePointerIcon

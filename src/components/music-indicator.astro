@@ -1,0 +1,112 @@
+---
+import { actions } from "astro:actions";
+
+import { MusicIcon, InfoIcon, type Icon } from "@lucide/astro";
+
+const { data: track, error } = await Astro.callAction(
+  actions.getMostRecentTrack,
+  {},
+);
+
+const isLive = !error && track.live;
+const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
+---
+
+<div
+  id="music-indicator"
+  class="relative size-[18px]"
+  data-is-live={isLive ? "true" : "false"}
+>
+  <ResolvedIcon
+    size={18}
+    class:list={["stroke-icon", isLive ? "animate-pulse" : null]}
+  />
+</div>
+
+<script>
+  const root = document.getElementById("music-indicator")!;
+  const isLive = root.dataset["isLive"] === "true";
+
+  const createIcon = (iconHtml: string) => {
+    const template = document.createElement("template");
+    template.innerHTML = iconHtml;
+    return template.content.firstChild as SVGSVGElement;
+  };
+
+  if (isLive) {
+    const iconList = [
+      `<svg
+        xmlns="http://www.w3.org/2000/svg"
+        stroke-width="2"
+        width="18"
+        height="18"
+        stroke="#484390"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none"
+        viewBox="0 0 24 24"
+        style="top:0px;left:0px;pointer-events:none;scale:100%;opacity:1;z-index:0"
+        class="absolute inline shrink-0"
+        data-left="0"
+        data-left-rate="1"
+        data-top="0"
+      >
+        <path d="M9 18V5l12-2v13"></path>
+        <circle cx="6" cy="18" r="3"></circle>
+        <circle cx="18" cy="16" r="3"></circle>
+      </svg>`,
+
+      `<svg
+        xmlns="http://www.w3.org/2000/svg"
+        stroke-width="2"
+        width="18"
+        height="18"
+        stroke="#484390"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        fill="none"
+        viewBox="0 0 24 24"
+        style="top:0px;left:0px;pointer-events:none;scale:100%;opacity:1;z-index:0"
+        class="absolute inline shrink-0"
+        data-left="0"
+        data-left-rate="1"
+        data-top="0"
+      >
+        <circle cx="8" cy="18" r="4"></circle>
+        <path d="M12 18V2l7 4"></path>
+      </svg>`,
+    ];
+
+    const live: SVGSVGElement[] = [];
+
+    setInterval(() => {
+      const index = Math.round(Math.random() * (iconList.length - 1));
+      const icon = createIcon(iconList[index]!);
+
+      icon.dataset["leftRate"] = (Math.random() * 1.4 + 0.3).toString();
+      live.push(icon);
+      root.append(icon);
+    }, 400);
+
+    setTimeout(() => {
+      setInterval(() => live.shift()!.remove(), 400);
+    }, 1500);
+
+    // Runs at ~60 FPS
+    setInterval(() => {
+      live.forEach((icon) => {
+        const leftRate = Number(icon.dataset["leftRate"]);
+        const newLeft = Number(icon.dataset["left"]) + leftRate;
+        const newTop = Number(icon.dataset["top"]) + 1;
+
+        icon.style.left = `${newLeft / 2}px`;
+        icon.style.top = `-${newTop / 2}px`;
+        icon.style.scale = `${1 + newLeft / 110 / leftRate}`;
+        icon.style.opacity = `${1 - newLeft / 90 / leftRate}`;
+
+        icon.dataset["left"] = newLeft.toString();
+        icon.dataset["top"] = newTop.toString();
+      });
+    }, 16.667);
+  }
+</script>
