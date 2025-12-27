@@ -6,7 +6,13 @@ import {
   getFullDateFormatting,
   getMonthYearDateFormatting,
 } from "@/scripts/util";
-import { CircleArrowRightIcon } from "@lucide/astro";
+import {
+  CircleArrowRightIcon,
+  BoxesIcon,
+  ScrollTextIcon,
+  WavesIcon,
+  InfoIcon,
+} from "@lucide/astro";
 import GridSection from "@/components/grid-section.astro";
 import TechList from "@/components/tech-list.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
@@ -45,9 +51,7 @@ posts = posts
     class="fixed right-pad bottom-pad left-pad space-y-pad rounded-lg bg-sweater-10 p-pad leading-none not-dark:bg-sweater-1 480:right-auto 480:bottom-15 480:left-15 480:w-[325px]"
   >
     <header class="space-y-pad">
-      <h1
-        class="cursor-default space-y-0.5 border-(length:--border-w) border-style p-pad"
-      >
+      <h1 class="cursor-default space-y-0.5 bordered p-pad">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="1.5rem"
@@ -70,11 +74,22 @@ posts = posts
         </span>
       </h1>
 
-      <nav class="grid grid-cols-2">
-        <a href="/projects">Portfolio</a>
-        <a href="/posts">Posts</a>
-        <a href="/fun">Stream</a>
-        <a href="/about">About</a>
+      <nav
+        class="grid grid-cols-2 bordered *:flex *:items-center *:justify-between *:gap-pad *:p-pad *:text-(length:--text-lg) *:font-bold *:text-link-primary *:transition-colors *:hover:bg-line *:hover:text-link-primary-hover"
+      >
+        <a
+          href="/projects"
+          class="border-r-(length:--border-w) border-b-(length:--border-w) border-style"
+        >
+          Portfolio <BoxesIcon size={18} class="stroke-icon" />
+        </a>
+        <a href="/posts" class="border-b-(length:--border-w) border-style">
+          Posts <ScrollTextIcon size={18} class="stroke-icon" />
+        </a>
+        <a href="/extra" class="border-r-(length:--border-w) border-style">
+          Extra <WavesIcon size={18} class="stroke-icon" />
+        </a>
+        <a href="/about">About <InfoIcon size={18} class="stroke-icon" /></a>
       </nav>
     </header>
 

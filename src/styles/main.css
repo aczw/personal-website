@@ -170,3 +170,7 @@
 @utility border-style {
   @apply border-dashed border-line;
 }
+
+@utility bordered {
+  @apply border-(length:--border-w) border-style;
+}
