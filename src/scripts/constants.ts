@@ -48,6 +48,24 @@ const WIDE_PROJECTS = [
 ];
 
 /**
+ * Corresponds to CSS var(--color-sweater-1).
+ */
+const SWEATER_1: Color = {
+  r: 0.8823529411764706,
+  g: 0.8745098039215686,
+  b: 1.0,
+};
+
+/**
+ * Corresponds to CSS var(--color-sweater-3).
+ */
+const SWEATER_3: Color = {
+  r: 0.7647058823529411,
+  g: 0.7411764705882353,
+  b: 1.0,
+};
+
+/**
  * Corresponds to CSS var(--color-sweater-8).
  */
 const SWEATER_8: Color = {
@@ -65,7 +83,7 @@ const SWEATER_10: Color = {
   b: 0.09803921568627451,
 };
 
-const DEFAULT_DITHER_SETTINGS: DitherSettings = {
+const DEFAULT_DARK_DITHER_SETTINGS: DitherSettings = {
   general: {
     mode: DitherMode.ORDERED,
     uvPixelSize: 32,
@@ -82,13 +100,33 @@ const DEFAULT_DITHER_SETTINGS: DitherSettings = {
   },
 };
 
+const DEFAULT_LIGHT_DITHER_SETTINGS: DitherSettings = {
+  general: {
+    mode: DitherMode.ORDERED,
+    uvPixelSize: 32,
+    numQuantizedColors: 5,
+    bias: -0.1,
+  },
+  color: {
+    a: SWEATER_1,
+    b: SWEATER_3,
+  },
+  ordered: {
+    bayerMatrixSize: BayerMatrixSize.EIGHT_BY_EIGHT,
+    ditheredSize: 4,
+  },
+};
+
 export {
   CDN_URL,
   VALID_MONTHS,
   HOMEPAGE_PROJECTS,
   DISABLED_PROJECTS,
   WIDE_PROJECTS,
+  SWEATER_1,
+  SWEATER_3,
   SWEATER_8,
   SWEATER_10,
-  DEFAULT_DITHER_SETTINGS,
+  DEFAULT_DARK_DITHER_SETTINGS,
+  DEFAULT_LIGHT_DITHER_SETTINGS,
 };

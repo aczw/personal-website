@@ -1,5 +1,5 @@
 import {
-  DEFAULT_DITHER_SETTINGS,
+  DEFAULT_DARK_DITHER_SETTINGS,
   SWEATER_10,
   SWEATER_8,
 } from "@/scripts/constants";
@@ -10,7 +10,7 @@ import {
 } from "@/scripts/dither/types";
 
 const DITHER_PRESETS: DitherSettings[] = [
-  DEFAULT_DITHER_SETTINGS,
+  DEFAULT_DARK_DITHER_SETTINGS,
   {
     general: {
       mode: DitherMode.ORDERED,

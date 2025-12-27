@@ -177,7 +177,8 @@ posts = posts
   import {
     CDN_URL,
     HOMEPAGE_PROJECTS,
-    DEFAULT_DITHER_SETTINGS,
+    DEFAULT_DARK_DITHER_SETTINGS,
+    DEFAULT_LIGHT_DITHER_SETTINGS,
   } from "@/scripts/constants";
   import { saturate } from "@/scripts/util";
   import { type Dither } from "@/scripts/dither/types";
@@ -368,10 +369,16 @@ posts = posts
     const progressBarElt = document.getElementById("progress-bar")!;
     const progressValueElt = document.getElementById("progress-value")!;
 
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
     const dither: Dither = {
       canvasSize: `0×0`,
       backend: "WebGL 2",
-      ...structuredClone(DEFAULT_DITHER_SETTINGS),
+      ...structuredClone(
+        prefersDark.matches ?
+          DEFAULT_DARK_DITHER_SETTINGS
+        : DEFAULT_LIGHT_DITHER_SETTINGS,
+      ),
     };
 
     const panelContainerElt = document.getElementById("panel-container")!;
