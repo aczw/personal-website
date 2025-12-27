@@ -24,17 +24,17 @@ const socials = [
 
 <footer class="grid-line-before relative">
   <div
-    class="grid grid-cols-1 border-b-(length:--border-w) border-dashed border-line-dark 480:grid-cols-2"
+    class="grid grid-cols-1 border-b-(length:--border-w) border-style 480:grid-cols-2"
   >
     <div
       aria-hidden="true"
-      class="border-b-(length:--border-w) border-dashed border-line-dark 480:border-r-(length:--border-w) 480:border-b-0"
+      class="border-b-(length:--border-w) border-style 480:border-r-(length:--border-w) 480:border-b-0"
     >
     </div>
 
     <a
       href="#"
-      class="group flex items-center justify-between p-pad transition-colors hover:bg-line-dark"
+      class="group hover:bg-line-dark flex items-center justify-between p-pad transition-colors"
     >
       <span
         class="translate-y-0.5 font-bold text-link-secondary transition-colors group-hover:text-link-secondary-hover"
@@ -46,7 +46,7 @@ const socials = [
   </div>
 
   <div
-    class="grid grid-cols-1 grid-rows-[auto_auto] *:border-dashed *:border-line-dark 480:grid-cols-2"
+    class="*: grid grid-cols-1 grid-rows-[auto_auto] *:border-style 480:grid-cols-2"
   >
     <div
       aria-hidden="true"
@@ -55,7 +55,7 @@ const socials = [
     </div>
 
     <div
-      class="grid grid-cols-2 border-b-(length:--border-w) *:border-dashed *:border-line-dark"
+      class="*: grid grid-cols-2 border-b-(length:--border-w) *:border-style"
     >
       {
         socials.map(({ href, label, icon: Icon }, index) => (
@@ -63,7 +63,7 @@ const socials = [
             href={href}
             target="_blank"
             class:list={[
-              "group flex items-center justify-between p-pad transition-colors hover:bg-line-bright",
+              "group hover:bg-line-bright flex items-center justify-between p-pad transition-colors",
               // Render dashed lines
               index < 2 ? "border-b-(length:--border-w)" : null,
               index % 2 === 0 ? "border-r-(length:--border-w)" : null,

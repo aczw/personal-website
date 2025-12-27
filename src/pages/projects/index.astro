@@ -68,7 +68,7 @@ const totalCells = projects.reduce(
             return WIDE_PROJECTS.includes(id) ?
                 <div
                   class:list={[
-                    "col-span-1 border-dashed border-line-dark p-pad transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50 480:p-0 480:hover:bg-line-dark 560:col-span-2",
+                    "480:hover:bg-line-dark col-span-1 border-style p-pad transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50 480:p-0 560:col-span-2",
                     index < projects.length - 1 ?
                       "border-b-(length:--border-w)"
                     : null,
@@ -78,7 +78,7 @@ const totalCells = projects.reduce(
                     href={`/projects/${id}`}
                     class="group grid grid-cols-1 480:grid-cols-2"
                   >
-                    <div class="border-dashed border-line-dark 480:border-r-(length:--border-w) 480:p-pad">
+                    <div class="border-style 480:border-r-(length:--border-w) 480:p-pad">
                       <ProjectCover
                         id={id}
                         cover={cover}
@@ -89,7 +89,7 @@ const totalCells = projects.reduce(
                       />
                     </div>
 
-                    <div class="flex flex-col *:border-dashed *:border-line-dark normal:grid normal:grid-cols-1 normal:grid-rows-4">
+                    <div class="*: flex flex-col *:border-style normal:grid normal:grid-cols-1 normal:grid-rows-4">
                       <div class="bg-sweater-9 px-pad pt-pad transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:space-y-1 480:border-b-(length:--border-w) 480:bg-transparent 480:pb-pad 480:group-hover:bg-transparent 560:border-b-0 normal:row-span-2 sm:border-b-(length:--border-w)">
                         <h3 class="leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:text-lg">
                           {name}
@@ -128,7 +128,7 @@ const totalCells = projects.reduce(
                 </div>
               : <div
                   class:list={[
-                    "border-dashed border-line-dark p-pad transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50 480:p-0 480:hover:bg-line-dark 560:p-pad 560:hover:bg-sweater-9/50 560:not-dark:hover:bg-sweater-2/50",
+                    "480:hover:bg-line-dark border-style p-pad transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50 480:p-0 560:p-pad 560:hover:bg-sweater-9/50 560:not-dark:hover:bg-sweater-2/50",
                     totalCells - numElapsedCells !== 0 ?
                       "border-b-(length:--border-w)"
                     : null,
@@ -141,7 +141,7 @@ const totalCells = projects.reduce(
                     href={`/projects/${id}`}
                     class="group grid grid-cols-1 480:grid-cols-2 560:grid-cols-1"
                   >
-                    <div class="border-dashed border-line-dark 480:border-r-(length:--border-w) 480:p-pad 560:border-r-0 560:p-0">
+                    <div class="border-style 480:border-r-(length:--border-w) 480:p-pad 560:border-r-0 560:p-0">
                       <ProjectCover
                         id={id}
                         cover={cover}
@@ -153,7 +153,7 @@ const totalCells = projects.reduce(
                     </div>
 
                     <div class="rounded-b-lg bg-sweater-9 transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:bg-transparent 480:group-hover:bg-transparent 560:bg-sweater-9 560:not-dark:bg-sweater-2 560:group-hover:bg-sweater-8 560:not-dark:group-hover:bg-sweater-3">
-                      <h3 class="border-dashed border-line-dark px-pad pt-pad leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:border-b-(length:--border-w) 480:pb-pad 480:text-lg 560:border-b-0 560:pb-0 560:text-base">
+                      <h3 class="border-style px-pad pt-pad leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:border-b-(length:--border-w) 480:pb-pad 480:text-lg 560:border-b-0 560:pb-0 560:text-base">
                         {name}
                       </h3>
 

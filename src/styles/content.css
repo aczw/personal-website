@@ -29,7 +29,7 @@
 
     /* Inline code should have some padding and unique background color */
     code {
-      @apply rounded-md bg-sweater-9 px-1.5 py-0.5 break-words;
+      @apply rounded-md bg-sweater-9 px-1.5 py-0.5 wrap-break-word;
 
       font-size: var(--text-mono);
 
@@ -92,24 +92,24 @@
     }
 
     table {
-      @apply border-y-(length:--border-w) border-dashed border-line-dark;
+      @apply border-y-(length:--border-w) border-style;
 
       width: 100%;
 
       thead {
-        @apply border-b-(length:--border-w) border-dashed border-line-dark bg-sweater-9/70 font-bold text-sweater-2 not-dark:bg-sweater-2/70 not-dark:text-sweater-8;
+        @apply border-b-(length:--border-w) border-style bg-sweater-9/70 font-bold text-sweater-2 not-dark:bg-sweater-2/70 not-dark:text-sweater-8;
 
         th {
-          @apply px-pad not-last:border-r-(length:--border-w) not-last:border-dashed not-last:border-line-dark;
+          @apply px-pad not-last:border-r-(length:--border-w) not-last:border-style;
         }
       }
 
       tbody {
         tr {
-          @apply not-last:border-b-(length:--border-w) not-last:border-dashed not-last:border-line-dark even:bg-sweater-9/35 not-dark:even:bg-sweater-2/35;
+          @apply not-last:border-b-(length:--border-w) not-last:border-style even:bg-sweater-9/35 not-dark:even:bg-sweater-2/35;
 
           td {
-            @apply px-pad leading-snug not-last:border-r-(length:--border-w) not-last:border-dashed not-last:border-line-dark;
+            @apply px-pad leading-snug not-last:border-r-(length:--border-w) not-last:border-style;
           }
         }
       }
@@ -118,7 +118,7 @@
     /* Style the last element in the content only if there are footnotes */
     :is(& > *) {
       &:nth-last-child(2):has(+ section[data-footnotes]) {
-        @apply mb-6! border-b-(length:--border-w) border-dashed border-line-dark pb-pad;
+        @apply mb-6! border-b-(length:--border-w) border-style pb-pad;
 
         @variant sm {
           @apply mb-12!;
@@ -135,7 +135,7 @@
 
     /* Target auto-generated footnotes */
     section[data-footnotes] {
-      @apply mb-0! border-t-(length:--border-w) border-dashed border-line-dark pt-pad;
+      @apply mb-0! border-t-(length:--border-w) border-style pt-pad;
 
       /* MDX generates a "Footnotes" heading. Make it screen reader only */
       > h2#footnote-label {

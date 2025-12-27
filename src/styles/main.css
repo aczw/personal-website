@@ -35,8 +35,7 @@
 
   --color-subtitle: --alpha(var(--subtitle) / 85%);
 
-  --color-line-bright: --alpha(var(--line) / 75%);
-  --color-line-dark: --alpha(var(--line) / 60%);
+  --color-line: --alpha(var(--line) / 80%);
 
   --color-link-primary: var(--link-primary);
   --color-link-primary-hover: var(--link-primary-hover);
@@ -87,7 +86,7 @@
 
     @variant not-dark {
       --subtitle: var(--color-sweater-8);
-      --line: --alpha(var(--color-sweater-2) / 70%);
+      --line: --alpha(var(--color-sweater-2) / 85%);
 
       --link-primary: var(--color-sweater-7);
       --link-primary-hover: var(--color-sweater-10);
@@ -162,40 +161,12 @@
   }
 }
 
-@utility grid-line-before {
-  &::before {
-    content: "";
-
-    position: absolute;
-    top: 0px;
-    left: -100vw;
-    z-index: 10;
-
-    height: var(--border-w);
-    width: 200vw;
-
-    background-color: var(--color-line-bright);
-  }
-}
-
-@utility grid-line-after {
-  &::after {
-    content: "";
-
-    position: absolute;
-    bottom: 0px;
-    left: -100vw;
-    z-index: 10;
-
-    height: var(--border-w);
-    width: 200vw;
-
-    background-color: var(--color-line-bright);
-  }
-}
-
 @utility maple {
   @apply font-mono;
 
   font-size: var(--text-mono);
+}
+
+@utility border-style {
+  @apply border-dashed border-line;
 }

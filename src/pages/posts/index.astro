@@ -40,14 +40,14 @@ const sortedPosts = posts.sort(
         return (
           <a
             href={`/posts/${id}`}
-            class="group flex border-dashed border-line-dark transition-colors not-last:border-b-(length:--border-w) hover:bg-line-dark sm:grid sm:grid-cols-[202px_minmax(0px,1fr)]"
+            class="group hover:bg-line-dark flex border-style transition-colors not-last:border-b-(length:--border-w) sm:grid sm:grid-cols-[202px_minmax(0px,1fr)]"
           >
             <time
               datetime={posted.toISOString()}
               title={getFullDateFormatting(posted)}
-              class="hidden border-r-(length:--border-w) border-dashed border-line-dark text-link-secondary 480:flex"
+              class="hidden border-r-(length:--border-w) border-style text-link-secondary 480:flex"
             >
-              <span class="border-dashed border-line-dark p-pad sm:border-r-(length:--border-w)">
+              <span class="border-style p-pad sm:border-r-(length:--border-w)">
                 <span
                   class:list={[isSubsequentPostInYear ? "invisible" : null]}
                 >

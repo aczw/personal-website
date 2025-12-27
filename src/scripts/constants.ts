@@ -70,7 +70,7 @@ const DEFAULT_DITHER_SETTINGS: DitherSettings = {
     mode: DitherMode.ORDERED,
     uvPixelSize: 32,
     numQuantizedColors: 5,
-    bias: 0.0,
+    bias: -0.08,
   },
   color: {
     a: SWEATER_10,

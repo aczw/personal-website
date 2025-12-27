@@ -99,10 +99,10 @@ const { Content, headings } = await render(project);
 
   <section id="introduction" class="grid-line-before grid-line-after relative">
     <div
-      class="grid grid-cols-1 space-y-1.5 border-b-(length:--border-w) border-dashed border-line-dark sm:grid-cols-2 sm:space-y-0"
+      class="grid grid-cols-1 space-y-1.5 border-b-(length:--border-w) border-style sm:grid-cols-2 sm:space-y-0"
     >
       <div
-        class="border-dashed border-line-dark px-pad pt-pad sm:border-r-(length:--border-w) sm:pb-pad"
+        class="border-style px-pad pt-pad sm:border-r-(length:--border-w) sm:pb-pad"
       >
         <h1
           class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
@@ -127,7 +127,7 @@ const { Content, headings } = await render(project);
         metadata.map(({ kind, data, icon: Icon }, index) => (
           <li
             class:list={[
-              "group col-span-1 flex justify-between gap-pad border-dashed border-line-dark",
+              "group col-span-1 flex justify-between gap-pad border-style",
               metadata.length === 2 ? "normal:col-span-2" : null,
 
               // Two metadata
@@ -167,7 +167,7 @@ const { Content, headings } = await render(project);
                 href={kind === "link" ? data.href : data}
                 target="_blank"
                 title={kind === "link" ? data.href : data}
-                class="flex grow justify-between gap-pad p-pad transition-colors group-hover:bg-line-dark"
+                class="group-hover:bg-line-dark flex grow justify-between gap-pad p-pad transition-colors"
               >
                 <div>
                   <p class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
