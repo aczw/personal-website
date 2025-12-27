@@ -35,7 +35,7 @@
 
   --color-subtitle: --alpha(var(--subtitle) / 85%);
 
-  --color-line: --alpha(var(--line) / 80%);
+  --color-line: --alpha(var(--line) / 90%);
 
   --color-link-primary: var(--link-primary);
   --color-link-primary-hover: var(--link-primary-hover);
@@ -86,7 +86,7 @@
 
     @variant not-dark {
       --subtitle: var(--color-sweater-8);
-      --line: --alpha(var(--color-sweater-2) / 85%);
+      --line: var(--color-sweater-2);
 
       --link-primary: var(--color-sweater-7);
       --link-primary-hover: var(--color-sweater-10);
