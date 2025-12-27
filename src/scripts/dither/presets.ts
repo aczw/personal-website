@@ -64,6 +64,22 @@ const DITHER_PRESETS: DitherSettings[] = [
       ditheredSize: 4,
     },
   },
+  {
+    general: {
+      mode: DitherMode.ORDERED,
+      uvPixelSize: 1,
+      numQuantizedColors: 2,
+      bias: 0.0,
+    },
+    color: {
+      a: SWEATER_10,
+      b: SWEATER_8,
+    },
+    ordered: {
+      bayerMatrixSize: BayerMatrixSize.EIGHT_BY_EIGHT,
+      ditheredSize: 2,
+    },
+  },
 ];
 
 function applyDitherSettings(
