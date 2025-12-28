@@ -117,6 +117,9 @@ const DEFAULT_LIGHT_DITHER_SETTINGS: DitherSettings = {
   },
 };
 
+/// Default icon size unless otherwise specified.
+const ICON_SIZE = 18;
+
 export {
   CDN_URL,
   VALID_MONTHS,
@@ -129,4 +132,5 @@ export {
   SWEATER_10,
   DEFAULT_DARK_DITHER_SETTINGS,
   DEFAULT_LIGHT_DITHER_SETTINGS,
+  ICON_SIZE,
 };
