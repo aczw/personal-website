@@ -19,17 +19,23 @@ type Panel = {
   fpsGraphs: PanelFpsGraphs;
 };
 
-function initializePanel(dither: Dither, container: HTMLElement): Panel {
+function initializePanel(dither: Dither): Panel {
+  const container = document.createElement("div");
+  container.id = "panel-container";
+  container.style.position = "fixed";
+  container.style.top = "calc(var(--spacing) * 10)";
+  container.style.right = "calc(var(--spacing) * 10)";
+  container.style.width = "285px";
+
+  document.body.append(container);
+
   const pane = new Pane({
+    title: "Panel",
     container,
   });
   pane.registerPlugin(TpEssentialsPlugin);
 
-  const info = pane.addFolder({
-    title: "Information",
-  });
-
-  const draw = info.addBlade({
+  const draw = pane.addBlade({
     view: "fpsgraph",
     label: "FPS",
     min: 0,
@@ -44,7 +50,7 @@ function initializePanel(dither: Dither, container: HTMLElement): Panel {
     }
   });
 
-  const video = info.addBlade({
+  const video = pane.addBlade({
     view: "fpsgraph",
     label: "Video",
     min: 0,
@@ -52,11 +58,11 @@ function initializePanel(dither: Dither, container: HTMLElement): Panel {
     rows: 1,
   }) as FpsGraphBladeApi;
 
-  info.addBinding(dither, "canvasSize", {
+  pane.addBinding(dither, "canvasSize", {
     readonly: true,
     label: "Dimensions",
   });
-  info.addBinding(dither, "backend", {
+  pane.addBinding(dither, "backend", {
     readonly: true,
     label: "Backend",
   });

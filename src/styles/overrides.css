@@ -2,7 +2,7 @@
   /* Make Tweakpane use Maple Mono */
   --tp-base-font-family: var(--font-mono);
   --tp-base-shadow-color: transparent;
-  --tp-base-border-radius: 0px;
+  --tp-base-border-radius: var(--radius-lg);
 
   /* Values were built with https://tweakpane.github.io/docs/theming/#builder */
   --tp-base-background-color: hsla(244, 47%, 7%, 1);

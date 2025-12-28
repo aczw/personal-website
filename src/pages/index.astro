@@ -43,9 +43,9 @@ const projects = await getEntries(
     style="opacity: 0;"></canvas>
 
   <main
-    class="fixed inset-x-pad bottom-pad flex flex-col gap-pad *:rounded-lg *:bg-sweater-10 *:p-pad *:leading-none *:not-dark:bg-sweater-1 480:right-auto 480:bottom-15 480:left-15 480:items-end *:480:w-[325px] md:flex-row"
+    class="fixed inset-x-pad bottom-pad space-y-pad leading-none *:space-y-pad *:rounded-lg *:bg-sweater-10 *:p-pad *:not-dark:bg-sweater-1 480:right-auto 480:bottom-10 480:left-10 480:w-[325px] 480:items-end"
   >
-    <section id="nav" class="space-y-pad">
+    <section>
       <h1 class="cursor-default space-y-0.5 bordered p-pad">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -92,15 +92,7 @@ const projects = await getEntries(
       </nav>
     </section>
 
-    <section hidden id="panel-container">
-      <div
-        id="panel-border-wrapper"
-        class="border-r-(length:--border-w) border-b-(length:--border-w) border-style"
-      >
-      </div>
-    </section>
-
-    <section class="space-y-pad">
+    <section>
       <div class="bordered">
         {
           projects.map(({ id, data: { name, metadata } }, index) => (
@@ -164,7 +156,7 @@ const projects = await getEntries(
           class="flex items-center justify-between gap-pad transition-transform ease-in-out group-active:scale-98"
         >
           <span class="hidden group-data-[state=open]:contents">
-            Close panel <SquareDashedMousePointerIcon
+            Hide panel <SquareDashedMousePointerIcon
               size={18}
               class="stroke-icon transition-transform"
               style=""
@@ -172,7 +164,7 @@ const projects = await getEntries(
           </span>
 
           <span class="hidden group-data-[state=closed]:contents">
-            Open panel <SquareMousePointerIcon
+            Show panel <SquareMousePointerIcon
               size={18}
               class="stroke-icon transition-transform"
               style=""
@@ -402,31 +394,17 @@ const projects = await getEntries(
       ),
     );
 
-    const panelContainerElt = document.getElementById("panel-container")!;
-    const navElt = document.getElementById("nav")!;
-
     let panel: Panel | null = null;
 
     document.getElementById("toggle-panel")!.addEventListener("click", (ev) => {
       if (!panel) {
-        panel = initializePanel(
-          dither,
-          document.getElementById("panel-border-wrapper")!,
-        );
+        panel = initializePanel(dither);
       } else {
         panel.pane.hidden = !panel.pane.hidden;
       }
 
       const elt = ev.currentTarget as HTMLButtonElement;
       elt.dataset["state"] = panel.pane.hidden ? "closed" : "open";
-
-      if (panel.pane.hidden) {
-        panelContainerElt.setAttribute("hidden", "");
-        navElt.removeAttribute("hidden");
-      } else {
-        panelContainerElt.removeAttribute("hidden");
-        navElt.setAttribute("hidden", "");
-      }
     });
 
     const progressBarElt = document.getElementById("progress-bar")!;
