@@ -15,6 +15,7 @@ const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
 
 <div
   id="music-indicator"
+  aria-hidden="true"
   class="relative size-icon"
   title={isLive ? "I'm currently listening to a song!" : null}
   data-is-live={isLive ? "true" : "false"}
