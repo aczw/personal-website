@@ -21,6 +21,9 @@
   --spacing-pad: --spacing(2.5);
   --spacing-pad-2: calc(var(--spacing-pad) * 2);
 
+  /* This should stay in sync with the ICON_SIZE constant. */
+  --spacing-icon: 18px;
+
   /* Primitives */
   --color-sweater-1: #e1dfff;
   --color-sweater-2: #d6d3ff;

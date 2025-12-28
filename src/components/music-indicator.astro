@@ -2,6 +2,7 @@
 import { actions } from "astro:actions";
 
 import { MusicIcon, InfoIcon, type Icon } from "@lucide/astro";
+import { ICON_SIZE } from "@/scripts/constants";
 
 const { data: track, error } = await Astro.callAction(
   actions.getMostRecentTrack,
@@ -14,11 +15,28 @@ const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
 
 <div
   id="music-indicator"
-  class="relative size-[18px]"
+  class="relative size-icon"
   title={isLive ? "I'm currently listening to a song!" : null}
   data-is-live={isLive ? "true" : "false"}
 >
-  <ResolvedIcon size={18} class="stroke-icon" />
+  {
+    isLive ?
+      <InfoIcon
+        size={ICON_SIZE}
+        class="absolute inset-0 scale-40 stroke-icon opacity-0 blur-xs transition-[opacity_filter_scale] duration-500 starting:scale-100 starting:opacity-100 starting:blur-none"
+      />
+    : null
+  }
+
+  <ResolvedIcon
+    size={ICON_SIZE}
+    class:list={[
+      "stroke-icon",
+      isLive ?
+        "absolute inset-0 scale-100 opacity-100 blur-none transition-[opacity_filter_scale] duration-500 starting:scale-40 starting:opacity-0 starting:blur-xs"
+      : null,
+    ]}
+  />
 </div>
 
 <script>
@@ -93,7 +111,11 @@ const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
             ],
             { duration: 1500, easing: "linear", fill: "forwards" },
           )
-          .addEventListener("finish", () => icon.remove());
+          .addEventListener("finish", (ev) => {
+            const animation = ev.currentTarget as Animation;
+            icon.remove();
+            animation.cancel();
+          });
 
         progress = 0;
       }
@@ -101,6 +123,7 @@ const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
       requestAnimationFrame(update);
     };
 
-    requestAnimationFrame(update);
+    // Wait a little to let the music icon fully animate in
+    setTimeout(() => requestAnimationFrame(update), 600);
   }
 </script>
