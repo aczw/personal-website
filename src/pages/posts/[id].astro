@@ -12,6 +12,7 @@ import {
 } from "@/scripts/util";
 import ContentLayout from "@/layouts/content-layout.astro";
 import ContentWithToc from "@/components/content-with-toc.astro";
+import { ICON_SIZE } from "@/scripts/constants";
 import GridSection from "@/components/grid-section.astro";
 
 export const getStaticPaths = (async () => {
@@ -89,7 +90,7 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
         </div>
 
         <div class="p-pad">
-          <CalendarFoldIcon size={18} class="shrink-0 stroke-icon" />
+          <CalendarFoldIcon size={ICON_SIZE} class="shrink-0 stroke-icon" />
         </div>
       </div>
 
@@ -110,7 +111,7 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
         </div>
 
         <div class="p-pad">
-          <BookOpenIcon size={18} class="shrink-0 stroke-icon" />
+          <BookOpenIcon size={ICON_SIZE} class="shrink-0 stroke-icon" />
         </div>
       </div>
     </div>

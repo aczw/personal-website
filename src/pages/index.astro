@@ -12,6 +12,7 @@ import {
 } from "@lucide/astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
+import { ICON_SIZE } from "@/scripts/constants";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 import ContentDate from "@/components/content-date.astro";
 import MusicIndicator from "@/components/music-indicator.astro";
@@ -76,17 +77,17 @@ const projects = await getEntries(
           href="/projects"
           class="border-r-(length:--border-w) border-b-(length:--border-w) border-style"
         >
-          Portfolio <BoxesIcon size={18} class="stroke-icon" />
+          Portfolio <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
         </a>
         <a href="/posts" class="border-b-(length:--border-w) border-style">
-          Posts <ScrollTextIcon size={18} class="stroke-icon" />
+          Posts <ScrollTextIcon size={ICON_SIZE} class="stroke-icon" />
         </a>
         <a href="/extra" class="border-r-(length:--border-w) border-style">
-          Extra <WavesIcon size={18} class="stroke-icon" />
+          Extra <WavesIcon size={ICON_SIZE} class="stroke-icon" />
         </a>
         <a href="/about">
           About <MusicIndicator server:defer>
-            <InfoIcon slot="fallback" size={18} class="stroke-icon" />
+            <InfoIcon slot="fallback" size={ICON_SIZE} class="stroke-icon" />
           </MusicIndicator>
         </a>
       </nav>
@@ -121,7 +122,10 @@ const projects = await getEntries(
                 </div>
               </div>
 
-              <SquareArrowRightIcon size={18} class="shrink-0 stroke-icon" />
+              <SquareArrowRightIcon
+                size={ICON_SIZE}
+                class="shrink-0 stroke-icon"
+              />
             </a>
           ))
         }
@@ -157,7 +161,7 @@ const projects = await getEntries(
         >
           <span class="hidden group-data-[state=open]:contents">
             Hide panel <SquareDashedMousePointerIcon
-              size={18}
+              size={ICON_SIZE}
               class="stroke-icon transition-transform"
               style=""
             />
@@ -165,7 +169,7 @@ const projects = await getEntries(
 
           <span class="hidden group-data-[state=closed]:contents">
             Show panel <SquareMousePointerIcon
-              size={18}
+              size={ICON_SIZE}
               class="stroke-icon transition-transform"
               style=""
             />

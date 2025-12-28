@@ -9,6 +9,7 @@ import {
 } from "@/scripts/util";
 import MainLayout from "@/layouts/main-layout.astro";
 import GridSection from "@/components/grid-section.astro";
+import { ICON_SIZE } from "@/scripts/constants";
 
 const posts = await getCollection("posts");
 const sortedPosts = posts.sort(
@@ -99,7 +100,7 @@ const sortedPosts = posts.sort(
 
               <CircleArrowRightIcon
                 aria-hidden="true"
-                size={18}
+                size={ICON_SIZE}
                 class="shrink-0 stroke-icon group-hover:stroke-icon 480:hidden 480:stroke-transparent md:block"
               />
             </span>

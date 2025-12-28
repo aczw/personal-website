@@ -1,6 +1,9 @@
 ---
-import { ArrowUpToLineIcon } from "@lucide/astro";
 import type { MarkdownHeading } from "astro";
+
+import { ArrowUpToLineIcon } from "@lucide/astro";
+
+import { ICON_SIZE } from "@/scripts/constants";
 
 interface Props {
   headings: MarkdownHeading[];
@@ -33,7 +36,7 @@ headings.forEach(({ depth, text }) => {
       <span
         class="flex items-center justify-between leading-none text-link-secondary transition-colors group-hover:text-link-secondary-hover"
       >
-        Back to top <ArrowUpToLineIcon size={18} class="stroke-icon" />
+        Back to top <ArrowUpToLineIcon size={ICON_SIZE} class="stroke-icon" />
       </span>
     </a>
 

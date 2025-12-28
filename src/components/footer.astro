@@ -9,6 +9,7 @@ import {
 } from "@lucide/astro";
 
 import LastFm from "@/components/last-fm.astro";
+import { ICON_SIZE } from "@/scripts/constants";
 
 const socials = [
   { href: "/_files/resume.pdf", label: "Resume", icon: FileUserIcon },
@@ -41,7 +42,7 @@ const socials = [
       >
         Back to top
       </span>
-      <ArrowUpToLineIcon size={18} class="stroke-icon" />
+      <ArrowUpToLineIcon size={ICON_SIZE} class="stroke-icon" />
     </a>
   </div>
 
@@ -72,7 +73,7 @@ const socials = [
             <span class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
               {label}
             </span>
-            <Icon size={18} class="stroke-icon" />
+            <Icon size={ICON_SIZE} class="stroke-icon" />
           </a>
         ))
       }

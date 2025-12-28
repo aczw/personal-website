@@ -25,6 +25,7 @@ import { DISABLED_PROJECTS } from "@/scripts/constants";
 import { validProjectCover } from "@/scripts/util";
 import ContentWithToc from "@/components/content-with-toc.astro";
 import GridSection from "@/components/grid-section.astro";
+import { ICON_SIZE } from "@/scripts/constants";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -161,7 +162,7 @@ const { Content, headings } = await render(project);
                   : <ContentDate date={data} />}
                 </div>
 
-                <Icon size={18} class="shrink-0 stroke-icon" />
+                <Icon size={ICON_SIZE} class="shrink-0 stroke-icon" />
               </>
             : <a
                 href={kind === "link" ? data.href : data}
@@ -182,7 +183,7 @@ const { Content, headings } = await render(project);
                   </p>
                 </div>
 
-                <Icon size={18} class="shrink-0 stroke-icon" />
+                <Icon size={ICON_SIZE} class="shrink-0 stroke-icon" />
               </a>
             }
           </li>

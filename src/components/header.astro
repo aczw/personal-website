@@ -2,6 +2,7 @@
 import { BoxesIcon, ScrollTextIcon } from "@lucide/astro";
 
 import type { LinkWithIcon } from "@/scripts/types";
+import { ICON_SIZE } from "@/scripts/constants";
 
 type Link = LinkWithIcon & { labelSmall?: string };
 
@@ -61,8 +62,8 @@ const links: Link[] = [
               <span class="480:hidden">{labelSmall}</span>
             : null}
 
-            <Icon size={18} class="stroke-icon group-hover:hidden" />
-            <span class="hidden h-[18px] items-center maple font-normal text-link-secondary group-hover:flex group-hover:text-link-secondary-hover">
+            <Icon size={ICON_SIZE} class="stroke-icon group-hover:hidden" />
+            <span class="hidden h-icon items-center maple font-normal text-link-secondary group-hover:flex group-hover:text-link-secondary-hover">
               {href}
             </span>
           </a>
