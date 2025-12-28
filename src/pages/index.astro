@@ -148,7 +148,7 @@ const projects = await getEntries(
 
       <button
         id="toggle-panel"
-        class="group hidden w-full bordered p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover 480:block"
+        class="group hidden w-full bordered p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 480:block"
         data-state="closed"
         data-umami-event="toggle-panel-button"
       >
