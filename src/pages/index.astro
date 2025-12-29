@@ -44,10 +44,10 @@ const projects = await getEntries(
     style="opacity: 0;"></canvas>
 
   <main
-    class="fixed inset-x-pad bottom-pad space-y-pad leading-none *:space-y-pad *:rounded-lg *:bg-sweater-10 *:p-pad *:not-dark:bg-sweater-1 480:right-auto 480:bottom-10 480:left-10 480:w-[325px] 480:items-end"
+    class="fixed inset-x-pad bottom-pad space-y-pad leading-none *:rounded-lg *:bg-sweater-10 *:p-pad *:not-dark:bg-sweater-1 480:right-auto 480:bottom-10 480:left-10 480:w-[350px] 480:items-end 480:*:p-pad-2"
   >
-    <section>
-      <h1 class="cursor-default space-y-0.5 bordered p-pad">
+    <section class="space-y-pad 480:space-y-pad-2">
+      <h1 class="cursor-default space-y-0.5">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="1.5rem"
@@ -71,7 +71,7 @@ const projects = await getEntries(
       </h1>
 
       <nav
-        class="grid grid-cols-2 bordered *:flex *:items-center *:justify-between *:gap-pad *:p-pad *:text-(length:--text-lg) *:font-bold *:text-link-primary *:transition-colors *:hover:bg-line *:hover:text-link-primary-hover"
+        class="grid grid-cols-2 bordered *:flex *:items-center *:justify-between *:gap-pad *:p-pad *:text-lg *:leading-none *:font-bold *:text-link-primary *:transition-colors *:hover:bg-line *:hover:text-link-primary-hover"
       >
         <a
           href="/projects"
@@ -80,7 +80,7 @@ const projects = await getEntries(
           Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
         </a>
         <a href="/posts" class="border-b-(length:--border-w) border-style">
-          Posts <FeatherIcon size={ICON_SIZE} class="stroke-icon" />
+          Writing <FeatherIcon size={ICON_SIZE} class="stroke-icon" />
         </a>
         <a href="/archive" class="border-r-(length:--border-w) border-style">
           Archive <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
@@ -93,33 +93,42 @@ const projects = await getEntries(
       </nav>
     </section>
 
-    <section>
+    <section class="space-y-3.5">
+      <div class="flex items-center gap-pad">
+        <progress
+          aria-label="Video progress"
+          max="1"
+          class="h-2 w-1/2 appearance-none overflow-hidden rounded-full [&::-moz-progress-bar]:bg-sweater-6 not-dark:[&::-moz-progress-bar]:bg-sweater-4 [&::-webkit-progress-bar]:bg-sweater-9 not-dark:[&::-webkit-progress-bar]:bg-sweater-2 [&::-webkit-progress-value]:bg-sweater-6 not-dark:[&::-webkit-progress-value]:bg-sweater-4"
+        ></progress>
+
+        <p
+          id="video-status"
+          class="w-1/2 cursor-default text-right maple text-[0.8rem] text-subtitle uppercase [status=loading]:animate-pulse"
+        >
+          Please wait
+        </p>
+      </div>
+
       <div class="bordered">
         {
           projects.map(({ id, data: { name, metadata } }, index) => (
             <a
               href={`/projects/${id}`}
-              class="group hidden border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line data-[playing=true]:flex"
+              class="group hidden border-style p-pad transition-colors hover:bg-line data-[playing=true]:flex 480:border-b-(length:--border-w)"
               data-project-id={id}
               data-playing={index === 0 ? "true" : "false"}
               data-umami-event="homepage-project-showcase"
               data-umami-event-id={id}
             >
               <div class="grow space-y-pad">
-                <p
-                  id="video-status"
-                  data-status={index === 0 ? "loading" : "ready"}
-                  class="maple text-xs text-subtitle uppercase data-[status=loading]:animate-pulse"
-                >
-                  {index === 0 ? "Please wait" : "Now playing"}
+                <p class="maple text-[0.8rem] text-icon uppercase data-[status=loading]:animate-pulse">
+                  Project
                 </p>
 
-                <div class="space-y-1">
-                  <h2 class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                    {name}
-                  </h2>
-                  <ContentDate date={metadata.date} />
-                </div>
+                <h2 class="mb-1 text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                  {name}
+                </h2>
+                <ContentDate date={metadata.date} class="mb-0" />
               </div>
 
               <SquareArrowRightIcon
@@ -130,52 +139,31 @@ const projects = await getEntries(
           ))
         }
 
-        <div class="p-pad">
-          <div
-            id="progress-bar"
-            aria-label="Video progress"
-            aria-valuemin="0"
-            aria-valuemax="100"
-            aria-valuenow="0"
-            aria-valuetext="0% finished"
-            class="h-2 w-full overflow-hidden rounded-full bg-sweater-9 not-dark:bg-sweater-2"
-          >
-            <div
-              id="progress-value"
-              class="h-full w-full origin-left bg-sweater-6 not-dark:bg-sweater-5"
-              style="transform:scaleX(0.0);"
-            >
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <button
-        id="toggle-panel"
-        class="group hidden w-full bordered p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 480:block"
-        data-state="closed"
-        data-umami-event="toggle-panel-button"
-      >
-        <span
-          class="flex items-center justify-between gap-pad transition-transform ease-in-out group-active:scale-98"
+        <button
+          id="toggle-panel"
+          class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 480:block"
+          data-state="closed"
+          data-umami-event="toggle-panel-button"
         >
-          <span class="hidden group-data-[state=open]:contents">
-            Hide panel <SquareDashedMousePointerIcon
-              size={ICON_SIZE}
-              class="stroke-icon transition-transform"
-              style=""
-            />
-          </span>
+          <span
+            class="flex items-center justify-between gap-pad transition-transform ease-in-out group-active:scale-98"
+          >
+            <span class="hidden group-data-[state=open]:contents">
+              Hide panel <SquareDashedMousePointerIcon
+                size={ICON_SIZE}
+                class="stroke-icon transition-transform"
+              />
+            </span>
 
-          <span class="hidden group-data-[state=closed]:contents">
-            Show panel <SquareMousePointerIcon
-              size={ICON_SIZE}
-              class="stroke-icon transition-transform"
-              style=""
-            />
+            <span class="hidden group-data-[state=closed]:contents">
+              Show panel <SquareMousePointerIcon
+                size={ICON_SIZE}
+                class="stroke-icon transition-transform"
+              />
+            </span>
           </span>
-        </span>
-      </button>
+        </button>
+      </div>
     </section>
   </main>
 </BaseLayout>
@@ -420,8 +408,7 @@ const projects = await getEntries(
       elt.dataset["state"] = isHidden ? "closed" : "open";
     });
 
-    const progressBarElt = document.getElementById("progress-bar")!;
-    const progressValueElt = document.getElementById("progress-value")!;
+    const progressBarElt = document.querySelector("progress")!;
 
     // The rate at which the current video updates (usually <= 60 FPS) is
     // usually slower than the screen's refresh rate. To prevent expensive
@@ -429,14 +416,9 @@ const projects = await getEntries(
     const onVideoFrameUpdate: VideoFrameRequestCallback = () => {
       panel?.fpsGraphs.video.begin();
 
-      const progress = saturate(
-        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0,
-      );
-
-      const percentage = Math.round(progress * 100).toString();
-      progressBarElt.setAttribute("aria-valuenow", percentage);
-      progressBarElt.setAttribute("aria-valuetext", `${percentage}% finished`);
-      progressValueElt.style.transform = `scaleX(${progress})`;
+      const progress =
+        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0;
+      progressBarElt.value = saturate(progress);
 
       gl.texImage2D(
         gl.TEXTURE_2D,
