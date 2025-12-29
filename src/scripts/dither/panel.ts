@@ -16,7 +16,29 @@ type PanelFpsGraphs = {
 
 type Panel = {
   pane: Pane;
+  container: HTMLDivElement;
+  animations: {
+    show: () => void;
+    hide: () => void;
+  };
   fpsGraphs: PanelFpsGraphs;
+};
+
+const SHOW_PANEL_KEYFRAMES: Keyframe[] = [
+  { transform: "scale(0.97)" },
+  { transform: "scale(1)" },
+];
+const SHOW_PANEL_OPTIONS: KeyframeAnimationOptions = {
+  duration: 100,
+  easing: "ease-out",
+  fill: "forwards",
+};
+
+const HIDE_PANEL_KEYFRAMES: Keyframe[] = [{ opacity: 1 }, { opacity: 0 }];
+const HIDE_PANEL_OPTIONS: KeyframeAnimationOptions = {
+  duration: 90,
+  easing: "ease-in",
+  fill: "forwards",
 };
 
 function initializePanel(dither: Dither): Panel {
@@ -26,8 +48,6 @@ function initializePanel(dither: Dither): Panel {
   container.style.top = "calc(var(--spacing) * 10)";
   container.style.right = "calc(var(--spacing) * 10)";
   container.style.width = "285px";
-
-  document.body.append(container);
 
   const pane = new Pane({
     title: "Panel",
@@ -152,7 +172,29 @@ function initializePanel(dither: Dither): Panel {
     });
   });
 
-  return { pane, fpsGraphs: { draw, video } };
+  return {
+    pane,
+    container,
+    animations: {
+      show: () => {
+        container
+          .animate(SHOW_PANEL_KEYFRAMES, SHOW_PANEL_OPTIONS)
+          .addEventListener("finish", (ev) =>
+            (ev.currentTarget as Animation).cancel(),
+          );
+        pane.hidden = false;
+      },
+      hide: () => {
+        container
+          .animate(HIDE_PANEL_KEYFRAMES, HIDE_PANEL_OPTIONS)
+          .addEventListener("finish", (ev) => {
+            pane.hidden = true;
+            (ev.currentTarget as Animation).cancel();
+          });
+      },
+    },
+    fpsGraphs: { draw, video },
+  };
 }
 
 export { initializePanel, type PanelFpsGraphs, type Panel };

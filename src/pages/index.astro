@@ -401,14 +401,23 @@ const projects = await getEntries(
     let panel: Panel | null = null;
 
     document.getElementById("toggle-panel")!.addEventListener("click", (ev) => {
+      let isHidden = false;
+
       if (!panel) {
         panel = initializePanel(dither);
+        document.body.append(panel.container);
       } else {
-        panel.pane.hidden = !panel.pane.hidden;
+        isHidden = !panel.pane.hidden;
+      }
+
+      if (isHidden) {
+        panel.animations.hide();
+      } else {
+        panel.animations.show();
       }
 
       const elt = ev.currentTarget as HTMLButtonElement;
-      elt.dataset["state"] = panel.pane.hidden ? "closed" : "open";
+      elt.dataset["state"] = isHidden ? "closed" : "open";
     });
 
     const progressBarElt = document.getElementById("progress-bar")!;
