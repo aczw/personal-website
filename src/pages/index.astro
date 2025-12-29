@@ -103,6 +103,7 @@ const projects = await getEntries(
 
         <p
           id="video-status"
+          data-status="loading"
           class="w-1/2 cursor-default text-right maple text-[0.8rem] text-subtitle uppercase [status=loading]:animate-pulse"
         >
           Please wait
@@ -433,6 +434,7 @@ const projects = await getEntries(
       currVideo.requestVideoFrameCallback(onVideoFrameUpdate);
     };
 
+    // Handle first frame load
     currVideo.requestVideoFrameCallback((now, metadata) => {
       const videoStatus = document.getElementById("video-status")!;
       videoStatus.innerText = "Now playing";
@@ -442,8 +444,8 @@ const projects = await getEntries(
       onVideoFrameUpdate(now, metadata);
     });
 
-    // On the other hand, uniform changes and resize events can occur at any
-    // time and can't wait for the video, which often updates slower
+    // Uniform changes and resize events can occur at any time and can't wait
+    // for the video, which often updates slower
     const draw: FrameRequestCallback = () => {
       panel?.fpsGraphs.draw.begin();
 
