@@ -3,12 +3,12 @@ import { getEntries } from "astro:content";
 
 import {
   BoxesIcon,
-  ScrollTextIcon,
-  WavesIcon,
   InfoIcon,
   SquareArrowRightIcon,
   SquareMousePointerIcon,
   SquareDashedMousePointerIcon,
+  FeatherIcon,
+  ToolCaseIcon,
 } from "@lucide/astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
@@ -77,13 +77,13 @@ const projects = await getEntries(
           href="/projects"
           class="border-r-(length:--border-w) border-b-(length:--border-w) border-style"
         >
-          Portfolio <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
+          Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
         </a>
         <a href="/posts" class="border-b-(length:--border-w) border-style">
-          Posts <ScrollTextIcon size={ICON_SIZE} class="stroke-icon" />
+          Posts <FeatherIcon size={ICON_SIZE} class="stroke-icon" />
         </a>
-        <a href="/extra" class="border-r-(length:--border-w) border-style">
-          Extra <WavesIcon size={ICON_SIZE} class="stroke-icon" />
+        <a href="/archive" class="border-r-(length:--border-w) border-style">
+          Archive <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
         </a>
         <a href="/about">
           About <MusicIndicator server:defer>
