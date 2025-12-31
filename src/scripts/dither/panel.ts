@@ -44,10 +44,11 @@ const HIDE_PANEL_OPTIONS: KeyframeAnimationOptions = {
 function initializePanel(dither: Dither): Panel {
   const container = document.createElement("div");
   container.id = "panel-container";
-  container.style.position = "fixed";
+  container.style.position = "absolute";
   container.style.top = "calc(var(--spacing) * 10)";
   container.style.right = "calc(var(--spacing) * 10)";
   container.style.width = "285px";
+  container.classList.add("hidden", "md:block");
 
   const pane = new Pane({
     title: "Panel",

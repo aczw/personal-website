@@ -109,7 +109,7 @@ const projects = await getEntries(
           projects.map(({ id, data: { name, metadata } }, index) => (
             <a
               href={`/projects/${id}`}
-              class="group hidden border-style p-pad transition-colors hover:bg-line data-[playing=true]:flex 480:border-b-(length:--border-w)"
+              class="group hidden border-style p-pad transition-colors hover:bg-line data-[playing=true]:flex md:border-b-(length:--border-w)"
               data-project-id={id}
               data-playing={index === 0 ? "true" : "false"}
               data-umami-event="homepage-project-showcase"
@@ -136,7 +136,7 @@ const projects = await getEntries(
 
         <button
           id="toggle-panel"
-          class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 480:block"
+          class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 md:block"
           data-state="closed"
           data-umami-event="toggle-panel-button"
         >
