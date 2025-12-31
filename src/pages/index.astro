@@ -103,10 +103,14 @@ const projects = await getEntries(
 
         <p
           id="video-status"
-          data-status="loading"
-          class="w-1/2 cursor-default text-right maple text-[0.8rem] text-subtitle uppercase [status=loading]:animate-pulse"
+          class="relative w-1/2 cursor-default text-right maple text-[0.8rem] text-subtitle uppercase"
         >
-          Please wait
+          <span class="absolute right-0 inline-block w-fit animate-pulse">
+            Please wait
+          </span>
+          <span aria-hidden="true" class="inline-block" style="opacity: 0;">
+            Now playing
+          </span>
         </p>
       </div>
 
@@ -436,9 +440,37 @@ const projects = await getEntries(
 
     // Handle first frame load
     currVideo.requestVideoFrameCallback((now, metadata) => {
-      const videoStatus = document.getElementById("video-status")!;
-      videoStatus.innerText = "Now playing";
-      videoStatus.dataset["status"] = "ready";
+      const videoStatusElt = document.getElementById("video-status")!;
+      const pleaseWaitElt = videoStatusElt.children[0]!;
+      const nowPlayingElt = videoStatusElt.children[1]!;
+
+      const keyframes: Keyframe[] = [
+        { opacity: 0, filter: "blur(var(--blur-xs))", scale: 0.4 },
+        { opacity: 1, filter: "blur(0px)", scale: 1 },
+      ];
+
+      const opts: KeyframeAnimationOptions = {
+        duration: 600,
+        // https://easings.net/#easeInOutQuart
+        easing: "cubic-bezier(0.76, 0, 0.24, 1)",
+        fill: "forwards",
+      };
+
+      // Animate transition
+      nowPlayingElt.removeAttribute("aria-hidden");
+      nowPlayingElt
+        .animate(keyframes, opts)
+        .addEventListener("finish", (ev) => {
+          const animation = ev.currentTarget as Animation;
+          animation.commitStyles();
+          animation.cancel();
+        });
+      pleaseWaitElt
+        .animate(keyframes, { ...opts, direction: "reverse" })
+        .addEventListener("finish", (ev) => {
+          (ev.currentTarget as Animation).commitStyles();
+          pleaseWaitElt.remove();
+        });
 
       canvas.style.opacity = "1";
       onVideoFrameUpdate(now, metadata);
