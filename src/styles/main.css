@@ -101,7 +101,7 @@
   }
 
   html {
-    @apply scroll-smooth bg-sweater-10 text-sweater-1;
+    @apply bg-sweater-10 text-sweater-1;
 
     font-size: 15px;
     scrollbar-gutter: stable;
