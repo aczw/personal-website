@@ -1,12 +1,29 @@
 ---
 import { getCollection } from "astro:content";
 
+import {
+  BoxesIcon,
+  InfoIcon,
+  SquareArrowRightIcon,
+  SquareMousePointerIcon,
+  SquareDashedMousePointerIcon,
+  FeatherIcon,
+  ToolCaseIcon,
+} from "@lucide/astro";
+
 import ProjectCover from "@/components/project-cover.astro";
-import { DISABLED_PROJECTS, WIDE_PROJECTS } from "@/scripts/constants";
+import {
+  DISABLED_PROJECTS,
+  WIDE_PROJECTS,
+  ICON_SIZE,
+} from "@/scripts/constants";
 import MainLayout from "@/layouts/main-layout.astro";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import GridSection from "@/components/grid-section.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
+import MusicIndicator from "@/components/music-indicator.astro";
+import Eye from "@/components/eye.astro";
 
 const withVideos: string[] = [
   "cuda-path-tracer",
@@ -25,7 +42,7 @@ const totalCells = projects.reduce(
 );
 ---
 
-<MainLayout
+<BaseLayout
   meta={{
     kind: "route",
     title: "Projects",
@@ -34,8 +51,79 @@ const totalCells = projects.reduce(
     ogImageParams: "Graphics programming, games, and sometimes art.",
   }}
 >
-  <GridSection>
-    <div class="grid grid-cols-1 560:grid-cols-2">
+  <header class="mx-auto max-w-[525px] pt-12 pb-6">
+    <!-- <nav
+      class="grid grid-cols-2 bordered *:flex *:items-center *:justify-between *:gap-pad *:p-pad *:text-lg *:leading-none *:font-bold *:text-link-primary *:transition-colors *:hover:bg-line *:hover:text-link-primary-hover"
+    >
+      <a
+        href="/projects"
+        class="border-r-(length:--border-w) border-b-(length:--border-w) border-style"
+      >
+        Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
+      </a>
+      <a href="/posts" class="border-b-(length:--border-w) border-style">
+        Writing <FeatherIcon size={ICON_SIZE} class="stroke-icon" />
+      </a>
+      <a href="/archive" class="border-r-(length:--border-w) border-style">
+        Archive <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
+      </a>
+      <a href="/about">
+        About <MusicIndicator server:defer>
+          <InfoIcon slot="fallback" size={ICON_SIZE} class="stroke-icon" />
+        </MusicIndicator>
+      </a>
+    </nav> -->
+
+    <div class="flex items-center gap-pad font-bold">
+      <a
+        title="Home"
+        href="/"
+        class="group transition-transform hover:-rotate-13"
+      >
+        <Eye
+          class="size-8 fill-link-secondary transition-colors group-hover:fill-link-secondary-hover"
+        />
+      </a>
+      <span
+        aria-hidden="true"
+        class="cursor-default text-[2.5rem] leading-none text-sweater-7"
+      >
+        /
+      </span><h1
+        class="text-[2.7rem] leading-none text-link-secondary hover:text-link-secondary-hover"
+      >
+        Portfolio
+      </h1>
+    </div>
+
+    <!-- <div class="flex flex-col gap-pad-2">
+      <p>
+        However, AABBs are not enough. For models with many triangles, they
+        cannot help because if the intersection is successful, we’ll need to
+        iterate through the entire triangle list. Is there some way of
+        addressing this?
+      </p>
+      <p>
+        BVHs work on the following principle: if the ray has intersected with
+        some bounding box, then anything outside of that box does not need to be
+        checked anymore, and can immediately be discarded.
+      </p>
+      <p>
+        For instance, what if we split our model into two different AABBs, let’s
+        say at the midpoint of the model? If the ray intersected with one AABB,
+        then we know every triangle in the other AABB, aka the other half of the
+        model, can be safely ignored.
+      </p>
+      <p>
+        That’s the idea. Of course, having never built one before I needed to do
+        some research. My implementation was primarily guided by the following
+        two resources:
+      </p>
+    </div> -->
+  </header>
+
+  <main class="mx-auto max-w-[1000px]">
+    <div class="grid grid-cols-1 bordered 560:grid-cols-2">
       {
         projects.map(
           (
@@ -173,5 +261,5 @@ const totalCells = projects.reduce(
         )
       }
     </div>
-  </GridSection>
-</MainLayout>
+  </main>
+</BaseLayout>
