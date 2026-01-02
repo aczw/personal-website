@@ -68,13 +68,6 @@
     --content-w-lg: 675px;
     --content-w-xl: 800px;
 
-    /* Minimum width of any content on the two sides of the center content. */
-    --side-w-min: 325px;
-
-    /* Standard grid template columns. */
-    --gtc-standard: minmax(var(--side-w-min), 1fr)
-      minmax(0px, var(--content-w-xl)) minmax(var(--side-w-min), 1fr);
-
     --subtitle: var(--color-sweater-2);
     --line: var(--color-sweater-9);
     --link-primary: var(--color-sweater-3);
@@ -154,6 +147,23 @@
       &::selection {
         background-color: var(--color-sweater-2);
       }
+    }
+  }
+}
+
+/* Related to the grid column layout. */
+@layer base {
+  :root {
+    /* Minimum width of any content on the two sides of the center content. */
+    --side-w: 325px;
+
+    /* Template columns that achieves a maximum of 2 columns at full width: one 
+     * left sidebar, and main content. It begins as a single column. */
+    --gtc-max-2: 1fr;
+
+    /* Expands to full 2-column layout. */
+    @variant lg {
+      --gtc-max-2: var(--side-w) minmax(0px, 1fr);
     }
   }
 }

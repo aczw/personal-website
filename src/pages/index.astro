@@ -40,10 +40,10 @@ const projects = await getEntries(
     style="opacity: 0;"></canvas>
 
   <main
-    class="flex h-svh flex-col justify-end-safe overflow-hidden p-pad leading-none desktop:grid desktop:grid-cols-(--gtc-standard) desktop:justify-normal desktop:gap-x-pad"
+    class="flex h-svh flex-col justify-end-safe overflow-hidden p-pad leading-none desktop:grid desktop:grid-cols-(--gtc-max-2) desktop:justify-normal"
   >
     <section
-      class="max-w-[500px] space-y-pad *:rounded-lg *:bg-sweater-10 *:p-pad *:not-dark:bg-sweater-1 desktop:col-span-1"
+      class="space-y-pad *:rounded-lg *:bg-sweater-10 *:p-pad *:not-dark:bg-sweater-1 desktop:max-w-(--side-w)"
     >
       <div class="space-y-pad">
         <h1 class="cursor-default space-y-0.5">
@@ -102,7 +102,7 @@ const projects = await getEntries(
                   <h2 class="mb-1 text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
                     {name}
                   </h2>
-                  <ContentDate date={metadata.date} class="mb-0" />
+                  <ContentDate date={metadata.date} class="text-subtitle" />
                 </div>
 
                 <SquareArrowRightIcon
@@ -115,7 +115,7 @@ const projects = await getEntries(
 
           <button
             id="toggle-panel"
-            class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 sm:block"
+            class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 md:block"
             data-state="closed"
             data-umami-event="toggle-panel-button"
           >

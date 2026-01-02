@@ -3,10 +3,19 @@ import { BoxesIcon, InfoIcon, FeatherIcon, ToolCaseIcon } from "@lucide/astro";
 
 import { ICON_SIZE } from "@/scripts/constants";
 import MusicIndicator from "@/components/music-indicator.astro";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
 ---
 
 <div
-  class="grid grid-cols-2 bordered text-lg leading-none font-bold *:flex *:items-center *:justify-between *:gap-pad *:p-pad *:text-link-primary *:transition-colors *:hover:bg-line *:hover:text-link-primary-hover"
+  class:list={[
+    "grid grid-cols-2 bordered text-lg leading-none font-bold *:flex *:items-center *:justify-between *:gap-pad *:p-pad *:text-link-primary *:transition-colors *:hover:bg-line *:hover:text-link-primary-hover",
+    className,
+  ]}
 >
   <a
     href="/projects"

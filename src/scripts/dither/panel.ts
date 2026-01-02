@@ -50,7 +50,7 @@ function initializePanel(dither: Dither): Panel {
   container.style.width = "275px";
   // Assumes these Tailwind classes are used somewhere else, otherwise they
   // won't be generated and this won't work.
-  container.classList.add("hidden", "sm:block");
+  container.classList.add("hidden", "md:block");
 
   const pane = new Pane({
     title: "Panel",

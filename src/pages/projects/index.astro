@@ -53,10 +53,15 @@ const lastRowStartIndex = projects.length - (projects.length % 2 === 0 ? 2 : 1);
     ogImageParams: "Graphics programming, games, and sometimes art.",
   }}
 >
-  <div class="grid grid-cols-(--gtc-standard) gap-x-pad p-pad leading-none">
+  <div class="grid grid-cols-(--gtc-max-2) gap-x-pad overflow-hidden p-pad">
     <header class="p-pad">
-      <nav class="space-y-pad">
-        <a href="/" class="group block space-y-0.5">
+      <nav
+        class="grid grid-cols-1 grid-rows-[auto_auto] items-end gap-y-pad sm:grid-cols-2 sm:grid-rows-1 lg:grid-cols-1 lg:grid-rows-[auto_auto]"
+      >
+        <a
+          href="/"
+          class="group col-span-1 flex h-full flex-col justify-end space-y-0.5"
+        >
           <Eye
             aria-hidden="true"
             class="size-6 fill-sweater-5 transition-[rotate_fill] not-dark:fill-sweater-6 group-hover:-rotate-13 group-hover:fill-sweater-4 not-dark:group-hover:fill-sweater-7"
@@ -69,12 +74,14 @@ const lastRowStartIndex = projects.length - (projects.length % 2 === 0 ? 2 : 1);
           </span>
         </a>
 
-        <RoutesGrid />
+        <RoutesGrid class="col-span-1" />
       </nav>
     </header>
 
-    <main class="space-y-pad py-pad">
-      <h1 class="cursor-default space-y-0.5">
+    <main class="p-pad lg:pl-0">
+      <h1
+        class="sr-only cursor-default space-y-0.5 leading-none lg:not-sr-only lg:mb-pad"
+      >
         <div aria-hidden="true" class="flex gap-1">
           <Eye class="size-6 fill-line" />
           <Eye class="size-6 fill-line" />
@@ -84,7 +91,7 @@ const lastRowStartIndex = projects.length - (projects.length % 2 === 0 ? 2 : 1);
         </span>
       </h1>
 
-      <section class="grid grid-cols-2 bordered">
+      <section class="grid grid-cols-1 bordered sm:grid-cols-2 xl:grid-cols-3">
         {
           projects.map(({ id, data }, index) => {
             const { name, cover, metadata } = data;
@@ -95,12 +102,6 @@ const lastRowStartIndex = projects.length - (projects.length % 2 === 0 ? 2 : 1);
                 href={`/projects/${id}`}
                 class:list={[
                   "group space-y-pad border-style p-pad transition-colors hover:bg-line",
-                  // All projects on the left add a border on the right
-                  index % 2 === 0 ? "border-r-(length:--border-w)" : null,
-                  // Only add bottom borders to all projects not on the last row
-                  index < lastRowStartIndex ?
-                    "border-b-(length:--border-w)"
-                  : null,
                 ]}
               >
                 <p class="flex items-center justify-between gap-x-pad">
@@ -122,19 +123,15 @@ const lastRowStartIndex = projects.length - (projects.length % 2 === 0 ? 2 : 1);
                   class="mb-pad overflow-hidden rounded-lg"
                 />
 
-                <div>
-                  <h2 class="mb-1 text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                <div class="space-y-1">
+                  <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
                     {name}
                   </h2>
 
                   <TechList
                     tech={tech}
-                    class="mb-0.5 text-subtitle transition-colors group-hover:text-link-secondary-hover"
-                  />
-                  {/* <ContentDate
-                    date={date}
                     class="text-subtitle transition-colors group-hover:text-link-secondary-hover"
-                  /> */}
+                  />
                 </div>
               </a>
             );
