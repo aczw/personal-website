@@ -2,21 +2,17 @@
 import { getEntries } from "astro:content";
 
 import {
-  BoxesIcon,
-  InfoIcon,
   SquareArrowRightIcon,
   SquareMousePointerIcon,
   SquareDashedMousePointerIcon,
-  FeatherIcon,
-  ToolCaseIcon,
 } from "@lucide/astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
 import { ICON_SIZE } from "@/scripts/constants";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 import ContentDate from "@/components/content-date.astro";
-import MusicIndicator from "@/components/music-indicator.astro";
 import Eye from "@/components/eye.astro";
+import RoutesGrid from "@/components/routes-grid.astro";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -63,27 +59,7 @@ const projects = await getEntries(
           </span>
         </h1>
 
-        <nav
-          class="grid grid-cols-2 bordered text-lg leading-none font-bold *:flex *:items-center *:justify-between *:gap-pad *:p-pad *:text-link-primary *:transition-colors *:hover:bg-line *:hover:text-link-primary-hover"
-        >
-          <a
-            href="/projects"
-            class="border-r-(length:--border-w) border-b-(length:--border-w) border-style"
-          >
-            Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
-          </a>
-          <a href="/posts" class="border-b-(length:--border-w) border-style">
-            Writing <FeatherIcon size={ICON_SIZE} class="stroke-icon" />
-          </a>
-          <a href="/archive" class="border-r-(length:--border-w) border-style">
-            Archive <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
-          </a>
-          <a href="/about">
-            About <MusicIndicator server:defer>
-              <InfoIcon slot="fallback" size={ICON_SIZE} class="stroke-icon" />
-            </MusicIndicator>
-          </a>
-        </nav>
+        <nav><RoutesGrid /></nav>
       </div>
 
       <div class="space-y-pad">

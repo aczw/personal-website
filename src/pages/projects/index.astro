@@ -22,7 +22,7 @@ import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import GridSection from "@/components/grid-section.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
-import MusicIndicator from "@/components/music-indicator.astro";
+import RoutesGrid from "@/components/routes-grid.astro";
 import Eye from "@/components/eye.astro";
 
 const withVideos: string[] = [
@@ -52,7 +52,25 @@ const totalCells = projects.reduce(
   }}
 >
   <div class="grid grid-cols-(--gtc-standard) p-pad leading-none">
-    <header>Header</header>
+    <header class="p-pad">
+      <nav class="space-y-pad">
+        <a href="/" class="group block">
+          <Eye
+            aria-hidden="true"
+            class="size-6 fill-sweater-5 transition-[rotate_fill] not-dark:fill-sweater-6 group-hover:-rotate-13 group-hover:fill-sweater-4 not-dark:group-hover:fill-sweater-7"
+          />
+
+          <span
+            class="text-3xl leading-none font-bold text-sweater-5 transition-colors not-dark:text-sweater-6 group-hover:text-sweater-4 not-dark:group-hover:text-sweater-7"
+          >
+            Charles Wang
+          </span>
+        </a>
+
+        <RoutesGrid />
+      </nav>
+    </header>
+
     <main>Main</main>
   </div>
 
