@@ -9,10 +9,9 @@ import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
 
 interface Props {
   meta: MetaKind;
-  preloadMono?: boolean;
 }
 
-const { meta, preloadMono } = Astro.props;
+const { meta } = Astro.props;
 
 let title = "Charles Wang";
 let description: string;
@@ -130,17 +129,13 @@ const canonicalUrl = stripEndingSlash(url);
       type="font/woff2"
       crossorigin="anonymous"
     />
-    {
-      preloadMono === true ?
-        <link
-          rel="preload"
-          href="/_files/fonts/MapleMono-Regular.woff2"
-          as="font"
-          type="font/woff2"
-          crossorigin="anonymous"
-        />
-      : null
-    }
+    <link
+      rel="preload"
+      href="/_files/fonts/MapleMono-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
 
     <title>{title}</title>
 

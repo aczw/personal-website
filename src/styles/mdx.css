@@ -1,10 +1,6 @@
 @layer components {
-  :root {
-    --content-w: 600px;
-  }
-
   /* Only style elements rendered from MDX */
-  .content {
+  .mdx {
     @apply *:px-pad;
 
     /* In general, all media should have full width. */

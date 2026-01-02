@@ -2,7 +2,7 @@
 
 @import "./animations.css";
 @import "./fonts.css";
-@import "./content.css";
+@import "./mdx.css";
 @import "./overrides.css";
 
 @theme {
@@ -48,55 +48,48 @@
 
   --color-icon: var(--icon);
 
-  /* Accounts for padding and border width on left and right sides */
-  --container-normal: calc(
-    var(--normal-w) + 2 * var(--spacing-pad) + 2 * var(--border-w)
-  );
-
-  /* When the table of contents should completely collapse. */
-  --breakpoint-toc: 700px;
+  /* A good indicator for when we're beyond phone width territory. As an
+   * example, the iPhone 14 Pro Max has a screen width of 430px. */
+  --breakpoint-desktop: 480px;
 
   /* Terrible names, but these don't really represent anything and are
    * just good values by themselves */
   --breakpoint-380: 380px;
-  --breakpoint-480: 480px;
   --breakpoint-560: 560px;
-
-  /* CSS variables can't be referenced in breakpoint theme variables, so we 
-   * have to hand calculate them.
-   * 
-   * This was calculated by starting with --container-normal, then adding
-   * (2 * --spacing-pad) for the additional padding outside the vertical
-   * grid lines.
-   *
-   * Also see https://github.com/tailwindlabs/tailwindcss/discussions/15113. */
-  --breakpoint-normal: 860.25px;
 }
 
 @layer base {
   :root {
     --border-w: 2px;
-    --normal-w: 800px;
+
+    /* Represents the three possible widths for content, centered in the
+     * middle of the screen. */
+    --content-w-base: 525px;
+    --content-w-lg: 675px;
+    --content-w-xl: 800px;
+
+    /* Minimum width of any content on the two sides of the center content. */
+    --side-w-min: 325px;
+
+    /* Standard grid template columns. */
+    --gtc-standard: minmax(var(--side-w-min), 1fr)
+      minmax(0px, var(--content-w-xl)) minmax(var(--side-w-min), 1fr);
 
     --subtitle: var(--color-sweater-2);
     --line: var(--color-sweater-9);
-
     --link-primary: var(--color-sweater-3);
     --link-primary-hover: var(--color-sweater-1);
     --link-secondary: var(--color-sweater-5);
     --link-secondary-hover: var(--color-sweater-4);
-
     --icon: var(--color-sweater-6);
 
     @variant not-dark {
       --subtitle: var(--color-sweater-8);
       --line: var(--color-sweater-2);
-
       --link-primary: var(--color-sweater-7);
       --link-primary-hover: var(--color-sweater-10);
       --link-secondary: var(--color-sweater-6);
       --link-secondary-hover: var(--color-sweater-7);
-
       --icon: var(--color-sweater-5);
     }
   }

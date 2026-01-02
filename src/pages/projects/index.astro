@@ -51,90 +51,12 @@ const totalCells = projects.reduce(
     ogImageParams: "Graphics programming, games, and sometimes art.",
   }}
 >
-  <header class="mx-auto max-w-[525px] pt-12 pb-12">
-    <!-- <div class="grid grid-cols-2 items-end">
-      <h1 class="cursor-default space-y-0.5">
-        <Eye
-          class="peer size-6 fill-sweater-5 transition-[rotate_fill] not-dark:fill-sweater-6 hover:-rotate-13 hover:fill-sweater-4 not-dark:hover:fill-sweater-7"
-        />
+  <div class="grid grid-cols-(--gtc-standard) p-pad leading-none">
+    <header>Header</header>
+    <main>Main</main>
+  </div>
 
-        <span
-          class="text-[1.75rem] font-bold text-sweater-5 transition-colors not-dark:text-sweater-6 peer-hover:text-sweater-4 not-dark:peer-hover:text-sweater-7"
-        >
-          Charles Wang
-        </span>
-      </h1>
-
-      <nav
-        class="grid grid-cols-2 bordered text-lg leading-none font-bold *:flex *:items-center *:justify-between *:gap-pad *:p-pad *:text-link-primary *:transition-colors *:hover:bg-line *:hover:text-link-primary-hover"
-      >
-        <a
-          href="/projects"
-          class="border-r-(length:--border-w) border-b-(length:--border-w) border-style"
-        >
-          Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
-        </a>
-        <a href="/posts" class="border-b-(length:--border-w) border-style">
-          Writing <FeatherIcon size={ICON_SIZE} class="stroke-icon" />
-        </a>
-        <a href="/archive" class="border-r-(length:--border-w) border-style">
-          Archive <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
-        </a>
-        <a href="/about">
-          About <MusicIndicator server:defer>
-            <InfoIcon slot="fallback" size={ICON_SIZE} class="stroke-icon" />
-          </MusicIndicator>
-        </a>
-      </nav>
-    </div> -->
-
-    <div class="mb-6 font-bold">
-      <p class="mb-1 flex items-center gap-1.5 text-2xl">
-        <a
-          title="Home"
-          href="/"
-          class="group transition-transform hover:-rotate-13"
-        >
-          <Eye
-            class="size-4.75 fill-link-secondary transition-colors group-hover:fill-link-secondary-hover"
-          />
-        </a>
-        <span class="cursor-default leading-none text-sweater-7">/</span>
-      </p>
-      <h1
-        class="text-4xl leading-none text-link-primary hover:text-link-secondary-hover"
-      >
-        Portfolio
-      </h1>
-    </div>
-
-    <!-- <div class="flex flex-col gap-pad-2">
-      <p>
-        However, AABBs are not enough. For models with many triangles, they
-        cannot help because if the intersection is successful, we’ll need to
-        iterate through the entire triangle list. Is there some way of
-        addressing this?
-      </p>
-      <p>
-        BVHs work on the following principle: if the ray has intersected with
-        some bounding box, then anything outside of that box does not need to be
-        checked anymore, and can immediately be discarded.
-      </p>
-      <p>
-        For instance, what if we split our model into two different AABBs, let’s
-        say at the midpoint of the model? If the ray intersected with one AABB,
-        then we know every triangle in the other AABB, aka the other half of the
-        model, can be safely ignored.
-      </p>
-      <p>
-        That’s the idea. Of course, having never built one before I needed to do
-        some research. My implementation was primarily guided by the following
-        two resources:
-      </p>
-    </div> -->
-  </header>
-
-  <main class="mr-auto ml-[calc(var(--spacing)*20+350px)] max-w-[700px]">
+  <!-- <main class="mr-auto ml-[calc(var(--spacing)*20+350px)] max-w-[700px]">
     <div class="grid grid-cols-1 bordered 560:grid-cols-2">
       {
         projects.map(
@@ -273,5 +195,5 @@ const totalCells = projects.reduce(
         )
       }
     </div>
-  </main>
+  </main> -->
 </BaseLayout>
