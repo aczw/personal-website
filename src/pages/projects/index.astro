@@ -40,6 +40,8 @@ const totalCells = projects.reduce(
   (sum, { id }) => (WIDE_PROJECTS.includes(id) ? sum + 2 : sum + 1),
   0,
 );
+
+const lastRowStartIndex = projects.length - (projects.length % 2 === 0 ? 2 : 1);
 ---
 
 <BaseLayout
@@ -51,10 +53,10 @@ const totalCells = projects.reduce(
     ogImageParams: "Graphics programming, games, and sometimes art.",
   }}
 >
-  <div class="grid grid-cols-(--gtc-standard) p-pad leading-none">
+  <div class="grid grid-cols-(--gtc-standard) gap-x-pad p-pad leading-none">
     <header class="p-pad">
       <nav class="space-y-pad">
-        <a href="/" class="group block">
+        <a href="/" class="group block space-y-0.5">
           <Eye
             aria-hidden="true"
             class="size-6 fill-sweater-5 transition-[rotate_fill] not-dark:fill-sweater-6 group-hover:-rotate-13 group-hover:fill-sweater-4 not-dark:group-hover:fill-sweater-7"
@@ -71,7 +73,75 @@ const totalCells = projects.reduce(
       </nav>
     </header>
 
-    <main>Main</main>
+    <main class="space-y-pad py-pad">
+      <h1 class="cursor-default space-y-0.5">
+        <div aria-hidden="true" class="flex gap-1">
+          <Eye class="size-6 fill-line" />
+          <Eye class="size-6 fill-line" />
+        </div>
+        <span class="text-3xl leading-none font-bold text-line">
+          Portfolio
+        </span>
+      </h1>
+
+      <section class="grid grid-cols-2 bordered">
+        {
+          projects.map(({ id, data }, index) => {
+            const { name, cover, metadata } = data;
+            const { tech, date } = metadata;
+
+            return (
+              <a
+                href={`/projects/${id}`}
+                class:list={[
+                  "group space-y-pad border-style p-pad transition-colors hover:bg-line",
+                  // All projects on the left add a border on the right
+                  index % 2 === 0 ? "border-r-(length:--border-w)" : null,
+                  // Only add bottom borders to all projects not on the last row
+                  index < lastRowStartIndex ?
+                    "border-b-(length:--border-w)"
+                  : null,
+                ]}
+              >
+                <p class="flex items-center justify-between gap-x-pad">
+                  <span class="label text-sweater-5 not-dark:text-sweater-6">
+                    {id}
+                  </span>
+
+                  <SquareArrowRightIcon
+                    aria-hidden="true"
+                    size={ICON_SIZE}
+                    class="shrink-0 stroke-icon"
+                  />
+                </p>
+
+                <ProjectCover
+                  id={id}
+                  cover={cover}
+                  useVideo={withVideos.includes(id) ? { small: true } : null}
+                  class="mb-pad overflow-hidden rounded-lg"
+                />
+
+                <div>
+                  <h2 class="mb-1 text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                    {name}
+                  </h2>
+
+                  <TechList
+                    tech={tech}
+                    class="mb-0.5 text-subtitle transition-colors group-hover:text-link-secondary-hover"
+                  />
+                  {/* <ContentDate
+                    date={date}
+                    class="text-subtitle transition-colors group-hover:text-link-secondary-hover"
+                  /> */}
+                </div>
+              </a>
+            );
+          })
+        }
+      </section>
+    </main>
   </div>
 
   <!-- <main class="mr-auto ml-[calc(var(--spacing)*20+350px)] max-w-[700px]">

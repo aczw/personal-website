@@ -67,7 +67,7 @@ function getMonthYearDateFormatting(date: Date) {
 }
 
 function getDateKind(date: ContentDateType): DateKind {
-  if (typeof date === "object" && date !== null && "from" in date) {
+  if (typeof date === "object" && "from" in date) {
     return { kind: "ranged", date };
   } else {
     return { kind: "simple", date };
