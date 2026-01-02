@@ -41,132 +41,131 @@ const projects = await getEntries(
   <canvas
     id="dither"
     aria-hidden="true"
-    class="pointer-events-none fixed inset-0 h-screen w-screen transition-opacity duration-1500 ease-out"
+    class="pointer-events-none absolute inset-0 -z-1 h-lvh w-full transition-opacity duration-1500 ease-out"
     style="opacity: 0;"></canvas>
 
   <main
-    class="absolute inset-x-0 bottom-0 space-y-pad overflow-x-hidden px-pad pb-pad leading-none *:rounded-lg *:bg-sweater-10 *:p-pad *:not-dark:bg-sweater-1 480:top-10 480:right-auto 480:bottom-auto 480:left-10 480:w-[350px] 480:items-end 480:overflow-x-visible 480:p-0 480:pb-10 480:*:p-pad-2"
+    class="flex h-svh flex-col justify-end-safe overflow-hidden p-pad leading-none 480:grid 480:grid-cols-[minmax(325px,1fr)_minmax(0px,800px)_minmax(325px,1fr)] 480:justify-normal"
   >
-    <section class="space-y-pad 480:space-y-pad-2">
-      <h1 class="cursor-default space-y-0.5">
-        <Eye
-          class="peer size-6 fill-sweater-5 transition-[rotate_fill] not-dark:fill-sweater-6 hover:-rotate-13 hover:fill-sweater-4 not-dark:hover:fill-sweater-7"
-        />
+    <section
+      class="max-w-[500px] space-y-pad *:rounded-lg *:bg-sweater-10 *:p-pad *:not-dark:bg-sweater-1 480:col-span-1"
+    >
+      <div class="space-y-pad">
+        <h1 class="cursor-default">
+          <Eye
+            aria-hidden="true"
+            class="peer size-6 fill-sweater-5 transition-[rotate_fill] not-dark:fill-sweater-6 hover:-rotate-13 hover:fill-sweater-4 not-dark:hover:fill-sweater-7"
+          />
 
-        <span
-          class="text-[1.75rem] font-bold text-sweater-5 transition-colors not-dark:text-sweater-6 peer-hover:text-sweater-4 not-dark:peer-hover:text-sweater-7"
-        >
-          Charles Wang
-        </span>
-      </h1>
-
-      <nav
-        class="grid grid-cols-2 bordered text-lg leading-none font-bold *:flex *:items-center *:justify-between *:gap-pad *:p-pad *:text-link-primary *:transition-colors *:hover:bg-line *:hover:text-link-primary-hover"
-      >
-        <a
-          href="/projects"
-          class="border-r-(length:--border-w) border-b-(length:--border-w) border-style"
-        >
-          Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
-        </a>
-        <a href="/posts" class="border-b-(length:--border-w) border-style">
-          Writing <FeatherIcon size={ICON_SIZE} class="stroke-icon" />
-        </a>
-        <a href="/archive" class="border-r-(length:--border-w) border-style">
-          Archive <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
-        </a>
-        <a href="/about">
-          About <MusicIndicator server:defer>
-            <InfoIcon slot="fallback" size={ICON_SIZE} class="stroke-icon" />
-          </MusicIndicator>
-        </a>
-      </nav>
-    </section>
-
-    <section class="space-y-3.5">
-      <div class="flex items-center gap-pad">
-        <progress
-          aria-label="Video progress"
-          max="1"
-          class="h-2 w-1/2 appearance-none overflow-hidden rounded-full [&::-moz-progress-bar]:bg-sweater-7 not-dark:[&::-moz-progress-bar]:bg-sweater-4 [&::-webkit-progress-bar]:bg-sweater-9 not-dark:[&::-webkit-progress-bar]:bg-sweater-2 [&::-webkit-progress-value]:bg-sweater-7 not-dark:[&::-webkit-progress-value]:bg-sweater-4"
-        ></progress>
-
-        <p
-          id="video-status"
-          class="relative w-1/2 cursor-default text-right maple text-[0.8rem] text-subtitle uppercase"
-        >
-          <span class="absolute right-0 inline-block w-fit animate-pulse">
-            Please wait
+          <span
+            class="text-3xl leading-none font-bold text-sweater-5 transition-colors not-dark:text-sweater-6 peer-hover:text-sweater-4 not-dark:peer-hover:text-sweater-7"
+          >
+            Charles Wang
           </span>
-          <span aria-hidden="true" class="inline-block" style="opacity: 0;">
-            Now playing
-          </span>
-        </p>
+        </h1>
+
+        <nav
+          class="grid grid-cols-2 bordered text-lg leading-none font-bold *:flex *:items-center *:justify-between *:gap-pad *:p-pad *:text-link-primary *:transition-colors *:hover:bg-line *:hover:text-link-primary-hover"
+        >
+          <a
+            href="/projects"
+            class="border-r-(length:--border-w) border-b-(length:--border-w) border-style"
+          >
+            Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
+          </a>
+          <a href="/posts" class="border-b-(length:--border-w) border-style">
+            Writing <FeatherIcon size={ICON_SIZE} class="stroke-icon" />
+          </a>
+          <a href="/archive" class="border-r-(length:--border-w) border-style">
+            Archive <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
+          </a>
+          <a href="/about">
+            About <MusicIndicator server:defer>
+              <InfoIcon slot="fallback" size={ICON_SIZE} class="stroke-icon" />
+            </MusicIndicator>
+          </a>
+        </nav>
       </div>
 
-      <div class="bordered">
-        {
-          projects.map(({ id, data: { name, metadata } }, index) => (
-            <a
-              href={`/projects/${id}`}
-              class="group hidden border-style p-pad transition-colors hover:bg-line data-[playing=true]:flex md:border-b-(length:--border-w)"
-              data-project-id={id}
-              data-playing={index === 0 ? "true" : "false"}
-              data-umami-event="homepage-project-showcase"
-              data-umami-event-id={id}
-            >
-              <div class="grow space-y-pad">
-                <p class="maple text-[0.8rem] text-sweater-5 uppercase not-dark:text-sweater-6 data-[status=loading]:animate-pulse">
-                  Project
-                </p>
+      <div class="space-y-pad">
+        <div class="flex items-center gap-pad">
+          <progress
+            aria-label="Video progress"
+            max="1"
+            class="h-2 w-1/2 appearance-none overflow-hidden rounded-full [&::-moz-progress-bar]:bg-sweater-7 not-dark:[&::-moz-progress-bar]:bg-sweater-4 [&::-webkit-progress-bar]:bg-sweater-9 not-dark:[&::-webkit-progress-bar]:bg-sweater-2 [&::-webkit-progress-value]:bg-sweater-7 not-dark:[&::-webkit-progress-value]:bg-sweater-4"
+          ></progress>
 
-                <h2 class="mb-1 text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                  {name}
-                </h2>
-                <ContentDate date={metadata.date} class="mb-0" />
-              </div>
-
-              <SquareArrowRightIcon
-                size={ICON_SIZE}
-                class="shrink-0 stroke-icon"
-              />
-            </a>
-          ))
-        }
-
-        <button
-          id="toggle-panel"
-          class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 md:block"
-          data-state="closed"
-          data-umami-event="toggle-panel-button"
-        >
-          <span
-            class="flex items-center justify-between gap-pad transition-transform ease-in-out group-active:scale-98"
+          <p
+            id="video-status"
+            class="relative w-1/2 cursor-default text-right label text-subtitle"
           >
-            <span class="hidden group-data-[state=open]:contents">
-              Hide panel <SquareDashedMousePointerIcon
-                size={ICON_SIZE}
-                class="stroke-icon transition-transform"
-              />
+            <span class="absolute right-0 inline-block w-fit animate-pulse">
+              Please wait
             </span>
+            <span aria-hidden="true" class="inline-block" style="opacity: 0;">
+              Now playing
+            </span>
+          </p>
+        </div>
 
-            <span class="hidden group-data-[state=closed]:contents">
-              Show panel <SquareMousePointerIcon
-                size={ICON_SIZE}
-                class="stroke-icon transition-transform"
-              />
+        <div class="bordered">
+          {
+            projects.map(({ id, data: { name, metadata } }, index) => (
+              <a
+                href={`/projects/${id}`}
+                class="group hidden border-style p-pad transition-colors hover:bg-line data-[playing=true]:flex md:border-b-(length:--border-w)"
+                data-project-id={id}
+                data-playing={index === 0 ? "true" : "false"}
+                data-umami-event="homepage-project-showcase"
+                data-umami-event-id={id}
+              >
+                <div class="grow">
+                  <p class="mb-pad label text-sweater-5 not-dark:text-sweater-6 data-[status=loading]:animate-pulse">
+                    Project
+                  </p>
+
+                  <h2 class="mb-1 text-lg font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                    {name}
+                  </h2>
+                  <ContentDate date={metadata.date} class="mb-0" />
+                </div>
+
+                <SquareArrowRightIcon
+                  size={ICON_SIZE}
+                  class="shrink-0 stroke-icon"
+                />
+              </a>
+            ))
+          }
+
+          <button
+            id="toggle-panel"
+            class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 md:block"
+            data-state="closed"
+            data-umami-event="toggle-panel-button"
+          >
+            <span
+              class="flex items-center justify-between gap-pad transition-transform ease-in-out group-active:scale-98"
+            >
+              <span class="hidden group-data-[state=open]:contents">
+                Hide panel <SquareDashedMousePointerIcon
+                  size={ICON_SIZE}
+                  class="stroke-icon transition-transform"
+                />
+              </span>
+
+              <span class="hidden group-data-[state=closed]:contents">
+                Show panel <SquareMousePointerIcon
+                  size={ICON_SIZE}
+                  class="stroke-icon transition-transform"
+                />
+              </span>
             </span>
-          </span>
-        </button>
+          </button>
+        </div>
       </div>
     </section>
   </main>
-
-  <!-- <div
-    class="absolute top-10 right-10 left-[calc(var(--spacing)*20+350px)] bg-sweater-9"
-  >
-    Test dkqwdjlkqwjdkqwjdkqljdqwkd
-  </div> -->
 </BaseLayout>
 
 <script>

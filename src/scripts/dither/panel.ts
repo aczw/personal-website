@@ -36,7 +36,7 @@ const SHOW_PANEL_OPTIONS: KeyframeAnimationOptions = {
 
 const HIDE_PANEL_KEYFRAMES: Keyframe[] = [{ opacity: 1 }, { opacity: 0 }];
 const HIDE_PANEL_OPTIONS: KeyframeAnimationOptions = {
-  duration: 90,
+  duration: 110,
   easing: "ease-in",
   fill: "forwards",
 };
@@ -45,9 +45,11 @@ function initializePanel(dither: Dither): Panel {
   const container = document.createElement("div");
   container.id = "panel-container";
   container.style.position = "absolute";
-  container.style.top = "calc(var(--spacing) * 10)";
-  container.style.right = "calc(var(--spacing) * 10)";
+  container.style.top = "var(--spacing-pad)";
+  container.style.right = "var(--spacing-pad)";
   container.style.width = "285px";
+  // Assumes these Tailwind classes are used somewhere else, otherwise they
+  // won't be generated and this won't work.
   container.classList.add("hidden", "md:block");
 
   const pane = new Pane({

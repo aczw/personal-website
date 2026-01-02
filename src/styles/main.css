@@ -16,6 +16,7 @@
   /* Monospace text should be a little smaller than display text. Otherwise
    * it looks too large. */
   --text-mono: 0.87rem;
+  --text-label: 0.8rem;
 
   /* This is 2.5 * 0.25rem = 0.625rem = 9.375px (1rem = 15px) */
   --spacing-pad: --spacing(2.5);
@@ -176,4 +177,8 @@
 
 @utility bordered {
   @apply border-(length:--border-w) border-style;
+}
+
+@utility label {
+  @apply maple text-label uppercase;
 }
