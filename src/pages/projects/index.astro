@@ -36,12 +36,19 @@ const projects = (await getCollection("projects"))
   .filter((project) => !DISABLED_PROJECTS.includes(project.id))
   .sort((a, b) => a.data.order - b.data.order);
 
-const totalCells = projects.reduce(
-  (sum, { id }) => (WIDE_PROJECTS.includes(id) ? sum + 2 : sum + 1),
-  0,
-);
+// Find the index of the first project belonging to the last row of
+// the grid. This changes depending on the number of columns in the layout
+const lastRowStartIndex = {
+  oneColumn: projects.length - 1,
+  twoColumn: projects.length - (projects.length % 2 === 0 ? 2 : 1),
+  threeColumn:
+    projects.length -
+    (projects.length % 3 === 0 ? 3
+    : projects.length % 3 === 2 ? 2
+    : 1),
+};
 
-const lastRowStartIndex = projects.length - (projects.length % 2 === 0 ? 2 : 1);
+console.log(lastRowStartIndex);
 ---
 
 <BaseLayout
@@ -91,7 +98,9 @@ const lastRowStartIndex = projects.length - (projects.length % 2 === 0 ? 2 : 1);
         </span>
       </h1>
 
-      <section class="grid grid-cols-1 bordered sm:grid-cols-2 xl:grid-cols-3">
+      <section
+        class="grid grid-cols-1 border-t-(length:--border-w) border-l-(length:--border-w) border-style sm:grid-cols-2 xl:grid-cols-3"
+      >
         {
           projects.map(({ id, data }, index) => {
             const { name, cover, metadata } = data;
@@ -101,7 +110,7 @@ const lastRowStartIndex = projects.length - (projects.length % 2 === 0 ? 2 : 1);
               <a
                 href={`/projects/${id}`}
                 class:list={[
-                  "group space-y-pad border-style p-pad transition-colors hover:bg-line",
+                  "group space-y-pad border-r-(length:--border-w) border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line",
                 ]}
               >
                 <p class="flex items-center justify-between gap-x-pad">

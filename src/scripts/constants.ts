@@ -38,6 +38,7 @@ const DISABLED_PROJECTS = [
   "moore-chair",
   "webgpu-clustered",
   "glsl-path-tracer",
+  "rcw",
 ];
 const WIDE_PROJECTS = [
   "cuda-path-tracer",
