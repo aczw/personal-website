@@ -26,8 +26,8 @@ const VALID_MONTHS = [
  * Order matters! Project videos will be played in the order defined here.
  */
 const HOMEPAGE_PROJECTS = [
-  "mini-minecraft",
   "cuda-path-tracer",
+  "mini-minecraft",
   "webgpu-clustered",
   "door",
 ];

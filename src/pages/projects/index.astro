@@ -103,7 +103,7 @@ const projects = (await getCollection("projects"))
 
                 {isWide ?
                   <Fragment>
-                    <div class="grid grid-cols-2 grid-rows-[auto_auto] gap-x-pad-2 gap-y-4">
+                    <div class="contents sm:grid sm:grid-cols-2 sm:grid-rows-[repeat(3,min-content)] sm:gap-x-pad-2 xl:grid-rows-[auto_auto] xl:gap-y-4">
                       <ProjectCover
                         id={id}
                         cover={cover}
@@ -112,33 +112,39 @@ const projects = (await getCollection("projects"))
                             { small: true }
                           : null
                         }
-                        class="overflow-hidden rounded-lg"
+                        class="mb-pad overflow-hidden rounded-lg sm:row-span-3 sm:mb-0 xl:row-span-1"
                       />
 
-                      <div class="space-y-pad">
-                        <h2 class="text-2xl leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                      <div class="space-y-1 sm:row-span-2 md:space-y-pad xl:row-span-1">
+                        <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover md:text-xl lg:text-2xl">
                           {name}
                         </h2>
-                        <p class="text-lg">{blurb}</p>
+                        <p class="hidden sm:block md:text-lg lg:text-base xl:text-lg">
+                          {blurb}
+                        </p>
                       </div>
 
-                      <div class="space-y-0.5">
-                        <h3 class="leading-none font-bold text-link-secondary transition-colors group-hover:text-link-secondary-hover">
+                      <div class="row-span-1 mt-1 flex flex-col gap-y-1 self-end *:leading-none *:transition-colors sm:mt-4 xl:col-span-2 xl:col-start-auto xl:row-start-auto xl:mt-0 xl:grid xl:grid-cols-subgrid xl:grid-rows-2">
+                        <h3
+                          aria-hidden="true"
+                          class="hidden font-bold text-link-secondary group-hover:text-link-secondary-hover xl:block"
+                        >
                           Made with
                         </h3>
-                        <TechList
-                          tech={tech}
-                          class="text-subtitle transition-colors group-hover:text-inherit"
-                        />
-                      </div>
-
-                      <div class="space-y-0.5">
-                        <h3 class="leading-none font-bold text-link-secondary transition-colors group-hover:text-link-secondary-hover">
+                        <h3
+                          aria-hidden="true"
+                          class="hidden font-bold text-link-secondary group-hover:text-link-secondary-hover xl:block"
+                        >
                           Date
                         </h3>
+
+                        <TechList
+                          tech={tech}
+                          class="text-subtitle group-hover:text-inherit"
+                        />
                         <ContentDate
                           date={date}
-                          class="text-subtitle transition-colors group-hover:text-inherit"
+                          class="hidden text-subtitle group-hover:text-inherit sm:block"
                         />
                       </div>
                     </div>
