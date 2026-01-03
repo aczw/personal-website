@@ -5,10 +5,8 @@ import { SquareArrowRightIcon } from "@lucide/astro";
 
 import ProjectCover from "@/components/project-cover.astro";
 import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
-import MainLayout from "@/layouts/main-layout.astro";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
-import GridSection from "@/components/grid-section.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import RoutesGrid from "@/components/routes-grid.astro";
 import Eye from "@/components/eye.astro";
@@ -77,7 +75,7 @@ const projects = (await getCollection("projects"))
         class="grid grid-cols-1 border-t-(length:--border-w) border-l-(length:--border-w) border-style sm:grid-cols-2 xl:grid-cols-3"
       >
         {
-          projects.map(({ id, data }, index) => {
+          projects.map(({ id, data }) => {
             const { name, cover, metadata, blurb } = data;
             const { tech, date } = metadata;
             const isWide = WIDE_PROJECTS.includes(id);
@@ -87,8 +85,8 @@ const projects = (await getCollection("projects"))
                 aria-label={name}
                 href={`/projects/${id}`}
                 class:list={[
-                  "group block space-y-pad border-r-(length:--border-w) border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line",
-                  isWide ? "col-span-2" : "col-span-1",
+                  "group col-span-1 block space-y-pad border-r-(length:--border-w) border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line",
+                  isWide ? "sm:col-span-2" : null,
                 ]}
               >
                 <p class="flex items-center justify-between gap-x-pad">
@@ -105,7 +103,7 @@ const projects = (await getCollection("projects"))
 
                 {isWide ?
                   <Fragment>
-                    <div class="grid grid-cols-2 gap-x-pad-2">
+                    <div class="grid grid-cols-2 grid-rows-[auto_auto] gap-x-pad-2 gap-y-4">
                       <ProjectCover
                         id={id}
                         cover={cover}
@@ -114,7 +112,7 @@ const projects = (await getCollection("projects"))
                             { small: true }
                           : null
                         }
-                        class="w-full grow overflow-hidden rounded-lg"
+                        class="overflow-hidden rounded-lg"
                       />
 
                       <div class="space-y-pad">
@@ -123,20 +121,25 @@ const projects = (await getCollection("projects"))
                         </h2>
                         <p class="text-lg">{blurb}</p>
                       </div>
-                    </div>
 
-                    <div class="grid grid-cols-2 gap-x-pad-2">
-                      <div class="space-y-1">
-                        <h3 class="text-lg leading-none font-bold text-link-primary">
+                      <div class="space-y-0.5">
+                        <h3 class="leading-none font-bold text-link-secondary transition-colors group-hover:text-link-secondary-hover">
                           Made with
                         </h3>
-                        <TechList tech={tech} class="text-subtitle" />
+                        <TechList
+                          tech={tech}
+                          class="text-subtitle transition-colors group-hover:text-inherit"
+                        />
                       </div>
-                      <div class="space-y-1 leading-none">
-                        <h3 class="text-lg leading-none font-bold text-link-primary">
+
+                      <div class="space-y-0.5">
+                        <h3 class="leading-none font-bold text-link-secondary transition-colors group-hover:text-link-secondary-hover">
                           Date
                         </h3>
-                        <ContentDate date={date} class="text-subtitle" />
+                        <ContentDate
+                          date={date}
+                          class="text-subtitle transition-colors group-hover:text-inherit"
+                        />
                       </div>
                     </div>
                   </Fragment>
@@ -152,7 +155,7 @@ const projects = (await getCollection("projects"))
                       class="mb-pad overflow-hidden rounded-lg"
                     />
 
-                    <div class="space-y-1">
+                    <div class="space-y-1 xl:pt-1">
                       <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
                         {name}
                       </h2>
