@@ -12,7 +12,7 @@ metadata:
 cover:
   img: cuda-path-tracer.png
   alt: A glass Stanford dragon is placed on a checkerboard floor, surrounded by pink, white, and yellow walls. A pair of cyan-tinted mirrors reflects the scene infinitely.
-order: 1
+order: 4
 
 slug: cuda-path-tracer
 ---
@@ -142,7 +142,7 @@ After adding it, obviously I had to test this material out on the classics.
   > Tip: try clicking on an image to enlarge it!
 </div>
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
   <figure>
     ![](renders/diffuse/sphere-800x800-5000.png)
     <figcaption>800×800 / 5000 samples</figcaption>
@@ -210,7 +210,7 @@ We will combine them both later to create dielectrics.
 
 First, complete reflection.
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
   <figure>
     ![](renders/perf-spec-dielectric/pure_reflection-800x800-5000.png)
     <figcaption>800×800 / 5000 samples</figcaption>
@@ -248,7 +248,7 @@ Second, there are cases where the incident angle is so large that a refraction a
 
 Keeping these two things in mind, we can get transmission working.
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
   <figure>
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.0.png)
     <figcaption>800×800 / 5000 samples / IOR 1.0</figcaption>
@@ -271,7 +271,7 @@ To make our path tracing a little easier (and to piggyback off of the wonders of
 
 What should the probability be? A simple solution is to set it to 50/50. However, this wouldn't result in an accurate physical render because we're not considering the Fresnel coefficients that dictate how much light is reflected and refracted at an intersection.
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
   <figure>
     ![](fresnel-half-half.png)
     <figcaption>800×800 / 3000 samples / IOR 1.55</figcaption>
@@ -429,7 +429,7 @@ ray.direction = glm::normalize(focus - ray.origin);
 
 With that, we get DOF!
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
   <figure>
     ![](renders/dof/dof-800x800-5000-12-bunny.png)
     <figcaption>800×800 / 5000 samples / 12 depth </figcaption>
@@ -483,7 +483,7 @@ A mesh is just a giant list of triangles that encompass it. Since the primitives
 
 My first implementation was simple and naive. For each triangle in the mesh, we perform a ray-triangle intersection test. If successful, we calculate intersection terms and return early. However, this logic is incorrect because it may not necesarily return the intersection with the _smallest_ `t` value.
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
   <figure>
     ![](not-taking-t-min.png)
     <figcaption>Not taking the minimum `t` value</figcaption>
@@ -638,7 +638,7 @@ By grouping paths with the same materials together, they all benefit from the ca
 
 Here are some failed renders that I thought looked pretty cool.
 
-<div class="grid grid-cols-1 gap-pad 480:grid-cols-2">
+<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
   <figure>
     ![](bloopers/cornell.2025-09-23_00-10-10z.3978samp.png)
     <figcaption>The seed for my random number generator was off</figcaption>

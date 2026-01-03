@@ -1,22 +1,10 @@
 ---
 import { getCollection } from "astro:content";
 
-import {
-  BoxesIcon,
-  InfoIcon,
-  SquareArrowRightIcon,
-  SquareMousePointerIcon,
-  SquareDashedMousePointerIcon,
-  FeatherIcon,
-  ToolCaseIcon,
-} from "@lucide/astro";
+import { SquareArrowRightIcon } from "@lucide/astro";
 
 import ProjectCover from "@/components/project-cover.astro";
-import {
-  DISABLED_PROJECTS,
-  WIDE_PROJECTS,
-  ICON_SIZE,
-} from "@/scripts/constants";
+import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import MainLayout from "@/layouts/main-layout.astro";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
@@ -25,7 +13,8 @@ import BaseLayout from "@/layouts/base-layout.astro";
 import RoutesGrid from "@/components/routes-grid.astro";
 import Eye from "@/components/eye.astro";
 
-const withVideos: string[] = [
+const WIDE_PROJECTS = ["racecar", "cuda-path-tracer"];
+const PROJECTS_WITH_VIDEOS = [
   "cuda-path-tracer",
   "pbr-renderer",
   "cuda-boids",
@@ -35,26 +24,12 @@ const withVideos: string[] = [
 const projects = (await getCollection("projects"))
   .filter((project) => !DISABLED_PROJECTS.includes(project.id))
   .sort((a, b) => a.data.order - b.data.order);
-
-// Find the index of the first project belonging to the last row of
-// the grid. This changes depending on the number of columns in the layout
-const lastRowStartIndex = {
-  oneColumn: projects.length - 1,
-  twoColumn: projects.length - (projects.length % 2 === 0 ? 2 : 1),
-  threeColumn:
-    projects.length -
-    (projects.length % 3 === 0 ? 3
-    : projects.length % 3 === 2 ? 2
-    : 1),
-};
-
-console.log(lastRowStartIndex);
 ---
 
 <BaseLayout
   meta={{
     kind: "route",
-    title: "Projects",
+    title: "Portfolio",
     description:
       "Projects mostly revolving around computer graphics, game development, and some art on the side.",
     ogImageParams: "Graphics programming, games, and sometimes art.",
@@ -103,14 +78,17 @@ console.log(lastRowStartIndex);
       >
         {
           projects.map(({ id, data }, index) => {
-            const { name, cover, metadata } = data;
+            const { name, cover, metadata, blurb } = data;
             const { tech, date } = metadata;
+            const isWide = WIDE_PROJECTS.includes(id);
 
             return (
               <a
+                aria-label={name}
                 href={`/projects/${id}`}
                 class:list={[
-                  "group space-y-pad border-r-(length:--border-w) border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line",
+                  "group block space-y-pad border-r-(length:--border-w) border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line",
+                  isWide ? "col-span-2" : "col-span-1",
                 ]}
               >
                 <p class="flex items-center justify-between gap-x-pad">
@@ -125,23 +103,67 @@ console.log(lastRowStartIndex);
                   />
                 </p>
 
-                <ProjectCover
-                  id={id}
-                  cover={cover}
-                  useVideo={withVideos.includes(id) ? { small: true } : null}
-                  class="mb-pad overflow-hidden rounded-lg"
-                />
+                {isWide ?
+                  <Fragment>
+                    <div class="grid grid-cols-2 gap-x-pad-2">
+                      <ProjectCover
+                        id={id}
+                        cover={cover}
+                        useVideo={
+                          PROJECTS_WITH_VIDEOS.includes(id) ?
+                            { small: true }
+                          : null
+                        }
+                        class="w-full grow overflow-hidden rounded-lg"
+                      />
 
-                <div class="space-y-1">
-                  <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                    {name}
-                  </h2>
+                      <div class="space-y-pad">
+                        <h2 class="text-2xl leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                          {name}
+                        </h2>
+                        <p class="text-lg">{blurb}</p>
+                      </div>
+                    </div>
 
-                  <TechList
-                    tech={tech}
-                    class="text-subtitle transition-colors group-hover:text-link-secondary-hover"
-                  />
-                </div>
+                    <div class="grid grid-cols-2 gap-x-pad-2">
+                      <div class="space-y-1">
+                        <h3 class="text-lg leading-none font-bold text-link-primary">
+                          Made with
+                        </h3>
+                        <TechList tech={tech} class="text-subtitle" />
+                      </div>
+                      <div class="space-y-1 leading-none">
+                        <h3 class="text-lg leading-none font-bold text-link-primary">
+                          Date
+                        </h3>
+                        <ContentDate date={date} class="text-subtitle" />
+                      </div>
+                    </div>
+                  </Fragment>
+                : <Fragment>
+                    <ProjectCover
+                      id={id}
+                      cover={cover}
+                      useVideo={
+                        PROJECTS_WITH_VIDEOS.includes(id) ?
+                          { small: true }
+                        : null
+                      }
+                      class="mb-pad overflow-hidden rounded-lg"
+                    />
+
+                    <div class="space-y-1">
+                      <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                        {name}
+                      </h2>
+
+                      <TechList
+                        tech={tech}
+                        class="text-subtitle transition-colors group-hover:text-link-secondary-hover"
+                      />
+                    </div>
+                  </Fragment>
+                }
               </a>
             );
           })

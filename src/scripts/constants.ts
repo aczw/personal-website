@@ -40,13 +40,6 @@ const DISABLED_PROJECTS = [
   "glsl-path-tracer",
   "rcw",
 ];
-const WIDE_PROJECTS = [
-  "cuda-path-tracer",
-  "door",
-  "pbr-renderer",
-  "catanks",
-  "rcw",
-];
 
 /**
  * Corresponds to CSS var(--color-sweater-1).
@@ -126,7 +119,6 @@ export {
   VALID_MONTHS,
   HOMEPAGE_PROJECTS,
   DISABLED_PROJECTS,
-  WIDE_PROJECTS,
   SWEATER_1,
   SWEATER_3,
   SWEATER_8,
