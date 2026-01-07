@@ -45,9 +45,10 @@ function initializePanel(dither: Dither): Panel {
   const container = document.createElement("div");
   container.id = "panel-container";
   container.style.position = "absolute";
-  container.style.top = "var(--spacing-pad)";
-  container.style.right = "var(--spacing-pad)";
+  container.style.bottom = "var(--spacing-pad-2)";
+  container.style.right = "var(--spacing-pad-2)";
   container.style.width = "275px";
+  container.style.zIndex = "2";
   // Assumes these Tailwind classes are used somewhere else, otherwise they
   // won't be generated and this won't work.
   container.classList.add("hidden", "md:block");
