@@ -94,16 +94,14 @@
     scrollbar-gutter: stable;
 
     &::selection {
-      background-color: var(--color-sweater-8);
-      color: var(--color-sweater-2);
+      @apply bg-sweater-8 text-sweater-2;
     }
 
     @variant not-dark {
       @apply bg-sweater-1 text-sweater-10;
 
       &::selection {
-        background-color: var(--color-sweater-2);
-        color: var(--color-sweater-8);
+        @apply bg-sweater-2 text-sweater-8;
       }
     }
   }
@@ -147,23 +145,6 @@
       &::selection {
         background-color: var(--color-sweater-2);
       }
-    }
-  }
-}
-
-/* Related to the grid column layout. */
-@layer base {
-  :root {
-    /* Minimum width of any content on the two sides of the center content. */
-    --side-w: 325px;
-
-    /* Template columns that achieves a maximum of 2 columns at full width: one 
-     * left sidebar, and main content. It begins as a single column. */
-    --gtc-max-2: 1fr;
-
-    /* Expands to full 2-column layout. */
-    @variant lg {
-      --gtc-max-2: var(--side-w) minmax(0px, 1fr);
     }
   }
 }

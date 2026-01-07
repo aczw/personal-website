@@ -14,7 +14,6 @@ import { ICON_SIZE } from "@/scripts/constants";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 import ContentDate from "@/components/content-date.astro";
 import Eye from "@/components/eye.astro";
-import RoutesGrid from "@/components/routes-grid.astro";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -39,7 +38,7 @@ const projects = await getEntries(
     class="mx-auto grid max-w-[800px] grid-cols-1 overflow-x-hidden desktop:grid-cols-2 desktop:gap-x-pad"
   >
     <header class="space-y-pad px-pad-2 pt-pad-2 font-bold">
-      <h1 class="space-y-0.5">
+      <a href="/" class="block space-y-0.5">
         <Eye
           aria-hidden="true"
           class="size-6 fill-sweater-5 not-dark:fill-sweater-6"
@@ -50,10 +49,10 @@ const projects = await getEntries(
         >
           Charles Wang
         </span>
-      </h1>
+      </a>
 
       <nav
-        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad *:flex *:items-center *:justify-between *:gap-x-pad *:text-xl *:leading-none *:text-link-primary"
+        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad *:flex *:items-center *:justify-between *:gap-x-pad *:text-xl *:leading-[1.1] *:text-link-primary"
       >
         <a href="/projects">
           Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
@@ -73,9 +72,72 @@ const projects = await getEntries(
     </header>
 
     <main
-      class="absolute inset-x-pad-2 bottom-pad-2 z-1 rounded-2xl bg-sweater-10 p-pad"
+      class="group absolute inset-x-pad-2 bottom-pad-2 z-1 overflow-hidden rounded-2xl bg-sweater-10 transition-colors hover:bg-[color-mix(in_srgb,var(--color-sweater-9),var(--color-sweater-10))]"
     >
-      Main
+      <div
+        id="video-progress"
+        role="progressbar"
+        aria-valuemin="0.0"
+        aria-valuemax="1.0"
+        aria-valuenow="0.0"
+        class="absolute inset-0 -z-1 origin-left bg-[color-mix(in_srgb,var(--color-sweater-9)_75%,var(--color-sweater-10))] transition-colors group-hover:bg-sweater-9"
+        style="transform: scaleX(0.0);"
+      >
+      </div>
+
+      {
+        projects.map(({ id, data: { name, metadata } }, index) => (
+          <a
+            href={`/projects/${id}`}
+            class="hidden gap-x-pad p-pad data-[playing=true]:flex"
+            data-project-id={id}
+            data-playing={index === 0 ? "true" : "false"}
+            data-umami-event="homepage-project-showcase"
+            data-umami-event-id={id}
+          >
+            <div class="grow">
+              <p class="mb-0.5 label text-sweater-5 not-dark:text-sweater-6">
+                Project
+              </p>
+
+              <h2 class="text-xl leading-tight font-bold text-sweater-2 transition-colors group-hover:text-link-primary-hover">
+                {name}
+              </h2>
+              <ContentDate date={metadata.date} />
+            </div>
+
+            <SquareArrowRightIcon
+              size={ICON_SIZE}
+              class="shrink-0 stroke-icon"
+            />
+          </a>
+        ))
+      }
+
+      <button
+        id="toggle-panel"
+        class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 md:block"
+        data-state="closed"
+        data-umami-event="toggle-panel-button"
+      >
+        <span
+          class="flex items-center justify-between gap-pad transition-transform ease-in-out group-active:scale-98"
+        >
+          <span class="hidden group-data-[state=open]:contents">
+            Hide panel <SquareDashedMousePointerIcon
+              size={ICON_SIZE}
+              class="stroke-icon transition-transform"
+            />
+          </span>
+
+          <span class="hidden group-data-[state=closed]:contents">
+            Show panel <SquareMousePointerIcon
+              size={ICON_SIZE}
+              class="stroke-icon transition-transform"
+            />
+          </span>
+        </span>
+      </button>
     </main>
   </div>
 
@@ -86,110 +148,6 @@ const projects = await getEntries(
       class="pointer-events-none h-[calc(100svh-128.88px-var(--spacing)*5)] w-full overflow-hidden rounded-3xl transition-opacity duration-1500 ease-out desktop:h-lvh"
       style="opacity: 0;"></canvas>
   </div>
-
-  <main
-    hidden
-    class="h-svh flex-col justify-end-safe overflow-hidden p-pad leading-none desktop:grid desktop:grid-cols-(--gtc-max-2) desktop:justify-normal"
-  >
-    <section
-      class="space-y-pad *:rounded-lg *:bg-sweater-10 *:p-pad *:not-dark:bg-sweater-1 desktop:max-w-(--side-w)"
-    >
-      <div class="space-y-pad">
-        <h1 class="cursor-default space-y-0.5">
-          <Eye
-            aria-hidden="true"
-            class="peer size-6 fill-sweater-5 transition-[rotate_fill] not-dark:fill-sweater-6 hover:-rotate-13 hover:fill-sweater-4 not-dark:hover:fill-sweater-7"
-          />
-
-          <span
-            class="text-3xl leading-none font-bold text-sweater-5 transition-colors not-dark:text-sweater-6 peer-hover:text-sweater-4 not-dark:peer-hover:text-sweater-7"
-          >
-            Charles Wang
-          </span>
-        </h1>
-
-        <nav><RoutesGrid /></nav>
-      </div>
-
-      <div class="space-y-pad">
-        <div class="flex items-center gap-pad">
-          <progress
-            aria-label="Video progress"
-            max="1"
-            class="h-2 w-1/2 appearance-none overflow-hidden rounded-full [&::-moz-progress-bar]:bg-sweater-7 not-dark:[&::-moz-progress-bar]:bg-sweater-4 [&::-webkit-progress-bar]:bg-sweater-9 not-dark:[&::-webkit-progress-bar]:bg-sweater-2 [&::-webkit-progress-value]:bg-sweater-7 not-dark:[&::-webkit-progress-value]:bg-sweater-4"
-          ></progress>
-
-          <p
-            id="video-status"
-            class="relative w-1/2 cursor-default text-right label text-subtitle"
-          >
-            <span class="absolute right-0 inline-block w-fit animate-pulse">
-              Please wait
-            </span>
-            <span aria-hidden="true" class="inline-block" style="opacity: 0;">
-              Now playing
-            </span>
-          </p>
-        </div>
-
-        <div class="bordered">
-          {
-            projects.map(({ id, data: { name, metadata } }, index) => (
-              <a
-                href={`/projects/${id}`}
-                class="group hidden gap-x-pad border-style p-pad transition-colors hover:bg-line data-[playing=true]:flex md:border-b-(length:--border-w)"
-                data-project-id={id}
-                data-playing={index === 0 ? "true" : "false"}
-                data-umami-event="homepage-project-showcase"
-                data-umami-event-id={id}
-              >
-                <div class="grow">
-                  <p class="mb-pad label text-sweater-5 not-dark:text-sweater-6 data-[status=loading]:animate-pulse">
-                    Project
-                  </p>
-
-                  <h2 class="mb-1 text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                    {name}
-                  </h2>
-                  <ContentDate date={metadata.date} class="text-subtitle" />
-                </div>
-
-                <SquareArrowRightIcon
-                  size={ICON_SIZE}
-                  class="shrink-0 stroke-icon"
-                />
-              </a>
-            ))
-          }
-
-          <button
-            id="toggle-panel"
-            class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 md:block"
-            data-state="closed"
-            data-umami-event="toggle-panel-button"
-          >
-            <span
-              class="flex items-center justify-between gap-pad transition-transform ease-in-out group-active:scale-98"
-            >
-              <span class="hidden group-data-[state=open]:contents">
-                Hide panel <SquareDashedMousePointerIcon
-                  size={ICON_SIZE}
-                  class="stroke-icon transition-transform"
-                />
-              </span>
-
-              <span class="hidden group-data-[state=closed]:contents">
-                Show panel <SquareMousePointerIcon
-                  size={ICON_SIZE}
-                  class="stroke-icon transition-transform"
-                />
-              </span>
-            </span>
-          </button>
-        </div>
-      </div>
-    </section>
-  </main>
 </BaseLayout>
 
 <script>
@@ -353,7 +311,7 @@ const projects = await getEntries(
     });
 
     /**
-     * Assumes we have more than one video. Come on. Otherwise it's boring
+     * Assumes we have more than one video. Otherwise it's boring.
      */
     const transitionToNextVideo = (currentIndex: number): number => {
       const getNextIndex = (currentIndex: number) => {
@@ -432,7 +390,7 @@ const projects = await getEntries(
       elt.dataset["state"] = isHidden ? "closed" : "open";
     });
 
-    const progressBarElt = document.querySelector("progress")!;
+    const videoProgressBar = document.getElementById("video-progress")!;
 
     // The rate at which the current video updates (usually <= 60 FPS) is
     // usually slower than the screen's refresh rate. To prevent expensive
@@ -440,9 +398,12 @@ const projects = await getEntries(
     const onVideoFrameUpdate: VideoFrameRequestCallback = () => {
       panel?.fpsGraphs.video.begin();
 
-      const progress =
-        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0;
-      progressBarElt.value = saturate(progress);
+      const progress = saturate(
+        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0,
+      );
+
+      videoProgressBar.style.transform = `scaleX(${progress})`;
+      videoProgressBar.setAttribute("aria-valuenow", progress.toString());
 
       gl.texImage2D(
         gl.TEXTURE_2D,
@@ -459,38 +420,6 @@ const projects = await getEntries(
 
     // Handle first frame load
     currVideo.requestVideoFrameCallback((now, metadata) => {
-      const videoStatusElt = document.getElementById("video-status")!;
-      const pleaseWaitElt = videoStatusElt.children[0]!;
-      const nowPlayingElt = videoStatusElt.children[1]!;
-
-      const keyframes: Keyframe[] = [
-        { opacity: 0, filter: "blur(var(--blur-xs))", scale: 0.4 },
-        { opacity: 1, filter: "blur(0px)", scale: 1 },
-      ];
-
-      const opts: KeyframeAnimationOptions = {
-        duration: 600,
-        // https://easings.net/#easeInOutQuart
-        easing: "cubic-bezier(0.76, 0, 0.24, 1)",
-        fill: "forwards",
-      };
-
-      // Animate transition
-      nowPlayingElt.removeAttribute("aria-hidden");
-      nowPlayingElt
-        .animate(keyframes, opts)
-        .addEventListener("finish", (ev) => {
-          const animation = ev.currentTarget as Animation;
-          animation.commitStyles();
-          animation.cancel();
-        });
-      pleaseWaitElt
-        .animate(keyframes, { ...opts, direction: "reverse" })
-        .addEventListener("finish", (ev) => {
-          (ev.currentTarget as Animation).commitStyles();
-          pleaseWaitElt.remove();
-        });
-
       canvas.style.opacity = "1";
       onVideoFrameUpdate(now, metadata);
     });
