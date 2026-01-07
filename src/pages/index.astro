@@ -35,24 +35,26 @@ const projects = await getEntries(
   }}
 >
   <div
-    class="mx-auto grid max-w-[800px] grid-cols-1 overflow-x-hidden desktop:grid-cols-2 desktop:gap-x-pad"
+    class="z-1 flex flex-col items-center-safe gap-y-pad overflow-x-hidden desktop:absolute desktop:inset-0"
   >
-    <header class="space-y-pad px-pad-2 pt-pad-2 font-bold">
-      <a href="/" class="block space-y-0.5">
+    <header
+      class="z-1 grid h-fit w-full grid-cols-1 gap-y-pad px-pad-2 pt-pad-2 font-bold desktop:mt-10 desktop:w-4/5 desktop:rounded-xl desktop:bg-sweater-10 desktop:p-pad desktop:not-dark:bg-sweater-1 sm:grid-cols-2 lg:w-[800px]"
+    >
+      <a href="/" class="group block space-y-0.5">
         <Eye
           aria-hidden="true"
-          class="size-6 fill-sweater-5 not-dark:fill-sweater-6"
+          class="size-6 fill-sweater-5 transition-[fill_rotate] not-dark:fill-sweater-6 group-hover:-rotate-13 group-hover:fill-sweater-4 not-dark:group-hover:fill-sweater-7"
         />
 
         <span
-          class="text-3xl leading-none text-sweater-5 not-dark:text-sweater-6"
+          class="text-3xl leading-none text-sweater-5 transition-colors not-dark:text-sweater-6 group-hover:text-sweater-4 not-dark:group-hover:text-sweater-7"
         >
           Charles Wang
         </span>
       </a>
 
       <nav
-        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad *:flex *:items-center *:justify-between *:gap-x-pad *:text-xl *:leading-[1.1] *:text-link-primary"
+        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad *:flex *:items-center *:justify-between *:gap-x-pad *:text-xl *:leading-[1.1] *:text-link-primary *:transition-colors *:hover:text-link-primary-hover sm:gap-y-1"
       >
         <a href="/projects">
           Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
@@ -72,7 +74,7 @@ const projects = await getEntries(
     </header>
 
     <main
-      class="group absolute inset-x-pad-2 bottom-pad-2 z-1 overflow-hidden rounded-2xl bg-sweater-10 transition-colors hover:bg-[color-mix(in_srgb,var(--color-sweater-9),var(--color-sweater-10))]"
+      class="group absolute inset-x-pad-2 bottom-pad-2 z-1 h-fit overflow-hidden rounded-2xl bg-sweater-10 transition-colors not-dark:bg-sweater-1 hover:bg-[color-mix(in_srgb,var(--color-sweater-9),var(--color-sweater-10))] not-dark:hover:bg-[color-mix(in_srgb,var(--color-sweater-1),var(--color-sweater-2))] desktop:relative desktop:inset-0 desktop:w-4/5 lg:w-[800px]"
     >
       <div
         id="video-progress"
@@ -80,7 +82,7 @@ const projects = await getEntries(
         aria-valuemin="0.0"
         aria-valuemax="1.0"
         aria-valuenow="0.0"
-        class="absolute inset-0 -z-1 origin-left bg-[color-mix(in_srgb,var(--color-sweater-9)_75%,var(--color-sweater-10))] transition-colors group-hover:bg-sweater-9"
+        class="absolute inset-0 -z-1 origin-left bg-[color-mix(in_srgb,var(--color-sweater-9)_var(--mix),var(--color-sweater-10))] transition-colors [--mix:75%] not-dark:bg-sweater-2 group-hover:bg-sweater-9 not-dark:group-hover:bg-[color-mix(in_srgb,var(--color-sweater-2)_var(--mix),var(--color-sweater-3))] desktop:[--mix:30%]"
         style="transform: scaleX(0.0);"
       >
       </div>
@@ -89,21 +91,24 @@ const projects = await getEntries(
         projects.map(({ id, data: { name, metadata } }, index) => (
           <a
             href={`/projects/${id}`}
-            class="hidden gap-x-pad p-pad data-[playing=true]:flex"
+            class="hidden gap-x-pad-2 p-pad data-[playing=true]:flex md:items-center"
             data-project-id={id}
             data-playing={index === 0 ? "true" : "false"}
             data-umami-event="homepage-project-showcase"
             data-umami-event-id={id}
           >
-            <div class="grow">
-              <p class="mb-0.5 label text-sweater-5 not-dark:text-sweater-6">
+            <div class="flex grow flex-col md:flex-row md:items-center md:gap-x-pad-2">
+              <p class="mb-0.5 label text-sweater-5 not-dark:text-sweater-6 desktop:text-mono md:mb-0">
                 Project
               </p>
 
-              <h2 class="text-xl leading-tight font-bold text-sweater-2 transition-colors group-hover:text-link-primary-hover">
+              <h2 class="text-xl leading-tight font-bold text-sweater-2 transition-colors not-dark:text-sweater-8 group-hover:text-link-primary-hover desktop:text-base">
                 {name}
               </h2>
-              <ContentDate date={metadata.date} />
+              <ContentDate
+                date={metadata.date}
+                class="group-hover:text-inherit md:text-subtitle md:transition-colors"
+              />
             </div>
 
             <SquareArrowRightIcon
@@ -113,39 +118,42 @@ const projects = await getEntries(
           </a>
         ))
       }
-
-      <button
-        id="toggle-panel"
-        class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 md:block"
-        data-state="closed"
-        data-umami-event="toggle-panel-button"
-      >
-        <span
-          class="flex items-center justify-between gap-pad transition-transform ease-in-out group-active:scale-98"
-        >
-          <span class="hidden group-data-[state=open]:contents">
-            Hide panel <SquareDashedMousePointerIcon
-              size={ICON_SIZE}
-              class="stroke-icon transition-transform"
-            />
-          </span>
-
-          <span class="hidden group-data-[state=closed]:contents">
-            Show panel <SquareMousePointerIcon
-              size={ICON_SIZE}
-              class="stroke-icon transition-transform"
-            />
-          </span>
-        </span>
-      </button>
     </main>
+
+    <button
+      id="toggle-panel"
+      hidden
+      class="group hidden w-full p-pad font-bold text-link-primary transition-colors hover:bg-line hover:text-link-primary-hover data-[state=open]:bg-line data-[state=open]:hover:bg-sweater-8/70 not-dark:data-[state=open]:hover:bg-sweater-3/70 md:block"
+      data-state="closed"
+      data-umami-event="toggle-panel-button"
+    >
+      <span
+        class="flex items-center justify-between gap-pad transition-transform ease-in-out group-active:scale-98"
+      >
+        <span class="hidden group-data-[state=open]:contents">
+          Hide panel <SquareDashedMousePointerIcon
+            size={ICON_SIZE}
+            class="stroke-icon transition-transform"
+          />
+        </span>
+
+        <span class="hidden group-data-[state=closed]:contents">
+          Show panel <SquareMousePointerIcon
+            size={ICON_SIZE}
+            class="stroke-icon transition-transform"
+          />
+        </span>
+      </span>
+    </button>
   </div>
 
-  <div class="p-pad">
+  <div
+    class="m-pad overflow-hidden rounded-3xl desktop:m-0 desktop:rounded-none"
+  >
     <canvas
       id="dither"
       aria-hidden="true"
-      class="pointer-events-none h-[calc(100svh-128.88px-var(--spacing)*5)] w-full overflow-hidden rounded-3xl transition-opacity duration-1500 ease-out desktop:h-lvh"
+      class="pointer-events-none h-[calc(100svh-132.63px-var(--spacing)*5)] w-full transition-opacity duration-1500 ease-out desktop:h-lvh"
       style="opacity: 0;"></canvas>
   </div>
 </BaseLayout>
