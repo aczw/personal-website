@@ -6,6 +6,8 @@ import {
   SquareMousePointerIcon,
   SquareDashedMousePointerIcon,
 } from "@lucide/astro";
+import { BoxesIcon, InfoIcon, FeatherIcon, ToolCaseIcon } from "@lucide/astro";
+import MusicIndicator from "@/components/music-indicator.astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
 import { ICON_SIZE } from "@/scripts/constants";
@@ -33,14 +35,61 @@ const projects = await getEntries(
       "Computer graphics student at the University of Pennsylvania.",
   }}
 >
-  <canvas
-    id="dither"
-    aria-hidden="true"
-    class="pointer-events-none absolute inset-0 -z-1 h-lvh w-full transition-opacity duration-1500 ease-out"
-    style="opacity: 0;"></canvas>
+  <div
+    class="mx-auto grid max-w-[800px] grid-cols-1 overflow-x-hidden desktop:grid-cols-2 desktop:gap-x-pad"
+  >
+    <header class="space-y-pad px-pad-2 pt-pad-2 font-bold">
+      <h1 class="space-y-0.5">
+        <Eye
+          aria-hidden="true"
+          class="size-6 fill-sweater-5 not-dark:fill-sweater-6"
+        />
+
+        <span
+          class="text-3xl leading-none text-sweater-5 not-dark:text-sweater-6"
+        >
+          Charles Wang
+        </span>
+      </h1>
+
+      <nav
+        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad *:flex *:items-center *:justify-between *:gap-x-pad *:text-xl *:leading-none *:text-link-primary"
+      >
+        <a href="/projects">
+          Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
+        </a>
+        <a href="/posts">
+          Writing <FeatherIcon size={ICON_SIZE} class="stroke-icon" />
+        </a>
+        <a href="/archive">
+          Archive <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
+        </a>
+        <a href="/about">
+          About <MusicIndicator server:defer>
+            <InfoIcon slot="fallback" size={ICON_SIZE} class="stroke-icon" />
+          </MusicIndicator>
+        </a>
+      </nav>
+    </header>
+
+    <main
+      class="absolute inset-x-pad-2 bottom-pad-2 z-1 rounded-2xl bg-sweater-10 p-pad"
+    >
+      Main
+    </main>
+  </div>
+
+  <div class="p-pad">
+    <canvas
+      id="dither"
+      aria-hidden="true"
+      class="pointer-events-none h-[calc(100svh-128.88px-var(--spacing)*5)] w-full overflow-hidden rounded-3xl transition-opacity duration-1500 ease-out desktop:h-lvh"
+      style="opacity: 0;"></canvas>
+  </div>
 
   <main
-    class="flex h-svh flex-col justify-end-safe overflow-hidden p-pad leading-none desktop:grid desktop:grid-cols-(--gtc-max-2) desktop:justify-normal"
+    hidden
+    class="h-svh flex-col justify-end-safe overflow-hidden p-pad leading-none desktop:grid desktop:grid-cols-(--gtc-max-2) desktop:justify-normal"
   >
     <section
       class="space-y-pad *:rounded-lg *:bg-sweater-10 *:p-pad *:not-dark:bg-sweater-1 desktop:max-w-(--side-w)"
