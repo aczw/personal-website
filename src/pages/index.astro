@@ -38,6 +38,7 @@ const projects = await getEntries(
   }}
 >
   <div
+    role="none"
     class="z-1 flex flex-col items-center-safe gap-y-pad overflow-x-hidden desktop:absolute desktop:inset-0"
   >
     <header
@@ -57,20 +58,20 @@ const projects = await getEntries(
       </h1>
 
       <nav
-        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad text-lg leading-none *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors *:hover:text-link-primary-hover sm:gap-y-1"
+        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad text-lg leading-none *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors **:stroke-icon *:hover:text-link-primary-hover sm:gap-y-1"
       >
         <a href="/projects">
-          Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
+          Portfolio <ToolCaseIcon aria-hidden="true" size={ICON_SIZE} />
         </a>
         <a href="/posts">
-          Writing <FeatherIcon size={ICON_SIZE} class="stroke-icon" />
+          Writing <FeatherIcon aria-hidden="true" size={ICON_SIZE} />
         </a>
         <a href="/archive">
-          Archive <BoxesIcon size={ICON_SIZE} class="stroke-icon" />
+          Archive <BoxesIcon aria-hidden="true" size={ICON_SIZE} />
         </a>
         <a href="/about">
           About <MusicIndicator server:defer>
-            <InfoIcon slot="fallback" size={ICON_SIZE} class="stroke-icon" />
+            <InfoIcon aria-hidden="true" slot="fallback" size={ICON_SIZE} />
           </MusicIndicator>
         </a>
       </nav>
@@ -86,9 +87,12 @@ const projects = await getEntries(
         <div
           id="video-progress"
           role="progressbar"
+          aria-live="off"
+          aria-label="Video progress"
           aria-valuemin="0.0"
           aria-valuemax="1.0"
           aria-valuenow="0.0"
+          aria-valuetext="0% finished"
           class="absolute inset-0 -z-1 origin-left bg-sweater-9 transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3"
           style="transform: scaleX(0.0);"
         >
@@ -96,17 +100,21 @@ const projects = await getEntries(
 
         {
           projects.map(({ id, data: { name, metadata } }, index) => (
-            <a
-              href={`/projects/${id}`}
-              class="hidden gap-x-pad-2 p-pad data-[playing=true]:flex md:items-center"
+            <div
+              class="relative hidden gap-x-pad-2 p-pad data-[playing=true]:flex md:items-center"
               data-project-id={id}
               data-playing={index === 0 ? "true" : "false"}
-              data-umami-event="homepage-project-showcase"
-              data-umami-event-id={id}
             >
               <div class="flex grow flex-col gap-y-1 *:leading-none md:flex-row md:items-center md:gap-x-pad-2">
                 <h2 class="text-lg font-bold text-link-primary transition-colors group-hover:text-link-primary-hover desktop:text-base">
-                  {name}
+                  <a
+                    href={`/projects/${id}`}
+                    class="after:absolute after:inset-0 after:z-1 after:rounded-2xl desktop:after:rounded-xl"
+                    data-umami-event="homepage-project-showcase"
+                    data-umami-event-id={id}
+                  >
+                    {name}
+                  </a>
                 </h2>
                 <ContentDate
                   date={metadata.date}
@@ -115,10 +123,11 @@ const projects = await getEntries(
               </div>
 
               <SquareArrowRightIcon
+                aria-hidden="true"
                 size={ICON_SIZE}
                 class="shrink-0 stroke-icon"
               />
-            </a>
+            </div>
           ))
         }
       </section>
@@ -134,6 +143,7 @@ const projects = await getEntries(
         >
           <span class="hidden group-data-[state=open]:contents">
             Hide panel <SquareDashedMousePointerIcon
+              aria-hidden="true"
               size={ICON_SIZE}
               class="stroke-icon"
             />
@@ -141,6 +151,7 @@ const projects = await getEntries(
 
           <span class="hidden group-data-[state=closed]:contents">
             Show panel <SquareMousePointerIcon
+              aria-hidden="true"
               size={ICON_SIZE}
               class="stroke-icon"
             />
@@ -415,6 +426,10 @@ const projects = await getEntries(
 
       videoProgressBar.style.transform = `scaleX(${progress})`;
       videoProgressBar.setAttribute("aria-valuenow", progress.toString());
+      videoProgressBar.setAttribute(
+        "aria-valuetext",
+        `${Math.round(progress * 100)}% finished`,
+      );
 
       gl.texImage2D(
         gl.TEXTURE_2D,
