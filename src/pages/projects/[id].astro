@@ -100,12 +100,14 @@ const { Content, headings } = await render(project);
   <main>
     <section
       aria-label="Project overview"
-      class="mx-auto max-w-[calc(1100px+var(--spacing-pad-4))] px-pad-2 pt-pad"
+      class="mx-auto mb-pad-2 max-w-[calc(1100px+var(--spacing-pad-4))] px-pad-2 pt-pad"
     >
-      <div class="mx-auto mb-pad-2 max-w-(--header-w) space-y-pad-2">
+      <div
+        class="mx-auto mb-pad-2 max-w-[calc(80%+var(--spacing-pad-2)-(2*var(--border-w)))] lg:max-w-(--header-w)"
+      >
         <!-- <h2 class="text-2xl leading-none font-bold text-sweater-2">Overview</h2> -->
 
-        <!-- <p class="max-w-[525px]">{blurb}</p> -->
+        <!-- <p class="max-w-(--content-w)">{blurb}</p> -->
 
         <dl
           class="-mx-pad-2 grid grid-cols-4 bordered px-pad-2 py-pad *:space-y-1 **:leading-none"
@@ -133,7 +135,7 @@ const { Content, headings } = await render(project);
         id={id}
         cover={cover}
         useVideo={{ small: false }}
-        class="mb-pad-4 overflow-hidden rounded-lg"
+        class="overflow-hidden rounded-lg"
       />
     </section>
 

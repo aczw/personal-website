@@ -63,9 +63,6 @@
     --header-w: 700px;
     --real-header-w: calc(var(--header-w) + var(--spacing-pad-2));
 
-    /* Results in roughly 80 characters per line. */
-    --content-w: 550px;
-
     --line: var(--color-sweater-9);
     --link-primary: var(--color-sweater-3);
     --link-primary-hover: var(--color-sweater-1);
