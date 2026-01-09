@@ -30,20 +30,20 @@ const description =
     kind: "route",
     title: "Portfolio",
     description,
-    ogImageParams: "Graphics programming, games, and sometimes art.",
+    ogImageParams: description,
   }}
 >
   <Header links={[]} description={description} maxColumns={2}>
     <Fragment slot="title">
       Portfolio <ToolCaseIcon
         aria-hidden="true"
-        class="stroke-icon md:size-9"
+        class="stroke-icon md:size-8"
       />
     </Fragment>
   </Header>
 
   <main
-    class="mx-auto grid max-w-[calc(1300px+var(--spacing-pad-4))] grid-cols-1 gap-y-pad-4 p-pad-2 sm:mt-pad-2 sm:grid-cols-2 sm:gap-y-0"
+    class="mx-auto grid max-w-[calc(1200px+var(--spacing-pad-4))] grid-cols-1 gap-y-pad-4 p-pad-2 sm:grid-cols-2 sm:gap-y-0"
   >
     {
       projects.map(({ id, data: { name, blurb, metadata, cover } }) => (
@@ -55,12 +55,12 @@ const description =
             id={id}
             cover={cover}
             useVideo={WITH_VIDEOS.includes(id) ? { small: true } : null}
-            class="mb-3.5 overflow-hidden rounded-2xl"
+            class="mb-3.5 overflow-hidden rounded-xl"
           />
 
           <h2
             id={id}
-            class="mb-2 flex items-center justify-between text-xl leading-[1.1] font-bold text-link-primary transition-colors group-hover:text-link-primary-hover sm:text-2xl lg:mb-1"
+            class="mb-1 flex items-center justify-between text-lg leading-[1.1] font-bold text-link-primary transition-colors group-hover:text-link-primary-hover sm:text-2xl"
           >
             <a
               href={`/projects/${id}`}
@@ -76,14 +76,12 @@ const description =
             />
           </h2>
 
-          <div class="mb-1.5 grid grid-cols-1 gap-x-pad gap-y-1.5 *:text-link-secondary *:transition-colors *:group-hover:text-link-secondary-hover sm:mb-pad sm:text-lg lg:grid-cols-2">
+          <div class="mb-1 grid grid-cols-1 gap-x-pad gap-y-1.5 *:text-link-secondary *:transition-colors *:group-hover:text-link-secondary-hover sm:mb-pad md:text-lg lg:grid-cols-2">
             <ContentDate date={metadata.date} class="leading-none" />
             <TechList tech={metadata.tech} class="*:leading-none" />
           </div>
 
-          <p class="hidden transition-colors group-hover:text-inherit desktop:[display:inherit]">
-            {blurb}
-          </p>
+          <p class="hidden desktop:[display:inherit]">{blurb}</p>
         </section>
       ))
     }

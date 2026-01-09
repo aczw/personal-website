@@ -19,7 +19,7 @@ const { links, description, maxColumns } = Astro.props;
     { "gap-x-pad-2 sm:grid-cols-2 lg:gap-x-pad-4": maxColumns === 2 },
   ]}
 >
-  <div class="space-y-1.5">
+  <div class="space-y-0.75">
     <nav class="flex items-start gap-x-1.5 font-bold *:leading-[0.8]">
       <a href="/" title="Home" class="block">
         <Eye
@@ -28,7 +28,7 @@ const { links, description, maxColumns } = Astro.props;
         />
       </a>
 
-      <Slash class="text-[2rem]" />
+      <Slash class="text-[1.9rem]" />
 
       {
         links.map(({ href, text }) => (
@@ -39,7 +39,7 @@ const { links, description, maxColumns } = Astro.props;
             >
               {text}
             </a>
-            <Slash class="text-[2rem]" />
+            <Slash class="text-[1.9rem]" />
           </>
         ))
       }
@@ -52,7 +52,7 @@ const { links, description, maxColumns } = Astro.props;
     </h1>
   </div>
 
-  <p class:list={["self-end-safe", { "max-w-[500px]": maxColumns === 1 }]}>
+  <p class:list={["self-end-safe", { "max-w-125": maxColumns === 1 }]}>
     {description}
   </p>
 </header>
