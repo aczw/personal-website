@@ -57,7 +57,7 @@ const projects = await getEntries(
       </h1>
 
       <nav
-        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad *:flex *:items-center *:justify-between *:gap-x-pad *:text-lg *:leading-none *:text-link-primary *:transition-colors *:hover:text-link-primary-hover sm:gap-y-1"
+        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad text-lg leading-none *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors *:hover:text-link-primary-hover sm:gap-y-1"
       >
         <a href="/projects">
           Portfolio <ToolCaseIcon size={ICON_SIZE} class="stroke-icon" />
@@ -104,8 +104,8 @@ const projects = await getEntries(
               data-umami-event="homepage-project-showcase"
               data-umami-event-id={id}
             >
-              <div class="flex grow flex-col md:flex-row md:items-center md:gap-x-pad-2">
-                <h2 class="text-xl leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover desktop:text-base">
+              <div class="flex grow flex-col gap-y-1 *:leading-none md:flex-row md:items-center md:gap-x-pad-2">
+                <h2 class="text-lg font-bold text-link-primary transition-colors group-hover:text-link-primary-hover desktop:text-base">
                   {name}
                 </h2>
                 <ContentDate
@@ -125,7 +125,7 @@ const projects = await getEntries(
 
       <button
         id="toggle-panel"
-        class="group hidden w-35 rounded-xl bg-sweater-10 p-pad font-bold text-link-primary transition-colors not-dark:bg-sweater-1 hover:bg-sweater-9 hover:text-link-primary-hover not-dark:hover:bg-sweater-2 data-[state=open]:bg-sweater-9 data-[state=open]:hover:bg-sweater-8 not-dark:data-[state=open]:hover:bg-sweater-3 md:flex md:shrink-0"
+        class="group hidden w-35 rounded-xl bg-sweater-10 p-pad leading-none transition-colors not-dark:bg-sweater-1 hover:bg-sweater-9 not-dark:hover:bg-sweater-2 data-[state=open]:bg-sweater-9 data-[state=open]:hover:bg-sweater-8 not-dark:data-[state=open]:hover:bg-sweater-3 md:flex md:shrink-0"
         data-state="closed"
         data-umami-event="toggle-panel-button"
       >

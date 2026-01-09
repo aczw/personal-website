@@ -1,11 +1,11 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import type { ContentDateType } from "@/scripts/types";
+import type { ContentDate } from "@/scripts/types";
 import { getDateKind } from "@/scripts/util";
 
 type Props = HTMLAttributes<"p"> & {
-  date: ContentDateType;
+  date: ContentDate;
 };
 
 const { date, ...props } = Astro.props;
