@@ -10,7 +10,7 @@ import ContentDate from "@/components/content-date.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import Eye from "@/components/eye.astro";
 
-const PROJECTS_WITH_VIDEOS = [
+const WITH_VIDEOS = [
   // "racecar",
   "cuda-path-tracer",
   "mini-minecraft",
@@ -77,9 +77,7 @@ const projects = (await getCollection("projects"))
           <ProjectCover
             id={id}
             cover={cover}
-            useVideo={
-              PROJECTS_WITH_VIDEOS.includes(id) ? { small: true } : null
-            }
+            useVideo={WITH_VIDEOS.includes(id) ? { small: true } : null}
             class="mb-pad overflow-hidden rounded-2xl"
           />
 

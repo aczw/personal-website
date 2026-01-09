@@ -9,13 +9,15 @@ type Props = HTMLAttributes<"p"> & {
 };
 
 const { date, ...props } = Astro.props;
+
 const dateKind = getDateKind(date);
 const labels: string[] = [];
+const isoFormats: string[] = [];
 
 switch (dateKind.kind) {
   case "simple": {
     labels.push(dateKind.date);
-    dateKind.date = new Date(dateKind.date).toISOString().slice(0, 7);
+    isoFormats.push(new Date(dateKind.date).toISOString().slice(0, 7));
 
     break;
   }
@@ -24,12 +26,15 @@ switch (dateKind.kind) {
     labels.push(dateKind.date.from, dateKind.date.to);
 
     // If "from" doesn't have a year, add it before creating Date object
+    let from = dateKind.date.from;
     if (!/\d/.test(dateKind.date.from)) {
-      dateKind.date.from += ` ${dateKind.date.to.split(" ")[1]!}`;
+      from += ` ${dateKind.date.to.split(" ")[1]!}`;
     }
 
-    dateKind.date.from = new Date(dateKind.date.from).toISOString().slice(0, 7);
-    dateKind.date.to = new Date(dateKind.date.to).toISOString().slice(0, 7);
+    isoFormats.push(
+      new Date(from).toISOString().slice(0, 7),
+      new Date(dateKind.date.to).toISOString().slice(0, 7),
+    );
 
     break;
   }
@@ -42,15 +47,15 @@ switch (dateKind.kind) {
 <Fragment>
   {
     dateKind.kind === "simple" ?
-      <time {...props} datetime={dateKind.date}>
+      <time {...props} datetime={isoFormats[0]}>
         {labels[0]}
       </time>
     : <div {...props}>
-        <time datetime={dateKind.date.from}>{labels[0]}</time>
+        <time datetime={isoFormats[0]}>{labels[0]}</time>
         <span class="text-sweater-7 select-none not-dark:text-sweater-4">
           –
         </span>
-        <time datetime={dateKind.date.to}>{labels[1]}</time>
+        <time datetime={isoFormats[1]}>{labels[1]}</time>
       </div>
   }
 </Fragment>
