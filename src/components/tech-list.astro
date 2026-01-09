@@ -11,12 +11,12 @@ const { tech: techList, class: className, ...props } = Astro.props;
 <ul class:list={["flex flex-wrap gap-x-1", className]} {...props}>
   {
     techList.map((tech, index) => (
-      <li class="leading-none">
+      <li>
         {tech}
         {index !== techList.length - 1 ?
           <span
             aria-hidden="true"
-            class="leading-none text-sweater-6/70 select-none not-dark:text-sweater-4/70"
+            class="leading-none text-sweater-7 select-none not-dark:text-sweater-4"
           >
             /
           </span>

@@ -10,12 +10,11 @@ import ContentDate from "@/components/content-date.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import Eye from "@/components/eye.astro";
 
-const WIDE_PROJECTS = ["racecar", "cuda-path-tracer"];
 const PROJECTS_WITH_VIDEOS = [
+  // "racecar",
   "cuda-path-tracer",
-  "pbr-renderer",
-  "cuda-boids",
-  "catanks",
+  "mini-minecraft",
+  "door",
 ];
 
 const projects = (await getCollection("projects"))
@@ -33,7 +32,7 @@ const projects = (await getCollection("projects"))
   }}
 >
   <header
-    class="mx-auto grid w-full grid-cols-1 gap-y-pad p-pad-2 desktop:mt-10 desktop:w-4/5 desktop:px-3.5 desktop:py-pad sm:grid-cols-2 lg:w-(--header-max-w)"
+    class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 gap-y-pad p-pad-2 desktop:mt-10 desktop:w-4/5 desktop:px-3.5 desktop:py-pad sm:grid-cols-2 lg:w-(--header-max-w) lg:gap-x-pad-4"
   >
     <div class="font-bold">
       <nav class="flex items-start gap-x-1.5">
@@ -51,7 +50,7 @@ const projects = (await getCollection("projects"))
       </nav>
 
       <h1
-        class="flex cursor-default items-center gap-x-2 text-3xl text-sweater-2 not-dark:text-sweater-9 sm:text-4xl md:text-5xl"
+        class="flex cursor-default items-center gap-x-2 text-3xl text-sweater-2 not-dark:text-sweater-8 sm:text-4xl md:text-5xl"
       >
         Portfolio <ToolCaseIcon
           aria-hidden="true"
@@ -66,252 +65,52 @@ const projects = (await getCollection("projects"))
     </p>
   </header>
 
-  <main class="p-pad lg:pl-0">
-    <section
-      class="grid grid-cols-1 border-t-(length:--border-w) border-l-(length:--border-w) border-style sm:grid-cols-2 xl:grid-cols-3"
-    >
-      {
-        projects.map(({ id, data }) => {
-          const { name, cover, metadata, blurb } = data;
-          const { tech, date } = metadata;
-          const isWide = WIDE_PROJECTS.includes(id);
+  <main
+    class="mx-auto grid max-w-[calc(1300px+var(--spacing-pad-4))] grid-cols-1 gap-y-pad-4 p-pad-2 sm:mt-pad-2 sm:grid-cols-2 sm:gap-y-0"
+  >
+    {
+      projects.map(({ id, data: { name, blurb, metadata, cover } }) => (
+        <article
+          aria-labelledby={id}
+          class="group relative rounded-3xl transition-colors duration-200 desktop:p-pad desktop:hover:bg-sweater-9 not-dark:desktop:hover:bg-sweater-2 lg:p-pad-2"
+        >
+          <ProjectCover
+            id={id}
+            cover={cover}
+            useVideo={
+              PROJECTS_WITH_VIDEOS.includes(id) ? { small: true } : null
+            }
+            class="mb-pad overflow-hidden rounded-2xl"
+          />
 
-          return (
+          <h2
+            id={id}
+            class="mb-2 flex items-center justify-between text-xl leading-[1.1] font-bold text-link-primary transition-colors group-hover:text-link-primary-hover sm:text-2xl lg:mb-1"
+          >
             <a
-              aria-label={name}
               href={`/projects/${id}`}
-              class:list={[
-                "group col-span-1 block space-y-pad border-r-(length:--border-w) border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line",
-                isWide ? "sm:col-span-2" : null,
-              ]}
+              class="after:absolute after:inset-0 after:z-1 after:rounded-3xl"
             >
-              <p class="flex items-center justify-between gap-x-pad">
-                <span class="label text-sweater-5 not-dark:text-sweater-6">
-                  {id}
-                </span>
-
-                <SquareArrowRightIcon
-                  aria-hidden="true"
-                  size={ICON_SIZE}
-                  class="shrink-0 stroke-icon"
-                />
-              </p>
-
-              {isWide ?
-                <Fragment>
-                  <div class="contents sm:grid sm:grid-cols-2 sm:grid-rows-[repeat(3,min-content)] sm:gap-x-pad-2 xl:grid-rows-[auto_auto] xl:gap-y-4">
-                    <ProjectCover
-                      id={id}
-                      cover={cover}
-                      useVideo={
-                        PROJECTS_WITH_VIDEOS.includes(id) ?
-                          { small: true }
-                        : null
-                      }
-                      class="mb-pad overflow-hidden rounded-lg sm:row-span-3 sm:mb-0 xl:row-span-1"
-                    />
-
-                    <div class="space-y-1 sm:row-span-2 md:space-y-pad xl:row-span-1">
-                      <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover md:text-xl lg:text-2xl">
-                        {name}
-                      </h2>
-                      <p class="hidden sm:block md:text-lg lg:text-base xl:text-lg">
-                        {blurb}
-                      </p>
-                    </div>
-
-                    <div class="row-span-1 mt-1 flex flex-col gap-y-1 self-end *:leading-none *:transition-colors sm:mt-4 xl:col-span-2 xl:col-start-auto xl:row-start-auto xl:mt-0 xl:grid xl:grid-cols-subgrid xl:grid-rows-2">
-                      <h3
-                        aria-hidden="true"
-                        class="hidden font-bold text-link-secondary group-hover:text-link-secondary-hover xl:block"
-                      >
-                        Made with
-                      </h3>
-                      <h3
-                        aria-hidden="true"
-                        class="hidden font-bold text-link-secondary group-hover:text-link-secondary-hover xl:block"
-                      >
-                        Date
-                      </h3>
-
-                      <TechList
-                        tech={tech}
-                        class="text-subtitle group-hover:text-inherit"
-                      />
-                      <ContentDate
-                        date={date}
-                        class="hidden text-subtitle group-hover:text-inherit sm:block"
-                      />
-                    </div>
-                  </div>
-                </Fragment>
-              : <Fragment>
-                  <ProjectCover
-                    id={id}
-                    cover={cover}
-                    useVideo={
-                      PROJECTS_WITH_VIDEOS.includes(id) ? { small: true } : null
-                    }
-                    class="mb-pad overflow-hidden rounded-lg"
-                  />
-
-                  <div class="space-y-1 xl:pt-1">
-                    <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                      {name}
-                    </h2>
-
-                    <TechList
-                      tech={tech}
-                      class="text-subtitle transition-colors group-hover:text-link-secondary-hover"
-                    />
-                  </div>
-                </Fragment>
-              }
+              {name}
             </a>
-          );
-        })
-      }
-    </section>
+
+            <SquareArrowRightIcon
+              aria-hidden="true"
+              size={ICON_SIZE}
+              class="shrink-0 stroke-icon sm:hidden"
+            />
+          </h2>
+
+          <div class="mb-1.5 grid grid-cols-1 gap-x-pad gap-y-1.5 *:text-link-secondary *:transition-colors *:group-hover:text-link-secondary-hover sm:mb-pad sm:text-lg lg:grid-cols-2">
+            <ContentDate date={metadata.date} class="leading-none" />
+            <TechList tech={metadata.tech} class="*:leading-none" />
+          </div>
+
+          <p class="hidden text-subtitle transition-colors group-hover:text-inherit desktop:[display:inherit]">
+            {blurb}
+          </p>
+        </article>
+      ))
+    }
   </main>
-
-  <!-- <main class="mr-auto ml-[calc(var(--spacing)*20+350px)] max-w-[700px]">
-    <div class="grid grid-cols-1 bordered 560:grid-cols-2">
-      {
-        projects.map(
-          (
-            {
-              id,
-              data: {
-                name,
-                blurb,
-                metadata: { tech, date },
-                cover,
-              },
-            },
-            index,
-          ) => {
-            const numElapsedCells = projects.reduce(
-              (sum, { id }, projectInCategoryIndex) => {
-                if (projectInCategoryIndex > index) {
-                  return sum;
-                }
-
-                if (WIDE_PROJECTS.includes(id)) {
-                  return sum + 2;
-                } else {
-                  return sum + 1;
-                }
-              },
-              0,
-            );
-
-            return WIDE_PROJECTS.includes(id) ?
-                <div
-                  class:list={[
-                    "480:hover:bg-line-dark col-span-1 border-style p-pad transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50 480:p-0 560:col-span-2",
-                    index < projects.length - 1 ?
-                      "border-b-(length:--border-w)"
-                    : null,
-                  ]}
-                >
-                  <a
-                    href={`/projects/${id}`}
-                    class="group grid grid-cols-1 480:grid-cols-2"
-                  >
-                    <div class="border-style 480:border-r-(length:--border-w) 480:p-pad">
-                      <ProjectCover
-                        id={id}
-                        cover={cover}
-                        useVideo={
-                          withVideos.includes(id) ? { small: true } : null
-                        }
-                        class="overflow-hidden rounded-t-lg 480:rounded-b-lg"
-                      />
-                    </div>
-
-                    <div class="*: flex flex-col *:border-style normal:grid normal:grid-cols-1 normal:grid-rows-4">
-                      <div class="bg-sweater-9 px-pad pt-pad transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:space-y-1 480:border-b-(length:--border-w) 480:bg-transparent 480:pb-pad 480:group-hover:bg-transparent 560:border-b-0 normal:row-span-2 sm:border-b-(length:--border-w)">
-                        <h3 class="leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:text-lg">
-                          {name}
-                        </h3>
-                        <p class="hidden 560:block">{blurb}</p>
-                      </div>
-
-                      <div class="hidden border-b-(length:--border-w) p-pad normal:block">
-                        <p class="font-bold text-sweater-3/85 transition-colors not-dark:text-sweater-7/85 group-hover:text-link-primary">
-                          Tech used
-                        </p>
-
-                        <TechList tech={tech} class="text-subtitle" />
-                      </div>
-
-                      <div class="hidden p-pad normal:block">
-                        <p class="font-bold text-sweater-3/85 transition-colors not-dark:text-sweater-7/85 group-hover:text-link-primary">
-                          Date
-                        </p>
-                        <ContentDate date={date} class="text-subtitle" />
-                      </div>
-
-                      <div class="rounded-b-lg bg-sweater-9 px-pad pb-pad transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:bg-transparent 480:pt-pad 480:group-hover:bg-transparent 560:hidden normal:hidden! sm:block">
-                        <TechList
-                          tech={tech}
-                          class="text-link-secondary 480:text-subtitle"
-                        />
-
-                        <ContentDate
-                          date={date}
-                          class="hidden text-subtitle 480:block"
-                        />
-                      </div>
-                    </div>
-                  </a>
-                </div>
-              : <div
-                  class:list={[
-                    "480:hover:bg-line-dark border-style p-pad transition-colors hover:bg-sweater-9/50 not-dark:hover:bg-sweater-2/50 480:p-0 560:p-pad 560:hover:bg-sweater-9/50 560:not-dark:hover:bg-sweater-2/50",
-                    totalCells - numElapsedCells !== 0 ?
-                      "border-b-(length:--border-w)"
-                    : null,
-                    numElapsedCells % 2 === 1 ?
-                      "560:border-r-(length:--border-w)"
-                    : null,
-                  ]}
-                >
-                  <a
-                    href={`/projects/${id}`}
-                    class="group grid grid-cols-1 480:grid-cols-2 560:grid-cols-1"
-                  >
-                    <div class="border-style 480:border-r-(length:--border-w) 480:p-pad 560:border-r-0 560:p-0">
-                      <ProjectCover
-                        id={id}
-                        cover={cover}
-                        useVideo={
-                          withVideos.includes(id) ? { small: true } : null
-                        }
-                        class="overflow-hidden rounded-t-lg 480:rounded-b-lg 560:rounded-b-none"
-                      />
-                    </div>
-
-                    <div class="rounded-b-lg bg-sweater-9 transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3 480:bg-transparent 480:group-hover:bg-transparent 560:bg-sweater-9 560:not-dark:bg-sweater-2 560:group-hover:bg-sweater-8 560:not-dark:group-hover:bg-sweater-3">
-                      <h3 class="border-style px-pad pt-pad leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover 480:border-b-(length:--border-w) 480:pb-pad 480:text-lg 560:border-b-0 560:pb-0 560:text-base">
-                        {name}
-                      </h3>
-
-                      <TechList
-                        tech={tech}
-                        class="px-pad pb-pad text-link-secondary 480:pt-pad 480:pb-0 480:text-subtitle 560:pt-0 560:pb-pad 560:text-link-secondary"
-                      />
-
-                      <ContentDate
-                        date={date}
-                        class="hidden px-pad pb-pad text-subtitle 480:block 560:hidden"
-                      />
-                    </div>
-                  </a>
-                </div>;
-          },
-        )
-      }
-    </div>
-  </main> -->
 </BaseLayout>

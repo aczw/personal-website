@@ -32,12 +32,13 @@ const HOMEPAGE_PROJECTS = [
   "door",
 ];
 const DISABLED_PROJECTS = [
-  "dgdg",
+  "cuda-boids",
   "deth",
+  "dgdg",
   "fireball",
-  "moore-chair",
-  "webgpu-clustered",
   "glsl-path-tracer",
+  "moore-chair",
+  "pbr-renderer",
   "rcw",
 ];
 
