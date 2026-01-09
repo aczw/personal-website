@@ -20,11 +20,11 @@ const { content: Content, headings } = Astro.props;
 
 <article aria-label="Technical breakdown">
   <div
-    class="relative grid grid-cols-[1fr_225px_1fr_minmax(0px,525px)_1fr_225px_1fr]"
+    class="relative grid grid-cols-[1fr_225px_1fr_minmax(0px,550px)_1fr_225px_1fr]"
   >
     <TableOfContents headings={headings} />
 
-    <div class="mdx col-start-4 space-y-pad-2 border-style">
+    <div class="mdx col-start-4 space-y-pad-2 border-style bg-sweater-9">
       <Content
         components={{
           h2: H2,

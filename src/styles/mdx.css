@@ -1,8 +1,6 @@
 @layer components {
   /* Only style elements rendered from MDX */
   .mdx {
-    @apply *:px-pad;
-
     /* In general, all media should have full width. */
     img,
     video {

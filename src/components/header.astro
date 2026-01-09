@@ -35,7 +35,7 @@ const { links, description, maxColumns } = Astro.props;
           <>
             <a
               href={href}
-              class="text-[2.1rem] text-link-primary transition-colors hover:text-link-primary-hover"
+              class="text-[2rem] text-link-primary transition-colors hover:text-link-primary-hover"
             >
               {text}
             </a>
@@ -46,13 +46,15 @@ const { links, description, maxColumns } = Astro.props;
     </nav>
 
     <h1
-      class="flex cursor-default items-center gap-x-2 text-4xl leading-[0.875] font-bold text-sweater-2 not-dark:text-sweater-8 md:text-5xl"
+      class="flex cursor-default items-center gap-x-2 text-[2.625rem] leading-[0.875] font-bold text-sweater-2 not-dark:text-sweater-8"
     >
       <slot name="title" />
     </h1>
   </div>
 
-  <p class:list={["self-end-safe", { "max-w-125": maxColumns === 1 }]}>
+  <p
+    class:list={["self-end-safe", { "max-w-(--content-w)": maxColumns === 1 }]}
+  >
     {description}
   </p>
 </header>

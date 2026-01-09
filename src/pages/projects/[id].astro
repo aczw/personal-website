@@ -100,37 +100,41 @@ const { Content, headings } = await render(project);
   <main>
     <section
       aria-label="Project overview"
-      class="mx-auto max-w-[calc(1100px+var(--spacing-pad-4))] space-y-pad-2 p-pad-2"
+      class="mx-auto max-w-[calc(1100px+var(--spacing-pad-4))] px-pad-2 pt-pad"
     >
+      <div class="mx-auto mb-pad-2 max-w-(--header-w) space-y-pad-2">
+        <!-- <h2 class="text-2xl leading-none font-bold text-sweater-2">Overview</h2> -->
+
+        <!-- <p class="max-w-[525px]">{blurb}</p> -->
+
+        <dl
+          class="-mx-pad-2 grid grid-cols-4 bordered px-pad-2 py-pad *:space-y-1 **:leading-none"
+        >
+          <div>
+            <dt class="text-lg font-bold text-sweater-2">Uses</dt>
+            <dd>Fuck</dd>
+          </div>
+          <div>
+            <dt class="text-lg font-bold text-sweater-2">Duration</dt>
+            <dd>Fuck</dd>
+          </div>
+          <div>
+            <dt class="text-lg font-bold text-sweater-2">View online</dt>
+            <dd>Fuck</dd>
+          </div>
+          <div>
+            <dt class="text-lg font-bold text-sweater-2">Source code</dt>
+            <dd>Fuck</dd>
+          </div>
+        </dl>
+      </div>
+
       <ProjectCover
         id={id}
         cover={cover}
         useVideo={{ small: false }}
-        class="overflow-hidden rounded-lg"
+        class="mb-pad-4 overflow-hidden rounded-lg"
       />
-
-      <div class="mx-auto max-w-(--header-w) space-y-pad-2">
-        <h2 class="text-2xl leading-none font-bold text-sweater-2">Overview</h2>
-
-        <p class="max-w-[525px]">{blurb}</p>
-
-        <dl class="-mx-pad-2 grid grid-cols-4 bordered p-pad-2">
-          <div>
-            <dt class="text-lg font-bold text-sweater-2">Uses</dt><dd></dd>
-          </div>
-          <div>
-            <dt class="text-lg font-bold text-sweater-2">Duration</dt><dd></dd>
-          </div>
-          <div>
-            <dt class="text-lg font-bold text-sweater-2">View online</dt><dd>
-            </dd>
-          </div>
-          <div>
-            <dt class="text-lg font-bold text-sweater-2">Source code</dt><dd>
-            </dd>
-          </div>
-        </dl>
-      </div>
     </section>
 
     <MdxContent content={Content} headings={headings} />
