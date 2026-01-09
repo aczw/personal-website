@@ -1,4 +1,4 @@
-import type { ContentDateType, DateKind } from "@/scripts/types";
+import type { ContentDate, DateKind } from "@/scripts/types";
 
 /**
  * This value is used in astro.config.ts, which unfortunately means it can't
@@ -66,7 +66,7 @@ function getMonthYearDateFormatting(date: Date) {
   });
 }
 
-function getDateKind(date: ContentDateType): DateKind {
+function getDateKind(date: ContentDate): DateKind {
   if (typeof date === "object" && "from" in date) {
     return { kind: "ranged", date };
   } else {

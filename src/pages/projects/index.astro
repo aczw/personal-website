@@ -20,22 +20,20 @@ const WITH_VIDEOS = [
 const projects = (await getCollection("projects"))
   .filter((project) => !DISABLED_PROJECTS.includes(project.id))
   .sort((a, b) => a.data.order - b.data.order);
+
+const description =
+  "Write-ups and technical breakdowns of some of my favorite projects.";
 ---
 
 <BaseLayout
   meta={{
     kind: "route",
     title: "Portfolio",
-    description:
-      "Write-ups and technical breakdowns for some of my favorite projects that I've done.",
+    description,
     ogImageParams: "Graphics programming, games, and sometimes art.",
   }}
 >
-  <Header
-    links={[]}
-    description="Write-ups and technical breakdowns for some of my favorite projects that I've done."
-    maxColumns={2}
-  >
+  <Header links={[]} description={description} maxColumns={2}>
     <Fragment slot="title">
       Portfolio <ToolCaseIcon
         aria-hidden="true"

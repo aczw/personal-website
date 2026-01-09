@@ -69,7 +69,8 @@
     --content-w-lg: 675px;
     --content-w-xl: 800px;
 
-    --header-max-w: 800px;
+    --header-w: 800px;
+    --real-header-w: calc(var(--header-w) + var(--spacing-pad-2));
 
     --subtitle: var(--color-sweater-2);
     --line: var(--color-sweater-9);

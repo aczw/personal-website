@@ -22,7 +22,7 @@ type MetaKind =
 
 type SimpleDate = z.infer<typeof SimpleDateSchema>;
 type RangedDate = z.infer<typeof RangedDateSchema>;
-type ContentDateType = z.infer<typeof DateSchema>;
+type ContentDate = z.infer<typeof DateSchema>;
 
 type DateKind =
   | { kind: "simple"; date: SimpleDate }
@@ -33,6 +33,6 @@ export type {
   MetaKind,
   SimpleDate,
   RangedDate,
-  ContentDateType,
+  ContentDate,
   DateKind,
 };

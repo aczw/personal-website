@@ -53,6 +53,9 @@ function initializePanel(dither: Dither): Panel {
   // won't be generated and this won't work.
   container.classList.add("hidden", "md:block");
 
+  // Prevents sliders from going off the screen
+  document.body.style.overflowX = "hidden";
+
   const pane = new Pane({
     title: "Panel",
     container,

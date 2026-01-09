@@ -18,13 +18,13 @@ interface Props {
 const { content: Content, headings } = Astro.props;
 ---
 
-<article aria-labelledby="page-title">
-  <section
-    class="grid-line-before grid-line-after toc:grid-cols-16 relative grid w-full grid-cols-1"
+<article aria-label="Technical breakdown">
+  <div
+    class="relative grid grid-cols-[1fr_225px_1fr_minmax(0px,525px)_1fr_225px_1fr]"
   >
-    <div
-      class="content toc:col-start-3 toc:col-end-14 toc:border-r-(length:--border-w) col-span-full space-y-pad-2 border-style py-pad md:col-start-4"
-    >
+    <TableOfContents headings={headings} />
+
+    <div class="content col-start-4 space-y-pad-2 border-style">
       <Content
         components={{
           h2: H2,
@@ -35,9 +35,7 @@ const { content: Content, headings } = Astro.props;
         }}
       />
     </div>
-
-    <TableOfContents headings={headings} />
-  </section>
+  </div>
 
   <dialog
     class="fixed top-1/2 left-1/2 mb-0 w-full max-w-[calc(1100px+2*var(--spacing-pad))] transform-[translate(-50%,-50%)] bg-transparent outline-0 backdrop:bg-sweater-10/85 not-dark:backdrop:bg-sweater-1/85"

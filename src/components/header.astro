@@ -15,7 +15,7 @@ const { links, description, maxColumns } = Astro.props;
 
 <header
   class:list={[
-    "mx-auto grid w-full grid-cols-1 gap-y-pad-2 px-pad-2 pt-pad-2 desktop:mt-10 desktop:w-4/5 desktop:px-3.5 desktop:py-pad lg:w-(--header-max-w)",
+    "mx-auto grid w-full grid-cols-1 gap-y-pad-2 px-pad-2 pt-pad-2 desktop:mt-10 desktop:w-4/5 desktop:p-pad lg:w-(--real-header-w)",
     { "gap-x-pad-2 sm:grid-cols-2 lg:gap-x-pad-4": maxColumns === 2 },
   ]}
 >
@@ -46,7 +46,6 @@ const { links, description, maxColumns } = Astro.props;
     </nav>
 
     <h1
-      id="page-title"
       class="flex cursor-default items-center gap-x-2 text-4xl leading-[0.875] font-bold text-sweater-2 not-dark:text-sweater-8 md:text-5xl"
     >
       <slot name="title" />

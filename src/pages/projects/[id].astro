@@ -20,7 +20,7 @@ import type {
   SourceHrefSchema,
   TechSchema,
 } from "@/scripts/schema";
-import type { ContentDateType } from "@/scripts/types";
+import type { ContentDate as ContentDateType } from "@/scripts/types";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import { DISABLED_PROJECTS } from "@/scripts/constants";
@@ -46,6 +46,7 @@ if (!project) {
 const {
   data: {
     name,
+    subtitle,
     blurb,
     metadata: { tech, link, sourceHref, date },
     cover,
@@ -96,8 +97,11 @@ const { Content, headings } = await render(project);
     <Fragment slot="title">{name}</Fragment>
   </Header>
 
-  <main class="sm:mt-pad-2">
-    <section class="p-pad-2">
+  <main>
+    <section
+      aria-label="Project overview"
+      class="mx-auto max-w-[calc(1100px+var(--spacing-pad-4))] space-y-pad-2 p-pad-2"
+    >
       <ProjectCover
         id={id}
         cover={cover}
@@ -105,75 +109,28 @@ const { Content, headings } = await render(project);
         class="overflow-hidden rounded-lg"
       />
 
-      <h2>Overview</h2>
+      <div class="mx-auto max-w-(--header-w) space-y-pad-2">
+        <h2 class="text-2xl leading-none font-bold text-sweater-2">Overview</h2>
 
-      <ul class="normal:grid-cols-4! grid grid-cols-1 560:grid-cols-2">
-        {
-          metadata.map(({ kind, data, icon: Icon }, index) => (
-            <li
-              class:list={[
-                "group col-span-1 flex justify-between gap-pad border-style",
-                metadata.length === 2 ? "normal:col-span-2" : null,
+        <p class="max-w-[525px]">{blurb}</p>
 
-                // Two metadata
-                metadata.length === 2 && index === 0 ?
-                  "border-b-(length:--border-w) 560:border-r-(length:--border-w) 560:border-b-0"
-                : null,
-
-                // Greater than two metadata
-                metadata.length > 2 && index % 2 === 0 ?
-                  "560:border-r-(length:--border-w)"
-                : null,
-                metadata.length > 2 && index < 2 ?
-                  "normal:border-r-(length:--border-w) normal:border-b-0 border-b-(length:--border-w)"
-                : null,
-                metadata.length > 2 && index === 2 ?
-                  "border-b-(length:--border-w) 560:border-b-0"
-                : null,
-
-                kind === "tech" || kind === "date" ? "p-pad" : null,
-              ]}
-            >
-              {kind === "tech" || kind === "date" ?
-                <>
-                  <div>
-                    <p class="font-bold break-all text-subtitle">
-                      {kind === "tech" ? "Tech" : "Date"}
-                    </p>
-
-                    {kind === "tech" ?
-                      <TechList tech={data} />
-                    : <ContentDate date={data} />}
-                  </div>
-
-                  <Icon size={ICON_SIZE} class="shrink-0 stroke-icon" />
-                </>
-              : <a
-                  href={kind === "link" ? data.href : data}
-                  target="_blank"
-                  title={kind === "link" ? data.href : data}
-                  class="group-hover:bg-line-dark flex grow justify-between gap-pad p-pad transition-colors"
-                >
-                  <div>
-                    <p class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                      {kind === "link" ? data.text : "Source code"}
-                    </p>
-
-                    <p class="break-all text-link-secondary">
-                      {kind === "link" ?
-                        /* Substring removes the https:// in front */
-                        data.href.substring(8).split("/")[0]!
-                      : "Visit GitHub"}
-                    </p>
-                  </div>
-
-                  <Icon size={ICON_SIZE} class="shrink-0 stroke-icon" />
-                </a>
-              }
-            </li>
-          ))
-        }
-      </ul>
+        <dl class="-mx-pad-2 grid grid-cols-4 bordered p-pad-2">
+          <div>
+            <dt class="text-lg font-bold text-sweater-2">Uses</dt><dd></dd>
+          </div>
+          <div>
+            <dt class="text-lg font-bold text-sweater-2">Duration</dt><dd></dd>
+          </div>
+          <div>
+            <dt class="text-lg font-bold text-sweater-2">View online</dt><dd>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-lg font-bold text-sweater-2">Source code</dt><dd>
+            </dd>
+          </div>
+        </dl>
+      </div>
     </section>
 
     <RenderedContent content={Content} headings={headings} />
