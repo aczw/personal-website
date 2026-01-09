@@ -53,6 +53,7 @@
   .tp-dfwv {
     font-feature-settings: var(--font-mono--font-feature-settings);
   }
+
   --ec-tm-markBrdCol: --alpha(var(--color-sweater-2) / 30%);
   --ec-tm-markBg: --alpha(var(--color-sweater-2) / 10%);
 

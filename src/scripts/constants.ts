@@ -112,8 +112,10 @@ const DEFAULT_LIGHT_DITHER_SETTINGS: DitherSettings = {
   },
 };
 
-/// Default icon size unless otherwise specified.
-const ICON_SIZE = 18;
+/**
+ * Default icon size unless otherwise specified.
+ */
+const ICON_SIZE = 20;
 
 export {
   CDN_URL,

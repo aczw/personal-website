@@ -12,7 +12,7 @@ import {
 } from "@lucide/astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
-import RenderedContent from "@/components/rendered-content.astro";
+import MdxContent from "@/components/mdx-content.astro";
 import Header from "@/components/header.astro";
 import ProjectCover from "@/components/project-cover.astro";
 import type {
@@ -133,6 +133,6 @@ const { Content, headings } = await render(project);
       </div>
     </section>
 
-    <RenderedContent content={Content} headings={headings} />
+    <MdxContent content={Content} headings={headings} />
   </main>
 </BaseLayout>
