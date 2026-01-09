@@ -64,18 +64,18 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
         {title}
       </h1>
 
-      {blurb ? <p class="text-subtitle">{blurb}</p> : null}
+      {blurb ? <p>{blurb}</p> : null}
     </div>
 
-    <div class="grid grid-cols-1 480:grid-cols-2">
+    <div class="480:grid-cols-2 grid grid-cols-1">
       <div
-        class="flex border-b-(length:--border-w) border-style 480:border-r-(length:--border-w) 480:border-b-0"
+        class="480:border-r-(length:--border-w) 480:border-b-0 flex border-b-(length:--border-w) border-style"
       >
         <div
-          class="flex grow flex-row 480:flex-col sm:flex-row sm:items-center"
+          class="480:flex-col flex grow flex-row sm:flex-row sm:items-center"
         >
           <p
-            class="shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
+            class="480:border-r-0 480:pb-0 shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold sm:border-r-(length:--border-w) sm:pb-pad"
           >
             Posted on
           </p>
@@ -83,7 +83,7 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
           <time
             datetime={posted.toISOString()}
             title={getFullDateFormatting(posted)}
-            class="grow px-pad pt-pad pb-pad 480:pt-0 sm:pt-pad"
+            class="480:pt-0 grow px-pad pt-pad pb-pad sm:pt-pad"
           >
             {getShortDateFormatting(posted)}
           </time>
@@ -96,15 +96,15 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
 
       <div class="flex">
         <div
-          class="flex grow flex-row 480:flex-col sm:flex-row sm:items-center"
+          class="480:flex-col flex grow flex-row sm:flex-row sm:items-center"
         >
           <p
-            class="shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
+            class="480:border-r-0 480:pb-0 shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold sm:border-r-(length:--border-w) sm:pb-pad"
           >
             Read time
           </p>
 
-          <p class="grow px-pad pt-pad pb-pad 480:pt-0 sm:pt-pad">
+          <p class="480:pt-0 grow px-pad pt-pad pb-pad sm:pt-pad">
             {numMinutes}
             {numMinutes > 1 ? "minutes" : "minute"}
           </p>

@@ -52,12 +52,7 @@ const { links, description, maxColumns } = Astro.props;
     </h1>
   </div>
 
-  <p
-    class:list={[
-      "self-end-safe desktop:text-subtitle",
-      { "max-w-[500px]": maxColumns === 1 },
-    ]}
-  >
+  <p class:list={["self-end-safe", { "max-w-[500px]": maxColumns === 1 }]}>
     {description}
   </p>
 </header>

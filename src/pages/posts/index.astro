@@ -46,7 +46,7 @@ const sortedPosts = posts.sort(
             <time
               datetime={posted.toISOString()}
               title={getFullDateFormatting(posted)}
-              class="hidden border-r-(length:--border-w) border-style text-link-secondary 480:flex"
+              class="480:flex hidden border-r-(length:--border-w) border-style text-link-secondary"
             >
               <span class="border-style p-pad sm:border-r-(length:--border-w)">
                 <span
@@ -85,7 +85,7 @@ const sortedPosts = posts.sort(
                 {blurb || body ?
                   <p
                     class:list={[
-                      "hidden leading-snug text-subtitle transition-colors group-hover:text-sweater-1 480:block sm:text-inherit sm:group-hover:text-inherit",
+                      "480:block hidden leading-snug transition-colors group-hover:text-sweater-1 sm:text-inherit sm:group-hover:text-inherit",
                       !blurb && body ? "italic" : null,
                     ]}
                   >
@@ -101,7 +101,7 @@ const sortedPosts = posts.sort(
               <CircleArrowRightIcon
                 aria-hidden="true"
                 size={ICON_SIZE}
-                class="shrink-0 stroke-icon group-hover:stroke-icon 480:hidden 480:stroke-transparent md:block"
+                class="480:hidden 480:stroke-transparent shrink-0 stroke-icon group-hover:stroke-icon md:block"
               />
             </span>
           </a>

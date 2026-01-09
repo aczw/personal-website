@@ -68,7 +68,7 @@
 
     /* Only select <figure> elements not from the Expressive Code library */
     figcaption {
-      @apply mt-1 text-sm text-subtitle *:inline;
+      @apply mt-1 text-sm *:inline;
 
       /* Draw a little arrow before the caption */
       &::before {
@@ -139,7 +139,7 @@
       }
 
       > ol {
-        @apply space-y-1.5 text-subtitle;
+        @apply space-y-1.5;
 
         /* The following two selectors are to make sure back ref arrows are 
          * inline with the text */
