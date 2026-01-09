@@ -1,14 +1,13 @@
 ---
 import { getCollection } from "astro:content";
 
-import { SquareArrowRightIcon } from "@lucide/astro";
+import { SquareArrowRightIcon, ToolCaseIcon } from "@lucide/astro";
 
 import ProjectCover from "@/components/project-cover.astro";
 import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
-import RoutesGrid from "@/components/routes-grid.astro";
 import Eye from "@/components/eye.astro";
 
 const WIDE_PROJECTS = ["racecar", "cuda-path-tracer"];
@@ -29,127 +28,78 @@ const projects = (await getCollection("projects"))
     kind: "route",
     title: "Portfolio",
     description:
-      "Projects mostly revolving around computer graphics, game development, and some art on the side.",
+      "Write-ups and technical breakdowns for some of my favorite projects that I've done.",
     ogImageParams: "Graphics programming, games, and sometimes art.",
   }}
 >
-  <div class="grid grid-cols-(--gtc-max-2) gap-x-pad overflow-hidden p-pad">
-    <header class="p-pad">
-      <nav
-        class="grid grid-cols-1 grid-rows-[auto_auto] items-end gap-y-pad sm:grid-cols-2 sm:grid-rows-1 lg:grid-cols-1 lg:grid-rows-[auto_auto]"
-      >
-        <a
-          href="/"
-          class="group col-span-1 flex h-full flex-col justify-end space-y-0.5"
-        >
+  <header
+    class="mx-auto grid w-full grid-cols-1 gap-y-pad p-pad-2 desktop:mt-10 desktop:w-4/5 desktop:px-3.5 desktop:py-pad sm:grid-cols-2 lg:w-(--header-max-w)"
+  >
+    <div class="font-bold">
+      <nav class="flex items-start gap-x-1.5">
+        <a href="/" title="Home" class="block">
           <Eye
             aria-hidden="true"
-            class="size-6 fill-sweater-5 transition-[rotate_fill] not-dark:fill-sweater-6 group-hover:-rotate-13 group-hover:fill-sweater-4 not-dark:group-hover:fill-sweater-7"
+            class="size-6.5 fill-link-primary transition-[fill_rotate] hover:-rotate-13 hover:fill-link-primary-hover"
           />
-
-          <span
-            class="text-3xl leading-none font-bold text-sweater-5 transition-colors not-dark:text-sweater-6 group-hover:text-sweater-4 not-dark:group-hover:text-sweater-7"
-          >
-            Charles Wang
-          </span>
         </a>
-
-        <RoutesGrid class="col-span-1" />
+        <span
+          aria-hidden="true"
+          class="text-[2rem] leading-[0.8] text-sweater-6/70 select-none not-dark:text-sweater-4/70"
+          >/</span
+        >
       </nav>
-    </header>
 
-    <main class="p-pad lg:pl-0">
       <h1
-        class="sr-only cursor-default space-y-0.5 leading-none lg:not-sr-only lg:mb-pad"
+        class="flex cursor-default items-center gap-x-2 text-3xl text-sweater-2 not-dark:text-sweater-9 sm:text-4xl md:text-5xl"
       >
-        <div aria-hidden="true" class="flex gap-1">
-          <Eye class="size-6 fill-line" />
-          <Eye class="size-6 fill-line" />
-        </div>
-        <span class="text-3xl leading-none font-bold text-line">
-          Portfolio
-        </span>
+        Portfolio <ToolCaseIcon
+          aria-hidden="true"
+          class="stroke-icon md:size-9"
+        />
       </h1>
+    </div>
 
-      <section
-        class="grid grid-cols-1 border-t-(length:--border-w) border-l-(length:--border-w) border-style sm:grid-cols-2 xl:grid-cols-3"
-      >
-        {
-          projects.map(({ id, data }) => {
-            const { name, cover, metadata, blurb } = data;
-            const { tech, date } = metadata;
-            const isWide = WIDE_PROJECTS.includes(id);
+    <p class="self-end-safe text-subtitle">
+      Write-ups and technical breakdowns for some of my favorite projects that
+      I've done.
+    </p>
+  </header>
 
-            return (
-              <a
-                aria-label={name}
-                href={`/projects/${id}`}
-                class:list={[
-                  "group col-span-1 block space-y-pad border-r-(length:--border-w) border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line",
-                  isWide ? "sm:col-span-2" : null,
-                ]}
-              >
-                <p class="flex items-center justify-between gap-x-pad">
-                  <span class="label text-sweater-5 not-dark:text-sweater-6">
-                    {id}
-                  </span>
+  <main class="p-pad lg:pl-0">
+    <section
+      class="grid grid-cols-1 border-t-(length:--border-w) border-l-(length:--border-w) border-style sm:grid-cols-2 xl:grid-cols-3"
+    >
+      {
+        projects.map(({ id, data }) => {
+          const { name, cover, metadata, blurb } = data;
+          const { tech, date } = metadata;
+          const isWide = WIDE_PROJECTS.includes(id);
 
-                  <SquareArrowRightIcon
-                    aria-hidden="true"
-                    size={ICON_SIZE}
-                    class="shrink-0 stroke-icon"
-                  />
-                </p>
+          return (
+            <a
+              aria-label={name}
+              href={`/projects/${id}`}
+              class:list={[
+                "group col-span-1 block space-y-pad border-r-(length:--border-w) border-b-(length:--border-w) border-style p-pad transition-colors hover:bg-line",
+                isWide ? "sm:col-span-2" : null,
+              ]}
+            >
+              <p class="flex items-center justify-between gap-x-pad">
+                <span class="label text-sweater-5 not-dark:text-sweater-6">
+                  {id}
+                </span>
 
-                {isWide ?
-                  <Fragment>
-                    <div class="contents sm:grid sm:grid-cols-2 sm:grid-rows-[repeat(3,min-content)] sm:gap-x-pad-2 xl:grid-rows-[auto_auto] xl:gap-y-4">
-                      <ProjectCover
-                        id={id}
-                        cover={cover}
-                        useVideo={
-                          PROJECTS_WITH_VIDEOS.includes(id) ?
-                            { small: true }
-                          : null
-                        }
-                        class="mb-pad overflow-hidden rounded-lg sm:row-span-3 sm:mb-0 xl:row-span-1"
-                      />
+                <SquareArrowRightIcon
+                  aria-hidden="true"
+                  size={ICON_SIZE}
+                  class="shrink-0 stroke-icon"
+                />
+              </p>
 
-                      <div class="space-y-1 sm:row-span-2 md:space-y-pad xl:row-span-1">
-                        <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover md:text-xl lg:text-2xl">
-                          {name}
-                        </h2>
-                        <p class="hidden sm:block md:text-lg lg:text-base xl:text-lg">
-                          {blurb}
-                        </p>
-                      </div>
-
-                      <div class="row-span-1 mt-1 flex flex-col gap-y-1 self-end *:leading-none *:transition-colors sm:mt-4 xl:col-span-2 xl:col-start-auto xl:row-start-auto xl:mt-0 xl:grid xl:grid-cols-subgrid xl:grid-rows-2">
-                        <h3
-                          aria-hidden="true"
-                          class="hidden font-bold text-link-secondary group-hover:text-link-secondary-hover xl:block"
-                        >
-                          Made with
-                        </h3>
-                        <h3
-                          aria-hidden="true"
-                          class="hidden font-bold text-link-secondary group-hover:text-link-secondary-hover xl:block"
-                        >
-                          Date
-                        </h3>
-
-                        <TechList
-                          tech={tech}
-                          class="text-subtitle group-hover:text-inherit"
-                        />
-                        <ContentDate
-                          date={date}
-                          class="hidden text-subtitle group-hover:text-inherit sm:block"
-                        />
-                      </div>
-                    </div>
-                  </Fragment>
-                : <Fragment>
+              {isWide ?
+                <Fragment>
+                  <div class="contents sm:grid sm:grid-cols-2 sm:grid-rows-[repeat(3,min-content)] sm:gap-x-pad-2 xl:grid-rows-[auto_auto] xl:gap-y-4">
                     <ProjectCover
                       id={id}
                       cover={cover}
@@ -158,28 +108,71 @@ const projects = (await getCollection("projects"))
                           { small: true }
                         : null
                       }
-                      class="mb-pad overflow-hidden rounded-lg"
+                      class="mb-pad overflow-hidden rounded-lg sm:row-span-3 sm:mb-0 xl:row-span-1"
                     />
 
-                    <div class="space-y-1 xl:pt-1">
-                      <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                    <div class="space-y-1 sm:row-span-2 md:space-y-pad xl:row-span-1">
+                      <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover md:text-xl lg:text-2xl">
                         {name}
                       </h2>
+                      <p class="hidden sm:block md:text-lg lg:text-base xl:text-lg">
+                        {blurb}
+                      </p>
+                    </div>
+
+                    <div class="row-span-1 mt-1 flex flex-col gap-y-1 self-end *:leading-none *:transition-colors sm:mt-4 xl:col-span-2 xl:col-start-auto xl:row-start-auto xl:mt-0 xl:grid xl:grid-cols-subgrid xl:grid-rows-2">
+                      <h3
+                        aria-hidden="true"
+                        class="hidden font-bold text-link-secondary group-hover:text-link-secondary-hover xl:block"
+                      >
+                        Made with
+                      </h3>
+                      <h3
+                        aria-hidden="true"
+                        class="hidden font-bold text-link-secondary group-hover:text-link-secondary-hover xl:block"
+                      >
+                        Date
+                      </h3>
 
                       <TechList
                         tech={tech}
-                        class="text-subtitle transition-colors group-hover:text-link-secondary-hover"
+                        class="text-subtitle group-hover:text-inherit"
+                      />
+                      <ContentDate
+                        date={date}
+                        class="hidden text-subtitle group-hover:text-inherit sm:block"
                       />
                     </div>
-                  </Fragment>
-                }
-              </a>
-            );
-          })
-        }
-      </section>
-    </main>
-  </div>
+                  </div>
+                </Fragment>
+              : <Fragment>
+                  <ProjectCover
+                    id={id}
+                    cover={cover}
+                    useVideo={
+                      PROJECTS_WITH_VIDEOS.includes(id) ? { small: true } : null
+                    }
+                    class="mb-pad overflow-hidden rounded-lg"
+                  />
+
+                  <div class="space-y-1 xl:pt-1">
+                    <h2 class="text-lg leading-none font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                      {name}
+                    </h2>
+
+                    <TechList
+                      tech={tech}
+                      class="text-subtitle transition-colors group-hover:text-link-secondary-hover"
+                    />
+                  </div>
+                </Fragment>
+              }
+            </a>
+          );
+        })
+      }
+    </section>
+  </main>
 
   <!-- <main class="mr-auto ml-[calc(var(--spacing)*20+350px)] max-w-[700px]">
     <div class="grid grid-cols-1 bordered 560:grid-cols-2">

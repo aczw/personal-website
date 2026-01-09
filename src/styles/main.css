@@ -68,6 +68,8 @@
     --content-w-lg: 675px;
     --content-w-xl: 800px;
 
+    --header-max-w: 800px;
+
     --subtitle: var(--color-sweater-2);
     --line: var(--color-sweater-9);
     --link-primary: var(--color-sweater-3);
