@@ -115,6 +115,8 @@ const RangedDateSchema = z.object({
   }),
 });
 
+const TechSchema = z.string().array();
+
 const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 
 export {
@@ -125,5 +127,6 @@ export {
   SourceHrefSchema,
   SimpleDateSchema,
   RangedDateSchema,
+  TechSchema,
   DateSchema,
 };

@@ -11,6 +11,9 @@ import {
   type Icon as IconType,
 } from "@lucide/astro";
 
+import BaseLayout from "@/layouts/base-layout.astro";
+import RenderedContent from "@/components/rendered-content.astro";
+import Header from "@/components/header.astro";
 import ProjectCover from "@/components/project-cover.astro";
 import type {
   LinkSchema,
@@ -20,11 +23,8 @@ import type {
 import type { ContentDateType } from "@/scripts/types";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
-import ContentLayout from "@/layouts/content-layout.astro";
 import { DISABLED_PROJECTS } from "@/scripts/constants";
 import { validProjectCover } from "@/scripts/util";
-import ContentWithToc from "@/components/content-with-toc.astro";
-import GridSection from "@/components/grid-section.astro";
 import { ICON_SIZE } from "@/scripts/constants";
 
 export const getStaticPaths = (async () => {
@@ -46,7 +46,6 @@ if (!project) {
 const {
   data: {
     name,
-    subtitle,
     blurb,
     metadata: { tech, link, sourceHref, date },
     cover,
@@ -88,109 +87,95 @@ if (sourceHref) {
 const { Content, headings } = await render(project);
 ---
 
-<ContentLayout meta={{ kind: "project", project }}>
-  <GridSection class="p-pad">
-    <ProjectCover
-      id={id}
-      cover={cover}
-      useVideo={{ small: false }}
-      class="overflow-hidden rounded-lg"
-    />
-  </GridSection>
+<BaseLayout meta={{ kind: "project", project }}>
+  <Header
+    links={[{ href: "/projects", text: "Portfolio" }]}
+    description={blurb}
+    maxColumns={1}
+  >
+    <Fragment slot="title">{name}</Fragment>
+  </Header>
 
-  <section id="introduction" class="grid-line-before grid-line-after relative">
-    <div
-      class="grid grid-cols-1 space-y-1.5 border-b-(length:--border-w) border-style sm:grid-cols-2 sm:space-y-0"
-    >
-      <div
-        class="border-style px-pad pt-pad sm:border-r-(length:--border-w) sm:pb-pad"
-      >
-        <h1
-          class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
-        >
-          {name}
-        </h1>
+  <main class="sm:mt-pad-2">
+    <section class="p-pad-2">
+      <ProjectCover
+        id={id}
+        cover={cover}
+        useVideo={{ small: false }}
+        class="overflow-hidden rounded-lg"
+      />
 
+      <h2>Overview</h2>
+
+      <ul class="normal:grid-cols-4! grid grid-cols-1 560:grid-cols-2">
         {
-          subtitle ?
-            <p class="text-2xl leading-tight text-subtitle">{subtitle}</p>
-          : null
+          metadata.map(({ kind, data, icon: Icon }, index) => (
+            <li
+              class:list={[
+                "group col-span-1 flex justify-between gap-pad border-style",
+                metadata.length === 2 ? "normal:col-span-2" : null,
+
+                // Two metadata
+                metadata.length === 2 && index === 0 ?
+                  "border-b-(length:--border-w) 560:border-r-(length:--border-w) 560:border-b-0"
+                : null,
+
+                // Greater than two metadata
+                metadata.length > 2 && index % 2 === 0 ?
+                  "560:border-r-(length:--border-w)"
+                : null,
+                metadata.length > 2 && index < 2 ?
+                  "normal:border-r-(length:--border-w) normal:border-b-0 border-b-(length:--border-w)"
+                : null,
+                metadata.length > 2 && index === 2 ?
+                  "border-b-(length:--border-w) 560:border-b-0"
+                : null,
+
+                kind === "tech" || kind === "date" ? "p-pad" : null,
+              ]}
+            >
+              {kind === "tech" || kind === "date" ?
+                <>
+                  <div>
+                    <p class="font-bold break-all text-subtitle">
+                      {kind === "tech" ? "Tech" : "Date"}
+                    </p>
+
+                    {kind === "tech" ?
+                      <TechList tech={data} />
+                    : <ContentDate date={data} />}
+                  </div>
+
+                  <Icon size={ICON_SIZE} class="shrink-0 stroke-icon" />
+                </>
+              : <a
+                  href={kind === "link" ? data.href : data}
+                  target="_blank"
+                  title={kind === "link" ? data.href : data}
+                  class="group-hover:bg-line-dark flex grow justify-between gap-pad p-pad transition-colors"
+                >
+                  <div>
+                    <p class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                      {kind === "link" ? data.text : "Source code"}
+                    </p>
+
+                    <p class="break-all text-link-secondary">
+                      {kind === "link" ?
+                        /* Substring removes the https:// in front */
+                        data.href.substring(8).split("/")[0]!
+                      : "Visit GitHub"}
+                    </p>
+                  </div>
+
+                  <Icon size={ICON_SIZE} class="shrink-0 stroke-icon" />
+                </a>
+              }
+            </li>
+          ))
         }
-      </div>
+      </ul>
+    </section>
 
-      <p class="px-pad pb-pad sm:pt-pad sm:text-subtitle">
-        {blurb}
-      </p>
-    </div>
-
-    <ul class="grid grid-cols-1 560:grid-cols-2 normal:grid-cols-4!">
-      {
-        metadata.map(({ kind, data, icon: Icon }, index) => (
-          <li
-            class:list={[
-              "group col-span-1 flex justify-between gap-pad border-style",
-              metadata.length === 2 ? "normal:col-span-2" : null,
-
-              // Two metadata
-              metadata.length === 2 && index === 0 ?
-                "border-b-(length:--border-w) 560:border-r-(length:--border-w) 560:border-b-0"
-              : null,
-
-              // Greater than two metadata
-              metadata.length > 2 && index % 2 === 0 ?
-                "560:border-r-(length:--border-w)"
-              : null,
-              metadata.length > 2 && index < 2 ?
-                "border-b-(length:--border-w) normal:border-r-(length:--border-w) normal:border-b-0"
-              : null,
-              metadata.length > 2 && index === 2 ?
-                "border-b-(length:--border-w) 560:border-b-0"
-              : null,
-
-              kind === "tech" || kind === "date" ? "p-pad" : null,
-            ]}
-          >
-            {kind === "tech" || kind === "date" ?
-              <>
-                <div>
-                  <p class="font-bold break-all text-subtitle">
-                    {kind === "tech" ? "Tech" : "Date"}
-                  </p>
-
-                  {kind === "tech" ?
-                    <TechList tech={data} />
-                  : <ContentDate date={data} />}
-                </div>
-
-                <Icon size={ICON_SIZE} class="shrink-0 stroke-icon" />
-              </>
-            : <a
-                href={kind === "link" ? data.href : data}
-                target="_blank"
-                title={kind === "link" ? data.href : data}
-                class="group-hover:bg-line-dark flex grow justify-between gap-pad p-pad transition-colors"
-              >
-                <div>
-                  <p class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                    {kind === "link" ? data.text : "Source code"}
-                  </p>
-
-                  <p class="break-all text-link-secondary">
-                    {kind === "link" ?
-                      /* Substring removes the https:// in front */
-                      data.href.substring(8).split("/")[0]!
-                    : "Visit GitHub"}
-                  </p>
-                </div>
-
-                <Icon size={ICON_SIZE} class="shrink-0 stroke-icon" />
-              </a>
-            }
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <ContentWithToc content={Content} headings={headings} />
-</ContentLayout>
+    <RenderedContent content={Content} headings={headings} />
+  </main>
+</BaseLayout>

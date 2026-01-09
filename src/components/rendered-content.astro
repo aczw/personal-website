@@ -7,6 +7,7 @@ import Aside from "@/components/mdx/aside.astro";
 import H2 from "@/components/mdx/h2.astro";
 import H3 from "@/components/mdx/h3.astro";
 import H4 from "@/components/mdx/h4.astro";
+
 import TableOfContents from "@/components/table-of-contents.astro";
 
 interface Props {
@@ -17,25 +18,38 @@ interface Props {
 const { content: Content, headings } = Astro.props;
 ---
 
-<section
-  class="grid-line-before grid-line-after relative grid w-full grid-cols-1 toc:grid-cols-16"
->
-  <div
-    class="content col-span-full space-y-pad-2 border-style py-pad toc:col-start-3 toc:col-end-14 toc:border-r-(length:--border-w) md:col-start-4"
+<article aria-labelledby="page-title">
+  <section
+    class="grid-line-before grid-line-after toc:grid-cols-16 relative grid w-full grid-cols-1"
   >
-    <Content
-      components={{
-        h2: H2,
-        h3: H3,
-        h4: H4,
-        blockquote: Aside,
-        a: Anchor,
-      }}
-    />
-  </div>
+    <div
+      class="content toc:col-start-3 toc:col-end-14 toc:border-r-(length:--border-w) col-span-full space-y-pad-2 border-style py-pad md:col-start-4"
+    >
+      <Content
+        components={{
+          h2: H2,
+          h3: H3,
+          h4: H4,
+          blockquote: Aside,
+          a: Anchor,
+        }}
+      />
+    </div>
 
-  <!-- <TableOfContents headings={headings} /> -->
-</section>
+    <TableOfContents headings={headings} />
+  </section>
+
+  <dialog
+    class="fixed top-1/2 left-1/2 mb-0 w-full max-w-[calc(1100px+2*var(--spacing-pad))] transform-[translate(-50%,-50%)] bg-transparent outline-0 backdrop:bg-sweater-10/85 not-dark:backdrop:bg-sweater-1/85"
+  >
+    <div class="p-pad">
+      <img
+        loading="eager"
+        class="mx-auto max-h-[80vh] cursor-zoom-out rounded-lg select-none"
+      />
+    </div>
+  </dialog>
+</article>
 
 <script>
   const dialogElt = document.querySelector("dialog");

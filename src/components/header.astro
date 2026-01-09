@@ -1,74 +1,64 @@
 ---
-import { BoxesIcon, ScrollTextIcon } from "@lucide/astro";
+import Eye from "@/components/eye.astro";
+import Slash from "@/components/slash.astro";
 
-import type { LinkWithIcon } from "@/scripts/types";
-import { ICON_SIZE } from "@/scripts/constants";
+type Link = { href: string; text: string };
 
-type Link = LinkWithIcon & { labelSmall?: string };
+interface Props {
+  links: Link[];
+  description: string;
+  maxColumns: 1 | 2;
+}
 
-const links: Link[] = [
-  {
-    href: "/projects",
-    label: "Portfolio",
-    labelSmall: "Projects",
-    icon: BoxesIcon,
-  },
-  {
-    href: "/posts",
-    label: "Writing",
-    icon: ScrollTextIcon,
-  },
-];
+const { links, description, maxColumns } = Astro.props;
 ---
 
-<header class="grid-line-before grid-line-after relative">
-  <nav class="grid grid-cols-1 480:grid-cols-2">
-    <a
-      href="/"
-      class="group hover:bg-line-dark h-full space-y-1 border-b-(length:--border-w) border-style px-pad pt-[calc(1.5*var(--spacing-pad))] pb-pad text-sweater-5 transition-colors not-dark:text-sweater-6 hover:text-sweater-3 not-dark:hover:text-sweater-7 480:border-b-0"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="1.7rem"
-        height="1.7rem"
-        viewBox="0 0 25 25"
-        fill="currentColor"
-        aria-hidden="true"
-        class="transition-transform group-hover:-rotate-13"
-      >
-        <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
-          d="M.626.626a2.139 2.139 0 0 1 3.025 0l1.82 1.821A12.2 12.2 0 0 1 12.536.21a12.2 12.2 0 0 1 7.022 2.21L21.35.625a2.139 2.139 0 0 1 3.025 3.025L22.58 5.443a12.2 12.2 0 0 1 2.21 7.022 12.2 12.2 0 0 1-2.238 7.063l1.82 1.821a2.139 2.139 0 1 1-3.024 3.025l-1.833-1.833a12.2 12.2 0 0 1-6.981 2.18 12.2 12.2 0 0 1-7.023-2.209L3.65 24.374a2.139 2.139 0 1 1-3.025-3.025l1.862-1.861a12.2 12.2 0 0 1-2.21-7.023c0-2.594.806-5 2.181-6.981L.626 3.65a2.139 2.139 0 0 1 0-3.025ZM8.61 19.414a7.943 7.943 0 0 0 3.925 1.03 7.944 7.944 0 0 0 3.88-1.005L12.5 15.524l-3.89 3.89Zm.866-6.914-3.89 3.89a7.943 7.943 0 0 1-1.03-3.925c0-1.408.364-2.731 1.005-3.88L9.476 12.5Zm6.048 0 3.935 3.934a7.944 7.944 0 0 0 1.055-3.969 7.943 7.943 0 0 0-1.03-3.925l-3.96 3.96Zm.935-6.984L12.5 9.476 8.566 5.54a7.943 7.943 0 0 1 3.969-1.055c1.426 0 2.766.374 3.924 1.03Z"
-        ></path>
-      </svg>
+<header
+  class:list={[
+    "mx-auto grid w-full grid-cols-1 gap-y-pad-2 px-pad-2 pt-pad-2 desktop:mt-10 desktop:w-4/5 desktop:px-3.5 desktop:py-pad lg:w-(--header-max-w)",
+    { "gap-x-pad-2 sm:grid-cols-2 lg:gap-x-pad-4": maxColumns === 2 },
+  ]}
+>
+  <div class="space-y-1.5">
+    <nav class="flex items-start gap-x-1.5 font-bold *:leading-[0.8]">
+      <a href="/" title="Home" class="block">
+        <Eye
+          aria-hidden="true"
+          class="size-6.5 fill-link-primary transition-[fill_rotate] hover:-rotate-13 hover:fill-link-primary-hover"
+        />
+      </a>
 
-      <span class="text-3xl leading-none font-bold">Charles Wang</span>
-    </a>
+      <Slash class="text-[2rem]" />
 
-    <div
-      class="divide-line-dark grid grid-cols-2 divide-x-(--border-w) divide-dashed border-style text-xl leading-none font-bold text-link-primary 480:grid-cols-1 480:divide-x-0 480:divide-y-(--border-w) 480:border-l-(length:--border-w) 480:text-lg"
-    >
       {
-        links.map(({ href, label, labelSmall, icon: Icon }) => (
-          <a
-            href={href}
-            class="group hover:bg-line-bright flex items-center justify-between p-pad transition-colors hover:text-link-primary-hover"
-          >
-            <span class:list={[labelSmall ? "hidden 480:inline" : null]}>
-              {label}
-            </span>
-            {labelSmall ?
-              <span class="480:hidden">{labelSmall}</span>
-            : null}
-
-            <Icon size={ICON_SIZE} class="stroke-icon group-hover:hidden" />
-            <span class="hidden h-icon items-center maple font-normal text-link-secondary group-hover:flex group-hover:text-link-secondary-hover">
-              {href}
-            </span>
-          </a>
+        links.map(({ href, text }) => (
+          <>
+            <a
+              href={href}
+              class="text-[2.1rem] text-link-primary transition-colors hover:text-link-primary-hover"
+            >
+              {text}
+            </a>
+            <Slash class="text-[2rem]" />
+          </>
         ))
       }
-    </div>
-  </nav>
+    </nav>
+
+    <h1
+      id="page-title"
+      class="flex cursor-default items-center gap-x-2 text-4xl leading-[0.875] font-bold text-sweater-2 not-dark:text-sweater-8 md:text-5xl"
+    >
+      <slot name="title" />
+    </h1>
+  </div>
+
+  <p
+    class:list={[
+      "self-end-safe desktop:text-subtitle",
+      { "max-w-[500px]": maxColumns === 1 },
+    ]}
+  >
+    {description}
+  </p>
 </header>

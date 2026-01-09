@@ -7,6 +7,7 @@ import {
   ImageSchema,
   LinkSchema,
   SourceHrefSchema,
+  TechSchema,
 } from "@/scripts/schema";
 
 const projects = defineCollection({
@@ -23,7 +24,7 @@ const projects = defineCollection({
         .optional(),
       blurb: BlurbSchema,
       metadata: z.object({
-        tech: z.string().array(),
+        tech: TechSchema,
         link: LinkSchema.optional(),
         sourceHref: SourceHrefSchema.optional(),
         date: DateSchema,

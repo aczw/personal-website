@@ -5,15 +5,18 @@ import {
   SquareArrowRightIcon,
   SquareMousePointerIcon,
   SquareDashedMousePointerIcon,
+  BoxesIcon,
+  InfoIcon,
+  FeatherIcon,
+  ToolCaseIcon,
 } from "@lucide/astro";
-import { BoxesIcon, InfoIcon, FeatherIcon, ToolCaseIcon } from "@lucide/astro";
-import MusicIndicator from "@/components/music-indicator.astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
 import { ICON_SIZE } from "@/scripts/constants";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 import ContentDate from "@/components/content-date.astro";
 import Eye from "@/components/eye.astro";
+import MusicIndicator from "@/components/music-indicator.astro";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -40,7 +43,7 @@ const projects = await getEntries(
     <header
       class="z-1 grid h-fit w-full grid-cols-1 gap-y-pad px-pad-2 pt-pad-2 font-bold desktop:mt-10 desktop:w-4/5 desktop:rounded-xl desktop:bg-sweater-10 desktop:px-3.5 desktop:py-pad desktop:not-dark:bg-sweater-1 sm:grid-cols-2 lg:w-(--header-max-w)"
     >
-      <h1 class="space-y-0.5">
+      <h1 class="space-y-1.25">
         <Eye
           aria-hidden="true"
           class="peer size-6.5 fill-sweater-5 transition-[fill_rotate] not-dark:fill-sweater-6 hover:-rotate-13 hover:fill-sweater-4 not-dark:hover:fill-sweater-7"
@@ -156,7 +159,7 @@ const projects = await getEntries(
     <canvas
       id="dither"
       aria-hidden="true"
-      class="pointer-events-none h-[calc(100svh-132.63px-var(--spacing)*5)] w-full transition-opacity duration-1500 ease-out desktop:h-lvh"
+      class="pointer-events-none h-[calc(100svh-137.31px-var(--spacing)*5)] w-full transition-opacity duration-1500 ease-out desktop:h-lvh"
       style="opacity: 0;"></canvas>
   </div>
 </BaseLayout>

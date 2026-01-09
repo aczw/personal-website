@@ -8,7 +8,7 @@ import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
-import Eye from "@/components/eye.astro";
+import Header from "@/components/header.astro";
 
 const WITH_VIDEOS = [
   // "racecar",
@@ -31,46 +31,25 @@ const projects = (await getCollection("projects"))
     ogImageParams: "Graphics programming, games, and sometimes art.",
   }}
 >
-  <header
-    class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 gap-y-pad p-pad-2 desktop:mt-10 desktop:w-4/5 desktop:px-3.5 desktop:py-pad sm:grid-cols-2 lg:w-(--header-max-w) lg:gap-x-pad-4"
+  <Header
+    links={[]}
+    description="Write-ups and technical breakdowns for some of my favorite projects that I've done."
+    maxColumns={2}
   >
-    <div class="font-bold">
-      <nav class="flex items-start gap-x-1.5">
-        <a href="/" title="Home" class="block">
-          <Eye
-            aria-hidden="true"
-            class="size-6.5 fill-link-primary transition-[fill_rotate] hover:-rotate-13 hover:fill-link-primary-hover"
-          />
-        </a>
-        <span
-          aria-hidden="true"
-          class="text-[2rem] leading-[0.8] text-sweater-6/70 select-none not-dark:text-sweater-4/70"
-          >/</span
-        >
-      </nav>
-
-      <h1
-        class="flex cursor-default items-center gap-x-2 text-3xl text-sweater-2 not-dark:text-sweater-8 sm:text-4xl md:text-5xl"
-      >
-        Portfolio <ToolCaseIcon
-          aria-hidden="true"
-          class="stroke-icon md:size-9"
-        />
-      </h1>
-    </div>
-
-    <p class="self-end-safe text-subtitle">
-      Write-ups and technical breakdowns for some of my favorite projects that
-      I've done.
-    </p>
-  </header>
+    <Fragment slot="title">
+      Portfolio <ToolCaseIcon
+        aria-hidden="true"
+        class="stroke-icon md:size-9"
+      />
+    </Fragment>
+  </Header>
 
   <main
     class="mx-auto grid max-w-[calc(1300px+var(--spacing-pad-4))] grid-cols-1 gap-y-pad-4 p-pad-2 sm:mt-pad-2 sm:grid-cols-2 sm:gap-y-0"
   >
     {
       projects.map(({ id, data: { name, blurb, metadata, cover } }) => (
-        <article
+        <section
           aria-labelledby={id}
           class="group relative rounded-3xl transition-colors duration-200 desktop:p-pad desktop:hover:bg-sweater-9 not-dark:desktop:hover:bg-sweater-2 lg:p-pad-2"
         >
@@ -104,10 +83,10 @@ const projects = (await getCollection("projects"))
             <TechList tech={metadata.tech} class="*:leading-none" />
           </div>
 
-          <p class="hidden text-subtitle transition-colors group-hover:text-inherit desktop:[display:inherit]">
+          <p class="hidden transition-colors group-hover:text-inherit desktop:[display:inherit]">
             {blurb}
           </p>
-        </article>
+        </section>
       ))
     }
   </main>

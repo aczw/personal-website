@@ -1,4 +1,5 @@
 ---
+import Slash from "@/components/slash.astro";
 import type { HTMLAttributes } from "astro/types";
 
 type Props = HTMLAttributes<"li"> & {
@@ -14,12 +15,7 @@ const { tech: techList, class: className, ...props } = Astro.props;
       <li>
         {tech}
         {index !== techList.length - 1 ?
-          <span
-            aria-hidden="true"
-            class="leading-none text-sweater-7 select-none not-dark:text-sweater-4"
-          >
-            /
-          </span>
+          <Slash class="leading-none" />
         : null}
       </li>
     ))
