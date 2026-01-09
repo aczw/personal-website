@@ -12,6 +12,8 @@ import {
 } from "@/scripts/util";
 import ContentLayout from "@/layouts/content-layout.astro";
 import ContentWithToc from "@/components/content-with-toc.astro";
+import { ICON_SIZE } from "@/scripts/constants";
+import GridSection from "@/components/grid-section.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -43,21 +45,19 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
 <ContentLayout meta={{ kind: "post", post }}>
   {
     cover ?
-      <section class="grid-line-before grid-line-after relative p-pad">
+      <GridSection class="p-pad">
         <Image
           src={cover.img}
           alt={cover.alt}
           loading="eager"
           class="rounded-lg bg-sweater-9 not-dark:bg-sweater-2"
         />
-      </section>
+      </GridSection>
     : null
   }
 
   <section id="introduction" class="grid-line-before grid-line-after relative">
-    <div
-      class="space-y-1 border-b-(length:--border-w) border-dashed border-line-dark p-pad"
-    >
+    <div class="space-y-1 border-b-(length:--border-w) border-style p-pad">
       <h1
         class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
       >
@@ -69,13 +69,13 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
 
     <div class="grid grid-cols-1 480:grid-cols-2">
       <div
-        class="flex border-b-(length:--border-w) border-dashed border-line-dark 480:border-r-(length:--border-w) 480:border-b-0"
+        class="flex border-b-(length:--border-w) border-style 480:border-r-(length:--border-w) 480:border-b-0"
       >
         <div
           class="flex grow flex-row 480:flex-col sm:flex-row sm:items-center"
         >
           <p
-            class="shrink-0 border-r-(length:--border-w) border-dashed border-line-dark px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
+            class="shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
           >
             Posted on
           </p>
@@ -90,7 +90,7 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
         </div>
 
         <div class="p-pad">
-          <CalendarFoldIcon size={18} class="shrink-0 stroke-icon" />
+          <CalendarFoldIcon size={ICON_SIZE} class="shrink-0 stroke-icon" />
         </div>
       </div>
 
@@ -99,7 +99,7 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
           class="flex grow flex-row 480:flex-col sm:flex-row sm:items-center"
         >
           <p
-            class="shrink-0 border-r-(length:--border-w) border-dashed border-line-dark px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
+            class="shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
           >
             Read time
           </p>
@@ -111,7 +111,7 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
         </div>
 
         <div class="p-pad">
-          <BookOpenIcon size={18} class="shrink-0 stroke-icon" />
+          <BookOpenIcon size={ICON_SIZE} class="shrink-0 stroke-icon" />
         </div>
       </div>
     </div>

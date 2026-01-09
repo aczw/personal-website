@@ -1,0 +1,14 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"section">;
+
+const { class: className, ...props } = Astro.props;
+---
+
+<section
+  class:list={["grid-line-before grid-line-after relative", className]}
+  {...props}
+>
+  <slot />
+</section>

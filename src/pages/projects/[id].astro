@@ -24,6 +24,8 @@ import ContentLayout from "@/layouts/content-layout.astro";
 import { DISABLED_PROJECTS } from "@/scripts/constants";
 import { validProjectCover } from "@/scripts/util";
 import ContentWithToc from "@/components/content-with-toc.astro";
+import GridSection from "@/components/grid-section.astro";
+import { ICON_SIZE } from "@/scripts/constants";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -87,21 +89,21 @@ const { Content, headings } = await render(project);
 ---
 
 <ContentLayout meta={{ kind: "project", project }}>
-  <section class="grid-line-before grid-line-after relative p-pad">
+  <GridSection class="p-pad">
     <ProjectCover
       id={id}
       cover={cover}
       useVideo={{ small: false }}
       class="overflow-hidden rounded-lg"
     />
-  </section>
+  </GridSection>
 
   <section id="introduction" class="grid-line-before grid-line-after relative">
     <div
-      class="grid grid-cols-1 space-y-1.5 border-b-(length:--border-w) border-dashed border-line-dark sm:grid-cols-2 sm:space-y-0"
+      class="grid grid-cols-1 space-y-1.5 border-b-(length:--border-w) border-style sm:grid-cols-2 sm:space-y-0"
     >
       <div
-        class="border-dashed border-line-dark px-pad pt-pad sm:border-r-(length:--border-w) sm:pb-pad"
+        class="border-style px-pad pt-pad sm:border-r-(length:--border-w) sm:pb-pad"
       >
         <h1
           class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
@@ -126,7 +128,7 @@ const { Content, headings } = await render(project);
         metadata.map(({ kind, data, icon: Icon }, index) => (
           <li
             class:list={[
-              "group col-span-1 flex justify-between gap-pad border-dashed border-line-dark",
+              "group col-span-1 flex justify-between gap-pad border-style",
               metadata.length === 2 ? "normal:col-span-2" : null,
 
               // Two metadata
@@ -160,13 +162,13 @@ const { Content, headings } = await render(project);
                   : <ContentDate date={data} />}
                 </div>
 
-                <Icon size={18} class="shrink-0 stroke-icon" />
+                <Icon size={ICON_SIZE} class="shrink-0 stroke-icon" />
               </>
             : <a
                 href={kind === "link" ? data.href : data}
                 target="_blank"
                 title={kind === "link" ? data.href : data}
-                class="flex grow justify-between gap-pad p-pad transition-colors group-hover:bg-line-dark"
+                class="group-hover:bg-line-dark flex grow justify-between gap-pad p-pad transition-colors"
               >
                 <div>
                   <p class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
@@ -181,7 +183,7 @@ const { Content, headings } = await render(project);
                   </p>
                 </div>
 
-                <Icon size={18} class="shrink-0 stroke-icon" />
+                <Icon size={ICON_SIZE} class="shrink-0 stroke-icon" />
               </a>
             }
           </li>

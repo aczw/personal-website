@@ -1,37 +1,53 @@
 ---
-import { ArrowUpToLineIcon, MusicIcon } from "@lucide/astro";
+import {
+  ArrowUpToLineIcon,
+  MusicIcon,
+  FileUserIcon,
+  LinkedinIcon,
+  GithubIcon,
+  MailIcon,
+} from "@lucide/astro";
 
 import LastFm from "@/components/last-fm.astro";
-import { getSocials } from "@/scripts/constants";
+import { ICON_SIZE } from "@/scripts/constants";
 
-const socials = getSocials();
+const socials = [
+  { href: "/_files/resume.pdf", label: "Resume", icon: FileUserIcon },
+  {
+    href: "https://linkedin.com/in/zwcharl",
+    label: "LinkedIn",
+    icon: LinkedinIcon,
+  },
+  { href: "https://github.com/aczw", label: "GitHub", icon: GithubIcon },
+  { href: "mailto:zwcharl@gmail.com", label: "Email", icon: MailIcon },
+];
 ---
 
 <footer class="grid-line-before relative">
   <div
-    class="grid grid-cols-1 border-b-(length:--border-w) border-dashed border-line-dark 480:grid-cols-2"
+    class="grid grid-cols-1 border-b-(length:--border-w) border-style 480:grid-cols-2"
   >
     <div
       aria-hidden="true"
-      class="border-b-(length:--border-w) border-dashed border-line-dark 480:border-r-(length:--border-w) 480:border-b-0"
+      class="border-b-(length:--border-w) border-style 480:border-r-(length:--border-w) 480:border-b-0"
     >
     </div>
 
     <a
       href="#"
-      class="group flex items-center justify-between p-pad transition-colors hover:bg-line-dark"
+      class="group hover:bg-line-dark flex items-center justify-between p-pad transition-colors"
     >
       <span
         class="translate-y-0.5 font-bold text-link-secondary transition-colors group-hover:text-link-secondary-hover"
       >
         Back to top
       </span>
-      <ArrowUpToLineIcon size={18} class="stroke-icon" />
+      <ArrowUpToLineIcon size={ICON_SIZE} class="stroke-icon" />
     </a>
   </div>
 
   <div
-    class="grid grid-cols-1 grid-rows-[auto_auto] *:border-dashed *:border-line-dark 480:grid-cols-2"
+    class="*: grid grid-cols-1 grid-rows-[auto_auto] *:border-style 480:grid-cols-2"
   >
     <div
       aria-hidden="true"
@@ -40,7 +56,7 @@ const socials = getSocials();
     </div>
 
     <div
-      class="grid grid-cols-2 border-b-(length:--border-w) *:border-dashed *:border-line-dark"
+      class="*: grid grid-cols-2 border-b-(length:--border-w) *:border-style"
     >
       {
         socials.map(({ href, label, icon: Icon }, index) => (
@@ -48,7 +64,7 @@ const socials = getSocials();
             href={href}
             target="_blank"
             class:list={[
-              "group flex items-center justify-between p-pad transition-colors hover:bg-line-bright",
+              "group hover:bg-line-bright flex items-center justify-between p-pad transition-colors",
               // Render dashed lines
               index < 2 ? "border-b-(length:--border-w)" : null,
               index % 2 === 0 ? "border-r-(length:--border-w)" : null,
@@ -57,7 +73,7 @@ const socials = getSocials();
             <span class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
               {label}
             </span>
-            <Icon size={18} class="stroke-icon" />
+            <Icon size={ICON_SIZE} class="stroke-icon" />
           </a>
         ))
       }

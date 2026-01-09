@@ -8,6 +8,8 @@ import {
   getMonthYearDateFormatting,
 } from "@/scripts/util";
 import MainLayout from "@/layouts/main-layout.astro";
+import GridSection from "@/components/grid-section.astro";
+import { ICON_SIZE } from "@/scripts/constants";
 
 const posts = await getCollection("posts");
 const sortedPosts = posts.sort(
@@ -24,7 +26,7 @@ const sortedPosts = posts.sort(
     ogImageParams: "Random ramblings on stuff I've been doing.",
   }}
 >
-  <section class="grid-line-before grid-line-after relative flex flex-col">
+  <GridSection class="flex flex-col">
     {
       sortedPosts.map(({ data: { title, blurb, posted }, id, body }, index) => {
         let isSubsequentPostInYear = false;
@@ -39,14 +41,14 @@ const sortedPosts = posts.sort(
         return (
           <a
             href={`/posts/${id}`}
-            class="group flex border-dashed border-line-dark transition-colors not-last:border-b-(length:--border-w) hover:bg-line-dark sm:grid sm:grid-cols-[202px_minmax(0px,1fr)]"
+            class="group hover:bg-line-dark flex border-style transition-colors not-last:border-b-(length:--border-w) sm:grid sm:grid-cols-[202px_minmax(0px,1fr)]"
           >
             <time
               datetime={posted.toISOString()}
               title={getFullDateFormatting(posted)}
-              class="hidden border-r-(length:--border-w) border-dashed border-line-dark text-link-secondary 480:flex"
+              class="hidden border-r-(length:--border-w) border-style text-link-secondary 480:flex"
             >
-              <span class="border-dashed border-line-dark p-pad sm:border-r-(length:--border-w)">
+              <span class="border-style p-pad sm:border-r-(length:--border-w)">
                 <span
                   class:list={[isSubsequentPostInYear ? "invisible" : null]}
                 >
@@ -98,7 +100,7 @@ const sortedPosts = posts.sort(
 
               <CircleArrowRightIcon
                 aria-hidden="true"
-                size={18}
+                size={ICON_SIZE}
                 class="shrink-0 stroke-icon group-hover:stroke-icon 480:hidden 480:stroke-transparent md:block"
               />
             </span>
@@ -106,5 +108,5 @@ const sortedPosts = posts.sort(
         );
       })
     }
-  </section>
+  </GridSection>
 </MainLayout>

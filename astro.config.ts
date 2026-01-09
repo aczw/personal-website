@@ -92,6 +92,7 @@ const config = defineConfig({
           const readingTime = getReadingTime(textOnPage);
 
           // @ts-expect-error: Astro object is guaranteed to exist
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           data.astro.frontmatter.stats = readingTime;
         },
     ],
@@ -113,6 +114,9 @@ const config = defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      allowedHosts: ["bore.pub"],
+    },
   },
 });
 

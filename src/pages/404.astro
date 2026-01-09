@@ -2,31 +2,28 @@
 import { Image } from "astro:assets";
 
 import Link from "@/components/link.astro";
-import CommonLayout from "@/layouts/common-layout.astro";
+import MainLayout from "@/layouts/main-layout.astro";
 ---
 
-<CommonLayout
+<MainLayout
   meta={{
     kind: "route",
     title: "404",
     description: "Sorry, this page doesn't exist.",
     ogImageParams: "Page not found.",
   }}
+  class="flex flex-col items-center justify-center p-pad"
 >
-  <main
-    class="flex min-h-[calc(100vh-45px-120.688px-180.5px-45px)] flex-col items-center justify-center space-y-16 p-pad sm:min-h-[calc(100vh-90px-81.188px-178.5px-90px)]"
-  >
-    <Image
-      src={import("@/assets/not-found.png")}
-      alt="Page not found"
-      class="w-[clamp(400px,80%,500px)]"
-    />
+  <Image
+    src={import("@/assets/not_found.png")}
+    alt="Page not found"
+    class="w-[clamp(400px,80%,500px)]"
+  />
 
-    <p>
-      Sorry, page not found.
-      <Link href="https://twitter.com/sawaratsuki1004" target="_blank">
-        Art by @sawaratsuki1004.
-      </Link>
-    </p>
-  </main>
-</CommonLayout>
+  <p>
+    Sorry, page not found.
+    <Link href="https://twitter.com/sawaratsuki1004" target="_blank">
+      Art by @sawaratsuki1004.
+    </Link>
+  </p>
+</MainLayout>

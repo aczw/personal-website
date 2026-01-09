@@ -1,10 +1,11 @@
 ---
-import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 
-import type { MetaKind } from "@/scripts/types";
 import "@/styles/main.css";
+
+import type { MetaKind } from "@/scripts/types";
 import { getShortDateFormatting, stripEndingSlash } from "@/scripts/util";
+import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
 
 interface Props {
   meta: MetaKind;
@@ -18,7 +19,7 @@ let ogImageParams: string;
 
 switch (meta.kind) {
   case "route": {
-    title = (meta.title ? `${meta.title} — ` : "") + title;
+    title = (meta.title ? `${meta.title} / ` : "") + title;
     description = meta.description;
     ogImageParams = `?heading=${encodeURIComponent(meta.ogImageParams)}`;
     break;
@@ -26,7 +27,7 @@ switch (meta.kind) {
 
   case "post": {
     const { data, id } = meta.post;
-    title = `${data.title} — ${title}`;
+    title = `${data.title} / ${title}`;
 
     // If the post doesn't have a blurb then just state when it was published
     description =
@@ -39,7 +40,7 @@ switch (meta.kind) {
 
   case "project": {
     const { data, id } = meta.project;
-    title = `${data.name} — ${title}`;
+    title = `${data.name} / ${title}`;
     description = data.blurb;
     ogImageParams = `?project=${id}`;
     break;
@@ -85,9 +86,34 @@ const canonicalUrl = stripEndingSlash(url);
     <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <link rel="icon" sizes="any" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
-    <link rel="icon" href="/favicon.ico" />
+    <link
+      rel="icon"
+      sizes="any"
+      type="image/svg+xml"
+      href="/favicon_dark_bg.svg"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      sizes="any"
+      type="image/svg+xml"
+      href="/favicon_light_bg.svg"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link
+      rel="icon"
+      sizes="64x64"
+      type="image/png"
+      href="/favicon_dark_bg.png"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      sizes="64x64"
+      type="image/png"
+      href="/favicon_light_bg.png"
+      media="(prefers-color-scheme: dark)"
+    />
 
     <link
       rel="preload"
@@ -119,28 +145,11 @@ const canonicalUrl = stripEndingSlash(url);
       src="https://cloud.umami.is/script.js"
       data-website-id="9ccfaf2d-6989-4335-ab83-606d54cdee0f"></script>
 
-    <Analytics />
     <SpeedInsights />
   </head>
 
   <body>
     <slot />
-
-    {
-      import.meta.env.DEV ?
-        <div
-          aria-hidden="true"
-          class="fixed bottom-5 left-5 z-9999 w-fit cursor-default rounded-xl bg-sweater-8 px-4 py-2 maple not-dark:bg-sweater-3"
-        >
-          <span class="hidden 2xl:inline">2XL ({">="}1536px)</span>
-          <span class="hidden xl:inline 2xl:hidden">XL ({">="}1280px)</span>
-          <span class="hidden lg:inline xl:hidden">LG ({">="}1024px)</span>
-          <span class="hidden md:inline lg:hidden">MD ({">="}768px)</span>
-          <span class="hidden sm:inline md:hidden">SM ({">="}640px)</span>
-          <span class="hidden 480:inline sm:hidden">XS ({">="}480px)</span>
-          <span class="480:hidden">{"<"} 480px</span>
-        </div>
-      : null
-    }
+    <ScreenSizeIndicator />
   </body>
 </html>

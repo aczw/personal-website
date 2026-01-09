@@ -6,9 +6,7 @@ import {
   DateSchema,
   ImageSchema,
   LinkSchema,
-  ProjectCategoriesSchema,
   SourceHrefSchema,
-  TechSchema,
 } from "@/scripts/schema";
 
 const projects = defineCollection({
@@ -25,12 +23,11 @@ const projects = defineCollection({
         .optional(),
       blurb: BlurbSchema,
       metadata: z.object({
-        tech: TechSchema,
+        tech: z.string().array(),
         link: LinkSchema.optional(),
         sourceHref: SourceHrefSchema.optional(),
         date: DateSchema,
       }),
-      type: ProjectCategoriesSchema,
       order: z.number(),
       cover: ImageSchema(image),
     }),
@@ -42,7 +39,6 @@ const posts = defineCollection({
     z.object({
       title: z.string(),
       blurb: BlurbSchema.optional(),
-      tags: ProjectCategoriesSchema.optional(),
       posted: z.date(),
       cover: ImageSchema(image).optional(),
     }),
