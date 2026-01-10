@@ -1,60 +1,47 @@
 ---
+import type { HTMLAttributes } from "astro/types";
+
 import Eye from "@/components/eye.astro";
 import Slash from "@/components/slash.astro";
 
 type Link = { href: string; text: string };
 
-interface Props {
+type Props = HTMLAttributes<"header"> & {
   links: Link[];
-  description: string;
-  maxColumns: 1 | 2;
-}
+};
 
-const { links, description, maxColumns } = Astro.props;
+const { links, class: className, ...props } = Astro.props;
 ---
 
 <header
   class:list={[
-    "mx-auto grid w-full grid-cols-1 gap-y-pad-2 px-pad-2 pt-pad-2 desktop:mt-10 desktop:w-4/5 desktop:p-pad lg:w-(--real-header-w)",
-    { "gap-x-pad-2 sm:grid-cols-2 lg:gap-x-pad-4": maxColumns === 2 },
+    "mx-auto w-full px-pad-2 pt-pad-2 desktop:mt-10 desktop:w-4/5 desktop:p-pad lg:w-(--real-header-w)",
+    className,
   ]}
+  {...props}
 >
-  <div class="space-y-0.75 *:leading-[0.8]">
-    <nav class="flex items-start gap-x-1.5 font-bold">
-      <a href="/" title="Home" class="block">
-        <Eye
-          aria-hidden="true"
-          class="fill-link-primary transition-[fill_rotate] hover:-rotate-13 hover:fill-link-primary-hover"
-        />
-      </a>
+  <nav class="flex items-start gap-x-1.75 leading-[0.8] font-bold">
+    <a href="/" title="Home" class="block">
+      <Eye
+        aria-hidden="true"
+        class="fill-link-primary transition-[fill_rotate] hover:-rotate-13 hover:fill-link-primary-hover"
+      />
+    </a>
 
-      <Slash class="text-[2.1rem]" />
+    <Slash class="text-[2.2rem]" />
 
-      {
-        links.map(({ href, text }) => (
-          <>
-            <a
-              href={href}
-              class="text-[2.2em] text-link-primary transition-colors hover:text-link-primary-hover"
-            >
-              {text}
-            </a>
-            <Slash class="text-[2.1rem]" />
-          </>
-        ))
-      }
-    </nav>
-
-    <h1
-      class="flex cursor-default items-center gap-x-2 text-[2.2rem] font-bold text-sweater-2 not-dark:text-sweater-8"
-    >
-      <slot name="title" />
-    </h1>
-  </div>
-
-  <p
-    class:list={["self-end-safe", { "max-w-(--content-w)": maxColumns === 1 }]}
-  >
-    {description}
-  </p>
+    {
+      links.map(({ href, text }) => (
+        <>
+          <a
+            href={href}
+            class="text-[2.2em] text-link-primary transition-colors hover:text-link-primary-hover"
+          >
+            {text}
+          </a>
+          <Slash class="text-[2.2rem]" />
+        </>
+      ))
+    }
+  </nav>
 </header>

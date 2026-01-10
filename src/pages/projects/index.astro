@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
-import { SquareArrowRightIcon } from "@lucide/astro";
+import { SquareArrowRightIcon, ToolCaseIcon } from "@lucide/astro";
 
 import ProjectCover from "@/components/project-cover.astro";
 import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
@@ -33,52 +33,63 @@ const description =
     ogImageParams: description,
   }}
 >
-  <Header links={[]} description={description} maxColumns={2}>
-    <Fragment slot="title">Portfolio</Fragment>
-  </Header>
+  <Header links={[]} />
 
-  <main
-    class="mx-auto grid max-w-[calc(1200px+var(--spacing-pad-4))] grid-cols-1 gap-y-pad-4 p-pad-2 sm:grid-cols-2 sm:gap-y-0"
-  >
-    {
-      projects.map(({ id, data: { name, blurb, metadata, cover } }) => (
-        <section
-          aria-labelledby={id}
-          class="group relative rounded-3xl transition-colors duration-200 desktop:p-pad desktop:hover:bg-sweater-9 not-dark:desktop:hover:bg-sweater-2 lg:p-pad-2"
-        >
-          <ProjectCover
-            id={id}
-            cover={cover}
-            useVideo={WITH_VIDEOS.includes(id) ? { small: true } : null}
-            class="mb-3.5 overflow-hidden rounded-xl"
-          />
+  <main>
+    <div
+      class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad desktop:pt-pad-2 md:grid-cols-2 lg:w-(--real-header-w) lg:gap-x-pad-4 lg:pt-pad-3"
+    >
+      <h1
+        class="flex items-center gap-x-pad text-5xl font-bold text-sweater-2 md:justify-between"
+      >
+        Portfolio <ToolCaseIcon size={36} class="stroke-icon" />
+      </h1>
+      <p class="max-w-(--content-w)">{description}</p>
+    </div>
 
-          <h2
-            id={id}
-            class="mb-1 flex items-center justify-between text-lg leading-[1.1] font-bold text-link-primary transition-colors group-hover:text-link-primary-hover sm:text-2xl"
+    <div
+      class="mx-auto grid max-w-[calc(1200px+var(--spacing-pad-4))] grid-cols-1 gap-y-pad-2 p-pad-2 sm:grid-cols-2 sm:gap-y-0"
+    >
+      {
+        projects.map(({ id, data: { name, blurb, metadata, cover } }) => (
+          <section
+            aria-labelledby={id}
+            class="group relative rounded-3xl transition-colors duration-200 desktop:p-pad desktop:hover:bg-sweater-9 not-dark:desktop:hover:bg-sweater-2 lg:p-pad-2"
           >
-            <a
-              href={`/projects/${id}`}
-              class="after:absolute after:inset-0 after:z-1 after:rounded-3xl"
-            >
-              {name}
-            </a>
-
-            <SquareArrowRightIcon
-              aria-hidden="true"
-              size={ICON_SIZE}
-              class="shrink-0 stroke-icon sm:hidden"
+            <ProjectCover
+              id={id}
+              cover={cover}
+              useVideo={WITH_VIDEOS.includes(id) ? { small: true } : null}
+              class="mb-pad overflow-hidden rounded-xl"
             />
-          </h2>
 
-          <div class="mb-1 grid grid-cols-1 gap-x-pad gap-y-1.5 *:text-link-secondary *:transition-colors *:group-hover:text-link-secondary-hover sm:mb-pad md:text-lg lg:grid-cols-2">
-            <ContentDate date={metadata.date} class="leading-none" />
-            <TechList tech={metadata.tech} class="*:leading-none" />
-          </div>
+            <h2
+              id={id}
+              class="mb-1 flex items-center justify-between text-lg leading-[1.1] font-bold text-link-primary transition-colors group-hover:text-link-primary-hover sm:text-xl"
+            >
+              <a
+                href={`/projects/${id}`}
+                class="after:absolute after:inset-0 after:z-1 after:rounded-3xl"
+              >
+                {name}
+              </a>
 
-          <p class="hidden desktop:[display:inherit]">{blurb}</p>
-        </section>
-      ))
-    }
+              <SquareArrowRightIcon
+                aria-hidden="true"
+                size={ICON_SIZE}
+                class="shrink-0 stroke-icon sm:hidden"
+              />
+            </h2>
+
+            <div class="mb-1 grid grid-cols-1 gap-x-pad gap-y-1.5 *:text-link-secondary *:transition-colors *:group-hover:text-link-secondary-hover lg:grid-cols-2 lg:text-lg">
+              <ContentDate date={metadata.date} class="leading-none" />
+              <TechList tech={metadata.tech} class="*:leading-none" />
+            </div>
+
+            <p class="hidden max-w-(--content-w) desktop:block">{blurb}</p>
+          </section>
+        ))
+      }
+    </div>
   </main>
 </BaseLayout>

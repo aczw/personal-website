@@ -19,6 +19,7 @@
 
   --spacing-pad: --spacing(2.5);
   --spacing-pad-2: calc(var(--spacing-pad) * 2);
+  --spacing-pad-3: calc(var(--spacing-pad) * 3);
   --spacing-pad-4: calc(var(--spacing-pad-2) * 2);
 
   /* This should stay in sync with the ICON_SIZE constant. */
