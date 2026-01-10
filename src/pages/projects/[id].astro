@@ -89,28 +89,33 @@ const { Content, headings } = await render(project);
 ---
 
 <BaseLayout meta={{ kind: "project", project }}>
-  <Header
-    links={[{ href: "/projects", text: "Portfolio" }]}
-    description={blurb}
-    maxColumns={1}
-  >
-    <Fragment slot="title">{name}</Fragment>
-  </Header>
+  <Header links={[{ href: "/projects", text: "Portfolio" }]} />
 
-  <main>
+  <main class="space-y-pad-4">
     <section
-      aria-label="Project overview"
-      class="mx-auto mb-pad-2 max-w-[calc(1100px+var(--spacing-pad-4))] px-pad-2 pt-pad"
+      class="mx-auto w-full px-pad-2 pt-pad-4 desktop:w-4/5 desktop:px-pad desktop:pt-pad-3 lg:w-(--real-header-w)"
     >
-      <div
-        class="mx-auto mb-pad-2 max-w-[calc(80%+var(--spacing-pad-2)-(2*var(--border-w)))] lg:max-w-(--header-w)"
-      >
-        <!-- <h2 class="text-2xl leading-none font-bold text-sweater-2">Overview</h2> -->
+      <h1 class="text-5xl font-bold text-sweater-2 not-dark:text-sweater-8">
+        {name}
+      </h1>
+      {
+        subtitle && (
+          <p class="-mb-2 text-2xl text-sweater-3 not-dark:text-sweater-7 desktop:mb-0 desktop:text-4xl">
+            {subtitle}
+          </p>
+        )
+      }
+      <p class="mt-pad max-w-(--content-w)">{blurb}</p>
+    </section>
 
-        <!-- <p class="max-w-(--content-w)">{blurb}</p> -->
+    <section aria-label="Project overview" class="space-y-pad-2">
+      <div
+        class="mx-auto w-full space-y-pad px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+      >
+        <h2 class="text-xl font-bold text-sweater-2">Overview</h2>
 
         <dl
-          class="-mx-pad-2 grid grid-cols-4 bordered px-pad-2 py-pad *:space-y-1 **:leading-none"
+          class="-mx-pad-2 grid grid-cols-4 bordered px-pad-2 py-pad-2 *:space-y-1 **:leading-none"
         >
           <div>
             <dt class="text-lg font-bold text-sweater-2">Uses</dt>
@@ -131,12 +136,14 @@ const { Content, headings } = await render(project);
         </dl>
       </div>
 
-      <ProjectCover
-        id={id}
-        cover={cover}
-        useVideo={{ small: false }}
-        class="overflow-hidden rounded-lg"
-      />
+      <div class="mx-auto max-w-(--real-wide-w) md:px-pad-2">
+        <ProjectCover
+          id={id}
+          cover={cover}
+          useVideo={{ small: false }}
+          class="overflow-hidden md:rounded-xl"
+        />
+      </div>
     </section>
 
     <MdxContent content={Content} headings={headings} />

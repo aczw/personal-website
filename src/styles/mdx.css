@@ -77,7 +77,7 @@
     }
 
     figcaption {
-      @apply mt-1 text-sm *:inline;
+      @apply mt-1 text-sm text-sweater-2 *:inline;
 
       /* Draw a little arrow before the caption */
       &::before {

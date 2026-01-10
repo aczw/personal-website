@@ -37,7 +37,7 @@ const description =
 
   <main>
     <div
-      class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad desktop:pt-pad-2 md:grid-cols-2 lg:w-(--real-header-w) lg:gap-x-pad-4 lg:pt-pad-3"
+      class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) lg:gap-x-pad-4 lg:pt-pad-3"
     >
       <h1
         class="flex items-center gap-x-pad text-5xl font-bold text-sweater-2 md:justify-between"
@@ -48,7 +48,7 @@ const description =
     </div>
 
     <div
-      class="mx-auto grid max-w-[calc(1200px+var(--spacing-pad-4))] grid-cols-1 gap-y-pad-2 p-pad-2 sm:grid-cols-2 sm:gap-y-0"
+      class="mx-auto grid max-w-(--real-wide-w) grid-cols-1 gap-y-pad-2 p-pad-2 sm:grid-cols-2 sm:gap-y-0"
     >
       {
         projects.map(({ id, data: { name, blurb, metadata, cover } }) => (
