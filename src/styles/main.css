@@ -38,13 +38,12 @@
   --color-sweater-10: #0a0919;
 
   --color-line: var(--line);
-
   --color-link-primary: var(--link-primary);
   --color-link-primary-hover: var(--link-primary-hover);
   --color-link-secondary: var(--link-secondary);
   --color-link-secondary-hover: var(--link-secondary-hover);
-
   --color-icon: var(--icon);
+  --color-heading: var(--heading);
 
   /* A good indicator for when we're beyond phone width territory. As an
    * example, the iPhone 14 Pro Max has a screen width of 430px. */
@@ -72,6 +71,7 @@
     --link-secondary: var(--color-sweater-5);
     --link-secondary-hover: var(--color-sweater-4);
     --icon: var(--color-sweater-6);
+    --heading: var(--color-sweater-2);
 
     @variant not-dark {
       --line: var(--color-sweater-2);
@@ -80,6 +80,7 @@
       --link-secondary: var(--color-sweater-6);
       --link-secondary-hover: var(--color-sweater-7);
       --icon: var(--color-sweater-5);
+      --heading: var(--color-sweater-8);
     }
   }
 

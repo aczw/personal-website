@@ -1,26 +1,18 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
-import type { z } from "astro/zod";
 
 import {
   CalendarFoldIcon,
   ExternalLinkIcon,
   FileCodeIcon,
   WrenchIcon,
-  type Icon as IconType,
 } from "@lucide/astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
 import MdxContent from "@/components/mdx-content.astro";
 import Header from "@/components/header.astro";
 import ProjectCover from "@/components/project-cover.astro";
-import type {
-  LinkSchema,
-  SourceHrefSchema,
-  TechSchema,
-} from "@/scripts/schema";
-import type { ContentDate as ContentDateType } from "@/scripts/types";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import { DISABLED_PROJECTS } from "@/scripts/constants";
@@ -58,6 +50,7 @@ if (!isValidProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 
+const numMetadata = 2 + (link ? 1 : 0) + (sourceHref ? 1 : 0);
 const { Content, headings } = await render(project);
 ---
 
@@ -68,7 +61,7 @@ const { Content, headings } = await render(project);
     <section
       class="mx-auto w-full px-pad-2 pt-pad-4 desktop:w-4/5 desktop:px-pad desktop:pt-pad-3 lg:w-(--real-header-w)"
     >
-      <h1 class="text-5xl font-bold text-sweater-2 not-dark:text-sweater-8">
+      <h1 class="text-5xl font-bold text-heading">
         {name}
       </h1>
       {
@@ -85,39 +78,72 @@ const { Content, headings } = await render(project);
       <div
         class="mx-auto w-full space-y-pad px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
       >
-        <h2 class="text-xl font-bold text-sweater-2">Overview</h2>
+        <h2 class="text-xl font-bold text-heading">Overview</h2>
 
         <dl
-          class="-mx-pad-2 grid grid-cols-4 gap-x-pad-2 bordered px-pad-2 py-pad-2 *:space-y-1 **:leading-none"
+          class="-mx-pad-2 grid gap-x-pad-2 bordered px-pad-2 py-pad **:leading-none"
+          style={`grid-template-columns: repeat(${numMetadata}, minmax(0, 1fr));`}
         >
-          <div>
-            <dt class="font-bold text-sweater-2">Uses</dt>
-            <dd><TechList tech={tech} /></dd>
+          <div class="flex">
+            <div class="grow space-y-1">
+              <dt class="font-bold text-heading">Made with</dt>
+              <dd><TechList tech={tech} /></dd>
+            </div>
+            <WrenchIcon
+              aria-hidden="true"
+              size={ICON_SIZE}
+              class="shrink-0 stroke-icon"
+            />
           </div>
 
-          <div>
-            <dt class="font-bold text-sweater-2">Duration</dt>
-            <dd><ContentDate date={date} /></dd>
+          <div class="flex">
+            <div class="grow space-y-1">
+              <dt class="font-bold text-heading">Duration</dt>
+              <dd><ContentDate date={date} /></dd>
+            </div>
+            <CalendarFoldIcon
+              aria-hidden="true"
+              size={ICON_SIZE}
+              class="shrink-0 stroke-icon"
+            />
           </div>
 
           {
             link && (
-              <div>
-                <dt class="font-bold text-sweater-2">{link.text}</dt>
-                <dd>
-                  <Link href={link.href}>{link.href}</Link>
-                </dd>
+              <div class="flex">
+                <div class="grow space-y-1">
+                  <dt class="font-bold text-heading">{link.text}</dt>
+                  <dd>
+                    <Link target="_blank" href={link.href}>
+                      {link.href}
+                    </Link>
+                  </dd>
+                </div>
+                <ExternalLinkIcon
+                  aria-hidden="true"
+                  size={ICON_SIZE}
+                  class="shrink-0 stroke-icon"
+                />
               </div>
             )
           }
 
           {
             sourceHref && (
-              <div>
-                <dt class="font-bold text-sweater-2">Source code</dt>
-                <dd>
-                  <Link href={sourceHref}>Visit GitHub</Link>
-                </dd>
+              <div class="flex">
+                <div class="grow space-y-1">
+                  <dt class="font-bold text-heading">Source</dt>
+                  <dd>
+                    <Link target="_blank" href={sourceHref}>
+                      View on GitHub
+                    </Link>
+                  </dd>
+                </div>
+                <FileCodeIcon
+                  aria-hidden="true"
+                  size={ICON_SIZE}
+                  class="shrink-0 stroke-icon"
+                />
               </div>
             )
           }
