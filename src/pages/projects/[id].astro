@@ -24,8 +24,9 @@ import type { ContentDate as ContentDateType } from "@/scripts/types";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import { DISABLED_PROJECTS } from "@/scripts/constants";
-import { validProjectCover } from "@/scripts/util";
+import { isValidProjectCover } from "@/scripts/util";
 import { ICON_SIZE } from "@/scripts/constants";
+import Link from "@/components/link.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -48,41 +49,13 @@ const {
     name,
     subtitle,
     blurb,
-    metadata: { tech, link, sourceHref, date },
+    metadata: { tech, date, link, sourceHref },
     cover,
   },
 } = project;
 
-if (!validProjectCover(cover.img.width, cover.img.height)) {
+if (!isValidProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
-}
-
-type MetadataKind =
-  | {
-      kind: "tech";
-      data: z.infer<typeof TechSchema>;
-      icon: typeof IconType;
-    }
-  | { kind: "link"; data: z.infer<typeof LinkSchema>; icon: typeof IconType }
-  | {
-      kind: "sourceHref";
-      data: z.infer<typeof SourceHrefSchema>;
-      icon: typeof IconType;
-    }
-  | { kind: "date"; data: ContentDateType; icon: typeof IconType };
-
-// Make my life easier by iterating through the metadata
-let metadata: MetadataKind[] = [
-  { kind: "tech", data: tech, icon: WrenchIcon },
-  { kind: "date", data: date, icon: CalendarFoldIcon },
-];
-
-if (link) {
-  metadata.push({ kind: "link", data: link, icon: ExternalLinkIcon });
-}
-
-if (sourceHref) {
-  metadata.push({ kind: "sourceHref", data: sourceHref, icon: FileCodeIcon });
 }
 
 const { Content, headings } = await render(project);
@@ -115,24 +88,39 @@ const { Content, headings } = await render(project);
         <h2 class="text-xl font-bold text-sweater-2">Overview</h2>
 
         <dl
-          class="-mx-pad-2 grid grid-cols-4 bordered px-pad-2 py-pad-2 *:space-y-1 **:leading-none"
+          class="-mx-pad-2 grid grid-cols-4 gap-x-pad-2 bordered px-pad-2 py-pad-2 *:space-y-1 **:leading-none"
         >
           <div>
-            <dt class="text-lg font-bold text-sweater-2">Uses</dt>
-            <dd>Fuck</dd>
+            <dt class="font-bold text-sweater-2">Uses</dt>
+            <dd><TechList tech={tech} /></dd>
           </div>
+
           <div>
-            <dt class="text-lg font-bold text-sweater-2">Duration</dt>
-            <dd>Fuck</dd>
+            <dt class="font-bold text-sweater-2">Duration</dt>
+            <dd><ContentDate date={date} /></dd>
           </div>
-          <div>
-            <dt class="text-lg font-bold text-sweater-2">View online</dt>
-            <dd>Fuck</dd>
-          </div>
-          <div>
-            <dt class="text-lg font-bold text-sweater-2">Source code</dt>
-            <dd>Fuck</dd>
-          </div>
+
+          {
+            link && (
+              <div>
+                <dt class="font-bold text-sweater-2">{link.text}</dt>
+                <dd>
+                  <Link href={link.href}>{link.href}</Link>
+                </dd>
+              </div>
+            )
+          }
+
+          {
+            sourceHref && (
+              <div>
+                <dt class="font-bold text-sweater-2">Source code</dt>
+                <dd>
+                  <Link href={sourceHref}>Visit GitHub</Link>
+                </dd>
+              </div>
+            )
+          }
         </dl>
       </div>
 
