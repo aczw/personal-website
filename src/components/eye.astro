@@ -1,15 +1,31 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-type Props = Omit<HTMLAttributes<"svg">, "xmlns" | "viewBox" | "aria-hidden">;
+import { EYE_SIZE } from "@/scripts/constants";
 
-const { class: className, ...props } = Astro.props;
+type Props = Omit<HTMLAttributes<"svg">, "xmlns" | "viewBox" | "style"> & {
+  size?: number;
+};
+
+const { class: className, size, ...props } = Astro.props;
+const length = `calc(${size ? size : EYE_SIZE} * var(--spacing))`;
+
+if (
+  className?.includes("w-") ||
+  className?.includes("h-") ||
+  className?.includes("size-")
+) {
+  throw new Error(
+    "Don't manually define Eye size with Tailwind! Use the dedicated `size` prop!",
+  );
+}
 ---
 
 <svg
   xmlns="http://www.w3.org/2000/svg"
-  viewBox="0 0 25 25"
+  viewBox="0 0 25.5 25.5"
   class={className}
+  style={`width: ${length}; height: ${length};`}
   {...props}
 >
   <path

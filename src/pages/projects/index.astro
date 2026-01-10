@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
-import { SquareArrowRightIcon, ToolCaseIcon } from "@lucide/astro";
+import { SquareArrowRightIcon } from "@lucide/astro";
 
 import ProjectCover from "@/components/project-cover.astro";
 import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
@@ -34,9 +34,7 @@ const description =
   }}
 >
   <Header links={[]} description={description} maxColumns={2}>
-    <Fragment slot="title">
-      Portfolio <ToolCaseIcon aria-hidden="true" class="size-7 stroke-icon" />
-    </Fragment>
+    <Fragment slot="title">Portfolio</Fragment>
   </Header>
 
   <main

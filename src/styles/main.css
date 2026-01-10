@@ -17,13 +17,12 @@
    * it looks too large. */
   --text-mono: 0.87rem;
 
-  /* This is 2.5 * 0.25rem = 0.625rem = 10px (1rem = 16px) */
   --spacing-pad: --spacing(2.5);
   --spacing-pad-2: calc(var(--spacing-pad) * 2);
   --spacing-pad-4: calc(var(--spacing-pad-2) * 2);
 
   /* This should stay in sync with the ICON_SIZE constant. */
-  --spacing-icon: 20px;
+  --spacing-icon: 18px;
 
   /* Primitives */
   --color-sweater-1: #e1dfff;
@@ -60,7 +59,7 @@
   :root {
     --border-w: 2px;
 
-    --header-w: 700px;
+    --header-w: 800px;
     --real-header-w: calc(var(--header-w) + var(--spacing-pad-2));
 
     --line: var(--color-sweater-9);
@@ -83,6 +82,8 @@
   html {
     @apply bg-sweater-10 text-sweater-1;
 
+    /* Change root font size to 15px (default is 16px). */
+    font-size: 15px;
     scrollbar-gutter: stable;
 
     &::selection {
