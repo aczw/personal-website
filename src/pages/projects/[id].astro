@@ -57,9 +57,9 @@ const { Content, headings } = await render(project);
 <BaseLayout meta={{ kind: "project", project }}>
   <Header links={[{ href: "/projects", text: "Portfolio" }]} />
 
-  <main class="space-y-pad-4">
+  <main>
     <section
-      class="mx-auto w-full px-pad-2 pt-pad-4 desktop:w-4/5 desktop:px-pad desktop:pt-pad-3 lg:w-(--real-header-w)"
+      class="mx-auto mb-pad-4 w-full px-pad-2 pt-pad-4 desktop:w-4/5 desktop:px-pad desktop:pt-pad-3 lg:w-(--real-header-w)"
     >
       <h1 class="text-5xl font-bold text-heading">
         {name}
@@ -74,7 +74,10 @@ const { Content, headings } = await render(project);
       <p class="mt-1.5 max-w-(--content-w)">{blurb}</p>
     </section>
 
-    <section aria-label="Project overview" class="space-y-pad-4">
+    <section
+      aria-label="Overview"
+      class="mb-pad-2 space-y-pad-2 desktop:mb-pad-4 desktop:space-y-pad-4"
+    >
       <div class="mx-auto max-w-(--real-wide-w) md:px-pad-2">
         <ProjectCover
           id={id}
@@ -89,7 +92,7 @@ const { Content, headings } = await render(project);
       >
         <dl
           aria-label="Metadata"
-          class="-mx-pad grid grid-cols-1 border-t-(length:--border-w) border-l-(length:--border-w) border-style *:flex *:gap-x-pad *:border-r-(length:--border-w) *:border-b-(length:--border-w) *:border-style *:p-pad **:leading-tight md:grid-cols-(--initial-grid-cols)"
+          class="grid grid-cols-1 gap-y-pad border-style *:flex *:gap-x-pad *:border-style **:leading-tight desktop:-mx-pad desktop:gap-y-0 desktop:border-t-(length:--border-w) desktop:border-l-(length:--border-w) desktop:*:border-r-(length:--border-w) desktop:*:border-b-(length:--border-w) desktop:*:p-pad md:grid-cols-(--initial-grid-cols)"
           style={`--initial-grid-cols: repeat(${numMetadata % 2 === 0 ? 2 : numMetadata}, minmax(0, 1fr));`}
         >
           <div>
