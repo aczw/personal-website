@@ -18,28 +18,25 @@ interface Props {
 const { content: Content, headings } = Astro.props;
 ---
 
-<article aria-label="Technical breakdown">
-  <div
-    class="relative grid grid-cols-1 px-pad-2 sm:grid-cols-[minmax(0,1fr)_minmax(0px,var(--toc-w))_var(--content-w)_minmax(0,calc(var(--header-w)-var(--content-w)))_minmax(0px,var(--toc-w))_minmax(0,1fr)]"
-  >
-    <div
-      class="mdx grid grid-cols-subgrid space-y-pad-2 border-style sm:col-span-2 sm:col-start-3"
-    >
-      <Content
-        components={{
-          h2: H2,
-          h3: H3,
-          h4: H4,
-          blockquote: Aside,
-          a: Anchor,
-        }}
-      />
-    </div>
+<article
+  aria-label="Write-up"
+  class="mx-auto w-full px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+>
+  <div class="mdx">
+    <Content
+      components={{
+        h2: H2,
+        h3: H3,
+        h4: H4,
+        blockquote: Aside,
+        a: Anchor,
+      }}
+    />
 
-    <TableOfContents
+    <!-- <TableOfContents
       headings={headings}
       class="col-start-5 ml-pad-2 hidden min-[1100px]:block min-[1150px]:ml-pad-4"
-    />
+    /> -->
   </div>
 
   <dialog
