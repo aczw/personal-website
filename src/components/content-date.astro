@@ -51,11 +51,15 @@ switch (dateKind.kind) {
         {labels[0]}
       </time>
     : <div {...props}>
-        <time datetime={isoFormats[0]}>{labels[0]}</time>
+        <time datetime={isoFormats[0]} class="whitespace-nowrap">
+          {labels[0]}
+        </time>
         <span class="text-sweater-7 select-none not-dark:text-sweater-4">
           –
         </span>
-        <time datetime={isoFormats[1]}>{labels[1]}</time>
+        <time datetime={isoFormats[1]} class="whitespace-nowrap">
+          {labels[1]}
+        </time>
       </div>
   }
 </Fragment>

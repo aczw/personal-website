@@ -81,8 +81,11 @@ const description =
               />
             </h2>
 
-            <div class="mb-1 grid grid-cols-1 gap-x-pad gap-y-1.5 *:text-link-secondary *:transition-colors *:group-hover:text-link-secondary-hover lg:grid-cols-2 lg:text-lg">
-              <ContentDate date={metadata.date} class="leading-none" />
+            <div class="mb-1 grid grid-cols-1 gap-x-pad-2 gap-y-1.5 *:text-link-secondary *:transition-colors *:group-hover:text-link-secondary-hover lg:grid-cols-2 lg:text-lg xl:gap-x-0">
+              <ContentDate
+                date={metadata.date}
+                class="hidden leading-none md:inline-block"
+              />
               <TechList tech={metadata.tech} class="*:leading-none" />
             </div>
 

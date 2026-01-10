@@ -71,23 +71,31 @@ const { Content, headings } = await render(project);
           </p>
         )
       }
-      <p class="mt-pad max-w-(--content-w)">{blurb}</p>
+      <p class="mt-1.5 max-w-(--content-w)">{blurb}</p>
     </section>
 
-    <section aria-label="Project overview" class="space-y-pad-2">
-      <div
-        class="mx-auto w-full space-y-pad px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
-      >
-        <h2 class="text-xl font-bold text-heading">Overview</h2>
+    <section aria-label="Project overview" class="space-y-pad-4">
+      <div class="mx-auto max-w-(--real-wide-w) md:px-pad-2">
+        <ProjectCover
+          id={id}
+          cover={cover}
+          useVideo={{ small: false }}
+          class="overflow-hidden md:rounded-xl"
+        />
+      </div>
 
+      <div
+        class="mx-auto w-full px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+      >
         <dl
-          class="-mx-pad-2 grid gap-x-pad-2 bordered px-pad-2 py-pad **:leading-none"
-          style={`grid-template-columns: repeat(${numMetadata}, minmax(0, 1fr));`}
+          aria-label="Metadata"
+          class="-mx-pad grid grid-cols-1 border-t-(length:--border-w) border-l-(length:--border-w) border-style *:flex *:gap-x-pad *:border-r-(length:--border-w) *:border-b-(length:--border-w) *:border-style *:p-pad **:leading-tight md:grid-cols-(--initial-grid-cols)"
+          style={`--initial-grid-cols: repeat(${numMetadata % 2 === 0 ? 2 : numMetadata}, minmax(0, 1fr));`}
         >
-          <div class="flex">
-            <div class="grow space-y-1">
+          <div>
+            <div class="grow space-y-0.5">
               <dt class="font-bold text-heading">Made with</dt>
-              <dd><TechList tech={tech} /></dd>
+              <dd><TechList tech={tech} class="" /></dd>
             </div>
             <WrenchIcon
               aria-hidden="true"
@@ -96,10 +104,10 @@ const { Content, headings } = await render(project);
             />
           </div>
 
-          <div class="flex">
-            <div class="grow space-y-1">
+          <div>
+            <div class="grow space-y-0.5">
               <dt class="font-bold text-heading">Duration</dt>
-              <dd><ContentDate date={date} /></dd>
+              <dd><ContentDate date={date} class="" /></dd>
             </div>
             <CalendarFoldIcon
               aria-hidden="true"
@@ -110,12 +118,15 @@ const { Content, headings } = await render(project);
 
           {
             link && (
-              <div class="flex">
-                <div class="grow space-y-1">
-                  <dt class="font-bold text-heading">{link.text}</dt>
+              <div>
+                <div class="grow space-y-0.5">
+                  <dt class="font-bold wrap-anywhere">{link.text}</dt>
                   <dd>
-                    <Link target="_blank" href={link.href}>
-                      {link.href}
+                    <Link target="_blank" href={link.href} class="break-all">
+                      {
+                        /* Get rid of https:// and only show domains */
+                        link.href.slice(8).split("/")[0]
+                      }
                     </Link>
                   </dd>
                 </div>
@@ -130,11 +141,11 @@ const { Content, headings } = await render(project);
 
           {
             sourceHref && (
-              <div class="flex">
-                <div class="grow space-y-1">
+              <div>
+                <div class="grow space-y-0.5">
                   <dt class="font-bold text-heading">Source</dt>
                   <dd>
-                    <Link target="_blank" href={sourceHref}>
+                    <Link target="_blank" href={sourceHref} class="">
                       View on GitHub
                     </Link>
                   </dd>
@@ -148,15 +159,6 @@ const { Content, headings } = await render(project);
             )
           }
         </dl>
-      </div>
-
-      <div class="mx-auto max-w-(--real-wide-w) md:px-pad-2">
-        <ProjectCover
-          id={id}
-          cover={cover}
-          useVideo={{ small: false }}
-          class="overflow-hidden md:rounded-xl"
-        />
       </div>
     </section>
 
