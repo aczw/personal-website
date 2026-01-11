@@ -2,7 +2,12 @@
   :root {
     /* Results in roughly 80 characters per line. */
     --content-w: 525px;
-    --toc-w: 200px;
+
+    --toc-w: 220px;
+
+    @variant xl {
+      --toc-w: 200px;
+    }
   }
 }
 

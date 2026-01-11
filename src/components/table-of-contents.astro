@@ -18,7 +18,10 @@ headings.forEach(({ depth, text }) => {
 ---
 
 <aside
-  class:list={["sticky top-0 h-screen overflow-y-auto", className]}
+  class:list={[
+    "sticky top-pad-2 h-fit max-h-[calc(100vh-var(--spacing-pad-4))] overflow-y-auto bordered p-pad-2",
+    className,
+  ]}
   {...props}
 >
   <nav class="flex flex-col text-link-secondary">
@@ -28,7 +31,7 @@ headings.forEach(({ depth, text }) => {
           <a
             href={`#${slug}`}
             class:list={[
-              "pr-pad leading-[1.1] transition-colors first:pt-0 last:pb-pad hover:text-link-primary data-seen:text-link-primary data-seen:hover:text-link-primary-hover",
+              "leading-[1.1] transition-colors first:pt-0 last:pb-pad hover:text-link-primary data-seen:text-link-primary data-seen:hover:text-link-primary-hover",
 
               depth === 2 ? "pt-[calc(var(--spacing-pad)*0.65)]" : "pt-0.5",
 
