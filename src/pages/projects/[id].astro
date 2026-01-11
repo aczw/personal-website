@@ -123,7 +123,9 @@ const { Content, headings } = await render(project);
             link && (
               <div>
                 <div class="grow space-y-0.5">
-                  <dt class="text-lg font-bold wrap-anywhere">{link.text}</dt>
+                  <dt class="text-lg font-bold wrap-anywhere text-heading">
+                    {link.text}
+                  </dt>
                   <dd>
                     <Link target="_blank" href={link.href} class="break-all">
                       {
