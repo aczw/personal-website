@@ -123,7 +123,7 @@ In each execution of the loop, until we've reached the max number of samples:
 
 One of my first new additions to the base code is adding a Lambertian diffuse shading model. What makes this model great is how easy it is to conceptualize and implement.
 
-<figure class="mdx-bleed-wide">
+<figure>
   ![An eye is looking at a hemisphere centered at the intersection between the
   surface normal and the outgoing direction.](pbrt-diffuse.png)
   <figcaption>
@@ -137,14 +137,14 @@ The Lambertian BRDF says that for an outgoing ray $\omega_o$, the scattering of 
 
 After adding it, obviously I had to test this material out on the classics.
 
-<figure>
-  <div class="grid grid-cols-1 gap-pad desktop:grid-cols-2">
+<figure class="mdx-bleed mdx-outdent">
+  <div class="grid grid-cols-1 gap-pad sm:grid-cols-2">
     ![](renders/diffuse/sphere-800x800-5000.png)
     ![](renders/diffuse/stanford_dragon-800x800-5000.png)
     ![](renders/diffuse/suzanne-800x800-5000.png)
     ![](renders/diffuse/utah_teapot-800x800-5000.png)
   </div>
-  <figcaption>All of these are 800×800 / 5000 samples.</figcaption>
+  <figcaption>800×800 resolution, 5000 samples each.</figcaption>
 </figure>
 
 #### Cosine-weighted hemisphere sampling
@@ -176,7 +176,7 @@ segment.ray = {
 
 What's the opposite of the diffuse shading model? I... don't know the answer, but collapsing from an infinite set of $\omega_i$ to a _discrete_ set of possibilities sounds right to me.
 
-<figure class="mx-auto max-w-120">
+<figure>
   ![An eye is looking at a hemisphere centered at the intersection between the
   surface normal and the outgoing direction. There is a strip of geometry that
   is pointing in the direction of reflection of the outgoing

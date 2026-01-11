@@ -97,7 +97,7 @@ const { Content, headings } = await render(project);
         >
           <div>
             <div class="grow space-y-0.5">
-              <dt class="font-bold text-heading">Made with</dt>
+              <dt class="text-lg font-bold text-heading">Made with</dt>
               <dd><TechList tech={tech} class="" /></dd>
             </div>
             <WrenchIcon
@@ -109,7 +109,7 @@ const { Content, headings } = await render(project);
 
           <div>
             <div class="grow space-y-0.5">
-              <dt class="font-bold text-heading">Duration</dt>
+              <dt class="text-lg font-bold text-heading">Duration</dt>
               <dd><ContentDate date={date} class="" /></dd>
             </div>
             <CalendarFoldIcon
@@ -123,7 +123,7 @@ const { Content, headings } = await render(project);
             link && (
               <div>
                 <div class="grow space-y-0.5">
-                  <dt class="font-bold wrap-anywhere">{link.text}</dt>
+                  <dt class="text-lg font-bold wrap-anywhere">{link.text}</dt>
                   <dd>
                     <Link target="_blank" href={link.href} class="break-all">
                       {
@@ -146,7 +146,7 @@ const { Content, headings } = await render(project);
             sourceHref && (
               <div>
                 <div class="grow space-y-0.5">
-                  <dt class="font-bold text-heading">Source</dt>
+                  <dt class="text-lg font-bold text-heading">Source</dt>
                   <dd>
                     <Link target="_blank" href={sourceHref} class="">
                       View on GitHub

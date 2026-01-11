@@ -2,41 +2,65 @@
   :root {
     /* Results in roughly 80 characters per line. */
     --content-w: 525px;
-    --toc-w: 220px;
   }
 }
 
 /* Only style elements rendered from MDX */
 @utility mdx {
-  @apply space-y-pad-2;
+  @apply grid space-y-pad-2;
+
+  grid-template-columns: minmax(0, var(--content-w)) 1fr;
+
+  > * {
+    @apply col-start-1;
+
+    /* Style the last element in the content only if there are footnotes */
+    &:nth-last-child(2):has(+ section[data-footnotes]) {
+      @apply mb-6! border-b-(length:--border-w) border-style pb-pad;
+
+      @variant sm {
+        @apply mb-12!;
+      }
+    }
+
+    /* Disable spacing before rendered LaTeX because MathJax provides
+     * its own margin styling (which I override) */
+    &:has(+ mjx-container) {
+      @apply mb-0;
+    }
+  }
+
+  h2:has(+ h3) {
+    @apply mb-pad;
+  }
 
   /* In general, all media should have full width. */
   img,
-  video {
-    @apply w-full rounded-lg;
+  video,
+  iframe {
+    @apply rounded-lg;
   }
 
-  img:not([data-no-zoom]) {
-    @apply transition-transform active:scale-97;
+  .mdx-outdent * {
+    @apply rounded-none;
 
-    cursor: zoom-in;
+    @variant desktop {
+      @apply rounded-lg;
+    }
   }
 
-  /* Direct media needs to have its padding and width manually
-     * adjusted, otherwise the border radius won't work. */
-  > img,
-  > video,
-  > iframe {
-    @apply mx-pad px-0;
+  /* Disable on mobile */
+  @media (hover: hover) {
+    img:not([data-no-zoom]) {
+      @apply transition-transform active:scale-97;
 
-    width: calc(100% - 2 * var(--spacing-pad));
+      cursor: zoom-in;
+    }
   }
 
   /* Inline code should have some padding and unique background color */
   code {
-    @apply rounded-md bg-sweater-9 px-1.5 py-0.5 wrap-break-word;
-
-    font-size: var(--text-mono);
+    @apply rounded-md bg-sweater-9 px-1.25 py-0.5 maple wrap-break-word;
 
     @variant not-dark {
       @apply bg-sweater-2;
@@ -98,10 +122,10 @@
   }
 
   table {
-    @apply mdx-bleed bordered;
+    @apply mdx-outdent border-y-(length:--border-w) border-style;
 
     thead {
-      @apply border-b-(length:--border-w) border-style bg-sweater-9/70 font-bold text-sweater-2 not-dark:bg-sweater-2/70 not-dark:text-sweater-8;
+      @apply border-b-(length:--border-w) border-style bg-sweater-9/70 font-bold text-heading not-dark:bg-sweater-2/70;
 
       th {
         @apply px-pad-2 py-0.5 not-last:border-r-(length:--border-w) not-last:border-style;
@@ -117,23 +141,9 @@
         }
       }
     }
-  }
 
-  /* Style the last element in the content only if there are footnotes */
-  :is(& > *) {
-    &:nth-last-child(2):has(+ section[data-footnotes]) {
-      @apply mb-6! border-b-(length:--border-w) border-style pb-pad;
-
-      @variant sm {
-        @apply mb-12!;
-      }
-    }
-
-    /* If the next element starts a new section, decrease the
-       * padding before it */
-    &:has(+ h2[id]),
-    &:has(+ h3[id]) {
-      @apply mb-pad!;
+    @variant desktop {
+      @apply border-x-(length:--border-w);
     }
   }
 
@@ -169,7 +179,21 @@
   }
 }
 
+@utility mdx-outdent {
+  @apply -ml-pad-2;
+
+  width: calc(100% + var(--spacing-pad-4));
+
+  > figcaption {
+    @apply ml-pad-2;
+  }
+}
+
 @utility mdx-bleed {
+  @apply col-span-2;
+}
+
+/* @utility mdx-bleed {
   @media (width >= 1150px) {
     @apply -ml-pad-2;
 
@@ -183,4 +207,4 @@
 
 @utility mdx-bleed-wide {
   @apply col-span-1 mdx-bleed sm:col-span-2;
-}
+} */

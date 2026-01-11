@@ -1,8 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { HashIcon } from "@lucide/astro";
-
 type Props = HTMLAttributes<"h3">;
 
 const { id, ...props } = Astro.props;
@@ -10,14 +8,10 @@ const { id, ...props } = Astro.props;
 
 <h3
   id={id}
-  class="scroll-mt-pad pt-pad text-lg leading-snug font-bold text-link-primary"
+  class="scroll-mt-pad font-bold text-link-primary transition-colors hover:text-link-primary-hover"
   {...props}
 >
-  <a
-    href={`#${id}`}
-    class="flex items-center justify-between gap-pad transition-colors hover:text-link-primary-hover"
-  >
+  <a href={`#${id}`} class="block w-full">
     <slot />
-    <HashIcon size={16} class="stroke-icon" aria-hidden="true" />
   </a>
 </h3>

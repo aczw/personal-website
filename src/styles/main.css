@@ -15,7 +15,7 @@
 
   /* Monospace text should be a little smaller than display text. Otherwise
    * it looks too large. */
-  --text-mono: 0.87rem;
+  --text-mono: 0.85rem;
 
   --spacing-pad: --spacing(2.5);
   --spacing-pad-2: calc(var(--spacing-pad) * 2);

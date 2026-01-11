@@ -18,11 +18,11 @@ interface Props {
 const { content: Content, headings } = Astro.props;
 ---
 
-<article
-  aria-label="Write-up"
-  class="mx-auto w-full px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
->
-  <div class="mdx">
+<Fragment>
+  <article
+    aria-label="Write-up"
+    class="mx-auto mdx w-full px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+  >
     <Content
       components={{
         h2: H2,
@@ -37,7 +37,7 @@ const { content: Content, headings } = Astro.props;
       headings={headings}
       class="col-start-5 ml-pad-2 hidden min-[1100px]:block min-[1150px]:ml-pad-4"
     /> -->
-  </div>
+  </article>
 
   <dialog
     class="fixed top-1/2 left-1/2 mb-0 w-full max-w-[calc(1100px+2*var(--spacing-pad))] transform-[translate(-50%,-50%)] bg-transparent outline-0 backdrop:bg-sweater-10/85 not-dark:backdrop:bg-sweater-1/85"
@@ -45,11 +45,11 @@ const { content: Content, headings } = Astro.props;
     <div class="p-pad">
       <img
         loading="eager"
-        class="mx-auto max-h-[80vh] cursor-zoom-out rounded-lg select-none"
+        class="mx-auto max-h-[80vh] cursor-zoom-out rounded-xl select-none"
       />
     </div>
   </dialog>
-</article>
+</Fragment>
 
 <script>
   const dialogElt = document.querySelector("dialog");

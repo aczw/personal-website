@@ -49,11 +49,6 @@
     --tp-monitor-foreground-color: hsla(247, 42%, 17%, 1);
   }
 
-  /* Force Tweakpane to use my Maple Mono settings */
-  .tp-dfwv {
-    font-feature-settings: var(--font-mono--font-feature-settings);
-  }
-
   --ec-tm-markBrdCol: --alpha(var(--color-sweater-2) / 30%);
   --ec-tm-markBg: --alpha(var(--color-sweater-2) / 10%);
 
@@ -77,9 +72,19 @@
     --ec-tm-delBrdCol: --alpha(#b4637a / 50%);
     --ec-tm-delDiffIndCol: --alpha(#b4637a / 65%);
   }
+}
 
-  /* Force EC code blocks to use my Maple Mono settings */
-  .expressive-code pre > code {
-    font-feature-settings: var(--font-mono--font-feature-settings) !important;
-  }
+/* Force Tweakpane to use my Maple Mono settings */
+.panel-container {
+  font-feature-settings: var(--font-mono--font-feature-settings);
+}
+
+/* Force EC code blocks to use my Maple Mono settings */
+.expressive-code pre > code {
+  font-feature-settings: var(--font-mono--font-feature-settings) !important;
+}
+
+/* Increase vertical spacing around LaTeX */
+.mdx > mjx-container[jax="CHTML"][display="true"] {
+  @apply my-pad-3;
 }
