@@ -6,21 +6,44 @@
   }
 }
 
-/* Only style elements rendered from MDX */
+/* Only style elements rendered from MDX. This copies the width behavior of 
+ * everything else, which is:
+ * 
+ * 1. `mobile`: full (100%) width, `px-pad-2`
+ * 2. Between `mobile` and `lg`: `w-4/5` (80%)
+ * 3. `lg` and above: `mx-auto` goes into effect, max width of --header-w
+ *
+ * It's a little fucked, however, because on `md` and above we use `grid` to
+ * lay out the content and place the table of contents on the side. In the
+ * name of DRY, the current width in the grid is captured by
+ * --mdx-grid-center-w. It operates on different breakpoints than above,
+ * namely `md` and `xl`, which is why there are so many @variants everywhere.
+ *
+ * Also keep in mind `mdx-outdent` and `mdx-bleed` also enable/disable
+ * depending on the current breakpoint. Not everything can be set up here
+ * within `mdx` either, see the inner <div> in mdx-content.astro that wraps
+ * all the actual rendered MDX content. It's all very fucked. */
 @utility mdx {
-  @apply mx-auto w-full px-pad-2 desktop:w-4/5 desktop:px-pad;
-
-  --center-w: calc(80% - var(--spacing-pad-2));
+  @apply mx-auto w-full px-pad-2 desktop:w-4/5 lg:px-pad;
 
   @variant md {
-    @apply mx-0 grid w-full px-0;
+    --mdx-grid-center-w: calc(80% + var(--spacing-pad));
+
+    @apply grid w-full;
 
     grid-template-columns:
       1fr
       minmax(0, var(--content-w))
-      minmax(0, calc(var(--center-w) - var(--content-w) - var(--toc-w)))
+      minmax(
+        0,
+        calc(var(--mdx-grid-center-w) - var(--content-w) - var(--toc-w))
+      )
       var(--toc-w)
       1fr;
+  }
+
+  @variant lg {
+    --mdx-grid-center-w: var(--header-w);
   }
 
   @variant xl {
@@ -29,27 +52,17 @@
       minmax(0, calc(var(--toc-w) + var(--spacing-pad-4)))
       1fr
       var(--content-w)
-      minmax(0, calc(var(--center-w) - var(--content-w)))
+      minmax(0, calc(var(--mdx-grid-center-w) - var(--content-w)))
       1fr
       calc(var(--toc-w) + var(--spacing-pad-4))
       1fr;
   }
 
-  @variant lg {
-    --center-w: var(--header-w);
-  }
+  div[role="none"] {
+    @apply space-y-pad-2 *:col-start-1;
 
-  > div[role="none"] {
-    @apply space-y-pad-2;
-
-    > * {
-      @apply col-start-1;
-
-      /* Disable spacing before rendered LaTeX because MathJax provides
-     * its own margin styling (which I override) */
-      &:has(+ mjx-container) {
-        @apply mb-0;
-      }
+    :has(+ mjx-container) {
+      @apply mb-0;
     }
   }
 
@@ -57,7 +70,6 @@
     @apply mb-pad;
   }
 
-  /* In general, all media should have full width. */
   img,
   video,
   iframe {
@@ -65,14 +77,9 @@
   }
 
   .mdx-outdent * {
-    @apply rounded-none;
-
-    @variant desktop {
-      @apply rounded-lg;
-    }
+    @apply rounded-none desktop:rounded-lg;
   }
 
-  /* Disable on mobile */
   @media (hover: hover) {
     img:not([data-no-zoom]) {
       @apply transition-transform active:scale-97;
@@ -81,7 +88,6 @@
     }
   }
 
-  /* Inline code should have some padding and unique background color */
   code {
     @apply rounded-md bg-sweater-9 px-1.25 py-0.5 maple wrap-break-word not-dark:bg-sweater-2;
   }
@@ -109,7 +115,6 @@
   figcaption {
     @apply mt-1 text-sm text-heading *:inline;
 
-    /* Draw a little arrow before the caption */
     &::before {
       @apply inline-block translate-y-0.5 scale-95 pr-1;
 
@@ -147,18 +152,14 @@
     }
   }
 
-  /* Target auto-generated footnotes */
   section[data-footnotes] {
     @apply mt-pad-2 border-t-(length:--border-w) border-style pt-pad-4;
 
-    /* MDX generates a "Footnotes" heading. Make it screen reader only */
     > h2#footnote-label {
       @apply sr-only;
     }
 
     > ol {
-      /* The following two selectors are to make sure back ref arrows are 
-         * inline with the text. */
       > li > p:has(> a[data-footnote-backref]) {
         display: inline;
       }
@@ -184,6 +185,24 @@
 
   > figcaption {
     @apply ml-pad-2;
+  }
+
+  @variant md {
+    @apply ml-0 w-full;
+
+    > figcaption {
+      @apply ml-0;
+    }
+  }
+
+  @variant lg {
+    @apply -ml-pad-2;
+
+    width: calc(100% + var(--spacing-pad-4));
+
+    > figcaption {
+      @apply ml-pad-2;
+    }
   }
 }
 
