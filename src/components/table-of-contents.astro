@@ -2,10 +2,6 @@
 import type { MarkdownHeading } from "astro";
 import type { HTMLAttributes } from "astro/types";
 
-import { ArrowUpToLineIcon } from "@lucide/astro";
-
-import { ICON_SIZE } from "@/scripts/constants";
-
 type Props = HTMLAttributes<"aside"> & {
   headings: MarkdownHeading[];
 };
@@ -25,48 +21,30 @@ headings.forEach(({ depth, text }) => {
   class:list={["sticky top-0 h-screen overflow-y-auto", className]}
   {...props}
 >
-  <nav>
-    <a
-      href="#"
-      class="group sticky inset-x-0 top-0 flex flex-col border-b-(length:--border-w) border-style bg-sweater-10 transition-colors not-dark:bg-sweater-1 hover:bg-sweater-9 not-dark:hover:bg-sweater-2"
-    >
-      <span
-        class="text-lg leading-snug font-bold text-link-primary transition-colors group-hover:text-link-primary-hover"
-        >Sections</span
-      >
+  <nav class="flex flex-col text-link-secondary">
+    {
+      headings.map(({ depth, slug, text }, index) => {
+        return (
+          <a
+            href={`#${slug}`}
+            class:list={[
+              "pr-pad leading-[1.1] transition-colors first:pt-0 last:pb-pad hover:text-link-primary data-seen:text-link-primary data-seen:hover:text-link-primary-hover",
 
-      <span
-        class="flex items-center justify-between leading-none text-link-secondary transition-colors group-hover:text-link-secondary-hover"
-      >
-        Back to top <ArrowUpToLineIcon size={ICON_SIZE} class="stroke-icon" />
-      </span>
-    </a>
+              depth === 2 ? "pt-[calc(var(--spacing-pad)*0.65)]" : "pt-0.5",
 
-    <div class="flex flex-col text-link-secondary">
-      {
-        headings.map(({ depth, slug, text }, index) => {
-          return (
-            <a
-              href={`#${slug}`}
-              class:list={[
-                "pr-pad leading-[1.1] transition-colors first:pt-0 last:pb-pad hover:text-link-primary data-seen:text-link-primary data-seen:hover:text-link-primary-hover",
-
-                depth === 2 ? "pt-[calc(var(--spacing-pad)*0.65)]" : "pt-0.5",
-
-                headings[index + 1]?.depth === 2 ?
-                  "pb-[calc(var(--spacing-pad)*0.65)]"
-                : "pb-0.5",
-              ]}
-              style={{
-                paddingLeft: `calc(${2 * depth - 4} * var(--spacing-pad))`,
-              }}
-            >
-              {text}
-            </a>
-          );
-        })
-      }
-    </div>
+              headings[index + 1]?.depth === 2 ?
+                "pb-[calc(var(--spacing-pad)*0.65)]"
+              : "pb-0.5",
+            ]}
+            style={{
+              paddingLeft: `calc(${2 * depth - 4} * var(--spacing-pad))`,
+            }}
+          >
+            {text}
+          </a>
+        );
+      })
+    }
   </nav>
 </aside>
 

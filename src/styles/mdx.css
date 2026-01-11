@@ -73,7 +73,7 @@
   img,
   video,
   iframe {
-    @apply rounded-xl;
+    @apply w-full rounded-xl;
   }
 
   .mdx-outdent * {
@@ -181,14 +181,14 @@
 
   width: calc(100% + var(--spacing-pad-4));
 
-  > figcaption {
+  figcaption {
     @apply ml-pad-2;
   }
 
   @variant md {
     @apply ml-0 w-full;
 
-    > figcaption {
+    figcaption {
       @apply ml-0;
     }
   }
@@ -198,7 +198,7 @@
 
     width: calc(100% + var(--spacing-pad-4));
 
-    > figcaption {
+    figcaption {
       @apply ml-pad-2;
     }
   }
@@ -206,4 +206,17 @@
 
 @utility mdx-bleed {
   @apply col-span-2;
+}
+
+/* Technically an override, but it's MDX-specific so it's here. */
+.expressive-code {
+  @apply mdx-outdent;
+
+  pre {
+    --ec-brdRad: 0px;
+
+    @variant desktop {
+      --ec-brdRad: var(--radius-xl);
+    }
+  }
 }

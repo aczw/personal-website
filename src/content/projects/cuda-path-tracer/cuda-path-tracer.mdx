@@ -138,7 +138,7 @@ The Lambertian BRDF says that for an outgoing ray $\omega_o$, the scattering of 
 After adding it, obviously I had to test this material out on the classics.
 
 <figure class="mdx-bleed mdx-outdent">
-  <div class="grid grid-cols-1 gap-pad sm:grid-cols-2">
+  <div class="grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
     ![](renders/diffuse/sphere-800x800-5000.png)
     ![](renders/diffuse/stanford_dragon-800x800-5000.png)
     ![](renders/diffuse/suzanne-800x800-5000.png)
@@ -196,16 +196,13 @@ We will combine them both later to create dielectrics.
 
 First, complete reflection.
 
-<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
-  <figure>
+<figure class="mdx-bleed mdx-outdent">
+  <div class="grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
     ![](renders/perf-spec-dielectric/pure_reflection-800x800-5000.png)
-    <figcaption>800×800 / 5000 samples</figcaption>
-  </figure>
-  <figure>
     ![](renders/perf-spec-dielectric/pure_reflection_inv-800x800-5000.png)
-    <figcaption>800×800 / 5000 samples</figcaption>
-  </figure>
-</div>
+  </div>
+  <figcaption>800×800 resolution, 5000 samples each.</figcaption>
+</figure>
 
 The first scene has a single purely reflective material with everything around it set to diffuse. It's essentially a perfect mirror. The second scene inverts everything: every wall is purely reflective.
 
@@ -216,6 +213,8 @@ The first scene has a single purely reflective material with everything around i
 Transmission was much trickier to implement. Two things in particular stood out.
 
 First, IORs are always defined relative to _something_.[^4] At a given intersection point, we always need to know what medium we're _entering_ and what medium we're _leaving_, because that affects the IOR ratio. How I keep track of this is to store an additional enum in my `Intersection` data struct that informs me whether the intersection was with the outside of a surface, or inside. Depending on the surface, we may have to flip the IOR.
+
+<div class="mdx-bleed">
 
 ```cpp
 /// Tracks which side of the geometry the intersection is at.
@@ -228,22 +227,21 @@ if (isect.surface == Surface::Outside) {
 }
 ```
 
+</div>
+
 Second, there are cases where the incident angle is so large that a refraction actually _reflects back into_ the original medium. This is called [total internal reflection](https://en.wikipedia.org/wiki/Total_internal_reflection), and we have to check for this possibility. `glm::refract` returns zero when this occurs, which I check for and return `std::nullopt`, indicating that no transmissive ray could be generated for this intersection.
 
 > My pure transmission function returns `std::optional<Ray>` for this reason.
 
 Keeping these two things in mind, we can get transmission working.
 
-<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
-  <figure>
+<figure class="mdx-bleed">
+  <div class="grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.0.png)
-    <figcaption>800×800 / 5000 samples / IOR 1.0</figcaption>
-  </figure>
-  <figure>
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.55.png)
-    <figcaption>800×800 / 5000 samples / IOR 1.55</figcaption>
-  </figure>
-</div>
+  </div>
+  <figcaption>800×800 resolution, 5000 samples, IOR of 1.55 each.</figcaption>
+</figure>
 
 These renders are... interesting. How do I interpret them?
 
@@ -257,18 +255,16 @@ To make our path tracing a little easier (and to piggyback off of the wonders of
 
 What should the probability be? A simple solution is to set it to 50/50. However, this wouldn't result in an accurate physical render because we're not considering the Fresnel coefficients that dictate how much light is reflected and refracted at an intersection.
 
-<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
-  <figure>
-    ![](fresnel-half-half.png)
-    <figcaption>800×800 / 3000 samples / IOR 1.55</figcaption>
-  </figure>
-  <figure>
-    ![](fresnel-accurate.png)
-    <figcaption>800×800 / 3000 samples / IOR 1.55</figcaption>
-  </figure>
-</div>
+<figure class="mdx-bleed mdx-outdent">
+  <div class="grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
+    ![](fresnel-half-half.png) ![](fresnel-accurate.png)
+  </div>
+  <figcaption>Resolution, 800×800, 3000 samples, IOR of 1.55 each.</figcaption>
+</figure>
 
 While both renders use the IOR of glass, the second one looks more real because we're considering the Fresnel reflectance term when randomly deciding to reflect or refract the ray:
+
+<div class="mdx-bleed">
 
 ```cpp
 auto rng = make_seeded_random_engine(curr_iter, index, curr_depth);
@@ -285,6 +281,8 @@ if (uniform_01(rng) < refl_term) {
 }
 ```
 
+</div>
+
 In real life, calculating the reflectance term requires solving the [Fresnel equations](https://en.wikipedia.org/wiki/Fresnel_equations). However, this is graphics so we can cheat! A popular alternative is to use Schlick's approximation, first demonstrated in 1994, which computes the term in a more efficient and simple manner. Here are some resources that helped me:
 
 - [Christophe Schlick's original paper](https://web.archive.org/web/20200510114532/http://cs.virginia.edu/~jdl/bib/appearance/analytic%20models/schlick94b.pdf). The approximation appears on page 7. Note this is a digital archive of the original page via the Wayback Machine.
@@ -294,23 +292,16 @@ In real life, calculating the reflectance term requires solving the [Fresnel equ
 
 Schlick's paper claims that the approximation runs _almost 32 times faster_ than the physical equations. Is this true? To test this, I also implemented the equations and ran the glass spheres scene from above 10 times, averaging the frame rate.
 
-<figure class="px-0">
-  <div class="overflow-x-auto">
-
-|  | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | Average |
-| --: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
-| **Schlick** | 61.367 | 61.240 | 61.370 | 61.344 | 61.373 | 61.311 | 61.376 | 61.220 | 61.051 | 61.280 | **61.293** |
-| **Real** | 61.256 | 61.187 | 61.317 | 61.200 | 61.339 | 61.279 | 61.271 | 60.928 | 61.224 | 61.196 | **61.220** |
-
-  </div>
-  <figcaption class="px-pad">Frames per second (FPS), higher is better</figcaption>
-</figure>
+- **Schlick:** 61.293 frames per second
+- **Real:** 61.220 frames per second
 
 Schlick appears to be 0.119% faster, which is not significant enough to make a claim about anything. I am not sure why I'm not getting more drastic results. My best guess is that my testing environment is flawed or biased in some manner.
 
 ### Roughness
 
 While I did not implement anything close to actual PBR techniques, I was curious how far I could take my pre-existing diffuse and perfectly specular shading models to mimic it. I only had time to introduce a _roughness_ slider that simply lerps between the diffuse and specular ray directions:
+
+<div class="mdx-bleed">
 
 ```cpp
 auto rng = make_seeded_random_engine(curr_iter, index, curr_depth);
@@ -325,9 +316,11 @@ segment.ray = {
 };
 ```
 
+</div>
+
 I got this idea while watching Sebastian Lague's [Coding Adventure: Ray Tracing](https://www.youtube.com/watch?v=Qz0KTGYJtUk) video. Well, how ~~bad~~ good is it?
 
-<figure>
+<figure class="mdx-bleed mdx-outdent">
   ![](renders/roughness_test-1200x800-5000.png)
   <figcaption>
     1200×800 / 5000 samples / Roughness, left to right: 0.0, 0.2, 0.45, 0.65,
@@ -347,6 +340,8 @@ It's easy to think of the rendered world only in terms of pixels, but there usua
 
 The solution is to add some randomness such that multiple different areas _within_ a pixel have an opportunity to be sampled.
 
+<div class="mdx-bleed">
+
 ```cpp
 int index = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -362,17 +357,19 @@ y += uniform_01(rng);
 x += uniform_01(rng);
 ```
 
+</div>
+
 That's it! We add a random value between $[0.0,1.0)$ so that the ray direction generated will never be the same for a given pixel.
 
-<figure>
-  <div class="grid grid-cols-2 gap-pad">
+<figure class="mdx-bleed mdx-outdent">
+  <div class="grid grid-cols-2 desktop:gap-pad-2">
     ![](stochastic-on.png) ![](stochastic-on-detail.png)
   </div>
   <figcaption>__Stochastic sampling.__ 1000×1000 / 10k samples</figcaption>
 </figure>
 
-<figure>
-  <div class="grid grid-cols-2 gap-pad">
+<figure class="mdx-bleed mdx-outdent">
+  <div class="grid grid-cols-2 desktop:gap-pad-2">
     ![](stochastic-off.png) ![](stochastic-off-detail.png)
   </div>
   <figcaption>__No stochastic sampling.__ 1000×1000 / 10k samples</figcaption>
@@ -390,6 +387,8 @@ Once again, PBRT v4 is a great resource and has a [section on thin lens models](
 
 The idea is we sample a random point on the lens (which is thin enough to simply be considered a circle), and use that as the initial camera ray's origin.
 
+<div class="mdx-bleed">
+
 ```cpp
 thrust::default_random_engine rng = make_seeded_random_engine(curr_iter, index, max_depth);
 thrust::uniform_real_distribution<float> uniform_01;
@@ -399,7 +398,11 @@ glm::vec2 sample = sample_uniform_disk_concentric(uniform_01(rng), uniform_01(rn
 glm::vec2 lens_point = settings.lens_radius * sample;
 ```
 
+</div>
+
 We also adjust the ray direction such that it intersects with the imaginary focus point. This is what allows us to "focus" a particular slice of the scene, and blur everything else.
+
+<div class="mdx-bleed">
 
 ```cpp
 // We want the relative distance from the camera to the plane of focus, so it
@@ -413,18 +416,17 @@ ray.origin += glm::vec3(lens_point.x, lens_point.y, 0.f);
 ray.direction = glm::normalize(focus - ray.origin);
 ```
 
+</div>
+
 With that, we get DOF!
 
-<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
-  <figure>
+<figure class="mdx-bleed mdx-outdent">
+  <div class="grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
     ![](renders/dof/dof-800x800-5000-12-bunny.png)
-    <figcaption>800×800 / 5000 samples / 12 depth </figcaption>
-  </figure>
-  <figure>
     ![](renders/dof/dof-800x800-5000-12-sphere.png)
-    <figcaption>800×800 / 5000 samples / 12 depth</figcaption>
-  </figure>
-</div>
+  </div>
+  <figcaption>800×800 resolution, 5000 samples, 12 depth each. </figcaption>
+</figure>
 
 Here we can see the focus point at two different places: the Stanford bunny, and the sphere.
 
@@ -459,7 +461,7 @@ for (const auto& [data, idx] : unique_data) {
 
 By using a map, checking whether a data point is unique is now on average $O(1)$ instead of linear.
 
-![](graphs/map-vs-vector-tri-build-time.png)
+<div class="mdx-bleed">![](graphs/map-vs-vector-tri-build-time.png)</div>
 
 The graph is a little comical and clearly demonstrates the exponential operation time. Yes, the 1532.75 seconds for `stanford_dragon` meant that my original implementation caused scene loading to take over 25 minutes. I am glad that it's fixed.
 
@@ -469,7 +471,7 @@ A mesh is just a giant list of triangles that encompass it. Since the primitives
 
 My first implementation was simple and naive. For each triangle in the mesh, we perform a ray-triangle intersection test. If successful, we calculate intersection terms and return early. However, this logic is incorrect because it may not necesarily return the intersection with the _smallest_ `t` value.
 
-<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
+<div class="mdx-bleed grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
   <figure>
     ![](not-taking-t-min.png)
     <figcaption>Not taking the minimum `t` value</figcaption>
@@ -494,7 +496,7 @@ Running Nsight Systems on my executable confirms this. In terms of CUDA operatio
 
 If we show the kernel operations in the Events View and sort by duration, we can also see that `kernel::find_intersections` takes up all the spots at the top of the list, meaning it makes up the bulk of our compute time.
 
-<figure>
+<figure class="mdx-bleed">
   ![](nsight-isect-longest.png)
   <figcaption>Intersections all the way down</figcaption>
 </figure>
@@ -591,7 +593,10 @@ Instead, we have to maintain a _stack_ of nodes that we haven't processed. Then,
 
 So, how much do BVHs improve performance?
 
-![](graphs/isect-culling.png)
+<figure class="mdx-bleed mdx-outdent">
+  ![](graphs/isect-culling.png)
+  <figcaption>I'm making a lot of funny charts, aren't I?</figcaption>
+</figure>
 
 _The bottom line is that without BVHs I simply could not run certain scenes_. Anything above roughly 3,000 triangles would simply take too long to converge to a passable image. For the Stanford bunny and Stanford dragon, loading the scene made my program crash, so I've assigned them a FPS of zero.
 
@@ -624,7 +629,7 @@ By grouping paths with the same materials together, they all benefit from the ca
 
 Here are some failed renders that I thought looked pretty cool.
 
-<div class="480:grid-cols-2 grid grid-cols-1 gap-pad">
+<div class="mdx-bleed mdx-outdent grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
   <figure>
     ![](bloopers/cornell.2025-09-23_00-10-10z.3978samp.png)
     <figcaption>The seed for my random number generator was off</figcaption>

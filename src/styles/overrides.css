@@ -72,6 +72,9 @@
     --ec-tm-delBrdCol: --alpha(#b4637a / 50%);
     --ec-tm-delDiffIndCol: --alpha(#b4637a / 65%);
   }
+
+  --ec-codePadBlk: var(--spacing-pad-2);
+  --ec-codePadInl: var(--spacing-pad-2);
 }
 
 /* Force Tweakpane to use my Maple Mono settings */
