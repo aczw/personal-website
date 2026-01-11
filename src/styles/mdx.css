@@ -19,10 +19,10 @@
  * --mdx-grid-center-w. It operates on different breakpoints than above,
  * namely `md` and `xl`, which is why there are so many @variants everywhere.
  *
- * Also keep in mind `mdx-outdent` and `mdx-bleed` also enable/disable
- * depending on the current breakpoint. Not everything can be set up here
- * within `mdx` either, see the inner <div> in mdx-content.astro that wraps
- * all the actual rendered MDX content. It's all very fucked. */
+ * Also keep in mind `mdx-outdent` also enables/disables depending on the 
+ * current breakpoint. Not everything can be set up here within `mdx` either, 
+ * see the inner <div> in mdx-content.astro that wraps all the actual rendered 
+ * MDX content. It's all very fucked. */
 @utility mdx {
   @apply mx-auto w-full px-pad-2 desktop:w-4/5 lg:px-pad;
 
@@ -73,18 +73,16 @@
   img,
   video,
   iframe {
-    @apply rounded-lg;
+    @apply rounded-xl;
   }
 
   .mdx-outdent * {
-    @apply rounded-none desktop:rounded-lg;
+    @apply rounded-none desktop:rounded-xl;
   }
 
   @media (hover: hover) {
     img:not([data-no-zoom]) {
-      @apply transition-transform active:scale-97;
-
-      cursor: zoom-in;
+      @apply cursor-zoom-in transition-transform active:scale-97;
     }
   }
 
@@ -207,7 +205,5 @@
 }
 
 @utility mdx-bleed {
-  @variant md {
-    @apply col-span-2;
-  }
+  @apply col-span-2;
 }
