@@ -2,22 +2,54 @@
   :root {
     /* Results in roughly 80 characters per line. */
     --content-w: 525px;
+    --toc-w: 200px;
   }
 }
 
 /* Only style elements rendered from MDX */
 @utility mdx {
-  @apply grid space-y-pad-2;
+  @apply mx-auto w-full px-pad-2 desktop:w-4/5 desktop:px-pad;
 
-  grid-template-columns: minmax(0, var(--content-w)) 1fr;
+  --center-w: calc(80% - var(--spacing-pad-2));
 
-  > * {
-    @apply col-start-1;
+  @variant md {
+    @apply mx-0 grid w-full px-0;
 
-    /* Disable spacing before rendered LaTeX because MathJax provides
+    grid-template-columns:
+      1fr
+      minmax(0, var(--content-w))
+      minmax(0, calc(var(--center-w) - var(--content-w) - var(--toc-w)))
+      var(--toc-w)
+      1fr;
+  }
+
+  @variant xl {
+    grid-template-columns:
+      1fr
+      minmax(0, calc(var(--toc-w) + var(--spacing-pad-4)))
+      1fr
+      var(--content-w)
+      minmax(0, calc(var(--center-w) - var(--content-w)))
+      1fr
+      calc(var(--toc-w) + var(--spacing-pad-4))
+      1fr;
+  }
+
+  @variant lg {
+    --center-w: var(--header-w);
+  }
+
+  > div[role="none"] {
+    @apply space-y-pad-2;
+
+    > * {
+      @apply col-start-1;
+
+      /* Disable spacing before rendered LaTeX because MathJax provides
      * its own margin styling (which I override) */
-    &:has(+ mjx-container) {
-      @apply mb-0;
+      &:has(+ mjx-container) {
+        @apply mb-0;
+      }
     }
   }
 
@@ -156,21 +188,7 @@
 }
 
 @utility mdx-bleed {
-  @apply col-span-2;
-}
-
-/* @utility mdx-bleed {
-  @media (width >= 1150px) {
-    @apply -ml-pad-2;
-
-    width: calc(100% + var(--spacing-pad-4));
-
-    > figcaption {
-      @apply ml-pad-2;
-    }
+  @variant md {
+    @apply col-span-2;
   }
 }
-
-@utility mdx-bleed-wide {
-  @apply col-span-1 mdx-bleed sm:col-span-2;
-} */

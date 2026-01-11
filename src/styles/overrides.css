@@ -85,6 +85,6 @@
 }
 
 /* Increase vertical spacing around LaTeX */
-.mdx > mjx-container[jax="CHTML"][display="true"] {
+.mdx > div[role="none"] > mjx-container[jax="CHTML"][display="true"] {
   @apply my-pad-3;
 }
