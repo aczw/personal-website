@@ -181,6 +181,10 @@
   @apply col-span-2;
 }
 
+@utility mdx-grid-2 {
+  @apply grid grid-cols-1 gap-pad-2 sm:grid-cols-2;
+}
+
 /* Technically an override, but it's MDX-specific so it's here. */
 .expressive-code {
   @apply mdx-outdent;

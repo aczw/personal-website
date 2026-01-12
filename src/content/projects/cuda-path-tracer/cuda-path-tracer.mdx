@@ -138,7 +138,7 @@ The Lambertian BRDF says that for an outgoing ray $\omega_o$, the scattering of 
 After adding it, obviously I had to test this material out on the classics.
 
 <figure class="mdx-bleed mdx-outdent">
-  <div class="grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
+  <div class="mdx-grid-2">
     ![](renders/diffuse/sphere-800x800-5000.png)
     ![](renders/diffuse/stanford_dragon-800x800-5000.png)
     ![](renders/diffuse/suzanne-800x800-5000.png)
@@ -197,7 +197,7 @@ We will combine them both later to create dielectrics.
 First, complete reflection.
 
 <figure class="mdx-bleed mdx-outdent">
-  <div class="grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
+  <div class="mdx-grid-2">
     ![](renders/perf-spec-dielectric/pure_reflection-800x800-5000.png)
     ![](renders/perf-spec-dielectric/pure_reflection_inv-800x800-5000.png)
   </div>
@@ -220,8 +220,8 @@ First, IORs are always defined relative to _something_.[^4] At a given intersect
 /// Tracks which side of the geometry the intersection is at.
 enum class Surface : char { Inside, Outside };
 
-// GLSL/GLM refract expects the IOR ratio to be incident over target, so
-// we treat the default as us starting from inside the material
+/// GLSL/GLM refract expects the IOR ratio to be incident over target, so we treat
+/// the default as us starting from inside the material.
 if (isect.surface == Surface::Outside) {
   eta = 1.f / eta;
 }
@@ -236,7 +236,7 @@ Second, there are cases where the incident angle is so large that a refraction a
 Keeping these two things in mind, we can get transmission working.
 
 <figure class="mdx-bleed">
-  <div class="grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
+  <div class="mdx-grid-2">
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.0.png)
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.55.png)
   </div>
@@ -256,7 +256,7 @@ To make our path tracing a little easier (and to piggyback off of the wonders of
 What should the probability be? A simple solution is to set it to 50/50. However, this wouldn't result in an accurate physical render because we're not considering the Fresnel coefficients that dictate how much light is reflected and refracted at an intersection.
 
 <figure class="mdx-bleed mdx-outdent">
-  <div class="grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
+  <div class="mdx-grid-2">
     ![](fresnel-half-half.png) ![](fresnel-accurate.png)
   </div>
   <figcaption>Resolution, 800×800, 3000 samples, IOR of 1.55 each.</figcaption>
@@ -362,14 +362,14 @@ x += uniform_01(rng);
 That's it! We add a random value between $[0.0,1.0)$ so that the ray direction generated will never be the same for a given pixel.
 
 <figure class="mdx-bleed mdx-outdent">
-  <div class="grid grid-cols-2 desktop:gap-pad-2">
+  <div class="grid grid-cols-2 desktop:gap-pad sm:gap-pad-2">
     ![](stochastic-on.png) ![](stochastic-on-detail.png)
   </div>
   <figcaption>__Stochastic sampling.__ 1000×1000 / 10k samples</figcaption>
 </figure>
 
 <figure class="mdx-bleed mdx-outdent">
-  <div class="grid grid-cols-2 desktop:gap-pad-2">
+  <div class="grid grid-cols-2 desktop:gap-pad sm:gap-pad-2">
     ![](stochastic-off.png) ![](stochastic-off-detail.png)
   </div>
   <figcaption>__No stochastic sampling.__ 1000×1000 / 10k samples</figcaption>
@@ -421,7 +421,7 @@ ray.direction = glm::normalize(focus - ray.origin);
 With that, we get DOF!
 
 <figure class="mdx-bleed mdx-outdent">
-  <div class="grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
+  <div class="mdx-grid-2">
     ![](renders/dof/dof-800x800-5000-12-bunny.png)
     ![](renders/dof/dof-800x800-5000-12-sphere.png)
   </div>
@@ -471,7 +471,7 @@ A mesh is just a giant list of triangles that encompass it. Since the primitives
 
 My first implementation was simple and naive. For each triangle in the mesh, we perform a ray-triangle intersection test. If successful, we calculate intersection terms and return early. However, this logic is incorrect because it may not necesarily return the intersection with the _smallest_ `t` value.
 
-<div class="mdx-bleed grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
+<div class="mdx-bleed mdx-grid-2">
   <figure>
     ![](not-taking-t-min.png)
     <figcaption>Not taking the minimum `t` value</figcaption>
@@ -629,7 +629,7 @@ By grouping paths with the same materials together, they all benefit from the ca
 
 Here are some failed renders that I thought looked pretty cool.
 
-<div class="mdx-bleed mdx-outdent grid grid-cols-1 gap-pad-2 sm:grid-cols-2">
+<div class="mdx-bleed mdx-outdent mdx-grid-2">
   <figure>
     ![](bloopers/cornell.2025-09-23_00-10-10z.3978samp.png)
     <figcaption>The seed for my random number generator was off</figcaption>
