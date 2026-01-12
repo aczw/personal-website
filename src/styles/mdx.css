@@ -1,7 +1,7 @@
 @layer base {
   :root {
     /* Results in roughly 80 characters per line. */
-    --content-w: 525px;
+    --content-w: 575px;
 
     --toc-w: 220px;
 
@@ -54,12 +54,8 @@
   @variant xl {
     grid-template-columns:
       1fr
-      minmax(0, calc(var(--toc-w) + var(--spacing-pad-4)))
-      1fr
       var(--content-w)
       minmax(0, calc(var(--mdx-grid-center-w) - var(--content-w)))
-      1fr
-      calc(var(--toc-w) + var(--spacing-pad-4))
       1fr;
   }
 

@@ -66,7 +66,7 @@ const { Content, headings } = await render(project);
       </h1>
       {
         subtitle && (
-          <p class="-mb-2 text-2xl text-sweater-3 not-dark:text-sweater-7 desktop:mb-0 desktop:text-4xl">
+          <p class="-mb-2 text-2xl text-sweater-2 not-dark:text-sweater-7 desktop:mb-0 desktop:text-4xl">
             {subtitle}
           </p>
         )
@@ -92,12 +92,12 @@ const { Content, headings } = await render(project);
       >
         <dl
           aria-label="Metadata"
-          class="grid grid-cols-1 gap-y-pad border-style *:flex *:gap-x-pad *:border-style **:leading-tight desktop:-mx-pad-2 desktop:gap-y-0 desktop:border-t-(length:--border-w) desktop:border-l-(length:--border-w) desktop:*:border-r-(length:--border-w) desktop:*:border-b-(length:--border-w) desktop:*:p-pad-2 md:grid-cols-(--initial-grid-cols)"
+          class="grid grid-cols-1 gap-y-pad border-style *:flex *:gap-x-pad *:border-style **:leading-tight desktop:-mx-pad desktop:gap-y-0 desktop:border-t-(length:--border-w) desktop:border-l-(length:--border-w) desktop:*:border-r-(length:--border-w) desktop:*:border-b-(length:--border-w) desktop:*:p-pad md:grid-cols-(--initial-grid-cols)"
           style={`--initial-grid-cols: repeat(${numMetadata % 2 === 0 ? 2 : numMetadata}, minmax(0, 1fr));`}
         >
           <div>
             <div class="grow space-y-0.5">
-              <dt class="text-lg font-bold text-heading">Made with</dt>
+              <dt class="font-bold text-heading">Made with</dt>
               <dd><TechList tech={tech} class="" /></dd>
             </div>
             <WrenchIcon
@@ -109,7 +109,7 @@ const { Content, headings } = await render(project);
 
           <div>
             <div class="grow space-y-0.5">
-              <dt class="text-lg font-bold text-heading">Duration</dt>
+              <dt class="font-bold text-heading">Duration</dt>
               <dd><ContentDate date={date} class="" /></dd>
             </div>
             <CalendarFoldIcon
@@ -123,7 +123,7 @@ const { Content, headings } = await render(project);
             link && (
               <div>
                 <div class="grow space-y-0.5">
-                  <dt class="text-lg font-bold wrap-anywhere text-heading">
+                  <dt class="font-bold wrap-anywhere text-heading">
                     {link.text}
                   </dt>
                   <dd>
@@ -148,7 +148,7 @@ const { Content, headings } = await render(project);
             sourceHref && (
               <div>
                 <div class="grow space-y-0.5">
-                  <dt class="text-lg font-bold text-heading">Source</dt>
+                  <dt class="font-bold text-heading">Source</dt>
                   <dd>
                     <Link target="_blank" href={sourceHref} class="">
                       View on GitHub

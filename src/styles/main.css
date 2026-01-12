@@ -15,7 +15,7 @@
 
   /* Monospace text should be a little smaller than display text. Otherwise
    * it looks too large. */
-  --text-mono: 0.85rem;
+  --text-mono: 0.87rem;
 
   --spacing-pad: --spacing(2.5);
   --spacing-pad-2: calc(var(--spacing-pad) * 2);
@@ -62,7 +62,7 @@
     --header-w: 800px;
     --real-header-w: calc(var(--header-w) + var(--spacing-pad-2));
 
-    --wide-w: 1150px;
+    --wide-w: 1100px;
     --real-wide-w: calc(var(--wide-w) + var(--spacing-pad-4));
 
     --line: var(--color-sweater-9);
@@ -87,8 +87,6 @@
   html {
     @apply bg-sweater-10 text-sweater-1;
 
-    /* Change root font size to 15px (default is 16px). */
-    font-size: 15px;
     scrollbar-gutter: stable;
 
     &::selection {

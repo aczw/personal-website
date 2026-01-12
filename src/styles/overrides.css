@@ -83,8 +83,8 @@
 }
 
 /* Force EC code blocks to use my Maple Mono settings */
-.expressive-code pre > code {
-  font-feature-settings: var(--font-mono--font-feature-settings) !important;
+.expressive-code pre * {
+  @apply maple;
 }
 
 /* Increase vertical spacing around LaTeX */

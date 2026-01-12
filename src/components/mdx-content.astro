@@ -22,7 +22,7 @@ const { content: Content, headings } = Astro.props;
   <article aria-label="Write-up" class="mdx mb-pad-4">
     <div
       role="none"
-      class="md:col-span-2 md:col-start-2 md:grid md:grid-cols-subgrid xl:col-start-4"
+      class="md:col-span-2 md:col-start-2 md:grid md:grid-cols-subgrid xl:col-start-2"
     >
       <Content
         components={{
@@ -37,7 +37,7 @@ const { content: Content, headings } = Astro.props;
 
     <TableOfContents
       headings={headings}
-      class="col-start-4 ml-pad-2 hidden md:block lg:ml-pad-4 xl:col-start-7"
+      class="col-start-4 ml-pad-2 hidden lg:ml-pad-4 xl:col-start-7"
     />
   </article>
 
