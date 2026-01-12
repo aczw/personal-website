@@ -1,112 +1,84 @@
 ---
 import { getCollection } from "astro:content";
 
-import { CircleArrowRightIcon } from "@lucide/astro";
+import { CircleArrowRightIcon, FeatherIcon } from "@lucide/astro";
 
 import {
   getFullDateFormatting,
   getMonthYearDateFormatting,
 } from "@/scripts/util";
-import MainLayout from "@/layouts/main-layout.astro";
-import GridSection from "@/components/grid-section.astro";
 import { ICON_SIZE } from "@/scripts/constants";
+import BaseLayout from "@/layouts/base-layout.astro";
+import Header from "@/components/header.astro";
 
-const posts = await getCollection("posts");
-const sortedPosts = posts.sort(
+const posts = (await getCollection("posts")).sort(
   (a, b) => b.data.posted.getTime() - a.data.posted.getTime(),
 );
 ---
 
-<MainLayout
+<BaseLayout
   meta={{
     kind: "route",
-    title: "Posts",
+    title: "Writing",
     description:
       "Random writing about stuff I've learned, things I'm working on, and interesting topics.",
     ogImageParams: "Random ramblings on stuff I've been doing.",
   }}
 >
-  <GridSection class="flex flex-col">
-    {
-      sortedPosts.map(({ data: { title, blurb, posted }, id, body }, index) => {
-        let isSubsequentPostInYear = false;
-        const monthYearDate = getMonthYearDateFormatting(posted);
+  <Header links={[]} />
 
-        const prevPost = sortedPosts[index - 1];
-        if (prevPost) {
-          isSubsequentPostInYear =
-            prevPost.data.posted.getFullYear() === posted.getFullYear();
-        }
+  <main
+    class="mx-auto w-full px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w) lg:pt-pad-3"
+  >
+    <h1 class="flex items-center gap-x-pad text-5xl font-bold text-heading">
+      Writing <FeatherIcon size={2 * ICON_SIZE} class="stroke-icon" />
+    </h1>
 
-        return (
-          <a
-            href={`/posts/${id}`}
-            class="group hover:bg-line-dark flex border-style transition-colors not-last:border-b-(length:--border-w) sm:grid sm:grid-cols-[202px_minmax(0px,1fr)]"
-          >
-            <time
-              datetime={posted.toISOString()}
-              title={getFullDateFormatting(posted)}
-              class="480:flex hidden border-r-(length:--border-w) border-style text-link-secondary"
+    <ul aria-label="Entries" class="*:group space-y-1 *:grid">
+      {
+        posts.map(({ data: { title, posted }, id }, index) => {
+          const [month, day] = getMonthYearDateFormatting(posted).split(" ");
+          const previousPost = posts[index - 1];
+
+          let hasSameYearAsLast = false;
+          if (previousPost) {
+            hasSameYearAsLast =
+              previousPost.data.posted.getFullYear() === posted.getFullYear();
+          }
+
+          return (
+            <li
+              class:list={[
+                "group grid-cols-[minmax(0,0.5fr)_minmax(0,0.25fr)_minmax(0,0.25fr)_minmax(0,1fr)]",
+                { "mt-pad-2": !hasSameYearAsLast && index !== 0 },
+              ]}
             >
-              <span class="border-style p-pad sm:border-r-(length:--border-w)">
-                <span
-                  class:list={[isSubsequentPostInYear ? "invisible" : null]}
-                >
-                  {posted.getFullYear()}
+              <time
+                datetime={posted.toISOString()}
+                title={getFullDateFormatting(posted)}
+                class="col-span-3 grid grid-cols-subgrid text-link-secondary transition-colors group-hover:text-link-secondary-hover"
+              >
+                <span class:list={[]}>{posted.getFullYear()}</span>
+
+                <span class:list={[{ "col-start-2": hasSameYearAsLast }]}>
+                  {month}
                 </span>
-              </span>
 
-              <span class="hidden p-pad text-link-secondary transition-colors group-hover:text-link-secondary-hover sm:inline">
-                {monthYearDate}
-              </span>
-            </time>
+                <span>{day}</span>
+              </time>
 
-            <span class="flex w-full justify-between gap-pad-2 p-pad">
-              <span>
-                <time
-                  datetime={posted.toISOString()}
-                  class="text-link-secondary transition-colors group-hover:text-link-secondary-hover sm:hidden"
+              <h2 class="text-lg font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+                <a
+                  href={`/posts/${id}`}
+                  class="after:absolute after:inset-0 after:z-1"
                 >
-                  {
-                    // This forces everything to be converted to a string first, avoiding weird spaces between commas
-                    <>
-                      {monthYearDate}
-                      {!isSubsequentPostInYear ?
-                        <span class="480:hidden">, {posted.getFullYear()}</span>
-                      : null}
-                    </>
-                  }
-                </time>
-
-                <h2 class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
                   {title}
-                </h2>
-
-                {blurb || body ?
-                  <p
-                    class:list={[
-                      "480:block hidden leading-snug transition-colors group-hover:text-sweater-1 sm:text-inherit sm:group-hover:text-inherit",
-                      !blurb && body ? "italic" : null,
-                    ]}
-                  >
-                    {blurb ?
-                      blurb
-                    : body ?
-                      <>“{body.slice(0, 70)}...”</>
-                    : null}
-                  </p>
-                : null}
-              </span>
-
-              <CircleArrowRightIcon
-                aria-hidden="true"
-                size={ICON_SIZE}
-                class="480:hidden 480:stroke-transparent shrink-0 stroke-icon group-hover:stroke-icon md:block"
-              />
-            </span>
-          </a>
-        );
-      })
-    }
-  </GridSection>
-</MainLayout>
+                </a>
+              </h2>
+            </li>
+          );
+        })
+      }
+    </ul>
+  </main>
+</BaseLayout>
