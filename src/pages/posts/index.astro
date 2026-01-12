@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
-import { CircleArrowRightIcon, FeatherIcon } from "@lucide/astro";
+import { FeatherIcon, SquareArrowRightIcon } from "@lucide/astro";
 
 import {
   getFullDateFormatting,
@@ -10,6 +10,7 @@ import {
 import { ICON_SIZE } from "@/scripts/constants";
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
+import Link from "@/components/link.astro";
 
 const posts = (await getCollection("posts")).sort(
   (a, b) => b.data.posted.getTime() - a.data.posted.getTime(),
@@ -28,29 +29,31 @@ const posts = (await getCollection("posts")).sort(
   <Header links={[]} />
 
   <main
-    class="mx-auto w-full px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w) lg:pt-pad-3"
+    class="mx-auto w-full space-y-pad-4 px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w) lg:pt-pad-3"
   >
     <h1 class="flex items-center gap-x-pad text-5xl font-bold text-heading">
       Writing <FeatherIcon size={2 * ICON_SIZE} class="stroke-icon" />
     </h1>
 
-    <ul aria-label="Entries" class="*:group space-y-1 *:grid">
+    <ul
+      aria-label="Entries"
+      class="duration-200 *:relative *:grid *:grid-cols-[minmax(0,0.25fr)_minmax(0,0.4fr)_minmax(0,0.15fr)_minmax(0,2fr)_calc(var(--spacing-pad-2)+18px)]"
+    >
       {
         posts.map(({ data: { title, posted }, id }, index) => {
           const [month, day] = getMonthYearDateFormatting(posted).split(" ");
           const previousPost = posts[index - 1];
 
-          let hasSameYearAsLast = false;
-          if (previousPost) {
-            hasSameYearAsLast =
-              previousPost.data.posted.getFullYear() === posted.getFullYear();
-          }
+          let hasSameYearAsLast =
+            previousPost?.data.posted.getFullYear() === posted.getFullYear();
+          let hasSameMonthAsLast =
+            previousPost?.data.posted.getUTCMonth() === posted.getUTCMonth();
 
           return (
             <li
               class:list={[
-                "group grid-cols-[minmax(0,0.5fr)_minmax(0,0.25fr)_minmax(0,0.25fr)_minmax(0,1fr)]",
-                { "mt-pad-2": !hasSameYearAsLast && index !== 0 },
+                "group",
+                { "mt-pad-4": !hasSameYearAsLast && index !== 0 },
               ]}
             >
               <time
@@ -58,16 +61,39 @@ const posts = (await getCollection("posts")).sort(
                 title={getFullDateFormatting(posted)}
                 class="col-span-3 grid grid-cols-subgrid text-link-secondary transition-colors group-hover:text-link-secondary-hover"
               >
-                <span class:list={[]}>{posted.getFullYear()}</span>
+                <span
+                  class:list={[
+                    {
+                      "opacity-0 transition-opacity group-hover:opacity-100":
+                        hasSameYearAsLast,
+                    },
+                  ]}
+                >
+                  {posted.getFullYear()}
+                </span>
 
-                <span class:list={[{ "col-start-2": hasSameYearAsLast }]}>
+                <span
+                  class:list={[
+                    {
+                      "opacity-0 transition-opacity group-hover:opacity-100":
+                        hasSameMonthAsLast,
+                    },
+                    { "col-start-2": hasSameYearAsLast },
+                  ]}
+                >
                   {month}
                 </span>
 
-                <span>{day}</span>
+                <span
+                  class:list={[
+                    { "col-start-3": hasSameYearAsLast || hasSameMonthAsLast },
+                  ]}
+                >
+                  {day}
+                </span>
               </time>
 
-              <h2 class="text-lg font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
+              <h2 class="text-[1.65rem] leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
                 <a
                   href={`/posts/${id}`}
                   class="after:absolute after:inset-0 after:z-1"
@@ -75,10 +101,22 @@ const posts = (await getCollection("posts")).sort(
                   {title}
                 </a>
               </h2>
+
+              <SquareArrowRightIcon
+                size={ICON_SIZE}
+                class="ml-pad-2 stroke-icon opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+              />
             </li>
           );
         })
       }
     </ul>
+
+    <p>
+      Some of my technical and lecture notes can be found at <Link
+        href="https://otherworld.czw.sh"
+        target="_blank">otherworld.czw.sh</Link
+      >.
+    </p>
   </main>
 </BaseLayout>
