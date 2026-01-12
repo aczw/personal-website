@@ -82,7 +82,7 @@ const projects = await getEntries(
     >
       <section
         aria-label="Featured project"
-        class="group relative z-1 h-fit w-full overflow-hidden rounded-2xl bg-sweater-10 transition-colors duration-250 not-dark:bg-sweater-1 hover:bg-sweater-9 not-dark:hover:bg-sweater-2 desktop:rounded-xl md:grow"
+        class="group relative z-1 h-fit w-full overflow-hidden rounded-xl bg-sweater-10 transition-colors duration-250 not-dark:bg-sweater-1 hover:bg-sweater-9 not-dark:hover:bg-sweater-2 md:grow"
       >
         <div
           id="video-progress"
@@ -101,7 +101,7 @@ const projects = await getEntries(
         {
           projects.map(({ id, data: { name, metadata } }, index) => (
             <div
-              class="relative hidden gap-x-pad-2 p-pad data-[playing=true]:flex md:items-center"
+              class="relative hidden gap-x-pad-2 p-3.5 data-[playing=true]:flex desktop:p-pad md:items-center"
               data-project-id={id}
               data-playing={index === 0 ? "true" : "false"}
             >
@@ -161,13 +161,10 @@ const projects = await getEntries(
     </main>
   </div>
 
-  <div
-    aria-hidden="true"
-    class="m-pad overflow-hidden rounded-3xl desktop:m-0 desktop:rounded-none"
-  >
+  <div aria-hidden="true" class="mt-pad-2 desktop:mt-0">
     <canvas
       id="dither"
-      class="pointer-events-none h-[calc(100svh-132.63px-var(--spacing)*5)] w-full transition-opacity duration-1500 ease-out desktop:h-lvh"
+      class="pointer-events-none h-[calc(100svh-141.5px-var(--spacing-pad-2))] w-full transition-opacity duration-1500 ease-out desktop:h-lvh"
       style="opacity: 0;"></canvas>
   </div>
 </BaseLayout>
