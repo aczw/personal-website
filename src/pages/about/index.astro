@@ -1,0 +1,34 @@
+---
+import { InfoIcon } from "@lucide/astro";
+
+import BaseLayout from "@/layouts/base-layout.astro";
+import Header from "@/components/header.astro";
+
+const description = "A little about who I am and what I believe.";
+---
+
+<BaseLayout
+  meta={{
+    kind: "route",
+    title: "About",
+    description,
+    ogImageParams: description,
+  }}
+>
+  <Header links={[]} />
+
+  <main>
+    <div
+      class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w) lg:gap-x-pad-4 lg:pt-pad-3"
+    >
+      <h1
+        class="flex items-center gap-x-pad text-5xl font-bold text-heading md:justify-between"
+      >
+        About <InfoIcon size={36} class="stroke-icon" />
+      </h1>
+      <p class="max-w-(--content-w)">
+        Pushing pixels and carving bridges. Always waiting for something.
+      </p>
+    </div>
+  </main>
+</BaseLayout>
