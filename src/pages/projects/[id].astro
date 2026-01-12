@@ -51,7 +51,7 @@ if (!isValidProjectCover(cover.img.width, cover.img.height)) {
 }
 
 const numMetadata = 2 + (link ? 1 : 0) + (sourceHref ? 1 : 0);
-const { Content, headings } = await render(project);
+const { Content } = await render(project);
 ---
 
 <BaseLayout meta={{ kind: "project", project }}>
@@ -167,6 +167,6 @@ const { Content, headings } = await render(project);
       </div>
     </section>
 
-    <MdxContent content={Content} headings={headings} />
+    <MdxContent content={Content} />
   </main>
 </BaseLayout>

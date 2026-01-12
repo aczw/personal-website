@@ -2,67 +2,52 @@
   :root {
     /* Results in roughly 80 characters per line. */
     --content-w: 575px;
-
-    --toc-w: 220px;
-
-    @variant xl {
-      --toc-w: 200px;
-    }
   }
 }
 
-/* Only style elements rendered from MDX. This copies the width behavior of 
- * everything else, which is:
+/* Only style elements rendered from MDX. This mostly copies the width
+ * behavior of everything else, which is:
  * 
- * 1. `mobile`: full (100%) width, `px-pad-2`
- * 2. Between `mobile` and `lg`: `w-4/5` (80%)
+ * 1. On mobile: full (100%) width, `px-pad-2`
+ * 2. Between mobile and `lg`: `w-4/5`
  * 3. `lg` and above: `mx-auto` goes into effect, max width of --header-w
  *
- * It's a little fucked, however, because on `md` and above we use `grid` to
- * lay out the content and place the table of contents on the side. In the
- * name of DRY, the current width in the grid is captured by
- * --mdx-grid-center-w. It operates on different breakpoints than above,
- * namely `md` and `xl`, which is why there are so many @variants everywhere.
- *
- * Also keep in mind `mdx-outdent` also enables/disables depending on the 
- * current breakpoint. Not everything can be set up here within `mdx` either, 
- * see the inner <div> in mdx-content.astro that wraps all the actual rendered 
- * MDX content. It's all very fucked. */
+ * There are a few changes, like making all elements with `mdx-outdent` span
+ * the full screen width with no rounded corners on mobile. Also, a grid
+ * layout is used on `desktop` breakpoint and above. */
 @utility mdx {
-  @apply mx-auto w-full px-pad-2 desktop:w-4/5 lg:px-pad;
+  @apply mx-auto w-full space-y-pad-2 px-pad-2;
 
-  @variant md {
-    --mdx-grid-center-w: calc(80% + var(--spacing-pad));
+  @variant desktop {
+    @apply mx-0 grid;
 
-    @apply grid w-full;
+    --mdx-content-l-w: minmax(0, calc(80% + var(--spacing-pad)));
+    /* Preserves the `col-span-2` for `mdx-bleed` elements. */
+    --mdx-content-r-w: 0px;
 
     grid-template-columns:
       1fr
-      minmax(0, var(--content-w))
-      minmax(
-        0,
-        calc(var(--mdx-grid-center-w) - var(--content-w) - var(--toc-w))
-      )
-      var(--toc-w)
+      var(--mdx-content-l-w)
+      var(--mdx-content-r-w)
       1fr;
+  }
+
+  @variant md {
+    --mdx-content-l-w: minmax(0, var(--content-w));
+    --mdx-content-r-w: calc(calc(80% + var(--spacing-pad)) - var(--content-w));
   }
 
   @variant lg {
-    --mdx-grid-center-w: var(--header-w);
+    --mdx-content-r-w: calc(var(--header-w) - var(--content-w));
   }
 
-  @variant xl {
-    grid-template-columns:
-      1fr
-      var(--content-w)
-      minmax(0, calc(var(--mdx-grid-center-w) - var(--content-w)))
-      1fr;
-  }
+  > * {
+    /* By default everything should start in the 2nd column fron the left. */
+    @apply col-start-2;
 
-  div[role="none"] {
-    @apply space-y-pad-2 *:col-start-1;
-
-    :has(+ mjx-container) {
+    /* Remove spacing from elements preceding LaTeX, because we're
+     * overriding its spacing later. */
+    &:has(+ mjx-container) {
       @apply mb-0;
     }
   }
@@ -74,13 +59,18 @@
   img,
   video,
   iframe {
+    /* `w-full` is necessary for make extremely small media span the full
+     * width regardless. */
     @apply w-full rounded-xl;
   }
 
+  /* All outdented elements will span the full screen width on mobile,
+   * therefore we need to remove its border radius. */
   .mdx-outdent * {
     @apply rounded-none desktop:rounded-xl;
   }
 
+  /* Not supported on mobile. */
   @media (hover: hover) {
     img:not([data-no-zoom]) {
       @apply cursor-zoom-in transition-transform active:scale-97;
@@ -184,24 +174,6 @@
 
   figcaption {
     @apply ml-pad-2;
-  }
-
-  @variant md {
-    @apply ml-0 w-full;
-
-    figcaption {
-      @apply ml-0;
-    }
-  }
-
-  @variant lg {
-    @apply -ml-pad-2;
-
-    width: calc(100% + var(--spacing-pad-4));
-
-    figcaption {
-      @apply ml-pad-2;
-    }
   }
 }
 
