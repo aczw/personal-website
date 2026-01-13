@@ -30,6 +30,9 @@ for (const post of posts) {
 for (const postsInYear of yearPostsMap.values()) {
   postsInYear.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
 }
+
+// Sort most recent year on top
+const yearPosts = [...yearPostsMap].sort((a, b) => b[0] - a[0]);
 ---
 
 <BaseLayout
@@ -51,7 +54,7 @@ for (const postsInYear of yearPostsMap.values()) {
     </h1>
 
     {
-      yearPostsMap.entries().map(([year, posts]) => (
+      yearPosts.map(([year, posts]) => (
         <section aria-label={`Posts in ${year}`}>
           <h2
             id={year.toString()}
