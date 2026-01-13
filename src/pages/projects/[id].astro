@@ -19,6 +19,7 @@ import { DISABLED_PROJECTS } from "@/scripts/constants";
 import { isValidProjectCover } from "@/scripts/util";
 import { ICON_SIZE } from "@/scripts/constants";
 import Link from "@/components/link.astro";
+import ContentIntroduction from "@/components/content-introduction.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -30,11 +31,7 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { id } = Astro.params;
-const project = await getEntry("projects", id);
-
-if (!project) {
-  throw new Error(`No project with id "${id}" found in collection."`);
-}
+const project = await getEntry("projects", id)!;
 
 const {
   data: {
@@ -58,21 +55,7 @@ const { Content } = await render(project);
   <Header links={[{ href: "/projects", text: "Portfolio" }]} />
 
   <main>
-    <section
-      class="mx-auto mb-pad-4 w-full px-pad-2 pt-pad-4 desktop:w-4/5 desktop:px-pad desktop:pt-pad-3 lg:w-(--real-header-w)"
-    >
-      <h1 class="text-5xl font-bold text-heading">
-        {name}
-      </h1>
-      {
-        subtitle && (
-          <p class="-mb-2 text-2xl text-sweater-2 not-dark:text-sweater-7 desktop:mb-0 desktop:text-4xl">
-            {subtitle}
-          </p>
-        )
-      }
-      <p class="mt-1.5 max-w-(--content-w)">{blurb}</p>
-    </section>
+    <ContentIntroduction title={name} subtitle={subtitle} blurb={blurb} />
 
     <section
       aria-label="Overview"

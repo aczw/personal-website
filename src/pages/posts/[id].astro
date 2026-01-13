@@ -8,12 +8,13 @@ import { BookOpenIcon, CalendarFoldIcon } from "@lucide/astro";
 import {
   getFullDateFormatting,
   getShortDateFormatting,
-  validProjectCover,
+  isValidProjectCover,
 } from "@/scripts/util";
-import ContentLayout from "@/layouts/content-layout.astro";
-import ContentWithToc from "@/components/content-with-toc.astro";
 import { ICON_SIZE } from "@/scripts/constants";
-import GridSection from "@/components/grid-section.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
+import MdxContent from "@/components/mdx-content.astro";
+import Header from "@/components/header.astro";
+import ContentIntroduction from "@/components/content-introduction.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -23,99 +24,101 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { id } = Astro.params;
-const post = await getEntry("posts", id);
-
-if (!post) {
-  throw new Error(`No post with id "${id}" found in collection."`);
-}
+const post = await getEntry("posts", id)!;
 
 const {
   data: { title, blurb, posted, cover },
 } = post;
 
-if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
+if (cover && !isValidProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 
-const { Content, headings, remarkPluginFrontmatter } = await render(post);
-
+const { Content, remarkPluginFrontmatter } = await render(post);
 const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
 ---
 
-<ContentLayout meta={{ kind: "post", post }}>
-  {
-    cover ?
-      <GridSection class="p-pad">
+<BaseLayout meta={{ kind: "post", post }}>
+  <Header links={[{ href: "/posts", text: "Writing" }]} />
+
+  <main>
+    <ContentIntroduction title={title} subtitle={blurb} />
+
+    {
+      cover ?
         <Image
           src={cover.img}
           alt={cover.alt}
           loading="eager"
           class="rounded-lg bg-sweater-9 not-dark:bg-sweater-2"
         />
-      </GridSection>
-    : null
-  }
+      : null
+    }
 
-  <section id="introduction" class="grid-line-before grid-line-after relative">
-    <div class="space-y-1 border-b-(length:--border-w) border-style p-pad">
-      <h1
-        class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
-      >
-        {title}
-      </h1>
-
-      {blurb ? <p>{blurb}</p> : null}
-    </div>
-
-    <div class="480:grid-cols-2 grid grid-cols-1">
-      <div
-        class="480:border-r-(length:--border-w) 480:border-b-0 flex border-b-(length:--border-w) border-style"
-      >
-        <div
-          class="480:flex-col flex grow flex-row sm:flex-row sm:items-center"
+    <section
+      id="introduction"
+      class="grid-line-before grid-line-after relative"
+    >
+      <div class="space-y-1 border-b-(length:--border-w) border-style p-pad">
+        <h1
+          class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
         >
-          <p
-            class="480:border-r-0 480:pb-0 shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold sm:border-r-(length:--border-w) sm:pb-pad"
-          >
-            Posted on
-          </p>
+          {title}
+        </h1>
 
-          <time
-            datetime={posted.toISOString()}
-            title={getFullDateFormatting(posted)}
-            class="480:pt-0 grow px-pad pt-pad pb-pad sm:pt-pad"
-          >
-            {getShortDateFormatting(posted)}
-          </time>
-        </div>
-
-        <div class="p-pad">
-          <CalendarFoldIcon size={ICON_SIZE} class="shrink-0 stroke-icon" />
-        </div>
+        {blurb ? <p>{blurb}</p> : null}
       </div>
 
-      <div class="flex">
+      <div class="480:grid-cols-2 grid grid-cols-1">
         <div
-          class="480:flex-col flex grow flex-row sm:flex-row sm:items-center"
+          class="480:border-r-(length:--border-w) 480:border-b-0 flex border-b-(length:--border-w) border-style"
         >
-          <p
-            class="480:border-r-0 480:pb-0 shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold sm:border-r-(length:--border-w) sm:pb-pad"
+          <div
+            class="480:flex-col flex grow flex-row sm:flex-row sm:items-center"
           >
-            Read time
-          </p>
+            <p
+              class="480:border-r-0 480:pb-0 shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold sm:border-r-(length:--border-w) sm:pb-pad"
+            >
+              Posted on
+            </p>
 
-          <p class="480:pt-0 grow px-pad pt-pad pb-pad sm:pt-pad">
-            {numMinutes}
-            {numMinutes > 1 ? "minutes" : "minute"}
-          </p>
+            <time
+              datetime={posted.toISOString()}
+              title={getFullDateFormatting(posted)}
+              class="480:pt-0 grow px-pad pt-pad pb-pad sm:pt-pad"
+            >
+              {getShortDateFormatting(posted)}
+            </time>
+          </div>
+
+          <div class="p-pad">
+            <CalendarFoldIcon size={ICON_SIZE} class="shrink-0 stroke-icon" />
+          </div>
         </div>
 
-        <div class="p-pad">
-          <BookOpenIcon size={ICON_SIZE} class="shrink-0 stroke-icon" />
+        <div class="flex">
+          <div
+            class="480:flex-col flex grow flex-row sm:flex-row sm:items-center"
+          >
+            <p
+              class="480:border-r-0 480:pb-0 shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold sm:border-r-(length:--border-w) sm:pb-pad"
+            >
+              Read time
+            </p>
+
+            <p class="480:pt-0 grow px-pad pt-pad pb-pad sm:pt-pad">
+              {numMinutes}
+              {numMinutes > 1 ? "minutes" : "minute"}
+            </p>
+          </div>
+
+          <div class="p-pad">
+            <BookOpenIcon size={ICON_SIZE} class="shrink-0 stroke-icon" />
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <ContentWithToc content={Content} headings={headings} />
-</ContentLayout>
+    <MdxContent content={Content} />
+  </main>
+</BaseLayout>
