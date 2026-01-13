@@ -52,7 +52,7 @@ const config = defineConfig({
 
       styleOverrides: {
         borderWidth: "0px",
-        borderRadius: "var(--radius-lg)",
+        borderRadius: "var(--radius-xl)",
         uiFontFamily: "Atkinson Hyperlegible Next",
         uiFontSize: "1rem",
         codeFontFamily: "Maple Mono",

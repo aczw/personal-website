@@ -196,4 +196,23 @@
       --ec-brdRad: var(--radius-xl);
     }
   }
+
+  figure.frame figcaption.header {
+    --header-border-radius: 0px;
+
+    @variant desktop {
+      --header-border-radius: var(--radius-xl);
+    }
+
+    @apply ml-0;
+
+    .title {
+      border-radius: 0px;
+      border-top-right-radius: var(--tab-border-radius);
+
+      @variant desktop {
+        border-radius: var(--radius-xl) var(--radius-xl) 0px 0px;
+      }
+    }
+  }
 }

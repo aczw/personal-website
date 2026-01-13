@@ -75,6 +75,8 @@
 
   --ec-codePadBlk: var(--spacing-pad-2);
   --ec-codePadInl: var(--spacing-pad-2);
+  --ec-uiPadInl: var(--spacing-pad-2);
+  --ec-uiPadBlk: --spacing(1.5);
 }
 
 /* Force Tweakpane to use my Maple Mono settings */
@@ -82,9 +84,23 @@
   font-feature-settings: var(--font-mono--font-feature-settings);
 }
 
-/* Force EC code blocks to use my Maple Mono settings */
-.expressive-code pre * {
-  @apply maple;
+.expressive-code {
+  /* Make tab headers bold */
+  figure.frame.has-title {
+    figcaption.header .title {
+      @apply font-bold text-heading;
+    }
+
+    pre code {
+      /* Decrease vertical padding when there's a title. */
+      --ec-codePadBlk: var(--spacing-pad);
+    }
+  }
+
+  /* Force EC code blocks to use my Maple Mono settings */
+  pre * {
+    @apply maple;
+  }
 }
 
 /* Increase vertical spacing around LaTeX */
