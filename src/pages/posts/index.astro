@@ -104,7 +104,7 @@ const posts = (await getCollection("posts")).sort(
 
               <SquareArrowRightIcon
                 size={ICON_SIZE}
-                class="ml-pad-2 stroke-icon opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+                class="ml-pad-2 stroke-icon opacity-0 transition-opacity group-hover:opacity-100"
               />
             </li>
           );
@@ -112,11 +112,11 @@ const posts = (await getCollection("posts")).sort(
       }
     </ul>
 
-    <p>
-      Some of my technical and lecture notes can be found at <Link
+    <p class="max-w-(--content-w)">
+      In the spirit of digital gardens, I'm also publishing course notes at <Link
         href="https://otherworld.czw.sh"
         target="_blank">otherworld.czw.sh</Link
-      >.
+      > in the hopes that someone may find them useful.
     </p>
   </main>
 </BaseLayout>
