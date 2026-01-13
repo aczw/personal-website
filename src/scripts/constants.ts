@@ -26,7 +26,7 @@ const VALID_MONTHS = [
  * Order matters! Project videos will be played in the order defined here.
  */
 const HOMEPAGE_PROJECTS = [
-  "cuda-path-tracer",
+  "catanks",
   "mini-minecraft",
   "webgpu-clustered",
   "door",
