@@ -5,16 +5,31 @@ import { FeatherIcon, SquareArrowRightIcon } from "@lucide/astro";
 
 import {
   getFullDateFormatting,
-  getMonthYearDateFormatting,
+  getMonthDayDateFormatting,
 } from "@/scripts/util";
 import { ICON_SIZE } from "@/scripts/constants";
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
 import Link from "@/components/link.astro";
 
-const posts = (await getCollection("posts")).sort(
-  (a, b) => b.data.posted.getTime() - a.data.posted.getTime(),
-);
+const posts = await getCollection("posts");
+const yearPostsMap = new Map<number, typeof posts>();
+
+// Group each post with its corresponding year
+for (const post of posts) {
+  const year = post.data.posted.getFullYear();
+
+  if (!yearPostsMap.has(year)) {
+    yearPostsMap.set(year, [post]);
+  } else {
+    yearPostsMap.get(year)!.push(post);
+  }
+}
+
+// Sort each group of posts
+for (const postsInYear of yearPostsMap.values()) {
+  postsInYear.sort((a, b) => b.data.posted.getTime() - a.data.posted.getTime());
+}
 ---
 
 <BaseLayout
@@ -29,94 +44,101 @@ const posts = (await getCollection("posts")).sort(
   <Header links={[]} />
 
   <main
-    class="mx-auto w-full space-y-pad-4 px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w) lg:pt-pad-3"
+    class="mx-auto w-full space-y-pad-4 px-pad-2 pt-pad-2 [--posts-date-w:120px] desktop:w-4/5 desktop:px-pad sm:[--posts-date-w:40%] md:[--posts-date-w:30%] lg:w-(--real-header-w) lg:pt-pad-3"
   >
     <h1 class="flex items-center gap-x-pad text-5xl font-bold text-heading">
       Writing <FeatherIcon size={2 * ICON_SIZE} class="stroke-icon" />
     </h1>
 
-    <ul
-      aria-label="Entries"
-      class="duration-200 *:relative *:grid *:grid-cols-[minmax(0,0.25fr)_minmax(0,0.4fr)_minmax(0,0.15fr)_minmax(0,2fr)_calc(var(--spacing-pad-2)+18px)]"
-    >
-      {
-        posts.map(({ data: { title, posted }, id }, index) => {
-          const [month, day] = getMonthYearDateFormatting(posted).split(" ");
-          const previousPost = posts[index - 1];
+    {
+      yearPostsMap.entries().map(([year, posts]) => (
+        <section aria-label={`Posts in ${year}`}>
+          <h2
+            id={year.toString()}
+            class="mb-pad text-xl font-bold text-heading sm:sr-only"
+          >
+            {year}
+          </h2>
 
-          let hasSameYearAsLast =
-            previousPost?.data.posted.getFullYear() === posted.getFullYear();
-          let hasSameMonthAsLast =
-            previousPost?.data.posted.getUTCMonth() === posted.getUTCMonth();
+          <ul class="space-y-1.5 *:relative *:grid *:grid-cols-[var(--posts-date-w)_minmax(0,1fr)] desktop:space-y-0">
+            {posts.map(({ data: { title, posted }, id }, index) => {
+              const monthDay = getMonthDayDateFormatting(posted);
+              const [month, day] = monthDay.split(" ");
+              const previousPost = posts[index - 1];
 
-          return (
-            <li
-              class:list={[
-                "group",
-                { "mt-pad-4": !hasSameYearAsLast && index !== 0 },
-              ]}
-            >
-              <time
-                datetime={posted.toISOString()}
-                title={getFullDateFormatting(posted)}
-                class="col-span-3 grid grid-cols-subgrid text-link-secondary transition-colors group-hover:text-link-secondary-hover"
-              >
-                <span
-                  class:list={[
-                    {
-                      "opacity-0 transition-opacity group-hover:opacity-100":
-                        hasSameYearAsLast,
-                    },
-                  ]}
-                >
-                  {posted.getFullYear()}
-                </span>
+              let hasSameYearAsLast =
+                previousPost?.data.posted.getFullYear() ===
+                posted.getFullYear();
+              let hasSameMonthAsLast =
+                previousPost?.data.posted.getUTCMonth() ===
+                posted.getUTCMonth();
 
-                <span
-                  class:list={[
-                    {
-                      "opacity-0 transition-opacity group-hover:opacity-100":
-                        hasSameMonthAsLast,
-                    },
-                    { "col-start-2": hasSameYearAsLast },
-                  ]}
-                >
-                  {month}
-                </span>
+              return (
+                <li class="group *:transition-colors">
+                  <time
+                    datetime={posted.toISOString()}
+                    title={getFullDateFormatting(posted)}
+                    class="grid grid-cols-1 text-link-secondary group-hover:text-link-secondary-hover sm:grid-cols-4"
+                  >
+                    <span
+                      class:list={[
+                        "hidden sm:inline",
+                        {
+                          "opacity-0 transition-opacity group-hover:opacity-100":
+                            hasSameYearAsLast,
+                        },
+                      ]}
+                    >
+                      {posted.getFullYear()}
+                    </span>
 
-                <span
-                  class:list={[
-                    { "col-start-3": hasSameYearAsLast || hasSameMonthAsLast },
-                  ]}
-                >
-                  {day}
-                </span>
-              </time>
+                    <span
+                      class:list={[
+                        "col-span-2 hidden sm:inline",
+                        {
+                          "opacity-0 transition-opacity group-hover:opacity-100":
+                            hasSameMonthAsLast,
+                        },
+                      ]}
+                    >
+                      {month}
+                    </span>
 
-              <h2 class="text-[1.65rem] leading-tight font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                <a
-                  href={`/posts/${id}`}
-                  class="after:absolute after:inset-0 after:z-1"
-                >
-                  {title}
-                </a>
-              </h2>
+                    <span class="hidden sm:inline">{day}</span>
 
-              <SquareArrowRightIcon
-                size={ICON_SIZE}
-                class="ml-pad-2 stroke-icon opacity-0 transition-opacity group-hover:opacity-100"
-              />
-            </li>
-          );
-        })
-      }
-    </ul>
+                    <span class="sm:hidden">{monthDay}</span>
+                  </time>
 
-    <p class="max-w-(--content-w)">
-      In the spirit of digital gardens, I'm also publishing course notes at <Link
-        href="https://otherworld.czw.sh"
-        target="_blank">otherworld.czw.sh</Link
-      > in the hopes that someone may find them useful.
-    </p>
+                  <h3 class="flex justify-between gap-x-pad-2 text-lg leading-snug font-bold text-link-primary group-hover:text-link-primary-hover sm:text-xl sm:leading-(--text-xl--line-height) md:text-2xl">
+                    <a
+                      href={`/posts/${id}`}
+                      class="after:absolute after:inset-0 after:z-1"
+                    >
+                      {title}
+                    </a>
+
+                    <SquareArrowRightIcon
+                      aria-hidden="true"
+                      size={ICON_SIZE}
+                      class="shrink-0 stroke-icon transition-opacity group-hover:opacity-100 desktop:opacity-0"
+                    />
+                  </h3>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      ))
+    }
+
+    <div class="space-y-pad">
+      <h2 class="text-xl font-bold text-heading">otherworld</h2>
+      <p class="max-w-(--content-w)">
+        In the spirit of digital gardens, I'm also publishing my technical notes
+        at <Link href="https://otherworld.czw.sh" target="_blank"
+          >otherworld.czw.sh</Link
+        > in the hopes that someone may find them useful.
+      </p>
+    </div>
   </main>
 </BaseLayout>

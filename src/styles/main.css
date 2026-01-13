@@ -48,11 +48,6 @@
   /* A good indicator for when we're beyond phone width territory. As an
    * example, the iPhone 14 Pro Max has a screen width of 430px. */
   --breakpoint-desktop: 480px;
-
-  /* Terrible names, but these don't really represent anything and are
-   * just good values by themselves */
-  --breakpoint-380: 380px;
-  --breakpoint-560: 560px;
 }
 
 @layer base {

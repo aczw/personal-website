@@ -56,9 +56,9 @@ function getFullDateFormatting(date: Date) {
 }
 
 /**
- * @returns Just the (full) month and year.
+ * @returns Full month and day.
  */
-function getMonthYearDateFormatting(date: Date) {
+function getMonthDayDateFormatting(date: Date) {
   return date.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
@@ -84,7 +84,7 @@ export {
   stripEndingSlash,
   getShortDateFormatting,
   getFullDateFormatting,
-  getMonthYearDateFormatting,
+  getMonthDayDateFormatting,
   getDateKind,
   saturate,
 };
