@@ -97,7 +97,7 @@
     @apply pl-pad;
 
     &::marker {
-      @apply text-sweater-6;
+      @apply text-sweater-5 not-dark:text-sweater-6;
     }
   }
 

@@ -1,14 +1,13 @@
 ---
-import { ChevronRightIcon } from "@lucide/astro";
-
-import { ICON_SIZE } from "@/scripts/constants";
+const { class: className, ...props } = Astro.props;
 ---
 
-<aside class="flex gap-pad" {...Astro.props}>
-  <ChevronRightIcon
-    aria-hidden="true"
-    size={ICON_SIZE}
-    class="shrink-0 stroke-icon"
-  />
-  <div class="space-y-pad"><slot /></div>
-</aside>
+<div
+  class:list={[
+    "space-y-pad-2 border-l-(length:--border-w) border-style pl-pad-2 text-sweater-3 not-dark:text-sweater-7",
+    className,
+  ]}
+  {...props}
+>
+  <slot />
+</div>
