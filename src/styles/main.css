@@ -122,6 +122,16 @@
   h6 {
     overflow-wrap: break-word;
     text-wrap: pretty;
+
+    /* An ABSOLUTELY INSANE HECK that detects if we're on WebKit on iOS,
+     * and disables text wrap. I don't like the behavior of `pretty` on it,
+     * as it tries to keep every line width the same. In the future if/when
+     * the `avoid-orphans` value is shipped, I can remove this.
+     *
+     * See also https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/-webkit-touch-callout#browser_compatibility. */
+    @supports (-webkit-touch-callout: none) {
+      text-wrap: wrap;
+    }
   }
 
   img,
