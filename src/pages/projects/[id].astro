@@ -19,7 +19,6 @@ import { DISABLED_PROJECTS } from "@/scripts/constants";
 import { isValidProjectCover } from "@/scripts/util";
 import { ICON_SIZE } from "@/scripts/constants";
 import Link from "@/components/link.astro";
-import ContentIntroduction from "@/components/content-introduction.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -55,7 +54,23 @@ const { Content } = await render(project);
   <Header links={[{ href: "/projects", text: "Portfolio" }]} />
 
   <main>
-    <ContentIntroduction title={name} subtitle={subtitle} blurb={blurb} />
+    <section
+      class="mx-auto mb-pad-4 w-full px-pad-2 pt-pad-4 desktop:w-4/5 desktop:px-pad desktop:pt-pad-3 lg:w-(--real-header-w)"
+    >
+      <h1 class="text-5xl font-bold text-heading">
+        {name}
+      </h1>
+
+      {
+        subtitle && (
+          <p class="mt-1 text-2xl text-sweater-2 not-dark:text-sweater-7 desktop:text-4xl">
+            {subtitle}
+          </p>
+        )
+      }
+
+      <p class="mt-1.5 max-w-(--content-w)">{blurb}</p>
+    </section>
 
     <section
       aria-label="Overview"
@@ -150,6 +165,6 @@ const { Content } = await render(project);
       </div>
     </section>
 
-    <MdxContent content={Content} />
+    <MdxContent aria-label="Write-up" content={Content} />
   </main>
 </BaseLayout>

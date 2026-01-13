@@ -14,7 +14,6 @@ import { ICON_SIZE } from "@/scripts/constants";
 import BaseLayout from "@/layouts/base-layout.astro";
 import MdxContent from "@/components/mdx-content.astro";
 import Header from "@/components/header.astro";
-import ContentIntroduction from "@/components/content-introduction.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -42,83 +41,73 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
   <Header links={[{ href: "/posts", text: "Writing" }]} />
 
   <main>
-    <ContentIntroduction title={title} subtitle={blurb} />
-
-    {
-      cover ?
-        <Image
-          src={cover.img}
-          alt={cover.alt}
-          loading="eager"
-          class="rounded-lg bg-sweater-9 not-dark:bg-sweater-2"
-        />
-      : null
-    }
-
     <section
-      id="introduction"
-      class="grid-line-before grid-line-after relative"
+      class="mx-auto mb-pad-4 w-full px-pad-2 pt-pad-4 desktop:w-4/5 desktop:px-pad desktop:pt-pad-3 lg:w-(--real-header-w)"
     >
-      <div class="space-y-1 border-b-(length:--border-w) border-style p-pad">
-        <h1
-          class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
+      <h1 class="text-4xl font-bold text-heading sm:text-5xl">
+        {title}
+      </h1>
+
+      <p
+        class="mt-1 -mb-2 text-xl text-sweater-2 not-dark:text-sweater-7 desktop:mb-0 desktop:text-2xl sm:text-4xl"
+      >
+        {blurb}
+      </p>
+    </section>
+
+    <section aria-label="Overview" class="mb-pad-2 desktop:mb-pad-4">
+      {
+        cover && (
+          <div class="mx-auto mb-pad-2 max-w-(--real-wide-w) desktop:mb-pad-4 md:px-pad-2">
+            <Image
+              src={cover.img}
+              alt={cover.alt}
+              loading="eager"
+              class="md:rounded-xl"
+            />
+          </div>
+        )
+      }
+
+      <div
+        class="mx-auto w-full px-pad-2 *:space-y-0.5 **:leading-tight desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+      >
+        <dl
+          class="grid max-w-(--content-w) grid-cols-1 gap-x-pad-2 gap-y-pad sm:grid-cols-2"
         >
-          {title}
-        </h1>
-
-        {blurb ? <p>{blurb}</p> : null}
-      </div>
-
-      <div class="480:grid-cols-2 grid grid-cols-1">
-        <div
-          class="480:border-r-(length:--border-w) 480:border-b-0 flex border-b-(length:--border-w) border-style"
-        >
-          <div
-            class="480:flex-col flex grow flex-row sm:flex-row sm:items-center"
-          >
-            <p
-              class="480:border-r-0 480:pb-0 shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold sm:border-r-(length:--border-w) sm:pb-pad"
-            >
-              Posted on
-            </p>
-
-            <time
-              datetime={posted.toISOString()}
-              title={getFullDateFormatting(posted)}
-              class="480:pt-0 grow px-pad pt-pad pb-pad sm:pt-pad"
-            >
-              {getShortDateFormatting(posted)}
-            </time>
+          <div>
+            <dt class="flex justify-between font-bold text-heading">
+              Posted <CalendarFoldIcon
+                size={ICON_SIZE}
+                class="shrink-0 stroke-icon"
+              />
+            </dt>
+            <dd>
+              <time
+                datetime={posted.toISOString()}
+                title={getFullDateFormatting(posted)}
+              >
+                {getShortDateFormatting(posted)}
+              </time>
+            </dd>
           </div>
 
-          <div class="p-pad">
-            <CalendarFoldIcon size={ICON_SIZE} class="shrink-0 stroke-icon" />
-          </div>
-        </div>
-
-        <div class="flex">
-          <div
-            class="480:flex-col flex grow flex-row sm:flex-row sm:items-center"
-          >
-            <p
-              class="480:border-r-0 480:pb-0 shrink-0 border-r-(length:--border-w) border-style px-pad pt-pad pb-pad font-bold sm:border-r-(length:--border-w) sm:pb-pad"
-            >
-              Read time
-            </p>
-
-            <p class="480:pt-0 grow px-pad pt-pad pb-pad sm:pt-pad">
+          <div>
+            <dt class="flex justify-between font-bold text-heading">
+              Length <BookOpenIcon
+                size={ICON_SIZE}
+                class="shrink-0 stroke-icon"
+              />
+            </dt>
+            <dd>
               {numMinutes}
               {numMinutes > 1 ? "minutes" : "minute"}
-            </p>
+            </dd>
           </div>
-
-          <div class="p-pad">
-            <BookOpenIcon size={ICON_SIZE} class="shrink-0 stroke-icon" />
-          </div>
-        </div>
+        </dl>
       </div>
     </section>
 
-    <MdxContent content={Content} />
+    <MdxContent aria-label="Post" content={Content} />
   </main>
 </BaseLayout>
