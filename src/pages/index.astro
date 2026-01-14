@@ -42,16 +42,16 @@ const projects = await getEntries(
     class="z-1 flex flex-col items-center-safe gap-y-pad overflow-x-hidden desktop:absolute desktop:inset-0"
   >
     <header
-      class="z-1 grid h-fit w-full grid-cols-1 gap-y-pad px-pad-2 pt-pad-2 font-bold desktop:mt-10 desktop:w-4/5 desktop:rounded-xl desktop:bg-sweater-10 desktop:p-pad desktop:not-dark:bg-sweater-1 sm:grid-cols-2 lg:w-(--real-header-w)"
+      class="z-1 grid h-fit w-full grid-cols-1 gap-y-pad px-pad-2 pt-pad-2 font-bold desktop:mt-10 desktop:w-4/5 desktop:rounded-xl desktop:bg-sweater-10 desktop:p-pad sm:grid-cols-2 lg:w-(--real-header-w) desktop:light:bg-sweater-1"
     >
       <h1 class="space-y-0.5">
         <Eye
           aria-hidden="true"
-          class="peer fill-sweater-5 transition-[fill_rotate] not-dark:fill-sweater-6 hover:-rotate-13 hover:fill-sweater-4 not-dark:hover:fill-sweater-7"
+          class="peer fill-sweater-5 transition-[fill_rotate] hover:-rotate-13 hover:fill-sweater-4 light:fill-sweater-6 light:hover:fill-sweater-7"
         />
 
         <span
-          class="cursor-default text-3xl leading-none text-sweater-5 transition-colors not-dark:text-sweater-6 peer-hover:text-sweater-4 not-dark:peer-hover:text-sweater-7"
+          class="cursor-default text-3xl leading-none text-sweater-5 transition-colors peer-hover:text-sweater-4 light:text-sweater-6 light:peer-hover:text-sweater-7"
         >
           Charles Wang
         </span>
@@ -82,7 +82,7 @@ const projects = await getEntries(
     >
       <section
         aria-label="Featured project"
-        class="group relative z-1 h-fit w-full overflow-hidden rounded-xl bg-sweater-10 transition-colors duration-250 not-dark:bg-sweater-1 hover:bg-sweater-9 not-dark:hover:bg-sweater-2 md:grow"
+        class="group relative z-1 h-fit w-full overflow-hidden rounded-xl bg-sweater-10 transition-colors duration-250 hover:bg-sweater-9 md:grow light:bg-sweater-1 light:hover:bg-sweater-2"
       >
         <div
           id="video-progress"
@@ -93,7 +93,7 @@ const projects = await getEntries(
           aria-valuemax="1.0"
           aria-valuenow="0.0"
           aria-valuetext="0% finished"
-          class="absolute inset-0 -z-1 origin-left bg-sweater-9 transition-colors not-dark:bg-sweater-2 group-hover:bg-sweater-8 not-dark:group-hover:bg-sweater-3"
+          class="absolute inset-0 -z-1 origin-left bg-sweater-9 transition-colors group-hover:bg-sweater-8 light:bg-sweater-2 light:group-hover:bg-sweater-3"
           style="transform: scaleX(0.0);"
         >
         </div>
@@ -134,7 +134,7 @@ const projects = await getEntries(
 
       <button
         id="toggle-panel"
-        class="group hidden w-35 rounded-xl bg-sweater-10 p-pad leading-none transition-colors not-dark:bg-sweater-1 hover:bg-sweater-9 not-dark:hover:bg-sweater-2 data-[state=open]:bg-sweater-9 data-[state=open]:hover:bg-sweater-8 not-dark:data-[state=open]:hover:bg-sweater-3 md:flex md:shrink-0"
+        class="group hidden w-35 rounded-xl bg-sweater-10 p-pad leading-none transition-colors hover:bg-sweater-9 data-[state=open]:bg-sweater-9 data-[state=open]:hover:bg-sweater-8 md:flex md:shrink-0 light:bg-sweater-1 light:hover:bg-sweater-2 light:data-[state=open]:hover:bg-sweater-3"
         data-state="closed"
         data-umami-event="toggle-panel-button"
       >

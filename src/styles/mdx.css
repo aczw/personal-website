@@ -78,11 +78,11 @@
   }
 
   code {
-    @apply rounded-md bg-sweater-9 px-1.25 py-0.5 maple wrap-break-word not-dark:bg-sweater-2;
+    @apply rounded-md bg-sweater-9 px-1.25 py-0.5 maple wrap-break-word light:bg-sweater-2;
   }
 
   del {
-    @apply cursor-not-allowed text-sweater-6 line-through not-dark:text-sweater-5;
+    @apply cursor-not-allowed text-sweater-6 line-through light:text-sweater-5;
   }
 
   ul {
@@ -97,7 +97,7 @@
     @apply pl-pad;
 
     &::marker {
-      @apply text-sweater-5 not-dark:text-sweater-6;
+      @apply text-sweater-5 light:text-sweater-6;
     }
   }
 
@@ -121,7 +121,7 @@
     @apply mdx-outdent border-y-(length:--border-w) border-style;
 
     thead {
-      @apply border-b-(length:--border-w) border-style bg-sweater-9/50 font-bold text-heading not-dark:bg-sweater-2/50;
+      @apply border-b-(length:--border-w) border-style bg-sweater-9/50 font-bold text-heading light:bg-sweater-2/50;
 
       th {
         @apply px-pad-2 py-0.5 not-last:border-r-(length:--border-w) not-last:border-style;
@@ -129,7 +129,7 @@
     }
 
     tr {
-      @apply even:bg-sweater-9/25 not-dark:even:bg-sweater-2/25;
+      @apply even:bg-sweater-9/25 light:even:bg-sweater-2/25;
 
       td {
         @apply px-pad-2 py-0.5 leading-snug not-last:border-r-(length:--border-w) not-last:border-style;
