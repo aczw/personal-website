@@ -175,6 +175,8 @@
 
   figcaption {
     @apply ml-pad-2;
+
+    max-width: min(var(--content-w), calc(100% - var(--spacing-pad-4)));
   }
 }
 
