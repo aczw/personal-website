@@ -137,7 +137,7 @@ The Lambertian BRDF says that for an outgoing ray $\omega_o$, the scattering of 
 
 After adding it, obviously I had to test this material out on the classics.
 
-<figure class="mdx-bleed mdx-outdent">
+<figure class="mdx-full">
   <div class="mdx-grid-2">
     ![](renders/diffuse/sphere-800x800-5000.png)
     ![](renders/diffuse/stanford_dragon-800x800-5000.png)
@@ -196,7 +196,7 @@ We will combine them both later to create dielectrics.
 
 First, complete reflection.
 
-<figure class="mdx-bleed mdx-outdent">
+<figure class="mdx-full">
   <div class="mdx-grid-2">
     ![](renders/perf-spec-dielectric/pure_reflection-800x800-5000.png)
     ![](renders/perf-spec-dielectric/pure_reflection_inv-800x800-5000.png)
@@ -255,7 +255,7 @@ To make our path tracing a little easier (and to piggyback off of the wonders of
 
 What should the probability be? A simple solution is to set it to 50/50. However, this wouldn't result in an accurate physical render because we're not considering the Fresnel coefficients that dictate how much light is reflected and refracted at an intersection.
 
-<figure class="mdx-bleed mdx-outdent">
+<figure class="mdx-full">
   <div class="mdx-grid-2">
     ![](fresnel-half-half.png) ![](fresnel-accurate.png)
   </div>
@@ -320,7 +320,7 @@ segment.ray = {
 
 I got this idea while watching Sebastian Lague's [Coding Adventure: Ray Tracing](https://www.youtube.com/watch?v=Qz0KTGYJtUk) video. Well, how ~~bad~~ good is it?
 
-<figure class="mdx-bleed mdx-outdent">
+<figure class="mdx-full">
   ![](renders/roughness_test-1200x800-5000.png)
   <figcaption>
     1200×800 / 5000 samples / Roughness, left to right: 0.0, 0.2, 0.45, 0.65,
@@ -361,14 +361,14 @@ x += uniform_01(rng);
 
 That's it! We add a random value between $[0.0,1.0)$ so that the ray direction generated will never be the same for a given pixel.
 
-<figure class="mdx-bleed mdx-outdent">
+<figure class="mdx-full">
   <div class="grid grid-cols-2 desktop:gap-pad sm:gap-pad-2">
     ![](stochastic-on.png) ![](stochastic-on-detail.png)
   </div>
   <figcaption>__Stochastic sampling.__ 1000×1000 / 10k samples</figcaption>
 </figure>
 
-<figure class="mdx-bleed mdx-outdent">
+<figure class="mdx-full">
   <div class="grid grid-cols-2 desktop:gap-pad sm:gap-pad-2">
     ![](stochastic-off.png) ![](stochastic-off-detail.png)
   </div>
@@ -420,7 +420,7 @@ ray.direction = glm::normalize(focus - ray.origin);
 
 With that, we get DOF!
 
-<figure class="mdx-bleed mdx-outdent">
+<figure class="mdx-full">
   <div class="mdx-grid-2">
     ![](renders/dof/dof-800x800-5000-12-bunny.png)
     ![](renders/dof/dof-800x800-5000-12-sphere.png)
@@ -593,7 +593,7 @@ Instead, we have to maintain a _stack_ of nodes that we haven't processed. Then,
 
 So, how much do BVHs improve performance?
 
-<figure class="mdx-bleed mdx-outdent">
+<figure class="mdx-full">
   ![](graphs/isect-culling.png)
   <figcaption>I'm making a lot of funny charts, aren't I?</figcaption>
 </figure>
@@ -629,7 +629,7 @@ By grouping paths with the same materials together, they all benefit from the ca
 
 Here are some failed renders that I thought looked pretty cool.
 
-<div class="mdx-bleed mdx-outdent mdx-grid-2">
+<div class="mdx-full mdx-grid-2">
   <figure>
     ![](bloopers/cornell.2025-09-23_00-10-10z.3978samp.png)
     <figcaption>The seed for my random number generator was off</figcaption>
