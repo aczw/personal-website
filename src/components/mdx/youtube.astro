@@ -1,0 +1,22 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = Omit<HTMLAttributes<"div">, "title"> & {
+  id: string;
+  title: string;
+  start?: number;
+};
+
+const { id, title, start, class: className, ...props } = Astro.props;
+---
+
+<div class={className} {...props}>
+  <iframe
+    src={`https://www.youtube-nocookie.com/embed/${id}${start ? `?start=${start}` : ""}`}
+    title={title}
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen
+    class="aspect-560/315"></iframe>
+</div>
