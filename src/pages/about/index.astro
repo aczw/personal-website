@@ -1,34 +1,93 @@
 ---
+import { Image } from "astro:assets";
+
 import { InfoIcon } from "@lucide/astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
+import { ABOUT_PICTURES, ICON_SIZE } from "@/scripts/constants";
 
-const description = "A little about who I am and what I believe.";
+const description = "More about who I am";
 ---
 
 <BaseLayout
   meta={{
     kind: "route",
     title: "About",
-    description,
+    description: description + ".",
     ogImageParams: description,
   }}
 >
   <Header links={[]} />
 
   <main>
-    <div
-      class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w) lg:gap-x-pad-4 lg:pt-pad-3"
-    >
-      <h1
-        class="flex items-center gap-x-pad text-5xl font-bold text-heading md:justify-between"
+    <article class="space-y-pad-4">
+      <hgroup
+        class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) lg:pt-pad-3 xl:gap-x-pad-4"
       >
-        About <InfoIcon size={36} class="stroke-icon" />
-      </h1>
-      <p class="max-w-(--content-w)">
-        Pushing pixels and carving bridges. Always waiting for something.
-      </p>
-    </div>
+        <h1 class="flex items-center gap-x-pad text-5xl font-bold text-heading">
+          About <InfoIcon size={2 * ICON_SIZE} class="stroke-icon" />
+        </h1>
+        <p class="max-w-(--content-w) italic">
+          Pushing pixels, carving bridges
+        </p>
+      </hgroup>
+
+      <div
+        class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 *:space-y-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
+      >
+        <div>
+          <p>Paragraph 1</p>
+          <p>Paragraph 1</p>
+          <p>Paragraph 1</p>
+          <p>Paragraph 1</p>
+          <p>Paragraph 1</p>
+        </div>
+
+        <button
+          id="change-picture"
+          class="relative h-fit cursor-pointer rounded-xl bg-sweater-3 *:overflow-hidden *:rounded-xl"
+        >
+          {
+            ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
+              <Image
+                hidden={index !== 0}
+                id={id}
+                src={imageMetadata}
+                alt={alt}
+                loading={index === 0 ? "eager" : "lazy"}
+                class="absolute inset-0"
+                data-umami-event="clicked-about-picture"
+                data-umami-event-id={id}
+              />
+            ))
+          }
+        </button>
+      </div>
+    </article>
   </main>
 </BaseLayout>
+
+<script>
+  const pictureBtn = document.getElementById(
+    "change-picture",
+  ) as HTMLButtonElement;
+
+  const images = pictureBtn.children;
+  const firstImage = images.item(0)!;
+  let activeImage = firstImage;
+
+  pictureBtn.addEventListener("click", () => {
+    activeImage.setAttribute("hidden", "");
+
+    const next = activeImage.nextElementSibling;
+
+    if (next) {
+      next.removeAttribute("hidden");
+      activeImage = next;
+    } else {
+      firstImage.removeAttribute("hidden");
+      activeImage = firstImage;
+    }
+  });
+</script>
