@@ -91,7 +91,10 @@ Chunking our terrain helps a lot when we draw our blocks. For instance, my teamm
 
 A block has six faces. Each face uses two triangles. If we render every face of every non-`EMPTY` block of every chunk, every single frame, our GPU would catch on fire and explode. There's no point in rendering faces that are hidden by another block. The player never sees it.
 
-![Two blocks are right next to each other. The face in between does not need to be rendered.](face-culling.png)
+<div class="mdx-full">
+  ![Two blocks are right next to each other. The face in between does not need
+  to be rendered.](face-culling.png)
+</div>
 
 Instead, we first iterate over every block in the chunk. For each non-`EMPTY` block, we check its six neighbors, and only render a corresponding face if its neighbor is `EMPTY`.
 
@@ -111,7 +114,10 @@ std::unordered_map<Direction, Chunk*> neighbors;
 
 If you were to noclip below the ground, it now looks "hollowed out." What you're seeing below is what our caves look like... on the outside! The player is technically inside solid `STONE` right now, but it's just not being drawn.
 
-![Since we're not rendering any blocks inside the terrain, we can see snake-like caves underground.](hollowed-caves.png)
+<div class="mdx-full">
+  ![Since we're not rendering any blocks inside the terrain, we can see
+  snake-like caves underground.](hollowed-caves.png)
+</div>
 
 _I cannot emphasize how much this improves performance._ On my laptop, my framerate basically tripled. This was a crucial step in getting our game to run well.
 
@@ -134,7 +140,10 @@ int stride = 4 + 4 + 2 + 1;
 
 The [`stride` parameter](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml) in `glVertexAttribPointer` was difficult to wrap my head around. All it does is tell the GPU when the data for the next vertex starts. To the GPU, our VBO is just a really, really long sequence of floats. So, we have to specify the size of each attribute.
 
-![In a stream of floats, we specify the first four to be for position, the next four to be for normals, and so on.](interleaved-vbo.png)
+<div class="mdx-outdent">
+  ![In a stream of floats, we specify the first four to be for position, the
+  next four to be for normals, and so on.](interleaved-vbo.png)
+</div>
 
 For example, `position` takes up four floats, while `anim` only uses one.
 
@@ -142,7 +151,10 @@ For example, `position` takes up four floats, while `anim` only uses one.
 
 All the block textures in our game live in a 256x256 PNG sprite. Each block face texture is 16x16 pixels, so we can refer to specific textures using a coordinate system. For example, the dirt texture's lower-left corner is located at (2, 1) on our imaginary grid.
 
-![A dirt face texture at coordinate (2, 1) corresponds to (2/16, 1/16) in UV coordinates.](block-uv.png)
+<div class="mdx-full">
+  ![A dirt face texture at coordinate (2, 1) corresponds to (2/16, 1/16) in UV
+  coordinates.](block-uv.png)
+</div>
 
 We map a block type to the imaginary coordinate for each of its six faces.
 
@@ -192,7 +204,10 @@ This solves our issue because transparent blocks now have the correct fragment c
 
 If we fly really high up into the air, you'll see a circular fog that surrounds the player and slowly fades blocks into the distance.
 
-![Blocks slowly fade into the distance in a circular radius around the player.](distance-fog.png)
+<div class="mdx-full">
+  ![Blocks slowly fade into the distance in a circular radius around the
+  player.](distance-fog.png)
+</div>
 
 In the chunk fragment shader, I obtain the player's world position and the fragment's world position. I find the distance between these two, and divide by a `max_distance` to get a value between 0.0-1.0.
 
@@ -200,17 +215,25 @@ This value is used to lerp between the original block color and the sampled sky 
 
 So, what is `max_distance`? At all times, we only render a specific number of chunks around the player: a 12x12 group of chunks, to be exact. The player is always at the center of this group, so the max distance (the circle's radius) is always at most 96 blocks.
 
-![Diagram depicting the fog starting roughly around 96 blocks around the player in all directions.](distance-fog-diagram.png)
+<div class="mdx-full">
+  ![Diagram depicting the fog starting roughly around 96 blocks around the
+  player in all directions.](distance-fog-diagram.png)
+</div>
 
 So, the distance fog plays a second role: to stop the player from seeing chunks appear and disappear as they move. But, it's worth it to implement for aesthetics alone, I think:
 
-![A beautiful sunrise over the desert.](distance-fog-pretty.png)
+<div class="mdx-full">
+  ![A beautiful sunrise over the desert.](distance-fog-pretty.png)
+</div>
 
 ## Day/night cycle, celestial objects
 
 Our engine features a day cycle. We see the sun during the day, and the moon and stars at night. Clouds are always visible. In between, sunsets and sunrises transition us nicely.
 
-![A diagram depicting what percentage of a day we spend in day, in night, and how long it takes to transition.](day-night-cycle.png)
+<div class="mdx-full">
+  ![A diagram depicting what percentage of a day we spend in day, in night, and
+  how long it takes to transition.](day-night-cycle.png)
+</div>
 
 During development, I religiously followed the diagram above. It defines a single day as a range from 0.0-1.0, and specifies exact durations for transitions. For example:
 
@@ -227,7 +250,10 @@ The skybox is _not_ a cubemap. We're actually drawing to a screen space quad. To
 
 Depending on the direction of the ray, we can decide different colors to give to every single pixel. The picture below, for example, maps the literal ray direction to RGB values.
 
-![The sky is split into green, red, and black depending on the direction of the ray.](skybox-uv.png)
+<div class="mdx-outdent">
+  ![The sky is split into green, red, and black depending on the direction of
+  the ray.](skybox-uv.png)
+</div>
 
 There's a lot we can do here. For example, map a position to a UV coordinate, and output a different color depending on the value. Or, shooting a ray out and coloring the radius around that ray a different color, up to a certain angle (like a cone). I also lerp between colors depending on the time of day.
 
@@ -360,7 +386,10 @@ void UI::render_ui() {
 
 We're allowed to define our UI element positions on a relative 0.0-1.0 scale because the `UI` class takes care of transforming it into actual positions on our current screen resolution. Furthermore, the x-values are offset by a `margin` that centers everything.
 
-![Diagram showing how the UI is scaled up and doesn't matter what screen resolution we are.](ui-scaling.png)
+<div class="mdx-full">
+  ![Diagram showing how the UI is scaled up and doesn't matter what screen
+  resolution we are.](ui-scaling.png)
+</div>
 
 I make a number of assumptions about the player's display:
 
@@ -395,7 +424,9 @@ The end result? Very, very basic text rendering.
 
 > Fun fact: the font below comes from a heavily-customized Minecraft texture pack that I made over quarantine! If I didn't have a bitmap font like this ready, all of this probably wouldn't have happened.
 
-![The font bitmap file is open in Photoshop.](font-ps.png)
+<div class="mdx-outdent">
+  ![The font bitmap file is open in Photoshop.](font-ps.png)
+</div>
 
 The idea is simple: map a basic set of characters to UVs on a sprite that contains the characters as a bitmap. This is not a new idea—[far, far from it](https://en.wikipedia.org/wiki/Computer_font#Bitmap_fonts)—and there are probably thousands of implementations online, but
 
@@ -423,7 +454,10 @@ From there, I was able to render a single character, and then a string, which is
 
 I did have time to, however, add an in-game debug mode that shows the player's current position, as well as the current chunk (press F3 just like Minecraft):
 
-![Debug mode is turned on, and shows the current player position as (32, 158, 32) and chunk coordinate as (32, 32).](debug-mode.png)
+<div class="mdx-full">
+  ![Debug mode is turned on, and shows the current player position as (32, 158,
+  32) and chunk coordinate as (32, 32).](debug-mode.png)
+</div>
 
 This helped my teammates easily share cool structures they found for our showcase reel: just take a screenshot! I thought this was a great way to immediately start using my text system.
 
@@ -432,5 +466,3 @@ This helped my teammates easily share cool structures they found for our showcas
 This project has been very rewarding and is probably the most fun I've ever had with a class project. I've learned a lot about OpenGL, C++, and rendering in general. I've also become _very_ aware of all the heavy lifting that engines like Unity or Unreal do for us.
 
 I'm proud of my UI system, which came together at the very last minute but turned out really well. I also really enjoy how the sky looks. Prettier than Minecraft, I dare say?
-
-Anyways. Thanks for reading this far.
