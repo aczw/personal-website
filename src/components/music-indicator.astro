@@ -2,7 +2,12 @@
 import { actions } from "astro:actions";
 
 import { MusicIcon, InfoIcon, type Icon } from "@lucide/astro";
-import { ICON_SIZE } from "@/scripts/constants";
+
+interface Props {
+  size: number;
+}
+
+const { size } = Astro.props;
 
 const { data: track, error } = await Astro.callAction(
   actions.getMostRecentTrack,
@@ -16,21 +21,26 @@ const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
 <div
   id="music-indicator"
   aria-hidden="true"
-  class="relative size-icon"
+  class="relative"
   title={isLive ? "I'm currently listening to a song!" : null}
+  style={{
+    height: `${size}px`,
+    width: `${size}px`,
+  }}
   data-is-live={isLive ? "true" : "false"}
+  data-icon-size={size}
 >
   {
     isLive ?
       <InfoIcon
-        size={ICON_SIZE}
+        size={size}
         class="absolute inset-0 scale-40 stroke-icon opacity-0 blur-xs transition-[opacity_filter_scale] duration-500 starting:scale-100 starting:opacity-100 starting:blur-none"
       />
     : null
   }
 
   <ResolvedIcon
-    size={ICON_SIZE}
+    size={size}
     class:list={[
       "stroke-icon",
       isLive ?
@@ -41,9 +51,8 @@ const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
 </div>
 
 <script>
-  import { ICON_SIZE } from "@/scripts/constants";
-
   const root = document.getElementById("music-indicator")!;
+  const iconSize = root.dataset["iconSize"]!;
   const isLive = root.dataset["isLive"] === "true";
 
   if (isLive) {
@@ -60,8 +69,8 @@ const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
       template.innerHTML = iconSvgString.trim();
 
       const iconSvg = template.content.firstElementChild as SVGSVGElement;
-      iconSvg.setAttribute("width", ICON_SIZE.toString());
-      iconSvg.setAttribute("height", ICON_SIZE.toString());
+      iconSvg.setAttribute("width", iconSize);
+      iconSvg.setAttribute("height", iconSize);
       iconSvg.removeAttribute("stroke");
       iconSvg.removeAttribute("stroke-width");
       iconSvg.style.cssText =

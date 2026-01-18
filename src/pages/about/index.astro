@@ -14,6 +14,7 @@ import imageDante from "@/assets/about/dante.jpg";
 import imageSomisomi from "@/assets/about/somisomi.jpg";
 import imageBirthday from "@/assets/about/birthday.jpg";
 import imageAsa from "@/assets/about/asa.jpg";
+import MusicIndicator from "@/components/music-indicator.astro";
 
 type AboutPicture = {
   id: string;
@@ -70,13 +71,20 @@ const description = "More about who I am";
   <main>
     <article class="space-y-pad-4">
       <hgroup
-        class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) lg:pt-pad-3 xl:gap-x-pad-4"
+        class="mx-auto w-full px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w) lg:pt-pad-3"
       >
         <h1 class="flex items-center gap-x-pad text-5xl font-bold text-heading">
-          About <InfoIcon size={2 * ICON_SIZE} class="stroke-icon" />
+          About <MusicIndicator size={2 * ICON_SIZE} server:defer>
+            <InfoIcon
+              aria-hidden="true"
+              slot="fallback"
+              size={2 * ICON_SIZE}
+              class="stroke-icon"
+            />
+          </MusicIndicator>
         </h1>
-        <p class="max-w-(--content-w) italic">
-          Pushing pixels, carving bridges
+        <p class="max-w-(--content-w) text-2xl italic">
+          Bridge carver, pixel pusher
         </p>
       </hgroup>
 
@@ -100,7 +108,7 @@ const description = "More about who I am";
           </p>
           <p>
             You can find ways to reach me and my resumé below. Thanks for
-            visiting!! (〜￣▽￣)〜
+            visiting!! <span class="whitespace-nowrap">(〜￣▽￣)〜</span>
           </p>
         </div>
 
