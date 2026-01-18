@@ -106,30 +106,23 @@ const description = "More about who I am";
 
         <div class="h-fit space-y-pad">
           <div
-            class="flex gap-x-pad *:w-1/2 *:rounded-xl *:bg-sweater-9 *:p-pad *:leading-none *:transition-colors *:hover:bg-sweater-8"
+            class="flex gap-x-pad *:flex *:w-1/2 *:items-center *:justify-between *:gap-x-pad *:rounded-xl *:bg-sweater-9 *:p-pad *:leading-none *:transition-[background-color_scale] *:hover:bg-sweater-8 *:active:scale-97"
           >
-            <button id="prev-picture" class="group"
-              ><span
-                class="flex w-full items-center justify-between gap-x-pad transition-transform group-active:scale-97"
-                ><ArrowLeftIcon
-                  aria-hidden="true"
-                  size={ICON_SIZE}
-                  class="stroke-icon"
-                />
-                Previous
-              </span>
+            <button id="prev-picture"
+              ><ArrowLeftIcon
+                aria-hidden="true"
+                size={ICON_SIZE}
+                class="stroke-icon"
+              />
+              Previous
             </button>
 
-            <button id="next-picture" class="group"
-              ><span
-                class="flex w-full items-center justify-between gap-x-pad transition-transform group-active:scale-97"
-              >
-                Next <ArrowRightIcon
-                  aria-hidden="true"
-                  size={ICON_SIZE}
-                  class="stroke-icon"
-                />
-              </span>
+            <button id="next-picture"
+              >Next <ArrowRightIcon
+                aria-hidden="true"
+                size={ICON_SIZE}
+                class="stroke-icon"
+              />
             </button>
           </div>
 

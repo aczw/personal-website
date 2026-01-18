@@ -134,28 +134,24 @@ const projects = await getEntries(
 
       <button
         id="toggle-panel"
-        class="group hidden w-35 rounded-xl bg-sweater-10 p-pad leading-none transition-colors hover:bg-sweater-9 data-[state=open]:bg-sweater-9 data-[state=open]:hover:bg-sweater-8 md:flex md:shrink-0 light:bg-sweater-1 light:hover:bg-sweater-2 light:data-[state=open]:bg-sweater-2 light:data-[state=open]:hover:bg-sweater-3"
+        class="group hidden w-35 items-center justify-between gap-x-pad rounded-xl bg-sweater-10 p-pad leading-none transition-[background-color_scale] hover:bg-sweater-9 active:scale-97 data-[state=open]:bg-sweater-9 data-[state=open]:hover:bg-sweater-8 md:flex md:shrink-0 light:bg-sweater-1 light:hover:bg-sweater-2 light:data-[state=open]:bg-sweater-2 light:data-[state=open]:hover:bg-sweater-3"
         data-state="closed"
         data-umami-event="toggle-panel-button"
       >
-        <span
-          class="flex w-full items-center justify-between gap-x-pad transition-transform ease-in-out group-active:scale-97"
-        >
-          <span class="hidden group-data-[state=open]:contents">
-            Hide panel <SquareDashedMousePointerIcon
-              aria-hidden="true"
-              size={ICON_SIZE}
-              class="stroke-icon"
-            />
-          </span>
+        <span class="hidden group-data-[state=open]:contents">
+          Hide panel <SquareDashedMousePointerIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="stroke-icon"
+          />
+        </span>
 
-          <span class="hidden group-data-[state=closed]:contents">
-            Show panel <SquareMousePointerIcon
-              aria-hidden="true"
-              size={ICON_SIZE}
-              class="stroke-icon"
-            />
-          </span>
+        <span class="hidden group-data-[state=closed]:contents">
+          Show panel <SquareMousePointerIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="stroke-icon"
+          />
         </span>
       </button>
     </main>
