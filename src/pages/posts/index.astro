@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
-import { FeatherIcon, SquareArrowRightIcon } from "@lucide/astro";
+import { SquareArrowRightIcon } from "@lucide/astro";
 
 import {
   getFullDateFormatting,
@@ -49,9 +49,7 @@ const yearPosts = [...yearPostsMap].sort((a, b) => b[0] - a[0]);
   <main
     class="mx-auto w-full space-y-pad-4 px-pad-2 pt-pad-2 [--posts-date-w:120px] desktop:w-4/5 desktop:px-pad sm:[--posts-date-w:40%] md:[--posts-date-w:30%] lg:w-(--real-header-w) lg:pt-pad-3"
   >
-    <h1 class="flex items-center gap-x-pad text-5xl font-bold text-heading">
-      Writing <FeatherIcon size={2 * ICON_SIZE} class="stroke-icon" />
-    </h1>
+    <h1 class="text-5xl font-bold text-heading">Writing</h1>
 
     {
       yearPosts.map(([year, posts]) => (

@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 
-import { SquareArrowRightIcon, ToolCaseIcon } from "@lucide/astro";
+import { SquareArrowRightIcon } from "@lucide/astro";
 
 import ProjectCover from "@/components/project-cover.astro";
 import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
@@ -39,9 +39,7 @@ const description =
     <hgroup
       class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) lg:pt-pad-3 xl:gap-x-pad-4"
     >
-      <h1 class="flex items-center gap-x-pad text-5xl font-bold text-heading">
-        Portfolio <ToolCaseIcon size={2 * ICON_SIZE} class="stroke-icon" />
-      </h1>
+      <h1 class="text-5xl font-bold text-heading">Portfolio</h1>
       <p class="max-w-(--content-w)">{description}</p>
     </hgroup>
 
