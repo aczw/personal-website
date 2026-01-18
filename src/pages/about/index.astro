@@ -1,11 +1,58 @@
 ---
+import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
 import { InfoIcon } from "@lucide/astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
-import { ABOUT_PICTURES, ICON_SIZE } from "@/scripts/constants";
+import { ICON_SIZE } from "@/scripts/constants";
+
+import imageSpider from "@/assets/about/spider.jpg";
+import imagePizza from "@/assets/about/pizza.jpg";
+import imageDante from "@/assets/about/dante.jpg";
+import imageSomisomi from "@/assets/about/somisomi.jpg";
+import imageBirthday from "@/assets/about/birthday.jpg";
+import imageAsa from "@/assets/about/asa.jpg";
+
+type AboutPicture = {
+  id: string;
+  imageMetadata: ImageMetadata;
+  alt: string;
+};
+
+const ABOUT_PICTURES: AboutPicture[] = [
+  {
+    id: "spider",
+    imageMetadata: imageSpider,
+    alt: "Me at 5 years old wearing a paper hat holding a paper spider.",
+  },
+  {
+    id: "pizza",
+    imageMetadata: imagePizza,
+    alt: "Me at 5 years old being fed pizza. I'm wearing a yellow jacket.",
+  },
+  {
+    id: "dante",
+    imageMetadata: imageDante,
+    alt: "Me being attacked by my best friend's dog, Dante.",
+  },
+  {
+    id: "somisomi",
+    imageMetadata: imageSomisomi,
+    alt: "Me looking very pleased holding Somisomi ice cream.",
+  },
+  {
+    id: "birthday",
+    imageMetadata: imageBirthday,
+    alt: "Celebrating my 20th birthday.",
+  },
+  {
+    id: "asa",
+    imageMetadata: imageAsa,
+    alt: "Me dressed up as Asa from Chainsaw Man for Halloween.",
+  },
+];
 
 const description = "More about who I am";
 ---
@@ -36,12 +83,25 @@ const description = "More about who I am";
       <div
         class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 *:space-y-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
       >
-        <div>
-          <p>Paragraph 1</p>
-          <p>Paragraph 1</p>
-          <p>Paragraph 1</p>
-          <p>Paragraph 1</p>
-          <p>Paragraph 1</p>
+        <div class="space-y-pad-2">
+          <p>
+            Hi! I'm a fourth year student in the Digital Media Design major at
+            UPenn. I'm interested in computer graphics, game engine development,
+            and real-time rendering.
+          </p>
+          <p>
+            I help run UPGRADE, our game dev club, and am part of the CG@Penn
+            student board. Previously I was at Snap.
+          </p>
+          <p>
+            I love making and designing things. For fun I like to run, create
+            playlists, read manga, and ride SEPTA. I strongly believe in shared
+            spaces and self-expression on the web.
+          </p>
+          <p>
+            You can find ways to reach me and my resumé below. Thanks for
+            visiting!! (〜￣▽￣)〜
+          </p>
         </div>
 
         <button
@@ -51,12 +111,14 @@ const description = "More about who I am";
           {
             ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
               <Image
-                hidden={index !== 0}
                 id={id}
                 src={imageMetadata}
                 alt={alt}
                 loading={index === 0 ? "eager" : "lazy"}
-                class="absolute inset-0"
+                class:list={[
+                  "absolute inset-0 origin-top",
+                  { "scale-40 opacity-0 blur-2xl": index !== 0 },
+                ]}
                 data-umami-event="clicked-about-picture"
                 data-umami-event-id={id}
               />
@@ -78,16 +140,37 @@ const description = "More about who I am";
   let activeImage = firstImage;
 
   pictureBtn.addEventListener("click", () => {
-    activeImage.setAttribute("hidden", "");
+    activeImage
+      .animate(
+        [{ scale: 0.4, opacity: 0.0, filter: "blur(var(--blur-2xl))" }],
+        {
+          duration: 300,
+          easing: "ease-in-out",
+          fill: "forwards",
+        },
+      )
+      .addEventListener("finish", (ev) => {
+        const animation = ev.currentTarget as Animation;
+        animation.commitStyles();
+        animation.cancel();
+      });
 
-    const next = activeImage.nextElementSibling;
+    const next =
+      activeImage.nextElementSibling ?
+        activeImage.nextElementSibling
+      : firstImage;
 
-    if (next) {
-      next.removeAttribute("hidden");
-      activeImage = next;
-    } else {
-      firstImage.removeAttribute("hidden");
-      activeImage = firstImage;
-    }
+    next
+      .animate([{ scale: 1.0, opacity: 1.0, filter: "none" }], {
+        duration: 200,
+        easing: "ease-in-out",
+        fill: "forwards",
+      })
+      .addEventListener("finish", (ev) => {
+        const animation = ev.currentTarget as Animation;
+        animation.commitStyles();
+        animation.cancel();
+        activeImage = next;
+      });
   });
 </script>
