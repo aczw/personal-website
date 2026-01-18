@@ -2,7 +2,7 @@
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
-import { InfoIcon } from "@lucide/astro";
+import { ArrowLeftIcon, ArrowRightIcon, InfoIcon } from "@lucide/astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
@@ -81,7 +81,7 @@ const description = "More about who I am";
       </hgroup>
 
       <div
-        class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 *:space-y-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
+        class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
       >
         <div class="space-y-pad-2">
           <p>
@@ -104,48 +104,76 @@ const description = "More about who I am";
           </p>
         </div>
 
-        <button
-          id="change-picture"
-          class="relative h-fit cursor-pointer rounded-xl bg-sweater-3 *:overflow-hidden *:rounded-xl"
-        >
-          {
-            ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
-              <Image
-                id={id}
-                src={imageMetadata}
-                alt={alt}
-                loading={index === 0 ? "eager" : "lazy"}
-                class:list={[
-                  "absolute inset-0 origin-top",
-                  { "scale-40 opacity-0 blur-2xl": index !== 0 },
-                ]}
-                data-umami-event="clicked-about-picture"
-                data-umami-event-id={id}
-              />
-            ))
-          }
-        </button>
+        <div class="h-fit space-y-pad">
+          <div
+            class="flex gap-x-pad *:w-1/2 *:rounded-xl *:bg-sweater-9 *:p-pad *:leading-none *:transition-colors *:hover:bg-sweater-8"
+          >
+            <button id="prev-picture" class="group"
+              ><span
+                class="flex w-full items-center justify-between gap-x-pad transition-transform group-active:scale-97"
+                ><ArrowLeftIcon
+                  aria-hidden="true"
+                  size={ICON_SIZE}
+                  class="stroke-icon"
+                />
+                Previous
+              </span>
+            </button>
+
+            <button id="next-picture" class="group"
+              ><span
+                class="flex w-full items-center justify-between gap-x-pad transition-transform group-active:scale-97"
+              >
+                Next <ArrowRightIcon
+                  aria-hidden="true"
+                  size={ICON_SIZE}
+                  class="stroke-icon"
+                />
+              </span>
+            </button>
+          </div>
+
+          <div
+            id="pictures"
+            class="relative rounded-xl *:overflow-hidden *:rounded-xl"
+          >
+            {
+              ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
+                <Image
+                  id={id}
+                  src={imageMetadata}
+                  alt={alt}
+                  loading={index === 0 ? "eager" : "lazy"}
+                  class:list={[
+                    "absolute inset-0 origin-top",
+                    { "scale-40 opacity-0 blur-2xl": index !== 0 },
+                  ]}
+                  data-umami-event="clicked-about-picture"
+                  data-umami-event-id={id}
+                />
+              ))
+            }
+          </div>
+        </div>
       </div>
     </article>
   </main>
 </BaseLayout>
 
 <script>
-  const pictureBtn = document.getElementById(
-    "change-picture",
-  ) as HTMLButtonElement;
-
-  const images = pictureBtn.children;
+  const images = document.getElementById("pictures")!.children;
   const firstImage = images.item(0)!;
+  const lastImage = images.item(images.length - 1)!;
+
   let activeImage = firstImage;
 
-  pictureBtn.addEventListener("click", () => {
+  function transitionActiveImage(target: Element) {
     activeImage
       .animate(
         [{ scale: 0.4, opacity: 0.0, filter: "blur(var(--blur-2xl))" }],
         {
-          duration: 300,
-          easing: "ease-in-out",
+          duration: 225,
+          easing: "cubic-bezier(0.87, 0, 0.13, 1)",
           fill: "forwards",
         },
       )
@@ -155,12 +183,7 @@ const description = "More about who I am";
         animation.cancel();
       });
 
-    const next =
-      activeImage.nextElementSibling ?
-        activeImage.nextElementSibling
-      : firstImage;
-
-    next
+    target
       .animate([{ scale: 1.0, opacity: 1.0, filter: "none" }], {
         duration: 200,
         easing: "ease-in-out",
@@ -170,7 +193,27 @@ const description = "More about who I am";
         const animation = ev.currentTarget as Animation;
         animation.commitStyles();
         animation.cancel();
-        activeImage = next;
+        activeImage = target;
       });
-  });
+  }
+
+  document
+    .getElementById("prev-picture")!
+    .addEventListener("click", () =>
+      transitionActiveImage(
+        activeImage.previousElementSibling ?
+          activeImage.previousElementSibling
+        : lastImage,
+      ),
+    );
+
+  document
+    .getElementById("next-picture")!
+    .addEventListener("click", () =>
+      transitionActiveImage(
+        activeImage.nextElementSibling ?
+          activeImage.nextElementSibling
+        : firstImage,
+      ),
+    );
 </script>
