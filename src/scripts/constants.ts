@@ -1,3 +1,8 @@
+import type { ImageMetadata } from "astro";
+
+import imageSpider from "@/assets/about/spider.jpg";
+import imageAsa from "@/assets/about/asa.jpg";
+
 import {
   BayerMatrixSize,
   DitherMode,
@@ -120,6 +125,28 @@ const DEFAULT_LIGHT_DITHER_SETTINGS: DitherSettings = {
 const ICON_SIZE = 18;
 const EYE_SIZE = 7;
 
+type AboutPicture = {
+  id: string;
+  imageMetadata: ImageMetadata;
+  alt: string;
+  date: string;
+};
+
+const ABOUT_PICTURES: AboutPicture[] = [
+  {
+    id: "spider",
+    imageMetadata: imageSpider,
+    alt: "Me at 5 years old wearing a paper hat holding a paper spider.",
+    date: "August 2009",
+  },
+  {
+    id: "asa",
+    imageMetadata: imageAsa,
+    alt: "Me dressed up as Asa from Chainsaw Man for Halloween.",
+    date: "October 2025",
+  },
+];
+
 export {
   CDN_URL,
   VALID_MONTHS,
@@ -133,4 +160,5 @@ export {
   DEFAULT_LIGHT_DITHER_SETTINGS,
   ICON_SIZE,
   EYE_SIZE,
+  ABOUT_PICTURES,
 };

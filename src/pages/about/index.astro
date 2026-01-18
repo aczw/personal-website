@@ -1,35 +1,21 @@
 ---
-import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
-import { ArrowLeftIcon, ArrowRightIcon, InfoIcon } from "@lucide/astro";
-
-import imageSpider from "@/assets/about/spider.jpg";
-import imageAsa from "@/assets/about/asa.jpg";
+import { InfoIcon } from "@lucide/astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
-import { ICON_SIZE } from "@/scripts/constants";
+import { ICON_SIZE, ABOUT_PICTURES } from "@/scripts/constants";
 import MusicIndicator from "@/components/music-indicator.astro";
+import { SimpleDateSchema } from "@/scripts/schema";
+import ContentDate from "@/components/content-date.astro";
 
-type AboutPicture = {
-  id: string;
-  imageMetadata: ImageMetadata;
-  alt: string;
-};
-
-const ABOUT_PICTURES: AboutPicture[] = [
-  {
-    id: "spider",
-    imageMetadata: imageSpider,
-    alt: "Me at 5 years old wearing a paper hat holding a paper spider.",
-  },
-  {
-    id: "asa",
-    imageMetadata: imageAsa,
-    alt: "Me dressed up as Asa from Chainsaw Man for Halloween.",
-  },
-];
+for (const picture of ABOUT_PICTURES) {
+  const result = SimpleDateSchema.safeParse(picture.date);
+  if (!result.success) {
+    throw new Error(result.error.flatten().formErrors.join(" / "));
+  }
+}
 
 const description = "More about who I am";
 ---
@@ -88,41 +74,17 @@ const description = "More about who I am";
           </p>
         </div>
 
-        <div class="h-fit space-y-pad">
-          <div
-            class="flex gap-x-pad *:flex *:w-1/2 *:items-center *:justify-between *:gap-x-pad *:rounded-xl *:bg-sweater-9 *:p-pad *:leading-none *:transition-[background-color_scale] *:hover:bg-sweater-8 *:active:scale-97"
-          >
-            <button id="prev-picture"
-              ><ArrowLeftIcon
-                aria-hidden="true"
-                size={ICON_SIZE}
-                class="stroke-icon"
-              />
-              Previous
-            </button>
-
-            <button id="next-picture"
-              >Next <ArrowRightIcon
-                aria-hidden="true"
-                size={ICON_SIZE}
-                class="stroke-icon"
-              />
-            </button>
-          </div>
-
-          <div
-            id="pictures"
-            class="relative rounded-xl *:overflow-hidden *:rounded-xl"
-          >
+        <figure class="space-y-pad">
+          <button class="relative h-[520px] w-full *:absolute *:inset-0">
             {
-              ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
+              ABOUT_PICTURES.map(({ id, imageMetadata, alt, date }, index) => (
                 <Image
                   id={id}
                   src={imageMetadata}
                   alt={alt}
                   loading={index === 0 ? "eager" : "lazy"}
                   class:list={[
-                    "absolute inset-0 origin-top",
+                    "cursor-pointer rounded-xl select-none",
                     { "scale-40 opacity-0 blur-2xl": index !== 0 },
                   ]}
                   data-umami-event="clicked-about-picture"
@@ -130,29 +92,37 @@ const description = "More about who I am";
                 />
               ))
             }
-          </div>
-        </div>
+          </button>
+          <figcaption class="text-left text-sm text-heading">
+            <ContentDate date={ABOUT_PICTURES[0]!.date} />
+          </figcaption>
+        </figure>
       </div>
     </article>
   </main>
 </BaseLayout>
 
 <script>
-  const images = document.getElementById("pictures")!.children;
-  const firstImage = images.item(0)!;
-  const lastImage = images.item(images.length - 1)!;
+  import { ABOUT_PICTURES } from "@/scripts/constants";
 
-  let activeImage = firstImage;
+  const figures = ABOUT_PICTURES.map(
+    (picture) => document.getElementById(picture.id)!,
+  );
 
-  function transitionActiveImage(target: Element) {
-    activeImage
+  const firstFigure = figures[0]!;
+  let activeFigure = firstFigure;
+
+  const keyframeOptions: KeyframeAnimationOptions = {
+    duration: 250,
+    easing: "cubic-bezier(0.87, 0, 0.13, 1)",
+    fill: "forwards",
+  };
+
+  function transitionActiveImage(target: HTMLElement) {
+    activeFigure
       .animate(
         [{ scale: 0.4, opacity: 0.0, filter: "blur(var(--blur-2xl))" }],
-        {
-          duration: 225,
-          easing: "cubic-bezier(0.87, 0, 0.13, 1)",
-          fill: "forwards",
-        },
+        keyframeOptions,
       )
       .addEventListener("finish", (ev) => {
         const animation = ev.currentTarget as Animation;
@@ -161,36 +131,23 @@ const description = "More about who I am";
       });
 
     target
-      .animate([{ scale: 1.0, opacity: 1.0, filter: "none" }], {
-        duration: 200,
-        easing: "ease-in-out",
-        fill: "forwards",
-      })
+      .animate([{ scale: 1.0, opacity: 1.0, filter: "none" }], keyframeOptions)
       .addEventListener("finish", (ev) => {
         const animation = ev.currentTarget as Animation;
         animation.commitStyles();
         animation.cancel();
-        activeImage = target;
+        activeFigure = target;
       });
   }
 
-  document
-    .getElementById("prev-picture")!
-    .addEventListener("click", () =>
-      transitionActiveImage(
-        activeImage.previousElementSibling ?
-          activeImage.previousElementSibling
-        : lastImage,
-      ),
-    );
+  for (const figure of figures) {
+    const target =
+      figure.nextElementSibling ?
+        (figure.nextElementSibling as HTMLElement)
+      : firstFigure;
 
-  document
-    .getElementById("next-picture")!
-    .addEventListener("click", () =>
-      transitionActiveImage(
-        activeImage.nextElementSibling ?
-          activeImage.nextElementSibling
-        : firstImage,
-      ),
-    );
+    figure.addEventListener("click", () => {
+      transitionActiveImage(target);
+    });
+  }
 </script>
