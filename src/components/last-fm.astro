@@ -4,6 +4,8 @@ import { actions } from "astro:actions";
 
 import { MusicIcon } from "@lucide/astro";
 
+import image400mg from "@/assets/400-mg.webp";
+
 import Link from "@/components/link.astro";
 import { ICON_SIZE } from "@/scripts/constants";
 
@@ -16,7 +18,7 @@ const available = !error;
 ---
 
 <div
-  class="space-y-pad opacity-100 transition-opacity duration-400 starting:opacity-0"
+  class="space-y-pad opacity-100 transition-opacity duration-500 starting:opacity-0"
 >
   <h3 class="font-bold text-heading">
     {
@@ -72,5 +74,44 @@ const available = !error;
           </>
       }
     </p>
+  </div>
+</div>
+
+<div
+  class="space-y-pad opacity-100 transition-opacity duration-500 starting:opacity-0"
+>
+  <h3 class="font-bold text-heading">
+    {available ? "Last 7 days" : "Current Spotify playlist"}
+  </h3>
+
+  <div class="flex gap-x-3.5">
+    {
+      available ? null : (
+        <Image
+          src={image400mg}
+          alt="Alley in a Philadelphia neighborhood. Cover for my Spotify playlist."
+          class="size-[3lh] shrink-0 rounded-md md:hidden lg:block"
+        />
+      )
+    }
+
+    {
+      available ?
+        <ul class="*:line-clamp-1">
+          <li>Top song: — 72 plays.</li>
+          <li>Top album: — 72 plays.</li>
+          <li>Top artist: — 72 plays.</li>
+        </ul>
+      : <p>
+          Every so often I compile a playlist of my current rotation. It
+          represents how I've been doing.
+          <Link
+            href="https://open.spotify.com/playlist/1dfHkaWMioz6lA6hWF1t6d"
+            target="_blank"
+          >
+            Check it out.
+          </Link>
+        </p>
+    }
   </div>
 </div>
