@@ -7,6 +7,7 @@ import imageAsa from "@/assets/about/asa.jpg";
 
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
+import Link from "@/components/link.astro";
 
 type AboutPicture = {
   id: string;
@@ -49,29 +50,8 @@ const description = "More about who I am";
       </h1>
 
       <div
-        class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
+        class="mx-auto grid w-full grid-cols-1 gap-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w)"
       >
-        <div class="space-y-pad-2">
-          <p>
-            Hi! I'm a fourth year student in the Digital Media Design major at
-            UPenn. I'm interested in computer graphics, game engine development,
-            and real-time rendering.
-          </p>
-          <p>
-            I help run UPGRADE, our game dev club, and am part of the CG@Penn
-            student board. Previously I was at Snap.
-          </p>
-          <p>
-            I love making and designing things. For fun I like to run, create
-            playlists, read manga, and ride SEPTA. I strongly believe in shared
-            spaces and self-expression on the web.
-          </p>
-          <p>
-            You can find ways to reach me and my resumé below. Thanks for
-            visiting!! <span class="whitespace-nowrap">(〜￣▽￣)〜</span>
-          </p>
-        </div>
-
         <button
           id="pictures"
           class="relative h-fit w-full overflow-hidden rounded-xl transition-transform data-initial:active:scale-97"
@@ -104,6 +84,37 @@ const description = "More about who I am";
             ))
           }
         </button>
+
+        <div class="space-y-pad-2">
+          <p>
+            Hi! I'm a fourth year student in the Digital Media Design major at
+            UPenn. I'm interested in computer graphics, game engine development,
+            and real-time rendering.
+          </p>
+          <p>
+            At school I help run <Link
+              href="https://pennupgrade.com"
+              target="_blank">UPGRADE</Link
+            >, our game dev club, and am part of the <Link
+              href="https://cg.cis.upenn.edu"
+              target="_blank">CG@Penn</Link
+            > student board. I've previously interned at TikTok and Snap to work on
+            their rendering engines.
+          </p>
+          <p>
+            I love making and designing things. For fun I like to run, create
+            playlists, read manga, and ride SEPTA.
+          </p>
+          <p>
+            I strongly believe in shared spaces, self-expression, and visual
+            identities. This is why I resonate so strongly with the web. I think
+            everyone should make their own website!
+          </p>
+          <p>
+            You can find ways to reach me and my resumé below. Thanks for
+            visiting!! <span class="whitespace-nowrap">(〜￣▽￣)〜</span>
+          </p>
+        </div>
       </div>
     </article>
   </main>
