@@ -1,7 +1,7 @@
 @layer base {
   :root {
     /* Results in roughly 80 characters per line. */
-    --content-w: 575px;
+    --content-w: 550px;
   }
 }
 
