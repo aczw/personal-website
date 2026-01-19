@@ -1,132 +1,67 @@
 ---
+import { Image } from "astro:assets";
 import { actions } from "astro:actions";
 
 import { MusicIcon } from "@lucide/astro";
+
+import Link from "@/components/link.astro";
+import { ICON_SIZE } from "@/scripts/constants";
 
 const { data: track, error } = await Astro.callAction(
   actions.getMostRecentTrack,
   {},
 );
-const available = !error;
 
-let title = null;
-if (available) {
-  title = `${track.live ? "Currently listening to" : "Last listened to"} ${track.songName} by ${track.artist}`;
-}
+const available = !error;
 ---
 
-<a
-  id="track"
-  href={available ? track.songUrl : "https://www.last.fm/user/ashzw"}
-  target="_blank"
-  title={title}
-  class="relative flex rounded-full bg-sweater-9 px-3 py-1.5 text-link-primary transition-colors [--fade-speed:100ms] hover:bg-sweater-8 hover:text-link-primary-hover light:bg-sweater-2 light:hover:bg-sweater-3"
-  data-quiet="true"
-  data-live={available && track.live ? "true" : "false"}
+<div
+  class="space-y-pad opacity-100 transition-opacity duration-400 starting:opacity-0"
 >
-  <div
-    class:list={[
-      "relative z-10 flex w-fit gap-2",
-      { "animate-pulse": available && track.live },
-    ]}
-  >
-    <MusicIcon size={15} class="inline shrink-0" />
+  <h3 class="font-bold text-heading">
+    {
+      available ?
+        track.live ?
+          "Currently listening to"
+        : "Last listened to"
+      : "Last.fm"
+    }
+  </h3>
 
-    <span
-      class="380:[display:-webkit-box] line-clamp-1 hidden w-full animate-fade-in leading-[1.1] break-all [--order:0]"
-    >
-      {available ? `${track.artist} — ${track.songName}` : "Scrobbles"}
-    </span>
-    <span class="380:hidden animate-fade-in leading-[1.1] [--order:0]">
-      {available && track.live ? "Scrobbling" : "Scrobbles"}
-    </span>
+  <div class="flex gap-x-3.5">
+    {
+      available && track.coverUrl ?
+        <Image
+          src={track.coverUrl}
+          alt={`Cover image for ${track.songName} by ${track.artist}`}
+          width={72}
+          height={72}
+          loading="eager"
+          class="size-[3lh] shrink-0 rounded-md"
+        />
+      : <div class="flex size-[3lh] shrink-0 items-center justify-center rounded-md bg-sweater-9">
+          <MusicIcon size={ICON_SIZE} class="stroke-icon" />
+        </div>
+    }
+
+    <p>
+      {
+        available ?
+          <>
+            <Link href={track.songUrl} target="_blank">
+              <cite class="not-italic">{track.songName}</cite>
+            </Link>{" "}
+            <span class="block">by {track.artist}</span>{" "}
+            <span class="block">from {track.album}</span>
+          </>
+        : <>
+            I've been tracking my music listening history since 2021. It's fun
+            to see the trends!{" "}
+            <Link href="https://www.last.fm/user/ashzw" target="_blank">
+              View my scrobbles.
+            </Link>
+          </>
+      }
+    </p>
   </div>
-</a>
-
-<script>
-  const root = document.querySelector<HTMLAnchorElement>("#track")!;
-  const isLive = root.dataset["live"] === "true";
-
-  function createIcon(iconHtml: string) {
-    const template = document.createElement("template");
-    template.innerHTML = iconHtml;
-    return template.content.firstChild! as SVGSVGElement;
-  }
-
-  if (isLive) {
-    const iconList = [
-      `<svg
-        xmlns="http://www.w3.org/2000/svg"
-        stroke-width="2"
-        width="15"
-        height="15"
-        stroke="#484390"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        fill="none"
-        viewBox="0 0 24 24"
-        style="margin-top:calc(var(--spacing) * 1.5);margin-left:calc(var(--spacing) * 3);top:0px;left:0px;pointer-events:none;scale:100%;opacity:1;z-index:0"
-        class="absolute inline shrink-0"
-        data-left="0"
-        data-left-rate="1"
-        data-top="0"
-      >
-        <path d="M9 18V5l12-2v13"></path>
-        <circle cx="6" cy="18" r="3"></circle>
-        <circle cx="18" cy="16" r="3"></circle>
-      </svg>`,
-
-      `<svg
-        xmlns="http://www.w3.org/2000/svg"
-        stroke-width="2"
-        width="15"
-        height="15"
-        stroke="#484390"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        fill="none"
-        viewBox="0 0 24 24"
-        style="margin-top:calc(var(--spacing) * 1.5);margin-left:calc(var(--spacing) * 3);top:0px;left:0px;pointer-events:none;scale:100%;opacity:1;z-index:0"
-        class="absolute inline shrink-0"
-        data-left="0"
-        data-left-rate="1"
-        data-top="0"
-      >
-        <circle cx="8" cy="18" r="4"></circle>
-        <path d="M12 18V2l7 4"></path>
-      </svg>`,
-    ];
-
-    const live: SVGSVGElement[] = [];
-
-    setInterval(() => {
-      const index = Math.round(Math.random() * (iconList.length - 1));
-      const icon = createIcon(iconList[index]!);
-
-      icon.dataset["leftRate"] = (Math.random() * 1.4 + 0.3).toString();
-      live.push(icon);
-      root.append(icon);
-    }, 400);
-
-    setTimeout(() => {
-      setInterval(() => live.shift()!.remove(), 400);
-    }, 1500);
-
-    // Runs at ~60 FPS
-    setInterval(() => {
-      live.forEach((icon) => {
-        const leftRate = Number(icon.dataset["leftRate"]);
-        const newLeft = Number(icon.dataset["left"]) + leftRate;
-        const newTop = Number(icon.dataset["top"]) + 1;
-
-        icon.style.left = `${newLeft / 2}px`;
-        icon.style.top = `-${newTop / 2}px`;
-        icon.style.scale = `${1 + newLeft / 110 / leftRate}`;
-        icon.style.opacity = `${1 - newLeft / 90 / leftRate}`;
-
-        icon.dataset["left"] = newLeft.toString();
-        icon.dataset["top"] = newTop.toString();
-      });
-    }, 16.6);
-  }
-</script>
+</div>

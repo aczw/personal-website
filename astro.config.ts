@@ -32,6 +32,10 @@ const config = defineConfig({
   image: {
     responsiveStyles: true,
     layout: "constrained",
+    remotePatterns: [
+      // Where Last.fm stores its cover images
+      { protocol: "https", hostname: "lastfm.freetls.fastly.net" },
+    ],
   },
   integrations: [
     sitemap(),
@@ -92,7 +96,6 @@ const config = defineConfig({
           const readingTime = getReadingTime(textOnPage);
 
           // @ts-expect-error: Astro object is guaranteed to exist
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
           data.astro.frontmatter.stats = readingTime;
         },
     ],

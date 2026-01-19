@@ -47,12 +47,21 @@ export const server = {
         });
       }
 
-      const { name, artist, url } = firstTrack;
+      const { artist, image, album, name, url } = firstTrack;
+
+      let coverUrl = null;
+      const mediumIndex = image.findIndex((cover) => cover.size === "large");
+      if (mediumIndex !== -1) {
+        coverUrl = image[mediumIndex]!["#text"];
+      }
 
       return {
-        songName: name,
         artist: artist["#text"],
+        coverUrl,
+        album: album["#text"],
+        songName: name,
         songUrl: url,
+
         live:
           firstTrack["@attr"] ?
             firstTrack["@attr"].nowplaying === "true"

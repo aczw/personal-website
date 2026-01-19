@@ -8,6 +8,7 @@ import imageAsa from "@/assets/about/asa.jpg";
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
 import Link from "@/components/link.astro";
+import LastFm from "@/components/last-fm.astro";
 
 type AboutPicture = {
   id: string;
@@ -41,81 +42,96 @@ const description = "More about who I am";
 >
   <Header links={[]} />
 
-  <main>
-    <article class="space-y-pad-4">
-      <h1
-        class="mx-auto w-full px-pad-2 pt-pad-2 text-5xl font-bold text-heading desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w) lg:pt-pad-3"
-      >
-        About
-      </h1>
+  <main
+    class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+  >
+    <h1 class="pt-pad-2 text-5xl font-bold text-heading lg:pt-pad-3">About</h1>
 
-      <div
-        class="mx-auto grid w-full grid-cols-1 gap-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w)"
+    <article
+      aria-label="Background"
+      class="grid grid-cols-1 gap-pad-4 md:grid-cols-2"
+    >
+      <button
+        id="pictures"
+        aria-label="Strange button"
+        class="relative order-2 h-fit w-full overflow-hidden rounded-xl transition-transform data-initial:cursor-help data-initial:active:scale-97 md:order-1"
+        data-initial=""
       >
-        <button
-          id="pictures"
-          class="relative order-2 h-fit w-full overflow-hidden rounded-xl transition-transform data-initial:cursor-help data-initial:active:scale-97 md:order-1"
-          data-initial=""
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute inset-0 z-1 origin-bottom bg-sweater-8/50 transition-opacity duration-500 select-none not-dark:bg-sweater-3/50"
+          style={{ transform: "scaleY(0.0)" }}
         >
-          <div
-            aria-hidden="true"
-            class="pointer-events-none absolute inset-0 z-1 origin-bottom bg-sweater-8/50 transition-opacity duration-500 select-none not-dark:bg-sweater-3/50"
-            style={{ transform: "scaleY(0.0)" }}
-          >
-          </div>
-
-          {
-            ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
-              <Image
-                id={id}
-                src={imageMetadata}
-                alt={alt}
-                loading={index === 0 ? "eager" : "lazy"}
-                class:list={[
-                  "rounded-xl",
-                  {
-                    "absolute inset-0 -z-1 scale-40 opacity-0 blur-2xl":
-                      index !== 0,
-                  },
-                ]}
-                data-umami-event="clicked-about-picture"
-                data-umami-event-id={id}
-              />
-            ))
-          }
-        </button>
-
-        <div class="order-1 max-w-(--content-w) space-y-pad-2 md:order-2">
-          <p>
-            Hi! I'm a fourth year student in the <Link
-              href="https://cg.cis.upenn.edu"
-              target="_blank">Digital Media Design</Link
-            > program at UPenn. I'm part of (and used to co-lead) <Link
-              href="https://pennupgrade.com"
-              target="_blank">UPGRADE</Link
-            >, our game dev club, and am part of the CG@Penn student board.
-          </p>
-          <p>
-            Previously I interned at TikTok and Snap to work on their rendering
-            engines. <Link href="/resume" target="_blank"
-              >Here's my resume.</Link
-            >
-          </p>
-          <p>
-            I'm generally interested in computer graphics, specifically
-            real-time rendering, and game engine development. I grew up drawing
-            and designing things, and continue to love doing so.
-          </p>
-          <p>
-            I strongly believe in shared spaces, self-expression, and visual
-            identities. This is why I resonate so strongly with the web.
-            Everyone can and should make a website! It's your digital source of
-            truth.
-          </p>
-          <p><span class="whitespace-nowrap">(〜￣▽￣)〜</span></p>
         </div>
+
+        {
+          ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
+            <Image
+              id={id}
+              src={imageMetadata}
+              alt={alt}
+              loading={index === 0 ? "eager" : "lazy"}
+              class:list={[
+                "rounded-xl",
+                {
+                  "absolute inset-0 -z-1 scale-40 opacity-0 blur-2xl":
+                    index !== 0,
+                },
+              ]}
+              data-umami-event="clicked-about-picture"
+              data-umami-event-id={id}
+            />
+          ))
+        }
+      </button>
+
+      <div class="order-1 max-w-(--content-w) space-y-pad-2 md:order-2">
+        <p>
+          Hi! I'm a fourth year student in the <Link
+            href="https://cg.cis.upenn.edu"
+            target="_blank">Digital Media Design</Link
+          > program at UPenn. I'm part of (and used to co-lead) <Link
+            href="https://pennupgrade.com"
+            target="_blank">UPGRADE</Link
+          >, our game dev club, and am part of the CG@Penn student board.
+        </p>
+        <p>
+          Previously I interned at TikTok and Snap to work on their rendering
+          engines. <Link href="/resume" target="_blank">Here's my resume.</Link>
+        </p>
+        <p>
+          I'm generally interested in computer graphics, specifically real-time
+          rendering, and game engine development. I grew up drawing and
+          designing things, and continue to love doing so.
+        </p>
+        <p>
+          I strongly believe in shared spaces, self-expression, and visual
+          identities. This is why I resonate so strongly with the web. Everyone
+          can and should make a website! It's your digital source of truth.
+        </p>
+        <p><span class="whitespace-nowrap">(〜￣▽￣)〜</span></p>
       </div>
     </article>
+
+    <section class="grid grid-cols-1 gap-x-pad-4 md:grid-cols-2">
+      <h2 class="col-span-full mb-pad text-xl font-bold text-heading">Music</h2>
+
+      <LastFm server:defer>
+        <Fragment slot="fallback">
+          <div aria-hidden="true" class="space-y-pad">
+            <div class="h-lh animate-pulse rounded-md bg-sweater-9"></div>
+            <div
+              class="flex gap-x-3.5 *:animate-pulse *:rounded-md *:bg-sweater-9"
+            >
+              <div class="size-[3lh] shrink-0 animate-pulse"></div>
+              <div class="h-[3lh] grow"></div>
+            </div>
+          </div>
+
+          <p>Test</p>
+        </Fragment>
+      </LastFm>
+    </section>
   </main>
 </BaseLayout>
 
