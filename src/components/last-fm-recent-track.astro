@@ -1,0 +1,74 @@
+---
+import { Image } from "astro:assets";
+import { actions } from "astro:actions";
+
+import { MusicIcon } from "@lucide/astro";
+
+import Link from "@/components/link.astro";
+import { ICON_SIZE } from "@/scripts/constants";
+
+const { data: recentTrack, error: getRecentTrackError } =
+  await Astro.callAction(actions.lastFm.getRecentTrack, {});
+
+const available = !getRecentTrackError;
+---
+
+<div
+  class="space-y-pad opacity-100 transition-opacity duration-500 starting:opacity-0"
+>
+  <h3 class="font-bold text-heading">
+    {
+      available ?
+        recentTrack.live ?
+          "Currently listening to"
+        : "Last listened to"
+      : "Last.fm"
+    }
+  </h3>
+
+  <div class="flex gap-x-3.5">
+    {
+      available && recentTrack.coverUrl ?
+        <Image
+          src={recentTrack.coverUrl}
+          alt={`Cover image for ${recentTrack.songName} by ${recentTrack.artist}`}
+          width={72}
+          height={72}
+          loading="eager"
+          class="size-[3lh] shrink-0 rounded-md"
+        />
+      : <div class="flex size-[3lh] shrink-0 items-center justify-center rounded-md bg-sweater-9">
+          <MusicIcon size={ICON_SIZE} class="stroke-icon" />
+        </div>
+    }
+
+    <p>
+      {
+        available ?
+          <>
+            <Link
+              href={recentTrack.songUrl}
+              target="_blank"
+              title={recentTrack.songName}
+              class="line-clamp-1"
+            >
+              {recentTrack.songName}
+            </Link>
+            <span title={recentTrack.artist} class="line-clamp-1">
+              by {recentTrack.artist}
+            </span>
+            <span title={recentTrack.album} class="line-clamp-1">
+              from {recentTrack.album}
+            </span>
+          </>
+        : <>
+            I've been tracking my music listening history since 2021. It's fun
+            to see the trends!{" "}
+            <Link href="https://www.last.fm/user/ashzw" target="_blank">
+              View my scrobbles.
+            </Link>
+          </>
+      }
+    </p>
+  </div>
+</div>

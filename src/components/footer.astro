@@ -8,7 +8,7 @@ import {
   MailIcon,
 } from "@lucide/astro";
 
-import LastFm from "@/components/last-fm.astro";
+import LastFmRecentTrack from "@/components/last-fm-recent-track.astro";
 import { ICON_SIZE } from "@/scripts/constants";
 
 const socials = [
@@ -82,7 +82,7 @@ const socials = [
     <div
       class="grid-line-after 480:border-r-(length:--border-w) px-pad pt-pad pb-3.5 maple leading-none"
     >
-      <LastFm server:defer>
+      <LastFmRecentTrack server:defer>
         <a
           href="https://www.last.fm/user/ashzw"
           target="_blank"
@@ -92,7 +92,7 @@ const socials = [
         >
           <MusicIcon size={15} class="inline" /> Scrobbles
         </a>
-      </LastFm>
+      </LastFmRecentTrack>
     </div>
   </div>
 </footer>

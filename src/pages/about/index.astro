@@ -8,7 +8,8 @@ import imageAsa from "@/assets/about/asa.jpg";
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
 import Link from "@/components/link.astro";
-import LastFm from "@/components/last-fm.astro";
+import LastFmRecentTrack from "@/components/last-fm-recent-track.astro";
+import LastFmTopStats from "@/components/last-fm-top-stats.astro";
 
 type AboutPicture = {
   id: string;
@@ -116,27 +117,27 @@ const description = "More about who I am";
     <section class="grid grid-cols-1 gap-x-pad-4 md:grid-cols-2">
       <h2 class="col-span-full mb-pad text-xl font-bold text-heading">Music</h2>
 
-      <LastFm server:defer>
-        <Fragment slot="fallback">
-          <div aria-hidden="true" class="space-y-pad">
-            <div class="h-lh animate-pulse rounded-md bg-sweater-9"></div>
-            <div
-              class="flex gap-x-3.5 *:animate-pulse *:rounded-md *:bg-sweater-9"
-            >
-              <div class="size-[3lh] shrink-0 animate-pulse"></div>
-              <div class="h-[3lh] grow"></div>
-            </div>
+      <LastFmRecentTrack server:defer>
+        <div aria-hidden="true" class="space-y-pad" slot="fallback">
+          <div class="h-lh animate-pulse rounded-md bg-sweater-9"></div>
+          <div
+            class="flex gap-x-3.5 *:animate-pulse *:rounded-md *:bg-sweater-9"
+          >
+            <div class="size-[3lh] shrink-0 animate-pulse"></div>
+            <div class="h-[3lh] grow"></div>
           </div>
+        </div>
+      </LastFmRecentTrack>
 
-          <div aria-hidden="true" class="space-y-pad">
-            <div class="h-lh animate-pulse rounded-md bg-sweater-9"></div>
-            <div
-              class="flex h-[3lh] animate-pulse gap-x-3.5 rounded-md bg-sweater-9"
-            >
-            </div>
+      <LastFmTopStats server:defer>
+        <div aria-hidden="true" class="space-y-pad" slot="fallback">
+          <div class="h-lh animate-pulse rounded-md bg-sweater-9"></div>
+          <div
+            class="flex h-[3lh] animate-pulse gap-x-3.5 rounded-md bg-sweater-9"
+          >
           </div>
-        </Fragment>
-      </LastFm>
+        </div>
+      </LastFmTopStats>
     </section>
   </main>
 </BaseLayout>
