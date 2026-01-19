@@ -211,7 +211,7 @@
       --header-border-radius: var(--radius-xl);
     }
 
-    @apply ml-0;
+    @apply ml-0 max-w-full;
 
     .title {
       border-radius: 0px;
