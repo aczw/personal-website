@@ -10,7 +10,7 @@ interface Props {
 const { size } = Astro.props;
 
 const { data: track, error } = await Astro.callAction(
-  actions.getMostRecentTrack,
+  actions.lastFm.getRecentTrack,
   {},
 );
 

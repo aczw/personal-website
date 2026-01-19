@@ -10,7 +10,7 @@ import Link from "@/components/link.astro";
 import { ICON_SIZE } from "@/scripts/constants";
 
 const { data: track, error } = await Astro.callAction(
-  actions.getMostRecentTrack,
+  actions.lastFm.getRecentTrack,
   {},
 );
 
