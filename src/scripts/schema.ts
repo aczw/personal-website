@@ -3,7 +3,22 @@ import { z } from "astro:schema";
 
 import { VALID_MONTHS } from "@/scripts/constants";
 
-const LastFmSchema = z.object({
+const LastFmAttrSchema = z.object({
+  user: z.string(),
+  totalPages: z.string(),
+  page: z.string(),
+  perPage: z.string(),
+  total: z.string(),
+});
+
+const LastFmImageSchema = z.array(
+  z.object({
+    size: z.enum(["small", "medium", "large", "extralarge"]),
+    "#text": z.string(),
+  }),
+);
+
+const LastFmRecentTracksSchema = z.object({
   recenttracks: z.object({
     track: z.array(
       z.object({
@@ -12,12 +27,7 @@ const LastFmSchema = z.object({
           "#text": z.string(),
         }),
         streamable: z.string(),
-        image: z.array(
-          z.object({
-            size: z.enum(["small", "medium", "large", "extralarge"]),
-            "#text": z.string(),
-          }),
-        ),
+        image: LastFmImageSchema,
         mbid: z.string(),
         album: z.object({
           mbid: z.string(),
@@ -38,13 +48,35 @@ const LastFmSchema = z.object({
           .optional(),
       }),
     ),
-    "@attr": z.object({
-      user: z.string(),
-      totalPages: z.string(),
-      page: z.string(),
-      perPage: z.string(),
-      total: z.string(),
-    }),
+    "@attr": LastFmAttrSchema,
+  }),
+});
+
+const LastFmTopTracksSchema = z.object({
+  toptracks: z.object({
+    track: z.array(
+      z.object({
+        streamable: z.object({
+          fulltrack: z.string(),
+          "#text": z.string(),
+        }),
+        mbid: z.string(),
+        name: z.string(),
+        image: LastFmImageSchema,
+        artist: z.object({
+          url: z.string(),
+          name: z.string(),
+          mbid: z.string(),
+        }),
+        url: z.string(),
+        duration: z.string(),
+        "@attr": z.object({
+          rank: z.string(),
+        }),
+        playcount: z.string(),
+      }),
+    ),
+    "@attr": LastFmAttrSchema,
   }),
 });
 
@@ -120,7 +152,8 @@ const TechSchema = z.string().array();
 const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 
 export {
-  LastFmSchema,
+  LastFmRecentTracksSchema,
+  LastFmTopTracksSchema,
   BlurbSchema,
   ImageSchema,
   LinkSchema,

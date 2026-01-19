@@ -9,12 +9,15 @@ import image400mg from "@/assets/400-mg.webp";
 import Link from "@/components/link.astro";
 import { ICON_SIZE } from "@/scripts/constants";
 
-const { data: track, error } = await Astro.callAction(
-  actions.lastFm.getRecentTrack,
+const { data: recentTrack, error: getRecentTrackError } =
+  await Astro.callAction(actions.lastFm.getRecentTrack, {});
+
+const { data: topStats, error: getTopStatsError } = await Astro.callAction(
+  actions.lastFm.getTopStats,
   {},
 );
 
-const available = !error;
+const available = !getRecentTrackError && !getTopStatsError;
 ---
 
 <div
@@ -23,7 +26,7 @@ const available = !error;
   <h3 class="font-bold text-heading">
     {
       available ?
-        track.live ?
+        recentTrack.live ?
           "Currently listening to"
         : "Last listened to"
       : "Last.fm"
@@ -32,10 +35,10 @@ const available = !error;
 
   <div class="flex gap-x-3.5">
     {
-      available && track.coverUrl ?
+      available && recentTrack.coverUrl ?
         <Image
-          src={track.coverUrl}
-          alt={`Cover image for ${track.songName} by ${track.artist}`}
+          src={recentTrack.coverUrl}
+          alt={`Cover image for ${recentTrack.songName} by ${recentTrack.artist}`}
           width={72}
           height={72}
           loading="eager"
@@ -51,18 +54,18 @@ const available = !error;
         available ?
           <>
             <Link
-              href={track.songUrl}
+              href={recentTrack.songUrl}
               target="_blank"
-              title={track.songName}
+              title={recentTrack.songName}
               class="line-clamp-1"
             >
-              {track.songName}
+              {recentTrack.songName}
             </Link>
-            <span title={track.artist} class="line-clamp-1">
-              by {track.artist}
+            <span title={recentTrack.artist} class="line-clamp-1">
+              by {recentTrack.artist}
             </span>
-            <span title={track.album} class="line-clamp-1">
-              from {track.album}
+            <span title={recentTrack.album} class="line-clamp-1">
+              from {recentTrack.album}
             </span>
           </>
         : <>
@@ -98,7 +101,13 @@ const available = !error;
     {
       available ?
         <ul class="*:line-clamp-1">
-          <li>Top song: — 72 plays.</li>
+          <li>
+            Top song:{" "}
+            <Link href={topStats.track.url} target="_blank">
+              {topStats.track.songName}
+            </Link>{" "}
+            — {topStats.track.count} plays.
+          </li>
           <li>Top album: — 72 plays.</li>
           <li>Top artist: — 72 plays.</li>
         </ul>

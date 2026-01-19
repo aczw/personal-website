@@ -6,6 +6,7 @@ import {
 } from "@/scripts/dither/types";
 
 const CDN_URL = "https://cdn.charleszw.com";
+const LASTFM_API_PREFIX = "https://ws.audioscrobbler.com/2.0/";
 
 const VALID_MONTHS = [
   "January",
@@ -122,6 +123,7 @@ const EYE_SIZE = 7;
 
 export {
   CDN_URL,
+  LASTFM_API_PREFIX,
   VALID_MONTHS,
   HOMEPAGE_PROJECTS,
   DISABLED_PROJECTS,
