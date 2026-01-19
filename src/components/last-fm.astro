@@ -48,11 +48,20 @@ const available = !error;
       {
         available ?
           <>
-            <Link href={track.songUrl} target="_blank">
-              <cite class="not-italic">{track.songName}</cite>
-            </Link>{" "}
-            <span class="block">by {track.artist}</span>{" "}
-            <span class="block">from {track.album}</span>
+            <Link
+              href={track.songUrl}
+              target="_blank"
+              title={track.songName}
+              class="line-clamp-1"
+            >
+              {track.songName}
+            </Link>
+            <span title={track.artist} class="line-clamp-1">
+              by {track.artist}
+            </span>
+            <span title={track.album} class="line-clamp-1">
+              from {track.album}
+            </span>
           </>
         : <>
             I've been tracking my music listening history since 2021. It's fun
