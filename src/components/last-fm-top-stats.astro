@@ -34,7 +34,7 @@ const available = !getTopStatsError;
     {
       available ?
         <ul class="*:line-clamp-1">
-          <li>
+          <li title={topStats.track.name}>
             Top song:{" "}
             <Link href={topStats.track.url} target="_blank">
               {topStats.track.name}
@@ -42,7 +42,7 @@ const available = !getTopStatsError;
             — {topStats.track.count} plays.
           </li>
 
-          <li>
+          <li title={topStats.album.name}>
             Top album:{" "}
             <Link href={topStats.album.url} target="_blank">
               {topStats.album.name}
@@ -50,7 +50,7 @@ const available = !getTopStatsError;
             — {topStats.album.count} plays.
           </li>
 
-          <li>
+          <li title={topStats.artist.name}>
             Top artist:{" "}
             <Link href={topStats.artist.url} target="_blank">
               {topStats.artist.name}
