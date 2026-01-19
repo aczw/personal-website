@@ -18,6 +18,12 @@ const LastFmImageSchema = z.array(
   }),
 );
 
+const LastFmArtistSchema = z.object({
+  url: z.string(),
+  name: z.string(),
+  mbid: z.string(),
+});
+
 const LastFmRecentTracksSchema = z.object({
   recenttracks: z.object({
     track: z.array(
@@ -63,17 +69,28 @@ const LastFmTopTracksSchema = z.object({
         mbid: z.string(),
         name: z.string(),
         image: LastFmImageSchema,
-        artist: z.object({
-          url: z.string(),
-          name: z.string(),
-          mbid: z.string(),
-        }),
+        artist: LastFmArtistSchema,
         url: z.string(),
         duration: z.string(),
-        "@attr": z.object({
-          rank: z.string(),
-        }),
+        "@attr": z.object({ rank: z.string() }),
         playcount: z.string(),
+      }),
+    ),
+    "@attr": LastFmAttrSchema,
+  }),
+});
+
+const LastFmTopAlbumsSchema = z.object({
+  topalbums: z.object({
+    album: z.array(
+      z.object({
+        artist: LastFmArtistSchema,
+        image: LastFmImageSchema,
+        mbid: z.string(),
+        url: z.string(),
+        playcount: z.string(),
+        "@attr": z.object({ rank: z.string() }),
+        name: z.string(),
       }),
     ),
     "@attr": LastFmAttrSchema,
@@ -154,6 +171,7 @@ const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 export {
   LastFmRecentTracksSchema,
   LastFmTopTracksSchema,
+  LastFmTopAlbumsSchema,
   BlurbSchema,
   ImageSchema,
   LinkSchema,

@@ -1,11 +1,41 @@
 import { ActionError, defineAction } from "astro:actions";
 import { LASTFM_API_KEY } from "astro:env/server";
+import type { SafeParseReturnType } from "astro/zod";
 
 import {
   LastFmRecentTracksSchema,
+  LastFmTopAlbumsSchema,
   LastFmTopTracksSchema,
 } from "@/scripts/schema";
 import { LASTFM_API_PREFIX } from "@/scripts/constants";
+
+function checkResponse(response: Response) {
+  if (!response.ok) {
+    let message = "Request to Last.fm servers failed!";
+
+    if (response.statusText.length !== 0) {
+      message += ` Server message: ${response.statusText}`;
+    }
+
+    throw new ActionError({
+      code: "INTERNAL_SERVER_ERROR",
+      message,
+    });
+  }
+}
+
+function checkSafeParse<In, Out>(result: SafeParseReturnType<In, Out>) {
+  if (!result.success) {
+    console.error(result.error.format());
+
+    throw new ActionError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Failed to parse Last.fm response! Check logs.",
+    });
+  }
+
+  return true;
+}
 
 const lastFm = {
   getRecentTrack: defineAction({
@@ -15,33 +45,13 @@ const lastFm = {
         `${LASTFM_API_PREFIX}?method=user.getrecenttracks&user=ashzw&api_key=${LASTFM_API_KEY}&limit=1&format=json`,
       );
 
-      if (!response.ok) {
-        let message = "Request to Last.fm servers failed!";
-
-        if (response.statusText.length !== 0) {
-          message += ` Server message: ${response.statusText}`;
-        }
-
-        throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
-          message,
-        });
-      }
-
+      checkResponse(response);
       const result = LastFmRecentTracksSchema.safeParse(await response.json());
 
-      if (!result.success) {
-        console.error(result.error.format());
-
-        throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to parse Last.fm response! Check logs.",
-        });
-      }
-
+      checkSafeParse(result);
       const {
         recenttracks: { track },
-      } = result.data;
+      } = result.data!;
       const firstTrack = track[0];
 
       if (!firstTrack) {
@@ -77,37 +87,19 @@ const lastFm = {
   getTopStats: defineAction({
     input: undefined,
     handler: async () => {
-      const response = await fetch(
+      const topTrackResponse = await fetch(
         `${LASTFM_API_PREFIX}?method=user.gettoptracks&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
       );
 
-      if (!response.ok) {
-        let message = "Request to Last.fm servers failed!";
+      checkResponse(topTrackResponse);
+      const topTrackResult = LastFmTopTracksSchema.safeParse(
+        await topTrackResponse.json(),
+      );
 
-        if (response.statusText.length !== 0) {
-          message += ` Server message: ${response.statusText}`;
-        }
-
-        throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
-          message,
-        });
-      }
-
-      const result = LastFmTopTracksSchema.safeParse(await response.json());
-
-      if (!result.success) {
-        console.error(result.error.format());
-
-        throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
-          message: "Failed to parse Last.fm response! Check logs.",
-        });
-      }
-
+      checkSafeParse(topTrackResult);
       const {
         toptracks: { track },
-      } = result.data;
+      } = topTrackResult.data!;
       const firstTrack = track[0];
 
       if (!firstTrack) {
@@ -117,13 +109,39 @@ const lastFm = {
         });
       }
 
-      const { name, url, playcount } = firstTrack;
+      const topAlbumResponse = await fetch(
+        `${LASTFM_API_PREFIX}?method=user.gettopalbums&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
+      );
+
+      checkResponse(topAlbumResponse);
+      const topAlbumResult = LastFmTopAlbumsSchema.safeParse(
+        await topAlbumResponse.json(),
+      );
+
+      checkSafeParse(topAlbumResult);
+      const {
+        topalbums: { album },
+      } = topAlbumResult.data!;
+      const firstAlbum = album[0];
+
+      if (!firstAlbum) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Did not find any top albums.",
+        });
+      }
 
       return {
         track: {
-          songName: name,
-          url,
-          count: Number(playcount),
+          name: firstTrack.name,
+          url: firstTrack.url,
+          count: Number(firstTrack.playcount),
+        },
+
+        album: {
+          name: firstAlbum.name,
+          url: firstAlbum.url,
+          count: Number(firstAlbum.playcount),
         },
       };
     },

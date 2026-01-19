@@ -104,11 +104,19 @@ const available = !getRecentTrackError && !getTopStatsError;
           <li>
             Top song:{" "}
             <Link href={topStats.track.url} target="_blank">
-              {topStats.track.songName}
+              {topStats.track.name}
             </Link>{" "}
             — {topStats.track.count} plays.
           </li>
-          <li>Top album: — 72 plays.</li>
+
+          <li>
+            Top album:{" "}
+            <Link href={topStats.album.url} target="_blank">
+              {topStats.album.name}
+            </Link>{" "}
+            — {topStats.album.count} plays.
+          </li>
+
           <li>Top artist: — 72 plays.</li>
         </ul>
       : <p>
