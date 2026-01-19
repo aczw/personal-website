@@ -26,7 +26,11 @@ const available = !getTopStatsError;
         <Image
           src={image400mg}
           alt="Alley in a Philadelphia neighborhood. Cover for my Spotify playlist."
-          class="size-[3lh] shrink-0 rounded-md md:hidden lg:block"
+          class="shrink-0 rounded-md md:hidden lg:block"
+          style={{
+            width: "3lh",
+            height: "3lh",
+          }}
         />
       )
     }
@@ -35,7 +39,7 @@ const available = !getTopStatsError;
       available ?
         <ul class="*:line-clamp-1">
           <li title={topStats.track.name}>
-            Top song:{" "}
+            <span class="sm:hidden md:inline">Top song: </span>
             <Link href={topStats.track.url} target="_blank">
               {topStats.track.name}
             </Link>{" "}
@@ -43,7 +47,7 @@ const available = !getTopStatsError;
           </li>
 
           <li title={topStats.album.name}>
-            Top album:{" "}
+            <span class="sm:hidden md:inline">Top album: </span>
             <Link href={topStats.album.url} target="_blank">
               {topStats.album.name}
             </Link>{" "}
@@ -51,7 +55,7 @@ const available = !getTopStatsError;
           </li>
 
           <li title={topStats.artist.name}>
-            Top artist:{" "}
+            <span class="sm:hidden md:inline">Top artist: </span>
             <Link href={topStats.artist.url} target="_blank">
               {topStats.artist.name}
             </Link>{" "}
