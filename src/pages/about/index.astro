@@ -54,7 +54,7 @@ const description = "More about who I am";
       >
         <button
           id="pictures"
-          class="relative order-2 h-fit w-full overflow-hidden rounded-xl transition-transform data-initial:active:scale-97 md:order-1"
+          class="relative order-2 h-fit w-full overflow-hidden rounded-xl transition-transform data-initial:cursor-help data-initial:active:scale-97 md:order-1"
           data-initial=""
         >
           <div
@@ -87,31 +87,30 @@ const description = "More about who I am";
 
         <div class="order-1 max-w-(--content-w) space-y-pad-2 md:order-2">
           <p>
-            Hi! I'm a fourth year student in the Digital Media Design major at
-            UPenn. I'm generally interested in computer graphics, specifically
-            real-time rendering, and game engine development.
-          </p>
-          <p>
-            At school I help run <Link
+            Hi! I'm a fourth year student in the <Link
+              href="https://cg.cis.upenn.edu"
+              target="_blank">Digital Media Design</Link
+            > program at UPenn. I'm part of (and used to co-lead) <Link
               href="https://pennupgrade.com"
               target="_blank">UPGRADE</Link
-            >, our game dev club, and am part of the <Link
-              href="https://cg.cis.upenn.edu"
-              target="_blank">CG@Penn</Link
-            > student board. Previously I interned at TikTok and Snap to work on their
-            rendering engines. <Link href="/resume" target="_blank"
-              >View my resume.</Link
+            >, our game dev club, and am part of the CG@Penn student board.
+          </p>
+          <p>
+            Previously I interned at TikTok and Snap to work on their rendering
+            engines. <Link href="/resume" target="_blank"
+              >Here's my resume.</Link
             >
           </p>
           <p>
-            I love making and designing things. For fun I like to run, create
-            playlists, read manga, and ride SEPTA.
+            I'm generally interested in computer graphics, specifically
+            real-time rendering, and game engine development. I grew up drawing
+            and designing things, and continue to love doing so.
           </p>
           <p>
             I strongly believe in shared spaces, self-expression, and visual
             identities. This is why I resonate so strongly with the web.
-            Everyone can and should make a website: it's your digital source of
-            truth!
+            Everyone can and should make a website! It's your digital source of
+            truth.
           </p>
           <p><span class="whitespace-nowrap">(〜￣▽￣)〜</span></p>
         </div>
@@ -156,17 +155,24 @@ const description = "More about who I am";
           delete picturesBtn.dataset["initial"];
           slider.style.opacity = "0";
 
-          // Spider
-          picturesBtn.children[1]!.animate(
-            [{ scale: 0.4, opacity: 0.0, filter: "blur(var(--blur-2xl))" }],
-            KEYFRAME_OPTS,
-          ).addEventListener("finish", handleAnimationFinish);
+          const spiderElt = picturesBtn.children[1] as HTMLImageElement;
+          const asaElt = picturesBtn.children[2] as HTMLImageElement;
 
-          // Asa
-          picturesBtn.children[2]!.animate(
-            [{ scale: 1.0, opacity: 1.0, filter: "none" }],
-            KEYFRAME_OPTS,
-          ).addEventListener("finish", handleAnimationFinish);
+          spiderElt.style.zIndex = "auto";
+          spiderElt
+            .animate(
+              [{ scale: 0.4, opacity: 0.0, filter: "blur(var(--blur-2xl))" }],
+              KEYFRAME_OPTS,
+            )
+            .addEventListener("finish", handleAnimationFinish);
+
+          asaElt.style.zIndex = "auto";
+          asaElt
+            .animate(
+              [{ scale: 1.0, opacity: 1.0, filter: "none" }],
+              KEYFRAME_OPTS,
+            )
+            .addEventListener("finish", handleAnimationFinish);
         }
       });
   }
