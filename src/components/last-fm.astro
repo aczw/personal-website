@@ -17,7 +17,8 @@ const { data: topStats, error: getTopStatsError } = await Astro.callAction(
   {},
 );
 
-const available = !getRecentTrackError && !getTopStatsError;
+const recentAvailable = !getRecentTrackError;
+const topAvailable = !getTopStatsError;
 ---
 
 <div
@@ -25,7 +26,7 @@ const available = !getRecentTrackError && !getTopStatsError;
 >
   <h3 class="font-bold text-heading">
     {
-      available ?
+      recentAvailable ?
         recentTrack.live ?
           "Currently listening to"
         : "Last listened to"
@@ -35,7 +36,7 @@ const available = !getRecentTrackError && !getTopStatsError;
 
   <div class="flex gap-x-3.5">
     {
-      available && recentTrack.coverUrl ?
+      recentAvailable && recentTrack.coverUrl ?
         <Image
           src={recentTrack.coverUrl}
           alt={`Cover image for ${recentTrack.songName} by ${recentTrack.artist}`}
@@ -51,7 +52,7 @@ const available = !getRecentTrackError && !getTopStatsError;
 
     <p>
       {
-        available ?
+        recentAvailable ?
           <>
             <Link
               href={recentTrack.songUrl}
@@ -84,12 +85,12 @@ const available = !getRecentTrackError && !getTopStatsError;
   class="space-y-pad opacity-100 transition-opacity duration-500 starting:opacity-0"
 >
   <h3 class="font-bold text-heading">
-    {available ? "Last 7 days" : "Current Spotify playlist"}
+    {topAvailable ? "Last 7 days" : "Current Spotify playlist"}
   </h3>
 
   <div class="flex gap-x-3.5">
     {
-      available ? null : (
+      topAvailable ? null : (
         <Image
           src={image400mg}
           alt="Alley in a Philadelphia neighborhood. Cover for my Spotify playlist."
@@ -99,7 +100,7 @@ const available = !getRecentTrackError && !getTopStatsError;
     }
 
     {
-      available ?
+      topAvailable ?
         <ul class="*:line-clamp-1">
           <li>
             Top song:{" "}
@@ -117,7 +118,13 @@ const available = !getRecentTrackError && !getTopStatsError;
             — {topStats.album.count} plays.
           </li>
 
-          <li>Top artist: — 72 plays.</li>
+          <li>
+            Top artist:{" "}
+            <Link href={topStats.artist.url} target="_blank">
+              {topStats.artist.name}
+            </Link>{" "}
+            — {topStats.artist.count} plays.
+          </li>
         </ul>
       : <p>
           Every so often I compile a playlist of my current rotation. It

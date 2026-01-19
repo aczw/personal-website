@@ -13,7 +13,7 @@ const LastFmAttrSchema = z.object({
 
 const LastFmImageSchema = z.array(
   z.object({
-    size: z.enum(["small", "medium", "large", "extralarge"]),
+    size: z.enum(["small", "medium", "large", "extralarge", "mega"]),
     "#text": z.string(),
   }),
 );
@@ -85,6 +85,23 @@ const LastFmTopAlbumsSchema = z.object({
     album: z.array(
       z.object({
         artist: LastFmArtistSchema,
+        image: LastFmImageSchema,
+        mbid: z.string(),
+        url: z.string(),
+        playcount: z.string(),
+        "@attr": z.object({ rank: z.string() }),
+        name: z.string(),
+      }),
+    ),
+    "@attr": LastFmAttrSchema,
+  }),
+});
+
+const LastFmTopArtistsSchema = z.object({
+  topartists: z.object({
+    artist: z.array(
+      z.object({
+        streamable: z.string(),
         image: LastFmImageSchema,
         mbid: z.string(),
         url: z.string(),
@@ -172,6 +189,7 @@ export {
   LastFmRecentTracksSchema,
   LastFmTopTracksSchema,
   LastFmTopAlbumsSchema,
+  LastFmTopArtistsSchema,
   BlurbSchema,
   ImageSchema,
   LinkSchema,

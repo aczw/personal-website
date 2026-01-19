@@ -5,6 +5,7 @@ import type { SafeParseReturnType } from "astro/zod";
 import {
   LastFmRecentTracksSchema,
   LastFmTopAlbumsSchema,
+  LastFmTopArtistsSchema,
   LastFmTopTracksSchema,
 } from "@/scripts/schema";
 import { LASTFM_API_PREFIX } from "@/scripts/constants";
@@ -131,6 +132,28 @@ const lastFm = {
         });
       }
 
+      const topArtistResponse = await fetch(
+        `${LASTFM_API_PREFIX}?method=user.gettopartists&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
+      );
+
+      checkResponse(topArtistResponse);
+      const topArtistResult = LastFmTopArtistsSchema.safeParse(
+        await topArtistResponse.json(),
+      );
+
+      checkSafeParse(topAlbumResult);
+      const {
+        topartists: { artist },
+      } = topArtistResult.data!;
+      const firstArtist = artist[0];
+
+      if (!firstArtist) {
+        throw new ActionError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Did not find any top artists.",
+        });
+      }
+
       return {
         track: {
           name: firstTrack.name,
@@ -142,6 +165,12 @@ const lastFm = {
           name: firstAlbum.name,
           url: firstAlbum.url,
           count: Number(firstAlbum.playcount),
+        },
+
+        artist: {
+          name: firstArtist.name,
+          url: firstArtist.url,
+          count: Number(firstArtist.playcount),
         },
       };
     },
