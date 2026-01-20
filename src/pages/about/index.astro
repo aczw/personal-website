@@ -46,10 +46,12 @@ const description = "More about who I am";
   <main
     class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
   >
-    <h1 class="pt-pad-2 text-5xl font-bold text-heading lg:pt-pad-3">About</h1>
+    <h1 id="about" class="pt-pad-2 text-5xl font-bold text-heading lg:pt-pad-3">
+      About
+    </h1>
 
     <article
-      aria-label="Background"
+      aria-labelledby="about"
       class="grid grid-cols-1 gap-pad-4 md:grid-cols-2"
     >
       <button
@@ -60,7 +62,7 @@ const description = "More about who I am";
       >
         <div
           aria-hidden="true"
-          class="pointer-events-none absolute inset-0 z-1 origin-bottom bg-sweater-8/50 transition-opacity duration-500 select-none not-dark:bg-sweater-3/50"
+          class="pointer-events-none absolute inset-0 z-1 origin-bottom bg-sweater-8/50 transition-opacity duration-500 select-none light:bg-sweater-3/50"
           style={{ transform: "scaleY(0.0)" }}
         >
         </div>
@@ -114,29 +116,58 @@ const description = "More about who I am";
     </article>
 
     <section class="max-w-(--content-w)">
-      <h2 class="text-xl font-bold text-heading">Contact</h2>
+      <h2 id="contact" class="mb-pad text-xl font-bold text-heading">
+        Contact
+      </h2>
+      <p>
+        I welcome random messages from strangers. Please reach out to say hello
+        or whatever you want! You can find me on <Link
+          href="https://twitter.com/zwcharl"
+          target="_blank">Twitter</Link
+        >, <Link href="https://github.com/aczw" target="_blank">GitHub</Link>, <Link
+          href="https://linkedin.com/in/zwcharl"
+          target="_blank">LinkedIn</Link
+        >, and <Link href="https://are.na/charles-zw" target="_blank"
+          >Are.na</Link
+        >. My email is <span class="inline-code"
+          >zwcharl &lt;at&gt; gmail &lt;dot&gt; com</span
+        >.
+      </p>
     </section>
 
     <section class="grid grid-cols-1 gap-x-pad-4 sm:grid-cols-2">
-      <h2 class="col-span-full mb-pad text-xl font-bold text-heading">Music</h2>
+      <h2
+        id="music"
+        class="col-span-full mb-pad text-xl font-bold text-heading"
+      >
+        Music
+      </h2>
 
       <LastFmRecentTrack server:defer>
-        <div aria-hidden="true" class="space-y-pad" slot="fallback">
-          <div class="h-lh animate-pulse rounded-md bg-sweater-9"></div>
+        <div
+          aria-hidden="true"
+          class="mb-pad-2 animate-pulse space-y-pad"
+          slot="fallback"
+        >
+          <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
           <div
-            class="flex gap-x-3.5 *:animate-pulse *:rounded-md *:bg-sweater-9"
+            class="flex gap-x-3.5 *:rounded-md *:bg-sweater-9 light:*:bg-sweater-2"
           >
-            <div class="size-[3lh] shrink-0 animate-pulse"></div>
+            <div class="size-[3lh] shrink-0"></div>
             <div class="h-[3lh] grow"></div>
           </div>
         </div>
       </LastFmRecentTrack>
 
       <LastFmTopStats server:defer>
-        <div aria-hidden="true" class="space-y-pad" slot="fallback">
-          <div class="h-lh animate-pulse rounded-md bg-sweater-9"></div>
+        <div
+          aria-hidden="true"
+          class="animate-pulse space-y-pad"
+          slot="fallback"
+        >
+          <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
           <div
-            class="flex h-[3lh] animate-pulse gap-x-3.5 rounded-md bg-sweater-9"
+            class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"
           >
           </div>
         </div>

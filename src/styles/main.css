@@ -68,7 +68,7 @@
     --icon: var(--color-sweater-6);
     --heading: var(--color-sweater-2);
 
-    @variant not-dark {
+    @variant light {
       --line: var(--color-sweater-2);
       --link-primary: var(--color-sweater-7);
       --link-primary-hover: var(--color-sweater-9);
@@ -88,7 +88,7 @@
       @apply bg-sweater-8 text-sweater-2;
     }
 
-    @variant not-dark {
+    @variant light {
       @apply bg-sweater-1 text-sweater-10;
 
       &::selection {
@@ -142,7 +142,7 @@
       background-color: var(--color-sweater-5);
     }
 
-    @variant not-dark {
+    @variant light {
       &::selection {
         background-color: var(--color-sweater-2);
       }

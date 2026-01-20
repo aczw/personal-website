@@ -5,6 +5,10 @@
   }
 }
 
+@utility inline-code {
+  @apply rounded-md bg-sweater-9 px-1.25 py-0.5 maple wrap-break-word light:bg-sweater-2;
+}
+
 /* Only style elements rendered from MDX. This mostly copies the width
  * behavior of everything else, which is:
  * 
@@ -79,7 +83,7 @@
   }
 
   code {
-    @apply rounded-md bg-sweater-9 px-1.25 py-0.5 maple wrap-break-word light:bg-sweater-2;
+    @apply inline-code;
   }
 
   del {
@@ -111,7 +115,7 @@
       content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkNmQzZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodC1pY29uIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodCI+PHBvbHlsaW5lIHBvaW50cz0iMTUgMTAgMjAgMTUgMTUgMjAiLz48cGF0aCBkPSJNNCA0djdhNCA0IDAgMCAwIDQgNGgxMiIvPjwvc3ZnPg==") /
         "";
 
-      @variant not-dark {
+      @variant light {
         content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTEwIDYuNjY2NjdMMTMuMzMzMyAxMEwxMCAxMy4zMzMzIiBzdHJva2U9IiM0ODQzOTAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yLjY2NjYzIDIuNjY2NjdWNy4zMzMzNEMyLjY2NjYzIDguMDQwNTggMi45NDc1OCA4LjcxODg2IDMuNDQ3NjcgOS4yMTg5NkMzLjk0Nzc3IDkuNzE5MDUgNC42MjYwNSAxMCA1LjMzMzI5IDEwSDEzLjMzMzMiIHN0cm9rZT0iIzQ4NDM5MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+") /
           "";
       }
