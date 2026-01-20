@@ -1,5 +1,7 @@
-import { lastFm } from "@/actions/last-fm";
+import { aniList } from "@/actions/anilist";
+import { lastFm } from "@/actions/lastfm";
 
 export const server = {
   lastFm,
+  aniList,
 };

@@ -8,8 +8,9 @@ import imageAsa from "@/assets/about/asa.jpg";
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
 import Link from "@/components/link.astro";
-import LastFmRecentTrack from "@/components/last-fm-recent-track.astro";
-import LastFmTopStats from "@/components/last-fm-top-stats.astro";
+import LastFmRecentTrack from "@/components/lastfm-recent-track.astro";
+import LastFmTopStats from "@/components/lastfm-top-stats.astro";
+import AniListRecentActivity from "@/components/anilist-recent-activity.astro";
 
 type AboutPicture = {
   id: string;
@@ -178,6 +179,7 @@ const description = "More about who I am";
       <h2 id="anilist" class="mb-pad text-xl font-bold text-heading">
         Anilist
       </h2>
+      <AniListRecentActivity server:defer />
     </section>
   </main>
 </BaseLayout>

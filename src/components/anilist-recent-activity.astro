@@ -1,0 +1,22 @@
+---
+import { actions } from "astro:actions";
+
+const { data, error } = await Astro.callAction(
+  actions.aniList.getRecentActivity,
+  {},
+);
+
+const available = !error;
+---
+
+<div class="opacity-100 transition-opacity duration-500 starting:opacity-0">
+  {
+    available ?
+      <ul>
+        {data.map((activity) => (
+          <li>{activity.media.title.english}</li>
+        ))}
+      </ul>
+    : null
+  }
+</div>

@@ -1,42 +1,124 @@
 import { ActionError, defineAction } from "astro:actions";
 import { LASTFM_API_KEY } from "astro:env/server";
-import type { SafeParseReturnType } from "astro/zod";
+import { z } from "astro/zod";
 
-import {
-  LastFmRecentTracksSchema,
-  LastFmTopAlbumsSchema,
-  LastFmTopArtistsSchema,
-  LastFmTopTracksSchema,
-} from "@/scripts/schema";
+import { checkResponse, checkSafeParse } from "@/actions/common";
 
 const LASTFM_API_PREFIX = "https://ws.audioscrobbler.com/2.0/";
 
-function checkResponse(response: Response) {
-  if (!response.ok) {
-    let message = "Request to Last.fm servers failed!";
+const AttrSchema = z.object({
+  user: z.string(),
+  totalPages: z.string(),
+  page: z.string(),
+  perPage: z.string(),
+  total: z.string(),
+});
 
-    if (response.statusText.length !== 0) {
-      message += ` Server message: ${response.statusText}`;
-    }
+const ImageSchema = z.array(
+  z.object({
+    size: z.enum(["small", "medium", "large", "extralarge", "mega"]),
+    "#text": z.string(),
+  }),
+);
 
-    throw new ActionError({
-      code: "INTERNAL_SERVER_ERROR",
-      message,
-    });
-  }
-}
+const ArtistSchema = z.object({
+  url: z.string(),
+  name: z.string(),
+  mbid: z.string(),
+});
 
-function checkSafeParse<In, Out>(result: SafeParseReturnType<In, Out>) {
-  if (!result.success) {
-    console.error(result.error.format());
+const RecentTracksSchema = z.object({
+  recenttracks: z.object({
+    track: z.array(
+      z.object({
+        artist: z.object({
+          mbid: z.string(),
+          "#text": z.string(),
+        }),
+        streamable: z.string(),
+        image: ImageSchema,
+        mbid: z.string(),
+        album: z.object({
+          mbid: z.string(),
+          "#text": z.string(),
+        }),
+        name: z.string(),
+        "@attr": z
+          .object({
+            nowplaying: z.enum(["true", "false"]),
+          })
+          .optional(),
+        url: z.string(),
+        date: z
+          .object({
+            uts: z.string(),
+            "#text": z.string(),
+          })
+          .optional(),
+      }),
+    ),
+    "@attr": AttrSchema,
+  }),
+});
 
-    throw new ActionError({
-      code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to parse Last.fm response! Check logs.",
-    });
-  }
+const TopTracksSchema = z.object({
+  toptracks: z.object({
+    track: z.array(
+      z.object({
+        streamable: z.object({
+          fulltrack: z.string(),
+          "#text": z.string(),
+        }),
+        mbid: z.string(),
+        name: z.string(),
+        image: ImageSchema,
+        artist: ArtistSchema,
+        url: z.string(),
+        duration: z.string(),
+        "@attr": z.object({ rank: z.string() }),
+        playcount: z.string(),
+      }),
+    ),
+    "@attr": AttrSchema,
+  }),
+});
 
-  return true;
+const TopAlbumsSchema = z.object({
+  topalbums: z.object({
+    album: z.array(
+      z.object({
+        artist: ArtistSchema,
+        image: ImageSchema,
+        mbid: z.string(),
+        url: z.string(),
+        playcount: z.string(),
+        "@attr": z.object({ rank: z.string() }),
+        name: z.string(),
+      }),
+    ),
+    "@attr": AttrSchema,
+  }),
+});
+
+const TopArtistsSchema = z.object({
+  topartists: z.object({
+    artist: z.array(
+      z.object({
+        streamable: z.string(),
+        image: ImageSchema,
+        mbid: z.string(),
+        url: z.string(),
+        playcount: z.string(),
+        "@attr": z.object({ rank: z.string() }),
+        name: z.string(),
+      }),
+    ),
+    "@attr": AttrSchema,
+  }),
+});
+
+function checkLastFmResponse(response: Response) {
+  checkResponse(response, "Request to Last.fm failed!");
 }
 
 const lastFm = {
@@ -47,10 +129,10 @@ const lastFm = {
         `${LASTFM_API_PREFIX}?method=user.getrecenttracks&user=ashzw&api_key=${LASTFM_API_KEY}&limit=1&format=json`,
       );
 
-      checkResponse(response);
-      const result = LastFmRecentTracksSchema.safeParse(await response.json());
-
+      checkLastFmResponse(response);
+      const result = RecentTracksSchema.safeParse(await response.json());
       checkSafeParse(result);
+
       const {
         recenttracks: { track },
       } = result.data!;
@@ -58,7 +140,7 @@ const lastFm = {
 
       if (!firstTrack) {
         throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
+          code: "NOT_FOUND",
           message: "Did not find any recent tracks.",
         });
       }
@@ -93,12 +175,12 @@ const lastFm = {
         `${LASTFM_API_PREFIX}?method=user.gettoptracks&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
       );
 
-      checkResponse(topTrackResponse);
-      const topTrackResult = LastFmTopTracksSchema.safeParse(
+      checkLastFmResponse(topTrackResponse);
+      const topTrackResult = TopTracksSchema.safeParse(
         await topTrackResponse.json(),
       );
-
       checkSafeParse(topTrackResult);
+
       const {
         toptracks: { track },
       } = topTrackResult.data!;
@@ -106,7 +188,7 @@ const lastFm = {
 
       if (!firstTrack) {
         throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
+          code: "NOT_FOUND",
           message: "Did not find any top tracks.",
         });
       }
@@ -115,12 +197,12 @@ const lastFm = {
         `${LASTFM_API_PREFIX}?method=user.gettopalbums&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
       );
 
-      checkResponse(topAlbumResponse);
-      const topAlbumResult = LastFmTopAlbumsSchema.safeParse(
+      checkLastFmResponse(topAlbumResponse);
+      const topAlbumResult = TopAlbumsSchema.safeParse(
         await topAlbumResponse.json(),
       );
-
       checkSafeParse(topAlbumResult);
+
       const {
         topalbums: { album },
       } = topAlbumResult.data!;
@@ -128,7 +210,7 @@ const lastFm = {
 
       if (!firstAlbum) {
         throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
+          code: "NOT_FOUND",
           message: "Did not find any top albums.",
         });
       }
@@ -137,12 +219,12 @@ const lastFm = {
         `${LASTFM_API_PREFIX}?method=user.gettopartists&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
       );
 
-      checkResponse(topArtistResponse);
-      const topArtistResult = LastFmTopArtistsSchema.safeParse(
+      checkLastFmResponse(topArtistResponse);
+      const topArtistResult = TopArtistsSchema.safeParse(
         await topArtistResponse.json(),
       );
-
       checkSafeParse(topAlbumResult);
+
       const {
         topartists: { artist },
       } = topArtistResult.data!;
@@ -150,7 +232,7 @@ const lastFm = {
 
       if (!firstArtist) {
         throw new ActionError({
-          code: "INTERNAL_SERVER_ERROR",
+          code: "NOT_FOUND",
           message: "Did not find any top artists.",
         });
       }

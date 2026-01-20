@@ -5,12 +5,9 @@ import { actions } from "astro:actions";
 import image400mg from "@/assets/400-mg.webp";
 import Link from "@/components/link.astro";
 
-const { data: topStats, error: getTopStatsError } = await Astro.callAction(
-  actions.lastFm.getTopStats,
-  {},
-);
+const { data, error } = await Astro.callAction(actions.lastFm.getTopStats, {});
 
-const available = !getTopStatsError;
+const available = !error;
 ---
 
 <div
@@ -38,28 +35,28 @@ const available = !getTopStatsError;
     {
       available ?
         <ul class="*:line-clamp-1">
-          <li title={topStats.track.name}>
+          <li title={data.track.name}>
             <span class="sm:hidden md:inline">Top song: </span>
-            <Link href={topStats.track.url} target="_blank">
-              {topStats.track.name}
+            <Link href={data.track.url} target="_blank">
+              {data.track.name}
             </Link>{" "}
-            — {topStats.track.count} plays.
+            — {data.track.count} plays.
           </li>
 
-          <li title={topStats.album.name}>
+          <li title={data.album.name}>
             <span class="sm:hidden md:inline">Top album: </span>
-            <Link href={topStats.album.url} target="_blank">
-              {topStats.album.name}
+            <Link href={data.album.url} target="_blank">
+              {data.album.name}
             </Link>{" "}
-            — {topStats.album.count} plays.
+            — {data.album.count} plays.
           </li>
 
-          <li title={topStats.artist.name}>
+          <li title={data.artist.name}>
             <span class="sm:hidden md:inline">Top artist: </span>
-            <Link href={topStats.artist.url} target="_blank">
-              {topStats.artist.name}
+            <Link href={data.artist.url} target="_blank">
+              {data.artist.name}
             </Link>{" "}
-            — {topStats.artist.count} plays.
+            — {data.artist.count} plays.
           </li>
         </ul>
       : <p>
