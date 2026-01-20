@@ -1,22 +1,65 @@
 ---
+import Link from "@/components/link.astro";
+import { getFullDateFormatting } from "@/scripts/util";
 import { actions } from "astro:actions";
 
-const { data, error } = await Astro.callAction(
-  actions.aniList.getRecentActivity,
-  {},
-);
+const { data, error } = await Astro.callAction(actions.aniList.getRecentActivity, {});
 
 const available = !error;
+
+if (!available) {
+  return;
+}
+
+console.log(data);
+
+const {
+  createdAt,
+  media: { title: potentialTitles, coverImage, siteUrl: mediaUrl },
+  status,
+  progress,
+  type,
+} = data[0]!;
+
+const date = new Date(createdAt * 1000);
+const now = new Date();
+const diffInSeconds = Math.floor((date.getTime() - now.getTime()) / 1000 / 86400);
+
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+const relativeTime = rtf.format(diffInSeconds, "days");
+
+const capitalizedStatus = `${status.charAt(0).toUpperCase()}${status.slice(1)}`;
+
+let title = potentialTitles.native;
+if (potentialTitles.english) {
+  title = potentialTitles.english;
+} else if (potentialTitles.romaji) {
+  title = potentialTitles.romaji;
+}
 ---
 
-<div class="opacity-100 transition-opacity duration-500 starting:opacity-0">
+<div
+  class="flex space-y-pad gap-x-3.5 opacity-100 transition-opacity duration-500 starting:opacity-0"
+>
   {
     available ?
-      <ul>
-        {data.map((activity) => (
-          <li>{activity.media.title.english}</li>
-        ))}
-      </ul>
+      <>
+        <img src={coverImage.medium} class="h-[4lh] rounded-md bg-sweater-9" loading="eager" />
+
+        <div class="max-w-(--content-w)">
+          <p title={getFullDateFormatting(date)} class="w-fit italic">
+            Latest {type === "MANGA_LIST" ? "manga" : "anime"} activity from{" "}
+            <time datetime={date.toISOString()}>{relativeTime}</time>.
+          </p>
+          <p>
+            {capitalizedStatus} {progress ? progress : null}
+            <Link href={mediaUrl} target="_blank">
+              {title}
+            </Link>
+            .
+          </p>
+        </div>
+      </>
     : null
   }
 </div>

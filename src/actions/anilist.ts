@@ -28,6 +28,10 @@ const QuerySchema = z.object({
               romaji: z.string().nullable(),
               native: z.string(),
             }),
+            coverImage: z.object({
+              medium: z.string(),
+            }),
+            siteUrl: z.string(),
           }),
           progress: z.string().nullable(),
           status: z.string(),

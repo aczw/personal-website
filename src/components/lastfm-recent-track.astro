@@ -1,5 +1,4 @@
 ---
-import { Image } from "astro:assets";
 import { actions } from "astro:actions";
 
 import { MusicIcon } from "@lucide/astro";
@@ -31,13 +30,11 @@ const available = !error;
   <div class="flex gap-x-3.5">
     {
       available && data.coverUrl ?
-        <Image
+        <img
           src={data.coverUrl}
           alt={`Cover image for ${data.songName} by ${data.artist}`}
-          width={72}
-          height={72}
           loading="eager"
-          class="size-[3lh] shrink-0 rounded-md"
+          class="size-[3lh] shrink-0 rounded-md bg-sweater-9"
         />
       : <div class="flex size-[3lh] shrink-0 items-center justify-center rounded-md bg-sweater-9">
           <MusicIcon size={ICON_SIZE} class="stroke-icon" />
