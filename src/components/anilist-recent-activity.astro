@@ -1,7 +1,9 @@
 ---
-import Link from "@/components/link.astro";
-import { getFullDateFormatting } from "@/scripts/util";
 import { actions } from "astro:actions";
+
+import Link from "@/components/link.astro";
+import Aside from "@/components/mdx/aside.astro";
+import { getFullDateFormatting } from "@/scripts/util";
 
 const { data, error } = await Astro.callAction(actions.aniList.getRecentActivity, {});
 
@@ -11,7 +13,7 @@ if (!available) {
   return;
 }
 
-console.log(data);
+const activities = data.slice(0, 5);
 
 const {
   createdAt,
@@ -39,25 +41,42 @@ if (potentialTitles.english) {
 ---
 
 <div
-  class="flex space-y-pad gap-x-3.5 opacity-100 transition-opacity duration-500 starting:opacity-0"
+  class="grid grid-cols-1 gap-x-pad-4 gap-y-pad opacity-100 transition-opacity duration-500 md:grid-cols-2 starting:opacity-0"
 >
   {
     available ?
       <>
-        <img src={coverImage.medium} class="h-[4lh] rounded-md bg-sweater-9" loading="eager" />
+        <ul class="flex gap-x-pad overflow-hidden overflow-x-auto rounded-md md:justify-between">
+          {activities.map(({ media: { coverImage, siteUrl } }) => (
+            <li>
+              <a href={siteUrl} target="_blank" class="block">
+                <img
+                  src={coverImage.medium}
+                  class="h-[4lh] rounded-md bg-sweater-9"
+                  loading="eager"
+                />
+              </a>
+            </li>
+          ))}
+        </ul>
 
-        <div class="max-w-(--content-w)">
-          <p title={getFullDateFormatting(date)} class="w-fit italic">
+        <div class="max-w-(--content-w) space-y-pad">
+          <p title={getFullDateFormatting(date)} class="w-fit">
             Latest {type === "MANGA_LIST" ? "manga" : "anime"} activity from{" "}
             <time datetime={date.toISOString()}>{relativeTime}</time>.
           </p>
-          <p>
-            {capitalizedStatus} {progress ? progress : null}
+          <Aside>
+            {capitalizedStatus}{" "}
+            {status.includes("complete") ?
+              type === "MANGA_LIST" ?
+                "reading"
+              : "watching"
+            : null}{" "}
+            {progress ? progress : null}{" "}
             <Link href={mediaUrl} target="_blank">
               {title}
             </Link>
-            .
-          </p>
+          </Aside>
         </div>
       </>
     : null

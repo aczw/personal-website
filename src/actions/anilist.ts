@@ -35,7 +35,6 @@ const QuerySchema = z.object({
           }),
           progress: z.string().nullable(),
           status: z.string(),
-          siteUrl: z.string(),
           type: z.enum(["ANIME_LIST", "MANGA_LIST"]),
         }),
       ),
