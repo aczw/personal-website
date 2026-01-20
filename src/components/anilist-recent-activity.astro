@@ -14,7 +14,10 @@ import Aside from "@/components/mdx/aside.astro";
 import { getFullDateFormatting } from "@/scripts/util";
 import type { AniListMediaTitle } from "@/actions/anilist";
 
-const { data, error } = await Astro.callAction(actions.aniList.getRecentActivity, {});
+const { data, error } = await Astro.callAction(
+  actions.aniList.getRecentActivity,
+  {},
+);
 
 const available = !error;
 
@@ -60,38 +63,34 @@ function resolvedTitle(title: AniListMediaTitle) {
   );
 }
 
-if (!available) {
-  return;
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+function relativeTime(date: Date) {
+  const diffInDays = Math.floor(
+    (date.getTime() - new Date().getTime()) / 86400000,
+  );
+
+  return rtf.format(diffInDays, "days");
 }
 
 const activities: typeof data = [];
 let count = 0;
 
-for (const newAct of data) {
-  if (activities.findIndex((act) => act.media.id === newAct.media.id) === -1) {
-    activities.push(newAct);
-    count++;
+if (available) {
+  for (const newAct of data) {
+    if (
+      activities.findIndex((act) => act.media.id === newAct.media.id) === -1
+    ) {
+      activities.push(newAct);
+      count++;
 
-    // Only the 5 most recent unique entries
-    if (count === 5) {
-      break;
+      // Only the 5 most recent unique entries
+      if (count === 5) {
+        break;
+      }
     }
   }
 }
-
-// Take the most recent activity and display it
-const {
-  createdAt,
-  media: { title, siteUrl: mediaUrl },
-  status,
-  progress,
-  type,
-} = activities[0]!;
-
-const date = new Date(createdAt * 1000);
-const diffInDays = Math.floor((date.getTime() - new Date().getTime()) / 86400000);
-const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-const relativeTime = rtf.format(diffInDays, "days");
 ---
 
 <div
@@ -106,9 +105,14 @@ const relativeTime = rtf.format(diffInDays, "days");
 
             return (
               <li class="shrink-0">
-                <a href={siteUrl} title={resolved} target="_blank" class="block">
+                <a
+                  href={siteUrl}
+                  title={resolved}
+                  target="_blank"
+                  class="block"
+                >
                   <img
-                    src={coverImage.medium}
+                    src={coverImage.large}
                     alt={`Cover art for ${resolved}`}
                     class="h-[4lh] rounded-md bg-sweater-9"
                     loading="eager"
@@ -137,30 +141,40 @@ const relativeTime = rtf.format(diffInDays, "days");
   </ul>
 
   {
-    available ?
+    available && activities[0] ?
       <div class="max-w-(--content-w) space-y-pad">
-        <p title={getFullDateFormatting(date)} class="w-fit">
-          Latest {type === "MANGA_LIST" ? "manga" : "anime"} activity from{" "}
-          <time datetime={date.toISOString()}>{relativeTime}</time>.
+        <p
+          title={getFullDateFormatting(
+            new Date(activities[0].createdAt * 1000),
+          )}
+          class="w-fit"
+        >
+          Latest {activities[0].type === "MANGA_LIST" ? "manga" : "anime"}{" "}
+          activity from{" "}
+          <time
+            datetime={new Date(activities[0].createdAt * 1000).toISOString()}
+          >
+            {relativeTime(new Date(activities[0].createdAt * 1000))}.
+          </time>
         </p>
         <Aside>
           <p>
-            {`${status.charAt(0).toUpperCase()}${status.slice(1)}`}{" "}
-            {status.includes("complete") ?
-              type === "MANGA_LIST" ?
+            {`${activities[0].status.charAt(0).toUpperCase()}${activities[0].status.slice(1)}`}{" "}
+            {activities[0].status.includes("complete") ?
+              activities[0].type === "MANGA_LIST" ?
                 "reading"
               : "watching"
             : null}{" "}
-            {progress ? `${progress} of` : null}{" "}
-            <Link href={mediaUrl} target="_blank">
-              {resolvedTitle(title)}
+            {activities[0].progress ? `${activities[0].progress} of` : null}{" "}
+            <Link href={activities[0].media.siteUrl} target="_blank">
+              {resolvedTitle(activities[0].media.title)}
             </Link>
           </p>
         </Aside>
       </div>
     : <p class="max-w-(--content-w)">
-        I've tracked most of the manga and anime I've consumed since I started in 2020. Here are
-        some of my favorites.{" "}
+        I've tracked most of the manga and anime I've consumed since I started
+        in 2020. Here are some of my favorites.{" "}
         <Link href="https://anilist.co/user/czw" target="_blank">
           View my AniList profile.
         </Link>

@@ -31,7 +31,7 @@ const QuerySchema = z.object({
           media: z.object({
             title: MediaTitleSchema,
             coverImage: z.object({
-              medium: z.string(),
+              large: z.string(),
             }),
             siteUrl: z.string(),
             id: z.number(),
