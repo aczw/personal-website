@@ -16,6 +16,12 @@ const variables = {
   typeIn: ["ANIME_LIST", "MANGA_LIST"],
 };
 
+const MediaTitleSchema = z.object({
+  english: z.string().nullable(),
+  romaji: z.string().nullable(),
+  native: z.string(),
+});
+
 const QuerySchema = z.object({
   data: z.object({
     Page: z.object({
@@ -23,11 +29,7 @@ const QuerySchema = z.object({
         z.object({
           createdAt: z.number(),
           media: z.object({
-            title: z.object({
-              english: z.string().nullable(),
-              romaji: z.string().nullable(),
-              native: z.string(),
-            }),
+            title: MediaTitleSchema,
             coverImage: z.object({
               medium: z.string(),
             }),
@@ -101,4 +103,6 @@ const aniList = {
   }),
 };
 
-export { aniList };
+type AniListMediaTitle = z.infer<typeof MediaTitleSchema>;
+
+export { aniList, type AniListMediaTitle };

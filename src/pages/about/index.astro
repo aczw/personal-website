@@ -148,7 +148,15 @@ const description = "More about who I am";
 
     <section>
       <h2 id="anilist" class="mb-pad text-xl font-bold text-heading">Anilist</h2>
-      <AniListRecentActivity server:defer />
+      <AniListRecentActivity server:defer>
+        <div
+          class="grid animate-pulse grid-cols-1 gap-x-pad-4 gap-y-pad-2 *:h-[4lh] *:rounded-md *:bg-sweater-9 md:grid-cols-2"
+          slot="fallback"
+        >
+          <div></div>
+          <div></div>
+        </div>
+      </AniListRecentActivity>
     </section>
   </main>
 </BaseLayout>

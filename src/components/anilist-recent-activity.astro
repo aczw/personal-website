@@ -1,13 +1,64 @@
 ---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
 import { actions } from "astro:actions";
+
+import imageYourLieInApril from "@/assets/anilist/your-lie-in-april.png";
+import imageReZero from "@/assets/anilist/rezero.jpg";
+import imageBloomIntoYou from "@/assets/anilist/bloom-into-you.jpg";
+import imageGijiHarem from "@/assets/anilist/giji-harem.jpg";
+import imageChainsawMan from "@/assets/anilist/chainsaw-man.png";
 
 import Link from "@/components/link.astro";
 import Aside from "@/components/mdx/aside.astro";
 import { getFullDateFormatting } from "@/scripts/util";
+import type { AniListMediaTitle } from "@/actions/anilist";
 
 const { data, error } = await Astro.callAction(actions.aniList.getRecentActivity, {});
 
 const available = !error;
+
+type BackupAniListEntry = {
+  title: string;
+  cover: ImageMetadata;
+  url: string;
+};
+
+const BACKUP_ENTRIES: BackupAniListEntry[] = [
+  {
+    title: "Your lie in April",
+    cover: imageYourLieInApril,
+    url: "https://anilist.co/anime/20665/Your-lie-in-April",
+  },
+  {
+    title: "Re:ZERO",
+    cover: imageReZero,
+    url: "https://anilist.co/anime/21355/ReZERO-Starting-Life-in-Another-World",
+  },
+  {
+    title: "Bloom Into You",
+    cover: imageBloomIntoYou,
+    url: "https://anilist.co/manga/86218/Bloom-Into-You",
+  },
+  {
+    title: "Giji Harem",
+    cover: imageGijiHarem,
+    url: "https://anilist.co/manga/105577/Giji-Harem",
+  },
+  {
+    title: "Chainsaw Man",
+    cover: imageChainsawMan,
+    url: "https://anilist.co/manga/105778/Chainsaw-Man",
+  },
+];
+
+function resolvedTitle(title: AniListMediaTitle) {
+  return (
+    title.english ? title.english
+    : title.romaji ? title.romaji
+    : title.native
+  );
+}
 
 if (!available) {
   return;
@@ -31,10 +82,7 @@ for (const newAct of data) {
 // Take the most recent activity and display it
 const {
   createdAt,
-  media: {
-    title: { english, romaji, native },
-    siteUrl: mediaUrl,
-  },
+  media: { title, siteUrl: mediaUrl },
   status,
   progress,
   type,
@@ -49,48 +97,73 @@ const relativeTime = rtf.format(diffInDays, "days");
 <div
   class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 opacity-100 transition-opacity duration-500 md:grid-cols-2 starting:opacity-0"
 >
-  {
-    available ?
-      <>
-        <ul class="flex gap-x-pad overflow-x-auto rounded-md md:justify-between">
-          {activities.map(({ media: { coverImage, siteUrl } }) => (
+  <ul class="flex gap-x-pad overflow-x-auto rounded-md md:justify-between">
+    {
+      available ?
+        <>
+          {activities.map(({ media: { title, coverImage, siteUrl } }) => {
+            const resolved = resolvedTitle(title);
+
+            return (
+              <li class="shrink-0">
+                <a href={siteUrl} title={resolved} target="_blank" class="block">
+                  <img
+                    src={coverImage.medium}
+                    alt={`Cover art for ${resolved}`}
+                    class="h-[4lh] rounded-md bg-sweater-9"
+                    loading="eager"
+                  />
+                </a>
+              </li>
+            );
+          })}
+        </>
+      : <>
+          {BACKUP_ENTRIES.map(({ title, cover, url }) => (
             <li class="shrink-0">
-              <a href={siteUrl} target="_blank" class="block">
-                <img
-                  src={coverImage.medium}
-                  class="h-[4lh] rounded-md bg-sweater-9"
-                  loading="eager"
+              <a href={url} title={title} target="_blank" class="block">
+                <Image
+                  src={cover}
+                  alt={`Cover art for ${title}`}
+                  class="rounded-md bg-sweater-9"
+                  style={{ height: "4lh", width: "auto" }}
+                  fit="contain"
                 />
               </a>
             </li>
           ))}
-        </ul>
+        </>
+    }
+  </ul>
 
-        <div class="max-w-(--content-w) space-y-pad">
-          <p title={getFullDateFormatting(date)} class="w-fit">
-            Latest {type === "MANGA_LIST" ? "manga" : "anime"} activity from{" "}
-            <time datetime={date.toISOString()}>{relativeTime}</time>.
+  {
+    available ?
+      <div class="max-w-(--content-w) space-y-pad">
+        <p title={getFullDateFormatting(date)} class="w-fit">
+          Latest {type === "MANGA_LIST" ? "manga" : "anime"} activity from{" "}
+          <time datetime={date.toISOString()}>{relativeTime}</time>.
+        </p>
+        <Aside>
+          <p>
+            {`${status.charAt(0).toUpperCase()}${status.slice(1)}`}{" "}
+            {status.includes("complete") ?
+              type === "MANGA_LIST" ?
+                "reading"
+              : "watching"
+            : null}{" "}
+            {progress ? `${progress} of` : null}{" "}
+            <Link href={mediaUrl} target="_blank">
+              {resolvedTitle(title)}
+            </Link>
           </p>
-          <Aside>
-            <p>
-              {`${status.charAt(0).toUpperCase()}${status.slice(1)}`}{" "}
-              {status.includes("complete") ?
-                type === "MANGA_LIST" ?
-                  "reading"
-                : "watching"
-              : null}{" "}
-              {progress ? `${progress} of` : null}{" "}
-              <Link href={mediaUrl} target="_blank">
-                {english ?
-                  english
-                : romaji ?
-                  romaji
-                : native}
-              </Link>
-            </p>
-          </Aside>
-        </div>
-      </>
-    : null
+        </Aside>
+      </div>
+    : <p class="max-w-(--content-w)">
+        I've tracked most of the manga and anime I've consumed since I started in 2020. Here are
+        some of my favorites.{" "}
+        <Link href="https://anilist.co/user/czw" target="_blank">
+          View my AniList profile.
+        </Link>
+      </p>
   }
 </div>
