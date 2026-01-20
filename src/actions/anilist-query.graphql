@@ -15,6 +15,7 @@ query ($userId: Int, $sort: [ActivitySort], $typeIn: [ActivityType], $page: Int,
             medium
           }
           siteUrl
+          id
         }
         progress
         status

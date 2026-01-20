@@ -13,42 +13,48 @@ if (!available) {
   return;
 }
 
-const activities = data.slice(0, 5);
+const activities: typeof data = [];
+let count = 0;
 
+for (const newAct of data) {
+  if (activities.findIndex((act) => act.media.id === newAct.media.id) === -1) {
+    activities.push(newAct);
+    count++;
+
+    // Only the 5 most recent unique entries
+    if (count === 5) {
+      break;
+    }
+  }
+}
+
+// Take the most recent activity and display it
 const {
   createdAt,
-  media: { title: potentialTitles, coverImage, siteUrl: mediaUrl },
+  media: {
+    title: { english, romaji, native },
+    siteUrl: mediaUrl,
+  },
   status,
   progress,
   type,
-} = data[0]!;
+} = activities[0]!;
 
 const date = new Date(createdAt * 1000);
-const now = new Date();
-const diffInSeconds = Math.floor((date.getTime() - now.getTime()) / 1000 / 86400);
-
+const diffInDays = Math.floor((date.getTime() - new Date().getTime()) / 86400000);
 const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-const relativeTime = rtf.format(diffInSeconds, "days");
-
-const capitalizedStatus = `${status.charAt(0).toUpperCase()}${status.slice(1)}`;
-
-let title = potentialTitles.native;
-if (potentialTitles.english) {
-  title = potentialTitles.english;
-} else if (potentialTitles.romaji) {
-  title = potentialTitles.romaji;
-}
+const relativeTime = rtf.format(diffInDays, "days");
 ---
 
 <div
-  class="grid grid-cols-1 gap-x-pad-4 gap-y-pad opacity-100 transition-opacity duration-500 md:grid-cols-2 starting:opacity-0"
+  class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 opacity-100 transition-opacity duration-500 md:grid-cols-2 starting:opacity-0"
 >
   {
     available ?
       <>
-        <ul class="flex gap-x-pad overflow-hidden overflow-x-auto rounded-md md:justify-between">
+        <ul class="flex gap-x-pad overflow-x-auto rounded-md md:justify-between">
           {activities.map(({ media: { coverImage, siteUrl } }) => (
-            <li>
+            <li class="shrink-0">
               <a href={siteUrl} target="_blank" class="block">
                 <img
                   src={coverImage.medium}
@@ -66,16 +72,22 @@ if (potentialTitles.english) {
             <time datetime={date.toISOString()}>{relativeTime}</time>.
           </p>
           <Aside>
-            {capitalizedStatus}{" "}
-            {status.includes("complete") ?
-              type === "MANGA_LIST" ?
-                "reading"
-              : "watching"
-            : null}{" "}
-            {progress ? progress : null}{" "}
-            <Link href={mediaUrl} target="_blank">
-              {title}
-            </Link>
+            <p>
+              {`${status.charAt(0).toUpperCase()}${status.slice(1)}`}{" "}
+              {status.includes("complete") ?
+                type === "MANGA_LIST" ?
+                  "reading"
+                : "watching"
+              : null}{" "}
+              {progress ? `${progress} of` : null}{" "}
+              <Link href={mediaUrl} target="_blank">
+                {english ?
+                  english
+                : romaji ?
+                  romaji
+                : native}
+              </Link>
+            </p>
           </Aside>
         </div>
       </>

@@ -12,7 +12,7 @@ const variables = {
   userId: ANILIST_USER_ID,
   sort: "ID_DESC",
   page: 1,
-  perPage: 10,
+  perPage: 15,
   typeIn: ["ANIME_LIST", "MANGA_LIST"],
 };
 
@@ -32,6 +32,7 @@ const QuerySchema = z.object({
               medium: z.string(),
             }),
             siteUrl: z.string(),
+            id: z.number(),
           }),
           progress: z.string().nullable(),
           status: z.string(),
