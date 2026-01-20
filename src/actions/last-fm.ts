@@ -8,7 +8,8 @@ import {
   LastFmTopArtistsSchema,
   LastFmTopTracksSchema,
 } from "@/scripts/schema";
-import { LASTFM_API_PREFIX } from "@/scripts/constants";
+
+const LASTFM_API_PREFIX = "https://ws.audioscrobbler.com/2.0/";
 
 function checkResponse(response: Response) {
   if (!response.ok) {
