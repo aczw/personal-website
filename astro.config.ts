@@ -32,10 +32,6 @@ const config = defineConfig({
   image: {
     responsiveStyles: true,
     layout: "constrained",
-    remotePatterns: [
-      // Where Last.fm stores its cover images
-      { protocol: "https", hostname: "lastfm.freetls.fastly.net" },
-    ],
   },
   integrations: [
     sitemap(),
@@ -63,10 +59,8 @@ const config = defineConfig({
         codeFontSize: "var(--text-mono)",
 
         frames: {
-          editorActiveTabBackground: ({ theme }) =>
-            theme.colors["editor.background"],
-          editorTabBarBackground: ({ theme }) =>
-            setAlpha(theme.colors["editor.background"], 0.5),
+          editorActiveTabBackground: ({ theme }) => theme.colors["editor.background"],
+          editorTabBarBackground: ({ theme }) => setAlpha(theme.colors["editor.background"], 0.5),
           shadowColor: "transparent",
         },
       },
@@ -81,8 +75,7 @@ const config = defineConfig({
         {
           chtml: {
             scale: 1.1,
-            fontURL:
-              "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+            fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
           },
         },
       ],
