@@ -85,14 +85,14 @@
     scrollbar-gutter: stable;
 
     &::selection {
-      @apply bg-sweater-8 text-sweater-2;
+      @apply bg-sweater-8 text-sweater-3;
     }
 
     @variant light {
       @apply bg-sweater-1 text-sweater-10;
 
       &::selection {
-        @apply bg-sweater-2 text-sweater-8;
+        @apply bg-sweater-3 text-sweater-8;
       }
     }
   }
