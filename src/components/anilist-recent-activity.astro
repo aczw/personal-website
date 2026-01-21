@@ -14,10 +14,7 @@ import Aside from "@/components/mdx/aside.astro";
 import { getFullDateFormatting } from "@/scripts/util";
 import type { AniListMediaTitle } from "@/actions/anilist";
 
-const { data, error } = await Astro.callAction(
-  actions.aniList.getRecentActivity,
-  {},
-);
+const { data, error } = await Astro.callAction(actions.aniList.getRecentActivity, {});
 
 const available = !error;
 
@@ -66,9 +63,7 @@ function resolvedTitle(title: AniListMediaTitle) {
 const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
 function relativeTime(date: Date) {
-  const diffInDays = Math.floor(
-    (date.getTime() - new Date().getTime()) / 86400000,
-  );
+  const diffInDays = Math.ceil((date.getTime() - new Date().getTime()) / 86400000);
 
   return rtf.format(diffInDays, "days");
 }
@@ -78,9 +73,7 @@ let count = 0;
 
 if (available) {
   for (const newAct of data) {
-    if (
-      activities.findIndex((act) => act.media.id === newAct.media.id) === -1
-    ) {
+    if (activities.findIndex((act) => act.media.id === newAct.media.id) === -1) {
       activities.push(newAct);
       count++;
 
@@ -105,12 +98,7 @@ if (available) {
 
             return (
               <li class="shrink-0">
-                <a
-                  href={siteUrl}
-                  title={resolved}
-                  target="_blank"
-                  class="block"
-                >
+                <a href={siteUrl} title={resolved} target="_blank" class="block">
                   <img
                     src={coverImage.large}
                     alt={`Cover art for ${resolved}`}
@@ -143,17 +131,9 @@ if (available) {
   {
     available && activities[0] ?
       <div class="max-w-(--content-w) space-y-pad">
-        <p
-          title={getFullDateFormatting(
-            new Date(activities[0].createdAt * 1000),
-          )}
-          class="w-fit"
-        >
-          Latest {activities[0].type === "MANGA_LIST" ? "manga" : "anime"}{" "}
-          activity from{" "}
-          <time
-            datetime={new Date(activities[0].createdAt * 1000).toISOString()}
-          >
+        <p title={getFullDateFormatting(new Date(activities[0].createdAt * 1000))} class="w-fit">
+          Latest {activities[0].type === "MANGA_LIST" ? "manga" : "anime"} activity from{" "}
+          <time datetime={new Date(activities[0].createdAt * 1000).toISOString()}>
             {relativeTime(new Date(activities[0].createdAt * 1000))}.
           </time>
         </p>
@@ -173,8 +153,8 @@ if (available) {
         </Aside>
       </div>
     : <p class="max-w-(--content-w)">
-        I've tracked most of the manga and anime I've consumed since I started
-        in 2020. Here are some of my favorites.{" "}
+        I've tracked most of the manga and anime I've consumed since I started in 2020. Here are
+        some of my favorites.{" "}
         <Link href="https://anilist.co/user/czw" target="_blank">
           View my AniList profile.
         </Link>
