@@ -10,7 +10,8 @@
   --font-mono: "Maple Mono";
 
   /* See https://font.subf.dev/en/playground for what each value means */
-  --font-mono--font-feature-settings: "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";
+  --font-mono--font-feature-settings:
+    "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";
 
   /* Monospace text should be a little smaller than display text. Otherwise
    * it looks too large. */
@@ -99,7 +100,6 @@
   /* Make vertical scrollbar always visible so horizontal content
    * doesn't jump */
   body {
-    overflow-x: hidden;
     overflow-y: scroll;
 
     /* This usually causes the whole page to shift because it also

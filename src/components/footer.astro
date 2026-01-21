@@ -4,17 +4,25 @@ import { ToolCaseIcon, FeatherIcon, BoxesIcon, InfoIcon } from "@lucide/astro";
 import MusicIndicator from "@/components/music-indicator.astro";
 import { ICON_SIZE } from "@/scripts/constants";
 import Link from "@/components/link.astro";
+import Eye from "@/components/eye.astro";
 ---
 
-<footer class="border-t-(length:--border-w) border-style desktop:mb-10">
+<footer
+  class="overflow-x-clip border-t-(length:--border-w) border-style desktop:mb-10"
+>
   <div
-    class="mx-auto grid w-full grid-cols-1 gap-pad-2 px-pad-2 py-pad-2 desktop:w-4/5 desktop:px-pad sm:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
+    class="mx-auto grid w-full grid-cols-1 gap-y-pad-2 px-pad-2 py-pad-2 desktop:w-4/5 desktop:px-pad sm:grid-cols-2 lg:w-(--real-header-w)"
   >
-    <div>LEFT</div>
+    <a href="#" title="Back to top" class="h-fit w-fit"
+      ><Eye
+        aria-hidden="true"
+        class="fill-sweater-5 transition-colors hover:fill-sweater-4 light:fill-sweater-6 light:hover:fill-sweater-7"
+      /></a
+    >
 
     <div class="space-y-pad-2">
       <div
-        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad font-bold *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors *:hover:text-link-primary-hover sm:gap-y-1"
+        class="grid grid-cols-2 gap-x-pad-2 gap-y-0.5 text-lg font-bold *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors *:hover:text-link-primary-hover"
       >
         <a href="/projects">
           Portfolio <ToolCaseIcon
@@ -24,10 +32,18 @@ import Link from "@/components/link.astro";
           />
         </a>
         <a href="/posts">
-          Writing <FeatherIcon aria-hidden="true" size={ICON_SIZE} class="shrink-0 stroke-icon" />
+          Writing <FeatherIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="shrink-0 stroke-icon"
+          />
         </a>
         <a href="/archive">
-          Archive <BoxesIcon aria-hidden="true" size={ICON_SIZE} class="shrink-0 stroke-icon" />
+          Archive <BoxesIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="shrink-0 stroke-icon"
+          />
         </a>
         <a href="/about">
           About <MusicIndicator size={ICON_SIZE} server:defer>
@@ -41,14 +57,16 @@ import Link from "@/components/link.astro";
         </a>
       </div>
 
-      <div class="grid grid-cols-2 gap-x-pad-2 gap-y-pad *:w-full sm:gap-y-1">
+      <div class="grid grid-cols-2 gap-x-pad-2 gap-y-0.5 *:w-full">
         <Link href="https://twitter.com/zwcharl" target="_blank">Twitter</Link>
         <Link href="https://github.com/aczw" target="_blank">GitHub</Link>
-        <Link href="https://linkedin.com/in/zwcharl" target="_blank">LinkedIn</Link>
+        <Link href="https://linkedin.com/in/zwcharl" target="_blank"
+          >LinkedIn</Link
+        >
         <Link href="https://are.na/charles-zw" target="_blank">Are.na</Link>
       </div>
 
-      <p class="italic">Waiting for something to happen</p>
+      <!-- <p class="italic">Waiting for something to happen</p> -->
     </div>
   </div>
 </footer>
