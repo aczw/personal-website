@@ -20,7 +20,7 @@
  * the full screen width with no rounded corners on mobile. Also, a grid
  * layout is used on `desktop` breakpoint and above. */
 @utility mdx {
-  @apply mx-auto w-full space-y-pad-2 px-pad-2;
+  @apply mx-auto mb-pad-4 w-full space-y-pad-2 px-pad-2;
 
   @variant desktop {
     @apply mx-0 grid;
@@ -147,7 +147,7 @@
   }
 
   section[data-footnotes] {
-    @apply mt-pad-2 border-t-(length:--border-w) border-style pt-pad-4;
+    @apply mt-pad-2 mb-0 border-t-(length:--border-w) border-style pt-pad-2 desktop:mt-0;
 
     > h2#footnote-label {
       @apply sr-only;

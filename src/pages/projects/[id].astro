@@ -19,6 +19,7 @@ import { DISABLED_PROJECTS } from "@/scripts/constants";
 import { isValidProjectCover } from "@/scripts/util";
 import { ICON_SIZE } from "@/scripts/constants";
 import Link from "@/components/link.astro";
+import Footer from "@/components/footer.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -167,4 +168,6 @@ const { Content } = await render(project);
 
     <MdxContent aria-label="Write-up" content={Content} />
   </main>
+
+  <Footer />
 </BaseLayout>
