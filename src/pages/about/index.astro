@@ -11,6 +11,7 @@ import Link from "@/components/link.astro";
 import LastFmRecentTrack from "@/components/lastfm-recent-track.astro";
 import LastFmTopStats from "@/components/lastfm-top-stats.astro";
 import AniListRecentActivity from "@/components/anilist-recent-activity.astro";
+import Footer from "@/components/footer.astro";
 
 type AboutPicture = {
   id: string;
@@ -45,9 +46,9 @@ const description = "More about who I am";
   <Header links={[]} />
 
   <main
-    class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+    class="mx-auto w-full space-y-pad-4 px-pad-2 pt-pad-2 pb-pad-4 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w) lg:pt-pad-3"
   >
-    <h1 id="about" class="pt-pad-2 text-5xl font-bold text-heading lg:pt-pad-3">About</h1>
+    <h1 id="about" class="text-5xl font-bold text-heading">About</h1>
 
     <article aria-labelledby="about" class="grid grid-cols-1 gap-pad-4 md:grid-cols-2">
       <button
@@ -160,6 +161,8 @@ const description = "More about who I am";
       </AniListRecentActivity>
     </section>
   </main>
+
+  <Footer />
 </BaseLayout>
 
 <script>

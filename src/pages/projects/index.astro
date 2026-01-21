@@ -9,6 +9,7 @@ import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
+import Footer from "@/components/footer.astro";
 
 const WITH_VIDEOS = [
   // "racecar",
@@ -21,8 +22,7 @@ const projects = (await getCollection("projects"))
   .filter((project) => !DISABLED_PROJECTS.includes(project.id))
   .sort((a, b) => a.data.order - b.data.order);
 
-const description =
-  "Write-ups and technical breakdowns of some of my favorite projects";
+const description = "Write-ups and technical breakdowns of some of my favorite projects";
 ---
 
 <BaseLayout
@@ -35,9 +35,9 @@ const description =
 >
   <Header links={[]} />
 
-  <main class="space-y-pad-4">
+  <main class="space-y-pad-4 pt-pad-2 pb-pad-4 lg:pt-pad-3">
     <hgroup
-      class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 pt-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) lg:pt-pad-3 xl:gap-x-pad-4"
+      class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
     >
       <h1 class="text-5xl font-bold text-heading">Portfolio</h1>
       <p class="max-w-(--content-w)">{description}.</p>
@@ -75,10 +75,7 @@ const description =
             </h2>
 
             <div class="mb-1 grid grid-cols-1 gap-x-pad-2 gap-y-1.5 px-pad-2 *:text-link-secondary *:transition-colors *:group-hover:text-link-secondary-hover desktop:px-0 lg:grid-cols-2 lg:text-lg xl:gap-x-0">
-              <ContentDate
-                date={metadata.date}
-                class="hidden leading-none md:inline-block"
-              />
+              <ContentDate date={metadata.date} class="hidden leading-none md:inline-block" />
               <TechList tech={metadata.tech} class="*:leading-none" />
             </div>
 
@@ -90,4 +87,6 @@ const description =
       }
     </div>
   </main>
+
+  <Footer />
 </BaseLayout>

@@ -1,98 +1,54 @@
 ---
-import {
-  ArrowUpToLineIcon,
-  MusicIcon,
-  FileUserIcon,
-  LinkedinIcon,
-  GithubIcon,
-  MailIcon,
-} from "@lucide/astro";
+import { ToolCaseIcon, FeatherIcon, BoxesIcon, InfoIcon } from "@lucide/astro";
 
-import LastFmRecentTrack from "@/components/lastfm-recent-track.astro";
+import MusicIndicator from "@/components/music-indicator.astro";
 import { ICON_SIZE } from "@/scripts/constants";
-
-const socials = [
-  { href: "/_files/resume.pdf", label: "Resume", icon: FileUserIcon },
-  {
-    href: "https://linkedin.com/in/zwcharl",
-    label: "LinkedIn",
-    icon: LinkedinIcon,
-  },
-  { href: "https://github.com/aczw", label: "GitHub", icon: GithubIcon },
-  { href: "mailto:zwcharl@gmail.com", label: "Email", icon: MailIcon },
-];
+import Link from "@/components/link.astro";
 ---
 
-<footer class="grid-line-before relative">
+<footer class="border-t-(length:--border-w) border-style desktop:mb-10">
   <div
-    class="480:grid-cols-2 grid grid-cols-1 border-b-(length:--border-w) border-style"
+    class="mx-auto grid w-full grid-cols-1 gap-pad-2 px-pad-2 py-pad-2 desktop:w-4/5 desktop:px-pad sm:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
   >
-    <div
-      aria-hidden="true"
-      class="480:border-r-(length:--border-w) 480:border-b-0 border-b-(length:--border-w) border-style"
-    >
-    </div>
+    <div>LEFT</div>
 
-    <a
-      href="#"
-      class="group hover:bg-line-dark flex items-center justify-between p-pad transition-colors"
-    >
-      <span
-        class="translate-y-0.5 font-bold text-link-secondary transition-colors group-hover:text-link-secondary-hover"
+    <div class="space-y-pad-2">
+      <div
+        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad font-bold *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors *:hover:text-link-primary-hover sm:gap-y-1"
       >
-        Back to top
-      </span>
-      <ArrowUpToLineIcon size={ICON_SIZE} class="stroke-icon" />
-    </a>
-  </div>
-
-  <div
-    class="*: 480:grid-cols-2 grid grid-cols-1 grid-rows-[auto_auto] *:border-style"
-  >
-    <div
-      aria-hidden="true"
-      class="480:block hidden border-r-(length:--border-w) border-b-(length:--border-w)"
-    >
-    </div>
-
-    <div
-      class="*: grid grid-cols-2 border-b-(length:--border-w) *:border-style"
-    >
-      {
-        socials.map(({ href, label, icon: Icon }, index) => (
-          <a
-            href={href}
-            target="_blank"
-            class:list={[
-              "group hover:bg-line-bright flex items-center justify-between p-pad transition-colors",
-              // Render dashed lines
-              index < 2 ? "border-b-(length:--border-w)" : null,
-              index % 2 === 0 ? "border-r-(length:--border-w)" : null,
-            ]}
-          >
-            <span class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-              {label}
-            </span>
-            <Icon size={ICON_SIZE} class="stroke-icon" />
-          </a>
-        ))
-      }
-    </div>
-
-    <div
-      class="grid-line-after 480:border-r-(length:--border-w) px-pad pt-pad pb-3.5 maple leading-none"
-    >
-      <LastFmRecentTrack server:defer>
-        <a
-          href="https://www.last.fm/user/ashzw"
-          target="_blank"
-          class="flex gap-2 rounded-full bg-sweater-9 px-3 py-1.5 text-link-primary transition-colors hover:bg-sweater-8 hover:text-link-primary-hover light:bg-sweater-2 light:hover:bg-sweater-3"
-          data-quiet="true"
-          slot="fallback"
-        >
-          <MusicIcon size={15} class="inline" /> Scrobbles
+        <a href="/projects">
+          Portfolio <ToolCaseIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="shrink-0 stroke-icon"
+          />
         </a>
-      </LastFmRecentTrack>
+        <a href="/posts">
+          Writing <FeatherIcon aria-hidden="true" size={ICON_SIZE} class="shrink-0 stroke-icon" />
+        </a>
+        <a href="/archive">
+          Archive <BoxesIcon aria-hidden="true" size={ICON_SIZE} class="shrink-0 stroke-icon" />
+        </a>
+        <a href="/about">
+          About <MusicIndicator size={ICON_SIZE} server:defer>
+            <InfoIcon
+              aria-hidden="true"
+              slot="fallback"
+              size={ICON_SIZE}
+              class="shrink-0 stroke-icon"
+            />
+          </MusicIndicator>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 gap-x-pad-2 gap-y-pad *:w-full sm:gap-y-1">
+        <Link href="https://twitter.com/zwcharl" target="_blank">Twitter</Link>
+        <Link href="https://github.com/aczw" target="_blank">GitHub</Link>
+        <Link href="https://linkedin.com/in/zwcharl" target="_blank">LinkedIn</Link>
+        <Link href="https://are.na/charles-zw" target="_blank">Are.na</Link>
+      </div>
+
+      <p class="italic">Waiting for something to happen</p>
     </div>
   </div>
 </footer>
