@@ -40,6 +40,7 @@ const config = defineConfig({
       themes: ["rose-pine", "rose-pine-dawn"],
 
       useThemedSelectionColors: true,
+      useThemedScrollbars: false,
       cascadeLayer: "ec",
 
       defaultProps: {
@@ -59,8 +60,10 @@ const config = defineConfig({
         codeFontSize: "var(--text-mono)",
 
         frames: {
-          editorActiveTabBackground: ({ theme }) => theme.colors["editor.background"],
-          editorTabBarBackground: ({ theme }) => setAlpha(theme.colors["editor.background"], 0.5),
+          editorActiveTabBackground: ({ theme }) =>
+            theme.colors["editor.background"],
+          editorTabBarBackground: ({ theme }) =>
+            setAlpha(theme.colors["editor.background"], 0.5),
           shadowColor: "transparent",
         },
       },
@@ -75,7 +78,8 @@ const config = defineConfig({
         {
           chtml: {
             scale: 1.1,
-            fontURL: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+            fontURL:
+              "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
           },
         },
       ],

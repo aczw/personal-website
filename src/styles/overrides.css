@@ -85,6 +85,10 @@
 }
 
 .expressive-code {
+  * {
+    scrollbar-width: thin;
+  }
+
   /* Make tab headers bold */
   figure.frame.has-title {
     figcaption.header .title {

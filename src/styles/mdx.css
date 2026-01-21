@@ -6,7 +6,7 @@
 }
 
 @utility inline-code {
-  @apply rounded-md bg-sweater-9 px-1.25 py-0.5 maple wrap-break-word light:bg-sweater-2;
+  @apply rounded-md bg-sweater-9 px-1.25 py-0.5 maple wrap-anywhere light:bg-sweater-2;
 }
 
 /* Only style elements rendered from MDX. This mostly copies the width

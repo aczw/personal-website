@@ -83,6 +83,7 @@
     @apply bg-sweater-10 text-sweater-1;
 
     scrollbar-gutter: stable;
+    scrollbar-width: thin;
 
     &::selection {
       @apply bg-sweater-8 text-sweater-3;
@@ -94,20 +95,6 @@
       &::selection {
         @apply bg-sweater-3 text-sweater-8;
       }
-    }
-  }
-
-  /* Make vertical scrollbar always visible so horizontal content
-   * doesn't jump */
-  body {
-    overflow-y: scroll;
-
-    /* This usually causes the whole page to shift because it also
-     * removes scrollbars, but we set scrollbar-gutter above. However, this
-     * causes there to be a gap on the right edge of the screen. I am
-     * hoping the dialog backdrop masks this... */
-    &:has(dialog[open]) {
-      overflow: hidden;
     }
   }
 
