@@ -22,7 +22,8 @@ const projects = (await getCollection("projects"))
   .filter((project) => !DISABLED_PROJECTS.includes(project.id))
   .sort((a, b) => a.data.order - b.data.order);
 
-const description = "Write-ups and technical breakdowns of some of my favorite projects";
+const description =
+  "Write-ups and technical breakdowns of some of my favorite projects";
 ---
 
 <BaseLayout
@@ -75,7 +76,10 @@ const description = "Write-ups and technical breakdowns of some of my favorite p
             </h2>
 
             <div class="mb-1 grid grid-cols-1 gap-x-pad-2 gap-y-1.5 px-pad-2 *:text-link-secondary *:transition-colors *:group-hover:text-link-secondary-hover desktop:px-0 lg:grid-cols-2 lg:text-lg xl:gap-x-0">
-              <ContentDate date={metadata.date} class="hidden leading-none md:inline-block" />
+              <ContentDate
+                date={metadata.date}
+                class="hidden leading-none md:inline-block"
+              />
               <TechList tech={metadata.tech} class="*:leading-none" />
             </div>
 
