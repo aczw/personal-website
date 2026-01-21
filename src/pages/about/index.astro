@@ -47,14 +47,9 @@ const description = "More about who I am";
   <main
     class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
   >
-    <h1 id="about" class="pt-pad-2 text-5xl font-bold text-heading lg:pt-pad-3">
-      About
-    </h1>
+    <h1 id="about" class="pt-pad-2 text-5xl font-bold text-heading lg:pt-pad-3">About</h1>
 
-    <article
-      aria-labelledby="about"
-      class="grid grid-cols-1 gap-pad-4 md:grid-cols-2"
-    >
+    <article aria-labelledby="about" class="grid grid-cols-1 gap-pad-4 md:grid-cols-2">
       <button
         id="pictures"
         aria-label="Strange button"
@@ -78,8 +73,7 @@ const description = "More about who I am";
               class:list={[
                 "rounded-xl",
                 {
-                  "absolute inset-0 -z-1 scale-40 opacity-0 blur-2xl":
-                    index !== 0,
+                  "absolute inset-0 -z-1 scale-40 opacity-0 blur-2xl": index !== 0,
                 },
               ]}
               data-umami-event="clicked-about-picture"
@@ -91,69 +85,54 @@ const description = "More about who I am";
 
       <div class="order-1 max-w-(--content-w) space-y-pad-2 md:order-2">
         <p>
-          Hi! I'm a fourth year student in the <Link
-            href="https://cg.cis.upenn.edu"
-            target="_blank">Digital Media Design</Link
+          Hi! I'm a fourth year student in the <Link href="https://cg.cis.upenn.edu" target="_blank"
+            >Digital Media Design</Link
           > program at UPenn. I'm part of (and used to co-lead) <Link
             href="https://pennupgrade.com"
             target="_blank">UPGRADE</Link
           >, our game dev club, and am part of the CG@Penn student board.
         </p>
         <p>
-          Previously I interned at TikTok and Snap to work on their rendering
-          engines. <Link href="/resume" target="_blank">Here's my resume.</Link>
+          Previously I interned at TikTok and Snap to work on their rendering engines. <Link
+            href="/resume"
+            target="_blank">Here's my resume.</Link
+          >
         </p>
         <p>
-          I'm generally interested in computer graphics, specifically real-time
-          rendering, and game engine development. I grew up drawing and
-          designing things, and continue to love doing so.
+          I'm generally interested in computer graphics, specifically real-time rendering, and game
+          engine development. I grew up drawing and designing things, and continue to love doing so.
         </p>
         <p>
-          I strongly believe in shared spaces, self-expression, and visual
-          identities. This is why I resonate so strongly with the web. Everyone
-          can and should make a website! It's your digital source of truth.
+          I strongly believe in shared spaces, self-expression, and visual identities. This is why I
+          resonate so strongly with the web. <span class="italic"
+            >Everyone can and should make a website!</span
+          > It's your digital source of truth.
         </p>
       </div>
     </article>
 
     <section class="max-w-(--content-w)">
-      <h2 id="contact" class="mb-pad text-xl font-bold text-heading">
-        Contact
-      </h2>
+      <h2 id="contact" class="mb-pad text-xl font-bold text-heading">Contact</h2>
       <p>
-        I welcome random messages from strangers. Please reach out to say hello
-        or whatever you want! You can find me on <Link
-          href="https://twitter.com/zwcharl"
-          target="_blank">Twitter</Link
+        I welcome random messages from strangers. Please reach out to say hello or whatever you
+        want! You can find me on <Link href="https://twitter.com/zwcharl" target="_blank"
+          >Twitter</Link
         >, <Link href="https://github.com/aczw" target="_blank">GitHub</Link>, <Link
           href="https://linkedin.com/in/zwcharl"
           target="_blank">LinkedIn</Link
-        >, and <Link href="https://are.na/charles-zw" target="_blank"
-          >Are.na</Link
-        >. My email is <span class="inline-code"
-          >zwcharl &lt;at&gt; gmail &lt;dot&gt; com</span
+        >, and <Link href="https://are.na/charles-zw" target="_blank">Are.na</Link>. My email is <span
+          class="inline-code">zwcharl &lt;at&gt; gmail &lt;dot&gt; com</span
         >.
       </p>
     </section>
 
     <section class="grid grid-cols-1 gap-x-pad-4 sm:grid-cols-2">
-      <h2
-        id="music"
-        class="col-span-full mb-pad text-xl font-bold text-heading"
-      >
-        Music
-      </h2>
+      <h2 id="music" class="col-span-full mb-pad text-xl font-bold text-heading">Music</h2>
 
       <LastFmRecentTrack server:defer>
-        <div
-          aria-hidden="true"
-          class="mb-pad-2 animate-pulse space-y-pad sm:mb-0"
-          slot="fallback"
-        >
+        <div aria-hidden="true" class="mb-pad-2 animate-pulse space-y-pad sm:mb-0" slot="fallback">
           <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
-          <div
-            class="flex gap-x-3.5 *:rounded-md *:bg-sweater-9 light:*:bg-sweater-2"
-          >
+          <div class="flex gap-x-3.5 *:rounded-md *:bg-sweater-9 light:*:bg-sweater-2">
             <div class="size-[3lh] shrink-0"></div>
             <div class="h-[3lh] grow"></div>
           </div>
@@ -161,24 +140,15 @@ const description = "More about who I am";
       </LastFmRecentTrack>
 
       <LastFmTopStats server:defer>
-        <div
-          aria-hidden="true"
-          class="animate-pulse space-y-pad"
-          slot="fallback"
-        >
+        <div aria-hidden="true" class="animate-pulse space-y-pad" slot="fallback">
           <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
-          <div
-            class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"
-          >
-          </div>
+          <div class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"></div>
         </div>
       </LastFmTopStats>
     </section>
 
     <section>
-      <h2 id="anilist" class="mb-pad text-xl font-bold text-heading">
-        Anilist
-      </h2>
+      <h2 id="anilist" class="mb-pad text-xl font-bold text-heading">Anilist</h2>
       <AniListRecentActivity server:defer>
         <div
           class="grid animate-pulse grid-cols-1 gap-x-pad-4 gap-y-pad-2 *:h-[4lh] *:rounded-md *:bg-sweater-9 md:grid-cols-2 light:*:bg-sweater-2"
@@ -233,18 +203,12 @@ const description = "More about who I am";
 
           spiderElt.style.zIndex = "auto";
           spiderElt
-            .animate(
-              [{ scale: 0.4, opacity: 0.0, filter: "blur(var(--blur-2xl))" }],
-              KEYFRAME_OPTS,
-            )
+            .animate([{ scale: 0.4, opacity: 0.0, filter: "blur(var(--blur-2xl))" }], KEYFRAME_OPTS)
             .addEventListener("finish", handleAnimationFinish);
 
           asaElt.style.zIndex = "auto";
           asaElt
-            .animate(
-              [{ scale: 1.0, opacity: 1.0, filter: "none" }],
-              KEYFRAME_OPTS,
-            )
+            .animate([{ scale: 1.0, opacity: 1.0, filter: "none" }], KEYFRAME_OPTS)
             .addEventListener("finish", handleAnimationFinish);
         }
       });
