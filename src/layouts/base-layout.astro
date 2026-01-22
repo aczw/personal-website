@@ -30,7 +30,10 @@ switch (meta.kind) {
     title = `${data.title} / ${title}`;
 
     // If the post doesn't have a blurb then just state when it was published
-    description = data.blurb ? data.blurb : `Posted on ${getShortDateFormatting(data.posted)}.`;
+    description =
+      data.blurb ?
+        data.blurb
+      : `Posted on ${getShortDateFormatting(data.posted)}.`;
     ogImageParams = `?post=${id}`;
     break;
   }
@@ -67,9 +70,15 @@ const canonicalUrl = stripEndingSlash(url);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:image" content={`https://charleszw.com/api/og.png${ogImageParams}`} />
+    <meta
+      property="og:image"
+      content={`https://charleszw.com/api/og.png${ogImageParams}`}
+    />
 
-    <meta property="twitter:image" content={`https://charleszw.com/api/og.png${ogImageParams}`} />
+    <meta
+      property="twitter:image"
+      content={`https://charleszw.com/api/og.png${ogImageParams}`}
+    />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />

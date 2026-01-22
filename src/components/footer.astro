@@ -21,6 +21,7 @@ import Link from "@/components/link.astro";
     <a
       href="#"
       class="flex items-center justify-between font-bold text-link-secondary transition-colors hover:text-link-secondary-hover"
+      data-umami-event="footer-back-to-top"
       >Back to top <ArrowUpToLineIcon size={ICON_SIZE} class="stroke-icon" /></a
     >
 
@@ -72,8 +73,9 @@ import Link from "@/components/link.astro";
 
       <q
         id="flavor"
-        class="block h-[2lh] cursor-default text-sm leading-snug text-sweater-7 italic before:content-none after:content-none desktop:text-base"
+        class="block h-[2lh] w-[300px] cursor-default text-sm leading-snug text-pretty text-sweater-7 italic before:content-none after:content-none desktop:w-[350px] desktop:text-base light:text-sweater-4"
         style={{ opacity: 0 }}
+        data-umami-event="footer-flavor-text"
       >
       </q>
     </div>

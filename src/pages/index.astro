@@ -110,7 +110,7 @@ const projects = await getEntries(
                   <a
                     href={`/projects/${id}`}
                     class="after:absolute after:inset-0 after:z-1 after:rounded-2xl desktop:after:rounded-xl"
-                    data-umami-event="homepage-project-showcase"
+                    data-umami-event="home-project-showcase"
                     data-umami-event-id={id}
                   >
                     {name}
@@ -136,7 +136,7 @@ const projects = await getEntries(
         id="toggle-panel"
         class="group hidden w-35 items-center justify-between gap-x-pad rounded-xl bg-sweater-10 p-pad leading-none transition-[background-color_scale] hover:bg-sweater-9 active:scale-97 data-[state=open]:bg-sweater-9 data-[state=open]:hover:bg-sweater-8 md:flex md:shrink-0 light:bg-sweater-1 light:hover:bg-sweater-2 light:data-[state=open]:bg-sweater-2 light:data-[state=open]:hover:bg-sweater-3"
         data-state="closed"
-        data-umami-event="toggle-panel-button"
+        data-umami-event="home-toggle-panel"
       >
         <span class="hidden group-data-[state=open]:contents">
           Hide panel <SquareDashedMousePointerIcon

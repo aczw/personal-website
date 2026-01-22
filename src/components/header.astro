@@ -20,7 +20,7 @@ const { links, class: className, ...props } = Astro.props;
   ]}
   {...props}
 >
-  <nav class="flex items-start gap-x-1.75 leading-[0.9] font-bold">
+  <nav class="flex items-start gap-x-1.75 leading-none font-bold">
     <a href="/" title="Home" aria-label="Go to home" class="block">
       <Eye
         aria-hidden="true"
@@ -28,18 +28,18 @@ const { links, class: className, ...props } = Astro.props;
       />
     </a>
 
-    <Slash class="text-[2.2rem]" />
+    <Slash class="text-[2.15rem]" />
 
     {
       links.map(({ href, text }) => (
         <>
           <a
             href={href}
-            class="text-[2.2em] text-link-primary transition-colors hover:text-link-primary-hover"
+            class="text-[2.15em] text-link-primary transition-colors hover:text-link-primary-hover"
           >
             {text}
           </a>
-          <Slash class="text-[2.2rem]" />
+          <Slash class="text-[2.15rem]" />
         </>
       ))
     }

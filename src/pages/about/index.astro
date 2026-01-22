@@ -59,6 +59,7 @@ const description = "More about who I am";
         aria-label="Strange button"
         class="relative order-2 h-fit w-full overflow-hidden rounded-xl transition-transform data-initial:cursor-help data-initial:active:scale-97 md:order-1"
         data-initial=""
+        data-umami-event="about-picture"
       >
         <div
           aria-hidden="true"
@@ -81,8 +82,6 @@ const description = "More about who I am";
                     index !== 0,
                 },
               ]}
-              data-umami-event="clicked-about-picture"
-              data-umami-event-id={id}
             />
           ))
         }
