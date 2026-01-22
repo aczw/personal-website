@@ -8,7 +8,7 @@ import {
 } from "@lucide/astro";
 
 import MusicIndicator from "@/components/music-indicator.astro";
-import { ICON_SIZE } from "@/scripts/constants";
+import { ICON_SIZE, FLAVOR_TEXTS } from "@/scripts/constants";
 import Link from "@/components/link.astro";
 ---
 
@@ -75,9 +75,36 @@ import Link from "@/components/link.astro";
         <Link href="https://are.na/charles-zw" target="_blank">Are.na</Link>
       </div>
 
-      <p class="cursor-default text-sm text-sweater-7 italic desktop:text-base">
-        Waiting for something to happen?
-      </p>
+      <q
+        id="flavor"
+        class="cursor-default text-sm leading-snug text-sweater-7 italic before:content-none after:content-none desktop:text-base"
+        style={{ opacity: 0 }}
+      >
+        {FLAVOR_TEXTS[0]}
+      </q>
     </div>
   </div>
 </footer>
+
+<script>
+  import { FLAVOR_TEXTS } from "@/scripts/constants";
+
+  let text = FLAVOR_TEXTS[Math.floor(Math.random() * FLAVOR_TEXTS.length)]!;
+  if (text.includes("/")) {
+    text = text
+      .split("/")
+      .map((fragment) => `“${fragment.trim()}”`)
+      .join(" / ");
+  } else {
+    text = `“${text}”`;
+  }
+
+  const flavorElt = document.getElementById("flavor")!;
+
+  flavorElt.innerText = text;
+  flavorElt.animate([{ opacity: 1 }], {
+    duration: 400,
+    easing: "ease-out",
+    fill: "forwards",
+  });
+</script>
