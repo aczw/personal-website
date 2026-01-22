@@ -8,7 +8,7 @@ import {
 } from "@lucide/astro";
 
 import MusicIndicator from "@/components/music-indicator.astro";
-import { ICON_SIZE, FLAVOR_TEXTS } from "@/scripts/constants";
+import { ICON_SIZE } from "@/scripts/constants";
 import Link from "@/components/link.astro";
 ---
 
@@ -76,11 +76,9 @@ import Link from "@/components/link.astro";
       </div>
 
       <q
-        id="flavor"
-        class="cursor-default text-sm leading-snug text-sweater-7 italic before:content-none after:content-none desktop:text-base"
-        style={{ opacity: 0 }}
+        class="block h-[3lh] cursor-default text-sm leading-snug text-sweater-7 italic before:content-none after:content-none desktop:text-base"
       >
-        {FLAVOR_TEXTS[0]}
+        <span id="flavor" style={{ opacity: 0 }}></span>
       </q>
     </div>
   </div>
@@ -89,22 +87,34 @@ import Link from "@/components/link.astro";
 <script>
   import { FLAVOR_TEXTS } from "@/scripts/constants";
 
-  let text = FLAVOR_TEXTS[Math.floor(Math.random() * FLAVOR_TEXTS.length)]!;
-  if (text.includes("/")) {
-    text = text
-      .split("/")
-      .map((fragment) => `“${fragment.trim()}”`)
-      .join(" / ");
-  } else {
-    text = `“${text}”`;
-  }
-
   const flavorElt = document.getElementById("flavor")!;
 
-  flavorElt.innerText = text;
-  flavorElt.animate([{ opacity: 1 }], {
-    duration: 400,
-    easing: "ease-out",
-    fill: "forwards",
-  });
+  function showFlavorText() {
+    let text = FLAVOR_TEXTS[Math.floor(Math.random() * FLAVOR_TEXTS.length)]!;
+    if (text.includes("/")) {
+      text = text
+        .split("/")
+        .map((fragment) => `“${fragment.trim()}”`)
+        .join(" / ");
+    } else {
+      text = `“${text}”`;
+    }
+
+    flavorElt.innerText = text;
+    flavorElt
+      .animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 400,
+        easing: "ease-out",
+        fill: "forwards",
+      })
+      .addEventListener("finish", (ev) => {
+        const animation = ev.currentTarget as Animation;
+        animation.commitStyles();
+        animation.cancel();
+      });
+  }
+
+  flavorElt.addEventListener("click", showFlavorText);
+
+  showFlavorText();
 </script>
