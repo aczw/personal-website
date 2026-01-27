@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-@import "./animations.css";
 @import "./fonts.css";
 @import "./mdx.css";
 @import "./overrides.css";
@@ -52,6 +51,8 @@
 
 @layer base {
   :root {
+    color-scheme: light dark;
+
     --border-w: 2px;
 
     --header-w: 800px;
