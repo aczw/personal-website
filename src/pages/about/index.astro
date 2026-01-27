@@ -2,8 +2,11 @@
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
+import imageDante from "@/assets/about/dante.jpg";
+import imageSuit from "@/assets/about/suit.jpg";
 import imageSpider from "@/assets/about/spider.jpg";
 import imageAsa from "@/assets/about/asa.jpg";
+import imageBirthday from "@/assets/about/birthday.jpg";
 
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
@@ -45,19 +48,70 @@ const description = "More about who I am";
 >
   <Header links={[]} />
 
-  <main
-    class="mx-auto w-full space-y-pad-4 px-pad-2 pt-pad pb-pad-4 desktop:w-4/5 desktop:px-pad desktop:pt-0 lg:w-(--real-header-w)"
-  >
-    <h1 id="about" class="text-5xl font-bold text-heading">About</h1>
-
-    <article
-      aria-labelledby="about"
-      class="grid grid-cols-1 gap-pad-4 md:grid-cols-2"
+  <main class="space-y-pad-4 pt-pad pb-pad-4 desktop:pt-0">
+    <div
+      class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
     >
+      <h1 id="about" class="text-5xl font-bold text-heading">About</h1>
+
+      <div class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 md:grid-cols-2">
+        <p>
+          I'm a fourth year student in the Digital Media Design program at the
+          University of Pennsylvania.
+        </p>
+        <p class="md:row-start-2">
+          I help out with (and used to co-lead) <Link
+            href="https://pennupgrade.com"
+            target="_blank">UPGRADE</Link
+          >, our game dev club, and run communications as part of the <Link
+            href="https://cg.cis.upenn.edu"
+            target="_blank">CG@Penn</Link
+          > student board.
+        </p>
+        <p class="md:row-start-2">
+          Last summer, I interned at Snap Inc. and hacked on their rendering
+          engine. It was fun! Before that, I was at TikTok. <Link
+            href="/resume"
+            target="_blank">Here's my resume.</Link
+          >
+        </p>
+      </div>
+    </div>
+
+    <section
+      aria-label="Pictures"
+      class="mx-auto grid max-w-(--real-wide-w) grid-cols-2 items-center *:min-w-0 desktop:gap-pad-2 desktop:px-pad-4 desktop:*:rounded-xl md:grid-cols-4 xl:gap-x-pad-4"
+      style={{
+        "--img-max-h": "25rem",
+      }}
+    >
+      <Image
+        src={imageDante}
+        alt="Me getting attacked by my friend's dog, Dante"
+        style={{
+          width: "auto",
+          maxHeight: "var(--img-max-h)",
+        }}
+        loading="eager"
+      />
+
+      <Image
+        src={imageBirthday}
+        alt='Me wearing a silver crown, holding a balloon with a sash that says "Birthday Princess" on it'
+        style={{
+          width: "auto",
+          maxHeight: "var(--img-max-h)",
+        }}
+        loading="eager"
+      />
+
       <button
         id="pictures"
         aria-label="Strange button"
-        class="relative order-2 h-fit w-full overflow-hidden rounded-xl transition-transform data-initial:cursor-help data-initial:active:scale-97 md:order-1"
+        class="relative overflow-hidden transition-transform data-initial:cursor-help data-initial:active:scale-98 xl:scale-102 xl:data-initial:active:scale-100"
+        style={{
+          rotate: "-2.5deg",
+        }}
         data-initial=""
         data-umami-event="about-picture"
       >
@@ -76,118 +130,125 @@ const description = "More about who I am";
               alt={alt}
               loading={index === 0 ? "eager" : "lazy"}
               class:list={[
-                "rounded-xl",
+                "desktop:rounded-xl",
                 {
-                  "absolute inset-0 -z-1 scale-40 opacity-0 blur-2xl":
+                  "absolute inset-0 -z-1 scale-50 opacity-0 blur-2xl":
                     index !== 0,
                 },
               ]}
+              style={{
+                width: "auto",
+                maxHeight: "var(--img-max-h)",
+              }}
             />
           ))
         }
       </button>
 
-      <div class="order-1 max-w-(--content-w) space-y-pad-2 md:order-2">
-        <p>
-          Hi! I'm a fourth year student in the <Link
-            href="https://cg.cis.upenn.edu"
-            target="_blank">Digital Media Design</Link
-          > program at UPenn. I'm part of (and used to co-lead) <Link
-            href="https://pennupgrade.com"
-            target="_blank">UPGRADE</Link
-          >, our game dev club, and am part of the CG@Penn student board.
-        </p>
-        <p>
-          Previously I interned at TikTok and Snap to work on their rendering
-          engines. <Link href="/resume" target="_blank">Here's my resume.</Link>
-        </p>
-        <p>
-          I'm generally interested in computer graphics, specifically real-time
-          rendering, and game engine development. I grew up drawing and
-          designing things, and continue to love doing so.
-        </p>
-        <p>
-          I strongly believe in shared spaces, self-expression, and visual
-          identities. This is why I resonate so strongly with the web. <span
-            class="italic">Everyone can and should make a website!</span
-          > It's your digital source of truth.
-        </p>
-      </div>
-    </article>
+      <Image
+        src={imageSuit}
+        alt="Close angle picture of my in a tuxedo with a Labubu sitting in my pocket"
+        style={{
+          width: "auto",
+          maxHeight: "var(--img-max-h)",
+        }}
+        loading="eager"
+      />
+    </section>
 
-    <section class="max-w-(--content-w)">
-      <h2 id="contact" class="mb-pad text-xl font-bold text-heading">
-        Contact
-      </h2>
+    <div
+      class="mx-auto grid w-full grid-cols-1 gap-x-pad-4 gap-y-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w)"
+    >
       <p>
-        I welcome random messages from strangers. Please reach out to say hello!
-        You can find me on <Link
-          href="https://twitter.com/zwcharl"
-          target="_blank">Twitter</Link
-        >, <Link href="https://github.com/aczw" target="_blank">GitHub</Link>, <Link
-          href="https://linkedin.com/in/zwcharl"
-          target="_blank">LinkedIn</Link
-        >, and <Link href="https://are.na/charles-zw" target="_blank"
-          >Are.na</Link
-        >. My email is <span class="inline-code"
-          >zwcharl &lt;at&gt; gmail &lt;dot&gt; com</span
-        >.
+        I'm interested in computer graphics, specifically real-time rendering,
+        and game engine development. I grew up making art and designing things,
+        which continues to show up in everything I do.
       </p>
-    </section>
+      <p>
+        I strongly believe in self-expression, visual identities, and open
+        spaces. Naturally, I resonate a lot with the web. <span class="italic"
+          >Everyone can and should make a website!</span
+        > It's your digital source of truth.
+      </p>
+    </div>
 
-    <section class="grid grid-cols-1 gap-x-pad-4 sm:grid-cols-2">
-      <h2
-        id="music"
-        class="col-span-full mb-pad text-xl font-bold text-heading"
-      >
-        Music
-      </h2>
+    <div
+      class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+    >
+      <section class="max-w-(--content-w)">
+        <h2 id="contact" class="mb-pad text-xl font-bold text-heading">
+          Contact
+        </h2>
+        <p>
+          I welcome random messages from strangers. Please reach out to say
+          hello! You can find me on <Link
+            href="https://twitter.com/zwcharl"
+            target="_blank">Twitter</Link
+          >, <Link href="https://github.com/aczw" target="_blank">GitHub</Link>, <Link
+            href="https://linkedin.com/in/zwcharl"
+            target="_blank">LinkedIn</Link
+          >, and <Link href="https://are.na/charles-zw" target="_blank"
+            >Are.na</Link
+          >. My email is <span class="inline-code"
+            >zwcharl &lt;at&gt; gmail &lt;dot&gt; com</span
+          >.
+        </p>
+      </section>
 
-      <LastFmRecentTrack server:defer>
-        <div
-          aria-hidden="true"
-          class="mb-pad-2 animate-pulse space-y-pad sm:mb-0"
-          slot="fallback"
+      <section class="grid grid-cols-1 gap-x-pad-4 sm:grid-cols-2">
+        <h2
+          id="music"
+          class="col-span-full mb-pad text-xl font-bold text-heading"
         >
-          <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
+          Music
+        </h2>
+
+        <LastFmRecentTrack server:defer>
           <div
-            class="flex gap-x-3.5 *:rounded-md *:bg-sweater-9 light:*:bg-sweater-2"
+            aria-hidden="true"
+            class="mb-pad-2 animate-pulse space-y-pad sm:mb-0"
+            slot="fallback"
           >
-            <div class="size-[3lh] shrink-0"></div>
-            <div class="h-[3lh] grow"></div>
+            <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
+            <div
+              class="flex gap-x-3.5 *:rounded-md *:bg-sweater-9 light:*:bg-sweater-2"
+            >
+              <div class="size-[3lh] shrink-0"></div>
+              <div class="h-[3lh] grow"></div>
+            </div>
           </div>
-        </div>
-      </LastFmRecentTrack>
+        </LastFmRecentTrack>
 
-      <LastFmTopStats server:defer>
-        <div
-          aria-hidden="true"
-          class="animate-pulse space-y-pad"
-          slot="fallback"
-        >
-          <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
+        <LastFmTopStats server:defer>
           <div
-            class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"
+            aria-hidden="true"
+            class="animate-pulse space-y-pad"
+            slot="fallback"
           >
+            <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
+            <div
+              class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"
+            >
+            </div>
           </div>
-        </div>
-      </LastFmTopStats>
-    </section>
+        </LastFmTopStats>
+      </section>
 
-    <section>
-      <h2 id="anilist" class="mb-pad text-xl font-bold text-heading">
-        Anilist
-      </h2>
-      <AniListRecentActivity server:defer>
-        <div
-          class="grid animate-pulse grid-cols-1 gap-x-pad-4 gap-y-pad-2 *:h-[4lh] *:rounded-md *:bg-sweater-9 md:grid-cols-2 light:*:bg-sweater-2"
-          slot="fallback"
-        >
-          <div></div>
-          <div></div>
-        </div>
-      </AniListRecentActivity>
-    </section>
+      <section>
+        <h2 id="anilist" class="mb-pad text-xl font-bold text-heading">
+          Anilist
+        </h2>
+        <AniListRecentActivity server:defer>
+          <div
+            class="grid animate-pulse grid-cols-1 gap-x-pad-4 gap-y-pad-2 *:h-[4lh] *:rounded-md *:bg-sweater-9 md:grid-cols-2 light:*:bg-sweater-2"
+            slot="fallback"
+          >
+            <div></div>
+            <div></div>
+          </div>
+        </AniListRecentActivity>
+      </section>
+    </div>
   </main>
 
   <Footer />
@@ -235,7 +296,7 @@ const description = "More about who I am";
           spiderElt.style.zIndex = "auto";
           spiderElt
             .animate(
-              [{ scale: 0.4, opacity: 0.0, filter: "blur(var(--blur-2xl))" }],
+              [{ scale: 0.5, opacity: 0.0, filter: "blur(var(--blur-2xl))" }],
               KEYFRAME_OPTS,
             )
             .addEventListener("finish", handleAnimationFinish);
@@ -246,6 +307,10 @@ const description = "More about who I am";
               [{ scale: 1.0, opacity: 1.0, filter: "none" }],
               KEYFRAME_OPTS,
             )
+            .addEventListener("finish", handleAnimationFinish);
+
+          picturesBtn
+            .animate([{ rotate: "0deg" }], KEYFRAME_OPTS)
             .addEventListener("finish", handleAnimationFinish);
         }
       });
