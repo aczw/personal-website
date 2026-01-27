@@ -45,20 +45,22 @@ const projects = await getEntries(
       class="z-1 grid h-fit w-full grid-cols-1 gap-y-pad px-pad-2 pt-pad-2 font-bold desktop:mt-10 desktop:w-4/5 desktop:rounded-xl desktop:bg-sweater-10 desktop:p-pad sm:grid-cols-2 lg:w-(--real-header-w) desktop:light:bg-sweater-1"
     >
       <h1 class="space-y-0.5">
-        <Eye
-          aria-hidden="true"
-          class="peer fill-sweater-5 transition-[fill_rotate] hover:-rotate-13 hover:fill-sweater-4 light:fill-sweater-6 light:hover:fill-sweater-7"
-        />
+        <div aria-hidden="true" class="flex h-[2.15rem] items-center">
+          <Eye
+            aria-hidden="true"
+            class="peer fill-sweater-5 transition-[fill_rotate] hover:-rotate-13 hover:fill-sweater-4 light:fill-sweater-6 light:hover:fill-sweater-7"
+          />
+        </div>
 
         <span
-          class="cursor-default text-3xl leading-none text-sweater-5 transition-colors peer-hover:text-sweater-4 light:text-sweater-6 light:peer-hover:text-sweater-7"
+          class="cursor-default text-2xl leading-none text-sweater-5 transition-colors peer-hover:text-sweater-4 light:text-sweater-6 light:peer-hover:text-sweater-7"
         >
           Charles Wang
         </span>
       </h1>
 
       <nav
-        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad text-xl leading-none *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors **:stroke-icon *:hover:text-link-primary-hover sm:gap-y-1"
+        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad text-xl leading-none *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors **:stroke-icon *:hover:text-link-primary-hover sm:gap-y-0"
       >
         <a href="/projects">
           Portfolio <ToolCaseIcon aria-hidden="true" size={ICON_SIZE} />
