@@ -10,7 +10,7 @@ import {
   getShortDateFormatting,
   isValidProjectCover,
 } from "@/scripts/util";
-import { ICON_SIZE } from "@/scripts/constants";
+import { DISABLED_POSTS, ICON_SIZE } from "@/scripts/constants";
 import BaseLayout from "@/layouts/base-layout.astro";
 import MdxContent from "@/components/mdx-content.astro";
 import Header from "@/components/header.astro";
@@ -18,9 +18,11 @@ import Footer from "@/components/footer.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
-  return posts.map((post) => {
-    return { params: { id: post.id } };
-  });
+  return posts
+    .filter((post) => !DISABLED_POSTS.includes(post.id))
+    .map((post) => {
+      return { params: { id: post.id } };
+    });
 }) satisfies GetStaticPaths;
 
 const { id } = Astro.params;

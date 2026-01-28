@@ -8,13 +8,15 @@ import {
   getFullDateFormatting,
   getMonthDayDateFormatting,
 } from "@/scripts/util";
-import { ICON_SIZE } from "@/scripts/constants";
+import { DISABLED_POSTS, ICON_SIZE } from "@/scripts/constants";
 import Link from "@/components/link.astro";
 
-const posts = await getCollection("posts");
-const yearPostsMap = new Map<number, typeof posts>();
+const posts = (await getCollection("posts")).filter(
+  (post) => !DISABLED_POSTS.includes(post.id),
+);
 
 // Group each post with its corresponding year
+const yearPostsMap = new Map<number, typeof posts>();
 for (const post of posts) {
   const year = post.data.posted.getFullYear();
 
