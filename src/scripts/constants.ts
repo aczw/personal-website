@@ -37,18 +37,12 @@ const DISABLED_PROJECTS = [
   "dgdg", // game
   "fireball", // code
   "glsl-path-tracer", // code
-  "moore-chair", // visual
+  "moore-chair", // visual(3d)
   "pbr-renderer", // code
   "racecar",
   "rcw", // game
 ];
 const DISABLED_POSTS = ["dithering"];
-
-// common to all: blurb, SimpleDateSchema, TechSchema, slug, number of teammates(opt, entering 0 is the same as undefined)
-
-// visual: medium(3d|traditional|digital|cover-art)
-// code: languages, libraries/frameworks, sourceHref(opt)
-// game: store links, engine, sourceHref(opt)
 
 /**
  * Corresponds to CSS var(--color-sweater-1).

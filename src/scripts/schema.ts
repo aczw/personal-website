@@ -74,6 +74,14 @@ const TechSchema = z.string().array();
 
 const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 
+const GalleryCommonSchema = z.object({
+  blurb: BlurbSchema,
+  date: SimpleDateSchema,
+  uses: TechSchema,
+  numMembers: z.number().int().min(2).optional(),
+  cover: z.enum(["image", "video"]),
+});
+
 export {
   BlurbSchema,
   ImageSchema,
@@ -83,4 +91,5 @@ export {
   RangedDateSchema,
   TechSchema,
   DateSchema,
+  GalleryCommonSchema,
 };

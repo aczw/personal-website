@@ -4,6 +4,7 @@ import { glob } from "astro/loaders";
 import {
   BlurbSchema,
   DateSchema,
+  GalleryCommonSchema,
   ImageSchema,
   LinkSchema,
   SourceHrefSchema,
@@ -45,9 +46,32 @@ const posts = defineCollection({
     }),
 });
 
+const gallery = defineCollection({
+  loader: glob({ pattern: "**/*.mdx", base: "./src/content/gallery" }),
+  schema: z.discriminatedUnion("type", [
+    GalleryCommonSchema.extend({
+      type: z.literal("visual"),
+      category: z.enum(["3d", "traditional", "digital", "cover-art"]),
+    }),
+    GalleryCommonSchema.extend({
+      type: z.literal("code"),
+      languages: z.string().array(), // Make it broad for now
+      libraries: z.string().array(),
+      sourceHref: SourceHrefSchema.optional(),
+    }),
+    GalleryCommonSchema.extend({
+      type: z.literal("game"),
+      stores: z.string().url().array(),
+      engine: z.enum(["unity", "unreal", "godot", "custom"]),
+      sourceHref: SourceHrefSchema.optional(),
+    }),
+  ]),
+});
+
 const collections = {
   projects,
   posts,
+  gallery,
 };
 
 export { collections, ImageSchema };
