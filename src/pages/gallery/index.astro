@@ -1,0 +1,42 @@
+---
+import CommonLayout from "@/layouts/common-layout.astro";
+
+const description = "Everything I've ever done";
+---
+
+<CommonLayout
+  meta={{
+    kind: "route",
+    title: "Gallery",
+    description: description + ".",
+    ogImageParams: description,
+  }}
+  headerLinks={[]}
+>
+  <main class="space-y-pad-4 pt-pad pb-pad-4 desktop:pt-0">
+    <h1
+      class="mx-auto w-full px-pad-2 text-5xl font-bold text-heading desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+    >
+      Gallery
+    </h1>
+
+    <ul
+      class="mx-auto max-w-(--real-wide-w) columns-1 gap-pad-2 space-y-pad-2 px-pad-2 sm:columns-2 md:columns-3 xl:gap-pad-4 xl:space-y-pad-4"
+    >
+      {
+        Array.from({ length: 5 }).map(() => (
+          <li class="break-inside-avoid bg-sweater-9">
+            <article>
+              <figure>
+                <div>Image will go here</div>
+                <figcaption>
+                  Some short metadata about the project will go here.
+                </figcaption>
+              </figure>
+            </article>
+          </li>
+        ))
+      }
+    </ul>
+  </main>
+</CommonLayout>
