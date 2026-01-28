@@ -28,6 +28,8 @@ type DateKind =
   | { kind: "simple"; date: SimpleDate }
   | { kind: "ranged"; date: RangedDate };
 
+type HeaderLink = { href: string; text: string };
+
 export type {
   EntryKind,
   MetaKind,
@@ -35,4 +37,5 @@ export type {
   RangedDate,
   ContentDate,
   DateKind,
+  HeaderLink,
 };

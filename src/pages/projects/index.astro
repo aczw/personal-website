@@ -3,13 +3,11 @@ import { getCollection } from "astro:content";
 
 import { SquareArrowRightIcon } from "@lucide/astro";
 
+import CommonLayout from "@/layouts/common-layout.astro";
 import ProjectCover from "@/components/project-cover.astro";
 import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
-import BaseLayout from "@/layouts/base-layout.astro";
-import Header from "@/components/header.astro";
-import Footer from "@/components/footer.astro";
 
 const WITH_VIDEOS = [
   // "racecar",
@@ -26,16 +24,15 @@ const description =
   "Write-ups and technical breakdowns of some of my favorite projects";
 ---
 
-<BaseLayout
+<CommonLayout
   meta={{
     kind: "route",
     title: "Portfolio",
     description: description + ".",
     ogImageParams: description,
   }}
+  headerLinks={[]}
 >
-  <Header links={[]} />
-
   <main class="space-y-pad-4 pt-pad pb-pad-4 desktop:pt-0">
     <hgroup
       class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
@@ -91,6 +88,4 @@ const description =
       }
     </div>
   </main>
-
-  <Footer />
-</BaseLayout>
+</CommonLayout>

@@ -3,15 +3,13 @@ import { getCollection } from "astro:content";
 
 import { SquareArrowRightIcon } from "@lucide/astro";
 
+import CommonLayout from "@/layouts/common-layout.astro";
 import {
   getFullDateFormatting,
   getMonthDayDateFormatting,
 } from "@/scripts/util";
 import { ICON_SIZE } from "@/scripts/constants";
-import BaseLayout from "@/layouts/base-layout.astro";
-import Header from "@/components/header.astro";
 import Link from "@/components/link.astro";
-import Footer from "@/components/footer.astro";
 
 const posts = await getCollection("posts");
 const yearPostsMap = new Map<number, typeof posts>();
@@ -36,7 +34,7 @@ for (const postsInYear of yearPostsMap.values()) {
 const yearPosts = [...yearPostsMap].sort((a, b) => b[0] - a[0]);
 ---
 
-<BaseLayout
+<CommonLayout
   meta={{
     kind: "route",
     title: "Writing",
@@ -44,9 +42,8 @@ const yearPosts = [...yearPostsMap].sort((a, b) => b[0] - a[0]);
       "Random writing about stuff I've learned, things I'm working on, and interesting topics.",
     ogImageParams: "Random ramblings on stuff I've been doing",
   }}
+  headerLinks={[]}
 >
-  <Header links={[]} />
-
   <main
     class="mx-auto w-full space-y-pad-4 px-pad-2 pt-pad pb-pad-4 [--posts-date-w:120px] desktop:w-4/5 desktop:px-pad desktop:pt-0 sm:[--posts-date-w:40%] md:[--posts-date-w:30%] lg:w-(--real-header-w)"
   >
@@ -143,6 +140,4 @@ const yearPosts = [...yearPostsMap].sort((a, b) => b[0] - a[0]);
       </p>
     </div>
   </main>
-
-  <Footer />
-</BaseLayout>
+</CommonLayout>

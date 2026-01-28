@@ -3,11 +3,10 @@ import type { HTMLAttributes } from "astro/types";
 
 import Eye from "@/components/eye.astro";
 import Slash from "@/components/slash.astro";
-
-type Link = { href: string; text: string };
+import type { HeaderLink } from "@/scripts/types";
 
 type Props = HTMLAttributes<"header"> & {
-  links: Link[];
+  links: HeaderLink[];
 };
 
 const { links, class: className, ...props } = Astro.props;

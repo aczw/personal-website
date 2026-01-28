@@ -9,9 +9,8 @@ import {
   WrenchIcon,
 } from "@lucide/astro";
 
-import BaseLayout from "@/layouts/base-layout.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
 import MdxContent from "@/components/mdx-content.astro";
-import Header from "@/components/header.astro";
 import ProjectCover from "@/components/project-cover.astro";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
@@ -19,7 +18,6 @@ import { DISABLED_PROJECTS } from "@/scripts/constants";
 import { isValidProjectCover } from "@/scripts/util";
 import { ICON_SIZE } from "@/scripts/constants";
 import Link from "@/components/link.astro";
-import Footer from "@/components/footer.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -51,9 +49,10 @@ const numMetadata = 2 + (link ? 1 : 0) + (sourceHref ? 1 : 0);
 const { Content } = await render(project);
 ---
 
-<BaseLayout meta={{ kind: "project", project }}>
-  <Header links={[{ href: "/projects", text: "Portfolio" }]} />
-
+<CommonLayout
+  meta={{ kind: "project", project }}
+  headerLinks={[{ href: "/projects", text: "Portfolio" }]}
+>
   <main>
     <section
       class="mx-auto mb-pad-4 w-full px-pad-2 pt-pad desktop:w-4/5 desktop:px-pad desktop:pt-0 lg:w-(--real-header-w)"
@@ -170,6 +169,4 @@ const { Content } = await render(project);
 
     <MdxContent aria-label="Write-up" content={Content} />
   </main>
-
-  <Footer />
-</BaseLayout>
+</CommonLayout>

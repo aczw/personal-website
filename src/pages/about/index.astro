@@ -8,13 +8,11 @@ import imageSpider from "@/assets/about/spider.jpg";
 import imageAsa from "@/assets/about/asa.jpg";
 import imageBirthday from "@/assets/about/birthday.jpg";
 
-import BaseLayout from "@/layouts/base-layout.astro";
-import Header from "@/components/header.astro";
+import CommonLayout from "@/layouts/common-layout.astro";
 import Link from "@/components/link.astro";
 import LastFmRecentTrack from "@/components/lastfm-recent-track.astro";
 import LastFmTopStats from "@/components/lastfm-top-stats.astro";
 import AniListRecentActivity from "@/components/anilist-recent-activity.astro";
-import Footer from "@/components/footer.astro";
 
 type AboutPicture = {
   id: string;
@@ -38,16 +36,15 @@ const ABOUT_PICTURES: AboutPicture[] = [
 const description = "More about who I am";
 ---
 
-<BaseLayout
+<CommonLayout
   meta={{
     kind: "route",
     title: "About",
     description: description + ".",
     ogImageParams: description,
   }}
+  headerLinks={[]}
 >
-  <Header links={[]} />
-
   <main class="space-y-pad-4 pt-pad pb-pad-4 desktop:pt-0">
     <div
       class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
@@ -250,9 +247,7 @@ const description = "More about who I am";
       </section>
     </div>
   </main>
-
-  <Footer />
-</BaseLayout>
+</CommonLayout>
 
 <script>
   const picturesBtn = document.getElementById("pictures") as HTMLButtonElement;
