@@ -147,7 +147,10 @@
   }
 
   section[data-footnotes] {
-    @apply mt-pad-2 mb-0 border-t-(length:--border-w) border-style pt-pad-2 desktop:mt-0;
+    @apply mt-pad-2 mb-0 border-t-(length:--border-w) border-style pt-pad-2 text-sm desktop:mt-0;
+
+    /* In footnotes, monospaced text should be even smaller. */
+    --text-mono: 0.8rem;
 
     > h2#footnote-label {
       @apply sr-only;
