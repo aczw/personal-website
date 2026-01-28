@@ -5,10 +5,10 @@ import {
   SquareArrowRightIcon,
   SquareMousePointerIcon,
   SquareDashedMousePointerIcon,
-  BoxesIcon,
   InfoIcon,
   FeatherIcon,
   ToolCaseIcon,
+  ComponentIcon,
 } from "@lucide/astro";
 
 import BaseLayout from "@/layouts/base-layout.astro";
@@ -68,8 +68,8 @@ const projects = await getEntries(
         <a href="/posts">
           Writing <FeatherIcon aria-hidden="true" size={ICON_SIZE} />
         </a>
-        <a href="/archive">
-          Archive <BoxesIcon aria-hidden="true" size={ICON_SIZE} />
+        <a href="/gallery">
+          Gallery <ComponentIcon aria-hidden="true" size={ICON_SIZE} />
         </a>
         <a href="/about">
           About <MusicIndicator size={ICON_SIZE} server:defer>
