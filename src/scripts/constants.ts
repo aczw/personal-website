@@ -23,11 +23,6 @@ const VALID_MONTHS = [
 ];
 
 /**
- * Might change in the future if I move.
- */
-const CURRENT_TIMEZONE = "America/New_York";
-
-/**
  * Order matters! Project videos will be played in the order defined here.
  */
 const HOMEPAGE_PROJECTS = [
@@ -174,7 +169,6 @@ const FLAVOR_TEXTS = [
 export {
   CDN_URL,
   VALID_MONTHS,
-  CURRENT_TIMEZONE,
   HOMEPAGE_PROJECTS,
   DISABLED_PROJECTS,
   DISABLED_POSTS,

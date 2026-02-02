@@ -1,12 +1,16 @@
-import { CURRENT_TIMEZONE } from "@/scripts/constants";
 import type { ContentDate, DateKind } from "@/scripts/types";
 
 /**
- * This value is used in astro.config.ts, which unfortunately means it can't
- * share a file with functions that deal with Astro components/JSX syntax,
- * e.g. constants.ts. Therefore it's defined in this file instead.
+ * Values used in astro.config.ts can't be defined in files with functions that
+ * deal with Astro components/JSX syntax, which includes constants.ts. So
+ * some constants are defined in this file instead.
  */
 const SITE_URL = "https://charleszw.com";
+
+/**
+ * Might change in the future if I move.
+ */
+const CURRENT_TIMEZONE = "America/New_York";
 
 /**
  * Checks that the cover image for my project covers have an aspect ratio of
