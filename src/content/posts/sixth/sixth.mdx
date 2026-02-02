@@ -14,13 +14,14 @@ I wanted to write a little about the sixth redesign of my website, v6. I've trie
 
 It's embarrassing but I'm always thinking about how I want to update my website design. As a result I've been collecting a number of inspirations since v5 which I've put in this Are.na channel.[^2]
 
-<iframe
-  width="100%"
-  height="450px"
-  style={{ borderRadius: "var(--radius-lg)", overflow: "hidden" }}
-  src="https://www.are.na/czw/charleszw-com-v6/embed"
-  title="inspo and vibes"
-></iframe>
+<div class="mdx-full">
+  <iframe
+    width="100%"
+    height="450px"
+    src="https://www.are.na/czw/charleszw-com-v6/embed"
+    title="inspo and vibes"
+  ></iframe>
+</div>
 
 A lot of these blocks emphasize text, structure, and subtlety—stuff that looks simple, but hopefully makes you think _hmmm_, but how did they actually make that? I wanted more polish and personality to shine through.
 
@@ -28,7 +29,7 @@ A lot of these blocks emphasize text, structure, and subtlety—stuff that looks
 
 I've experimented with grid layouts since the beginning of this site. Here's what v1 of the home page looked like at one point:
 
-<figure>
+<figure class="mdx-outdent">
   <div class="rounded-lg border-(length:--border-w) border-style">
     ![Screenshot of the first version of this website. Multiple squares of
     different sizes are arranged in a grid in the center.](v1-wip.png)
@@ -85,9 +86,9 @@ To counteract the smaller content width, I wanted some way for people to enlarge
 
 It uses very little JS—[a little less than 40 lines](https://github.com/aczw/personal-website/blob/e6c1fd1c95efb776d161afc8f10e13f793983acd/src/components/content-with-toc.astro#L46-L83)—to add event listeners to images and for setting/resetting the image viewer. A bulk of the work is handled by the `<dialog>` element itself, including the overlay and keyboard accessibility.
 
-Try it now with the image below. (Note: not available on mobile because you can just, you know, _zoom in_.)
+Try it now with the image below. (Note: not available on mobile because you can just, like, pinch.)
 
-<figure>
+<figure class="mdx-outdent">
   ![Steam Deck is lying on a bed. On the screen is the start menu for Catanks, a
   game.](catanks-deck.jpg)
   <figcaption>
