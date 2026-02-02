@@ -1,5 +1,13 @@
 ---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
 import CommonLayout from "@/layouts/common-layout.astro";
+import { CDN_URL } from "@/scripts/constants";
+
+const gallery = (await getCollection("gallery")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
 
 const description = "Everything I've ever done";
 ---
@@ -24,17 +32,26 @@ const description = "Everything I've ever done";
       class="mx-auto max-w-(--real-wide-w) columns-1 gap-pad-2 space-y-pad-2 px-pad-2 sm:columns-2 md:columns-3 xl:gap-pad-4 xl:space-y-pad-4"
     >
       {
-        Array.from({ length: 5 }).map(() => (
-          <li class="break-inside-avoid bg-sweater-9">
-            <article>
-              <figure>
-                <div>Image will go here</div>
-                <figcaption>
-                  Some short metadata about the project will go here.
-                </figcaption>
-              </figure>
-            </article>
+        gallery.map(({ id, data: { type, cover } }) => (
+          <li class="break-inside-avoid">
+            <a href={`/gallery/${id}`} class="rounded-lg">
+              {type === "visual" ?
+                <Image
+                  src={`${CDN_URL}/gallery/${id}/1.png`}
+                  alt={cover.alt}
+                  inferSize
+                  priority
+                  class="rounded-lg bg-sweater-9"
+                />
+              : null}
+            </a>
           </li>
+        ))
+      }
+
+      {
+        Array.from({ length: 5 }).map(() => (
+          <li class="break-inside-avoid bg-sweater-9">Media will go here</li>
         ))
       }
     </ul>

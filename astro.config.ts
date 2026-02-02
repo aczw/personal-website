@@ -32,6 +32,15 @@ const config = defineConfig({
   image: {
     responsiveStyles: true,
     layout: "constrained",
+    remotePatterns: [
+      { protocol: "https", hostname: "cdn.charleszw.com", pathname: "/**" },
+      {
+        protocol: "https",
+        hostname: "lastfm.freetls.fastly.net",
+        pathname: "/**",
+      },
+      { protocol: "https", hostname: "**.anilist.co", pathname: "/**" },
+    ],
   },
   integrations: [
     sitemap(),

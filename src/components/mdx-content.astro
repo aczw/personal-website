@@ -34,6 +34,8 @@ const { content: Content, class: className, ...props } = Astro.props;
     <div class="p-pad-2">
       <img
         loading="eager"
+        decoding="sync"
+        fetchpriority="high"
         class="mx-auto max-h-[80vh] cursor-zoom-out rounded-xl select-none"
       />
     </div>

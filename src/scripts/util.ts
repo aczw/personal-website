@@ -1,3 +1,4 @@
+import { CURRENT_TIMEZONE } from "@/scripts/constants";
 import type { ContentDate, DateKind } from "@/scripts/types";
 
 /**
@@ -36,7 +37,7 @@ function getShortDateFormatting(date: Date) {
     month: "long",
     day: "numeric",
     year: "numeric",
-    timeZone: "America/New_York",
+    timeZone: CURRENT_TIMEZONE,
   });
 }
 
@@ -50,7 +51,7 @@ function getFullDateFormatting(date: Date) {
     year: "numeric",
     hour: "numeric",
     minute: "numeric",
-    timeZone: "America/New_York",
+    timeZone: CURRENT_TIMEZONE,
     timeZoneName: "short",
   });
 }
@@ -62,7 +63,7 @@ function getMonthDayDateFormatting(date: Date) {
   return date.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
-    timeZone: "America/New_York",
+    timeZone: CURRENT_TIMEZONE,
   });
 }
 

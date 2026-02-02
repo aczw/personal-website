@@ -55,7 +55,7 @@ const BACKUP_ENTRIES: BackupAniListEntry[] = [
   },
 ];
 
-function resolvedTitle(title: AniListMediaTitle) {
+function getResolvedTitle(title: AniListMediaTitle) {
   return (
     title.english ? title.english
     : title.romaji ? title.romaji
@@ -67,6 +67,7 @@ const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
 
 function relativeTime(date: Date) {
   const diffInDays = Math.ceil(
+    // Calculate in terms of days
     (date.getTime() - new Date().getTime()) / 86400000,
   );
 
@@ -101,7 +102,7 @@ if (available) {
       available ?
         <>
           {activities.map(({ media: { title, coverImage, siteUrl } }) => {
-            const resolved = resolvedTitle(title);
+            const resolved = getResolvedTitle(title);
 
             return (
               <li class="shrink-0">
@@ -111,11 +112,13 @@ if (available) {
                   target="_blank"
                   class="block"
                 >
-                  <img
+                  <Image
                     src={coverImage.large}
                     alt={`Cover art for ${resolved}`}
-                    class="h-[4lh] rounded-md bg-sweater-9"
-                    loading="eager"
+                    inferSize
+                    priority
+                    class="rounded-md bg-sweater-9"
+                    style={{ height: "4lh", width: "auto" }}
                   />
                 </a>
               </li>
@@ -129,9 +132,9 @@ if (available) {
                 <Image
                   src={cover}
                   alt={`Cover art for ${title}`}
+                  priority
                   class="rounded-md bg-sweater-9"
                   style={{ height: "4lh", width: "auto" }}
-                  fit="contain"
                 />
               </a>
             </li>
@@ -167,7 +170,7 @@ if (available) {
             : null}{" "}
             {activities[0].progress ? `${activities[0].progress} of` : null}{" "}
             <Link href={activities[0].media.siteUrl} target="_blank">
-              {resolvedTitle(activities[0].media.title)}
+              {getResolvedTitle(activities[0].media.title)}
             </Link>
           </p>
         </Aside>

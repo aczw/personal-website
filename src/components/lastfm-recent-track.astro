@@ -5,6 +5,7 @@ import { MusicIcon } from "@lucide/astro";
 
 import Link from "@/components/link.astro";
 import { ICON_SIZE } from "@/scripts/constants";
+import { Image } from "astro:assets";
 
 const { data, error } = await Astro.callAction(
   actions.lastFm.getRecentTrack,
@@ -30,11 +31,13 @@ const available = !error;
   <div class="flex gap-x-3.5">
     {
       available && data.coverUrl ?
-        <img
+        <Image
           src={data.coverUrl}
           alt={`Cover image for ${data.songName} by ${data.artist}`}
-          loading="eager"
-          class="size-[3lh] shrink-0 rounded-md bg-sweater-9"
+          inferSize
+          priority
+          class="shrink-0 rounded-md bg-sweater-9"
+          style={{ height: "3lh", width: "3lh" }}
         />
       : <div class="flex size-[3lh] shrink-0 items-center justify-center rounded-md bg-sweater-9">
           <MusicIcon size={ICON_SIZE} class="stroke-icon" />

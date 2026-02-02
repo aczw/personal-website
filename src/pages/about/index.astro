@@ -89,7 +89,7 @@ const description = "More about who I am";
           width: "auto",
           maxHeight: "var(--img-max-h)",
         }}
-        loading="eager"
+        priority
       />
 
       <Image
@@ -99,7 +99,7 @@ const description = "More about who I am";
           width: "auto",
           maxHeight: "var(--img-max-h)",
         }}
-        loading="eager"
+        priority
       />
 
       <button
@@ -125,7 +125,7 @@ const description = "More about who I am";
               id={id}
               src={imageMetadata}
               alt={alt}
-              loading={index === 0 ? "eager" : "lazy"}
+              priority={index === 0}
               class:list={[
                 "desktop:rounded-xl",
                 {
@@ -149,7 +149,7 @@ const description = "More about who I am";
           width: "auto",
           maxHeight: "var(--img-max-h)",
         }}
-        loading="eager"
+        priority
       />
     </section>
 

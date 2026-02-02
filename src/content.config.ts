@@ -4,7 +4,7 @@ import { glob } from "astro/loaders";
 import {
   BlurbSchema,
   DateSchema,
-  GalleryCommonSchema,
+  GalleryCommonSchema as common,
   ImageSchema,
   LinkSchema,
   SourceHrefSchema,
@@ -61,17 +61,17 @@ const gallery = defineCollection({
     retainBody: true,
   }),
   schema: z.discriminatedUnion("type", [
-    GalleryCommonSchema.extend({
+    common.extend({
       type: z.literal("visual"),
       category: z.enum(["3d", "traditional", "digital", "cover-art"]),
     }),
-    GalleryCommonSchema.extend({
+    common.extend({
       type: z.literal("code"),
       languages: z.string().array(), // Make it broad for now
       libraries: z.string().array(),
       sourceHref: SourceHrefSchema.optional(),
     }),
-    GalleryCommonSchema.extend({
+    common.extend({
       type: z.literal("game"),
       stores: z.string().url().array(),
       engine: z.enum(["unity", "unreal", "godot", "custom"]),

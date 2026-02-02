@@ -1,6 +1,5 @@
 ---
 import { Image } from "astro:assets";
-import type { CollectionEntry } from "astro:content";
 import type { z } from "astro/zod";
 
 import type { ImageSchema } from "@/content.config";
@@ -8,7 +7,7 @@ import { CDN_URL } from "@/scripts/constants";
 import { isValidProjectCover } from "@/scripts/util";
 
 interface Props {
-  id: CollectionEntry<"projects">["id"];
+  id: string;
   cover: z.infer<ReturnType<typeof ImageSchema>>;
   useVideo: { small: boolean } | null;
   class?: string;
@@ -28,7 +27,7 @@ if (!isValidProjectCover(cover.img.width, cover.img.height)) {
   class:list={["relative block aspect-16/10 *:absolute *:inset-0", className]}
   data-use-video={useVideo ? "true" : "false"}
 >
-  <Image src={cover.img} alt={cover.alt} loading="eager" class="bg-sweater-9" />
+  <Image src={cover.img} alt={cover.alt} priority class="bg-sweater-9" />
 
   {
     useVideo ?
