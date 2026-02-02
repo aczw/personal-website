@@ -12,7 +12,11 @@ import {
 } from "@/scripts/schema";
 
 const projects = defineCollection({
-  loader: glob({ pattern: "**/*.mdx", base: "./src/content/projects" }),
+  loader: glob({
+    pattern: "**/*.mdx",
+    base: "./src/content/projects",
+    retainBody: false,
+  }),
   schema: ({ image }) =>
     z.object({
       name: z.string(),
@@ -36,7 +40,11 @@ const projects = defineCollection({
 });
 
 const posts = defineCollection({
-  loader: glob({ pattern: "**/*.mdx", base: "./src/content/posts" }),
+  loader: glob({
+    pattern: "**/*.mdx",
+    base: "./src/content/posts",
+    retainBody: false,
+  }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -47,7 +55,11 @@ const posts = defineCollection({
 });
 
 const gallery = defineCollection({
-  loader: glob({ pattern: "**/*.mdx", base: "./src/content/gallery" }),
+  loader: glob({
+    pattern: "**/*.mdx",
+    base: "./src/content/gallery",
+    retainBody: true,
+  }),
   schema: z.discriminatedUnion("type", [
     GalleryCommonSchema.extend({
       type: z.literal("visual"),
