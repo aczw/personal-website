@@ -21,15 +21,14 @@ const projects = (await getCollection("projects"))
   .sort((a, b) => a.data.order - b.data.order);
 
 const description =
-  "Write-ups and technical breakdowns of some of my favorite projects";
+  "Write-ups and technical breakdowns for some of my favorite projects.";
 ---
 
 <CommonLayout
   meta={{
     kind: "route",
-    title: "Portfolio",
-    description: description + ".",
-    ogImageParams: description,
+    route: "projects",
+    description,
   }}
   headerLinks={[]}
 >
@@ -38,7 +37,7 @@ const description =
       class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
     >
       <h1 class="text-5xl font-bold text-heading">Portfolio</h1>
-      <p class="mt-1.5 max-w-(--content-w)">{description}.</p>
+      <p class="mt-1.5 max-w-(--content-w)">{description}</p>
     </hgroup>
 
     <div

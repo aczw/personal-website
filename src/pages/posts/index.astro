@@ -34,16 +34,13 @@ for (const postsInYear of yearPostsMap.values()) {
 
 // Sort most recent year on top
 const yearPosts = [...yearPostsMap].sort((a, b) => b[0] - a[0]);
-
-const description = "Writing on technical topics and personal life";
 ---
 
 <CommonLayout
   meta={{
     kind: "route",
-    title: "Writing",
-    description: description + ".",
-    ogImageParams: description,
+    route: "posts",
+    description: "Writing whatever.",
   }}
   headerLinks={[]}
 >
