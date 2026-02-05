@@ -26,15 +26,25 @@ const projects = await getEntries(
     };
   }),
 );
----
 
-<BaseLayout
-  meta={{
+/*meta={{
     kind: "route",
     title: null,
     description:
       "Computer graphics student at the University of Pennsylvania. Currently pushing pixels and carving into bridges.",
     ogImageParams: "Pixel pusher, bridge carver",
+  }}
+  meta={{
+    kind: "general",
+  }} */
+---
+
+<BaseLayout
+  meta={{
+    kind: "route",
+    route: "home",
+    description:
+      "Computer graphics, games, and design. Pushing pixels, carving bridges",
   }}
 >
   <div
@@ -177,7 +187,6 @@ const projects = await getEntries(
     DEFAULT_DARK_DITHER_SETTINGS,
     DEFAULT_LIGHT_DITHER_SETTINGS,
   } from "@/scripts/constants";
-  import { saturate } from "@/scripts/util";
   import { type Dither } from "@/scripts/dither/types";
   import { initializePanel, type Panel } from "@/scripts/dither/panel";
   import { applyDitherSettings } from "@/scripts/dither/presets";
@@ -415,9 +424,10 @@ const projects = await getEntries(
     const onVideoFrameUpdate: VideoFrameRequestCallback = () => {
       panel?.fpsGraphs.video.begin();
 
-      const progress = saturate(
-        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0,
-      );
+      // Avoid divide-by-zero and saturate to avoid floating point errors
+      let progress =
+        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0;
+      progress = Math.max(Math.min(progress, 1), 0);
 
       videoProgressBar.style.transform = `scaleX(${progress})`;
       videoProgressBar.setAttribute("aria-valuenow", progress.toString());

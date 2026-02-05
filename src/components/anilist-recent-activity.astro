@@ -11,7 +11,7 @@ import imageChainsawMan from "@/assets/anilist/chainsaw-man.png";
 
 import Link from "@/components/link.astro";
 import Aside from "@/components/mdx/aside.astro";
-import { getFullDateFormatting } from "@/scripts/util";
+import { capitalize, getFullDateFormatting } from "@/scripts/util";
 import type { AniListMediaTitle } from "@/actions/anilist";
 
 const { data, error } = await Astro.callAction(
@@ -162,7 +162,7 @@ if (available) {
         </p>
         <Aside>
           <p>
-            {`${activities[0].status.charAt(0).toUpperCase()}${activities[0].status.slice(1)}`}{" "}
+            {capitalize(activities[0].status)}{" "}
             {activities[0].status.includes("complete") ?
               activities[0].type === "MANGA_LIST" ?
                 "reading"

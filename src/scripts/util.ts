@@ -79,8 +79,8 @@ function getDateKind(date: ContentDate): DateKind {
   }
 }
 
-function saturate(value: number) {
-  return Math.max(Math.min(value, 1), 0);
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 export {
@@ -91,5 +91,5 @@ export {
   getFullDateFormatting,
   getMonthDayDateFormatting,
   getDateKind,
-  saturate,
+  capitalize,
 };

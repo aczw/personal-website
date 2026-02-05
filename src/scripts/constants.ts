@@ -7,6 +7,19 @@ import {
 
 const CDN_URL = "https://cdn.charleszw.com";
 
+/**
+ * Essentially maps to every unique page on the site except for
+ * content collection entries.
+ */
+const ROUTES = [
+  "home",
+  "404",
+  "projects",
+  "posts",
+  "gallery",
+  "about",
+] as const;
+
 const VALID_MONTHS = [
   "January",
   "February",
@@ -168,6 +181,7 @@ const FLAVOR_TEXTS = [
 
 export {
   CDN_URL,
+  ROUTES,
   VALID_MONTHS,
   HOMEPAGE_PROJECTS,
   DISABLED_PROJECTS,

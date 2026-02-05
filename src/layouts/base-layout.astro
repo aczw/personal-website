@@ -3,55 +3,79 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 
 import "@/styles/main.css";
 
-import type { MetaKind } from "@/scripts/types";
-import { getShortDateFormatting, stripEndingSlash } from "@/scripts/util";
+import type { Meta } from "@/scripts/types";
+import {
+  capitalize,
+  getShortDateFormatting,
+  SITE_URL,
+  stripEndingSlash,
+} from "@/scripts/util";
 import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
 
 interface Props {
-  meta: MetaKind;
+  meta: Meta;
 }
 
-const { meta } = Astro.props;
+type Head = {
+  title: string;
+  description: string;
+  og: `?${Meta["kind"]}=${string}`;
+};
 
-let title = "Charles Wang";
-let description: string;
-let ogImageParams: string;
+const head: Head = (() => {
+  const { meta } = Astro.props;
 
-switch (meta.kind) {
-  case "route": {
-    title = (meta.title ? `${meta.title} / ` : "") + title;
-    description = meta.description;
-    ogImageParams = `?heading=${encodeURIComponent(meta.ogImageParams)}`;
-    break;
+  switch (meta.kind) {
+    case "route":
+      return {
+        title: meta.route === "home" ? "" : capitalize(meta.route),
+        description: meta.description,
+        og: `?route=${meta.route}`,
+      };
+
+    case "projects": {
+      const { data, id } = meta.projectsEntry;
+      return {
+        title: data.name,
+        description: data.blurb,
+        og: `?projects=${id}`,
+      };
+    }
+
+    case "posts": {
+      const { data, id } = meta.postsEntry;
+      const description =
+        data.blurb !== undefined ?
+          data.blurb
+        : `Posted on ${getShortDateFormatting(data.posted)}`;
+
+      return {
+        title: data.title,
+        description,
+        og: `?posts=${id}`,
+      };
+    }
+
+    case "gallery":
+      return {
+        title: "Gallery TODO",
+        description: "Gallery TODO",
+        og: `?gallery=TODO`,
+      };
+
+    default:
+      throw new Error("Unhandled meta kind!");
   }
-
-  case "post": {
-    const { data, id } = meta.post;
-    title = `${data.title} / ${title}`;
-
-    // If the post doesn't have a blurb then just state when it was published
-    description =
-      data.blurb ?
-        data.blurb
-      : `Posted on ${getShortDateFormatting(data.posted)}.`;
-    ogImageParams = `?post=${id}`;
-    break;
-  }
-
-  case "project": {
-    const { data, id } = meta.project;
-    title = `${data.name} / ${title}`;
-    description = data.blurb;
-    ogImageParams = `?project=${id}`;
-    break;
-  }
-
-  default:
-    throw new Error("Unreachable!");
-}
+})();
 
 const url = new URL(Astro.url.pathname, Astro.site).toString();
 const canonicalUrl = stripEndingSlash(url);
+
+const { title: titlePrefix, description, og } = head;
+const ogUrl = `${SITE_URL}/api/og.png${og}`;
+
+const title =
+  titlePrefix.length === 0 ? "Charles Wang" : `${titlePrefix} / Charles Wang`;
 ---
 
 <!doctype html>
@@ -73,15 +97,9 @@ const canonicalUrl = stripEndingSlash(url);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="en_US" />
-    <meta
-      property="og:image"
-      content={`https://charleszw.com/api/og.png${ogImageParams}`}
-    />
+    <meta property="og:image" content={ogUrl} />
 
-    <meta
-      property="twitter:image"
-      content={`https://charleszw.com/api/og.png${ogImageParams}`}
-    />
+    <meta property="twitter:image" content={ogUrl} />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
