@@ -86,7 +86,7 @@ const url = new URL(Astro.url.pathname, Astro.site).toString();
 const canonicalUrl = stripEndingSlash(url);
 
 const { title: titlePrefix, description, og } = head;
-const ogUrl = `${SITE_URL}/api/og.png${og}`;
+const ogImageUrl = `${SITE_URL}/api/og.png${og}`;
 
 const title =
   titlePrefix.length === 0 ? "Charles Wang" : `${titlePrefix} / Charles Wang`;
@@ -111,9 +111,9 @@ const title =
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image" content={ogImageUrl} />
 
-    <meta property="twitter:image" content={ogUrl} />
+    <meta property="twitter:image" content={ogImageUrl} />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
@@ -125,28 +125,28 @@ const title =
       rel="icon"
       sizes="any"
       type="image/svg+xml"
-      href="/favicon_dark_bg.svg"
+      href="/favicon-dark-bg.svg"
       media="(prefers-color-scheme: light)"
     />
     <link
       rel="icon"
       sizes="any"
       type="image/svg+xml"
-      href="/favicon_light_bg.svg"
+      href="/favicon-light-bg.svg"
       media="(prefers-color-scheme: dark)"
     />
     <link
       rel="icon"
       sizes="64x64"
       type="image/png"
-      href="/favicon_dark_bg.png"
+      href="/favicon-dark-bg.png"
       media="(prefers-color-scheme: light)"
     />
     <link
       rel="icon"
       sizes="64x64"
       type="image/png"
-      href="/favicon_light_bg.png"
+      href="/favicon-light-bg.png"
       media="(prefers-color-scheme: dark)"
     />
 
