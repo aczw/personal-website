@@ -32,6 +32,15 @@ const config = defineConfig({
   image: {
     responsiveStyles: true,
     layout: "constrained",
+    remotePatterns: [
+      { protocol: "https", hostname: "cdn.charleszw.com", pathname: "/**" },
+      {
+        protocol: "https",
+        hostname: "lastfm.freetls.fastly.net",
+        pathname: "/**",
+      },
+      { protocol: "https", hostname: "**.anilist.co", pathname: "/**" },
+    ],
   },
   integrations: [
     sitemap(),
@@ -40,6 +49,7 @@ const config = defineConfig({
       themes: ["rose-pine", "rose-pine-dawn"],
 
       useThemedSelectionColors: true,
+      useThemedScrollbars: false,
       cascadeLayer: "ec",
 
       defaultProps: {
@@ -52,7 +62,7 @@ const config = defineConfig({
 
       styleOverrides: {
         borderWidth: "0px",
-        borderRadius: "var(--radius-lg)",
+        borderRadius: "var(--radius-xl)",
         uiFontFamily: "Atkinson Hyperlegible Next",
         uiFontSize: "1rem",
         codeFontFamily: "Maple Mono",
@@ -92,7 +102,8 @@ const config = defineConfig({
           const readingTime = getReadingTime(textOnPage);
 
           // @ts-expect-error: Astro object is guaranteed to exist
-          data.astro.frontmatter.stats = readingTime;
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+          data.astro.frontmatter["stats"] = readingTime;
         },
     ],
   },
@@ -113,6 +124,9 @@ const config = defineConfig({
   },
   vite: {
     plugins: [tailwindcss()],
+    server: {
+      allowedHosts: ["bore.pub"],
+    },
   },
 });
 

@@ -1,54 +1,7 @@
 import type { ImageFunction } from "astro:content";
 import { z } from "astro:schema";
 
-import { PROJECT_CATEGORIES, VALID_MONTHS } from "@/scripts/constants";
-
-const LastFmSchema = z.object({
-  recenttracks: z.object({
-    track: z.array(
-      z.object({
-        artist: z.object({
-          mbid: z.string(),
-          "#text": z.string(),
-        }),
-        streamable: z.string(),
-        image: z.array(
-          z.object({
-            size: z.enum(["small", "medium", "large", "extralarge"]),
-            "#text": z.string(),
-          }),
-        ),
-        mbid: z.string(),
-        album: z.object({
-          mbid: z.string(),
-          "#text": z.string(),
-        }),
-        name: z.string(),
-        "@attr": z
-          .object({
-            nowplaying: z.enum(["true", "false"]),
-          })
-          .optional(),
-        url: z.string(),
-        date: z
-          .object({
-            uts: z.string(),
-            "#text": z.string(),
-          })
-          .optional(),
-      }),
-    ),
-    "@attr": z.object({
-      user: z.string(),
-      totalPages: z.string(),
-      page: z.string(),
-      perPage: z.string(),
-      total: z.string(),
-    }),
-  }),
-});
-
-const ProjectCategoriesSchema = z.enum(PROJECT_CATEGORIES);
+import { VALID_MONTHS } from "@/scripts/constants";
 
 const BlurbSchema = z.string().refine((blurb) => blurb.length <= 170, {
   message:
@@ -60,8 +13,6 @@ const ImageSchema = (image: ImageFunction) =>
     img: image(),
     alt: z.string(),
   });
-
-const TechSchema = z.string().array();
 
 const LinkSchema = z.object({
   href: z.string().url(),
@@ -119,17 +70,29 @@ const RangedDateSchema = z.object({
   }),
 });
 
+const TechSchema = z.string().array();
+
 const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 
+const GalleryCommonSchema = z.object({
+  title: z.string().optional(),
+  blurb: BlurbSchema,
+  date: z.date(),
+  uses: TechSchema,
+  numMembers: z.number().int().min(2).optional(),
+  cover: z.object({
+    alt: z.string(),
+  }),
+});
+
 export {
-  LastFmSchema,
-  ProjectCategoriesSchema,
   BlurbSchema,
   ImageSchema,
-  TechSchema,
   LinkSchema,
   SourceHrefSchema,
   SimpleDateSchema,
   RangedDateSchema,
+  TechSchema,
   DateSchema,
+  GalleryCommonSchema,
 };

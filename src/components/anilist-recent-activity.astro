@@ -1,0 +1,186 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+import { actions } from "astro:actions";
+
+import imageYourLieInApril from "@/assets/anilist/your-lie-in-april.png";
+import imageReZero from "@/assets/anilist/rezero.jpg";
+import imageBloomIntoYou from "@/assets/anilist/bloom-into-you.jpg";
+import imageGijiHarem from "@/assets/anilist/giji-harem.jpg";
+import imageChainsawMan from "@/assets/anilist/chainsaw-man.png";
+
+import Link from "@/components/link.astro";
+import Aside from "@/components/mdx/aside.astro";
+import { capitalize, getFullDateFormatting } from "@/scripts/util";
+import type { AniListMediaTitle } from "@/actions/anilist";
+
+const { data, error } = await Astro.callAction(
+  actions.aniList.getRecentActivity,
+  {},
+);
+
+const available = !error;
+
+type BackupAniListEntry = {
+  title: string;
+  cover: ImageMetadata;
+  url: string;
+};
+
+const BACKUP_ENTRIES: BackupAniListEntry[] = [
+  {
+    title: "Your lie in April",
+    cover: imageYourLieInApril,
+    url: "https://anilist.co/anime/20665/Your-lie-in-April",
+  },
+  {
+    title: "Re:ZERO",
+    cover: imageReZero,
+    url: "https://anilist.co/anime/21355/ReZERO-Starting-Life-in-Another-World",
+  },
+  {
+    title: "Bloom Into You",
+    cover: imageBloomIntoYou,
+    url: "https://anilist.co/manga/86218/Bloom-Into-You",
+  },
+  {
+    title: "Giji Harem",
+    cover: imageGijiHarem,
+    url: "https://anilist.co/manga/105577/Giji-Harem",
+  },
+  {
+    title: "Chainsaw Man",
+    cover: imageChainsawMan,
+    url: "https://anilist.co/manga/105778/Chainsaw-Man",
+  },
+];
+
+function getResolvedTitle(title: AniListMediaTitle) {
+  return (
+    title.english ? title.english
+    : title.romaji ? title.romaji
+    : title.native
+  );
+}
+
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
+
+function relativeTime(date: Date) {
+  const diffInDays = Math.ceil(
+    // Calculate in terms of days
+    (date.getTime() - new Date().getTime()) / 86400000,
+  );
+
+  return rtf.format(diffInDays, "days");
+}
+
+const activities: typeof data = [];
+let count = 0;
+
+if (available) {
+  for (const newAct of data) {
+    if (
+      activities.findIndex((act) => act.media.id === newAct.media.id) === -1
+    ) {
+      activities.push(newAct);
+      count++;
+
+      // Only the 5 most recent unique entries
+      if (count === 5) {
+        break;
+      }
+    }
+  }
+}
+---
+
+<div
+  class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 opacity-100 transition-opacity duration-500 md:grid-cols-2 starting:opacity-0"
+>
+  <ul class="flex gap-x-pad overflow-x-auto rounded-md md:justify-between">
+    {
+      available ?
+        <>
+          {activities.map(({ media: { title, coverImage, siteUrl } }) => {
+            const resolved = getResolvedTitle(title);
+
+            return (
+              <li class="shrink-0">
+                <a
+                  href={siteUrl}
+                  title={resolved}
+                  target="_blank"
+                  class="block"
+                >
+                  <Image
+                    src={coverImage.large}
+                    alt={`Cover art for ${resolved}`}
+                    inferSize
+                    priority
+                    class="rounded-md bg-sweater-9"
+                    style={{ height: "4lh", width: "auto" }}
+                  />
+                </a>
+              </li>
+            );
+          })}
+        </>
+      : <>
+          {BACKUP_ENTRIES.map(({ title, cover, url }) => (
+            <li class="shrink-0">
+              <a href={url} title={title} target="_blank" class="block">
+                <Image
+                  src={cover}
+                  alt={`Cover art for ${title}`}
+                  priority
+                  class="rounded-md bg-sweater-9"
+                  style={{ height: "4lh", width: "auto" }}
+                />
+              </a>
+            </li>
+          ))}
+        </>
+    }
+  </ul>
+
+  {
+    available && activities[0] ?
+      <div class="max-w-(--content-w) space-y-pad">
+        <p
+          title={getFullDateFormatting(
+            new Date(activities[0].createdAt * 1000),
+          )}
+          class="w-fit"
+        >
+          Latest {activities[0].type === "MANGA_LIST" ? "manga" : "anime"}{" "}
+          activity from{" "}
+          <time
+            datetime={new Date(activities[0].createdAt * 1000).toISOString()}
+          >
+            {relativeTime(new Date(activities[0].createdAt * 1000))}.
+          </time>
+        </p>
+        <Aside>
+          <p>
+            {capitalize(activities[0].status)}{" "}
+            {activities[0].status.includes("complete") ?
+              activities[0].type === "MANGA_LIST" ?
+                "reading"
+              : "watching"
+            : null}{" "}
+            {activities[0].progress ? `${activities[0].progress} of` : null}{" "}
+            <Link href={activities[0].media.siteUrl} target="_blank">
+              {getResolvedTitle(activities[0].media.title)}
+            </Link>
+          </p>
+        </Aside>
+      </div>
+    : <p class="max-w-(--content-w)">
+        I've tracked most of the manga and anime I've consumed since I started
+        in 2020. Here are some of my favorites.{" "}
+        <Link href="https://anilist.co/user/czw" target="_blank">
+          View my AniList profile.
+        </Link>
+      </p>
+  }
+</div>

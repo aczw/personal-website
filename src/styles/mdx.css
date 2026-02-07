@@ -1,0 +1,232 @@
+@layer base {
+  :root {
+    /* Results in roughly 80 characters per line. */
+    --content-w: 550px;
+  }
+}
+
+@utility inline-code {
+  @apply rounded-md bg-sweater-9 px-1.25 py-0.5 maple wrap-anywhere light:bg-sweater-2;
+}
+
+/* Only style elements rendered from MDX. This mostly copies the width
+ * behavior of everything else, which is:
+ * 
+ * 1. On mobile: full (100%) width, `px-pad-2`
+ * 2. Between mobile and `lg`: `w-4/5`
+ * 3. `lg` and above: `mx-auto` goes into effect, max width of --header-w
+ *
+ * There are a few changes, like making all elements with `mdx-outdent` span
+ * the full screen width with no rounded corners on mobile. Also, a grid
+ * layout is used on `desktop` breakpoint and above. */
+@utility mdx {
+  @apply mx-auto mb-pad-4 w-full space-y-pad-2 px-pad-2;
+
+  @variant desktop {
+    @apply mx-0 grid;
+
+    --mdx-content-l-w: minmax(0, calc(80% + var(--spacing-pad)));
+    /* Preserves the `col-span-2` for `mdx-bleed` elements. */
+    --mdx-content-r-w: 0px;
+
+    grid-template-columns:
+      1fr
+      var(--mdx-content-l-w)
+      var(--mdx-content-r-w)
+      1fr;
+  }
+
+  @variant md {
+    --mdx-content-l-w: minmax(0, var(--content-w));
+    --mdx-content-r-w: calc(calc(80% + var(--spacing-pad)) - var(--content-w));
+  }
+
+  @variant lg {
+    --mdx-content-r-w: calc(var(--header-w) - var(--content-w));
+  }
+
+  > * {
+    /* By default everything should start in the 2nd column fron the left. */
+    @apply col-start-2;
+
+    /* Remove spacing from elements preceding LaTeX, because we're
+     * overriding its spacing later. */
+    &:has(+ mjx-container) {
+      @apply mb-0;
+    }
+  }
+
+  h2:has(+ h3) {
+    @apply mb-pad;
+  }
+
+  img,
+  video,
+  iframe {
+    /* `w-full` is necessary for make extremely small media span the full
+     * width regardless. */
+    @apply w-full rounded-xl;
+  }
+
+  /* All outdented elements will span the full screen width on mobile,
+   * therefore we need to remove its border radius. */
+  .mdx-outdent *,
+  .mdx-full * {
+    @apply rounded-none desktop:rounded-xl;
+  }
+
+  /* Not supported on mobile. */
+  @media (hover: hover) {
+    img:not([data-no-zoom]) {
+      @apply cursor-zoom-in transition-transform active:scale-97;
+    }
+  }
+
+  code {
+    @apply inline-code;
+  }
+
+  del {
+    @apply cursor-not-allowed text-sweater-6 line-through light:text-sweater-5;
+  }
+
+  ul {
+    @apply ml-pad-2 list-outside list-["➔"] space-y-1;
+  }
+
+  ol {
+    @apply ml-pad-2 list-outside list-decimal space-y-1;
+  }
+
+  li {
+    @apply pl-pad;
+
+    &::marker {
+      @apply text-sweater-6 light:text-sweater-5;
+    }
+  }
+
+  figcaption {
+    @apply mt-1 text-sm text-heading *:inline;
+
+    &::before {
+      @apply inline-block translate-y-0.5 scale-95 pr-1;
+
+      content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkNmQzZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodC1pY29uIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodCI+PHBvbHlsaW5lIHBvaW50cz0iMTUgMTAgMjAgMTUgMTUgMjAiLz48cGF0aCBkPSJNNCA0djdhNCA0IDAgMCAwIDQgNGgxMiIvPjwvc3ZnPg==") /
+        "";
+
+      @variant light {
+        content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTEwIDYuNjY2NjdMMTMuMzMzMyAxMEwxMCAxMy4zMzMzIiBzdHJva2U9IiM0ODQzOTAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yLjY2NjYzIDIuNjY2NjdWNy4zMzMzNEMyLjY2NjYzIDguMDQwNTggMi45NDc1OCA4LjcxODg2IDMuNDQ3NjcgOS4yMTg5NkMzLjk0Nzc3IDkuNzE5MDUgNC42MjYwNSAxMCA1LjMzMzI5IDEwSDEzLjMzMzMiIHN0cm9rZT0iIzQ4NDM5MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+") /
+          "";
+      }
+    }
+  }
+
+  table {
+    @apply mdx-outdent border-y-(length:--border-w) border-style;
+
+    thead {
+      @apply border-b-(length:--border-w) border-style bg-sweater-9/50 font-bold text-heading light:bg-sweater-2/50;
+
+      th {
+        @apply px-pad-2 py-0.5 not-last:border-r-(length:--border-w) not-last:border-style;
+      }
+    }
+
+    tr {
+      @apply even:bg-sweater-9/25 light:even:bg-sweater-2/25;
+
+      td {
+        @apply px-pad-2 py-0.5 leading-snug not-last:border-r-(length:--border-w) not-last:border-style;
+      }
+    }
+
+    @variant desktop {
+      @apply border-x-(length:--border-w);
+    }
+  }
+
+  section[data-footnotes] {
+    @apply mt-pad-2 mb-0 border-t-(length:--border-w) border-style pt-pad-2 text-sm desktop:mt-0;
+
+    /* In footnotes, monospaced text should be even smaller. */
+    --text-mono: 0.8rem;
+
+    > h2#footnote-label {
+      @apply sr-only;
+    }
+
+    > ol {
+      > li > p:has(> a[data-footnote-backref]) {
+        display: inline;
+      }
+
+      a[data-footnote-backref] {
+        display: inline;
+
+        > svg {
+          @apply translate-x-0.5 -translate-y-0.5;
+
+          stroke-width: 2.5px;
+          display: inline;
+        }
+      }
+    }
+  }
+}
+
+@utility mdx-outdent {
+  @apply -ml-pad-2;
+
+  width: calc(100% + var(--spacing-pad-4));
+
+  figcaption {
+    @apply ml-pad-2;
+
+    max-width: min(var(--content-w), calc(100% - var(--spacing-pad-4)));
+  }
+}
+
+@utility mdx-bleed {
+  @apply col-span-2;
+}
+
+@utility mdx-full {
+  @apply mdx-bleed mdx-outdent;
+}
+
+@utility mdx-grid-2 {
+  @apply grid grid-cols-1 gap-pad-2 sm:grid-cols-2;
+}
+
+/* Technically an override, but it's MDX-specific so it's here. */
+.expressive-code {
+  @apply mdx-outdent;
+
+  pre {
+    --ec-brdRad: 0px;
+
+    @variant desktop {
+      --ec-brdRad: var(--radius-xl);
+    }
+  }
+
+  figure.frame figcaption.header {
+    --header-border-radius: 0px;
+
+    @variant desktop {
+      --header-border-radius: var(--radius-xl);
+    }
+
+    @apply ml-0 max-w-full;
+
+    .title {
+      border-radius: 0px;
+      border-top-right-radius: var(--tab-border-radius);
+
+      @variant desktop {
+        border-radius: var(--radius-xl) var(--radius-xl) 0px 0px;
+      }
+    }
+  }
+}

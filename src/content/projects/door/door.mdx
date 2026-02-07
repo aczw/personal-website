@@ -12,16 +12,18 @@ metadata:
     text: View online
   sourceHref: https://github.com/aczw/hw04-stylization
   date: November 2024
-type: graphics
-order: 4
+order: 5
 cover:
   img: door.png
   alt: A slightly open white door is floating above a picnic blanket that has food, a laptop, and a basket on it. The background is purple.
+
 slug: door
 ---
 
 import { Image } from "astro:assets";
+
 import VideoGif from "@/components/video-gif.astro";
+import YouTube from "@/components/mdx/youtube.astro";
 
 For one of the homeworks of our procedural graphics class, CIS 5660, we were to create a stylized scene mimicking some concept art that we pick out. In particular, we focused on using Unity Renderer Features to achieve non-photorealistic rendering (NPR).
 
@@ -31,7 +33,7 @@ The natural pick for me was anything from [OMORI](https://www.omori-game.com/). 
 
 > I should mention that there will be light spoilers for the game from this point onwards.
 
-<div class="grid gap-pad sm:grid-cols-2">
+<div class="mdx-grid-2 mdx-full">
   <figure>
     ![OMORI characters looking at photobook on a picnic blanket in a forest.](ca-1.png)
     <figcaption>
@@ -62,7 +64,7 @@ Homework is still homework and there were two shaders I was required to create.
 
 ### Toon shading
 
-<figure>
+<figure class="mdx-full">
   ![Screenshot of Unity Shader Graph for my toon shader](toon.png)
   <figcaption>Shader Graph for my toon shader.</figcaption>
 </figure>
@@ -79,22 +81,17 @@ Another requirement we had to meet was to create an additional shader that anima
 
 It's a bit hard to explain, so here's a YouTube video.
 
-<iframe
-  width="560"
-  height="315"
-  src="https://www.youtube-nocookie.com/embed/2D1VBDjamoA?si=H1yoLXpy_Ya8Hxbg&amp;start=182"
-  title="OMORI - Sweetheart"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-  referrerpolicy="strict-origin-when-cross-origin"
-  allowfullscreen
-></iframe>
-
-> Here's the [direct link](https://youtu.be/2D1VBDjamoA?t=182) if the embed doesn't work.
+<figure class="mdx-full">
+  <YouTube id="2D1VBDjamoA" title="OMORI - Sweetheart" start={182} />
+  <figcaption>
+    Here's the [direct link](https://youtu.be/2D1VBDjamoA?t=182) if the embed
+    doesn't work.
+  </figcaption>
+</figure>
 
 To create the drawn look as seen in-game, I drew two textures using Procreate's default pencil brushes. The lighter one emphasizes the scribbles more by being more sparse.
 
-<div class="mx-auto grid max-w-[500px] grid-cols-2 gap-pad">
+<div class="grid grid-cols-2 gap-pad-2">
   ![White square with lighter black scribbles all over it.](tex-light.png)
   ![White square with heavier black scribbles all over it.](tex-heavy.png)
 </div>
@@ -105,7 +102,7 @@ The textures being black and white make them very versatile. The values can be i
 
 I can now "animate" these textures by rotating them by a random amount. To emulate the game's behavior of animating across a fixed set of sprites, I sample the UV orientation from a triangle wave that I've increased the amplitude of, and then floored so I could get staggered values that repeated infinitely.
 
-<figure class="mx-auto max-w-[500px]">
+<figure class="mdx-outdent">
   ![Staircase-like graph from the Graphtoy window](triwave.png)
   <figcaption>
     **Staggered triangle wave.** I used [Graphtoy](https://graphtoy.com) to
@@ -115,7 +112,7 @@ I can now "animate" these textures by rotating them by a random amount. To emula
 
 Hopefully the image conveys my implementation visually. Each of those steps are a value I plug into my UV rotation. That results in this final output:
 
-<figure>
+<figure class="mdx-full">
   <VideoGif
     content={{ collection: "projects", folder: frontmatter.slug }}
     name="door-anim-tex"
@@ -138,11 +135,13 @@ For outlines I turned to the [Roberts cross operator](https://en.wikipedia.org/w
 
 This gives us basic outlines.
 
-![A sphere floating above a plane with black outlines.](basic-outlines.png)
+<div class="mdx-outdent">
+  ![A sphere floating above a plane with black outlines.](basic-outlines.png)
+</div>
 
 However, outlines in OMORI seem to be made up of three overlapping parts: a green, pink, and purple part. Zooming in on the second concept art you can see it very clearly.
 
-<figure class="mx-auto max-w-[400px]">
+<figure class="mx-auto">
   <Image
     src={import("./outline-example.png")}
     alt="Close-up of Mari's elbow, showcasing the multicolored
@@ -154,7 +153,10 @@ However, outlines in OMORI seem to be made up of three overlapping parts: a gree
 
 We need three outlines, so we do exactly that. Each outline has a different color and has its UVs slightly offset to give us the chromatic aberration look. I also use the Random Range node to vary the outline thickness based on screen position. Finally, I replace the solid outline with the scribble texture and animate it using the same method as the surface shader.
 
-![The same sphere and plane but now rendered using OMORI's outlines.](cool-outlines.png)
+<div class="mdx-full">
+  ![The same sphere and plane but now rendered using OMORI's
+  outlines.](cool-outlines.png)
+</div>
 
 ## Assembling a scene
 
@@ -162,7 +164,10 @@ I found all the models on Sketchfab. They are [credited in the README here](http
 
 Speaking of laptop, I created a custom shader that specifically draws a texture to the screen geometry.
 
-![Unity scene view of the laptop screen with the shader applied.](laptop-screen.png)
+<div class="mdx-full">
+  ![Unity scene view of the laptop screen with the shader
+  applied.](laptop-screen.png)
+</div>
 
 To prevent the door from self-shadowing and ruining the <span aria-label="aesthetic">𝓪𝓮𝓼𝓽𝓱𝓮𝓽𝓲𝓬</span>, I added a `UseShadow` shader parameter that completely turns off shadow attenuation in the main toon shader.
 
@@ -174,7 +179,10 @@ I couldn't figure out how to achieve this effect using Unity UI or another rende
 
 As the image below betrays, the purple scrolling background you see is actually a giant plane that is perpendicular to the camera view vector. I made it a child of the camera so any transforms are applied to the plane as well.
 
-![Unity scene view of the background plane being projected along our camera's view vector.](bg-hack.png)
+<div class="mdx-full">
+  ![Unity scene view of the background plane being projected along our camera's
+  view vector.](bg-hack.png)
+</div>
 
 I scroll the UVs of an image in a shader that I specifically wrote for the background. The material is then applied to the plane.
 
@@ -182,7 +190,10 @@ I scroll the UVs of an image in a shader that I specifically wrote for the backg
 
 Press spacebar to toggle between two different views.
 
-![Alternative scene view when spacebar is pressed. Everything becomes darker, redder, and scarier.](horror.png)
+<div class="mdx-full">
+  ![Alternative scene view when spacebar is pressed. Everything becomes darker,
+  redder, and scarier.](horror.png)
+</div>
 
 A number of changes occur:
 

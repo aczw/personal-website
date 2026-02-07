@@ -1,0 +1,76 @@
+---
+import { actions } from "astro:actions";
+
+import { MusicIcon } from "@lucide/astro";
+
+import Link from "@/components/link.astro";
+import { ICON_SIZE } from "@/scripts/constants";
+import { Image } from "astro:assets";
+
+const { data, error } = await Astro.callAction(
+  actions.lastFm.getRecentTrack,
+  {},
+);
+
+const available = !error;
+---
+
+<div
+  class="mb-pad-2 space-y-pad opacity-100 transition-opacity duration-500 sm:mb-0 starting:opacity-0"
+>
+  <h3 class="font-bold text-heading">
+    {
+      available ?
+        data.live ?
+          "Now playing"
+        : "Last listened to"
+      : "Last.fm"
+    }
+  </h3>
+
+  <div class="flex gap-x-3.5">
+    {
+      available && data.coverUrl ?
+        <Image
+          src={data.coverUrl}
+          alt={`Cover image for ${data.songName} by ${data.artist}`}
+          inferSize
+          priority
+          class="shrink-0 rounded-md bg-sweater-9"
+          style={{ height: "3lh", width: "3lh" }}
+        />
+      : <div class="flex size-[3lh] shrink-0 items-center justify-center rounded-md bg-sweater-9">
+          <MusicIcon size={ICON_SIZE} class="stroke-icon" />
+        </div>
+    }
+
+    <p>
+      {
+        available ?
+          <>
+            <Link
+              href={data.songUrl}
+              target="_blank"
+              title={data.songName}
+              class="line-clamp-1"
+            >
+              {data.songName}
+            </Link>
+            <span title={data.artist} class="line-clamp-1">
+              by {data.artist}
+            </span>
+            <span title={data.album} class="line-clamp-1">
+              from {data.album}
+            </span>
+          </>
+        : <>
+            I've been tracking my music listening history since 2021. It's fun
+            to see the trends!{" "}
+            <Link href="https://www.last.fm/user/ashzw" target="_blank">
+              View my scrobbles.
+            </Link>
+          </>
+      }
+    </p>
+  </div>
+</div>

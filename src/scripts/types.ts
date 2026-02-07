@@ -1,47 +1,49 @@
-import type { CollectionEntry } from "astro:content";
+import type { CollectionEntry, CollectionKey } from "astro:content";
 import type { z } from "astro/zod";
-
-import { type Icon as IconType } from "@lucide/astro";
 
 import type {
   DateSchema,
   RangedDateSchema,
   SimpleDateSchema,
 } from "@/scripts/schema";
+import type { ROUTES } from "@/scripts/constants";
 
-type EntryKind =
-  | { kind: "post"; post: CollectionEntry<"posts"> }
-  | { kind: "project"; project: CollectionEntry<"projects"> };
+type Route = (typeof ROUTES)[number];
 
-type MetaKind =
-  | {
-      kind: "route";
-      title: string | null;
-      description: string;
-      ogImageParams: string;
-    }
-  | EntryKind;
+/**
+ * Maps every content collection name to a literal "kind" and creates a
+ * discriminated union out of all collections.
+ */
+type CollectionKind = {
+  [Collection in CollectionKey]: {
+    kind: Collection;
+  } & {
+    [K in Collection as `${K}Entry`]: CollectionEntry<Collection>;
+  };
+}[CollectionKey];
 
-type LinkWithIcon = {
-  href: string;
-  label: string;
-  icon: typeof IconType;
-};
+type Meta =
+  | { kind: "route"; route: Route; description: string }
+  | CollectionKind;
+type MetaKind = Meta["kind"];
 
 type SimpleDate = z.infer<typeof SimpleDateSchema>;
 type RangedDate = z.infer<typeof RangedDateSchema>;
-type ContentDateType = z.infer<typeof DateSchema>;
+type ContentDate = z.infer<typeof DateSchema>;
 
 type DateKind =
   | { kind: "simple"; date: SimpleDate }
   | { kind: "ranged"; date: RangedDate };
 
+type HeaderLink = { href: string; text: string };
+
 export type {
-  EntryKind,
+  Route,
+  Meta,
   MetaKind,
-  LinkWithIcon,
   SimpleDate,
   RangedDate,
-  ContentDateType,
+  ContentDate,
   DateKind,
+  HeaderLink,
 };

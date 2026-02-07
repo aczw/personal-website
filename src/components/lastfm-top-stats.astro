@@ -1,0 +1,74 @@
+---
+import { Image } from "astro:assets";
+import { actions } from "astro:actions";
+
+import image400mg from "@/assets/400-mg.webp";
+import Link from "@/components/link.astro";
+
+const { data, error } = await Astro.callAction(actions.lastFm.getTopStats, {});
+
+const available = !error;
+---
+
+<div
+  class="space-y-pad opacity-100 transition-opacity duration-500 starting:opacity-0"
+>
+  <h3 class="font-bold text-heading">
+    {available ? "Last 7 days" : "Current Spotify playlist"}
+  </h3>
+
+  <div class="flex gap-x-3.5">
+    {
+      available ? null : (
+        <Image
+          src={image400mg}
+          alt="Alley in a Philadelphia neighborhood. Cover for my Spotify playlist."
+          class="shrink-0 rounded-md md:hidden lg:block"
+          style={{
+            width: "3lh",
+            height: "3lh",
+          }}
+        />
+      )
+    }
+
+    {
+      available ?
+        <ul class="*:line-clamp-1">
+          <li title={data.track.name}>
+            <span class="sm:hidden md:inline">Top song: </span>
+            <Link href={data.track.url} target="_blank">
+              {data.track.name}
+            </Link>{" "}
+            — {data.track.count} plays.
+          </li>
+
+          <li title={data.album.name}>
+            <span class="sm:hidden md:inline">Top album: </span>
+            <Link href={data.album.url} target="_blank">
+              {data.album.name}
+            </Link>{" "}
+            — {data.album.count} plays.
+          </li>
+
+          <li title={data.artist.name}>
+            <span class="sm:hidden md:inline">Top artist: </span>
+            <Link href={data.artist.url} target="_blank">
+              {data.artist.name}
+            </Link>{" "}
+            — {data.artist.count} plays.
+          </li>
+        </ul>
+      : <p>
+          Every so often I compile a playlist of my current rotation. It
+          represents how I've been doing.
+          <Link
+            href="https://open.spotify.com/playlist/1dfHkaWMioz6lA6hWF1t6d"
+            target="_blank"
+          >
+            Check it out.
+          </Link>
+        </p>
+    }
+  </div>
+</div>

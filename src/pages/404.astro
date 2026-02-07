@@ -1,32 +1,32 @@
 ---
 import { Image } from "astro:assets";
 
-import Link from "@/components/link.astro";
+import imageNotFound from "@/assets/not-found.png";
+
 import CommonLayout from "@/layouts/common-layout.astro";
 ---
 
 <CommonLayout
   meta={{
     kind: "route",
-    title: "404",
-    description: "Sorry, this page doesn't exist.",
-    ogImageParams: "Page not found.",
+    route: "404",
+    description: "Page not found. How did you get here??",
   }}
+  headerLinks={[]}
 >
   <main
-    class="flex min-h-[calc(100vh-45px-120.688px-180.5px-45px)] flex-col items-center justify-center space-y-16 p-pad sm:min-h-[calc(100vh-90px-81.188px-178.5px-90px)]"
+    class="mx-auto my-25 flex w-full flex-col items-center gap-y-pad-4 px-pad-2 desktop:my-pad-4 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
   >
-    <Image
-      src={import("@/assets/not-found.png")}
-      alt="Page not found"
-      class="w-[clamp(400px,80%,500px)]"
-    />
+    <h1 class="sr-only">Page not found</h1>
 
-    <p>
-      Sorry, page not found.
-      <Link href="https://twitter.com/sawaratsuki1004" target="_blank">
-        Art by @sawaratsuki1004.
-      </Link>
-    </p>
+    <a
+      href="https://twitter.com/sawaratsuki1004"
+      target="_blank"
+      class="w-[clamp(325px,90%,500px)]"
+    >
+      <Image src={imageNotFound} alt="Page not found" priority />
+    </a>
+
+    <p>Sorry, page not found.</p>
   </main>
 </CommonLayout>

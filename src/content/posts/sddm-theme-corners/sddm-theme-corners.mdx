@@ -12,7 +12,7 @@ While setting up my Linux environment, I became addicted to customizing my setup
 
 Having chosen [SDDM](https://github.com/sddm/sddm/) as my display manager of choice, I started looking for login themes... and didn't find anything that appealed to me. Thus `sddm-theme-corners` was born. Take a look at some example setups:
 
-<div class="grid grid-cols-1 gap-pad sm:grid-cols-2">
+<div class="mdx-full mdx-grid-2">
   ![My customized login theme, featuring a light, pastel blue color scheme with
   a glacier wallpaper.](glacier.png) ![An orange color scheme featuring
   completely round corners and Hanako-kun.](hanako.png) ![A very colorful
@@ -38,17 +38,21 @@ Common controls like power and session management are grouped together. Some the
 
 Some themes included icons for popular DEs like GNOME, KDE, Deepin, etc. I felt that it would be impossible to cover all cases, and chose a text-based list instead. Icons for sessions don't offer enough detail anyway; what if I wanted GNOME on both Xorg and Wayland?
 
-<VideoGif
-  content={{ collection: "posts", folder: frontmatter.slug }}
-  name="power-session-buttons"
-/>
+<div class="mdx-full">
+  <VideoGif
+    content={{ collection: "posts", folder: frontmatter.slug }}
+    name="power-session-buttons"
+  />
+</div>
 
 The user picture (if you choose to enable it) also acts as a user switcher. All it really does is prefill in the user field. The last user logged in is saved, however, and filled in for you next time.
 
-<VideoGif
-  content={{ collection: "posts", folder: frontmatter.slug }}
-  name="user-picture-inputs"
-/>
+<div class="mdx-full">
+  <VideoGif
+    content={{ collection: "posts", folder: frontmatter.slug }}
+    name="user-picture-inputs"
+  />
+</div>
 
 The login button is grayed out until both input fields are filled out.
 
@@ -56,10 +60,12 @@ The login button is grayed out until both input fields are filled out.
 
 Tying everything together are subtle animations that occur when popups come in and out of view. I especially like what happens when you enter an incorrect login:
 
-<VideoGif
-  content={{ collection: "posts", folder: frontmatter.slug }}
-  name="incorrect-login-anim"
-/>
+<div class="mdx-full">
+  <VideoGif
+    content={{ collection: "posts", folder: frontmatter.slug }}
+    name="incorrect-login-anim"
+  />
+</div>
 
 Don't like the default colors or how round everything is? I've exposed multiple config options that allow you to theme pretty much everything. You can also change the font and datetime format; however, the layout itself cannot be modified. After all, stuff in `sddm-theme-corners` should stay in the corners!
 
@@ -71,13 +77,17 @@ To get started, I looked through the default themes that SDDM provides, as well 
 
 I definitely committed some coding sins while trying to figure out how to hook everything together. I'm particularly proud of this abomination:
 
-```
+<div class="mdx-bleed">
+
+```js
 Component.onCompleted: {
   if (userPicture.enabled) {
     userPicture.source = userWrapper.items.get(userList.currentIndex).model.icon;
   }
 }
 ```
+
+</div>
 
 I revisited this line for the write-up, and... I'm not too sure what it does. I think it updates the picture displayed when you switch users.
 

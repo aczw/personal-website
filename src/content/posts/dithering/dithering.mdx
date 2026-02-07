@@ -1,0 +1,67 @@
+---
+title: Dithering
+posted: 2025-12-24T21:09:00.000-05
+
+slug: dithering
+---
+
+outline
+
+- check all commits prefixed with "webgpu:"
+- i had many video buffering issues at first. i did two things to fix them
+  - first, i originally tried loading all videos at once. this caused the current video to stutter because there were multiple network connections at once. now, on video transition, it plays the next video, and only starts preloading the next next one. _show code_
+  - second, i simply decreased the video file sizes. i didn't have a consistent set of formats for each video. all of them had at least a mp4, but this resulted in 10-20 MB videos. i took some time to add missing format versions for all videos, including a WebM version and a "smaller" MP4 video with a lower resolution. decreasing the amount of data needed to be fetched is the most direct way of dealing with buffering issues.
+  - i also tried adding a
+    ```html
+    <link
+      rel="preload"
+      href="https://..."
+      as="video"
+      type="video/mp4"
+      fetchpriority="high"
+      crossorigin="anonymous"
+    />
+    ```
+    link preload for my video, but this behavior seems to be inconsistent and is at least disabled on Chromium for now. See [here](https://chromium-review.googlesource.com/c/chromium/src/+/1440522) and [here](https://issues.chromium.org/issues/40632962) for details.
+- I wanted to achieve the effect [seen here](https://dithering.niccolofanton.dev), where it seems like the dithering is applied on top of a pixelization pass. Fortunately, we actually don't need two separate render passes. I realized that just like how we can offset the UV sample values, we can do the same for the pixel sample values for the Bayer matrix. Currently, it's hardcoded to check every pixel because we use `gl_FragCoord.xy` directly. We can define a separate pixel size for just the Bayer matrix instead.
+- `requestVideoFrameCallback()`: https://web.dev/articles/requestvideoframecallback-rvfc, https://developer.mozilla.org/en-US/docs/Web/API/HTMLVideoElement/requestVideoFrameCallback
+- passing video texture to GPU: https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_textures_in_WebGL
+  - turns out `gl.texImage2D` can take a `HTMLVideoElement` as the source, which to me is an incredible integration of the classic OpenGL API with web technology. like, in hindsight, _obviously_ this should work, duh! https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/Tutorial/Animating_textures_in_WebGL
+- after seemingly getting it to work on desktop, it was time to fix all the broken things on iOS, as usual.
+  - first, turns out iOS will immediately full screen play videos on page load unless you add playsInline, so i did that
+  - with iOS 26, safari has completely altered the tab bar. i do agree it looks much better, but it also means we can't use display fixed anymore because just covering the viewport isn't enough anymore: _show picture_. instead im probably going to have to do some stupif shit to fix this idk man
+- we can make some simplifications/optimizations in the shader.
+  - first, we never bother with colored dithering and only work with grayscale values. therefore, we can treat the dithered value as an interpolation value `t` that we use to sample our true color palette.
+  - originally i was working with many, hardcoded `const` variables within the shader. this made iteration faster, but i wanted to expose them in the configuration pane, so i started converting them to uniforms.
+    - one of these is the Bayer matrix size for ordered dithering. I support 2×2, 4×4, and 8×8, so I used a switch case for this: _show code_. however, seeing those 6 modulo operations got me a little worried.[^1] Since we're performing integer modulo and we're using powers of two, the modulo operations can be replaced with simple, efficient bitwise ANDs: _show code_.
+    - intuitively, we're collapsing a big integer to be within the range $[0, m-1]$, where $m$ is the modulus. and since $m$ is a power of two, this means we only care about the first, first 2, and first 3 least significant bits respectively. therefore we can AND the remaining bits away.
+- during development I heavily relied on Tweakpane to quickly adjust shader uniforms on the fly. i figured, why limit this inspector to myself? The panel now ships with the live site, allowing you to adjust everything from the colors to the dither algorithm used.
+  - Another thing I built for myself while testing were these presets that you could toggle between that would set the dither settings for you with one press of a button. I've exposed that under the "Presets" tab in the panel.
+  - The idea of presets additionally got me thinking... what if there was a dark mode and light mode preset? And then I could toggle between them if the user's system appearance changed!
+    - So now on page load, we first check what color scheme the user prefers, and loads the corresponding initial dither settings.
+    - We also add an event listener to update the dither palette on the fly when the user's system theme changes.
+      ```ts
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+      const dither: Dither = {
+        canvasSize: `0×0`,
+        backend: "WebGL 2",
+        ...structuredClone(
+          prefersDark.matches ?
+            DEFAULT_DARK_DITHER_SETTINGS
+          : DEFAULT_LIGHT_DITHER_SETTINGS,
+        ),
+      };
+
+      prefersDark.addEventListener("change", (ev) =>
+        applyDitherSettings(
+          dither,
+          ev.matches ?
+            DEFAULT_DARK_DITHER_SETTINGS
+          : DEFAULT_LIGHT_DITHER_SETTINGS,
+        ),
+      );
+      ```
+    - This makes the canvas match the CSS color scheme, which I think looks and feels really good.
+
+[^1]: Theoretically the GLSL compiler generates a jump table for switch statements, meaning only 2 of the 6 modulo operations are performed per execution.

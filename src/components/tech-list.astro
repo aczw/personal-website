@@ -1,4 +1,5 @@
 ---
+import Slash from "@/components/slash.astro";
 import type { HTMLAttributes } from "astro/types";
 
 type Props = HTMLAttributes<"li"> & {
@@ -11,15 +12,10 @@ const { tech: techList, class: className, ...props } = Astro.props;
 <ul class:list={["flex flex-wrap gap-x-1", className]} {...props}>
   {
     techList.map((tech, index) => (
-      <li class="leading-snug">
+      <li>
         {tech}
         {index !== techList.length - 1 ?
-          <span
-            aria-hidden="true"
-            class="cursor-default text-sweater-6/70 select-none not-dark:text-sweater-4/70"
-          >
-            /
-          </span>
+          <Slash class="leading-none" />
         : null}
       </li>
     ))

@@ -1,26 +1,63 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import type { ContentDateType } from "@/scripts/types";
+import type { ContentDate } from "@/scripts/types";
 import { getDateKind } from "@/scripts/util";
 
 type Props = HTMLAttributes<"p"> & {
-  date: ContentDateType;
+  date: ContentDate;
 };
 
 const { date, ...props } = Astro.props;
 
 const dateKind = getDateKind(date);
+const labels: string[] = [];
+const isoFormats: string[] = [];
+
+switch (dateKind.kind) {
+  case "simple": {
+    labels.push(dateKind.date);
+    isoFormats.push(new Date(dateKind.date).toISOString().slice(0, 7));
+
+    break;
+  }
+
+  case "ranged": {
+    labels.push(dateKind.date.from, dateKind.date.to);
+
+    // If "from" doesn't have a year, add it before creating Date object
+    let from = dateKind.date.from;
+    if (!/\d/.test(dateKind.date.from)) {
+      from += ` ${dateKind.date.to.split(" ")[1]!}`;
+    }
+
+    isoFormats.push(
+      new Date(from).toISOString().slice(0, 7),
+      new Date(dateKind.date.to).toISOString().slice(0, 7),
+    );
+
+    break;
+  }
+
+  default:
+    throw new Error("Unreachable date kind");
+}
 ---
 
-<p {...props}>
+<Fragment>
   {
     dateKind.kind === "simple" ?
-      dateKind.date
-    : <>
-        {dateKind.date.from}{" "}
-        <span class="cursor-default text-sweater-6/80 select-none">—</span>{" "}
-        {dateKind.date.to}
-      </>
+      <time {...props} datetime={isoFormats[0]}>
+        {labels[0]}
+      </time>
+    : <div {...props}>
+        <time datetime={isoFormats[0]} class="whitespace-nowrap">
+          {labels[0]}
+        </time>
+        <span class="text-sweater-7 select-none light:text-sweater-4">–</span>
+        <time datetime={isoFormats[1]} class="whitespace-nowrap">
+          {labels[1]}
+        </time>
+      </div>
   }
-</p>
+</Fragment>

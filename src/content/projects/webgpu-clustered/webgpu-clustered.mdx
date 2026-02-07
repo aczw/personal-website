@@ -6,17 +6,17 @@ metadata:
   tech:
     - WebGPU
     - WGSL
-    - TypeScript
+    - glTF
   link:
     href: https://webgpu.czw.sh/clustered-rendering
-    text: View online demo
+    text: Live site
   date: October 2025
   sourceHref: https://github.com/aczw/webgpu-samples/tree/main/src/clustered-rendering
-type: graphics
 cover:
   img: webgpu-clustered.png
   alt: Camera is aimed down the classic Sponza scene, which is lit up by thousands of small colored point lights.
-order: 2
+order: 6
+
 slug: webgpu-clustered
 ---
 
@@ -28,7 +28,7 @@ Below I will discuss some details on how each rendering method was implemented, 
 
 The base setup is the same across all three implementations. We are initially looking down our Sponza scene, and have a certain number of lights to render.
 
-<figure>
+<figure class="mdx-full">
   ![Sponza scene rendered only with its albedo.](sponza_albedo.png)
   <figcaption>Sponza scene, rendered purely with its base albedo.</figcaption>
 </figure>
@@ -67,4 +67,9 @@ To keep things consistent, I maintained the same canvas resolution of 1920×1200
 | **CPU**    | Ryzen 5 7600X @ 4.7Ghz                         |
 | **GPU**    | RTX 5060 Ti 16 GB, Studio Driver 581.29        |
 
-![Graph comparing frame rates for the naive, Forward+, and deferred rendering methods.](graph.png)
+Here's a graph demonstrating how the frame rate is impacted by the number of lights present in the scene. Clustered deferred rendering manages to have the best frames per second at 5000 lights.
+
+<div class="mdx-full">
+  ![Graph comparing frame rates for the naive, Forward+, and deferred rendering
+  methods.](graph.png)
+</div>

@@ -45,6 +45,8 @@ Since every link in my vault uses the shortest path possible—plus, none of my 
 
 This is thanks to Quartz’s Obsidian support. Make sure to set the markdownLinkResolution option to shortest for the CrawlLinks plugin, like so:
 
+<div class="mdx-bleed">
+
 ```ts title="quartz.config.ts"
 const config: QuartzConfig = {
   /* ...other stuff... */
@@ -54,7 +56,11 @@ const config: QuartzConfig = {
 };
 ```
 
+</div>
+
 Since I’ll be making copies of my notes, the file creation date on disk will not be accurate. Fortunately, I keep track of when each note was created and modified via frontmatter within the note itself. I tell Quartz to use and display that instead.
+
+<div class="mdx-bleed">
 
 ```ts title="quartz.config.ts" ins={5}
 const config: QuartzConfig = {
@@ -64,9 +70,13 @@ const config: QuartzConfig = {
       Plugin.CreatedModifiedDate({ priority: ["frontmatter"] }),
       Plugin.CrawlLinks({ markdownLinkResolution: "shortest" }),
     ],
+
+
   },
 };
 ```
+
+</div>
 
 ### Styling
 
@@ -74,7 +84,7 @@ Most of the time was spent on making things look ✨*pretty*✨
 
 I customized Quartz to use the same color scheme as this website. I also created a light mode version,[^3] and honestly I think it looks even better than dark:
 
-<div class="mx-pad rounded-lg border-dashed border-line-dark px-0 not-dark:border-(length:--border-w)">
+<div class="mdx-full">
   ![Homepage of the my Quartz site, displayed in light purple
   colors.](quartz-light.png)
 </div>
@@ -128,6 +138,8 @@ Following [Quartz’s advice](https://quartz.jzhao.xyz/features/private-pages), 
 > Originally I thought about writing some sort of custom logic that chooses to copy over a file only if it’s referenced at least once in one of the notes, but this folder thing was just simpler to do.
 
 Here is the entirety of my workflow file:
+
+<div class="mdx-bleed">
 
 ```yaml title=".github/workflows/update-content.yml"
 name: Update vault content
@@ -206,6 +218,8 @@ jobs:
           cd <QUARTZ_REPO>
           bun quartz sync
 ```
+
+</div>
 
 Some notes:
 

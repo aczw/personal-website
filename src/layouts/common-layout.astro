@@ -1,21 +1,18 @@
 ---
 import type { ComponentProps } from "astro/types";
 
-import Footer from "@/components/footer.astro";
-import Header from "@/components/header.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
+import Header from "@/components/header.astro";
+import Footer from "@/components/footer.astro";
+import type { HeaderLink } from "@/scripts/types";
 
-type Props = ComponentProps<typeof BaseLayout>;
+type Props = ComponentProps<typeof BaseLayout> & { headerLinks: HeaderLink[] };
+
+const { headerLinks, ...props } = Astro.props;
 ---
 
-<BaseLayout {...Astro.props}>
-  <div class="overflow-x-clip px-pad">
-    <div
-      class="mx-auto max-w-normal space-y-6 border-x-(length:--border-w) border-line-bright py-6 sm:space-y-12 sm:py-12"
-    >
-      <Header />
-      <slot />
-      <Footer />
-    </div>
-  </div>
+<BaseLayout {...props}>
+  <Header links={headerLinks} />
+  <slot />
+  <Footer />
 </BaseLayout>

@@ -1,0 +1,32 @@
+# https://studio.apollographql.com/sandbox/explorer?endpoint=https%3A%2F%2Fgraphql.anilist.co&explorerURLState=N4IgJg9gxgrgtgUwHYBcQC4QEcYIE4CeAFACQwDO%2BAkmOgARWoA0dJ5EeK9A2gIJQoAlgDdBKAgGUOKALosS4gA4JGPfkNHiAKgWVzWigIYBzBPUYp5yvAAUTZhqgCUdYAB08bpHTp3TRI1N6EkCEFms-BxD8SJd3T28fOkMBETFBBHI6IgpqWlZcvBoWdk5g0ss6JQQAfUEkYOrGOI8vJKSAOi66CG8AGUFyFHU08VdWxPafKDwEQxQEMF4UCamkxDBBQ3GEtfahFAAbBB22vfbkY0PBgAtV86S8CDhDACtBe4e6JHmRBE%2B9gBfAFrKAQYTUF6mU6TB6HQx4UwgqbA3YPchiBAAVTwh2R7UEYHxdFRZzWiiexlm5HIxKG8woxOqyNJsNZPlZrJATBAwgRWwARsdyBgQPEzm4QIUaJL6ABWAAsACYlQB2ACMqqY90lFVldElVAAIjUjQBRCQAYUl2rRktC%2BvVtolIAi9kdAAZnYlJU0kPruJLeAA5KgAWTNNT6VAkWhtBpAYZDAHFeFGY3GQDIJoDua6IEMAGbXYw3FAAeWsv16EhmgkUaEwIEBQA
+
+query (
+  $userId: Int
+  $sort: [ActivitySort]
+  $typeIn: [ActivityType]
+  $page: Int
+  $perPage: Int
+) {
+  Page(page: $page, perPage: $perPage) {
+    activities(userId: $userId, sort: $sort, type_in: $typeIn) {
+      ... on ListActivity {
+        createdAt
+        media {
+          title {
+            english
+            romaji
+            native
+          }
+          coverImage {
+            large
+          }
+          siteUrl
+          id
+        }
+        progress
+        status
+        type
+      }
+    }
+  }
+}

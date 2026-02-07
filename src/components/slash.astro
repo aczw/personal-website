@@ -1,0 +1,13 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = Omit<HTMLAttributes<"span">, "aria-hidden">;
+
+const { class: className, ...props } = Astro.props;
+---
+
+<span
+  aria-hidden="true"
+  class:list={["text-sweater-7 select-none light:text-sweater-4", className]}
+  {...props}>/</span
+>

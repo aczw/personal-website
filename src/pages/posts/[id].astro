@@ -8,114 +8,115 @@ import { BookOpenIcon, CalendarFoldIcon } from "@lucide/astro";
 import {
   getFullDateFormatting,
   getShortDateFormatting,
-  validProjectCover,
+  isValidProjectCover,
 } from "@/scripts/util";
-import ContentLayout from "@/layouts/content-layout.astro";
-import ContentWithToc from "@/components/content-with-toc.astro";
+import { DISABLED_POSTS, ICON_SIZE } from "@/scripts/constants";
+import BaseLayout from "@/layouts/base-layout.astro";
+import MdxContent from "@/components/mdx-content.astro";
+import Header from "@/components/header.astro";
+import Footer from "@/components/footer.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
-  return posts.map((post) => {
-    return { params: { id: post.id } };
-  });
+  return posts
+    .filter((post) => !DISABLED_POSTS.includes(post.id))
+    .map((post) => {
+      return { params: { id: post.id } };
+    });
 }) satisfies GetStaticPaths;
 
 const { id } = Astro.params;
-const post = await getEntry("posts", id);
-
-if (!post) {
-  throw new Error(`No post with id "${id}" found in collection."`);
-}
+const post = await getEntry("posts", id)!;
 
 const {
   data: { title, blurb, posted, cover },
 } = post;
 
-if (cover && !validProjectCover(cover.img.width, cover.img.height)) {
+if (cover && !isValidProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 
-const { Content, headings, remarkPluginFrontmatter } = await render(post);
-
+const { Content, remarkPluginFrontmatter } = await render(post);
 const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
 ---
 
-<ContentLayout meta={{ kind: "post", post }}>
-  {
-    cover ?
-      <section class="grid-line-before grid-line-after relative p-pad">
-        <Image
-          src={cover.img}
-          alt={cover.alt}
-          loading="eager"
-          class="rounded-lg bg-sweater-9 not-dark:bg-sweater-2"
-        />
-      </section>
-    : null
-  }
+<BaseLayout meta={{ kind: "posts", postsEntry: post }}>
+  <Header links={[{ href: "/posts", text: "Writing" }]} />
 
-  <section id="introduction" class="grid-line-before grid-line-after relative">
-    <div
-      class="space-y-1 border-b-(length:--border-w) border-dashed border-line-dark p-pad"
+  <main class="pt-pad desktop:pt-0">
+    <section
+      class="mx-auto mb-pad-4 w-full px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
     >
       <h1
-        class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
+        class="text-[2.65rem] leading-none font-bold text-heading sm:text-5xl"
       >
         {title}
       </h1>
 
-      {blurb ? <p class="text-subtitle">{blurb}</p> : null}
-    </div>
-
-    <div class="grid grid-cols-1 480:grid-cols-2">
-      <div
-        class="flex border-b-(length:--border-w) border-dashed border-line-dark 480:border-r-(length:--border-w) 480:border-b-0"
+      <p
+        class="mt-1 -mb-2 text-xl text-sweater-2 desktop:mb-0 desktop:text-2xl sm:text-4xl light:text-sweater-7"
       >
-        <div
-          class="flex grow flex-row 480:flex-col sm:flex-row sm:items-center"
+        {blurb}
+      </p>
+    </section>
+
+    <section aria-label="Overview" class="mb-pad-2 desktop:mb-pad-4">
+      {
+        cover && (
+          <div class="mx-auto mb-pad-2 max-w-(--real-wide-w) desktop:mb-pad-4 md:px-pad-2">
+            <Image
+              src={cover.img}
+              alt={cover.alt}
+              priority
+              class="md:rounded-xl"
+            />
+          </div>
+        )
+      }
+
+      <div
+        class="mx-auto w-full px-pad-2 *:space-y-0.5 **:leading-tight desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+      >
+        <dl
+          class="grid max-w-(--content-w) grid-cols-1 gap-x-pad-2 gap-y-pad sm:grid-cols-2"
         >
-          <p
-            class="shrink-0 border-r-(length:--border-w) border-dashed border-line-dark px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
-          >
-            Posted on
-          </p>
+          <div>
+            <dt class="flex justify-between font-bold text-heading">
+              Posted <CalendarFoldIcon
+                aria-hidden="true"
+                size={ICON_SIZE}
+                class="shrink-0 stroke-icon"
+              />
+            </dt>
+            <dd>
+              <time
+                datetime={posted.toISOString()}
+                title={getFullDateFormatting(posted)}
+              >
+                {getShortDateFormatting(posted)}
+              </time>
+            </dd>
+          </div>
 
-          <time
-            datetime={posted.toISOString()}
-            title={getFullDateFormatting(posted)}
-            class="grow px-pad pt-pad pb-pad 480:pt-0 sm:pt-pad"
-          >
-            {getShortDateFormatting(posted)}
-          </time>
-        </div>
-
-        <div class="p-pad">
-          <CalendarFoldIcon size={18} class="shrink-0 stroke-icon" />
-        </div>
+          <div>
+            <dt class="flex justify-between font-bold text-heading">
+              Length <BookOpenIcon
+                aria-hidden="true"
+                size={ICON_SIZE}
+                class="shrink-0 stroke-icon"
+              />
+            </dt>
+            <dd>
+              {numMinutes}
+              {numMinutes > 1 ? "minutes" : "minute"}
+            </dd>
+          </div>
+        </dl>
       </div>
+    </section>
 
-      <div class="flex">
-        <div
-          class="flex grow flex-row 480:flex-col sm:flex-row sm:items-center"
-        >
-          <p
-            class="shrink-0 border-r-(length:--border-w) border-dashed border-line-dark px-pad pt-pad pb-pad font-bold text-subtitle 480:border-r-0 480:pb-0 sm:border-r-(length:--border-w) sm:pb-pad"
-          >
-            Read time
-          </p>
+    <MdxContent aria-label="Post" content={Content} />
+  </main>
 
-          <p class="grow px-pad pt-pad pb-pad 480:pt-0 sm:pt-pad">
-            {numMinutes}
-            {numMinutes > 1 ? "minutes" : "minute"}
-          </p>
-        </div>
-
-        <div class="p-pad">
-          <BookOpenIcon size={18} class="shrink-0 stroke-icon" />
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <ContentWithToc content={Content} headings={headings} />
-</ContentLayout>
+  <Footer />
+</BaseLayout>

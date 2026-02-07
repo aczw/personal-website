@@ -1,82 +1,118 @@
 ---
-import { ArrowUpToLineIcon, MusicIcon } from "@lucide/astro";
+import {
+  ToolCaseIcon,
+  FeatherIcon,
+  ComponentIcon,
+  InfoIcon,
+  ArrowUpToLineIcon,
+} from "@lucide/astro";
 
-import LastFm from "@/components/last-fm.astro";
-import { getSocials } from "@/scripts/constants";
-
-const socials = getSocials();
+import MusicIndicator from "@/components/music-indicator.astro";
+import { ICON_SIZE } from "@/scripts/constants";
+import Link from "@/components/link.astro";
 ---
 
-<footer class="grid-line-before relative">
+<footer
+  class="overflow-x-clip border-t-(length:--border-w) border-style desktop:mb-10"
+>
   <div
-    class="grid grid-cols-1 border-b-(length:--border-w) border-dashed border-line-dark 480:grid-cols-2"
+    class="mx-auto grid w-full grid-cols-1 items-start gap-x-pad-4 gap-y-pad-3 px-pad-2 pt-pad-2 pb-pad-2 desktop:w-4/5 desktop:px-pad desktop:pt-pad-4 sm:grid-cols-2 lg:w-(--real-header-w)"
   >
-    <div
-      aria-hidden="true"
-      class="border-b-(length:--border-w) border-dashed border-line-dark 480:border-r-(length:--border-w) 480:border-b-0"
-    >
-    </div>
-
     <a
       href="#"
-      class="group flex items-center justify-between p-pad transition-colors hover:bg-line-dark"
+      class="flex items-center justify-between font-bold text-link-secondary transition-colors hover:text-link-secondary-hover"
+      data-umami-event="footer-back-to-top"
+      >Back to top <ArrowUpToLineIcon size={ICON_SIZE} class="stroke-icon" /></a
     >
-      <span
-        class="translate-y-0.5 font-bold text-link-secondary transition-colors group-hover:text-link-secondary-hover"
+
+    <div class="space-y-pad-3">
+      <div
+        class="grid grid-cols-2 gap-x-pad-2 gap-y-0.5 font-bold *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors *:hover:text-link-primary-hover md:text-lg"
       >
-        Back to top
-      </span>
-      <ArrowUpToLineIcon size={18} class="stroke-icon" />
-    </a>
-  </div>
-
-  <div
-    class="grid grid-cols-1 grid-rows-[auto_auto] *:border-dashed *:border-line-dark 480:grid-cols-2"
-  >
-    <div
-      aria-hidden="true"
-      class="hidden border-r-(length:--border-w) border-b-(length:--border-w) 480:block"
-    >
-    </div>
-
-    <div
-      class="grid grid-cols-2 border-b-(length:--border-w) *:border-dashed *:border-line-dark"
-    >
-      {
-        socials.map(({ href, label, icon: Icon }, index) => (
-          <a
-            href={href}
-            target="_blank"
-            class:list={[
-              "group flex items-center justify-between p-pad transition-colors hover:bg-line-bright",
-              // Render dashed lines
-              index < 2 ? "border-b-(length:--border-w)" : null,
-              index % 2 === 0 ? "border-r-(length:--border-w)" : null,
-            ]}
-          >
-            <span class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-              {label}
-            </span>
-            <Icon size={18} class="stroke-icon" />
-          </a>
-        ))
-      }
-    </div>
-
-    <div
-      class="grid-line-after px-pad pt-pad pb-3.5 maple leading-none 480:border-r-(length:--border-w)"
-    >
-      <LastFm server:defer>
-        <a
-          href="https://www.last.fm/user/ashzw"
-          target="_blank"
-          class="flex gap-2 rounded-full bg-sweater-9 px-3 py-1.5 text-link-primary transition-colors not-dark:bg-sweater-2 hover:bg-sweater-8 hover:text-link-primary-hover not-dark:hover:bg-sweater-3"
-          data-quiet="true"
-          slot="fallback"
-        >
-          <MusicIcon size={15} class="inline" /> Scrobbles
+        <a href="/projects">
+          Portfolio <ToolCaseIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="shrink-0 stroke-icon"
+          />
         </a>
-      </LastFm>
+        <a href="/posts">
+          Writing <FeatherIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="shrink-0 stroke-icon"
+          />
+        </a>
+        <p class="opacity-20 select-none" title="PARDON OUR DUST!">
+          Gallery <ComponentIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="shrink-0 stroke-icon"
+          />
+        </p>
+        <a href="/about">
+          About <MusicIndicator size={ICON_SIZE} server:defer>
+            <InfoIcon
+              aria-hidden="true"
+              slot="fallback"
+              size={ICON_SIZE}
+              class="shrink-0 stroke-icon"
+            />
+          </MusicIndicator>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-2 gap-x-pad-2 gap-y-0.5">
+        <Link href="https://twitter.com/zwcharl" target="_blank">Twitter</Link>
+        <Link href="https://are.na/charles-zw" target="_blank">Are.na</Link>
+        <Link href="https://linkedin.com/in/zwcharl" target="_blank"
+          >LinkedIn</Link
+        >
+        <Link href="https://github.com/aczw" target="_blank">GitHub</Link>
+      </div>
+
+      <q
+        id="flavor"
+        class="block h-[2lh] w-75 cursor-default text-sm leading-snug text-pretty text-sweater-7 italic before:content-none after:content-none desktop:w-87.5 desktop:text-base light:text-sweater-4"
+        style={{ opacity: 0 }}
+        data-umami-event="footer-flavor-text"
+      >
+      </q>
     </div>
   </div>
 </footer>
+
+<script>
+  import { FLAVOR_TEXTS } from "@/scripts/constants";
+
+  const flavorElt = document.getElementById("flavor")!;
+
+  function showFlavorText() {
+    let text = FLAVOR_TEXTS[Math.floor(Math.random() * FLAVOR_TEXTS.length)]!;
+    if (text.includes("/")) {
+      text = text
+        .split("/")
+        .map((fragment) => `“${fragment.trim()}”`)
+        .join(" / ");
+    } else {
+      text = `“${text}”`;
+    }
+
+    flavorElt.innerText = text;
+    flavorElt
+      .animate([{ opacity: 0 }, { opacity: 1 }], {
+        duration: 400,
+        easing: "ease-out",
+        fill: "forwards",
+      })
+      .addEventListener("finish", (ev) => {
+        const animation = ev.currentTarget as Animation;
+        animation.commitStyles();
+        animation.cancel();
+      });
+  }
+
+  flavorElt.addEventListener("click", showFlavorText);
+
+  showFlavorText();
+</script>

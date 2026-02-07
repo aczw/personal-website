@@ -1,0 +1,139 @@
+---
+import { actions } from "astro:actions";
+
+import { MusicIcon, InfoIcon, type Icon } from "@lucide/astro";
+
+interface Props {
+  size: number;
+}
+
+const { size } = Astro.props;
+
+const { data: track, error } = await Astro.callAction(
+  actions.lastFm.getRecentTrack,
+  {},
+);
+
+const isLive = !error && track.live;
+const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
+---
+
+<div
+  id="music-indicator"
+  aria-hidden="true"
+  class="relative"
+  title={isLive ? "I'm currently listening to a song!" : null}
+  style={{
+    height: `${size}px`,
+    width: `${size}px`,
+  }}
+  data-is-live={isLive ? "true" : "false"}
+  data-icon-size={size}
+>
+  {
+    isLive ?
+      <InfoIcon
+        size={size}
+        class="absolute inset-0 scale-40 stroke-icon opacity-0 blur-xs transition-[opacity_filter_scale] duration-500 starting:scale-100 starting:opacity-100 starting:blur-none"
+      />
+    : null
+  }
+
+  <ResolvedIcon
+    size={size}
+    class:list={[
+      "stroke-icon",
+      isLive ?
+        "absolute inset-0 scale-100 opacity-100 blur-none transition-[opacity_filter_scale] duration-500 starting:scale-40 starting:opacity-0 starting:blur-xs"
+      : null,
+    ]}
+  />
+</div>
+
+<script>
+  const root = document.getElementById("music-indicator")!;
+  const iconSize = root.dataset["iconSize"]!;
+  const isLive = root.dataset["isLive"] === "true";
+
+  if (isLive) {
+    // Create templates for each of the possible icons. We'll use these to
+    // generate copies of each icon
+    const iconTemplates: HTMLTemplateElement[] = Object.values<string>(
+      import.meta.glob("../assets/music-indicator/*.svg", {
+        eager: true,
+        query: "?raw",
+        import: "default",
+      }),
+    ).map((iconSvgString) => {
+      const template = document.createElement("template");
+      template.innerHTML = iconSvgString.trim();
+
+      const iconSvg = template.content.firstElementChild as SVGSVGElement;
+      iconSvg.setAttribute("width", iconSize);
+      iconSvg.setAttribute("height", iconSize);
+      iconSvg.removeAttribute("stroke");
+      iconSvg.removeAttribute("stroke-width");
+      iconSvg.style.cssText =
+        "position: absolute; bottom: 0px; pointer-events: none; stroke: var(--color-icon);";
+
+      return template;
+    });
+
+    const pickAndCreateIcon = (): SVGSVGElement => {
+      const randomIndex = Math.floor(Math.random() * iconTemplates.length);
+      const pickedTemplate = iconTemplates[randomIndex]!;
+      const iconSvg = pickedTemplate.content.firstElementChild as SVGSVGElement;
+
+      return document.importNode(iconSvg, true);
+    };
+
+    let progress = 0;
+    let prevTime = performance.now();
+
+    const update: FrameRequestCallback = (now) => {
+      progress += now - prevTime;
+      prevTime = now;
+
+      // Controls icon spawn rate, in milliseconds
+      if (progress >= 300) {
+        const icon = pickAndCreateIcon();
+        root.append(icon);
+
+        // Random angle between [20, 70] degrees, then converted to radians
+        const randAngle = ((Math.random() * 50 + 20) * Math.PI) / 180;
+        const randRadius = Math.random() * 30 + 70;
+        const x = randRadius * Math.cos(randAngle);
+        const y = randRadius * Math.sin(randAngle);
+
+        icon
+          .animate(
+            [
+              {
+                opacity: 1,
+                transform: "translate(0) scale(1)",
+                strokeWidth: 2,
+              },
+              {
+                opacity: 0,
+                transform: `translate(${x}px, -${y}px) scale(1.5)`,
+                strokeWidth: 1.33,
+              },
+            ],
+            { duration: 1500, easing: "linear", fill: "forwards" },
+          )
+          .addEventListener("finish", (ev) => {
+            const animation = ev.currentTarget as Animation;
+            icon.remove();
+            animation.cancel();
+          });
+
+        progress = 0;
+      }
+
+      requestAnimationFrame(update);
+    };
+
+    // Wait a little to let the music icon fully animate in
+    setTimeout(() => requestAnimationFrame(update), 600);
+  }
+</script>

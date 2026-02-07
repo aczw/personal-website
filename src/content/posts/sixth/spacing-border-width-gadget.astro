@@ -1,51 +1,49 @@
 <div
-  class="mx-pad space-y-pad rounded-lg bg-sweater-9 py-pad not-dark:bg-sweater-2"
+  class="mdx-outdent space-y-pad border-y-(length:--border-w) border-style p-pad-2 desktop:rounded-xl desktop:border-x-(length:--border-w)"
 >
   <div class="flex justify-between gap-pad">
-    <p class="text-lg font-bold">Break everything!</p>
+    <p class="font-bold text-heading">Break everything!</p>
     <button
       id="reset-button"
-      class="cursor-pointer text-link-primary transition-colors hover:text-link-primary-hover"
+      class="text-link-primary transition-colors hover:text-link-primary-hover"
       >Reset</button
     >
   </div>
 
   <div class="space-y-0.5">
     <div class="flex items-center justify-between gap-pad">
-      <label for="spacing-slider"
-        >Padding (<span class="maple">--spacing-pad</span>)</label
-      ><p id="spacing-value" class="">9.4px</p>
+      <label for="spacing-slider">Padding (<code>--spacing-pad</code>)</label><p
+        id="spacing-value"
+        class=""
+      >
+        9.4px
+      </p>
     </div>
-    <div class="flex items-center">
-      <input
-        id="spacing-slider"
-        type="range"
-        value="9.375"
-        min="0"
-        max="100"
-        step="0.1"
-        class="w-full"
-      />
-    </div>
+    <input
+      id="spacing-slider"
+      type="range"
+      value="9.375"
+      min="0"
+      max="100"
+      step="0.1"
+      class="w-full"
+    />
   </div>
 
   <div class="space-y-0.5">
     <div class="flex items-center justify-between gap-pad">
-      <label for="border-slider"
-        >Border width (<span class="maple">--border-w</span>)</label
+      <label for="border-slider">Border width (<code>--border-w</code>)</label
       ><p id="border-value" class="">9.4px</p>
     </div>
-    <div class="flex items-center">
-      <input
-        id="border-slider"
-        type="range"
-        value="2"
-        min="0"
-        max="25"
-        step="1"
-        class="w-full"
-      />
-    </div>
+    <input
+      id="border-slider"
+      type="range"
+      value="2"
+      min="0"
+      max="25"
+      step="1"
+      class="w-full"
+    />
   </div>
 </div>
 

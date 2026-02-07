@@ -1,4 +1,54 @@
 :root {
+  /* Make Tweakpane use Maple Mono */
+  --tp-base-font-family: var(--font-mono);
+  --tp-base-shadow-color: transparent;
+  --tp-base-border-radius: var(--radius-lg);
+
+  /* Values were built with https://tweakpane.github.io/docs/theming/#builder */
+  --tp-base-background-color: hsla(244, 47%, 7%, 1);
+  --tp-button-background-color: hsla(244, 36%, 41%, 1);
+  --tp-button-background-color-active: rgba(108, 102, 183, 1);
+  --tp-button-background-color-focus: rgba(91, 85, 175, 1);
+  --tp-button-background-color-hover: rgba(81, 75, 160, 1);
+  --tp-button-foreground-color: hsla(244, 100%, 94%, 1);
+  --tp-container-background-color: hsla(247, 42%, 17%, 0.5);
+  --tp-container-background-color-active: rgba(55, 47, 116, 0.5);
+  --tp-container-background-color-focus: rgba(47, 40, 98, 0.5);
+  --tp-container-background-color-hover: rgba(38, 33, 80, 0.5);
+  --tp-container-foreground-color: hsla(244, 100%, 94%, 1);
+  --tp-groove-foreground-color: hsla(247, 42%, 17%, 0.5);
+  --tp-input-background-color: hsla(247, 42%, 17%, 1);
+  --tp-input-background-color-active: hsla(247, 42%, 32%, 1);
+  --tp-input-background-color-focus: hsla(247, 42%, 27%, 1);
+  --tp-input-background-color-hover: hsla(246, 42%, 22%, 1);
+  --tp-input-foreground-color: hsla(244, 100%, 91%, 1);
+  --tp-label-foreground-color: hsla(244, 100%, 94%, 1);
+  --tp-monitor-background-color: hsla(247, 42%, 17%, 1);
+  --tp-monitor-foreground-color: hsla(244, 100%, 94%, 1);
+
+  @variant light {
+    --tp-base-background-color: hsla(244, 100%, 94%, 1);
+    --tp-button-background-color: hsla(245, 100%, 83%, 1);
+    --tp-button-background-color-active: rgba(105, 92, 255, 1);
+    --tp-button-background-color-focus: rgba(129, 117, 255, 1);
+    --tp-button-background-color-hover: rgba(152, 143, 255, 1);
+    --tp-button-foreground-color: hsla(244, 47%, 7%, 1);
+    --tp-container-background-color: hsla(245, 100%, 87%, 0.35);
+    --tp-container-background-color-active: hsla(245, 100%, 72%, 0.35);
+    --tp-container-background-color-focus: hsla(245, 100%, 77%, 0.35);
+    --tp-container-background-color-hover: hsla(245, 100%, 82%, 0.35);
+    --tp-container-foreground-color: hsla(244, 47%, 7%, 1);
+    --tp-groove-foreground-color: hsla(245, 100%, 87%, 0.35);
+    --tp-input-background-color: hsla(244, 100%, 91%, 1);
+    --tp-input-background-color-active: hsla(244, 100%, 76%, 1);
+    --tp-input-background-color-focus: hsla(244, 100%, 81%, 1);
+    --tp-input-background-color-hover: hsla(243, 100%, 86%, 1);
+    --tp-input-foreground-color: hsla(247, 42%, 17%, 1);
+    --tp-label-foreground-color: hsla(244, 47%, 7%, 1);
+    --tp-monitor-background-color: hsla(244, 100%, 91%, 1);
+    --tp-monitor-foreground-color: hsla(247, 42%, 17%, 1);
+  }
+
   --ec-tm-markBrdCol: --alpha(var(--color-sweater-2) / 30%);
   --ec-tm-markBg: --alpha(var(--color-sweater-2) / 10%);
 
@@ -10,7 +60,7 @@
   --ec-tm-delBrdCol: --alpha(#eb6f92 / 50%);
   --ec-tm-delDiffIndCol: --alpha(#eb6f92 / 65%);
 
-  @variant not-dark {
+  @variant light {
     --ec-tm-markBrdCol: --alpha(var(--color-sweater-9) / 30%);
     --ec-tm-markBg: --alpha(var(--color-sweater-9) / 10%);
 
@@ -23,8 +73,41 @@
     --ec-tm-delDiffIndCol: --alpha(#b4637a / 65%);
   }
 
-  /* Force EC code blocks to use my Maple Mono settings */
-  .expressive-code pre > code {
-    font-feature-settings: var(--font-mono--font-feature-settings) !important;
+  --ec-codePadBlk: var(--spacing-pad-2);
+  --ec-codePadInl: var(--spacing-pad-2);
+  --ec-uiPadInl: var(--spacing-pad-2);
+  --ec-uiPadBlk: --spacing(1.5);
+}
+
+/* Force Tweakpane to use my Maple Mono settings */
+.panel-container {
+  font-feature-settings: var(--font-mono--font-feature-settings);
+}
+
+.expressive-code {
+  * {
+    scrollbar-width: thin;
   }
+
+  /* Make tab headers bold */
+  figure.frame.has-title {
+    figcaption.header .title {
+      @apply font-bold text-heading;
+    }
+
+    pre code {
+      /* Decrease vertical padding when there's a title. */
+      --ec-codePadBlk: var(--spacing-pad);
+    }
+  }
+
+  /* Force EC code blocks to use my Maple Mono settings */
+  pre * {
+    @apply maple;
+  }
+}
+
+/* Increase vertical spacing around LaTeX */
+.mdx > mjx-container[jax="CHTML"][display="true"] {
+  @apply my-pad-3;
 }

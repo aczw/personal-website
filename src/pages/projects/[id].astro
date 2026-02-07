@@ -1,29 +1,23 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
 import type { GetStaticPaths } from "astro";
-import type { z } from "astro/zod";
 
 import {
   CalendarFoldIcon,
   ExternalLinkIcon,
   FileCodeIcon,
   WrenchIcon,
-  type Icon as IconType,
 } from "@lucide/astro";
 
+import CommonLayout from "@/layouts/common-layout.astro";
+import MdxContent from "@/components/mdx-content.astro";
 import ProjectCover from "@/components/project-cover.astro";
-import type {
-  LinkSchema,
-  SourceHrefSchema,
-  TechSchema,
-} from "@/scripts/schema";
-import type { ContentDateType } from "@/scripts/types";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
-import ContentLayout from "@/layouts/content-layout.astro";
 import { DISABLED_PROJECTS } from "@/scripts/constants";
-import { validProjectCover } from "@/scripts/util";
-import ContentWithToc from "@/components/content-with-toc.astro";
+import { isValidProjectCover } from "@/scripts/util";
+import { ICON_SIZE } from "@/scripts/constants";
+import Link from "@/components/link.astro";
 
 export const getStaticPaths = (async () => {
   const projects = await getCollection("projects");
@@ -35,160 +29,144 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { id } = Astro.params;
-const project = await getEntry("projects", id);
-
-if (!project) {
-  throw new Error(`No project with id "${id}" found in collection."`);
-}
+const project = await getEntry("projects", id)!;
 
 const {
   data: {
     name,
     subtitle,
     blurb,
-    metadata: { tech, link, sourceHref, date },
+    metadata: { tech, date, link, sourceHref },
     cover,
   },
 } = project;
 
-if (!validProjectCover(cover.img.width, cover.img.height)) {
+if (!isValidProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 
-type MetadataKind =
-  | {
-      kind: "tech";
-      data: z.infer<typeof TechSchema>;
-      icon: typeof IconType;
-    }
-  | { kind: "link"; data: z.infer<typeof LinkSchema>; icon: typeof IconType }
-  | {
-      kind: "sourceHref";
-      data: z.infer<typeof SourceHrefSchema>;
-      icon: typeof IconType;
-    }
-  | { kind: "date"; data: ContentDateType; icon: typeof IconType };
-
-// Make my life easier by iterating through the metadata
-let metadata: MetadataKind[] = [
-  { kind: "tech", data: tech, icon: WrenchIcon },
-  { kind: "date", data: date, icon: CalendarFoldIcon },
-];
-
-if (link) {
-  metadata.push({ kind: "link", data: link, icon: ExternalLinkIcon });
-}
-
-if (sourceHref) {
-  metadata.push({ kind: "sourceHref", data: sourceHref, icon: FileCodeIcon });
-}
-
-const { Content, headings } = await render(project);
+const numMetadata = 2 + (link ? 1 : 0) + (sourceHref ? 1 : 0);
+const { Content } = await render(project);
 ---
 
-<ContentLayout meta={{ kind: "project", project }}>
-  <section class="grid-line-before grid-line-after relative p-pad">
-    <ProjectCover
-      id={id}
-      cover={cover}
-      useVideo={{ small: false }}
-      class="overflow-hidden rounded-lg"
-    />
-  </section>
-
-  <section id="introduction" class="grid-line-before grid-line-after relative">
-    <div
-      class="grid grid-cols-1 space-y-1.5 border-b-(length:--border-w) border-dashed border-line-dark sm:grid-cols-2 sm:space-y-0"
+<CommonLayout
+  meta={{ kind: "projects", projectsEntry: project }}
+  headerLinks={[{ href: "/projects", text: "Portfolio" }]}
+>
+  <main>
+    <section
+      class="mx-auto mb-pad-4 w-full px-pad-2 pt-pad desktop:w-4/5 desktop:px-pad desktop:pt-0 lg:w-(--real-header-w)"
     >
-      <div
-        class="border-dashed border-line-dark px-pad pt-pad sm:border-r-(length:--border-w) sm:pb-pad"
+      <h1
+        class="text-[2.65rem] leading-none font-bold text-heading sm:text-5xl"
       >
-        <h1
-          class="text-2xl leading-tight font-bold text-sweater-2 not-dark:text-sweater-8"
-        >
-          {name}
-        </h1>
+        {name}
+      </h1>
 
-        {
-          subtitle ?
-            <p class="text-2xl leading-tight text-subtitle">{subtitle}</p>
-          : null
-        }
+      {
+        subtitle && (
+          <p class="mt-1 text-2xl text-sweater-2 desktop:text-4xl light:text-sweater-7">
+            {subtitle}
+          </p>
+        )
+      }
+
+      <p class="mt-1.5 max-w-(--content-w)">{blurb}</p>
+    </section>
+
+    <section
+      aria-label="Overview"
+      class="mb-pad-2 space-y-pad-2 desktop:mb-pad-4 desktop:space-y-pad-4"
+    >
+      <div class="mx-auto max-w-(--real-wide-w) md:px-pad-2">
+        <ProjectCover
+          id={id}
+          cover={cover}
+          useVideo={{ small: false }}
+          class="overflow-hidden md:rounded-xl"
+        />
       </div>
 
-      <p class="px-pad pb-pad sm:pt-pad sm:text-subtitle">
-        {blurb}
-      </p>
-    </div>
+      <div
+        class="mx-auto w-full px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+      >
+        <dl
+          aria-label="Metadata"
+          class="grid grid-cols-1 gap-y-pad border-style *:flex *:gap-x-pad *:border-style **:leading-tight desktop:-mx-pad desktop:gap-y-0 desktop:border-t-(length:--border-w) desktop:border-l-(length:--border-w) desktop:*:border-r-(length:--border-w) desktop:*:border-b-(length:--border-w) desktop:*:p-pad md:grid-cols-(--initial-grid-cols)"
+          style={`--initial-grid-cols: repeat(${numMetadata % 2 === 0 ? 2 : numMetadata}, minmax(0, 1fr));`}
+        >
+          <div>
+            <div class="grow space-y-0.5">
+              <dt class="font-bold text-heading">Made with</dt>
+              <dd><TechList tech={tech} class="" /></dd>
+            </div>
+            <WrenchIcon
+              aria-hidden="true"
+              size={ICON_SIZE}
+              class="shrink-0 stroke-icon"
+            />
+          </div>
 
-    <ul class="grid grid-cols-1 560:grid-cols-2 normal:grid-cols-4!">
-      {
-        metadata.map(({ kind, data, icon: Icon }, index) => (
-          <li
-            class:list={[
-              "group col-span-1 flex justify-between gap-pad border-dashed border-line-dark",
-              metadata.length === 2 ? "normal:col-span-2" : null,
+          <div>
+            <div class="grow space-y-0.5">
+              <dt class="font-bold text-heading">Duration</dt>
+              <dd><ContentDate date={date} class="" /></dd>
+            </div>
+            <CalendarFoldIcon
+              aria-hidden="true"
+              size={ICON_SIZE}
+              class="shrink-0 stroke-icon"
+            />
+          </div>
 
-              // Two metadata
-              metadata.length === 2 && index === 0 ?
-                "border-b-(length:--border-w) 560:border-r-(length:--border-w) 560:border-b-0"
-              : null,
-
-              // Greater than two metadata
-              metadata.length > 2 && index % 2 === 0 ?
-                "560:border-r-(length:--border-w)"
-              : null,
-              metadata.length > 2 && index < 2 ?
-                "border-b-(length:--border-w) normal:border-r-(length:--border-w) normal:border-b-0"
-              : null,
-              metadata.length > 2 && index === 2 ?
-                "border-b-(length:--border-w) 560:border-b-0"
-              : null,
-
-              kind === "tech" || kind === "date" ? "p-pad" : null,
-            ]}
-          >
-            {kind === "tech" || kind === "date" ?
-              <>
-                <div>
-                  <p class="font-bold break-all text-subtitle">
-                    {kind === "tech" ? "Tech" : "Date"}
-                  </p>
-
-                  {kind === "tech" ?
-                    <TechList tech={data} />
-                  : <ContentDate date={data} />}
+          {
+            link && (
+              <div>
+                <div class="grow space-y-0.5">
+                  <dt class="font-bold wrap-anywhere text-heading">
+                    {link.text}
+                  </dt>
+                  <dd>
+                    <Link target="_blank" href={link.href} class="break-all">
+                      {
+                        /* Get rid of https:// and only show domains */
+                        link.href.slice(8).split("/")[0]
+                      }
+                    </Link>
+                  </dd>
                 </div>
+                <ExternalLinkIcon
+                  aria-hidden="true"
+                  size={ICON_SIZE}
+                  class="shrink-0 stroke-icon"
+                />
+              </div>
+            )
+          }
 
-                <Icon size={18} class="shrink-0 stroke-icon" />
-              </>
-            : <a
-                href={kind === "link" ? data.href : data}
-                target="_blank"
-                title={kind === "link" ? data.href : data}
-                class="flex grow justify-between gap-pad p-pad transition-colors group-hover:bg-line-dark"
-              >
-                <div>
-                  <p class="font-bold text-link-primary transition-colors group-hover:text-link-primary-hover">
-                    {kind === "link" ? data.text : "Source code"}
-                  </p>
-
-                  <p class="break-all text-link-secondary">
-                    {kind === "link" ?
-                      /* Substring removes the https:// in front */
-                      data.href.substring(8).split("/")[0]!
-                    : "Visit GitHub"}
-                  </p>
+          {
+            sourceHref && (
+              <div>
+                <div class="grow space-y-0.5">
+                  <dt class="font-bold text-heading">Source</dt>
+                  <dd>
+                    <Link target="_blank" href={sourceHref} class="">
+                      View on GitHub
+                    </Link>
+                  </dd>
                 </div>
+                <FileCodeIcon
+                  aria-hidden="true"
+                  size={ICON_SIZE}
+                  class="shrink-0 stroke-icon"
+                />
+              </div>
+            )
+          }
+        </dl>
+      </div>
+    </section>
 
-                <Icon size={18} class="shrink-0 stroke-icon" />
-              </a>
-            }
-          </li>
-        ))
-      }
-    </ul>
-  </section>
-
-  <ContentWithToc content={Content} headings={headings} />
-</ContentLayout>
+    <MdxContent aria-label="Write-up" content={Content} />
+  </main>
+</CommonLayout>

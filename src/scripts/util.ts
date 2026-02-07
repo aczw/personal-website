@@ -1,54 +1,22 @@
-import type { CollectionEntry } from "astro:content";
-
-import { readdirSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-import type { PROJECT_CATEGORIES } from "@/scripts/constants";
-import type { ContentDateType, DateKind } from "@/scripts/types";
+import type { ContentDate, DateKind } from "@/scripts/types";
 
 /**
- * This value is used in astro.config.ts, which unfortunately means it can't
- * share a file with functions that deal with Astro components/JSX syntax,
- * e.g. constants.ts. Therefore it's defined in this file instead.
+ * Values used in astro.config.ts can't be defined in files with functions that
+ * deal with Astro components/JSX syntax, which includes constants.ts. So
+ * some constants are defined in this file instead.
  */
 const SITE_URL = "https://charleszw.com";
 
 /**
- * Astro's sitemap integration does not include dynamic routes in the generated sitemap when
- * the site uses SSR. This function crawls the filesystem and does it manually.
- *
- * Note: this also includes routes that are private/drafts, because it does not check frontmatter.
- *
- * Note: currently unused because projects and posts are statically generated since v5.0.0. Check
- * file paths before using.
- *
- * @see https://github.com/withastro/astro/issues/3682#issuecomment-1492468918
+ * Might change in the future if I move.
  */
-function getContentRoutes() {
-  const __filename = fileURLToPath(import.meta.url);
-  const __dirname = dirname(__filename);
-
-  const contentPath = join(__dirname, "src", "content");
-
-  const postUrls = readdirSync(join(contentPath, "posts")).map((file) => {
-    const fileName = file.split(".")[0];
-    return `${SITE_URL}/posts/${fileName}`;
-  });
-
-  const projectUrls = readdirSync(join(contentPath, "projects")).map((file) => {
-    const fileName = file.split(".")[0];
-    return `${SITE_URL}/projects/${fileName}`;
-  });
-
-  return [...postUrls, ...projectUrls];
-}
+const CURRENT_TIMEZONE = "America/New_York";
 
 /**
  * Checks that the cover image for my project covers have an aspect ratio of
  * 16:10, for no real reason other than consistency and aesthetics
  */
-function validProjectCover(width: number, height: number): boolean {
+function isValidProjectCover(width: number, height: number): boolean {
   const ratio = width / height;
 
   if (Math.abs(ratio - 1.6) <= 0.01) {
@@ -73,7 +41,7 @@ function getShortDateFormatting(date: Date) {
     month: "long",
     day: "numeric",
     year: "numeric",
-    timeZone: "America/New_York",
+    timeZone: CURRENT_TIMEZONE,
   });
 }
 
@@ -87,52 +55,41 @@ function getFullDateFormatting(date: Date) {
     year: "numeric",
     hour: "numeric",
     minute: "numeric",
-    timeZone: "America/New_York",
+    timeZone: CURRENT_TIMEZONE,
     timeZoneName: "short",
   });
 }
 
 /**
- * @returns Just the (full) month and year.
+ * @returns Full month and day.
  */
-function getMonthYearDateFormatting(date: Date) {
+function getMonthDayDateFormatting(date: Date) {
   return date.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
-    timeZone: "America/New_York",
+    timeZone: CURRENT_TIMEZONE,
   });
 }
 
-function getProjectsInCategory(
-  projects: CollectionEntry<"projects">[],
-  category: (typeof PROJECT_CATEGORIES)[number],
-  sort = true,
-) {
-  const filtered = projects.filter((project) => project.data.type === category);
-
-  if (sort) {
-    return filtered.sort((a, b) => a.data.order - b.data.order);
-  } else {
-    return filtered;
-  }
-}
-
-function getDateKind(date: ContentDateType): DateKind {
-  if (typeof date === "object" && date !== null && "from" in date) {
+function getDateKind(date: ContentDate): DateKind {
+  if (typeof date === "object" && "from" in date) {
     return { kind: "ranged", date };
   } else {
     return { kind: "simple", date };
   }
 }
 
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
 export {
   SITE_URL,
-  getContentRoutes,
-  validProjectCover,
+  isValidProjectCover,
   stripEndingSlash,
   getShortDateFormatting,
   getFullDateFormatting,
-  getMonthYearDateFormatting,
-  getProjectsInCategory,
+  getMonthDayDateFormatting,
   getDateKind,
+  capitalize,
 };

@@ -1,56 +1,95 @@
 ---
-import Analytics from "@vercel/analytics/astro";
 import SpeedInsights from "@vercel/speed-insights/astro";
 
-import type { MetaKind } from "@/scripts/types";
 import "@/styles/main.css";
-import { getShortDateFormatting, stripEndingSlash } from "@/scripts/util";
+
+import type { Meta, MetaKind } from "@/scripts/types";
+import {
+  capitalize,
+  getShortDateFormatting,
+  SITE_URL,
+  stripEndingSlash,
+} from "@/scripts/util";
+import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
 
 interface Props {
-  meta: MetaKind;
+  meta: Meta;
 }
 
-const { meta } = Astro.props;
+type Head = {
+  title: string;
+  description: string;
+  og: `?${MetaKind}=${string}`;
+};
 
-let title = "Charles Wang";
-let description: string;
-let ogImageParams: string;
+const head: Head = (() => {
+  const { meta } = Astro.props;
 
-switch (meta.kind) {
-  case "route": {
-    title = (meta.title ? `${meta.title} — ` : "") + title;
-    description = meta.description;
-    ogImageParams = `?heading=${encodeURIComponent(meta.ogImageParams)}`;
-    break;
+  switch (meta.kind) {
+    case "route": {
+      const title = (() => {
+        switch (meta.route) {
+          case "home":
+            return "";
+          case "projects":
+            return "Portfolio";
+          case "posts":
+            return "Writing";
+          default:
+            return capitalize(meta.route);
+        }
+      })();
+
+      return {
+        title,
+        description: meta.description,
+        og: `?route=${meta.route}`,
+      };
+    }
+
+    case "projects": {
+      const { data, id } = meta.projectsEntry;
+      return {
+        title: data.name,
+        description: data.blurb,
+        og: `?projects=${id}`,
+      };
+    }
+
+    case "posts": {
+      const { data, id } = meta.postsEntry;
+      const description =
+        data.blurb !== undefined ?
+          data.blurb
+        : `Posted on ${getShortDateFormatting(data.posted)}`;
+
+      return {
+        title: data.title,
+        description,
+        og: `?posts=${id}`,
+      };
+    }
+
+    case "gallery":
+      return {
+        title: "Gallery TODO",
+        description: "Gallery TODO",
+        og: `?gallery=TODO`,
+      };
+
+    default:
+      throw new Error("Unhandled meta kind!");
   }
-
-  case "post": {
-    const { data, id } = meta.post;
-    title = `${data.title} — ${title}`;
-
-    // If the post doesn't have a blurb then just state when it was published
-    description =
-      data.blurb ?
-        data.blurb
-      : `Posted on ${getShortDateFormatting(data.posted)}.`;
-    ogImageParams = `?post=${id}`;
-    break;
-  }
-
-  case "project": {
-    const { data, id } = meta.project;
-    title = `${data.name} — ${title}`;
-    description = data.blurb;
-    ogImageParams = `?project=${id}`;
-    break;
-  }
-
-  default:
-    throw new Error("Unreachable!");
-}
+})();
 
 const url = new URL(Astro.url.pathname, Astro.site).toString();
 const canonicalUrl = stripEndingSlash(url);
+
+const { title: titlePrefix, description, og } = head;
+const ogImageUrl = `${SITE_URL}/api/og.png${og}`;
+
+const title =
+  titlePrefix.length === 0 ? "Charles Wang" : `${titlePrefix} / Charles Wang`;
 ---
 
 <!doctype html>
@@ -58,7 +97,10 @@ const canonicalUrl = stripEndingSlash(url);
   <head>
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
+    <meta
+      name="viewport"
+      content="width=device-width, interactive-widget=resizes-content"
+    />
     <meta name="generator" content={Astro.generator} />
 
     <meta name="color-scheme" content="dark light" />
@@ -69,15 +111,9 @@ const canonicalUrl = stripEndingSlash(url);
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="en_US" />
-    <meta
-      property="og:image"
-      content={`https://charleszw.com/api/og.png${ogImageParams}`}
-    />
+    <meta property="og:image" content={ogImageUrl} />
 
-    <meta
-      property="twitter:image"
-      content={`https://charleszw.com/api/og.png${ogImageParams}`}
-    />
+    <meta property="twitter:image" content={ogImageUrl} />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />
@@ -85,9 +121,34 @@ const canonicalUrl = stripEndingSlash(url);
     <link rel="canonical" href={canonicalUrl} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <link rel="icon" sizes="any" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
-    <link rel="icon" href="/favicon.ico" />
+    <link
+      rel="icon"
+      sizes="any"
+      type="image/svg+xml"
+      href="/favicon-dark-bg.svg"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      sizes="any"
+      type="image/svg+xml"
+      href="/favicon-light-bg.svg"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link
+      rel="icon"
+      sizes="64x64"
+      type="image/png"
+      href="/favicon-dark-bg.png"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      sizes="64x64"
+      type="image/png"
+      href="/favicon-light-bg.png"
+      media="(prefers-color-scheme: dark)"
+    />
 
     <link
       rel="preload"
@@ -119,28 +180,11 @@ const canonicalUrl = stripEndingSlash(url);
       src="https://cloud.umami.is/script.js"
       data-website-id="9ccfaf2d-6989-4335-ab83-606d54cdee0f"></script>
 
-    <Analytics />
     <SpeedInsights />
   </head>
 
   <body>
     <slot />
-
-    {
-      import.meta.env.DEV ?
-        <div
-          aria-hidden="true"
-          class="fixed bottom-5 left-5 z-9999 w-fit cursor-default rounded-xl bg-sweater-8 px-4 py-2 maple not-dark:bg-sweater-3"
-        >
-          <span class="hidden 2xl:inline">2XL ({">="}1536px)</span>
-          <span class="hidden xl:inline 2xl:hidden">XL ({">="}1280px)</span>
-          <span class="hidden lg:inline xl:hidden">LG ({">="}1024px)</span>
-          <span class="hidden md:inline lg:hidden">MD ({">="}768px)</span>
-          <span class="hidden sm:inline md:hidden">SM ({">="}640px)</span>
-          <span class="hidden 480:inline sm:hidden">XS ({">="}480px)</span>
-          <span class="480:hidden">{"<"} 480px</span>
-        </div>
-      : null
-    }
+    <ScreenSizeIndicator />
   </body>
 </html>

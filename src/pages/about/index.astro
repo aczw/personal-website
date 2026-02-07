@@ -1,0 +1,315 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+import imageDante from "@/assets/about/dante.jpg";
+import imageSuit from "@/assets/about/suit.jpg";
+import imageSpider from "@/assets/about/spider.jpg";
+import imageAsa from "@/assets/about/asa.jpg";
+import imageBirthday from "@/assets/about/birthday.jpg";
+
+import CommonLayout from "@/layouts/common-layout.astro";
+import Link from "@/components/link.astro";
+import LastFmRecentTrack from "@/components/lastfm-recent-track.astro";
+import LastFmTopStats from "@/components/lastfm-top-stats.astro";
+import AniListRecentActivity from "@/components/anilist-recent-activity.astro";
+
+type AboutPicture = {
+  id: string;
+  imageMetadata: ImageMetadata;
+  alt: string;
+};
+
+const ABOUT_PICTURES: AboutPicture[] = [
+  {
+    id: "spider",
+    imageMetadata: imageSpider,
+    alt: "Me at 5 years old wearing a paper hat holding a paper spider.",
+  },
+  {
+    id: "asa",
+    imageMetadata: imageAsa,
+    alt: "Me dressed up as Asa from Chainsaw Man for Halloween.",
+  },
+];
+---
+
+<CommonLayout
+  meta={{
+    kind: "route",
+    route: "about",
+    description: "Who I am.",
+  }}
+  headerLinks={[]}
+>
+  <main class="space-y-pad-4 pt-pad pb-pad-4 desktop:pt-0">
+    <div
+      class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+    >
+      <h1 id="about" class="text-5xl font-bold text-heading">About</h1>
+
+      <div class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 md:grid-cols-2">
+        <p>
+          I'm a fourth year student in the Digital Media Design program at the
+          University of Pennsylvania.
+        </p>
+        <p class="md:row-start-2">
+          I help out with (and used to co-lead) <Link
+            href="https://pennupgrade.com"
+            target="_blank">UPGRADE</Link
+          >, our game dev club, and run communications as part of the <Link
+            href="https://cg.cis.upenn.edu"
+            target="_blank">CG@Penn</Link
+          > student board.
+        </p>
+        <p class="md:row-start-2">
+          Last summer, I interned at Snap Inc. and hacked on their rendering
+          engine. It was fun! Before that, I was at TikTok. <Link
+            href="/resume"
+            target="_blank"
+            data-umami-event="resume">Here's my resume.</Link
+          >
+        </p>
+      </div>
+    </div>
+
+    <section
+      aria-label="Pictures"
+      class="mx-auto grid max-w-(--real-wide-w) grid-cols-2 items-center *:min-w-0 desktop:gap-pad-2 desktop:px-pad-4 desktop:*:rounded-xl md:grid-cols-4 xl:gap-x-pad-4"
+      style={{
+        "--img-max-h": "25rem",
+      }}
+    >
+      <Image
+        src={imageDante}
+        alt="Me getting attacked by my friend's dog, Dante"
+        style={{
+          width: "auto",
+          maxHeight: "var(--img-max-h)",
+        }}
+        priority
+      />
+
+      <Image
+        src={imageBirthday}
+        alt='Me wearing a silver crown, holding a balloon with a sash that says "Birthday Princess" on it'
+        style={{
+          width: "auto",
+          maxHeight: "var(--img-max-h)",
+        }}
+        priority
+      />
+
+      <button
+        id="pictures"
+        aria-label="Strange button"
+        class="relative overflow-hidden transition-transform data-initial:cursor-help data-initial:active:scale-98 xl:scale-102 xl:data-initial:active:scale-100"
+        style={{
+          rotate: "-2.5deg",
+        }}
+        data-initial=""
+        data-umami-event="about-picture"
+      >
+        <div
+          aria-hidden="true"
+          class="pointer-events-none absolute inset-0 z-1 origin-bottom bg-sweater-8/50 transition-opacity duration-500 select-none light:bg-sweater-3/50"
+          style={{ transform: "scaleY(0.0)" }}
+        >
+        </div>
+
+        {
+          ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
+            <Image
+              id={id}
+              src={imageMetadata}
+              alt={alt}
+              priority={index === 0}
+              class:list={[
+                "desktop:rounded-xl",
+                {
+                  "absolute inset-0 -z-1 scale-50 opacity-0 blur-2xl":
+                    index !== 0,
+                },
+              ]}
+              style={{
+                width: "auto",
+                maxHeight: "var(--img-max-h)",
+              }}
+            />
+          ))
+        }
+      </button>
+
+      <Image
+        src={imageSuit}
+        alt="Close angle picture of my in a tuxedo with a Labubu sitting in my pocket"
+        style={{
+          width: "auto",
+          maxHeight: "var(--img-max-h)",
+        }}
+        priority
+      />
+    </section>
+
+    <div
+      class="mx-auto grid w-full grid-cols-1 gap-x-pad-4 gap-y-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w)"
+    >
+      <p>
+        I'm interested in computer graphics, specifically real-time rendering,
+        and game engine development. I grew up making art and designing things,
+        which continues to show up in everything I do.
+      </p>
+      <p>
+        I strongly believe in self-expression, visual identities, and open
+        spaces. Naturally, I resonate a lot with the web. <span class="italic"
+          >Everyone can and should make a website!</span
+        > It's your digital source of truth.
+      </p>
+    </div>
+
+    <div
+      class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
+    >
+      <section class="max-w-(--content-w)">
+        <h2 id="contact" class="mb-pad text-xl font-bold text-heading">
+          Contact
+        </h2>
+        <p>
+          I welcome random messages from strangers. Please reach out to say
+          hello! You can find me on <Link
+            href="https://twitter.com/zwcharl"
+            target="_blank">Twitter</Link
+          >, <Link href="https://are.na/charles-zw" target="_blank">Are.na</Link
+          >, <Link href="https://linkedin.com/in/zwcharl" target="_blank"
+            >LinkedIn</Link
+          >, and <Link href="https://github.com/aczw" target="_blank"
+            >GitHub</Link
+          >. My email is <span class="inline-code"
+            >zwcharl &lt;at&gt; gmail &lt;dot&gt; com</span
+          >.
+        </p>
+      </section>
+
+      <section class="grid grid-cols-1 gap-x-pad-4 sm:grid-cols-2">
+        <h2
+          id="music"
+          class="col-span-full mb-pad text-xl font-bold text-heading"
+        >
+          Music
+        </h2>
+
+        <LastFmRecentTrack server:defer>
+          <div
+            aria-hidden="true"
+            class="mb-pad-2 animate-pulse space-y-pad sm:mb-0"
+            slot="fallback"
+          >
+            <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
+            <div
+              class="flex gap-x-3.5 *:rounded-md *:bg-sweater-9 light:*:bg-sweater-2"
+            >
+              <div class="size-[3lh] shrink-0"></div>
+              <div class="h-[3lh] grow"></div>
+            </div>
+          </div>
+        </LastFmRecentTrack>
+
+        <LastFmTopStats server:defer>
+          <div
+            aria-hidden="true"
+            class="animate-pulse space-y-pad"
+            slot="fallback"
+          >
+            <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
+            <div
+              class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"
+            >
+            </div>
+          </div>
+        </LastFmTopStats>
+      </section>
+
+      <section>
+        <h2 id="anilist" class="mb-pad text-xl font-bold text-heading">
+          Anilist
+        </h2>
+        <AniListRecentActivity server:defer>
+          <div
+            class="grid animate-pulse grid-cols-1 gap-x-pad-4 gap-y-pad-2 *:h-[4lh] *:rounded-md *:bg-sweater-9 md:grid-cols-2 light:*:bg-sweater-2"
+            slot="fallback"
+          >
+            <div></div>
+            <div></div>
+          </div>
+        </AniListRecentActivity>
+      </section>
+    </div>
+  </main>
+</CommonLayout>
+
+<script>
+  const picturesBtn = document.getElementById("pictures") as HTMLButtonElement;
+  const slider = picturesBtn.firstElementChild as HTMLDivElement;
+
+  const KEYFRAME_OPTS: KeyframeAnimationOptions = {
+    duration: 600,
+    // https://easings.net/#easeInOutExpo
+    easing: "cubic-bezier(0.87, 0, 0.13, 1)",
+    fill: "forwards",
+  };
+
+  function handleAnimationFinish(ev: AnimationPlaybackEvent) {
+    const animation = ev.currentTarget as Animation;
+    animation.commitStyles();
+    animation.cancel();
+  }
+
+  let sliderStage = 0;
+
+  function handleSliderProgress() {
+    slider
+      .animate([{ transform: `scaleY(${++sliderStage * 0.2})` }], {
+        duration: 200,
+        easing: "ease-in-out",
+        fill: "forwards",
+      })
+      .addEventListener("finish", (ev) => {
+        const animation = ev.currentTarget as Animation;
+        animation.commitStyles();
+        animation.cancel();
+
+        if (sliderStage === 5) {
+          window.umami.track("about-picture-finished");
+
+          picturesBtn.removeEventListener("click", handleSliderProgress);
+          delete picturesBtn.dataset["initial"];
+          slider.style.opacity = "0";
+
+          const spiderElt = picturesBtn.children[1] as HTMLImageElement;
+          const asaElt = picturesBtn.children[2] as HTMLImageElement;
+
+          spiderElt.style.zIndex = "auto";
+          spiderElt
+            .animate(
+              [{ scale: 0.5, opacity: 0.0, filter: "blur(var(--blur-2xl))" }],
+              KEYFRAME_OPTS,
+            )
+            .addEventListener("finish", handleAnimationFinish);
+
+          asaElt.style.zIndex = "auto";
+          asaElt
+            .animate(
+              [{ scale: 1.0, opacity: 1.0, filter: "none" }],
+              KEYFRAME_OPTS,
+            )
+            .addEventListener("finish", handleAnimationFinish);
+
+          picturesBtn
+            .animate([{ rotate: "0deg" }], KEYFRAME_OPTS)
+            .addEventListener("finish", handleAnimationFinish);
+        }
+      });
+  }
+
+  picturesBtn.addEventListener("click", handleSliderProgress);
+</script>
