@@ -32,16 +32,13 @@ const ABOUT_PICTURES: AboutPicture[] = [
     alt: "Me dressed up as Asa from Chainsaw Man for Halloween.",
   },
 ];
-
-const description = "More about who I am";
 ---
 
 <CommonLayout
   meta={{
     kind: "route",
-    title: "About",
-    description: description + ".",
-    ogImageParams: description,
+    route: "about",
+    description: "About who I am.",
   }}
   headerLinks={[]}
 >

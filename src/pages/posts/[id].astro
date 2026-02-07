@@ -40,7 +40,7 @@ const { Content, remarkPluginFrontmatter } = await render(post);
 const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
 ---
 
-<BaseLayout meta={{ kind: "post", post }}>
+<BaseLayout meta={{ kind: "posts", postsEntry: post }}>
   <Header links={[{ href: "/posts", text: "Writing" }]} />
 
   <main class="pt-pad desktop:pt-0">

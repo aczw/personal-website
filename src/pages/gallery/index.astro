@@ -8,16 +8,13 @@ import { CDN_URL } from "@/scripts/constants";
 const gallery = (await getCollection("gallery")).sort(
   (a, b) => b.data.date.getTime() - a.data.date.getTime(),
 );
-
-const description = "Everything I've ever done";
 ---
 
 <CommonLayout
   meta={{
     kind: "route",
-    title: "Gallery",
-    description: description + ".",
-    ogImageParams: description,
+    route: "gallery",
+    description: "Everything I've ever done.",
   }}
   headerLinks={[]}
 >
