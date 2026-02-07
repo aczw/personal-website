@@ -18,10 +18,10 @@ type OgContent = {
 };
 
 const ROUTE_DESCRIPTIONS: Record<Route, string> = {
-  home: "Pixel pusher, bridge carver",
+  home: "",
 
-  projects: "Write-ups and technical breakdowns",
-  posts: "Writing whatever",
+  projects: "Write-ups and breakdowns",
+  posts: "Random thoughts and topics",
   gallery: "Everything I've done",
 
   about: "Who I am",
@@ -48,7 +48,10 @@ const GET: APIRoute = async ({ request }) => {
   if (route !== null) {
     switch (route as Route) {
       case "home":
-        content = { title: null, subtitles: [ROUTE_DESCRIPTIONS["home"]] };
+        content = {
+          title: "Computer graphics, systems, and design",
+          subtitles: [ROUTE_DESCRIPTIONS["home"]],
+        };
         break;
 
       case "projects":
@@ -129,7 +132,7 @@ const GET: APIRoute = async ({ request }) => {
     style="background-color: #0a0919; padding: 0px 70px;"
   >
     <div
-      tw="flex h-1/2"
+      tw="flex h-1/3"
       style="border-left: 8px dashed #312d65; padding-left: 65px; padding-top: 65px;"
     >
       <svg
@@ -152,7 +155,7 @@ const GET: APIRoute = async ({ request }) => {
     >
       ${
         title !== null ?
-          `<p tw="text-7xl text-balance font-bold leading-[0.6]" style="color: #9a91fe;">${title}</p>`
+          `<p tw="text-8xl text-balance font-bold leading-[1.1]" style="color: #9a91fe;">${title}</p>`
         : ""
       }
       ${subtitles
