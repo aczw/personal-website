@@ -279,8 +279,6 @@ const ABOUT_PICTURES: AboutPicture[] = [
         animation.cancel();
 
         if (sliderStage === 5) {
-          window.umami.track("about-picture-finished");
-
           picturesBtn.removeEventListener("click", handleSliderProgress);
           delete picturesBtn.dataset["initial"];
           slider.style.opacity = "0";
@@ -307,6 +305,10 @@ const ABOUT_PICTURES: AboutPicture[] = [
           picturesBtn
             .animate([{ rotate: "0deg" }], KEYFRAME_OPTS)
             .addEventListener("finish", handleAnimationFinish);
+
+          if (window.umami) {
+            window.umami.track("about-picture-finished");
+          }
         }
       });
   }
