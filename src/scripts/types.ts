@@ -38,6 +38,7 @@ type DateKind =
 type HeaderLink = { href: string; text: string };
 
 export type {
+  Route,
   Meta,
   MetaKind,
   SimpleDate,
