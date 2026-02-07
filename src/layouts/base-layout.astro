@@ -3,7 +3,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 
 import "@/styles/main.css";
 
-import type { Meta } from "@/scripts/types";
+import type { Meta, MetaKind } from "@/scripts/types";
 import {
   capitalize,
   getShortDateFormatting,
@@ -19,19 +19,33 @@ interface Props {
 type Head = {
   title: string;
   description: string;
-  og: `?${Meta["kind"]}=${string}`;
+  og: `?${MetaKind}=${string}`;
 };
 
 const head: Head = (() => {
   const { meta } = Astro.props;
 
   switch (meta.kind) {
-    case "route":
+    case "route": {
+      const title = (() => {
+        switch (meta.route) {
+          case "home":
+            return "";
+          case "projects":
+            return "Portfolio";
+          case "posts":
+            return "Writing";
+          default:
+            return capitalize(meta.route);
+        }
+      })();
+
       return {
-        title: meta.route === "home" ? "" : capitalize(meta.route),
+        title,
         description: meta.description,
         og: `?route=${meta.route}`,
       };
+    }
 
     case "projects": {
       const { data, id } = meta.projectsEntry;

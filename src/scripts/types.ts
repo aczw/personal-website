@@ -25,6 +25,7 @@ type CollectionKind = {
 type Meta =
   | { kind: "route"; route: Route; description: string }
   | CollectionKind;
+type MetaKind = Meta["kind"];
 
 type SimpleDate = z.infer<typeof SimpleDateSchema>;
 type RangedDate = z.infer<typeof RangedDateSchema>;
@@ -36,4 +37,12 @@ type DateKind =
 
 type HeaderLink = { href: string; text: string };
 
-export type { Meta, SimpleDate, RangedDate, ContentDate, DateKind, HeaderLink };
+export type {
+  Meta,
+  MetaKind,
+  SimpleDate,
+  RangedDate,
+  ContentDate,
+  DateKind,
+  HeaderLink,
+};
