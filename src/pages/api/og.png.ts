@@ -9,7 +9,7 @@ import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
 import { html } from "satori-html";
 
-import { getDateKind, getShortDateFormatting } from "@/scripts/util";
+import { getShortDateFormatting } from "@/scripts/util";
 import type { Route } from "@/scripts/types";
 
 type OgContent = {
@@ -17,25 +17,17 @@ type OgContent = {
   subtitles: string[];
 };
 
-const ROUTE_DESCRIPTIONS: Record<Route, string> = {
-  home: "",
-
-  projects: "Write-ups and breakdowns",
-  posts: "Random thoughts and topics",
-  gallery: "Everything I've done",
-
-  about: "Who I am",
-  "404": "Page not found",
-};
+const FONT_NAME = "Atkinson Hyperlegible Next";
+const FONT_PATH_PREFIX = `${process.cwd()}/public/_files/fonts/og`;
 
 const GET: APIRoute = async ({ request }) => {
   const params = new URL(request.url).searchParams;
   const route = params.get("route");
-  const project = params.get("projects");
-  const post = params.get("posts");
+  const projectId = params.get("projects");
+  const postId = params.get("posts");
 
-  if (route === null && project === null && post === null) {
-    const statusText = "No input parameter";
+  if (route === null && projectId === null && postId === null) {
+    const statusText = "Invalid input parameter";
     return new Response(statusText, {
       status: 400,
       statusText,
@@ -50,71 +42,65 @@ const GET: APIRoute = async ({ request }) => {
       case "home":
         content = {
           title: "Computer graphics, systems, and design",
-          subtitles: [ROUTE_DESCRIPTIONS["home"]],
+          subtitles: [],
         };
         break;
 
       case "projects":
         content = {
           title: "Portfolio",
-          subtitles: [ROUTE_DESCRIPTIONS["projects"]],
+          subtitles: ["Write-ups and breakdowns"],
         };
         break;
 
       case "posts":
         content = {
           title: "Writing",
-          subtitles: [ROUTE_DESCRIPTIONS["posts"]],
+          subtitles: ["Random thoughts and topics"],
         };
         break;
 
       case "gallery":
-        content = {
-          title: "Gallery",
-          subtitles: [ROUTE_DESCRIPTIONS["gallery"]],
-        };
+        content = { title: "Gallery", subtitles: ["Everything I've done"] };
         break;
 
       case "about":
-        content = { title: "About", subtitles: [ROUTE_DESCRIPTIONS["about"]] };
+        content = { title: "About", subtitles: ["Who I am"] };
         break;
 
       case "404":
-        content = { title: "404", subtitles: [ROUTE_DESCRIPTIONS["404"]] };
+        content = { title: "404", subtitles: ["Page not found"] };
         break;
 
       default:
         statusText = "Incorrect route type";
     }
-  } else if (project !== null) {
-    const post = await getEntry("posts", maybePost);
-
-    if (post) {
-      c = {
-        kind: "post",
-        title: post.data.title,
-        date: post.data.posted,
-      };
-    } else {
-      statusText = `Post "${maybePost}" not found`;
-    }
-  } else if (post !== null) {
-    const project = await getEntry("projects", maybeProject);
+  } else if (projectId !== null) {
+    const project = await getEntry("projects", projectId);
 
     if (project) {
-      const date = getDateKind(project.data.metadata.date);
+      const { data } = project;
 
-      c = {
-        kind: "project",
-        name: project.data.name,
-        tags: project.data.metadata.tech.join(", "),
-        date:
-          date.kind === "simple" ?
-            date.date
-          : `${date.date.from} — ${date.date.to}`,
+      content = {
+        // "door" uses characters not supported by the font
+        title: projectId === "door" ? "DOOR" : data.name,
+        subtitles: [data.metadata.tech.join(", "), "Portfolio"],
       };
     } else {
-      statusText = `Project ${maybeProject} not found`;
+      statusText = `Project "${projectId}" not found`;
+    }
+  } else if (postId !== null) {
+    const post = await getEntry("posts", postId);
+
+    if (post) {
+      const { data } = post;
+
+      content = {
+        title: data.title,
+        subtitles: [getShortDateFormatting(data.posted), "Writing"],
+      };
+    } else {
+      statusText = `Post "${postId}" not found`;
     }
   }
 
@@ -161,28 +147,25 @@ const GET: APIRoute = async ({ request }) => {
       ${subtitles
         .map(
           (subtitle) =>
-            `<p tw="text-6xl leading-[0.6]" style="color: #c3bdff">${subtitle}</p>`,
+            `<p tw="text-6xl leading-[0.7]" style="color: #c3bdff">${subtitle}</p>`,
         )
         .join("\n")}
     </div>
   </div>`);
-
-  const name = "Atkinson Hyperlegible Next";
-  const fontPathPrefix = `${process.cwd()}/public/_files/fonts/og`;
 
   const svg = await satori(markup as React.ReactNode, {
     width: 1280,
     height: 720,
     fonts: [
       {
-        name,
-        data: readFileSync(`${fontPathPrefix}/AtkHypNext-Regular.ttf`),
+        name: FONT_NAME,
+        data: readFileSync(`${FONT_PATH_PREFIX}/AtkHypNext-Regular.ttf`),
         style: "normal",
         weight: 400,
       },
       {
-        name,
-        data: readFileSync(`${fontPathPrefix}/AtkHypNext-SemiBold.ttf`),
+        name: FONT_NAME,
+        data: readFileSync(`${FONT_PATH_PREFIX}/AtkHypNext-SemiBold.ttf`),
         style: "normal",
         // Pretend semibold is bold because it looks better
         weight: 700,
