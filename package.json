@@ -1,6 +1,10 @@
 {
   "name": "personal-website",
-  "author": "Charles Wang <zwcharl@gmail.com> (https://charleszw.com)",
+  "author": {
+    "name": "Charles Wang",
+    "email": "zwcharl@gmail.com",
+    "url": "https://charleszw.com"
+  },
   "type": "module",
   "version": "7.0.0",
   "scripts": {
