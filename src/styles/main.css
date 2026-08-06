@@ -1,16 +1,14 @@
 @import "tailwindcss";
 
-@import "./fonts.css";
 @import "./mdx.css";
 @import "./overrides.css";
 
 @theme inline {
   --font-sans: var(--font-atkinson);
+  --font-mono: var(--font-maple);
 }
 
 @theme {
-  --font-mono: "Maple Mono";
-
   /* See https://font.subf.dev/en/playground for what each value means */
   --font-mono--font-feature-settings:
     "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";

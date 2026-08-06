@@ -23,11 +23,6 @@ const config = defineConfig({
   trailingSlash: "never",
   adapter: vercel({
     imageService: true,
-    // Required for OG image generation
-    includeFiles: [
-      "./public/_files/fonts/og/AtkHypNext-Regular.ttf",
-      "./public/_files/fonts/og/AtkHypNext-SemiBold.ttf",
-    ],
   }),
   fonts: [
     {
@@ -49,6 +44,15 @@ const config = defineConfig({
       subsets: ["latin"],
       fallbacks: [],
       formats: ["woff"],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: "Maple Mono",
+      cssVariable: "--font-maple",
+      weights: [400, 700],
+      styles: ["normal", "italic"],
+      fallbacks: ["monospace"],
+      formats: ["woff2"],
     },
   ],
   image: {
