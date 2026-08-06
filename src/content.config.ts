@@ -50,7 +50,7 @@ const posts = defineCollection({
     z.object({
       title: z.string(),
       blurb: BlurbSchema.optional(),
-      posted: z.iso.date(),
+      posted: z.date(),
       cover: ImageSchema(image).optional(),
     }),
 });

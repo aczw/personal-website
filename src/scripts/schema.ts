@@ -76,7 +76,7 @@ const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 const GalleryCommonSchema = z.object({
   title: z.string().optional(),
   blurb: BlurbSchema,
-  date: z.iso.date(),
+  date: z.date(),
   uses: TechSchema,
   numMembers: z.int().min(2).optional(),
   cover: z.object({
