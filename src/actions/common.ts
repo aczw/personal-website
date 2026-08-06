@@ -1,5 +1,5 @@
 import { ActionError } from "astro:actions";
-import type { SafeParseReturnType } from "astro/zod";
+import { type ZodSafeParseResult } from "astro/zod";
 
 function checkResponse(response: Response, initialMessage: string) {
   if (!response.ok) {
@@ -16,13 +16,13 @@ function checkResponse(response: Response, initialMessage: string) {
   }
 }
 
-function checkSafeParse<In, Out>(result: SafeParseReturnType<In, Out>) {
+function checkSafeParse<Out>(result: ZodSafeParseResult<Out>) {
   if (!result.success) {
-    console.error("[Zod]", result.error.errors);
+    console.error("[Zod]", result.error.issues);
 
     throw new ActionError({
       code: "INTERNAL_SERVER_ERROR",
-      message: "Failed to parse response! Check logs.",
+      message: "Failed to parse response!",
     });
   }
 }

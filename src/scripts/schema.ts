@@ -4,7 +4,7 @@ import { z } from "astro/zod";
 import { VALID_MONTHS } from "@/scripts/constants";
 
 const BlurbSchema = z.string().refine((blurb) => blurb.length <= 170, {
-  message:
+  error:
     "Blurb should be 170 characters or less (so it looks nice in previews).",
 });
 
@@ -15,14 +15,14 @@ const ImageSchema = (image: ImageFunction) =>
   });
 
 const LinkSchema = z.object({
-  href: z.string().url(),
+  href: z.url(),
   text: z.string(),
 });
 
 const SourceHrefSchema = z
   .url()
   .refine((url) => url.startsWith("https://github.com/"), {
-    message: "Source code is assumed to be hosted on GitHub",
+    error: "Source code is assumed to be hosted on GitHub",
   });
 
 const SimpleDateSchema = z.string().refine(
@@ -61,11 +61,11 @@ const RangedDateSchema = z.object({
       }
     },
     {
-      message: "From date can either be <month> <year>, or just <month>",
+      error: "From date can either be <month> <year>, or just <month>",
     },
   ),
   to: z.string().refine((to) => SimpleDateSchema.safeParse(to).success, {
-    message: "To date should be of the form <month> <year>",
+    error: "To date should be of the form <month> <year>",
   }),
 });
 
@@ -76,9 +76,9 @@ const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 const GalleryCommonSchema = z.object({
   title: z.string().optional(),
   blurb: BlurbSchema,
-  date: z.date(),
+  date: z.iso.date(),
   uses: TechSchema,
-  numMembers: z.number().int().min(2).optional(),
+  numMembers: z.int().min(2).optional(),
   cover: z.object({
     alt: z.string(),
   }),

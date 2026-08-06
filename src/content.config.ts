@@ -24,7 +24,7 @@ const projects = defineCollection({
       subtitle: z
         .string()
         .refine((subtitle) => subtitle.length <= 40, {
-          message:
+          error:
             "Subtitle should be extremely short. Use a blurb for longer content.",
         })
         .optional(),
@@ -50,7 +50,7 @@ const posts = defineCollection({
     z.object({
       title: z.string(),
       blurb: BlurbSchema.optional(),
-      posted: z.date(),
+      posted: z.iso.date(),
       cover: ImageSchema(image).optional(),
     }),
 });
@@ -62,19 +62,22 @@ const gallery = defineCollection({
     retainBody: true,
   }),
   schema: z.discriminatedUnion("type", [
-    common.extend({
+    z.object({
+      ...common.shape,
       type: z.literal("visual"),
       category: z.enum(["3d", "traditional", "digital", "cover-art"]),
     }),
-    common.extend({
+    z.object({
+      ...common.shape,
       type: z.literal("code"),
       languages: z.string().array(), // Make it broad for now
       libraries: z.string().array(),
       sourceHref: SourceHrefSchema.optional(),
     }),
-    common.extend({
+    z.object({
+      ...common.shape,
       type: z.literal("game"),
-      stores: z.string().url().array(),
+      stores: z.url().array(),
       engine: z.enum(["unity", "unreal", "godot", "custom"]),
       sourceHref: SourceHrefSchema.optional(),
     }),
