@@ -62,7 +62,7 @@ const config = defineConfig({
       { protocol: "https", hostname: "cdn.charleszw.com", pathname: "/**" },
       {
         protocol: "https",
-        hostname: "lastfm.freetls.fastly.net",
+        hostname: "lastfm-img.freetls.fastly.net",
         pathname: "/**",
       },
       { protocol: "https", hostname: "**.anilist.co", pathname: "/**" },
@@ -149,7 +149,7 @@ const config = defineConfig({
     },
   },
   vite: {
-    plugins: [tailwindcss()],
+    plugins: [tailwindcss({ optimize: { minify: true } })],
     server: {
       allowedHosts: ["bore.pub"],
     },
