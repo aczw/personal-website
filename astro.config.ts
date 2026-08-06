@@ -1,4 +1,4 @@
-import { defineConfig, envField } from "astro/config";
+import { defineConfig, envField, fontProviders } from "astro/config";
 
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
@@ -29,6 +29,18 @@ const config = defineConfig({
       "./public/_files/fonts/og/AtkHypNext-SemiBold.ttf",
     ],
   }),
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: "Atkinson Hyperlegible Next",
+      cssVariable: "--font-atkinson",
+      weights: [400, 700],
+      styles: ["normal", "italic"],
+      subsets: ["latin"],
+      fallbacks: ["sans-serif"],
+      formats: ["woff2"],
+    },
+  ],
   image: {
     responsiveStyles: true,
     layout: "constrained",

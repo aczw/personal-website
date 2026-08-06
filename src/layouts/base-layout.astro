@@ -11,6 +11,7 @@ import {
   stripEndingSlash,
 } from "@/scripts/util";
 import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
+import { Font } from "astro:assets";
 
 interface Props {
   meta: Meta;
@@ -152,20 +153,6 @@ const title =
 
     <link
       rel="preload"
-      href="/_files/fonts/AtkHypNext-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="/_files/fonts/AtkHypNext-SemiBold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
       href="/_files/fonts/MapleMono-Regular.woff2"
       as="font"
       type="font/woff2"
@@ -181,6 +168,8 @@ const title =
       data-website-id="9ccfaf2d-6989-4335-ab83-606d54cdee0f"></script>
 
     <SpeedInsights />
+
+    <Font cssVariable="--font-atkinson" preload />
   </head>
 
   <body>
