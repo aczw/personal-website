@@ -40,6 +40,16 @@ const config = defineConfig({
       fallbacks: ["sans-serif"],
       formats: ["woff2"],
     },
+    {
+      provider: fontProviders.fontsource(),
+      name: "Atkinson Hyperlegible Next",
+      cssVariable: "--font-atkinson-og",
+      weights: [400, 600],
+      styles: ["normal"],
+      subsets: ["latin"],
+      fallbacks: [],
+      formats: ["woff"],
+    },
   ],
   image: {
     responsiveStyles: true,

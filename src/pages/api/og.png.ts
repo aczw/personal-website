@@ -2,8 +2,7 @@ export const prerender = false;
 
 import type { APIRoute } from "astro";
 import { getEntry } from "astro:content";
-
-import { readFileSync } from "node:fs";
+import { experimental_getFontFileURL, fontData } from "astro:assets";
 
 import { Resvg } from "@resvg/resvg-js";
 import satori from "satori";
@@ -17,14 +16,25 @@ type OgContent = {
   subtitles: string[];
 };
 
-const FONT_NAME = "Atkinson Hyperlegible Next";
-const FONT_PATH_PREFIX = `${process.cwd()}/public/_files/fonts/og`;
-
-const GET: APIRoute = async ({ request }) => {
-  const params = new URL(request.url).searchParams;
+const GET: APIRoute = async (ctx) => {
+  const params = new URL(ctx.request.url).searchParams;
   const route = params.get("route");
   const projectId = params.get("projects");
   const postId = params.get("posts");
+
+  const atkFontsForOg = fontData["--font-atkinson-og"];
+  // In astro.config.ts, "400" is listed before "600," which is what I'm
+  // assuming here when indexing into `atkFontsForOg`.
+  const atkNormalFontPath = atkFontsForOg[0]?.src[0]?.url;
+  const atkSemiboldFontPath = atkFontsForOg[1]?.src[0]?.url;
+
+  if (!atkNormalFontPath || !atkSemiboldFontPath) {
+    const statusText = "Cannot find font path for Atkinson Hyperlegible Next.";
+    return new Response(statusText, {
+      status: 500,
+      statusText,
+    });
+  }
 
   if (route === null && projectId === null && postId === null) {
     const statusText = "Invalid input parameter";
@@ -158,14 +168,18 @@ const GET: APIRoute = async ({ request }) => {
     height: 720,
     fonts: [
       {
-        name: FONT_NAME,
-        data: readFileSync(`${FONT_PATH_PREFIX}/AtkHypNext-Regular.ttf`),
+        name: "Atkinson Hyperlegible Next",
+        data: await fetch(
+          experimental_getFontFileURL(atkNormalFontPath, ctx.url),
+        ).then((res) => res.arrayBuffer()),
         style: "normal",
         weight: 400,
       },
       {
-        name: FONT_NAME,
-        data: readFileSync(`${FONT_PATH_PREFIX}/AtkHypNext-SemiBold.ttf`),
+        name: "Atkinson Hyperlegible Next",
+        data: await fetch(
+          experimental_getFontFileURL(atkSemiboldFontPath, ctx.url),
+        ).then((res) => res.arrayBuffer()),
         style: "normal",
         // Pretend semibold is bold because it looks better
         weight: 700,
