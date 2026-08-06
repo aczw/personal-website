@@ -1,5 +1,5 @@
 import type { ImageFunction } from "astro:content";
-import { z } from "astro:schema";
+import { z } from "astro/zod";
 
 import { VALID_MONTHS } from "@/scripts/constants";
 
@@ -20,7 +20,6 @@ const LinkSchema = z.object({
 });
 
 const SourceHrefSchema = z
-  .string()
   .url()
   .refine((url) => url.startsWith("https://github.com/"), {
     message: "Source code is assumed to be hosted on GitHub",
