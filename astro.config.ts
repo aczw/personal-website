@@ -3,6 +3,7 @@ import { defineConfig, envField, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
+import { unified } from "@astrojs/markdown-remark";
 
 import tailwindcss from "@tailwindcss/vite";
 
@@ -67,6 +68,12 @@ const config = defineConfig({
       },
       { protocol: "https", hostname: "**.anilist.co", pathname: "/**" },
     ],
+    service: {
+      entrypoint: "astro/assets/services/sharp",
+      config: {
+        jpeg: { mozjpeg: true },
+      },
+    },
   },
   integrations: [
     sitemap(),
@@ -106,31 +113,33 @@ const config = defineConfig({
     mdx(),
   ],
   markdown: {
-    rehypePlugins: [
-      rehypeUnwrapImages,
-      [
-        rehypeMathjax,
-        {
-          chtml: {
-            scale: 1.1,
-            fontURL:
-              "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+    processor: unified({
+      rehypePlugins: [
+        rehypeUnwrapImages,
+        [
+          rehypeMathjax,
+          {
+            chtml: {
+              scale: 1.1,
+              fontURL:
+                "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+            },
           },
-        },
+        ],
       ],
-    ],
-    remarkPlugins: [
-      remarkMath,
-      () =>
-        // Adapted from https://docs.astro.build/en/recipes/reading-time
-        function (tree, { data }) {
-          const textOnPage = toString(tree);
-          const readingTime = getReadingTime(textOnPage);
+      remarkPlugins: [
+        remarkMath,
+        () =>
+          // Adapted from https://docs.astro.build/en/recipes/reading-time
+          function (tree, { data }) {
+            const textOnPage = toString(tree);
+            const readingTime = getReadingTime(textOnPage);
 
-          // @ts-expect-error: Astro object is guaranteed to exist
-          data.astro.frontmatter["stats"] = readingTime;
-        },
-    ],
+            // @ts-expect-error: Astro object is guaranteed to exist
+            data.astro.frontmatter["stats"] = readingTime;
+          },
+      ],
+    }),
   },
   env: {
     schema: {
