@@ -3,6 +3,7 @@ import { defineConfig, envField, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
+import { satteri } from "@astrojs/markdown-satteri";
 import { unified } from "@astrojs/markdown-remark";
 
 import tailwindcss from "@tailwindcss/vite";
@@ -13,10 +14,9 @@ import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
 import remarkMath from "remark-math";
 import rehypeMathjax from "rehype-mathjax/chtml";
 import rehypeUnwrapImages from "rehype-unwrap-images";
-import getReadingTime from "reading-time";
-import { toString } from "mdast-util-to-string";
 
 import { SITE_URL } from "./src/scripts/util";
+import { satteriUnwrapImagesPlugin } from "@/scripts/satteri-plugins";
 
 const config = defineConfig({
   site: SITE_URL,
@@ -113,32 +113,12 @@ const config = defineConfig({
     mdx(),
   ],
   markdown: {
-    processor: unified({
-      rehypePlugins: [
-        rehypeUnwrapImages,
-        [
-          rehypeMathjax,
-          {
-            chtml: {
-              scale: 1.1,
-              fontURL:
-                "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
-            },
-          },
-        ],
-      ],
-      remarkPlugins: [
-        remarkMath,
-        () =>
-          // Adapted from https://docs.astro.build/en/recipes/reading-time
-          function (tree, { data }) {
-            const textOnPage = toString(tree);
-            const readingTime = getReadingTime(textOnPage);
-
-            // @ts-expect-error: Astro object is guaranteed to exist
-            data.astro.frontmatter["stats"] = readingTime;
-          },
-      ],
+    processor: satteri({
+      hastPlugins: [satteriUnwrapImagesPlugin],
+      features: {
+        math: true,
+        smartPunctuation: true,
+      },
     }),
   },
   env: {
