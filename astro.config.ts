@@ -3,20 +3,18 @@ import { defineConfig, envField, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
-import { satteri } from "@astrojs/markdown-satteri";
 import { unified } from "@astrojs/markdown-remark";
 
 import tailwindcss from "@tailwindcss/vite";
 
-import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 import astroExpressiveCode, { setAlpha } from "astro-expressive-code";
+import { pluginCollapsibleSections } from "@expressive-code/plugin-collapsible-sections";
 
 import remarkMath from "remark-math";
 import rehypeMathjax from "rehype-mathjax/chtml";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 
 import { SITE_URL } from "./src/scripts/util";
-import { satteriUnwrapImagesPlugin } from "@/scripts/satteri-plugins";
 
 const config = defineConfig({
   site: SITE_URL,
@@ -113,12 +111,21 @@ const config = defineConfig({
     mdx(),
   ],
   markdown: {
-    processor: satteri({
-      hastPlugins: [satteriUnwrapImagesPlugin],
-      features: {
-        math: true,
-        smartPunctuation: true,
-      },
+    processor: unified({
+      rehypePlugins: [
+        rehypeUnwrapImages,
+        [
+          rehypeMathjax,
+          {
+            chtml: {
+              scale: 1.1,
+              fontURL:
+                "https://cdn.jsdelivr.net/npm/mathjax@3/es5/output/chtml/fonts/woff-v2",
+            },
+          },
+        ],
+      ],
+      remarkPlugins: [remarkMath],
     }),
   },
   env: {

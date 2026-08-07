@@ -32,7 +32,6 @@
     "remark-math": "^6.0.0",
     "satori": "^0.29.0",
     "satori-html": "^0.3.2",
-    "satteri": "^0.9.5",
     "tailwindcss": "^4.1.18",
     "tweakpane": "^4.0.5"
   },
