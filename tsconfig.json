@@ -14,5 +14,10 @@
   ],
   "exclude": [
     "dist"
-  ]
+  ],
+  "mdx": {
+    "plugins": [
+      "remark-math"
+    ]
+  }
 }
