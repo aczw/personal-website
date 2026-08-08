@@ -406,7 +406,7 @@ We also adjust the ray direction such that it intersects with the imaginary focu
 
 ```cpp
 // We want the relative distance from the camera to the plane of focus, so it
-// doesn't matter what sign  the ray direction is
+// doesn't matter what sign the ray direction is
 float t = settings.focal_distance / glm::abs(ray.direction.z);
 glm::vec3 focus = ray.at(t);
 
@@ -542,7 +542,7 @@ And it turns out, yes, he's very much speaking the truth.
 
 Pre-computing the division term made my scenes run faster by _roughly ~20%_ and this held true for most scenes, with those having more objects seeing the most benefit. A cursory search for division performance on the GPU led me to [this discussion on NVIDIA Developer forums](https://forums.developer.nvidia.com/t/speed-comparison-of-division-compared-to-other-arithmetic-operations-perhaps-something-like-clock-cycles/168371), which saw division being ~10 times slower than multiplication.
 
-Given that this division would be occurring in a hot loop and is entirely unavoidable, the speed up is not surprising. I was surprised at how _much_ it made an impact, though.
+Given that this division would be occurring in a hot loop and is entirely unavoidable, the speed-up is not surprising. I was surprised at how _much_ it made an impact, though.
 
 ### Bounding volume hierarchy (BVH)
 
@@ -559,7 +559,7 @@ That's the idea. Of course, having never built one before I needed to do some re
 
 I decided on a binary tree structure. Every node in the tree either has two children or is a leaf. If the node is a leaf, then it contains a list of triangles. Every node also has an AABB. It follows that the AABBs for two children make up the parent's AABB.
 
-While I construct the BVH on the CPU, the data needs to be sent to the GPU. Therefore, a naive implementation of a node like this:
+While I construct the BVH on the CPU, the data needs to be sent to the GPU. Therefore, a naive implementation of a node like this...
 
 ```cpp
 struct BvhNode {
@@ -570,7 +570,7 @@ struct BvhNode {
 };
 ```
 
-would not work, because we can't dynamically allocate memory for the triangles, nor can we store references to the node children. Instead, all the BVH nodes need to be stored as a list in a buffer, and the triangles as well. We then store _indexes_ into those buffers in the `BvhNode` struct to act as references.
+...would not work, because we can't dynamically allocate memory for the triangles, nor can we store references to the node children. Instead, all the BVH nodes need to be stored as a list in a buffer, and the triangles as well. We then store _indexes_ into those buffers in the `BvhNode` struct to act as references.
 
 ```cpp
 struct Node {
@@ -598,9 +598,9 @@ So, how much do BVHs improve performance?
   <figcaption>I'm making a lot of funny charts, aren't I?</figcaption>
 </figure>
 
-_The bottom line is that without BVHs I simply could not run certain scenes_. Anything above roughly 3,000 triangles would simply take too long to converge to a passable image. For the Stanford bunny and Stanford dragon, loading the scene made my program crash, so I've assigned them a FPS of zero.
+The bottom line is that without BVHs I could not run certain scenes. Anything above roughly 3,000 triangles would take too long to converge to a recognizable image. For the Stanford bunny and Stanford dragon, loading the scene made my program crash, so I've assigned them a FPS of zero.
 
-From the graph we can see the logarithmic nature of the BVH. At every step of the BVH traversal we remove around half of the current triangles, so while the Stanford dragon has more than 10 times the triangles of the Stanford bunny, the FPS did not significantly drop.
+From the graph we can see the logarithmic nature of the BVH. At every step of the BVH traversal we remove around half of the current triangles, so while the Stanford dragon has more than 10 times the triangles of the Stanford bunny, the FPS did not suffer an equivalent drop.
 
 ## Partitioning path segments
 
