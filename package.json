@@ -2,11 +2,11 @@
   "name": "personal-website",
   "author": {
     "name": "Charles Wang",
-    "email": "zwcharl@gmail.com",
+    "email": "git@fwd.czw.sh",
     "url": "https://charleszw.com"
   },
   "type": "module",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
@@ -46,7 +46,7 @@
     "prettier": "^3.8.1",
     "prettier-plugin-astro": "^0.14.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "typescript": "^5.9.3",
+    "typescript": "^6",
     "typescript-eslint": "^8.54.0"
   },
   "trustedDependencies": [
