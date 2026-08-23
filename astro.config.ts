@@ -28,7 +28,7 @@ const config = defineConfig({
       provider: fontProviders.fontsource(),
       name: "Atkinson Hyperlegible Next",
       cssVariable: "--font-atkinson",
-      weights: [400, 700],
+      weights: [400, 500, 700],
       styles: ["normal", "italic"],
       subsets: ["latin"],
       fallbacks: ["sans-serif"],

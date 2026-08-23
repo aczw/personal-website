@@ -54,6 +54,10 @@
   :root {
     color-scheme: light dark;
 
+    --max-w: 1100px;
+    --max-w-padded: calc(var(--max-w) + 2.5rem);
+    --prose-w: 550px;
+
     --border-w: 2px;
 
     --header-w: 800px;
@@ -62,7 +66,8 @@
     --wide-w: 1200px;
     --real-wide-w: calc(var(--wide-w) + var(--spacing-pad-4));
 
-    --line: var(--color-sweater-9);
+    --line: var(--color-sweater-8);
+
     --link-primary: var(--color-sweater-3);
     --link-primary-hover: var(--color-sweater-1);
     --link-secondary: var(--color-sweater-5);
@@ -71,7 +76,8 @@
     --heading: var(--color-sweater-2);
 
     @variant light {
-      --line: var(--color-sweater-2);
+      --line: var(--color-sweater-3);
+
       --link-primary: var(--color-sweater-7);
       --link-primary-hover: var(--color-sweater-9);
       --link-secondary: var(--color-sweater-6);
@@ -137,6 +143,10 @@
       }
     }
   }
+}
+
+@utility constrain {
+  @apply mx-auto w-full max-w-(--max-w-padded) px-5;
 }
 
 @utility maple {

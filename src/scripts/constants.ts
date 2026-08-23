@@ -132,7 +132,6 @@ const DEFAULT_LIGHT_DITHER_SETTINGS: DitherSettings = {
  * `var(--spacing-icon)` defined in main.css.
  */
 const ICON_SIZE = 18;
-const EYE_SIZE = 7;
 
 const FLAVOR_TEXTS = [
   "Waiting for something to happen?",
@@ -193,6 +192,5 @@ export {
   DEFAULT_DARK_DITHER_SETTINGS,
   DEFAULT_LIGHT_DITHER_SETTINGS,
   ICON_SIZE,
-  EYE_SIZE,
   FLAVOR_TEXTS,
 };

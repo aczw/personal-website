@@ -1,4 +1,6 @@
 ---
+import { Font } from "astro:assets";
+
 import SpeedInsights from "@vercel/speed-insights/astro";
 
 import "@/styles/main.css";
@@ -11,7 +13,6 @@ import {
   stripEndingSlash,
 } from "@/scripts/util";
 import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
-import { Font } from "astro:assets";
 
 interface Props {
   meta: Meta;

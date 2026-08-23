@@ -1,0 +1,45 @@
+---
+import Eye from "@/components/eye.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
+---
+
+<BaseLayout meta={{ kind: "route", route: "home", description: "NEW" }}>
+  <header class="constrain mt-6 sm:mt-20">
+    <nav class="sm:w-(--prose-w)">
+      <a
+        href="/"
+        title="Home"
+        aria-label="Go to the homepage"
+        class="group mb-4 flex w-fit items-center gap-1.5"
+      >
+        <Eye
+          size={3.5}
+          class="fill-sweater-5 group-hover:fill-sweater-4 light:fill-sweater-6 light:group-hover:fill-sweater-7"
+        />
+        <p
+          class="text-lg/1 leading-none font-medium text-sweater-5 group-hover:text-sweater-4 group-hover:text-sweater-7 light:text-sweater-6"
+        >
+          Charles Wang
+        </p>
+      </a>
+
+      <div
+        class="flex gap-4 border-t-2 border-dashed border-line pt-0.5 *:text-link-primary *:hover:text-link-primary-hover"
+      >
+        <a href="/index">Index</a>
+        <a href="/projects">Projects</a>
+        <a href="/posts">Writing</a>
+        <a href="/about">About</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="mt-5">
+    <section class="constrain">
+      <p class="sm:w-(--prose-w)">
+        Hi, welcome. Thanks for visiting my little space. Please do explore and
+        take a look around. Here's some stuff I've made...
+      </p>
+    </section>
+  </main>
+</BaseLayout>

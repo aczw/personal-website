@@ -1,14 +1,14 @@
 ---
 import type { HTMLAttributes } from "astro/types";
 
-import { EYE_SIZE } from "@/scripts/constants";
-
 type Props = Omit<HTMLAttributes<"svg">, "xmlns" | "viewBox" | "style"> & {
   size?: number;
 };
 
+const DEFAULT_EYE_SIZE = 7;
+
 const { class: className, size, ...props } = Astro.props;
-const length = `calc(${size ? size : EYE_SIZE} * var(--spacing))`;
+const length = `calc(${size ? size : DEFAULT_EYE_SIZE} * var(--spacing))`;
 
 if (
   className?.includes("w-") ||
