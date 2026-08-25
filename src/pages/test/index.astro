@@ -35,11 +35,21 @@ import BaseLayout from "@/layouts/base-layout.astro";
   </header>
 
   <main class="mt-5">
-    <section class="constrain">
-      <p class="sm:w-(--prose-w)">
-        Hi, welcome. Thanks for visiting my little space. Please do explore and
-        take a look around. Here's some stuff I've made...
+    <div class="constrain">
+      <p class="mb-5 sm:w-(--prose-w)">
+        Hi, welcome. Thanks for visiting my little space. Please do take a look
+        around and explore. Here's some stuff I've made...
       </p>
+    </div>
+
+    <section class="overflow-x-auto">
+      <div
+        class="flex w-max gap-4 pr-5 pl-[max(1.25rem,calc((100vw-var(--max-w-padded))/2+1.25rem))]"
+      >
+        <div class="aspect-16/10 h-[425px] shrink-0 bg-sweater-9"></div>
+        <div class="aspect-16/10 h-[425px] shrink-0 bg-sweater-9"></div>
+        <div class="aspect-16/10 h-[425px] shrink-0 bg-sweater-9"></div>
+      </div>
     </section>
   </main>
 </BaseLayout>
