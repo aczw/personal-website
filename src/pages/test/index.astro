@@ -62,7 +62,14 @@ const projects = await getEntries(
 
           return (
             <article class="relative space-y-1">
-              <video autoplay loop muted playsinline preload="auto">
+              <video
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="auto"
+                class="rounded-sm"
+              >
                 <source src={`${path}/cover.webm`} type="video/webm" />
                 <source src={`${path}/cover.mp4`} type="video/mp4" />
               </video>

@@ -40,7 +40,7 @@ const VALID_MONTHS = [
  */
 const HOMEPAGE_PROJECTS = [
   "mini-minecraft",
-  "cuda-path-tracer",
+  "door",
   "catanks",
 ];
 const DISABLED_PROJECTS = [
