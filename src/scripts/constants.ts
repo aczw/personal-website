@@ -39,10 +39,9 @@ const VALID_MONTHS = [
  * Order matters! Project videos will be played in the order defined here.
  */
 const HOMEPAGE_PROJECTS = [
-  "catanks",
   "mini-minecraft",
-  "webgpu-clustered",
-  "door",
+  "cuda-path-tracer",
+  "catanks",
 ];
 const DISABLED_PROJECTS = [
   "cuda-boids", // code

@@ -1,6 +1,15 @@
 ---
+import { getEntries } from "astro:content";
+
 import Eye from "@/components/eye.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
+import { CDN_URL, HOMEPAGE_PROJECTS } from "@/scripts/constants";
+
+const projects = await getEntries(
+  HOMEPAGE_PROJECTS.map((id) => {
+    return { collection: "projects", id };
+  }),
+);
 ---
 
 <BaseLayout meta={{ kind: "route", route: "home", description: "NEW" }}>
@@ -10,21 +19,21 @@ import BaseLayout from "@/layouts/base-layout.astro";
         href="/"
         title="Home"
         aria-label="Go to the homepage"
-        class="group mb-4 flex w-fit items-center gap-1.5"
+        class="group flex w-fit items-center gap-1.5"
       >
         <Eye
           size={3.5}
           class="fill-sweater-5 group-hover:fill-sweater-4 light:fill-sweater-6 light:group-hover:fill-sweater-7"
         />
-        <p
+        <span
           class="text-lg/1 leading-none font-medium text-sweater-5 group-hover:text-sweater-4 light:text-sweater-6 light:group-hover:text-sweater-7"
         >
           Charles Wang
-        </p>
+        </span>
       </a>
 
       <div
-        class="flex gap-4 border-t-2 border-dashed border-line pt-0.5 *:text-link-primary *:hover:text-link-primary-hover"
+        class="mt-4 flex gap-4 border-t-2 border-dashed border-line pt-0.5 *:text-link-primary *:hover:text-link-primary-hover"
       >
         <a href="/index">Index</a>
         <a href="/projects">Projects</a>
@@ -34,22 +43,38 @@ import BaseLayout from "@/layouts/base-layout.astro";
     </nav>
   </header>
 
-  <main class="mt-5">
-    <div class="constrain">
-      <p class="mb-5 sm:w-(--prose-w)">
-        Hi, welcome. Thanks for visiting my little space. Please do take a look
-        around and explore. Here's some stuff I've made...
+  <main class="mt-4">
+    <div class="constrain space-y-3 *:sm:w-(--prose-w)">
+      <p>
+        Hi, welcome. Thanks for visiting my little space. I wonder how you ended
+        up here? Regardless, please do take a look around and explore.
       </p>
+      <p>Here's some stuff I've made that I'm proud of...</p>
     </div>
 
-    <section class="overflow-x-auto">
-      <div
-        class="flex w-max gap-4 pr-5 pl-[max(1.25rem,calc((100vw-var(--max-w-padded))/2+1.25rem))]"
-      >
-        <div class="aspect-16/10 h-[425px] shrink-0 bg-sweater-9"></div>
-        <div class="aspect-16/10 h-[425px] shrink-0 bg-sweater-9"></div>
-        <div class="aspect-16/10 h-[425px] shrink-0 bg-sweater-9"></div>
-      </div>
+    <section
+      aria-label="Some projects I made"
+      class="constrain mt-5 grid grid-cols-3 gap-3"
+    >
+      {
+        projects.map(({ id, data }) => {
+          const path = `${CDN_URL}/projects/${id}`;
+
+          return (
+            <article class="relative space-y-1">
+              <video autoplay loop muted playsinline preload="auto">
+                <source src={`${path}/cover.webm`} type="video/webm" />
+                <source src={`${path}/cover.mp4`} type="video/mp4" />
+              </video>
+              <h2>
+                <a href="/" class="after:absolute after:inset-0 after:z-1">
+                  {data.subtitle ? data.subtitle : "<No subtitle>"}
+                </a>
+              </h2>
+            </article>
+          );
+        })
+      }
     </section>
   </main>
 </BaseLayout>
