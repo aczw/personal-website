@@ -10,7 +10,7 @@ const SITE_URL = "https://charleszw.com";
 /**
  * Might change in the future if I move.
  */
-const CURRENT_TIMEZONE = "America/New_York";
+const CURRENT_TIMEZONE = "America/Los_Angeles";
 
 /**
  * Checks that the cover image for my project covers have an aspect ratio of
