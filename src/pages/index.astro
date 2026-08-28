@@ -166,9 +166,6 @@ const projects = await getEntries(
 </BaseLayout>
 
 <script>
-  import vertSource from "@/shaders/no-op.vert.glsl?raw";
-  import fragSource from "@/shaders/dither.frag.glsl?raw";
-
   import {
     CDN_URL,
     HOMEPAGE_PROJECTS,
@@ -185,36 +182,6 @@ const projects = await getEntries(
 
     if (!gl) {
       console.log("No WebGL 2 context found");
-      return;
-    }
-
-    const createShader = (type: GLenum, source: string) => {
-      const shader = gl.createShader(type)!;
-      gl.shaderSource(shader, source);
-      gl.compileShader(shader);
-
-      if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
-
-      // Otherwise, an error occurred
-      console.error("Error compiling shader:", gl.getShaderInfoLog(shader));
-      gl.deleteShader(shader);
-
-      return null;
-    };
-
-    const vertShader = createShader(gl.VERTEX_SHADER, vertSource);
-    const fragShader = createShader(gl.FRAGMENT_SHADER, fragSource);
-
-    if (!vertShader || !fragShader) return;
-
-    const program = gl.createProgram();
-    gl.attachShader(program, vertShader);
-    gl.attachShader(program, fragShader);
-    gl.linkProgram(program);
-
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.error("Error linking program:", gl.getProgramInfoLog(program));
-      gl.deleteProgram(program);
       return;
     }
 
