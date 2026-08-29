@@ -3,7 +3,7 @@
 out vec2 frag_uv;
 
 // Coordinates for drawing an oversized triangle (acts as fullscreen quad)
-const vec2 UV_COORDS[] = vec2[](vec2(0.f, 0.f), vec2(2.f, 0.f), vec2(0.f, 2.f));
+const vec2 UV_COORDS[3] = vec2[](vec2(0.f, 0.f), vec2(2.f, 0.f), vec2(0.f, 2.f));
 
 void main() {
   vec2 uv = UV_COORDS[gl_VertexID];

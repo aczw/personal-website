@@ -83,6 +83,11 @@ const projects = await getEntries(
         })
       }
     </section>
+
+    <section class="constrain mt-5 space-y-1">
+      <p>Awesome canvas</p>
+      <canvas id="tile-1" class="aspect-16/10 h-[400px]"></canvas>
+    </section>
   </main>
 </BaseLayout>
 
@@ -91,10 +96,13 @@ const projects = await getEntries(
   import fragSource from "@/shaders/red.frag.glsl?raw";
 
   const run = () => {
+    const tile1 = document.getElementById("tile-1") as HTMLCanvasElement;
+    const bitmapCtx1 = tile1.getContext("bitmaprenderer");
+
     const offCanvas = new OffscreenCanvas(1280, 800);
     const gl = offCanvas.getContext("webgl2");
 
-    if (!gl) return;
+    if (!gl || !bitmapCtx1) return;
 
     const createShader = (type: GLenum, source: string) => {
       const shader = gl.createShader(type)!;
@@ -133,9 +141,9 @@ const projects = await getEntries(
 
     const draw: FrameRequestCallback = () => {
       gl.clearColor(0.0, 0.0, 0.0, 0.0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-
       gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+      bitmapCtx1.transferFromImageBitmap(offCanvas.transferToImageBitmap());
 
       requestAnimationFrame(draw);
     };
