@@ -100,7 +100,11 @@ const projects = await getEntries(
     const bitmapCtx1 = tile1.getContext("bitmaprenderer");
 
     const offCanvas = new OffscreenCanvas(1280, 800);
-    const gl = offCanvas.getContext("webgl2");
+    const gl = offCanvas.getContext("webgl2", {
+      depth: false,
+      stencil: false,
+      antialias: false,
+    });
 
     if (!gl || !bitmapCtx1) return;
 
