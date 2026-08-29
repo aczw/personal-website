@@ -85,8 +85,25 @@ const projects = await getEntries(
     </section>
 
     <section class="constrain mt-5 space-y-1">
-      <p>Awesome canvas</p>
-      <canvas id="tile-1" class="aspect-16/10 h-[400px]"></canvas>
+      <p>Awesome canvases</p>
+
+      <div class="grid grid-cols-3 gap-3">
+        {
+          Array.from({ length: 3 }).map((_, index) => (
+            <article class="relative space-y-1">
+              <canvas
+                id={`tile-${index}`}
+                class="aspect-16/10 w-full rounded-sm bg-sweater-9"
+              />
+              <h2>
+                <a href="/" class="after:absolute after:inset-0 after:z-1">
+                  [No subtitle]
+                </a>
+              </h2>
+            </article>
+          ))
+        }
+      </div>
     </section>
   </main>
 </BaseLayout>
@@ -96,8 +113,8 @@ const projects = await getEntries(
   import fragSource from "@/shaders/new.frag.glsl?raw";
 
   const run = () => {
-    const tile1 = document.getElementById("tile-1") as HTMLCanvasElement;
-    const bitmapCtx1 = tile1.getContext("bitmaprenderer");
+    const tile0Canvas = document.getElementById("tile-0") as HTMLCanvasElement;
+    const bitmapCtx0 = tile0Canvas.getContext("bitmaprenderer");
 
     const offCanvas = new OffscreenCanvas(1280, 800);
     const gl = offCanvas.getContext("webgl2", {
@@ -106,7 +123,7 @@ const projects = await getEntries(
       antialias: false,
     });
 
-    if (!gl || !bitmapCtx1) return;
+    if (!gl || !bitmapCtx0) return;
 
     const createShader = (type: GLenum, source: string) => {
       const shader = gl.createShader(type)!;
@@ -143,11 +160,26 @@ const projects = await getEntries(
     const vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
 
+    const dimensionsUnifLoc = gl.getUniformLocation(program, "u_dimensions");
+
     const draw: FrameRequestCallback = () => {
       gl.clearColor(0.0, 0.0, 0.0, 0.0);
+
+      // https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+      if (
+        offCanvas.width !== tile0Canvas.clientWidth ||
+        offCanvas.height !== tile0Canvas.clientHeight
+      ) {
+        offCanvas.width = tile0Canvas.clientWidth;
+        offCanvas.height = tile0Canvas.clientHeight;
+
+        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
+      }
+
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-      bitmapCtx1.transferFromImageBitmap(offCanvas.transferToImageBitmap());
+      bitmapCtx0.transferFromImageBitmap(offCanvas.transferToImageBitmap());
 
       requestAnimationFrame(draw);
     };

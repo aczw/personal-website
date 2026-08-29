@@ -186,7 +186,6 @@ const projects = await getEntries(
     }
 
     const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
-    const dimensionsUnifLoc = gl.getUniformLocation(program, "u_dimensions");
     const ditherModeUnifLoc = gl.getUniformLocation(program, "u_dither_mode");
     const uvPixelSizeUnifLoc = gl.getUniformLocation(
       program,
@@ -371,7 +370,6 @@ const projects = await getEntries(
     const draw: FrameRequestCallback = () => {
       panel?.fpsGraphs.draw.begin();
 
-      // See https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
       if (
         canvas.width !== canvas.clientWidth ||
         canvas.height !== canvas.clientHeight

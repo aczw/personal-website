@@ -1,6 +1,8 @@
 #version 300 es
 precision highp float;
 
+uniform ivec2 u_dimensions;
+
 in vec2 frag_uv;
 
 out vec4 out_color;
