@@ -10,7 +10,7 @@ in vec2 frag_uv;
 out vec4 out_color;
 
 const float ONE_OVER_UINT_MAX = 1.f / 4294967295.f;
-const float CELL_DENSITY = 2.f;
+const float CELL_DENSITY = 1.5f;
 
 // https://www.shadertoy.com/view/XlGcRh
 uvec2 pcg2d(uvec2 v) {
@@ -28,7 +28,7 @@ vec2 hash(vec2 v) {
   return vec2(pcg2d(uvec2(ivec2(v)))) * ONE_OVER_UINT_MAX;
 }
 
-float worley(vec2 sample_pos, float time) {
+float worley(vec2 sample_pos) {
   vec2 base_cell = floor(sample_pos);
   vec2 local_pos = fract(sample_pos);
 
@@ -48,7 +48,7 @@ float worley(vec2 sample_pos, float time) {
 
 void main() {
   float aspect_ratio = float(u_dimensions.x) / float(u_dimensions.y);
-  vec2 sample_pos = frag_uv * vec2(aspect_ratio, 1.f) * CELL_DENSITY;
+  vec2 sample_pos = frag_uv * vec2(aspect_ratio, 1.f) * CELL_DENSITY + u_time;
 
-  out_color = vec4(vec3(worley(sample_pos, u_time)), 1.f);
+  out_color = vec4(vec3(worley(sample_pos)), 1.f);
 }
