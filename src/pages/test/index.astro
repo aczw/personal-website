@@ -161,9 +161,10 @@ const projects = await getEntries(
     gl.bindVertexArray(vao);
 
     const dimensionsUnifLoc = gl.getUniformLocation(program, "u_dimensions");
+    const timeUnifLoc = gl.getUniformLocation(program, "u_time");
 
-    const draw: FrameRequestCallback = () => {
-      gl.clearColor(0.0, 0.0, 0.0, 0.0);
+    const draw: FrameRequestCallback = (now) => {
+      const time = now * 0.001;
 
       // https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
       if (
@@ -176,6 +177,10 @@ const projects = await getEntries(
         gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
         gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
       }
+
+      gl.clearColor(0.0, 0.0, 0.0, 0.0);
+
+      gl.uniform1f(timeUnifLoc, time);
 
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
