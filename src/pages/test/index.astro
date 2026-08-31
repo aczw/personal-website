@@ -203,12 +203,12 @@ const projects = await getEntries(
       gl.uniform1f(timeUnifLoc, time);
 
       gl.uniform1i(ditherModeUnifLoc, 1); // ordered
-      gl.uniform1i(uvPixelSizeUnifLoc, 4);
+      gl.uniform1i(uvPixelSizeUnifLoc, 48);
       gl.uniform1i(numQuantizedColorsUnifLoc, 4);
       gl.uniform1f(biasUnifLoc, 0);
 
       gl.uniform1i(bayerMatrixSizeUnifLoc, 2); // 8x8
-      gl.uniform1i(orderedDitherSizeUnifLoc, 4);
+      gl.uniform1i(orderedDitherSizeUnifLoc, 6);
 
       gl.uniform3f(
         colorAUnifLoc,

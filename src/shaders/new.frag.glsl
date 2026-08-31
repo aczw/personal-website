@@ -115,11 +115,11 @@ float ordered_dither(float luminance) {
 }
 
 void main() {
-  float aspect_ratio = float(u_dimensions.x) / float(u_dimensions.y);
-  vec2 sample_pos = frag_uv * vec2(aspect_ratio, 1.f) * CELL_DENSITY + u_time;
+  vec2 normalized_pixel_size = vec2(u_uv_pixel_size) / vec2(u_dimensions);
+  vec2 pixelated_uv = normalized_pixel_size * floor(frag_uv / normalized_pixel_size);
 
-  // vec2 normalized_pixel_size = vec2(u_uv_pixel_size) / vec2(u_dimensions);
-  // vec2 uv = normalized_pixel_size * floor(frag_uv / normalized_pixel_size);
+  float aspect_ratio = float(u_dimensions.x) / float(u_dimensions.y);
+  vec2 sample_pos = pixelated_uv * vec2(aspect_ratio, 1.f) * CELL_DENSITY + u_time;
 
   float t = ordered_dither(worley(sample_pos));
   t = clamp(t, 0.f, 1.f);
