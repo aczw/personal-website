@@ -186,26 +186,6 @@ const projects = await getEntries(
     }
 
     const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
-    const ditherModeUnifLoc = gl.getUniformLocation(program, "u_dither_mode");
-    const uvPixelSizeUnifLoc = gl.getUniformLocation(
-      program,
-      "u_uv_pixel_size",
-    );
-    const numQuantizedColorsUnifLoc = gl.getUniformLocation(
-      program,
-      "u_num_quantized_colors",
-    );
-    const biasUnifLoc = gl.getUniformLocation(program, "u_bias");
-    const colorAUnifLoc = gl.getUniformLocation(program, "u_color_a");
-    const colorBUnifLoc = gl.getUniformLocation(program, "u_color_b");
-    const bayerMatrixSizeUnifLoc = gl.getUniformLocation(
-      program,
-      "u_bayer_matrix_size",
-    );
-    const orderedDitherSizeUnifLoc = gl.getUniformLocation(
-      program,
-      "u_ordered_dither_size",
-    );
 
     const videoFrameTexture = gl.createTexture();
     gl.activeTexture(gl.TEXTURE0 + 0);
@@ -374,35 +354,35 @@ const projects = await getEntries(
         canvas.width !== canvas.clientWidth ||
         canvas.height !== canvas.clientHeight
       ) {
-        canvas.width = canvas.clientWidth;
-        canvas.height = canvas.clientHeight;
+        // canvas.width = canvas.clientWidth;
+        // canvas.height = canvas.clientHeight;
 
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-        gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
+        // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        // gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
         dither.canvasSize = `${gl.canvas.width}×${gl.canvas.height}`;
       }
 
-      gl.uniform1i(ditherModeUnifLoc, dither.general.mode);
-      gl.uniform1i(uvPixelSizeUnifLoc, dither.general.uvPixelSize);
-      gl.uniform1i(
-        numQuantizedColorsUnifLoc,
-        dither.general.numQuantizedColors,
-      );
-      gl.uniform1f(biasUnifLoc, dither.general.bias);
-      gl.uniform3f(
-        colorAUnifLoc,
-        dither.color.a.r,
-        dither.color.a.g,
-        dither.color.a.b,
-      );
-      gl.uniform3f(
-        colorBUnifLoc,
-        dither.color.b.r,
-        dither.color.b.g,
-        dither.color.b.b,
-      );
-      gl.uniform1i(bayerMatrixSizeUnifLoc, dither.ordered.bayerMatrixSize);
-      gl.uniform1i(orderedDitherSizeUnifLoc, dither.ordered.ditheredSize);
+      // gl.uniform1i(ditherModeUnifLoc, dither.general.mode);
+      // gl.uniform1i(uvPixelSizeUnifLoc, dither.general.uvPixelSize);
+      // gl.uniform1i(
+      //   numQuantizedColorsUnifLoc,
+      //   dither.general.numQuantizedColors,
+      // );
+      // gl.uniform1f(biasUnifLoc, dither.general.bias);
+      // gl.uniform3f(
+      //   colorAUnifLoc,
+      //   dither.color.a.r,
+      //   dither.color.a.g,
+      //   dither.color.a.b,
+      // );
+      // gl.uniform3f(
+      //   colorBUnifLoc,
+      //   dither.color.b.r,
+      //   dither.color.b.g,
+      //   dither.color.b.b,
+      // );
+      // gl.uniform1i(bayerMatrixSizeUnifLoc, dither.ordered.bayerMatrixSize);
+      // gl.uniform1i(orderedDitherSizeUnifLoc, dither.ordered.ditheredSize);
 
       gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
 
