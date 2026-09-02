@@ -144,10 +144,7 @@ const config = defineConfig({
     },
   },
   vite: {
-    plugins: [tailwindcss({ optimize: { minify: true } })],
-    server: {
-      allowedHosts: ["bore.pub"],
-    },
+    plugins: [tailwindcss()],
   },
 });
 
