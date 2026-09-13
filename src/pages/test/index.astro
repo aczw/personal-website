@@ -124,6 +124,15 @@ const projects = await getEntries(
 
     if (!tiles.every((tile): tile is Tile => tile.bitmapCtx !== null)) return;
 
+    // Automatically resume playing videos if they were paused somehow
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") return;
+
+      tiles.forEach(({ videoElt }) => {
+        if (videoElt.paused) videoElt.play();
+      });
+    });
+
     const createShader = (type: GLenum, source: string) => {
       const shader = gl.createShader(type)!;
       gl.shaderSource(shader, source);
