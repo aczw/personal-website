@@ -9,6 +9,7 @@ uniform int u_dither_mode;
 uniform int u_uv_pixel_size;
 uniform int u_num_quantized_colors;
 uniform float u_bias;
+uniform float u_speed;
 
 uniform int u_bayer_matrix_size;
 uniform int u_ordered_dither_size;
@@ -119,7 +120,7 @@ void main() {
   vec2 pixelated_uv = normalized_pixel_size * floor(frag_uv / normalized_pixel_size);
 
   float aspect_ratio = float(u_dimensions.x) / float(u_dimensions.y);
-  vec2 sample_pos = pixelated_uv * vec2(aspect_ratio, 1.f) * CELL_DENSITY + u_time;
+  vec2 sample_pos = pixelated_uv * vec2(aspect_ratio, 1.f) * CELL_DENSITY + (u_time * u_speed);
 
   float t = ordered_dither(worley(sample_pos));
   t = clamp(t, 0.f, 1.f);

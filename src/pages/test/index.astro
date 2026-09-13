@@ -25,16 +25,12 @@ const projects = await getEntries(
           size={3.5}
           class="fill-sweater-5 group-hover:fill-sweater-4 light:fill-sweater-6 light:group-hover:fill-sweater-7"
         />
-        <span
-          class="text-lg/1 leading-none font-medium text-sweater-5 group-hover:text-sweater-4 light:text-sweater-6 light:group-hover:text-sweater-7"
-        >
+        <span class="text-lg/1 leading-none font-medium text-sweater-5 group-hover:text-sweater-4 light:text-sweater-6 light:group-hover:text-sweater-7">
           Charles Wang
         </span>
       </a>
 
-      <div
-        class="mt-4 flex gap-4 border-t-2 border-dashed border-line pt-0.5 *:text-link-primary *:hover:text-link-primary-hover"
-      >
+      <div class="mt-4 flex gap-4 border-t-2 border-dashed border-line pt-0.5 *:text-link-primary *:hover:text-link-primary-hover">
         <a href="/index">Index</a>
         <a href="/projects">Projects</a>
         <a href="/posts">Writing</a>
@@ -56,53 +52,49 @@ const projects = await getEntries(
       aria-label="Some projects I made"
       class="constrain mt-5 grid grid-cols-3 gap-3"
     >
-      {
-        projects.map(({ id, data }) => {
-          const path = `${CDN_URL}/projects/${id}`;
+      {projects.map(({ id, data }) => {
+        const path = `${CDN_URL}/projects/${id}`;
 
-          return (
-            <article class="relative space-y-1">
-              <video
-                autoplay
-                loop
-                muted
-                playsinline
-                preload="auto"
-                class="rounded-sm"
-              >
-                <source src={`${path}/cover.webm`} type="video/webm" />
-                <source src={`${path}/cover.mp4`} type="video/mp4" />
-              </video>
-              <h2>
-                <a href="/" class="after:absolute after:inset-0 after:z-1">
-                  {data.subtitle ? data.subtitle : "<No subtitle>"}
-                </a>
-              </h2>
-            </article>
-          );
-        })
-      }
+        return (
+          <article class="relative space-y-1">
+            <video
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="auto"
+              class="rounded-sm"
+            >
+              <source src={`${path}/cover.webm`} type="video/webm" />
+              <source src={`${path}/cover.mp4`} type="video/mp4" />
+            </video>
+            <h2>
+              <a href="/" class="after:absolute after:inset-0 after:z-1">
+                {data.subtitle ? data.subtitle : "<No subtitle>"}
+              </a>
+            </h2>
+          </article>
+        );
+      })}
     </section>
 
     <section class="constrain mt-5 space-y-1">
       <p>Awesome canvases</p>
 
       <div class="grid grid-cols-3 gap-3">
-        {
-          Array.from({ length: 3 }).map((_, index) => (
-            <article class="relative space-y-1">
-              <canvas
-                id={`tile-${index}`}
-                class="aspect-16/10 w-full rounded-sm bg-sweater-9"
-              />
-              <h2>
-                <a href="/" class="after:absolute after:inset-0 after:z-1">
-                  [No subtitle]
-                </a>
-              </h2>
-            </article>
-          ))
-        }
+        {Array.from({ length: 3 }).map((_, index) => (
+          <article class="relative space-y-1">
+            <canvas
+              id={`tile-${index}`}
+              class="aspect-16/10 w-full rounded-sm bg-sweater-9"
+            />
+            <h2>
+              <a href="/" class="after:absolute after:inset-0 after:z-1">
+                [No subtitle]
+              </a>
+            </h2>
+          </article>
+        ))}
       </div>
     </section>
   </main>
@@ -173,6 +165,7 @@ const projects = await getEntries(
       "u_num_quantized_colors",
     );
     const biasUnifLoc = gl.getUniformLocation(program, "u_bias");
+    const speedUnifLoc = gl.getUniformLocation(program, "u_speed");
 
     const bayerMatrixSizeUnifLoc = gl.getUniformLocation(
       program,
@@ -206,6 +199,7 @@ const projects = await getEntries(
       gl.uniform1i(uvPixelSizeUnifLoc, 48);
       gl.uniform1i(numQuantizedColorsUnifLoc, 4);
       gl.uniform1f(biasUnifLoc, 0);
+      gl.uniform1f(speedUnifLoc, 0.25);
 
       gl.uniform1i(bayerMatrixSizeUnifLoc, 2); // 8x8
       gl.uniform1i(orderedDitherSizeUnifLoc, 6);
