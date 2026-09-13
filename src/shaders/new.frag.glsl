@@ -2,6 +2,8 @@
 precision highp float;
 precision highp int;
 
+uniform sampler2D u_video_frame;
+
 uniform ivec2 u_dimensions;
 uniform float u_time;
 
@@ -127,4 +129,6 @@ void main() {
 
   vec3 final_color = mix(u_color_a, u_color_b, t);
   out_color = vec4(final_color, 1.f);
+
+  out_color = texture(u_video_frame, frag_uv);
 }

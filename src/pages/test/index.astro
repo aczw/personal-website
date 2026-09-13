@@ -3,7 +3,7 @@ import { getEntries } from "astro:content";
 
 import Eye from "@/components/eye.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
-import { CDN_URL, HOMEPAGE_PROJECTS } from "@/scripts/constants";
+import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -43,59 +43,32 @@ const projects = await getEntries(
     <div class="constrain space-y-3 *:sm:w-(--prose-w)">
       <p>
         Hi, welcome. Thanks for visiting my little space. I wonder how you ended
-        up here? Regardless, please do take a look around and explore.
+        up here? Please do take a look around and explore.
       </p>
       <p>Here's some stuff I've made that I'm proud of...</p>
     </div>
 
     <section
+      class="constrain mt-5 space-y-1 grid grid-cols-3 gap-3"
       aria-label="Some projects I made"
-      class="constrain mt-5 grid grid-cols-3 gap-3"
     >
-      {projects.map(({ id, data }) => {
-        const path = `${CDN_URL}/projects/${id}`;
-
-        return (
-          <article class="relative space-y-1">
-            <video
-              autoplay
-              loop
-              muted
-              playsinline
-              preload="auto"
-              class="rounded-sm"
+      {projects.map(({ id }, index) => (
+        <article class="relative space-y-1">
+          <canvas
+            id={`tile-${index}`}
+            class="aspect-16/10 w-full rounded-sm bg-sweater-9"
+            data-project-id={id}
+          />
+          <h2>
+            <a
+              href={`/projects/${id}`}
+              class="after:absolute after:inset-0 after:z-1"
             >
-              <source src={`${path}/cover.webm`} type="video/webm" />
-              <source src={`${path}/cover.mp4`} type="video/mp4" />
-            </video>
-            <h2>
-              <a href="/" class="after:absolute after:inset-0 after:z-1">
-                {data.subtitle ? data.subtitle : "<No subtitle>"}
-              </a>
-            </h2>
-          </article>
-        );
-      })}
-    </section>
-
-    <section class="constrain mt-5 space-y-1">
-      <p>Awesome canvases</p>
-
-      <div class="grid grid-cols-3 gap-3">
-        {projects.map((_, index) => (
-          <article class="relative space-y-1">
-            <canvas
-              id={`tile-${index}`}
-              class="aspect-16/10 w-full rounded-sm bg-sweater-9"
-            />
-            <h2>
-              <a href="/" class="after:absolute after:inset-0 after:z-1">
-                [No subtitle... yet]
-              </a>
-            </h2>
-          </article>
-        ))}
-      </div>
+              [No subtitle... yet]
+            </a>
+          </h2>
+        </article>
+      ))}
     </section>
   </main>
 </BaseLayout>
@@ -104,23 +77,16 @@ const projects = await getEntries(
   import vertSource from "@/shaders/quad.vert.glsl?raw";
   import fragSource from "@/shaders/new.frag.glsl?raw";
 
-  import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
+  import { CDN_URL, HOMEPAGE_PROJECTS } from "@/scripts/constants";
 
   type Tile = {
     canvas: HTMLCanvasElement;
     bitmapCtx: ImageBitmapRenderingContext;
+    videoElt: HTMLVideoElement;
+    videoFrameTex: WebGLTexture;
   };
 
   const run = () => {
-    const tiles = HOMEPAGE_PROJECTS.map((_, index) => {
-      const tileCanvas = document.getElementById(
-        `tile-${index}`,
-      ) as HTMLCanvasElement;
-      const bitmapCtx = tileCanvas.getContext("bitmaprenderer");
-
-      return { canvas: tileCanvas, bitmapCtx };
-    });
-
     const offCanvas = new OffscreenCanvas(1280, 800);
     const gl = offCanvas.getContext("webgl2", {
       depth: false,
@@ -128,9 +94,35 @@ const projects = await getEntries(
       antialias: false,
     });
 
-    if (!gl || !tiles.every((tile): tile is Tile => tile.bitmapCtx !== null)) {
-      return;
-    }
+    if (!gl) return;
+
+    const tiles = HOMEPAGE_PROJECTS.map((_, index) => {
+      const tileCanvas = document.getElementById(
+        `tile-${index}`,
+      ) as HTMLCanvasElement;
+      const bitmapCtx = tileCanvas.getContext("bitmaprenderer");
+
+      const projectId = tileCanvas.dataset["projectId"]!;
+      const videoElt = document.createElement("video");
+      videoElt.crossOrigin = "anonymous";
+      videoElt.src = `${CDN_URL}/projects/${projectId}/cover.mp4`;
+      videoElt.muted = true;
+      // Prevents video from autoplaying in fullscreen on page load on iOS
+      videoElt.playsInline = true;
+      videoElt.loop = true;
+      videoElt.play();
+
+      const videoFrameTex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+      return { canvas: tileCanvas, bitmapCtx, videoElt, videoFrameTex };
+    });
+
+    if (!tiles.every((tile): tile is Tile => tile.bitmapCtx !== null)) return;
 
     const createShader = (type: GLenum, source: string) => {
       const shader = gl.createShader(type)!;
@@ -163,9 +155,13 @@ const projects = await getEntries(
     }
 
     gl.useProgram(program);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
     const vao = gl.createVertexArray();
     gl.bindVertexArray(vao);
+
+    const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
 
     const dimensionsUnifLoc = gl.getUniformLocation(program, "u_dimensions");
     const timeUnifLoc = gl.getUniformLocation(program, "u_time");
@@ -194,6 +190,48 @@ const projects = await getEntries(
     const colorAUnifLoc = gl.getUniformLocation(program, "u_color_a");
     const colorBUnifLoc = gl.getUniformLocation(program, "u_color_b");
 
+    gl.uniform1i(videoFrameUnifLoc, 0);
+
+    gl.uniform1i(ditherModeUnifLoc, 1); // ordered
+    gl.uniform1i(uvPixelSizeUnifLoc, 48);
+    gl.uniform1i(numQuantizedColorsUnifLoc, 4);
+    gl.uniform1f(biasUnifLoc, 0);
+    gl.uniform1f(speedUnifLoc, 0.25);
+
+    gl.uniform1i(bayerMatrixSizeUnifLoc, 2); // 8x8
+    gl.uniform1i(orderedDitherSizeUnifLoc, 6);
+
+    gl.uniform3f(
+      colorAUnifLoc,
+      0.0392156862745098,
+      0.03529411764705882,
+      0.09803921568627451,
+    );
+    gl.uniform3f(
+      colorBUnifLoc,
+      0.19215686274509805,
+      0.17647058823529413,
+      0.396078431372549,
+    );
+
+    tiles.forEach(({ videoElt, videoFrameTex }) => {
+      const uploadVideoFrame: VideoFrameRequestCallback = () => {
+        gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
+        gl.texImage2D(
+          gl.TEXTURE_2D,
+          0,
+          gl.RGBA,
+          gl.RGBA,
+          gl.UNSIGNED_BYTE,
+          videoElt,
+        );
+
+        videoElt.requestVideoFrameCallback(uploadVideoFrame);
+      };
+
+      videoElt.requestVideoFrameCallback(uploadVideoFrame);
+    });
+
     const draw: FrameRequestCallback = (now) => {
       const time = now * 0.001;
 
@@ -212,31 +250,12 @@ const projects = await getEntries(
       });
       gl.uniform1f(timeUnifLoc, time);
 
-      gl.uniform1i(ditherModeUnifLoc, 1); // ordered
-      gl.uniform1i(uvPixelSizeUnifLoc, 48);
-      gl.uniform1i(numQuantizedColorsUnifLoc, 4);
-      gl.uniform1f(biasUnifLoc, 0);
-      gl.uniform1f(speedUnifLoc, 0.25);
-
-      gl.uniform1i(bayerMatrixSizeUnifLoc, 2); // 8x8
-      gl.uniform1i(orderedDitherSizeUnifLoc, 6);
-
-      gl.uniform3f(
-        colorAUnifLoc,
-        0.0392156862745098,
-        0.03529411764705882,
-        0.09803921568627451,
-      );
-      gl.uniform3f(
-        colorBUnifLoc,
-        0.19215686274509805,
-        0.17647058823529413,
-        0.396078431372549,
-      );
-
-      tiles.forEach(({ bitmapCtx }) => {
+      tiles.forEach(({ bitmapCtx, videoFrameTex }) => {
         gl.clearColor(0.0, 0.0, 0.0, 0.0);
+
+        gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
+
         bitmapCtx.transferFromImageBitmap(offCanvas.transferToImageBitmap());
       });
 
