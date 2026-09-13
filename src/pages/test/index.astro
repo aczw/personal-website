@@ -82,7 +82,7 @@ const projects = await getEntries(
       <p>Awesome canvases</p>
 
       <div class="grid grid-cols-3 gap-3">
-        {Array.from({ length: 3 }).map((_, index) => (
+        {projects.map((_, index) => (
           <article class="relative space-y-1">
             <canvas
               id={`tile-${index}`}
@@ -90,7 +90,7 @@ const projects = await getEntries(
             />
             <h2>
               <a href="/" class="after:absolute after:inset-0 after:z-1">
-                [No subtitle]
+                [No subtitle... yet]
               </a>
             </h2>
           </article>
@@ -104,9 +104,22 @@ const projects = await getEntries(
   import vertSource from "@/shaders/quad.vert.glsl?raw";
   import fragSource from "@/shaders/new.frag.glsl?raw";
 
+  import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
+
+  type Tile = {
+    canvas: HTMLCanvasElement;
+    bitmapCtx: ImageBitmapRenderingContext;
+  };
+
   const run = () => {
-    const tile0Canvas = document.getElementById("tile-0") as HTMLCanvasElement;
-    const bitmapCtx0 = tile0Canvas.getContext("bitmaprenderer");
+    const tiles = HOMEPAGE_PROJECTS.map((_, index) => {
+      const tileCanvas = document.getElementById(
+        `tile-${index}`,
+      ) as HTMLCanvasElement;
+      const bitmapCtx = tileCanvas.getContext("bitmaprenderer");
+
+      return { canvas: tileCanvas, bitmapCtx };
+    });
 
     const offCanvas = new OffscreenCanvas(1280, 800);
     const gl = offCanvas.getContext("webgl2", {
@@ -115,7 +128,9 @@ const projects = await getEntries(
       antialias: false,
     });
 
-    if (!gl || !bitmapCtx0) return;
+    if (!gl || !tiles.every((tile): tile is Tile => tile.bitmapCtx !== null)) {
+      return;
+    }
 
     const createShader = (type: GLenum, source: string) => {
       const shader = gl.createShader(type)!;
@@ -182,17 +197,19 @@ const projects = await getEntries(
     const draw: FrameRequestCallback = (now) => {
       const time = now * 0.001;
 
-      // https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
-      if (
-        offCanvas.width !== tile0Canvas.clientWidth ||
-        offCanvas.height !== tile0Canvas.clientHeight
-      ) {
-        offCanvas.width = tile0Canvas.clientWidth;
-        offCanvas.height = tile0Canvas.clientHeight;
+      tiles.forEach(({ canvas: tileCanvas }) => {
+        // https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+        if (
+          offCanvas.width !== tileCanvas.clientWidth ||
+          offCanvas.height !== tileCanvas.clientHeight
+        ) {
+          offCanvas.width = tileCanvas.clientWidth;
+          offCanvas.height = tileCanvas.clientHeight;
 
-        gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-        gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
-      }
+          gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+          gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
+        }
+      });
       gl.uniform1f(timeUnifLoc, time);
 
       gl.uniform1i(ditherModeUnifLoc, 1); // ordered
@@ -217,10 +234,11 @@ const projects = await getEntries(
         0.396078431372549,
       );
 
-      gl.clearColor(0.0, 0.0, 0.0, 0.0);
-      gl.drawArrays(gl.TRIANGLES, 0, 3);
-
-      bitmapCtx0.transferFromImageBitmap(offCanvas.transferToImageBitmap());
+      tiles.forEach(({ bitmapCtx }) => {
+        gl.clearColor(0.0, 0.0, 0.0, 0.0);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+        bitmapCtx.transferFromImageBitmap(offCanvas.transferToImageBitmap());
+      });
 
       requestAnimationFrame(draw);
     };

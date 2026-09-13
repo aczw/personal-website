@@ -36,13 +36,14 @@ const VALID_MONTHS = [
 ];
 
 /**
- * Order matters! Project videos will be played in the order defined here.
+ * Order matters! Project videos will be played in the order defined.
+ * There are exactly three tiles on the homepage which is enforced here.
  */
 const HOMEPAGE_PROJECTS = [
   "mini-minecraft",
   "door",
   "catanks",
-];
+] as const satisfies readonly [string, string, string];
 const DISABLED_PROJECTS = [
   "cuda-boids", // code
   "deth", // game
