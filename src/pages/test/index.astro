@@ -110,6 +110,7 @@ const projects = await getEntries(
       // Prevents video from autoplaying in fullscreen on page load on iOS
       videoElt.playsInline = true;
       videoElt.loop = true;
+      videoElt.playbackRate = 0.35;
       videoElt.play();
 
       const videoFrameTex = gl.createTexture();
@@ -186,6 +187,7 @@ const projects = await getEntries(
     );
     const biasUnifLoc = gl.getUniformLocation(program, "u_bias");
     const speedUnifLoc = gl.getUniformLocation(program, "u_speed");
+    const mixUnifLoc = gl.getUniformLocation(program, "u_mix");
 
     const bayerMatrixSizeUnifLoc = gl.getUniformLocation(
       program,
@@ -206,22 +208,13 @@ const projects = await getEntries(
     gl.uniform1i(numQuantizedColorsUnifLoc, 4);
     gl.uniform1f(biasUnifLoc, 0);
     gl.uniform1f(speedUnifLoc, 0.25);
+    gl.uniform1f(mixUnifLoc, 0.4);
 
     gl.uniform1i(bayerMatrixSizeUnifLoc, 2); // 8x8
     gl.uniform1i(orderedDitherSizeUnifLoc, 6);
 
-    gl.uniform3f(
-      colorAUnifLoc,
-      0.0392156862745098,
-      0.03529411764705882,
-      0.09803921568627451,
-    );
-    gl.uniform3f(
-      colorBUnifLoc,
-      0.19215686274509805,
-      0.17647058823529413,
-      0.396078431372549,
-    );
+    gl.uniform3f(colorAUnifLoc, 0.03921, 0.03529, 0.09803);
+    gl.uniform3f(colorBUnifLoc, 0.19215, 0.17647, 0.39607);
 
     tiles.forEach(({ videoElt, videoFrameTex }) => {
       const uploadVideoFrame: VideoFrameRequestCallback = () => {
