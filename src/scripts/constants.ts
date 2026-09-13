@@ -36,14 +36,14 @@ const VALID_MONTHS = [
 ];
 
 /**
- * Order matters! Project videos will be played in the order defined here.
+ * Order matters! Project videos will be played in the order defined.
+ * There are exactly three tiles on the homepage which is enforced here.
  */
 const HOMEPAGE_PROJECTS = [
-  "catanks",
   "mini-minecraft",
-  "webgpu-clustered",
   "door",
-];
+  "catanks",
+] as const satisfies readonly [string, string, string];
 const DISABLED_PROJECTS = [
   "cuda-boids", // code
   "deth", // game
@@ -132,7 +132,6 @@ const DEFAULT_LIGHT_DITHER_SETTINGS: DitherSettings = {
  * `var(--spacing-icon)` defined in main.css.
  */
 const ICON_SIZE = 18;
-const EYE_SIZE = 7;
 
 const FLAVOR_TEXTS = [
   "Waiting for something to happen?",
@@ -193,6 +192,5 @@ export {
   DEFAULT_DARK_DITHER_SETTINGS,
   DEFAULT_LIGHT_DITHER_SETTINGS,
   ICON_SIZE,
-  EYE_SIZE,
   FLAVOR_TEXTS,
 };

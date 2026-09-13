@@ -36,8 +36,7 @@ if (cover && !isValidProjectCover(cover.img.width, cover.img.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 
-const { Content, remarkPluginFrontmatter } = await render(post);
-const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
+const { Content } = await render(post);
 ---
 
 <BaseLayout meta={{ kind: "posts", postsEntry: post }}>
@@ -106,10 +105,7 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
                 class="shrink-0 stroke-icon"
               />
             </dt>
-            <dd>
-              {numMinutes}
-              {numMinutes > 1 ? "minutes" : "minute"}
-            </dd>
+            <dd>Infinity minutes</dd>
           </div>
         </dl>
       </div>
