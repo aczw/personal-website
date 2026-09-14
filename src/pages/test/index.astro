@@ -78,13 +78,7 @@ const projects = await getEntries(
   import fragSource from "@/shaders/new.frag.glsl?raw";
 
   import { CDN_URL, HOMEPAGE_PROJECTS } from "@/scripts/constants";
-
-  type Tile = {
-    canvas: HTMLCanvasElement;
-    bitmapCtx: ImageBitmapRenderingContext;
-    videoElt: HTMLVideoElement;
-    videoFrameTex: WebGLTexture;
-  };
+  import type { Tile } from "@/scripts/dither/types";
 
   const run = () => {
     const offCanvas = new OffscreenCanvas(1280, 800);
@@ -96,11 +90,13 @@ const projects = await getEntries(
 
     if (!gl) return;
 
-    const tiles = HOMEPAGE_PROJECTS.map((_, index) => {
+    const tiles: (Tile | null)[] = HOMEPAGE_PROJECTS.map((_, index) => {
       const tileCanvas = document.getElementById(
         `tile-${index}`,
       ) as HTMLCanvasElement;
       const bitmapCtx = tileCanvas.getContext("bitmaprenderer");
+
+      if (!bitmapCtx) return null;
 
       const projectId = tileCanvas.dataset["projectId"]!;
       const videoElt = document.createElement("video");
@@ -120,10 +116,16 @@ const projects = await getEntries(
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
-      return { canvas: tileCanvas, bitmapCtx, videoElt, videoFrameTex };
+      return {
+        canvas: tileCanvas,
+        bitmapCtx,
+        videoElt,
+        videoFrameTex,
+        state: { kind: "init", delay: index * 0.15 },
+      } satisfies Tile;
     });
 
-    if (!tiles.every((tile): tile is Tile => tile.bitmapCtx !== null)) return;
+    if (!tiles.every((tile) => tile !== null)) return;
 
     // Automatically resume playing videos if they were paused somehow
     document.addEventListener("visibilitychange", () => {
@@ -208,16 +210,22 @@ const projects = await getEntries(
     gl.uniform1i(numQuantizedColorsUnifLoc, 4);
     gl.uniform1f(biasUnifLoc, 0);
     gl.uniform1f(speedUnifLoc, 0.25);
-    gl.uniform1f(mixUnifLoc, 0.4);
+    gl.uniform1f(mixUnifLoc, 0);
 
     gl.uniform1i(bayerMatrixSizeUnifLoc, 2); // 8x8
     gl.uniform1i(orderedDitherSizeUnifLoc, 6);
 
-    gl.uniform3f(colorAUnifLoc, 0.03921, 0.03529, 0.09803);
-    gl.uniform3f(colorBUnifLoc, 0.19215, 0.17647, 0.39607);
+    gl.uniform3f(colorAUnifLoc, 0.11372, 0.09803, 0.23921);
+    gl.uniform3f(colorBUnifLoc, 0.28235, 0.26274, 0.5647);
 
-    tiles.forEach(({ videoElt, videoFrameTex }) => {
-      const uploadVideoFrame: VideoFrameRequestCallback = () => {
+    const lerp = (a: number, b: number, t: number): number => {
+      return a * (1 - t) + b * t;
+    };
+
+    tiles.forEach((tile, index) => {
+      const { videoElt, videoFrameTex } = tile;
+
+      const uploadVideoFrame: VideoFrameRequestCallback = (now) => {
         gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
         gl.texImage2D(
           gl.TEXTURE_2D,
@@ -228,16 +236,29 @@ const projects = await getEntries(
           videoElt,
         );
 
+        // if (tile.state.kind === "init") {
+        //   tile.state = { kind: "video-loaded", loadStartTime: now };
+        //   console.log(`tile ${index}'s video has loaded!`);
+        // }
+
         videoElt.requestVideoFrameCallback(uploadVideoFrame);
       };
 
       videoElt.requestVideoFrameCallback(uploadVideoFrame);
     });
 
-    const draw: FrameRequestCallback = (now) => {
-      const time = now * 0.001;
+    // The timestamp at which the draw loop actually begins running, which
+    // will always likely be lagging behind page load
+    const drawStartTime = performance.now() * 0.001;
 
-      tiles.forEach(({ canvas: tileCanvas }) => {
+    const draw: FrameRequestCallback = (now) => {
+      const elapsed = Math.max(now * 0.001 - drawStartTime, 0);
+
+      gl.uniform1f(timeUnifLoc, elapsed);
+
+      tiles.forEach((tile) => {
+        const { canvas: tileCanvas, bitmapCtx, videoFrameTex } = tile;
+
         // https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
         if (
           offCanvas.width !== tileCanvas.clientWidth ||
@@ -249,12 +270,45 @@ const projects = await getEntries(
           gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
           gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
         }
-      });
-      gl.uniform1f(timeUnifLoc, time);
 
-      tiles.forEach(({ bitmapCtx, videoFrameTex }) => {
+        let biasValue = -1;
+
+        switch (tile.state.kind) {
+          case "init": {
+            const offsetElapsed = elapsed - tile.state.delay;
+
+            if (offsetElapsed < 0) break;
+
+            const t = offsetElapsed / 1.75;
+            if (t < 1) {
+              biasValue = lerp(-1, 0, 1 - Math.pow(1 - t, 5));
+            } else {
+              biasValue = 0;
+              tile.state = { kind: "procedural" };
+            }
+
+            break;
+          }
+
+          case "procedural": {
+            biasValue = 0;
+            break;
+          }
+
+          case "video-loaded": {
+            biasValue = 0;
+            break;
+          }
+        }
+
+        // if (state.kind === "video-loaded") {
+        //   const mixValue = Math.min((now - state.loadStartTime) / 1000, 1);
+        //   gl.uniform1f(mixUnifLoc, mixValue);
+        // }
+
+        gl.uniform1f(biasUnifLoc, biasValue);
+
         gl.clearColor(0.0, 0.0, 0.0, 0.0);
-
         gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
 

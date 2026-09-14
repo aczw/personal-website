@@ -35,6 +35,19 @@ type DitherSettings = {
 
 type Dither = DitherInformation & DitherSettings;
 
+type TileState =
+  | { kind: "init"; delay: number }
+  | { kind: "procedural" }
+  | { kind: "video-loaded"; loadStartTime: number };
+
+type Tile = {
+  canvas: HTMLCanvasElement;
+  bitmapCtx: ImageBitmapRenderingContext;
+  videoElt: HTMLVideoElement;
+  videoFrameTex: WebGLTexture;
+  state: TileState;
+};
+
 export {
   DitherMode,
   BayerMatrixSize,
@@ -42,4 +55,5 @@ export {
   type DitherInformation,
   type DitherSettings,
   type Dither,
+  type Tile,
 };

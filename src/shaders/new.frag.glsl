@@ -107,13 +107,13 @@ float ordered_dither(float luminance) {
 
     case 2: {
       ivec2 index = pixel & 7;
-      threshold = BAYER_MATRIX_8[index.y * 8 + index.x] + u_bias;
+      threshold = BAYER_MATRIX_8[index.y * 8 + index.x];
       break;
     }
   }
 
   float final = luminance + threshold;
-  final = quantize(final);
+  final = quantize(final + u_bias);
 
   return clamp(final, 0.f, 1.f);
 }
