@@ -52,8 +52,8 @@ const projects = await getEntries(
       class="constrain mt-5 space-y-1 grid grid-cols-3 gap-3"
       aria-label="Some projects I made"
     >
-      {projects.map(({ id }, index) => (
-        <article class="relative space-y-1">
+      {projects.map(({ id, data: { subtitle } }, index) => (
+        <article class="relative space-y-1 group">
           <canvas
             id={`tile-${index}`}
             class="aspect-16/10 w-full rounded-sm bg-sweater-9"
@@ -62,9 +62,9 @@ const projects = await getEntries(
           <h2>
             <a
               href={`/projects/${id}`}
-              class="after:absolute after:inset-0 after:z-1"
+              class="after:absolute after:inset-0 after:z-1 text-link-primary group-hover:text-link-primary-hover font-medium"
             >
-              [No subtitle... yet]
+              {subtitle ? subtitle : "<NO SUBTITLE>"}
             </a>
           </h2>
         </article>
@@ -116,13 +116,27 @@ const projects = await getEntries(
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
-      return {
+      const tile: Tile = {
         canvas: tileCanvas,
         bitmapCtx,
         videoElt,
+        videoLoaded: false,
         videoFrameTex,
         state: { kind: "init", delay: index * 0.15 },
-      } satisfies Tile;
+      };
+
+      const checkIfVideoIsLoaded = () => {
+        if (
+          videoElt.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA &&
+          !tile.videoLoaded
+        ) {
+          tile.videoLoaded = true;
+        }
+      };
+      videoElt.addEventListener("progress", checkIfVideoIsLoaded);
+      videoElt.addEventListener("canplaythrough", checkIfVideoIsLoaded);
+
+      return tile;
     });
 
     if (!tiles.every((tile) => tile !== null)) return;
@@ -222,31 +236,6 @@ const projects = await getEntries(
       return a * (1 - t) + b * t;
     };
 
-    tiles.forEach((tile, index) => {
-      const { videoElt, videoFrameTex } = tile;
-
-      const uploadVideoFrame: VideoFrameRequestCallback = (now) => {
-        gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
-        gl.texImage2D(
-          gl.TEXTURE_2D,
-          0,
-          gl.RGBA,
-          gl.RGBA,
-          gl.UNSIGNED_BYTE,
-          videoElt,
-        );
-
-        // if (tile.state.kind === "init") {
-        //   tile.state = { kind: "video-loaded", loadStartTime: now };
-        //   console.log(`tile ${index}'s video has loaded!`);
-        // }
-
-        videoElt.requestVideoFrameCallback(uploadVideoFrame);
-      };
-
-      videoElt.requestVideoFrameCallback(uploadVideoFrame);
-    });
-
     // The timestamp at which the draw loop actually begins running, which
     // will always likely be lagging behind page load
     const drawStartTime = performance.now() * 0.001;
@@ -257,7 +246,7 @@ const projects = await getEntries(
       gl.uniform1f(timeUnifLoc, elapsed);
 
       tiles.forEach((tile) => {
-        const { canvas: tileCanvas, bitmapCtx, videoFrameTex } = tile;
+        const { canvas: tileCanvas, bitmapCtx, videoElt, videoFrameTex } = tile;
 
         // https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
         if (
@@ -272,19 +261,39 @@ const projects = await getEntries(
         }
 
         let biasValue = -1;
+        let mixValue = 0;
 
         switch (tile.state.kind) {
           case "init": {
+            mixValue = 0;
+
             const offsetElapsed = elapsed - tile.state.delay;
 
             if (offsetElapsed < 0) break;
 
             const t = offsetElapsed / 1.75;
-            if (t < 1) {
+
+            if (t <= 1) {
               biasValue = lerp(-1, 0, 1 - Math.pow(1 - t, 5));
             } else {
               biasValue = 0;
               tile.state = { kind: "procedural" };
+
+              const uploadVideoFrame: VideoFrameRequestCallback = () => {
+                gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
+                gl.texImage2D(
+                  gl.TEXTURE_2D,
+                  0,
+                  gl.RGBA,
+                  gl.RGBA,
+                  gl.UNSIGNED_BYTE,
+                  videoElt,
+                );
+
+                videoElt.requestVideoFrameCallback(uploadVideoFrame);
+              };
+
+              videoElt.requestVideoFrameCallback(uploadVideoFrame);
             }
 
             break;
@@ -292,21 +301,41 @@ const projects = await getEntries(
 
           case "procedural": {
             biasValue = 0;
+            mixValue = 0;
+
+            if (tile.videoLoaded) {
+              tile.state = { kind: "video-loaded", loadStartTime: elapsed };
+            }
+
             break;
           }
 
           case "video-loaded": {
             biasValue = 0;
+            mixValue = 0;
+
+            const offsetElapsed = elapsed - tile.state.loadStartTime;
+            const t = Math.max(offsetElapsed / 1.75, 0);
+
+            if (t <= 1) {
+              mixValue = t;
+            } else {
+              mixValue = 1;
+              tile.state = { kind: "video" };
+            }
+
+            break;
+          }
+
+          case "video": {
+            biasValue = 0;
+            mixValue = 1;
             break;
           }
         }
 
-        // if (state.kind === "video-loaded") {
-        //   const mixValue = Math.min((now - state.loadStartTime) / 1000, 1);
-        //   gl.uniform1f(mixUnifLoc, mixValue);
-        // }
-
         gl.uniform1f(biasUnifLoc, biasValue);
+        gl.uniform1f(mixUnifLoc, mixValue);
 
         gl.clearColor(0.0, 0.0, 0.0, 0.0);
         gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);

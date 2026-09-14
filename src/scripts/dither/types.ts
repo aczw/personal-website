@@ -38,12 +38,14 @@ type Dither = DitherInformation & DitherSettings;
 type TileState =
   | { kind: "init"; delay: number }
   | { kind: "procedural" }
-  | { kind: "video-loaded"; loadStartTime: number };
+  | { kind: "video-loaded"; loadStartTime: number }
+  | { kind: "video" };
 
 type Tile = {
   canvas: HTMLCanvasElement;
   bitmapCtx: ImageBitmapRenderingContext;
   videoElt: HTMLVideoElement;
+  videoLoaded: boolean;
   videoFrameTex: WebGLTexture;
   state: TileState;
 };
