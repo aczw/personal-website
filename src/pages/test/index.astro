@@ -108,7 +108,6 @@ const projects = await getEntries(
       // Prevents video from autoplaying in fullscreen on page load on iOS
       videoElt.playsInline = true;
       videoElt.loop = true;
-      videoElt.playbackRate = 0.35;
       videoElt.play();
 
       const videoFrameTex = gl.createTexture();

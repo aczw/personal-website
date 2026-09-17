@@ -132,13 +132,8 @@ void main() {
   vec2 worley_sample_pos = pixelate(frag_uv + u_uv_offset) * vec2(aspect_ratio, 1.f) * CELL_DENSITY + (u_direction * u_time * u_speed);
   float worley_value = compute_worley(worley_sample_pos);
 
-  // Retrieve video color value and extract luminance
-  vec4 video_frame_color = texture(u_video_frame, pixelate(frag_uv));
-  float video_value = dot(vec3(0.21f, 0.72f, 0.07f), video_frame_color.rgb);
+  vec3 video_color = texture(u_video_frame, frag_uv).rgb;
+  vec3 worley_color = mix(u_color_a, u_color_b, ordered_dither(worley_value));
 
-  float mixed_value = mix(worley_value, video_value, u_mix);
-  float t = ordered_dither(mixed_value * mixed_value);
-  vec3 final_color = mix(u_color_a, u_color_b, t);
-
-  out_color = vec4(vec3(final_color), 1.f);
+  out_color = vec4(mix(worley_color, video_color, u_mix), 1.f);
 }
