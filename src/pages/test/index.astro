@@ -57,7 +57,6 @@ const projects = await getEntries(
           <canvas
             id={`tile-${index}`}
             class="aspect-16/10 w-full rounded-sm bg-sweater-9"
-            data-project-id={id}
           />
           <h2>
             <a
@@ -78,7 +77,11 @@ const projects = await getEntries(
   import fragSource from "@/shaders/new.frag.glsl?raw";
 
   import { CDN_URL, DIRECTIONS, HOMEPAGE_PROJECTS } from "@/scripts/constants";
-  import type { Tile } from "@/scripts/dither/types";
+  import {
+    BayerMatrixSize,
+    DitherMode,
+    type Tile,
+  } from "@/scripts/dither/types";
 
   const run = () => {
     const offCanvas = new OffscreenCanvas(1280, 800);
@@ -90,15 +93,14 @@ const projects = await getEntries(
 
     if (!gl) return;
 
-    const tiles: (Tile | null)[] = HOMEPAGE_PROJECTS.map((_, index) => {
-      const tileCanvas = document.getElementById(
+    const tiles: (Tile | null)[] = HOMEPAGE_PROJECTS.map((projectId, index) => {
+      const tileCanvasElt = document.getElementById(
         `tile-${index}`,
       ) as HTMLCanvasElement;
-      const bitmapCtx = tileCanvas.getContext("bitmaprenderer");
+      const bitmapCtx = tileCanvasElt.getContext("bitmaprenderer");
 
       if (!bitmapCtx) return null;
 
-      const projectId = tileCanvas.dataset["projectId"]!;
       const videoElt = document.createElement("video");
       videoElt.crossOrigin = "anonymous";
       videoElt.src = `${CDN_URL}/projects/${projectId}/cover.mp4`;
@@ -118,7 +120,7 @@ const projects = await getEntries(
 
       const tile: Tile = {
         state: { kind: "init", delay: index * 0.15 },
-        canvas: tileCanvas,
+        canvas: tileCanvasElt,
         bitmapCtx,
         videoElt,
         videoLoaded: false,
@@ -132,7 +134,7 @@ const projects = await getEntries(
 
       const checkIfVideoIsLoaded = () => {
         if (
-          videoElt.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA &&
+          videoElt.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA &&
           !tile.videoLoaded
         ) {
           tile.videoLoaded = true;
@@ -227,14 +229,14 @@ const projects = await getEntries(
 
     gl.uniform1i(videoFrameUnifLoc, 0);
 
-    gl.uniform1i(ditherModeUnifLoc, 1); // ordered
+    gl.uniform1i(ditherModeUnifLoc, DitherMode.ORDERED);
     gl.uniform1i(uvPixelSizeUnifLoc, 48);
     gl.uniform1i(numQuantizedColorsUnifLoc, 4);
     gl.uniform1f(biasUnifLoc, 0);
     gl.uniform1f(speedUnifLoc, 0.25);
     gl.uniform1f(mixUnifLoc, 0);
 
-    gl.uniform1i(bayerMatrixSizeUnifLoc, 2); // 8x8
+    gl.uniform1i(bayerMatrixSizeUnifLoc, BayerMatrixSize.EIGHT_BY_EIGHT);
     gl.uniform1i(orderedDitherSizeUnifLoc, 6);
 
     gl.uniform3f(colorAUnifLoc, 0.11372, 0.09803, 0.23921);
