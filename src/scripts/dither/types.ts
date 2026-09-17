@@ -41,13 +41,17 @@ type TileState =
   | { kind: "video-loaded"; loadStartTime: number }
   | { kind: "video" };
 
+type Direction = { x: number; y: number };
+
 type Tile = {
+  state: TileState;
   canvas: HTMLCanvasElement;
   bitmapCtx: ImageBitmapRenderingContext;
   videoElt: HTMLVideoElement;
   videoLoaded: boolean;
   videoFrameTex: WebGLTexture;
-  state: TileState;
+  direction: Direction;
+  uvOffset: { u: number; v: number };
 };
 
 export {
@@ -57,5 +61,6 @@ export {
   type DitherInformation,
   type DitherSettings,
   type Dither,
+  type Direction,
   type Tile,
 };

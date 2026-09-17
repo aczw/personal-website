@@ -12,6 +12,9 @@ uniform int u_uv_pixel_size;
 uniform int u_num_quantized_colors;
 uniform float u_bias;
 uniform float u_speed;
+uniform vec2 u_direction;
+uniform vec2 u_uv_offset;
+
 uniform float u_mix;
 
 uniform int u_bayer_matrix_size;
@@ -118,19 +121,19 @@ float ordered_dither(float luminance) {
   return clamp(final, 0.f, 1.f);
 }
 
-void main() {
-  float aspect_ratio = float(u_dimensions.x) / float(u_dimensions.y);
-
-  // Pixelization pass
+vec2 pixelate(vec2 uv) {
   vec2 normalized_pixel_size = vec2(u_uv_pixel_size) / vec2(u_dimensions);
-  vec2 pixelated_uv = normalized_pixel_size * floor(frag_uv / normalized_pixel_size);
+  return normalized_pixel_size * floor((uv) / normalized_pixel_size);
+}
 
+void main() {
   // Generate Worley noise value
-  vec2 worley_sample_pos = pixelated_uv * vec2(aspect_ratio, 1.f) * CELL_DENSITY + (u_time * u_speed);
+  float aspect_ratio = float(u_dimensions.x) / float(u_dimensions.y);
+  vec2 worley_sample_pos = pixelate(frag_uv + u_uv_offset) * vec2(aspect_ratio, 1.f) * CELL_DENSITY + (u_direction * u_time * u_speed);
   float worley_value = compute_worley(worley_sample_pos);
 
   // Retrieve video color value and extract luminance
-  vec4 video_frame_color = texture(u_video_frame, pixelated_uv);
+  vec4 video_frame_color = texture(u_video_frame, pixelate(frag_uv));
   float video_value = dot(vec3(0.21f, 0.72f, 0.07f), video_frame_color.rgb);
 
   float mixed_value = mix(worley_value, video_value, u_mix);

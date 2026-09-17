@@ -77,7 +77,7 @@ const projects = await getEntries(
   import vertSource from "@/shaders/quad.vert.glsl?raw";
   import fragSource from "@/shaders/new.frag.glsl?raw";
 
-  import { CDN_URL, HOMEPAGE_PROJECTS } from "@/scripts/constants";
+  import { CDN_URL, DIRECTIONS, HOMEPAGE_PROJECTS } from "@/scripts/constants";
   import type { Tile } from "@/scripts/dither/types";
 
   const run = () => {
@@ -117,12 +117,17 @@ const projects = await getEntries(
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
       const tile: Tile = {
+        state: { kind: "init", delay: index * 0.15 },
         canvas: tileCanvas,
         bitmapCtx,
         videoElt,
         videoLoaded: false,
         videoFrameTex,
-        state: { kind: "init", delay: index * 0.15 },
+        direction: DIRECTIONS[index]!,
+        uvOffset: {
+          u: 0.5 + Math.random() * 1.5,
+          v: 0.5 + Math.random() * 1.5,
+        },
       };
 
       const checkIfVideoIsLoaded = () => {
@@ -203,6 +208,9 @@ const projects = await getEntries(
     );
     const biasUnifLoc = gl.getUniformLocation(program, "u_bias");
     const speedUnifLoc = gl.getUniformLocation(program, "u_speed");
+    const directionUnifLoc = gl.getUniformLocation(program, "u_direction");
+    const uvOffsetUnifLoc = gl.getUniformLocation(program, "u_uv_offset");
+
     const mixUnifLoc = gl.getUniformLocation(program, "u_mix");
 
     const bayerMatrixSizeUnifLoc = gl.getUniformLocation(
@@ -335,6 +343,8 @@ const projects = await getEntries(
         }
 
         gl.uniform1f(biasUnifLoc, biasValue);
+        gl.uniform2f(directionUnifLoc, tile.direction.x, tile.direction.y);
+        gl.uniform2f(uvOffsetUnifLoc, tile.uvOffset.u, tile.uvOffset.v);
         gl.uniform1f(mixUnifLoc, mixValue);
 
         gl.clearColor(0.0, 0.0, 0.0, 0.0);
