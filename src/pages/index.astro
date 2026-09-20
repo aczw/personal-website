@@ -1,394 +1,365 @@
 ---
 import { getEntries } from "astro:content";
 
-import {
-  SquareArrowRightIcon,
-  SquareMousePointerIcon,
-  SquareDashedMousePointerIcon,
-  InfoIcon,
-  FeatherIcon,
-  ToolCaseIcon,
-  ComponentIcon,
-} from "@lucide/astro";
-
-import BaseLayout from "@/layouts/base-layout.astro";
-import { ICON_SIZE } from "@/scripts/constants";
-import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
-import ContentDate from "@/components/content-date.astro";
 import Eye from "@/components/eye.astro";
-import MusicIndicator from "@/components/music-indicator.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
+import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
-    return {
-      collection: "projects" as const,
-      id,
-    };
+    return { collection: "projects", id };
   }),
 );
 ---
 
-<BaseLayout
-  meta={{
-    kind: "route",
-    route: "home",
-    description: "Computer graphics, systems, and design.",
-  }}
->
-  <div
-    role="none"
-    class="z-1 flex flex-col items-center-safe gap-y-pad overflow-x-clip desktop:absolute desktop:inset-0"
-  >
-    <header
-      class="z-1 grid h-fit w-full grid-cols-1 gap-y-pad px-pad-2 pt-pad-2 font-bold desktop:mt-10 desktop:w-4/5 desktop:rounded-xl desktop:bg-sweater-10 desktop:p-pad sm:grid-cols-2 lg:w-(--real-header-w) desktop:light:bg-sweater-1"
-    >
-      <h1 class="space-y-0.5">
-        <div aria-hidden="true" class="flex h-[2.15rem] items-center">
-          <Eye
-            aria-hidden="true"
-            class="peer fill-sweater-5 transition-[fill_rotate] hover:-rotate-13 hover:fill-sweater-4 light:fill-sweater-6 light:hover:fill-sweater-7"
-          />
-        </div>
-
-        <span
-          class="cursor-default text-2xl leading-none text-sweater-5 transition-colors peer-hover:text-sweater-4 light:text-sweater-6 light:peer-hover:text-sweater-7"
-        >
+<BaseLayout meta={{ kind: "route", route: "home", description: "NEW" }}>
+  <header class="constrain mt-6 sm:mt-20">
+    <nav class="sm:w-(--prose-w)">
+      <a
+        href="/"
+        title="Home"
+        aria-label="Go to the homepage"
+        class="group flex w-fit items-center gap-1.5"
+      >
+        <Eye
+          size={3.5}
+          class="fill-sweater-5 group-hover:fill-sweater-4 light:fill-sweater-6 light:group-hover:fill-sweater-7"
+        />
+        <span class="text-lg/1 leading-none font-medium text-sweater-5 group-hover:text-sweater-4 light:text-sweater-6 light:group-hover:text-sweater-7">
           Charles Wang
         </span>
-      </h1>
+      </a>
 
-      <nav
-        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad text-xl leading-none *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors **:stroke-icon *:hover:text-link-primary-hover sm:gap-y-0"
-      >
-        <a href="/projects">
-          Portfolio <ToolCaseIcon aria-hidden="true" size={ICON_SIZE} />
-        </a>
-        <a href="/posts">
-          Writing <FeatherIcon aria-hidden="true" size={ICON_SIZE} />
-        </a>
-        <p class="opacity-20 select-none" title="PARDON OUR DUST!">
-          Gallery <ComponentIcon aria-hidden="true" size={ICON_SIZE} />
-        </p>
-        <a href="/about">
-          About <MusicIndicator size={ICON_SIZE} server:defer>
-            <InfoIcon aria-hidden="true" slot="fallback" size={ICON_SIZE} />
-          </MusicIndicator>
-        </a>
-      </nav>
-    </header>
+      <div class="mt-4 flex gap-4 border-t-2 border-dashed border-line pt-0.5 *:text-link-primary *:hover:text-link-primary-hover">
+        <a href="/index">Index</a>
+        <a href="/projects">Projects</a>
+        <a href="/posts">Writing</a>
+        <a href="/about">About</a>
+      </div>
+    </nav>
+  </header>
 
-    <main
-      class="absolute inset-x-pad-2 bottom-pad-2 z-1 flex gap-x-pad desktop:relative desktop:inset-0 desktop:w-4/5 lg:w-(--real-header-w)"
+  <main class="mt-4">
+    <div class="constrain space-y-3 *:sm:w-(--prose-w)">
+      <p>
+        Hi, welcome. Thanks for visiting my little space. I wonder how you ended
+        up here? Please do take a look around and explore.
+      </p>
+      <p>Here's some stuff I've made that I'm proud of...</p>
+    </div>
+
+    <section
+      class="constrain mt-5 space-y-1 grid grid-cols-3 gap-3"
+      aria-label="Some projects I made"
     >
-      <section
-        aria-label="Featured project"
-        class="group relative z-1 h-fit w-full overflow-hidden rounded-xl bg-sweater-10 transition-colors duration-250 hover:bg-sweater-9 md:grow light:bg-sweater-1 light:hover:bg-sweater-2"
-      >
-        <div
-          id="video-progress"
-          role="progressbar"
-          aria-live="off"
-          aria-label="Video progress"
-          aria-valuemin="0.0"
-          aria-valuemax="1.0"
-          aria-valuenow="0.0"
-          aria-valuetext="0% finished"
-          class="absolute inset-0 -z-1 origin-left bg-sweater-9 transition-colors group-hover:bg-sweater-8 light:bg-sweater-2 light:group-hover:bg-sweater-3"
-          style="transform: scaleX(0.0);"
-        >
-        </div>
-
-        {
-          projects.map(({ id, data: { name, metadata } }, index) => (
-            <div
-              class="relative hidden gap-x-pad-2 p-3.5 data-[playing=true]:flex desktop:p-pad md:items-center"
-              data-project-id={id}
-              data-playing={index === 0 ? "true" : "false"}
+      {projects.map(({ id, data: { subtitle } }, index) => (
+        <article class="relative space-y-1 group">
+          <canvas
+            id={`tile-${index}`}
+            class="aspect-16/10 w-full rounded-sm bg-sweater-9"
+          />
+          <h2>
+            <a
+              href={`/projects/${id}`}
+              class="after:absolute after:inset-0 after:z-1 text-link-primary group-hover:text-link-primary-hover font-medium"
             >
-              <div class="flex grow flex-col gap-y-1 *:leading-none md:flex-row md:items-center md:gap-x-pad-2">
-                <h2 class="text-lg font-bold text-link-primary transition-colors group-hover:text-link-primary-hover desktop:text-base">
-                  <a
-                    href={`/projects/${id}`}
-                    class="after:absolute after:inset-0 after:z-1 after:rounded-2xl desktop:after:rounded-xl"
-                    data-umami-event="home-project-showcase"
-                    data-umami-event-id={id}
-                  >
-                    {name}
-                  </a>
-                </h2>
-                <ContentDate
-                  date={metadata.date}
-                  class="group-hover:text-inherit md:transition-colors"
-                />
-              </div>
-
-              <SquareArrowRightIcon
-                aria-hidden="true"
-                size={ICON_SIZE}
-                class="shrink-0 stroke-icon"
-              />
-            </div>
-          ))
-        }
-      </section>
-
-      <button
-        id="toggle-panel"
-        class="group hidden w-35 items-center justify-between gap-x-pad rounded-xl bg-sweater-10 p-pad leading-none transition-[background-color_scale] hover:bg-sweater-9 active:scale-97 data-[state=open]:bg-sweater-9 data-[state=open]:hover:bg-sweater-8 md:flex md:shrink-0 light:bg-sweater-1 light:hover:bg-sweater-2 light:data-[state=open]:bg-sweater-2 light:data-[state=open]:hover:bg-sweater-3"
-        data-state="closed"
-        data-umami-event="home-toggle-panel"
-      >
-        <span class="hidden group-data-[state=open]:contents">
-          Hide panel <SquareDashedMousePointerIcon
-            aria-hidden="true"
-            size={ICON_SIZE}
-            class="stroke-icon"
-          />
-        </span>
-
-        <span class="hidden group-data-[state=closed]:contents">
-          Show panel <SquareMousePointerIcon
-            aria-hidden="true"
-            size={ICON_SIZE}
-            class="stroke-icon"
-          />
-        </span>
-      </button>
-    </main>
-  </div>
-
-  <div aria-hidden="true" class="mt-pad-2 desktop:mt-0">
-    <canvas
-      id="dither"
-      class="pointer-events-none h-[calc(100svh-141.5px-var(--spacing-pad-2))] w-full transition-opacity duration-1500 ease-out desktop:h-lvh"
-      style="opacity: 0;"></canvas>
-  </div>
+              {subtitle ? subtitle : "<NO SUBTITLE>"}
+            </a>
+          </h2>
+        </article>
+      ))}
+    </section>
+  </main>
 </BaseLayout>
 
 <script>
-  import {
-    CDN_URL,
-    HOMEPAGE_PROJECTS,
-    DEFAULT_DARK_DITHER_SETTINGS,
-    DEFAULT_LIGHT_DITHER_SETTINGS,
-  } from "@/scripts/constants";
-  import { type Dither } from "@/scripts/dither/types";
-  import { initializePanel, type Panel } from "@/scripts/dither/panel";
-  import { applyDitherSettings } from "@/scripts/dither/presets";
+  import vertSource from "@/shaders/quad.vert.glsl?raw";
+  import fragSource from "@/shaders/tile.frag.glsl?raw";
+
+  import { CDN_URL, DIRECTIONS, HOMEPAGE_PROJECTS } from "@/scripts/constants";
+  import { BayerMatrixSize, type Tile } from "@/scripts/dither/types";
 
   const run = () => {
-    const canvas = document.getElementById("dither") as HTMLCanvasElement;
-    const gl = canvas.getContext("webgl2");
-
-    if (!gl) {
-      console.log("No WebGL 2 context found");
-      return;
-    }
-
-    const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
-
-    const videoFrameTexture = gl.createTexture();
-    gl.activeTexture(gl.TEXTURE0 + 0);
-    gl.bindTexture(gl.TEXTURE_2D, videoFrameTexture);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-    gl.uniform1i(videoFrameUnifLoc, 0);
-
-    const nowPlayingAnchors: HTMLAnchorElement[] = [];
-    const alreadyLoadedVideos = new WeakSet<HTMLVideoElement>();
-    const videos: HTMLVideoElement[] = HOMEPAGE_PROJECTS.map((id) => {
-      const element = document.querySelector(`[data-project-id="${id}"]`)!;
-      nowPlayingAnchors.push(element as HTMLAnchorElement);
-
-      const newVideo = document.createElement("video");
-      newVideo.crossOrigin = "anonymous";
-      newVideo.preload = "auto";
-      newVideo.src = `${CDN_URL}/projects/${id}/cover.mp4`;
-      newVideo.muted = true;
-      // Prevents video from auto playing in fullscreen on page load on iOS
-      // (even though we've never attached it to the DOM)
-      newVideo.playsInline = true;
-
-      return newVideo;
+    const offCanvas = new OffscreenCanvas(1280, 800);
+    const gl = offCanvas.getContext("webgl2", {
+      depth: false,
+      stencil: false,
+      antialias: false,
     });
 
-    // Ready the first video for playing
-    let currVideo!: HTMLVideoElement;
-    alreadyLoadedVideos.add(videos[0]!);
+    if (!gl) return;
 
-    // Automatically start playing current video if the user switched tabs and
-    // switched back (browsers pause the video in the background)
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "visible" && currVideo.paused) {
-        currVideo.play();
-      }
-    });
+    const tiles: (Tile | null)[] = HOMEPAGE_PROJECTS.map((projectId, index) => {
+      const tileCanvasElt = document.getElementById(
+        `tile-${index}`,
+      ) as HTMLCanvasElement;
+      const bitmapCtx = tileCanvasElt.getContext("bitmaprenderer");
 
-    /**
-     * Assumes we have more than one video. Otherwise it's boring.
-     */
-    const transitionToNextVideo = (currentIndex: number): number => {
-      const getNextIndex = (currentIndex: number) => {
-        return currentIndex === videos.length - 1 ? 0 : currentIndex + 1;
+      if (!bitmapCtx) return null;
+
+      const videoElt = document.createElement("video");
+      videoElt.crossOrigin = "anonymous";
+      videoElt.src = `${CDN_URL}/projects/${projectId}/cover.mp4`;
+      videoElt.muted = true;
+      // Prevents video from autoplaying in fullscreen on page load on iOS
+      videoElt.playsInline = true;
+      videoElt.loop = true;
+      videoElt.play();
+
+      const videoFrameTex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+
+      const tile: Tile = {
+        state: { kind: "init", delay: index * 0.15 },
+        canvas: tileCanvasElt,
+        bitmapCtx,
+        videoElt,
+        videoLoaded: false,
+        videoFrameTex,
+        direction: DIRECTIONS[index]!,
+        uvOffset: {
+          u: 0.5 + Math.random() * 1.5,
+          v: 0.5 + Math.random() * 1.5,
+        },
       };
 
-      const nextIndex = getNextIndex(currentIndex);
-      currVideo = videos[nextIndex]!;
-      currVideo.play();
+      const checkIfVideoIsLoaded = () => {
+        if (
+          videoElt.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA &&
+          !tile.videoLoaded
+        ) {
+          tile.videoLoaded = true;
+        }
+      };
+      videoElt.addEventListener("progress", checkIfVideoIsLoaded);
+      videoElt.addEventListener("canplaythrough", checkIfVideoIsLoaded);
 
-      // Reset current video to the beginning for the next play
-      videos[currentIndex]!.currentTime = 0;
+      return tile;
+    });
 
-      // Start preloading next next video if we haven't done it before
-      const nextNextVideo = videos[getNextIndex(nextIndex)]!;
-      if (!alreadyLoadedVideos.has(nextNextVideo)) {
-        nextNextVideo.load();
-        alreadyLoadedVideos.add(nextNextVideo);
-      }
+    if (!tiles.every((tile) => tile !== null)) return;
 
-      return nextIndex;
-    };
+    // Automatically resume playing videos if they were paused somehow
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") return;
 
-    // Transitions to index 0 aka plays the first video
-    transitionToNextVideo(videos.length - 1);
-
-    videos.forEach((video, index) => {
-      video.addEventListener("ended", () => {
-        const nextIndex = transitionToNextVideo(index);
-
-        nowPlayingAnchors[index]!.dataset["playing"] = "false";
-        nowPlayingAnchors[nextIndex]!.dataset["playing"] = "true";
+      tiles.forEach(({ videoElt }) => {
+        if (videoElt.paused) videoElt.play();
       });
     });
 
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+    const createShader = (type: GLenum, source: string) => {
+      const shader = gl.createShader(type)!;
+      gl.shaderSource(shader, source);
+      gl.compileShader(shader);
 
-    const dither: Dither = {
-      canvasSize: `0×0`,
-      backend: "WebGL 2",
-      ...structuredClone(
-        prefersDark.matches ?
-          DEFAULT_DARK_DITHER_SETTINGS
-        : DEFAULT_LIGHT_DITHER_SETTINGS,
-      ),
+      if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
+
+      console.error("Error compiling shader:", gl.getShaderInfoLog(shader));
+      return null;
     };
 
-    prefersDark.addEventListener("change", (ev) =>
-      applyDitherSettings(
-        dither,
-        ev.matches ?
-          DEFAULT_DARK_DITHER_SETTINGS
-        : DEFAULT_LIGHT_DITHER_SETTINGS,
-      ),
+    const vertShader = createShader(gl.VERTEX_SHADER, vertSource);
+    const fragShader = createShader(gl.FRAGMENT_SHADER, fragSource);
+
+    if (!vertShader || !fragShader) return;
+
+    const program = gl.createProgram();
+    gl.attachShader(program, vertShader);
+    gl.attachShader(program, fragShader);
+    gl.linkProgram(program);
+
+    gl.deleteShader(vertShader);
+    gl.deleteShader(fragShader);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.error("Error linking program:", gl.getProgramInfoLog(program));
+      gl.deleteProgram(program);
+      return;
+    }
+
+    gl.useProgram(program);
+    gl.activeTexture(gl.TEXTURE0);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+
+    const vao = gl.createVertexArray();
+    gl.bindVertexArray(vao);
+
+    const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
+
+    const dimensionsUnifLoc = gl.getUniformLocation(program, "u_dimensions");
+    const timeUnifLoc = gl.getUniformLocation(program, "u_time");
+
+    const uvPixelSizeUnifLoc = gl.getUniformLocation(
+      program,
+      "u_uv_pixel_size",
+    );
+    const numQuantizedColorsUnifLoc = gl.getUniformLocation(
+      program,
+      "u_num_quantized_colors",
+    );
+    const biasUnifLoc = gl.getUniformLocation(program, "u_bias");
+    const speedUnifLoc = gl.getUniformLocation(program, "u_speed");
+    const directionUnifLoc = gl.getUniformLocation(program, "u_direction");
+    const uvOffsetUnifLoc = gl.getUniformLocation(program, "u_uv_offset");
+
+    const mixUnifLoc = gl.getUniformLocation(program, "u_mix");
+
+    const bayerMatrixSizeUnifLoc = gl.getUniformLocation(
+      program,
+      "u_bayer_matrix_size",
+    );
+    const orderedDitherSizeUnifLoc = gl.getUniformLocation(
+      program,
+      "u_ordered_dither_size",
     );
 
-    let panel: Panel | null = null;
+    const colorAUnifLoc = gl.getUniformLocation(program, "u_color_a");
+    const colorBUnifLoc = gl.getUniformLocation(program, "u_color_b");
 
-    document.getElementById("toggle-panel")!.addEventListener("click", (ev) => {
-      let isHidden = false;
+    gl.uniform1i(videoFrameUnifLoc, 0);
 
-      if (!panel) {
-        panel = initializePanel(dither);
-        document.body.append(panel.container);
-      } else {
-        isHidden = !panel.pane.hidden;
-      }
+    gl.uniform1i(uvPixelSizeUnifLoc, 48);
+    gl.uniform1i(numQuantizedColorsUnifLoc, 4);
+    gl.uniform1f(biasUnifLoc, 0);
+    gl.uniform1f(speedUnifLoc, 0.5);
+    gl.uniform1f(mixUnifLoc, 0);
 
-      if (isHidden) {
-        panel.animations.hide();
-      } else {
-        panel.animations.show();
-      }
+    gl.uniform1i(bayerMatrixSizeUnifLoc, BayerMatrixSize.EIGHT_BY_EIGHT);
+    gl.uniform1i(orderedDitherSizeUnifLoc, 5);
 
-      const elt = ev.currentTarget as HTMLButtonElement;
-      elt.dataset["state"] = isHidden ? "closed" : "open";
-    });
+    gl.uniform3f(colorAUnifLoc, 0.11372, 0.09803, 0.23921);
+    gl.uniform3f(colorBUnifLoc, 0.28235, 0.26274, 0.5647);
 
-    const videoProgressBar = document.getElementById("video-progress")!;
-
-    // The rate at which the current video updates (usually <= 60 FPS) is
-    // usually slower than the screen's refresh rate. To prevent expensive
-    // CPU-to-GPU texture copies of the same video data, we do it in this loop
-    const onVideoFrameUpdate: VideoFrameRequestCallback = () => {
-      panel?.fpsGraphs.video.begin();
-
-      // Avoid divide-by-zero and saturate to avoid floating point errors
-      let progress =
-        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0;
-      progress = Math.max(Math.min(progress, 1), 0);
-
-      videoProgressBar.style.transform = `scaleX(${progress})`;
-      videoProgressBar.setAttribute("aria-valuenow", progress.toString());
-      videoProgressBar.setAttribute(
-        "aria-valuetext",
-        `${Math.round(progress * 100)}% finished`,
-      );
-
-      gl.texImage2D(
-        gl.TEXTURE_2D,
-        0,
-        gl.RGBA,
-        gl.RGBA,
-        gl.UNSIGNED_BYTE,
-        currVideo,
-      );
-
-      panel?.fpsGraphs.video.end();
-      currVideo.requestVideoFrameCallback(onVideoFrameUpdate);
+    const lerp = (a: number, b: number, t: number): number => {
+      return a * (1 - t) + b * t;
     };
 
-    // Handle first frame load
-    currVideo.requestVideoFrameCallback((now, metadata) => {
-      canvas.style.opacity = "1";
-      onVideoFrameUpdate(now, metadata);
-    });
+    // The timestamp at which the draw loop actually begins running, which
+    // will always likely be lagging behind page load
+    const drawStartTime = performance.now() * 0.001;
 
-    // Uniform changes and resize events can occur at any time and can't wait
-    // for the video, which often updates slower
-    const draw: FrameRequestCallback = () => {
-      panel?.fpsGraphs.draw.begin();
+    const draw: FrameRequestCallback = (now) => {
+      const elapsed = Math.max(now * 0.001 - drawStartTime, 0);
 
-      if (
-        canvas.width !== canvas.clientWidth ||
-        canvas.height !== canvas.clientHeight
-      ) {
-        // canvas.width = canvas.clientWidth;
-        // canvas.height = canvas.clientHeight;
+      gl.uniform1f(timeUnifLoc, elapsed);
 
-        // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-        // gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
-        dither.canvasSize = `${gl.canvas.width}×${gl.canvas.height}`;
-      }
+      tiles.forEach((tile) => {
+        const { canvas: tileCanvas, bitmapCtx, videoElt, videoFrameTex } = tile;
 
-      // gl.uniform1i(ditherModeUnifLoc, dither.general.mode);
-      // gl.uniform1i(uvPixelSizeUnifLoc, dither.general.uvPixelSize);
-      // gl.uniform1i(
-      //   numQuantizedColorsUnifLoc,
-      //   dither.general.numQuantizedColors,
-      // );
-      // gl.uniform1f(biasUnifLoc, dither.general.bias);
-      // gl.uniform3f(
-      //   colorAUnifLoc,
-      //   dither.color.a.r,
-      //   dither.color.a.g,
-      //   dither.color.a.b,
-      // );
-      // gl.uniform3f(
-      //   colorBUnifLoc,
-      //   dither.color.b.r,
-      //   dither.color.b.g,
-      //   dither.color.b.b,
-      // );
-      // gl.uniform1i(bayerMatrixSizeUnifLoc, dither.ordered.bayerMatrixSize);
-      // gl.uniform1i(orderedDitherSizeUnifLoc, dither.ordered.ditheredSize);
+        // https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+        if (
+          offCanvas.width !== tileCanvas.clientWidth ||
+          offCanvas.height !== tileCanvas.clientHeight
+        ) {
+          offCanvas.width = tileCanvas.clientWidth;
+          offCanvas.height = tileCanvas.clientHeight;
 
-      gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
+          gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+          gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
+        }
 
-      panel?.fpsGraphs.draw.end();
+        let biasValue = -1;
+        let mixValue = 0;
+        let orderedDitherSizeValue = 5;
+
+        switch (tile.state.kind) {
+          case "init": {
+            mixValue = 0;
+            orderedDitherSizeValue = 5;
+
+            const offsetElapsed = elapsed - tile.state.delay;
+
+            if (offsetElapsed < 0) break;
+
+            const t = offsetElapsed / 1.75;
+
+            if (t <= 1) {
+              biasValue = lerp(-1, 0, 1 - Math.pow(1 - t, 5));
+            } else {
+              biasValue = 0;
+              tile.state = { kind: "procedural" };
+
+              const uploadVideoFrame: VideoFrameRequestCallback = () => {
+                gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
+                gl.texImage2D(
+                  gl.TEXTURE_2D,
+                  0,
+                  gl.RGBA,
+                  gl.RGBA,
+                  gl.UNSIGNED_BYTE,
+                  videoElt,
+                );
+
+                videoElt.requestVideoFrameCallback(uploadVideoFrame);
+              };
+
+              videoElt.requestVideoFrameCallback(uploadVideoFrame);
+            }
+
+            break;
+          }
+
+          case "procedural": {
+            biasValue = 0;
+            mixValue = 0;
+            orderedDitherSizeValue = 5;
+
+            if (tile.videoLoaded) {
+              tile.state = { kind: "video-loaded", loadStartTime: elapsed };
+            }
+
+            break;
+          }
+
+          case "video-loaded": {
+            biasValue = 0;
+            mixValue = 0;
+            orderedDitherSizeValue = 5;
+
+            const offsetElapsed = elapsed - tile.state.loadStartTime;
+            const t = Math.max(offsetElapsed / 0.25, 0);
+
+            if (t <= 1) {
+              mixValue = t;
+              orderedDitherSizeValue = lerp(5, 2, t);
+            } else {
+              mixValue = 1;
+              orderedDitherSizeValue = 2;
+              tile.state = { kind: "video" };
+            }
+
+            break;
+          }
+
+          case "video": {
+            biasValue = 0;
+            mixValue = 1;
+            orderedDitherSizeValue = 2;
+            break;
+          }
+        }
+
+        gl.uniform1f(biasUnifLoc, biasValue);
+        gl.uniform1f(mixUnifLoc, mixValue);
+        gl.uniform1i(orderedDitherSizeUnifLoc, orderedDitherSizeValue);
+        gl.uniform2f(directionUnifLoc, tile.direction.x, tile.direction.y);
+        gl.uniform2f(uvOffsetUnifLoc, tile.uvOffset.u, tile.uvOffset.v);
+
+        gl.clearColor(0.0, 0.0, 0.0, 0.0);
+        gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
+        gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+        bitmapCtx.transferFromImageBitmap(offCanvas.transferToImageBitmap());
+      });
+
       requestAnimationFrame(draw);
     };
+
     requestAnimationFrame(draw);
   };
 

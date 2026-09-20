@@ -1,0 +1,396 @@
+---
+import { getEntries } from "astro:content";
+
+import {
+  SquareArrowRightIcon,
+  SquareMousePointerIcon,
+  SquareDashedMousePointerIcon,
+  InfoIcon,
+  FeatherIcon,
+  ToolCaseIcon,
+  ComponentIcon,
+} from "@lucide/astro";
+
+import BaseLayout from "@/layouts/base-layout.astro";
+import { ICON_SIZE } from "@/scripts/constants";
+import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
+import ContentDate from "@/components/content-date.astro";
+import Eye from "@/components/eye.astro";
+import MusicIndicator from "@/components/music-indicator.astro";
+
+const projects = await getEntries(
+  HOMEPAGE_PROJECTS.map((id) => {
+    return {
+      collection: "projects" as const,
+      id,
+    };
+  }),
+);
+---
+
+<BaseLayout
+  meta={{
+    kind: "route",
+    route: "home",
+    description: "Computer graphics, systems, and design.",
+  }}
+>
+  <div
+    role="none"
+    class="z-1 flex flex-col items-center-safe gap-y-pad overflow-x-clip desktop:absolute desktop:inset-0"
+  >
+    <header
+      class="z-1 grid h-fit w-full grid-cols-1 gap-y-pad px-pad-2 pt-pad-2 font-bold desktop:mt-10 desktop:w-4/5 desktop:rounded-xl desktop:bg-sweater-10 desktop:p-pad sm:grid-cols-2 lg:w-(--real-header-w) desktop:light:bg-sweater-1"
+    >
+      <h1 class="space-y-0.5">
+        <div aria-hidden="true" class="flex h-[2.15rem] items-center">
+          <Eye
+            aria-hidden="true"
+            class="peer fill-sweater-5 transition-[fill_rotate] hover:-rotate-13 hover:fill-sweater-4 light:fill-sweater-6 light:hover:fill-sweater-7"
+          />
+        </div>
+
+        <span
+          class="cursor-default text-2xl leading-none text-sweater-5 transition-colors peer-hover:text-sweater-4 light:text-sweater-6 light:peer-hover:text-sweater-7"
+        >
+          Charles Wang
+        </span>
+      </h1>
+
+      <nav
+        class="grid grid-cols-2 gap-x-pad-2 gap-y-pad text-xl leading-none *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors **:stroke-icon *:hover:text-link-primary-hover sm:gap-y-0"
+      >
+        <a href="/projects">
+          Portfolio <ToolCaseIcon aria-hidden="true" size={ICON_SIZE} />
+        </a>
+        <a href="/posts">
+          Writing <FeatherIcon aria-hidden="true" size={ICON_SIZE} />
+        </a>
+        <p class="opacity-20 select-none" title="PARDON OUR DUST!">
+          Gallery <ComponentIcon aria-hidden="true" size={ICON_SIZE} />
+        </p>
+        <a href="/about">
+          About <MusicIndicator size={ICON_SIZE} server:defer>
+            <InfoIcon aria-hidden="true" slot="fallback" size={ICON_SIZE} />
+          </MusicIndicator>
+        </a>
+      </nav>
+    </header>
+
+    <main
+      class="absolute inset-x-pad-2 bottom-pad-2 z-1 flex gap-x-pad desktop:relative desktop:inset-0 desktop:w-4/5 lg:w-(--real-header-w)"
+    >
+      <section
+        aria-label="Featured project"
+        class="group relative z-1 h-fit w-full overflow-hidden rounded-xl bg-sweater-10 transition-colors duration-250 hover:bg-sweater-9 md:grow light:bg-sweater-1 light:hover:bg-sweater-2"
+      >
+        <div
+          id="video-progress"
+          role="progressbar"
+          aria-live="off"
+          aria-label="Video progress"
+          aria-valuemin="0.0"
+          aria-valuemax="1.0"
+          aria-valuenow="0.0"
+          aria-valuetext="0% finished"
+          class="absolute inset-0 -z-1 origin-left bg-sweater-9 transition-colors group-hover:bg-sweater-8 light:bg-sweater-2 light:group-hover:bg-sweater-3"
+          style="transform: scaleX(0.0);"
+        >
+        </div>
+
+        {
+          projects.map(({ id, data: { name, metadata } }, index) => (
+            <div
+              class="relative hidden gap-x-pad-2 p-3.5 data-[playing=true]:flex desktop:p-pad md:items-center"
+              data-project-id={id}
+              data-playing={index === 0 ? "true" : "false"}
+            >
+              <div class="flex grow flex-col gap-y-1 *:leading-none md:flex-row md:items-center md:gap-x-pad-2">
+                <h2 class="text-lg font-bold text-link-primary transition-colors group-hover:text-link-primary-hover desktop:text-base">
+                  <a
+                    href={`/projects/${id}`}
+                    class="after:absolute after:inset-0 after:z-1 after:rounded-2xl desktop:after:rounded-xl"
+                    data-umami-event="home-project-showcase"
+                    data-umami-event-id={id}
+                  >
+                    {name}
+                  </a>
+                </h2>
+                <ContentDate
+                  date={metadata.date}
+                  class="group-hover:text-inherit md:transition-colors"
+                />
+              </div>
+
+              <SquareArrowRightIcon
+                aria-hidden="true"
+                size={ICON_SIZE}
+                class="shrink-0 stroke-icon"
+              />
+            </div>
+          ))
+        }
+      </section>
+
+      <button
+        id="toggle-panel"
+        class="group hidden w-35 items-center justify-between gap-x-pad rounded-xl bg-sweater-10 p-pad leading-none transition-[background-color_scale] hover:bg-sweater-9 active:scale-97 data-[state=open]:bg-sweater-9 data-[state=open]:hover:bg-sweater-8 md:flex md:shrink-0 light:bg-sweater-1 light:hover:bg-sweater-2 light:data-[state=open]:bg-sweater-2 light:data-[state=open]:hover:bg-sweater-3"
+        data-state="closed"
+        data-umami-event="home-toggle-panel"
+      >
+        <span class="hidden group-data-[state=open]:contents">
+          Hide panel <SquareDashedMousePointerIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="stroke-icon"
+          />
+        </span>
+
+        <span class="hidden group-data-[state=closed]:contents">
+          Show panel <SquareMousePointerIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="stroke-icon"
+          />
+        </span>
+      </button>
+    </main>
+  </div>
+
+  <div aria-hidden="true" class="mt-pad-2 desktop:mt-0">
+    <canvas
+      id="dither"
+      class="pointer-events-none h-[calc(100svh-141.5px-var(--spacing-pad-2))] w-full transition-opacity duration-1500 ease-out desktop:h-lvh"
+      style="opacity: 0;"></canvas>
+  </div>
+</BaseLayout>
+
+<script>
+  import {
+    CDN_URL,
+    HOMEPAGE_PROJECTS,
+    DEFAULT_DARK_DITHER_SETTINGS,
+    DEFAULT_LIGHT_DITHER_SETTINGS,
+  } from "@/scripts/constants";
+  import { type Dither } from "@/scripts/dither/types";
+  import { initializePanel, type Panel } from "@/scripts/dither/panel";
+  import { applyDitherSettings } from "@/scripts/dither/presets";
+
+  const run = () => {
+    const canvas = document.getElementById("dither") as HTMLCanvasElement;
+    const gl = canvas.getContext("webgl2");
+
+    if (!gl) {
+      console.log("No WebGL 2 context found");
+      return;
+    }
+
+    const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
+
+    const videoFrameTexture = gl.createTexture();
+    gl.activeTexture(gl.TEXTURE0 + 0);
+    gl.bindTexture(gl.TEXTURE_2D, videoFrameTexture);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+    gl.uniform1i(videoFrameUnifLoc, 0);
+
+    const nowPlayingAnchors: HTMLAnchorElement[] = [];
+    const alreadyLoadedVideos = new WeakSet<HTMLVideoElement>();
+    const videos: HTMLVideoElement[] = HOMEPAGE_PROJECTS.map((id) => {
+      const element = document.querySelector(`[data-project-id="${id}"]`)!;
+      nowPlayingAnchors.push(element as HTMLAnchorElement);
+
+      const newVideo = document.createElement("video");
+      newVideo.crossOrigin = "anonymous";
+      newVideo.preload = "auto";
+      newVideo.src = `${CDN_URL}/projects/${id}/cover.mp4`;
+      newVideo.muted = true;
+      // Prevents video from auto playing in fullscreen on page load on iOS
+      // (even though we've never attached it to the DOM)
+      newVideo.playsInline = true;
+
+      return newVideo;
+    });
+
+    // Ready the first video for playing
+    let currVideo!: HTMLVideoElement;
+    alreadyLoadedVideos.add(videos[0]!);
+
+    // Automatically start playing current video if the user switched tabs and
+    // switched back (browsers pause the video in the background)
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "visible" && currVideo.paused) {
+        currVideo.play();
+      }
+    });
+
+    /**
+     * Assumes we have more than one video. Otherwise it's boring.
+     */
+    const transitionToNextVideo = (currentIndex: number): number => {
+      const getNextIndex = (currentIndex: number) => {
+        return currentIndex === videos.length - 1 ? 0 : currentIndex + 1;
+      };
+
+      const nextIndex = getNextIndex(currentIndex);
+      currVideo = videos[nextIndex]!;
+      currVideo.play();
+
+      // Reset current video to the beginning for the next play
+      videos[currentIndex]!.currentTime = 0;
+
+      // Start preloading next next video if we haven't done it before
+      const nextNextVideo = videos[getNextIndex(nextIndex)]!;
+      if (!alreadyLoadedVideos.has(nextNextVideo)) {
+        nextNextVideo.load();
+        alreadyLoadedVideos.add(nextNextVideo);
+      }
+
+      return nextIndex;
+    };
+
+    // Transitions to index 0 aka plays the first video
+    transitionToNextVideo(videos.length - 1);
+
+    videos.forEach((video, index) => {
+      video.addEventListener("ended", () => {
+        const nextIndex = transitionToNextVideo(index);
+
+        nowPlayingAnchors[index]!.dataset["playing"] = "false";
+        nowPlayingAnchors[nextIndex]!.dataset["playing"] = "true";
+      });
+    });
+
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
+
+    const dither: Dither = {
+      canvasSize: `0×0`,
+      backend: "WebGL 2",
+      ...structuredClone(
+        prefersDark.matches ?
+          DEFAULT_DARK_DITHER_SETTINGS
+        : DEFAULT_LIGHT_DITHER_SETTINGS,
+      ),
+    };
+
+    prefersDark.addEventListener("change", (ev) =>
+      applyDitherSettings(
+        dither,
+        ev.matches ?
+          DEFAULT_DARK_DITHER_SETTINGS
+        : DEFAULT_LIGHT_DITHER_SETTINGS,
+      ),
+    );
+
+    let panel: Panel | null = null;
+
+    document.getElementById("toggle-panel")!.addEventListener("click", (ev) => {
+      let isHidden = false;
+
+      if (!panel) {
+        panel = initializePanel(dither);
+        document.body.append(panel.container);
+      } else {
+        isHidden = !panel.pane.hidden;
+      }
+
+      if (isHidden) {
+        panel.animations.hide();
+      } else {
+        panel.animations.show();
+      }
+
+      const elt = ev.currentTarget as HTMLButtonElement;
+      elt.dataset["state"] = isHidden ? "closed" : "open";
+    });
+
+    const videoProgressBar = document.getElementById("video-progress")!;
+
+    // The rate at which the current video updates (usually <= 60 FPS) is
+    // usually slower than the screen's refresh rate. To prevent expensive
+    // CPU-to-GPU texture copies of the same video data, we do it in this loop
+    const onVideoFrameUpdate: VideoFrameRequestCallback = () => {
+      panel?.fpsGraphs.video.begin();
+
+      // Avoid divide-by-zero and saturate to avoid floating point errors
+      let progress =
+        currVideo.duration > 0 ? currVideo.currentTime / currVideo.duration : 0;
+      progress = Math.max(Math.min(progress, 1), 0);
+
+      videoProgressBar.style.transform = `scaleX(${progress})`;
+      videoProgressBar.setAttribute("aria-valuenow", progress.toString());
+      videoProgressBar.setAttribute(
+        "aria-valuetext",
+        `${Math.round(progress * 100)}% finished`,
+      );
+
+      gl.texImage2D(
+        gl.TEXTURE_2D,
+        0,
+        gl.RGBA,
+        gl.RGBA,
+        gl.UNSIGNED_BYTE,
+        currVideo,
+      );
+
+      panel?.fpsGraphs.video.end();
+      currVideo.requestVideoFrameCallback(onVideoFrameUpdate);
+    };
+
+    // Handle first frame load
+    currVideo.requestVideoFrameCallback((now, metadata) => {
+      canvas.style.opacity = "1";
+      onVideoFrameUpdate(now, metadata);
+    });
+
+    // Uniform changes and resize events can occur at any time and can't wait
+    // for the video, which often updates slower
+    const draw: FrameRequestCallback = () => {
+      panel?.fpsGraphs.draw.begin();
+
+      if (
+        canvas.width !== canvas.clientWidth ||
+        canvas.height !== canvas.clientHeight
+      ) {
+        // canvas.width = canvas.clientWidth;
+        // canvas.height = canvas.clientHeight;
+
+        // gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+        // gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
+        dither.canvasSize = `${gl.canvas.width}×${gl.canvas.height}`;
+      }
+
+      // gl.uniform1i(ditherModeUnifLoc, dither.general.mode);
+      // gl.uniform1i(uvPixelSizeUnifLoc, dither.general.uvPixelSize);
+      // gl.uniform1i(
+      //   numQuantizedColorsUnifLoc,
+      //   dither.general.numQuantizedColors,
+      // );
+      // gl.uniform1f(biasUnifLoc, dither.general.bias);
+      // gl.uniform3f(
+      //   colorAUnifLoc,
+      //   dither.color.a.r,
+      //   dither.color.a.g,
+      //   dither.color.a.b,
+      // );
+      // gl.uniform3f(
+      //   colorBUnifLoc,
+      //   dither.color.b.r,
+      //   dither.color.b.g,
+      //   dither.color.b.b,
+      // );
+      // gl.uniform1i(bayerMatrixSizeUnifLoc, dither.ordered.bayerMatrixSize);
+      // gl.uniform1i(orderedDitherSizeUnifLoc, dither.ordered.ditheredSize);
+
+      gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_BYTE, 0);
+
+      panel?.fpsGraphs.draw.end();
+      requestAnimationFrame(draw);
+    };
+    requestAnimationFrame(draw);
+  };
+
+  run();
+</script>
