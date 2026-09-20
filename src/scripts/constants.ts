@@ -2,7 +2,6 @@ import {
   BayerMatrixSize,
   DitherMode,
   type Color,
-  type Direction,
   type DitherSettings,
 } from "@/scripts/dither/types";
 
@@ -45,16 +44,6 @@ const HOMEPAGE_PROJECTS = [
   "catanks",
   "mini-minecraft",
 ] as const satisfies readonly [string, string, string];
-
-/**
- * Each of the three tiles pick a different direction to move for its
- * respective procedural noise.
- */
-const DIRECTIONS = [
-  { x: 1, y: 1 },
-  { x: -1, y: 1 },
-  { x: 1, y: -1 },
-] as const satisfies readonly [Direction, Direction, Direction];
 
 const DISABLED_PROJECTS = [
   "cuda-boids", // code
@@ -195,7 +184,6 @@ export {
   ROUTES,
   VALID_MONTHS,
   HOMEPAGE_PROJECTS,
-  DIRECTIONS,
   DISABLED_PROJECTS,
   DISABLED_POSTS,
   SWEATER_1,

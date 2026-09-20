@@ -35,25 +35,6 @@ type DitherSettings = {
 
 type Dither = DitherInformation & DitherSettings;
 
-type TileState =
-  | { kind: "init"; delay: number }
-  | { kind: "procedural" }
-  | { kind: "video-loaded"; loadStartTime: number }
-  | { kind: "video" };
-
-type Direction = { x: number; y: number };
-
-type Tile = {
-  state: TileState;
-  canvas: HTMLCanvasElement;
-  bitmapCtx: ImageBitmapRenderingContext;
-  videoElt: HTMLVideoElement;
-  videoLoaded: boolean;
-  videoFrameTex: WebGLTexture;
-  direction: Direction;
-  uvOffset: { u: number; v: number };
-};
-
 export {
   DitherMode,
   BayerMatrixSize,
@@ -61,6 +42,4 @@ export {
   type DitherInformation,
   type DitherSettings,
   type Dither,
-  type Direction,
-  type Tile,
 };

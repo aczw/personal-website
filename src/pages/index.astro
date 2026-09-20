@@ -73,121 +73,38 @@ const projects = await getEntries(
 </BaseLayout>
 
 <script>
-  import vertSource from "@/shaders/quad.vert.glsl?raw";
-  import fragSource from "@/shaders/tile.frag.glsl?raw";
-
-  import { CDN_URL, DIRECTIONS, HOMEPAGE_PROJECTS } from "@/scripts/constants";
-  import { BayerMatrixSize, type Tile } from "@/scripts/dither/types";
+  import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
+  import { BayerMatrixSize } from "@/scripts/dither/types";
+  import { initializeGfx } from "@/scripts/homepage/gfx";
+  import { createTile } from "@/scripts/tile";
 
   const run = () => {
-    const offCanvas = new OffscreenCanvas(1280, 800);
-    const gl = offCanvas.getContext("webgl2", {
-      depth: false,
-      stencil: false,
-      antialias: false,
-    });
+    const gfxRes = initializeGfx();
 
-    if (!gl) return;
-
-    const tiles: (Tile | null)[] = HOMEPAGE_PROJECTS.map((projectId, index) => {
-      const tileCanvasElt = document.getElementById(
-        `tile-${index}`,
-      ) as HTMLCanvasElement;
-      const bitmapCtx = tileCanvasElt.getContext("bitmaprenderer");
-
-      if (!bitmapCtx) return null;
-
-      const videoElt = document.createElement("video");
-      videoElt.crossOrigin = "anonymous";
-      videoElt.src = `${CDN_URL}/projects/${projectId}/cover.mp4`;
-      videoElt.muted = true;
-      // Prevents video from autoplaying in fullscreen on page load on iOS
-      videoElt.playsInline = true;
-      videoElt.loop = true;
-      videoElt.play();
-
-      const videoFrameTex = gl.createTexture();
-      gl.bindTexture(gl.TEXTURE_2D, videoFrameTex);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-
-      const tile: Tile = {
-        state: { kind: "init", delay: index * 0.15 },
-        canvas: tileCanvasElt,
-        bitmapCtx,
-        videoElt,
-        videoLoaded: false,
-        videoFrameTex,
-        direction: DIRECTIONS[index]!,
-        uvOffset: {
-          u: 0.5 + Math.random() * 1.5,
-          v: 0.5 + Math.random() * 1.5,
-        },
-      };
-
-      const checkIfVideoIsLoaded = () => {
-        if (
-          videoElt.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA &&
-          !tile.videoLoaded
-        ) {
-          tile.videoLoaded = true;
-        }
-      };
-      videoElt.addEventListener("progress", checkIfVideoIsLoaded);
-      videoElt.addEventListener("canplaythrough", checkIfVideoIsLoaded);
-
-      return tile;
-    });
-
-    if (!tiles.every((tile) => tile !== null)) return;
-
-    // Automatically resume playing videos if they were paused somehow
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") return;
-
-      tiles.forEach(({ videoElt }) => {
-        if (videoElt.paused) videoElt.play();
-      });
-    });
-
-    const createShader = (type: GLenum, source: string) => {
-      const shader = gl.createShader(type)!;
-      gl.shaderSource(shader, source);
-      gl.compileShader(shader);
-
-      if (gl.getShaderParameter(shader, gl.COMPILE_STATUS)) return shader;
-
-      console.error("Error compiling shader:", gl.getShaderInfoLog(shader));
-      return null;
-    };
-
-    const vertShader = createShader(gl.VERTEX_SHADER, vertSource);
-    const fragShader = createShader(gl.FRAGMENT_SHADER, fragSource);
-
-    if (!vertShader || !fragShader) return;
-
-    const program = gl.createProgram();
-    gl.attachShader(program, vertShader);
-    gl.attachShader(program, fragShader);
-    gl.linkProgram(program);
-
-    gl.deleteShader(vertShader);
-    gl.deleteShader(fragShader);
-
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.error("Error linking program:", gl.getProgramInfoLog(program));
-      gl.deleteProgram(program);
+    if (gfxRes.kind === "err") {
+      console.error(`Error initializing graphics context: ${gfxRes.message}`);
       return;
     }
 
-    gl.useProgram(program);
-    gl.activeTexture(gl.TEXTURE0);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    const { offCanvas, gl, program } = gfxRes.data;
 
-    const vao = gl.createVertexArray();
-    gl.bindVertexArray(vao);
+    const tileResArr = HOMEPAGE_PROJECTS.map((projectId, index) =>
+      createTile(gl, projectId, index),
+    );
+
+    if (
+      !tileResArr.every((tileRes, index) => {
+        if (tileRes.kind === "err")
+          console.error(`Failed to create tile ${index}: ${tileRes.message}`);
+
+        return tileRes.kind === "ok";
+      })
+    ) {
+      console.error("Failed to create all 3 tiles");
+      return;
+    }
+
+    const tiles = tileResArr.map((tileRes) => tileRes.data);
 
     const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
 
