@@ -12,13 +12,17 @@ type Direction = { x: number; y: number };
 
 type Tile = {
   state: State;
-  canvas: HTMLCanvasElement;
+  canvasElt: HTMLCanvasElement;
   bitmapCtx: ImageBitmapRenderingContext;
-  videoElt: HTMLVideoElement;
-  videoLoaded: boolean;
-  videoFrameTex: WebGLTexture;
-  direction: Direction;
-  uvOffset: { u: number; v: number };
+  proc: {
+    direction: Direction;
+    uvOffset: { u: number; v: number };
+  };
+  video: {
+    elt: HTMLVideoElement;
+    frameTex: WebGLTexture;
+    isLoaded: boolean;
+  };
 };
 
 /**
@@ -65,24 +69,28 @@ const createTile = (
 
   const tile: Tile = {
     state: { kind: "init", delay: index * 0.15 },
-    canvas: tileCanvasElt,
+    canvasElt: tileCanvasElt,
     bitmapCtx,
-    videoElt,
-    videoLoaded: false,
-    videoFrameTex,
-    direction: DIRECTIONS[index]!,
-    uvOffset: {
-      u: 0.5 + Math.random() * 1.5,
-      v: 0.5 + Math.random() * 1.5,
+    proc: {
+      direction: DIRECTIONS[index]!,
+      uvOffset: {
+        u: 0.5 + Math.random() * 1.5,
+        v: 0.5 + Math.random() * 1.5,
+      },
+    },
+    video: {
+      elt: videoElt,
+      frameTex: videoFrameTex,
+      isLoaded: false,
     },
   };
 
   const checkIfVideoIsLoaded = () => {
     if (
       videoElt.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA &&
-      !tile.videoLoaded
+      !tile.video.isLoaded
     ) {
-      tile.videoLoaded = true;
+      tile.video.isLoaded = true;
     }
   };
   videoElt.addEventListener("progress", checkIfVideoIsLoaded);
