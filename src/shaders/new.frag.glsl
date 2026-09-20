@@ -7,7 +7,6 @@ uniform sampler2D u_video_frame;
 uniform ivec2 u_dimensions;
 uniform float u_time;
 
-uniform int u_dither_mode;
 uniform int u_uv_pixel_size;
 uniform int u_num_quantized_colors;
 uniform float u_bias;
@@ -50,11 +49,6 @@ vec2 random2To2(vec2 v) {
   return vec2(pcg2d(uvec2(ivec2(v)))) * ONE_OVER_UINT_MAX;
 }
 
-float random2To1(vec2 v) {
-  uvec2 hash = pcg2d(uvec2(ivec2(v)));
-  return float(hash.x ^ hash.y) * ONE_OVER_UINT_MAX;
-}
-
 float compute_worley(vec2 sample_pos) {
   vec2 base_cell = floor(sample_pos);
   vec2 local_pos = fract(sample_pos);
@@ -79,20 +73,9 @@ float quantize(float value) {
   return floor(value * (num_colors - 1.0f) + 0.5f) / (num_colors - 1.0f);
 }
 
-// https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web/#a-first-pass-at-dithering-in-react-three-fiber
-float noise_dither(float luminance) {
-  float final = quantize(luminance + u_bias);
-
-  if (final < random2To1(gl_FragCoord.xy)) {
-    return 0.0f;
-  } else {
-    return clamp(final, 0.f, 1.f);
-  }
-}
-
-float ordered_dither(float luminance) {
+float ordered_dither(float value) {
   vec2 offset = vec2(u_ordered_dither_size);
-  ivec2 pixel = ivec2(offset * floor(gl_FragCoord.xy / offset));
+  ivec2 pixel = ivec2(floor(gl_FragCoord.xy / offset));
 
   float threshold = 0.0f;
   switch (u_bayer_matrix_size) {
@@ -115,7 +98,8 @@ float ordered_dither(float luminance) {
     }
   }
 
-  float final = luminance + threshold;
+  float num_colors = float(u_num_quantized_colors);
+  float final = value + (threshold - 0.5f) / (num_colors - 1.f);
   final = quantize(final + u_bias);
 
   return clamp(final, 0.f, 1.f);
@@ -133,7 +117,24 @@ void main() {
   float worley_value = compute_worley(worley_sample_pos);
 
   vec3 video_color = texture(u_video_frame, frag_uv).rgb;
-  vec3 worley_color = mix(u_color_a, u_color_b, ordered_dither(worley_value));
+  float dithered_worley_value = ordered_dither(worley_value);
+  vec3 worley_color = mix(u_color_a, u_color_b, dithered_worley_value);
 
-  out_color = vec4(mix(worley_color, video_color, u_mix), 1.f);
+  float r = ordered_dither(video_color.r);
+  float g = ordered_dither(video_color.g);
+  float b = ordered_dither(video_color.b);
+  vec3 test = vec3(r, g, b);
+
+  // Ease in out quart
+  float x = dithered_worley_value;
+  if (x < 0.5f) {
+    dithered_worley_value = 8.f * x * x * x * x;
+  } else {
+    dithered_worley_value = 1.f - pow(-2.f * x + 2.f, 4.f) * 0.5f;
+  }
+
+  dithered_worley_value = clamp((dithered_worley_value * 0.3f) + 0.7f, 0.f, 1.f);
+  vec3 mixed_color = mix(worley_color, test * dithered_worley_value, u_mix);
+
+  out_color = vec4(mixed_color, 1.f);
 }
