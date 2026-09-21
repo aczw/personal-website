@@ -6,31 +6,26 @@ uniform sampler2D u_video_frame;
 
 uniform ivec2 u_dimensions;
 uniform float u_time;
-
-uniform int u_uv_pixel_size;
-uniform int u_num_quantized_colors;
-uniform float u_bias;
-uniform float u_speed;
-uniform vec2 u_direction;
-uniform vec2 u_uv_offset;
-
-uniform float u_mix;
-
-uniform int u_bayer_matrix_size;
-uniform int u_ordered_dither_size;
-
 uniform vec3 u_color_a;
 uniform vec3 u_color_b;
+
+uniform float u_bias;
+uniform float u_mix;
+uniform int u_dither_size;
+
+uniform vec2 u_direction;
+uniform vec2 u_offset;
 
 in vec2 frag_uv;
 
 out vec4 out_color;
 
-const float ONE_OVER_UINT_MAX = 1.f / 4294967295.f;
+const int PIXEL_SIZE = 48;
+const int QUANTIZED_COLOR_COUNT = 4;
+const float PROC_SPEED_MULT = 0.5f;
 const float CELL_DENSITY = 0.75f;
 
-const mat2 BAYER_MATRIX_2 = mat2(0.0f, 2.0f, 3.0f, 1.0f) / 4.0f;
-const mat4 BAYER_MATRIX_4 = mat4(0.0f, 8.0f, 2.0f, 10.0f, 12.0f, 4.0f, 14.0f, 6.0f, 3.0f, 11.0f, 1.0f, 9.0f, 15.0f, 7.0f, 13.0f, 5.0f) / 16.0f;
+const float ONE_OVER_UINT_MAX = 1.f / 4294967295.f;
 const float BAYER_MATRIX_8[64] = float[64](0.0f / 64.0f, 48.0f / 64.0f, 12.0f / 64.0f, 60.0f / 64.0f, 3.0f / 64.0f, 51.0f / 64.0f, 15.0f / 64.0f, 63.0f / 64.0f, 32.0f / 64.0f, 16.0f / 64.0f, 44.0f / 64.0f, 28.0f / 64.0f, 35.0f / 64.0f, 19.0f / 64.0f, 47.0f / 64.0f, 31.0f / 64.0f, 8.0f / 64.0f, 56.0f / 64.0f, 4.0f / 64.0f, 52.0f / 64.0f, 11.0f / 64.0f, 59.0f / 64.0f, 7.0f / 64.0f, 55.0f / 64.0f, 40.0f / 64.0f, 24.0f / 64.0f, 36.0f / 64.0f, 20.0f / 64.0f, 43.0f / 64.0f, 27.0f / 64.0f, 39.0f / 64.0f, 23.0f / 64.0f, 2.0f / 64.0f, 50.0f / 64.0f, 14.0f / 64.0f, 62.0f / 64.0f, 1.0f / 64.0f, 49.0f / 64.0f, 13.0f / 64.0f, 61.0f / 64.0f, 34.0f / 64.0f, 18.0f / 64.0f, 46.0f / 64.0f, 30.0f / 64.0f, 33.0f / 64.0f, 17.0f / 64.0f, 45.0f / 64.0f, 29.0f / 64.0f, 10.0f / 64.0f, 58.0f / 64.0f, 6.0f / 64.0f, 54.0f / 64.0f, 9.0f / 64.0f, 57.0f / 64.0f, 5.0f / 64.0f, 53.0f / 64.0f, 42.0f / 64.0f, 26.0f / 64.0f, 38.0f / 64.0f, 22.0f / 64.0f, 41.0f / 64.0f, 25.0f / 64.0f, 37.0f / 64.0f, 21.0f / 64.0f);
 
 // https://www.shadertoy.com/view/XlGcRh
@@ -67,38 +62,18 @@ float compute_worley(vec2 sample_pos) {
   return min_distance;
 }
 
-/// https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web/#shades-of-gray-and-colors
+// https://blog.maximeheckel.com/posts/the-art-of-dithering-and-retro-shading-web/#shades-of-gray-and-colors
 float quantize(float value) {
-  float num_colors = float(u_num_quantized_colors);
+  float num_colors = float(QUANTIZED_COLOR_COUNT);
   return floor(value * (num_colors - 1.0f) + 0.5f) / (num_colors - 1.0f);
 }
 
 float ordered_dither(float value) {
-  vec2 offset = vec2(u_ordered_dither_size);
-  ivec2 pixel = ivec2(floor(gl_FragCoord.xy / offset));
+  ivec2 pixel = ivec2(floor(gl_FragCoord.xy / vec2(u_dither_size)));
+  ivec2 index = pixel & 7;
+  float threshold = BAYER_MATRIX_8[index.y * 8 + index.x];
 
-  float threshold = 0.0f;
-  switch (u_bayer_matrix_size) {
-    case 0: {
-      ivec2 index = pixel & 1;
-      threshold = BAYER_MATRIX_2[index.y][index.x];
-      break;
-    }
-
-    case 1: {
-      ivec2 index = pixel & 3;
-      threshold = BAYER_MATRIX_4[index.y][index.x];
-      break;
-    }
-
-    case 2: {
-      ivec2 index = pixel & 7;
-      threshold = BAYER_MATRIX_8[index.y * 8 + index.x];
-      break;
-    }
-  }
-
-  float num_colors = float(u_num_quantized_colors);
+  float num_colors = float(QUANTIZED_COLOR_COUNT);
   float final = value + (threshold - 0.5f) / (num_colors - 1.f);
   final = quantize(final + u_bias);
 
@@ -106,14 +81,14 @@ float ordered_dither(float value) {
 }
 
 vec2 pixelate(vec2 uv) {
-  vec2 normalized_pixel_size = vec2(u_uv_pixel_size) / vec2(u_dimensions);
+  vec2 normalized_pixel_size = vec2(PIXEL_SIZE) / vec2(u_dimensions);
   return normalized_pixel_size * floor((uv) / normalized_pixel_size);
 }
 
 void main() {
   // Generate Worley noise value
   float aspect_ratio = float(u_dimensions.x) / float(u_dimensions.y);
-  vec2 worley_sample_pos = pixelate(frag_uv + u_uv_offset) * vec2(aspect_ratio, 1.f) * CELL_DENSITY + (u_direction * u_time * u_speed);
+  vec2 worley_sample_pos = pixelate(frag_uv + u_offset) * vec2(aspect_ratio, 1.f) * CELL_DENSITY + (u_direction * u_time * PROC_SPEED_MULT);
   float worley_value = compute_worley(worley_sample_pos);
 
   vec3 video_color = texture(u_video_frame, frag_uv).rgb;

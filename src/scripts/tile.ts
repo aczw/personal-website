@@ -16,7 +16,7 @@ type Tile = {
   bitmapCtx: ImageBitmapRenderingContext;
   proc: {
     direction: Direction;
-    uvOffset: { u: number; v: number };
+    offset: { u: number; v: number };
   };
   video: {
     elt: HTMLVideoElement;
@@ -28,7 +28,7 @@ type Tile = {
 type FrameUniforms = {
   bias: number;
   mix: number;
-  orderedDitherSize: number;
+  ditherSize: number;
 };
 
 /**
@@ -42,14 +42,14 @@ const DIRECTIONS = [
 ] as const satisfies readonly [Direction, Direction, Direction];
 
 const PROC_INIT_ANIM_DURATION = 1.75;
+const VIDEO_INIT_ANIM_DURATION = 0.25;
+
 const BIAS_START = -1;
 const BIAS_END = 0;
-
-const VIDEO_INIT_ANIM_DURATION = 0.25;
 const MIX_START = 0;
 const MIX_END = 1;
-const ORDERED_DITHER_SIZE_START = 5;
-const ORDERED_DITHER_SIZE_END = 2;
+const DITHER_SIZE_START = 5;
+const DITHER_SIZE_END = 2;
 
 const createTile = (
   gl: GlCtx,
@@ -89,7 +89,7 @@ const createTile = (
     bitmapCtx,
     proc: {
       direction: DIRECTIONS[index]!,
-      uvOffset: {
+      offset: {
         u: 0.5 + Math.random() * 1.5,
         v: 0.5 + Math.random() * 1.5,
       },
@@ -173,7 +173,7 @@ const getUniformsForState = (state: State, elapsed: number): FrameUniforms => {
       const uniforms: FrameUniforms = {
         bias: BIAS_START,
         mix: MIX_START,
-        orderedDitherSize: ORDERED_DITHER_SIZE_START,
+        ditherSize: DITHER_SIZE_START,
       };
       const offsetElapsed = elapsed - state.delayDuration;
 
@@ -190,7 +190,7 @@ const getUniformsForState = (state: State, elapsed: number): FrameUniforms => {
       return {
         bias: BIAS_END,
         mix: MIX_START,
-        orderedDitherSize: ORDERED_DITHER_SIZE_START,
+        ditherSize: DITHER_SIZE_START,
       };
 
     case "init-video": {
@@ -200,11 +200,7 @@ const getUniformsForState = (state: State, elapsed: number): FrameUniforms => {
       return {
         bias: BIAS_END,
         mix: t,
-        orderedDitherSize: lerp(
-          ORDERED_DITHER_SIZE_START,
-          ORDERED_DITHER_SIZE_END,
-          t,
-        ),
+        ditherSize: lerp(DITHER_SIZE_START, DITHER_SIZE_END, t),
       };
     }
 
@@ -212,7 +208,7 @@ const getUniformsForState = (state: State, elapsed: number): FrameUniforms => {
       return {
         bias: BIAS_END,
         mix: MIX_END,
-        orderedDitherSize: ORDERED_DITHER_SIZE_END,
+        ditherSize: DITHER_SIZE_END,
       };
   }
 };

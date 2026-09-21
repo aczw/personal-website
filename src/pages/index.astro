@@ -74,7 +74,6 @@ const projects = await getEntries(
 
 <script>
   import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
-  import { BayerMatrixSize } from "@/scripts/dither/types";
   import { initializeGfx } from "@/scripts/homepage/gfx";
   import {
     checkToAdvanceState,
@@ -110,48 +109,22 @@ const projects = await getEntries(
 
     const tiles = tileResArr.map((tileRes) => tileRes.data);
 
-    const videoFrameUnifLoc = gl.getUniformLocation(program, "u_video_frame");
+    gl.uniform1i(gl.getUniformLocation(program, "u_video_frame"), 0);
 
-    const dimensionsUnifLoc = gl.getUniformLocation(program, "u_dimensions");
-    const timeUnifLoc = gl.getUniformLocation(program, "u_time");
+    const dimensionsUnif = gl.getUniformLocation(program, "u_dimensions");
+    const timeUnif = gl.getUniformLocation(program, "u_time");
+    const colorAUnif = gl.getUniformLocation(program, "u_color_a");
+    const colorBUnif = gl.getUniformLocation(program, "u_color_b");
 
-    const uvPixelSizeUnifLoc = gl.getUniformLocation(
-      program,
-      "u_uv_pixel_size",
-    );
-    const numQuantizedColorsUnifLoc = gl.getUniformLocation(
-      program,
-      "u_num_quantized_colors",
-    );
-    const biasUnifLoc = gl.getUniformLocation(program, "u_bias");
-    const speedUnifLoc = gl.getUniformLocation(program, "u_speed");
-    const directionUnifLoc = gl.getUniformLocation(program, "u_direction");
-    const uvOffsetUnifLoc = gl.getUniformLocation(program, "u_uv_offset");
+    const biasUnif = gl.getUniformLocation(program, "u_bias");
+    const mixUnif = gl.getUniformLocation(program, "u_mix");
+    const ditherSizeUnif = gl.getUniformLocation(program, "u_dither_size");
 
-    const mixUnifLoc = gl.getUniformLocation(program, "u_mix");
+    const directionUnif = gl.getUniformLocation(program, "u_direction");
+    const offsetUnif = gl.getUniformLocation(program, "u_offset");
 
-    const bayerMatrixSizeUnifLoc = gl.getUniformLocation(
-      program,
-      "u_bayer_matrix_size",
-    );
-    const orderedDitherSizeUnifLoc = gl.getUniformLocation(
-      program,
-      "u_ordered_dither_size",
-    );
-
-    const colorAUnifLoc = gl.getUniformLocation(program, "u_color_a");
-    const colorBUnifLoc = gl.getUniformLocation(program, "u_color_b");
-
-    gl.uniform1i(videoFrameUnifLoc, 0);
-
-    gl.uniform1i(uvPixelSizeUnifLoc, 48);
-    gl.uniform1i(numQuantizedColorsUnifLoc, 4);
-    gl.uniform1f(speedUnifLoc, 0.5);
-
-    gl.uniform1i(bayerMatrixSizeUnifLoc, BayerMatrixSize.EIGHT_BY_EIGHT);
-
-    gl.uniform3f(colorAUnifLoc, 0.11372, 0.09803, 0.23921);
-    gl.uniform3f(colorBUnifLoc, 0.28235, 0.26274, 0.5647);
+    gl.uniform3f(colorAUnif, 0.11372, 0.09803, 0.23921);
+    gl.uniform3f(colorBUnif, 0.28235, 0.26274, 0.5647);
 
     // The timestamp at which the draw loop actually begins running, which
     // will likely be lagging behind page load
@@ -160,7 +133,7 @@ const projects = await getEntries(
     const draw: FrameRequestCallback = (now) => {
       const elapsed = Math.max(now * 0.001 - drawStartTime, 0);
 
-      gl.uniform1f(timeUnifLoc, elapsed);
+      gl.uniform1f(timeUnif, elapsed);
 
       tiles.forEach((tile) => {
         const { canvasElt, proc } = tile;
@@ -174,21 +147,21 @@ const projects = await getEntries(
           offCanvas.height = canvasElt.clientHeight;
 
           gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-          gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
+          gl.uniform2i(dimensionsUnif, gl.canvas.width, gl.canvas.height);
         }
 
         // Mutates tile state in place
         checkToAdvanceState(gl, tile, elapsed);
-        const { bias, mix, orderedDitherSize } = getUniformsForState(
+        const { bias, mix, ditherSize } = getUniformsForState(
           tile.state,
           elapsed,
         );
 
-        gl.uniform1f(biasUnifLoc, bias);
-        gl.uniform1f(mixUnifLoc, mix);
-        gl.uniform1i(orderedDitherSizeUnifLoc, orderedDitherSize);
-        gl.uniform2f(directionUnifLoc, proc.direction.x, proc.direction.y);
-        gl.uniform2f(uvOffsetUnifLoc, proc.uvOffset.u, proc.uvOffset.v);
+        gl.uniform1f(biasUnif, bias);
+        gl.uniform1f(mixUnif, mix);
+        gl.uniform1i(ditherSizeUnif, ditherSize);
+        gl.uniform2f(directionUnif, proc.direction.x, proc.direction.y);
+        gl.uniform2f(offsetUnif, proc.offset.u, proc.offset.v);
 
         gl.clearColor(0.0, 0.0, 0.0, 0.0);
         gl.bindTexture(gl.TEXTURE_2D, tile.video.frameTex);
