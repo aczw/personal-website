@@ -56,7 +56,7 @@ const projects = await getEntries(
         <article class="relative space-y-1 group">
           <canvas
             id={`tile-${index}`}
-            class="aspect-16/10 w-full rounded-md bg-sweater-9"
+            class="aspect-16/10 w-full rounded-md bg-sweater-9 light:bg-sweater-2"
           />
           <h2>
             <a
@@ -123,8 +123,21 @@ const projects = await getEntries(
     const directionUnif = gl.getUniformLocation(program, "u_direction");
     const offsetUnif = gl.getUniformLocation(program, "u_offset");
 
-    gl.uniform3f(colorAUnif, 0.11372, 0.09803, 0.23921);
-    gl.uniform3f(colorBUnif, 0.28235, 0.26274, 0.5647);
+    const toggleColorScheme = (prefersDark: boolean) => {
+      if (prefersDark) {
+        gl.uniform3f(colorAUnif, 0.11372, 0.09803, 0.23921); // sweater-7
+        gl.uniform3f(colorBUnif, 0.28235, 0.26274, 0.5647); // sweater-9
+      } else {
+        gl.uniform3f(colorAUnif, 0.83921, 0.82745, 1.0); // sweater-4
+        gl.uniform3f(colorBUnif, 0.67843, 0.65098, 1.0); // sweater-2
+      }
+    };
+
+    const prefersDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    prefersDarkQuery.addEventListener("change", (ev) =>
+      toggleColorScheme(ev.matches),
+    );
+    toggleColorScheme(prefersDarkQuery.matches);
 
     // The timestamp at which the draw loop actually begins running, which
     // will likely be lagging behind page load
