@@ -3,9 +3,9 @@ import type { GlCtx } from "@/scripts/homepage/gfx";
 import type { Result } from "@/scripts/types";
 
 type State =
-  | { kind: "init"; delay: number }
-  | { kind: "procedural" }
-  | { kind: "video-loaded"; loadStartTime: number }
+  | { kind: "init-proc"; delayDuration: number }
+  | { kind: "proc" }
+  | { kind: "init-video"; startTime: number }
   | { kind: "video" };
 
 type Direction = { x: number; y: number };
@@ -84,7 +84,7 @@ const createTile = (
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
 
   const tile: Tile = {
-    state: { kind: "init", delay: index * 0.15 },
+    state: { kind: "init-proc", delayDuration: index * 0.15 },
     canvasElt: tileCanvasElt,
     bitmapCtx,
     proc: {
@@ -123,9 +123,9 @@ const createTile = (
 
 const checkToAdvanceState = (gl: GlCtx, tile: Tile, elapsed: number) => {
   switch (tile.state.kind) {
-    case "init":
-      if (elapsed - tile.state.delay > PROC_INIT_ANIM_DURATION) {
-        tile.state = { kind: "procedural" };
+    case "init-proc":
+      if (elapsed - tile.state.delayDuration > PROC_INIT_ANIM_DURATION) {
+        tile.state = { kind: "proc" };
 
         const uploadVideoFrame: VideoFrameRequestCallback = () => {
           gl.bindTexture(gl.TEXTURE_2D, tile.video.frameTex);
@@ -146,14 +146,14 @@ const checkToAdvanceState = (gl: GlCtx, tile: Tile, elapsed: number) => {
       }
       break;
 
-    case "procedural":
+    case "proc":
       if (tile.video.isLoaded) {
-        tile.state = { kind: "video-loaded", loadStartTime: elapsed };
+        tile.state = { kind: "init-video", startTime: elapsed };
       }
       break;
 
-    case "video-loaded":
-      if (elapsed - tile.state.loadStartTime > VIDEO_INIT_ANIM_DURATION) {
+    case "init-video":
+      if (elapsed - tile.state.startTime > VIDEO_INIT_ANIM_DURATION) {
         tile.state = { kind: "video" };
       }
       break;
@@ -169,13 +169,13 @@ const lerp = (a: number, b: number, t: number): number => {
 
 const getUniformsForState = (state: State, elapsed: number): FrameUniforms => {
   switch (state.kind) {
-    case "init": {
+    case "init-proc": {
       const uniforms: FrameUniforms = {
         bias: BIAS_START,
         mix: MIX_START,
         orderedDitherSize: ORDERED_DITHER_SIZE_START,
       };
-      const offsetElapsed = elapsed - state.delay;
+      const offsetElapsed = elapsed - state.delayDuration;
 
       // Tile is delayed from starting animation
       if (offsetElapsed < 0) return uniforms;
@@ -186,15 +186,15 @@ const getUniformsForState = (state: State, elapsed: number): FrameUniforms => {
       return uniforms;
     }
 
-    case "procedural":
+    case "proc":
       return {
         bias: BIAS_END,
         mix: MIX_START,
         orderedDitherSize: ORDERED_DITHER_SIZE_START,
       };
 
-    case "video-loaded": {
-      const offsetElapsed = elapsed - state.loadStartTime;
+    case "init-video": {
+      const offsetElapsed = elapsed - state.startTime;
       const t = offsetElapsed / VIDEO_INIT_ANIM_DURATION;
 
       return {
