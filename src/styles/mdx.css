@@ -56,6 +56,11 @@
     }
   }
 
+  b,
+  strong {
+    @apply font-medium;
+  }
+
   h2:has(+ h3) {
     @apply mb-pad;
   }

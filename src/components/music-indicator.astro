@@ -1,7 +1,7 @@
 ---
 import { actions } from "astro:actions";
 
-import { MusicIcon, InfoIcon, type Icon } from "@lucide/astro";
+import { MusicIcon, InfoIcon } from "@lucide/astro";
 
 interface Props {
   size: number;
@@ -15,7 +15,6 @@ const { data: track, error } = await Astro.callAction(
 );
 
 const isLive = !error && track.live;
-const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
 ---
 
 <div
@@ -30,24 +29,18 @@ const ResolvedIcon: typeof Icon = isLive ? MusicIcon : InfoIcon;
   data-is-live={isLive ? "true" : "false"}
   data-icon-size={size}
 >
-  {
-    isLive ?
-      <InfoIcon
-        size={size}
-        class="absolute inset-0 scale-40 stroke-icon opacity-0 blur-xs transition-[opacity_filter_scale] duration-500 starting:scale-100 starting:opacity-100 starting:blur-none"
-      />
-    : null
-  }
-
-  <ResolvedIcon
-    size={size}
-    class:list={[
-      "stroke-icon",
-      isLive ?
-        "absolute inset-0 scale-100 opacity-100 blur-none transition-[opacity_filter_scale] duration-500 starting:scale-40 starting:opacity-0 starting:blur-xs"
-      : null,
-    ]}
-  />
+  {isLive ?
+    <InfoIcon
+      size={size}
+      class="absolute inset-0 scale-40 stroke-icon opacity-0 blur-xs transition-[opacity_filter_scale] duration-500 starting:scale-100 starting:opacity-100 starting:blur-none"
+    />
+  : null}
+  {isLive ?
+    <MusicIcon
+      size={size}
+      class="stroke-icon absolute inset-0 scale-100 opacity-100 blur-none transition-[opacity_filter_scale] duration-500 starting:scale-40 starting:opacity-0 starting:blur-xs"
+    />
+  : <InfoIcon size={size} class="stroke-icon" />}
 </div>
 
 <script>
