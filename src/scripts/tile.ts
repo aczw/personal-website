@@ -25,6 +25,12 @@ type Tile = {
   };
 };
 
+type FrameUniforms = {
+  bias: number;
+  mix: number;
+  orderedDitherSize: number;
+};
+
 /**
  * Each of the three tiles pick a different direction to move for its
  * respective procedural noise.
@@ -34,6 +40,16 @@ const DIRECTIONS = [
   { x: -1, y: 1 },
   { x: 1, y: -1 },
 ] as const satisfies readonly [Direction, Direction, Direction];
+
+const PROC_INIT_ANIM_DURATION = 1.75;
+const BIAS_START = -1;
+const BIAS_END = 0;
+
+const VIDEO_INIT_ANIM_DURATION = 0.25;
+const MIX_START = 0;
+const MIX_END = 1;
+const ORDERED_DITHER_SIZE_START = 5;
+const ORDERED_DITHER_SIZE_END = 2;
 
 const createTile = (
   gl: GlCtx,
@@ -105,4 +121,106 @@ const createTile = (
   return { kind: "ok", data: tile };
 };
 
-export { type Direction, type Tile, createTile };
+const checkToAdvanceState = (gl: GlCtx, tile: Tile, elapsed: number) => {
+  switch (tile.state.kind) {
+    case "init":
+      if (elapsed - tile.state.delay > PROC_INIT_ANIM_DURATION) {
+        tile.state = { kind: "procedural" };
+
+        const uploadVideoFrame: VideoFrameRequestCallback = () => {
+          gl.bindTexture(gl.TEXTURE_2D, tile.video.frameTex);
+          gl.texImage2D(
+            gl.TEXTURE_2D,
+            0,
+            gl.RGBA,
+            gl.RGBA,
+            gl.UNSIGNED_BYTE,
+            tile.video.elt,
+          );
+
+          tile.video.elt.requestVideoFrameCallback(uploadVideoFrame);
+        };
+
+        // Start uploading video frames
+        tile.video.elt.requestVideoFrameCallback(uploadVideoFrame);
+      }
+      break;
+
+    case "procedural":
+      if (tile.video.isLoaded) {
+        tile.state = { kind: "video-loaded", loadStartTime: elapsed };
+      }
+      break;
+
+    case "video-loaded":
+      if (elapsed - tile.state.loadStartTime > VIDEO_INIT_ANIM_DURATION) {
+        tile.state = { kind: "video" };
+      }
+      break;
+
+    case "video":
+      break;
+  }
+};
+
+const lerp = (a: number, b: number, t: number): number => {
+  return a * (1 - t) + b * t;
+};
+
+const getUniformsForState = (state: State, elapsed: number): FrameUniforms => {
+  switch (state.kind) {
+    case "init": {
+      const uniforms: FrameUniforms = {
+        bias: BIAS_START,
+        mix: MIX_START,
+        orderedDitherSize: ORDERED_DITHER_SIZE_START,
+      };
+      const offsetElapsed = elapsed - state.delay;
+
+      // Tile is delayed from starting animation
+      if (offsetElapsed < 0) return uniforms;
+
+      const t = offsetElapsed / PROC_INIT_ANIM_DURATION;
+      uniforms.bias = lerp(BIAS_START, BIAS_END, 1 - Math.pow(1 - t, 5));
+
+      return uniforms;
+    }
+
+    case "procedural":
+      return {
+        bias: BIAS_END,
+        mix: MIX_START,
+        orderedDitherSize: ORDERED_DITHER_SIZE_START,
+      };
+
+    case "video-loaded": {
+      const offsetElapsed = elapsed - state.loadStartTime;
+      const t = offsetElapsed / VIDEO_INIT_ANIM_DURATION;
+
+      return {
+        bias: BIAS_END,
+        mix: t,
+        orderedDitherSize: lerp(
+          ORDERED_DITHER_SIZE_START,
+          ORDERED_DITHER_SIZE_END,
+          t,
+        ),
+      };
+    }
+
+    case "video":
+      return {
+        bias: BIAS_END,
+        mix: MIX_END,
+        orderedDitherSize: ORDERED_DITHER_SIZE_END,
+      };
+  }
+};
+
+export {
+  type Direction,
+  type Tile,
+  createTile,
+  checkToAdvanceState,
+  getUniformsForState,
+};

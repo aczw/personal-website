@@ -56,7 +56,7 @@ const projects = await getEntries(
         <article class="relative space-y-1 group">
           <canvas
             id={`tile-${index}`}
-            class="aspect-16/10 w-full rounded-sm bg-sweater-9"
+            class="aspect-16/10 w-full rounded-md bg-sweater-9"
           />
           <h2>
             <a
@@ -76,7 +76,11 @@ const projects = await getEntries(
   import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
   import { BayerMatrixSize } from "@/scripts/dither/types";
   import { initializeGfx } from "@/scripts/homepage/gfx";
-  import { createTile } from "@/scripts/tile";
+  import {
+    checkToAdvanceState,
+    createTile,
+    getUniformsForState,
+  } from "@/scripts/tile";
 
   const run = () => {
     const gfxRes = initializeGfx();
@@ -142,22 +146,15 @@ const projects = await getEntries(
 
     gl.uniform1i(uvPixelSizeUnifLoc, 48);
     gl.uniform1i(numQuantizedColorsUnifLoc, 4);
-    gl.uniform1f(biasUnifLoc, 0);
     gl.uniform1f(speedUnifLoc, 0.5);
-    gl.uniform1f(mixUnifLoc, 0);
 
     gl.uniform1i(bayerMatrixSizeUnifLoc, BayerMatrixSize.EIGHT_BY_EIGHT);
-    gl.uniform1i(orderedDitherSizeUnifLoc, 5);
 
     gl.uniform3f(colorAUnifLoc, 0.11372, 0.09803, 0.23921);
     gl.uniform3f(colorBUnifLoc, 0.28235, 0.26274, 0.5647);
 
-    const lerp = (a: number, b: number, t: number): number => {
-      return a * (1 - t) + b * t;
-    };
-
     // The timestamp at which the draw loop actually begins running, which
-    // will always likely be lagging behind page load
+    // will likely be lagging behind page load
     const drawStartTime = performance.now() * 0.001;
 
     const draw: FrameRequestCallback = (now) => {
@@ -166,7 +163,7 @@ const projects = await getEntries(
       gl.uniform1f(timeUnifLoc, elapsed);
 
       tiles.forEach((tile) => {
-        const { canvasElt, bitmapCtx, proc, video } = tile;
+        const { canvasElt, proc } = tile;
 
         // https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
         if (
@@ -180,98 +177,26 @@ const projects = await getEntries(
           gl.uniform2i(dimensionsUnifLoc, gl.canvas.width, gl.canvas.height);
         }
 
-        let biasValue = -1;
-        let mixValue = 0;
-        let orderedDitherSizeValue = 5;
+        // Mutates tile state in place
+        checkToAdvanceState(gl, tile, elapsed);
+        const { bias, mix, orderedDitherSize } = getUniformsForState(
+          tile.state,
+          elapsed,
+        );
 
-        switch (tile.state.kind) {
-          case "init": {
-            mixValue = 0;
-            orderedDitherSizeValue = 5;
-
-            const offsetElapsed = elapsed - tile.state.delay;
-
-            if (offsetElapsed < 0) break;
-
-            const t = offsetElapsed / 1.75;
-
-            if (t <= 1) {
-              biasValue = lerp(-1, 0, 1 - Math.pow(1 - t, 5));
-            } else {
-              biasValue = 0;
-              tile.state = { kind: "procedural" };
-
-              const uploadVideoFrame: VideoFrameRequestCallback = () => {
-                gl.bindTexture(gl.TEXTURE_2D, video.frameTex);
-                gl.texImage2D(
-                  gl.TEXTURE_2D,
-                  0,
-                  gl.RGBA,
-                  gl.RGBA,
-                  gl.UNSIGNED_BYTE,
-                  video.elt,
-                );
-
-                video.elt.requestVideoFrameCallback(uploadVideoFrame);
-              };
-
-              video.elt.requestVideoFrameCallback(uploadVideoFrame);
-            }
-
-            break;
-          }
-
-          case "procedural": {
-            biasValue = 0;
-            mixValue = 0;
-            orderedDitherSizeValue = 5;
-
-            if (tile.video.isLoaded) {
-              tile.state = { kind: "video-loaded", loadStartTime: elapsed };
-            }
-
-            break;
-          }
-
-          case "video-loaded": {
-            biasValue = 0;
-            mixValue = 0;
-            orderedDitherSizeValue = 5;
-
-            const offsetElapsed = elapsed - tile.state.loadStartTime;
-            const t = Math.max(offsetElapsed / 0.25, 0);
-
-            if (t <= 1) {
-              mixValue = t;
-              orderedDitherSizeValue = lerp(5, 2, t);
-            } else {
-              mixValue = 1;
-              orderedDitherSizeValue = 2;
-              tile.state = { kind: "video" };
-            }
-
-            break;
-          }
-
-          case "video": {
-            biasValue = 0;
-            mixValue = 1;
-            orderedDitherSizeValue = 2;
-            break;
-          }
-        }
-
-        gl.uniform1f(biasUnifLoc, biasValue);
-        gl.uniform1f(mixUnifLoc, mixValue);
-        gl.uniform1i(orderedDitherSizeUnifLoc, orderedDitherSizeValue);
+        gl.uniform1f(biasUnifLoc, bias);
+        gl.uniform1f(mixUnifLoc, mix);
+        gl.uniform1i(orderedDitherSizeUnifLoc, orderedDitherSize);
         gl.uniform2f(directionUnifLoc, proc.direction.x, proc.direction.y);
         gl.uniform2f(uvOffsetUnifLoc, proc.uvOffset.u, proc.uvOffset.v);
 
         gl.clearColor(0.0, 0.0, 0.0, 0.0);
-        gl.bindTexture(gl.TEXTURE_2D, video.frameTex);
+        gl.bindTexture(gl.TEXTURE_2D, tile.video.frameTex);
         gl.drawArrays(gl.TRIANGLES, 0, 3);
 
-        bitmapCtx.transferFromImageBitmap(offCanvas.transferToImageBitmap());
+        tile.bitmapCtx.transferFromImageBitmap(
+          offCanvas.transferToImageBitmap(),
+        );
       });
 
       requestAnimationFrame(draw);
