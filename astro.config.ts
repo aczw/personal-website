@@ -20,9 +20,7 @@ const config = defineConfig({
   site: SITE_URL,
   output: "static",
   trailingSlash: "never",
-  adapter: vercel({
-    imageService: true,
-  }),
+  adapter: vercel(),
   fonts: [
     {
       provider: fontProviders.fontsource(),

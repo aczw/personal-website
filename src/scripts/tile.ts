@@ -42,7 +42,7 @@ const DIRECTIONS = [
 ] as const satisfies readonly [Direction, Direction, Direction];
 
 const PROC_INIT_ANIM_DURATION = 1.75;
-const VIDEO_INIT_ANIM_DURATION = 0.25;
+const VIDEO_INIT_ANIM_DURATION = 0.35;
 
 const BIAS_START = -1;
 const BIAS_END = 0;
@@ -56,8 +56,9 @@ const createTile = (
   projectId: string,
   index: number,
 ): Result<Tile> => {
-  const tileEltId = `tile-${index}`;
-  const tileCanvasElt = document.getElementById(tileEltId) as HTMLCanvasElement;
+  const tileCanvasElt = document.getElementById(
+    `tile-${index}`,
+  ) as HTMLCanvasElement;
   const bitmapCtx = tileCanvasElt.getContext("bitmaprenderer");
 
   if (!bitmapCtx) {

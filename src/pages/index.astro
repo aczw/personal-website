@@ -4,6 +4,7 @@ import { getEntries } from "astro:content";
 import Eye from "@/components/eye.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
+import { Image } from "astro:assets";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -52,11 +53,20 @@ const projects = await getEntries(
       class="constrain mt-5 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3"
       aria-label="Some projects I made"
     >
-      {projects.map(({ id, data: { subtitle } }, index) => (
+      {projects.map(({ id, data: { subtitle, cover } }, index) => (
         <article class="relative space-y-1 group">
+          <Image
+            id={`cover-image-${index}`}
+            src={cover.img}
+            alt={cover.alt}
+            class="aspect-16/10 w-full h-auto rounded-md bg-sweater-9 light:bg-sweater-2 hidden"
+            loading="lazy"
+            decoding="async"
+          />
           <canvas
             id={`tile-${index}`}
             class="aspect-16/10 w-full rounded-md bg-sweater-9 light:bg-sweater-2"
+            aria-hidden="true"
           />
           <h2>
             <a
@@ -81,11 +91,25 @@ const projects = await getEntries(
     getUniformsForState,
   } from "@/scripts/tile";
 
+  const displayCoverImages = () =>
+    HOMEPAGE_PROJECTS.forEach((_, index) => {
+      const tileCanvasElt = document.getElementById(
+        `tile-${index}`,
+      ) as HTMLCanvasElement;
+      const coverImageElt = document.getElementById(
+        `cover-image-${index}`,
+      ) as HTMLImageElement;
+
+      tileCanvasElt.remove();
+      coverImageElt.classList.remove("hidden");
+    });
+
   const run = () => {
     const gfxRes = initializeGfx();
 
     if (gfxRes.kind === "err") {
       console.error(`Error initializing graphics context: ${gfxRes.message}`);
+      displayCoverImages();
       return;
     }
 
@@ -104,6 +128,7 @@ const projects = await getEntries(
       })
     ) {
       console.error("Failed to create all 3 tiles");
+      displayCoverImages();
       return;
     }
 
