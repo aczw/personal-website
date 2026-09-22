@@ -128,11 +128,7 @@ const DEFAULT_LIGHT_DITHER_SETTINGS: DitherSettings = {
   },
 };
 
-/**
- * Default icon size unless otherwise specified. Should stay in sync with
- * `var(--spacing-icon)` defined in main.css.
- */
-const ICON_SIZE = 18;
+const ICON_SIZE = 16;
 
 const FLAVOR_TEXTS = [
   "Waiting for something to happen?",

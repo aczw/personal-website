@@ -21,7 +21,6 @@ const isLive = !error && track.live;
   id="music-indicator"
   aria-hidden="true"
   class="relative"
-  title={isLive ? "I'm currently listening to a song!" : null}
   style={{
     height: `${size}px`,
     width: `${size}px`,
@@ -32,15 +31,15 @@ const isLive = !error && track.live;
   {isLive ?
     <InfoIcon
       size={size}
-      class="absolute inset-0 scale-40 stroke-icon opacity-0 blur-xs transition-[opacity_filter_scale] duration-500 starting:scale-100 starting:opacity-100 starting:blur-none"
+      class="absolute inset-0 scale-40 stroke-sweater-7 light:stroke-sweater-5 opacity-0 blur-xs transition-[opacity_filter_scale] duration-500 starting:scale-100 starting:opacity-100 starting:blur-none"
     />
   : null}
   {isLive ?
     <MusicIcon
       size={size}
-      class="stroke-icon absolute inset-0 scale-100 opacity-100 blur-none transition-[opacity_filter_scale] duration-500 starting:scale-40 starting:opacity-0 starting:blur-xs"
+      class="stroke-sweater-7 light:stroke-sweater-5 absolute inset-0 scale-100 opacity-100 blur-none transition-[opacity_filter_scale] duration-500 starting:scale-40 starting:opacity-0 starting:blur-xs"
     />
-  : <InfoIcon size={size} class="stroke-icon" />}
+  : <InfoIcon size={size} class="stroke-sweater-7 light:stroke-sweater-5" />}
 </div>
 
 <script>
@@ -67,7 +66,7 @@ const isLive = !error && track.live;
       iconSvg.removeAttribute("stroke");
       iconSvg.removeAttribute("stroke-width");
       iconSvg.style.cssText =
-        "position: absolute; bottom: 0px; pointer-events: none; stroke: var(--color-icon);";
+        "position: absolute; bottom: 0px; pointer-events: none; stroke: var(--color-sweater-7);";
 
       return template;
     });

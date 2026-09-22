@@ -1,10 +1,14 @@
 ---
 import { getEntries } from "astro:content";
+import { Image } from "astro:assets";
+
+import { ArrowRightIcon } from "@lucide/astro";
 
 import Eye from "@/components/eye.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
-import { Image } from "astro:assets";
+import LastFmRecentTrack from "@/components/lastfm-recent-track.astro";
+import LastFmTopStats from "@/components/lastfm-top-stats.astro";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -14,7 +18,7 @@ const projects = await getEntries(
 ---
 
 <BaseLayout meta={{ kind: "route", route: "home", description: "NEW" }}>
-  <header class="constrain mt-6 sm:mt-20">
+  <header class="constrain px-5 mt-6 sm:mt-20">
     <nav class="sm:w-(--prose-w)">
       <a
         href="/"
@@ -41,16 +45,16 @@ const projects = await getEntries(
   </header>
 
   <main class="mt-4">
-    <div class="constrain space-y-3 *:sm:w-(--prose-w)">
+    <div class="constrain px-5 space-y-3 *:sm:w-(--prose-w)">
       <p>
         Hi, welcome. Thanks for visiting my little space. I wonder how you ended
         up here? Please do take a look around and explore.
       </p>
-      <p>Here's some stuff I've made that I'm proud of...</p>
+      <p>Here are some projects I've worked on...</p>
     </div>
 
     <section
-      class="constrain mt-5 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3"
+      class="constrain desktop:px-5 mt-5 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3"
       aria-label="Some projects I made"
     >
       {projects.map(({ id, data: { subtitle, cover } }, index) => (
@@ -59,28 +63,88 @@ const projects = await getEntries(
             id={`cover-image-${index}`}
             src={cover.img}
             alt={cover.alt}
-            class="aspect-16/10 w-full h-auto rounded-md bg-sweater-9 light:bg-sweater-2 hidden"
+            class="aspect-16/10 w-full h-auto desktop:rounded-lg bg-sweater-9 light:bg-sweater-2 hidden"
             loading="lazy"
             decoding="async"
           />
           <canvas
             id={`tile-${index}`}
-            class="aspect-16/10 w-full rounded-md bg-sweater-9 light:bg-sweater-2"
+            class="aspect-16/10 w-full desktop:rounded-lg bg-sweater-9 light:bg-sweater-2"
             aria-hidden="true"
           />
-          <h2>
+          <h2 class="px-5 desktop:px-0">
             <a
               href={`/projects/${id}`}
-              class="after:absolute after:inset-0 after:z-1 text-link-primary group-hover:text-link-primary-hover font-medium"
+              class="after:absolute flex items-center justify-between desktop:justify-start gap-1 after:inset-0 after:z-1 text-link-primary group-hover:text-link-primary-hover font-medium"
             >
               {subtitle ? subtitle : "<NO SUBTITLE>"}
+              <ArrowRightIcon size={16} />
             </a>
           </h2>
         </article>
       ))}
     </section>
+
+    <section class="mt-5 constrain px-5">
+      <p class="sm:w-(--prose-w)">
+        Music is how I pass the time. Every time I make a new playlist it feels
+        like I'm closing out a past chapter. Recently I've been listening to...
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-5 mt-5 lg:w-4/5">
+        <LastFmRecentTrack server:defer>
+          <div
+            aria-hidden="true"
+            class="animate-pulse flex gap-x-3"
+            slot="fallback"
+          >
+            <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
+            <div class="flex flex-col grow justify-between">
+              <div class="rounded-sm h-[3lh] bg-sweater-9 light:bg-sweater-2"></div>
+              <div class="rounded-sm h-lh bg-sweater-9 light:bg-sweater-2"></div>
+            </div>
+          </div>
+        </LastFmRecentTrack>
+
+        <LastFmTopStats server:defer>
+          <div
+            aria-hidden="true"
+            class="animate-pulse space-y-pad"
+            slot="fallback"
+          >
+            <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
+            <div class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"></div>
+          </div>
+        </LastFmTopStats>
+      </div>
+    </section>
+
+    <section class="mt-5 constrain px-5">
+      <p>
+        I currently live in Los Angeles, where it's 12
+        <span id="time-colon" style={{ opacity: 1 }}>
+          :
+        </span>
+        24 AM. Come find me!
+      </p>
+    </section>
   </main>
 </BaseLayout>
+
+<script>
+  const colonElt = document.getElementById("time-colon") as HTMLSpanElement;
+
+  const tick = () => {
+    colonElt.style.opacity = colonElt.style.opacity === "1" ? "0" : "1";
+
+    const msIntoSeconds = Date.now() % 1000;
+    const delay = 1000 - msIntoSeconds;
+
+    window.setTimeout(tick, delay);
+  };
+
+  tick();
+</script>
 
 <script>
   import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
@@ -89,7 +153,7 @@ const projects = await getEntries(
     checkToAdvanceState,
     createTile,
     getUniformsForState,
-  } from "@/scripts/tile";
+  } from "@/scripts/homepage/tile";
 
   const displayCoverImages = () =>
     HOMEPAGE_PROJECTS.forEach((_, index) => {

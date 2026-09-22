@@ -1,11 +1,12 @@
 ---
 import { actions } from "astro:actions";
+import { Image } from "astro:assets";
 
 import { MusicIcon } from "@lucide/astro";
 
 import Link from "@/components/link.astro";
 import { ICON_SIZE } from "@/scripts/constants";
-import { Image } from "astro:assets";
+import MusicIndicator from "./music-indicator.astro";
 
 const { data, error } = await Astro.callAction(
   actions.lastFm.getRecentTrack,
@@ -15,62 +16,74 @@ const { data, error } = await Astro.callAction(
 const available = !error;
 ---
 
-<div
-  class="mb-pad-2 space-y-pad opacity-100 transition-opacity duration-500 sm:mb-0 starting:opacity-0"
->
-  <h3 class="font-bold text-heading">
-    {
-      available ?
-        data.live ?
-          "Now playing"
-        : "Last listened to"
-      : "Last.fm"
-    }
-  </h3>
+<div class="opacity-100 flex gap-x-3 transition-opacity duration-600 starting:opacity-0">
+  {available && data.coverUrl ?
+    <Image
+      src={data.coverUrl}
+      alt={`Art for ${data.songName} by ${data.artist}`}
+      inferSize
+      priority
+      class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"
+      style={{ height: "5lh", width: "5lh" }}
+    />
+  : <div class="flex size-[5lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
+      <MusicIcon size={ICON_SIZE} class="stroke-icon" />
+    </div>
+  }
 
-  <div class="flex gap-x-3.5">
-    {
-      available && data.coverUrl ?
-        <Image
-          src={data.coverUrl}
-          alt={`Cover image for ${data.songName} by ${data.artist}`}
-          inferSize
-          priority
-          class="shrink-0 rounded-md bg-sweater-9"
-          style={{ height: "3lh", width: "3lh" }}
-        />
-      : <div class="flex size-[3lh] shrink-0 items-center justify-center rounded-md bg-sweater-9">
-          <MusicIcon size={ICON_SIZE} class="stroke-icon" />
-        </div>
-    }
-
+  <div class="flex flex-col justify-between">
     <p>
-      {
-        available ?
-          <>
-            <Link
-              href={data.songUrl}
-              target="_blank"
-              title={data.songName}
-              class="line-clamp-1"
-            >
-              {data.songName}
-            </Link>
-            <span title={data.artist} class="line-clamp-1">
-              by {data.artist}
+      {available ?
+        <>
+          <a
+            href={data.songUrl}
+            target="_blank"
+            rel="noopener"
+            title={data.songName}
+            class="font-medium w-fit text-link-primary hover:text-link-primary-hover"
+          >
+            {data.songName}
+          </a>
+          <span title={data.artist} class="line-clamp-1">
+            by{" "}
+            <span class="font-medium text-link-primary hover:text-link-primary-hover">
+              {data.artist}
             </span>
-            <span title={data.album} class="line-clamp-1">
-              from {data.album}
+          </span>
+          <span title={data.album} class="line-clamp-1">
+            from{" "}
+            <span class="font-medium text-link-primary hover:text-link-primary-hover">
+              {data.album}
             </span>
-          </>
-        : <>
-            I've been tracking my music listening history since 2021. It's fun
-            to see the trends!{" "}
-            <Link href="https://www.last.fm/user/ashzw" target="_blank">
-              View my scrobbles.
-            </Link>
-          </>
+          </span>
+        </>
+      : <>
+          I've been tracking my music listening history since 2021. It's fun to
+          see the trends!{" "}
+          <Link href="https://www.last.fm/user/ashzw" target="_blank">
+            View my scrobbles.
+          </Link>
+        </>
       }
     </p>
+
+    <div
+      class="flex items-center gap-1.5"
+      title={
+        available && data.live ?
+          "live, at this current moment in time, wherever you are"
+        : null
+      }
+    >
+      <p class="text-sweater-7 light:text-sweater-5">
+        {available ?
+          data.live ?
+            "Playing right now."
+          : "Played 10 hours ago."
+        : "Last.fm"}
+      </p>
+
+      <MusicIndicator size={ICON_SIZE} />
+    </div>
   </div>
 </div>

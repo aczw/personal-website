@@ -15,7 +15,7 @@ import {
 const projects = defineCollection({
   loader: glob({
     pattern: "**/*.mdx",
-    base: "./src/content/projects",
+    base: "./content/projects",
     retainBody: false,
   }),
   schema: ({ image }) =>
@@ -43,7 +43,7 @@ const projects = defineCollection({
 const posts = defineCollection({
   loader: glob({
     pattern: "**/*.mdx",
-    base: "./src/content/posts",
+    base: "./content/posts",
     retainBody: false,
   }),
   schema: ({ image }) =>
@@ -58,7 +58,7 @@ const posts = defineCollection({
 const gallery = defineCollection({
   loader: glob({
     pattern: "**/*.mdx",
-    base: "./src/content/gallery",
+    base: "./content/gallery",
     retainBody: true,
   }),
   schema: z.discriminatedUnion("type", [
