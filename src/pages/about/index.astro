@@ -10,8 +10,8 @@ import imageBirthday from "@/assets/about/birthday.jpg";
 
 import CommonLayout from "@/layouts/common-layout.astro";
 import Link from "@/components/link.astro";
-import LastFmRecentTrack from "@/components/lastfm-recent-track.astro";
-import LastFmTopStats from "@/components/lastfm-top-stats.astro";
+import LastFmRecentTrack from "@/components/homepage/lastfm-recent-track.astro";
+import LastFmTopStats from "@/components/homepage/lastfm-top-stats.astro";
 import AniListRecentActivity from "@/components/anilist-recent-activity.astro";
 
 type AboutPicture = {
@@ -43,10 +43,10 @@ const ABOUT_PICTURES: AboutPicture[] = [
   headerLinks={[]}
 >
   <main class="space-y-pad-4 pt-pad pb-pad-4 desktop:pt-0">
-    <div
-      class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
-    >
-      <h1 id="about" class="text-5xl font-bold text-heading">About</h1>
+    <div class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)">
+      <h1 id="about" class="text-5xl font-bold text-heading">
+        About
+      </h1>
 
       <div class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 md:grid-cols-2">
         <p>
@@ -54,21 +54,22 @@ const ABOUT_PICTURES: AboutPicture[] = [
           University of Pennsylvania.
         </p>
         <p class="md:row-start-2">
-          I help out with (and used to co-lead) <Link
-            href="https://pennupgrade.com"
-            target="_blank">UPGRADE</Link
-          >, our game dev club, and run communications as part of the <Link
-            href="https://cg.cis.upenn.edu"
-            target="_blank">CG@Penn</Link
-          > student board.
+          I help out with (and used to co-lead){" "}
+          <Link href="https://pennupgrade.com" target="_blank">
+            UPGRADE
+          </Link>
+          , our game dev club, and run communications as part of the{" "}
+          <Link href="https://cg.cis.upenn.edu" target="_blank">
+            CG@Penn
+          </Link>{" "}
+          student board.
         </p>
         <p class="md:row-start-2">
           Last summer, I interned at Snap Inc. and hacked on their rendering
-          engine. It was fun! Before that, I was at TikTok. <Link
-            href="/resume"
-            target="_blank"
-            data-umami-event="resume">Here's my resume.</Link
-          >
+          engine. It was fun! Before that, I was at TikTok.{" "}
+          <Link href="/resume" target="_blank" data-umami-event="resume">
+            Here's my resume.
+          </Link>
         </p>
       </div>
     </div>
@@ -114,30 +115,27 @@ const ABOUT_PICTURES: AboutPicture[] = [
           aria-hidden="true"
           class="pointer-events-none absolute inset-0 z-1 origin-bottom bg-sweater-8/50 transition-opacity duration-500 select-none light:bg-sweater-3/50"
           style={{ transform: "scaleY(0.0)" }}
-        >
-        </div>
+        ></div>
 
-        {
-          ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
-            <Image
-              id={id}
-              src={imageMetadata}
-              alt={alt}
-              priority={index === 0}
-              class:list={[
-                "desktop:rounded-xl",
-                {
-                  "absolute inset-0 -z-1 scale-50 opacity-0 blur-2xl":
-                    index !== 0,
-                },
-              ]}
-              style={{
-                width: "auto",
-                maxHeight: "var(--img-max-h)",
-              }}
-            />
-          ))
-        }
+        {ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
+          <Image
+            id={id}
+            src={imageMetadata}
+            alt={alt}
+            priority={index === 0}
+            class:list={[
+              "desktop:rounded-xl",
+              {
+                "absolute inset-0 -z-1 scale-50 opacity-0 blur-2xl":
+                  index !== 0,
+              },
+            ]}
+            style={{
+              width: "auto",
+              maxHeight: "var(--img-max-h)",
+            }}
+          />
+        ))}
       </button>
 
       <Image
@@ -151,9 +149,7 @@ const ABOUT_PICTURES: AboutPicture[] = [
       />
     </section>
 
-    <div
-      class="mx-auto grid w-full grid-cols-1 gap-x-pad-4 gap-y-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w)"
-    >
+    <div class="mx-auto grid w-full grid-cols-1 gap-x-pad-4 gap-y-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w)">
       <p>
         I'm interested in computer graphics, specifically real-time rendering,
         and game engine development. I grew up making art and designing things,
@@ -161,32 +157,40 @@ const ABOUT_PICTURES: AboutPicture[] = [
       </p>
       <p>
         I strongly believe in self-expression, visual identities, and open
-        spaces. Naturally, I resonate a lot with the web. <span class="italic"
-          >Everyone can and should make a website!</span
-        > It's your digital source of truth.
+        spaces. Naturally, I resonate a lot with the web.{" "}
+        <span class="italic">Everyone can and should make a website!</span> It's
+        your digital source of truth.
       </p>
     </div>
 
-    <div
-      class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
-    >
+    <div class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)">
       <section class="max-w-(--content-w)">
         <h2 id="contact" class="mb-pad text-xl font-bold text-heading">
           Contact
         </h2>
         <p>
           I welcome random messages from strangers. Please reach out to say
-          hello! You can find me on <Link
-            href="https://twitter.com/zwcharl"
-            target="_blank">Twitter</Link
-          >, <Link href="https://are.na/charles-zw" target="_blank">Are.na</Link
-          >, <Link href="https://linkedin.com/in/zwcharl" target="_blank"
-            >LinkedIn</Link
-          >, and <Link href="https://github.com/aczw" target="_blank"
-            >GitHub</Link
-          >. My email is <span class="inline-code"
-            >zwcharl &lt;at&gt; gmail &lt;dot&gt; com</span
-          >.
+          hello! You can find me on{" "}
+          <Link href="https://twitter.com/zwcharl" target="_blank">
+            Twitter
+          </Link>
+          ,{" "}
+          <Link href="https://are.na/charles-zw" target="_blank">
+            Are.na
+          </Link>
+          ,{" "}
+          <Link href="https://linkedin.com/in/zwcharl" target="_blank">
+            LinkedIn
+          </Link>
+          , and{" "}
+          <Link href="https://github.com/aczw" target="_blank">
+            GitHub
+          </Link>
+          . My email is{" "}
+          <span class="inline-code">
+            zwcharl &lt;at&gt; gmail &lt;dot&gt; com
+          </span>
+          .
         </p>
       </section>
 
@@ -205,9 +209,7 @@ const ABOUT_PICTURES: AboutPicture[] = [
             slot="fallback"
           >
             <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
-            <div
-              class="flex gap-x-3.5 *:rounded-md *:bg-sweater-9 light:*:bg-sweater-2"
-            >
+            <div class="flex gap-x-3.5 *:rounded-md *:bg-sweater-9 light:*:bg-sweater-2">
               <div class="size-[3lh] shrink-0"></div>
               <div class="h-[3lh] grow"></div>
             </div>
@@ -221,10 +223,7 @@ const ABOUT_PICTURES: AboutPicture[] = [
             slot="fallback"
           >
             <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
-            <div
-              class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"
-            >
-            </div>
+            <div class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"></div>
           </div>
         </LastFmTopStats>
       </section>

@@ -7,68 +7,73 @@ import {
   ArrowUpToLineIcon,
 } from "@lucide/astro";
 
-import MusicIndicator from "@/components/music-indicator.astro";
+import MusicNotePlayer from "@/components/homepage/music-note-player.astro";
 import { ICON_SIZE } from "@/scripts/constants";
 import Link from "@/components/link.astro";
 ---
 
-<footer
-  class="overflow-x-clip border-t-(length:--border-w) border-style desktop:mb-10"
->
-  <div
-    class="mx-auto grid w-full grid-cols-1 items-start gap-x-pad-4 gap-y-pad-3 px-pad-2 pt-pad-2 pb-pad-2 desktop:w-4/5 desktop:px-pad desktop:pt-pad-4 sm:grid-cols-2 lg:w-(--real-header-w)"
-  >
+<footer class="overflow-x-clip border-t-(length:--border-w) border-style desktop:mb-10">
+  <div class="mx-auto grid w-full grid-cols-1 items-start gap-x-pad-4 gap-y-pad-3 px-pad-2 pt-pad-2 pb-pad-2 desktop:w-4/5 desktop:px-pad desktop:pt-pad-4 sm:grid-cols-2 lg:w-(--real-header-w)">
     <a
       href="#"
       class="flex items-center justify-between font-bold text-link-secondary transition-colors hover:text-link-secondary-hover"
       data-umami-event="footer-back-to-top"
-      >Back to top <ArrowUpToLineIcon size={ICON_SIZE} class="stroke-icon" /></a
     >
+      Back to top <ArrowUpToLineIcon size={ICON_SIZE} class="stroke-icon" />
+    </a>
 
     <div class="space-y-pad-3">
-      <div
-        class="grid grid-cols-2 gap-x-pad-2 gap-y-0.5 font-bold *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors *:hover:text-link-primary-hover md:text-lg"
-      >
+      <div class="grid grid-cols-2 gap-x-pad-2 gap-y-0.5 font-bold *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors *:hover:text-link-primary-hover md:text-lg">
         <a href="/projects">
-          Portfolio <ToolCaseIcon
+          Portfolio{" "}
+          <ToolCaseIcon
             aria-hidden="true"
             size={ICON_SIZE}
             class="shrink-0 stroke-icon"
           />
         </a>
         <a href="/posts">
-          Writing <FeatherIcon
+          Writing{" "}
+          <FeatherIcon
             aria-hidden="true"
             size={ICON_SIZE}
             class="shrink-0 stroke-icon"
           />
         </a>
         <p class="opacity-20 select-none" title="PARDON OUR DUST!">
-          Gallery <ComponentIcon
+          Gallery{" "}
+          <ComponentIcon
             aria-hidden="true"
             size={ICON_SIZE}
             class="shrink-0 stroke-icon"
           />
         </p>
         <a href="/about">
-          About <MusicIndicator size={ICON_SIZE} server:defer>
+          About{" "}
+          <MusicNotePlayer size={ICON_SIZE} server:defer>
             <InfoIcon
               aria-hidden="true"
               slot="fallback"
               size={ICON_SIZE}
               class="shrink-0 stroke-icon"
             />
-          </MusicIndicator>
+          </MusicNotePlayer>
         </a>
       </div>
 
       <div class="grid grid-cols-2 gap-x-pad-2 gap-y-0.5">
-        <Link href="https://twitter.com/zwcharl" target="_blank">Twitter</Link>
-        <Link href="https://are.na/charles-zw" target="_blank">Are.na</Link>
-        <Link href="https://linkedin.com/in/zwcharl" target="_blank"
-          >LinkedIn</Link
-        >
-        <Link href="https://github.com/aczw" target="_blank">GitHub</Link>
+        <Link href="https://twitter.com/zwcharl" target="_blank">
+          Twitter
+        </Link>
+        <Link href="https://are.na/charles-zw" target="_blank">
+          Are.na
+        </Link>
+        <Link href="https://linkedin.com/in/zwcharl" target="_blank">
+          LinkedIn
+        </Link>
+        <Link href="https://github.com/aczw" target="_blank">
+          GitHub
+        </Link>
       </div>
 
       <q
@@ -76,8 +81,7 @@ import Link from "@/components/link.astro";
         class="block h-[2lh] w-75 cursor-default text-sm leading-snug text-pretty text-sweater-7 italic before:content-none after:content-none desktop:w-87.5 desktop:text-base light:text-sweater-4"
         style={{ opacity: 0 }}
         data-umami-event="footer-flavor-text"
-      >
-      </q>
+      ></q>
     </div>
   </div>
 </footer>

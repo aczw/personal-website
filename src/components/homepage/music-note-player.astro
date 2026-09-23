@@ -1,0 +1,105 @@
+---
+import { MusicIcon } from "@lucide/astro";
+
+import { ICON_SIZE } from "@/scripts/constants";
+---
+
+<div
+  id="music-indicator"
+  aria-hidden="true"
+  class="relative"
+  style={{
+    height: `${ICON_SIZE}px`,
+    width: `${ICON_SIZE}px`,
+  }}
+  data-icon-size={ICON_SIZE}
+>
+  <MusicIcon size={ICON_SIZE} class="stroke-icon absolute inset-0" />
+</div>
+
+<script>
+  import { ICON_SIZE } from "@/scripts/constants";
+
+  const root = document.getElementById("music-indicator")!;
+  const iconSize = ICON_SIZE.toString();
+
+  // Create templates for each of the possible icons. We'll use these to
+  // generate copies of each icon
+  const iconTemplates: HTMLTemplateElement[] = Object.values<string>(
+    import.meta.glob("../../assets/music-indicator/*.svg", {
+      eager: true,
+      query: "?raw",
+      import: "default",
+    }),
+  ).map((iconSvgString) => {
+    const template = document.createElement("template");
+    template.innerHTML = iconSvgString.trim();
+
+    const iconSvg = template.content.firstElementChild as SVGSVGElement;
+    iconSvg.setAttribute("width", iconSize);
+    iconSvg.setAttribute("height", iconSize);
+    iconSvg.removeAttribute("stroke");
+    iconSvg.removeAttribute("stroke-width");
+    iconSvg.style.cssText =
+      "position: absolute; bottom: 0px; pointer-events: none";
+    iconSvg.classList.add("stroke-icon");
+
+    return template;
+  });
+
+  const pickAndCreateIcon = (): SVGSVGElement => {
+    const randomIndex = Math.floor(Math.random() * iconTemplates.length);
+    const pickedTemplate = iconTemplates[randomIndex]!;
+    const iconSvg = pickedTemplate.content.firstElementChild as SVGSVGElement;
+
+    return document.importNode(iconSvg, true);
+  };
+
+  let progress = 0;
+  let prevTime = performance.now();
+
+  const update: FrameRequestCallback = (now) => {
+    progress += now - prevTime;
+    prevTime = now;
+
+    // Controls icon spawn rate, in milliseconds
+    if (progress >= 300) {
+      const icon = pickAndCreateIcon();
+      root.append(icon);
+
+      // Random angle between [20, 70] degrees, then converted to radians
+      const randAngle = ((Math.random() * 50 + 20) * Math.PI) / 180;
+      const randRadius = Math.random() * 30 + 70;
+      const x = randRadius * Math.cos(randAngle);
+      const y = randRadius * Math.sin(randAngle);
+
+      icon
+        .animate(
+          [
+            {
+              opacity: 1,
+              transform: "translate(0) scale(1)",
+              strokeWidth: 2,
+            },
+            {
+              opacity: 0,
+              transform: `translate(${x}px, -${y}px) scale(1.5)`,
+              strokeWidth: 1.33,
+            },
+          ],
+          { duration: 1500, easing: "linear", fill: "forwards" },
+        )
+        .addEventListener("finish", (ev) => {
+          const animation = ev.currentTarget as Animation;
+          icon.remove();
+          animation.cancel();
+        });
+
+      progress = 0;
+    }
+
+    requestAnimationFrame(update);
+  };
+
+  requestAnimationFrame(update);
+</script>

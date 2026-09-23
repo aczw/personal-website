@@ -7,8 +7,8 @@ import { ArrowRightIcon } from "@lucide/astro";
 import Eye from "@/components/eye.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
-import LastFmRecentTrack from "@/components/lastfm-recent-track.astro";
-import LastFmTopStats from "@/components/lastfm-top-stats.astro";
+import LastFmRecentTrack from "@/components/homepage/lastfm-recent-track.astro";
+import LastFmTopStats from "@/components/homepage/lastfm-top-stats.astro";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {

@@ -175,6 +175,8 @@ const FLAVOR_TEXTS = [
   "I'll tell 'em / You have no plans for me / I will set my soul on fire",
 ];
 
+const DAY_TO_SECONDS = 86400;
+
 export {
   CDN_URL,
   ROUTES,
@@ -190,4 +192,5 @@ export {
   DEFAULT_LIGHT_DITHER_SETTINGS,
   ICON_SIZE,
   FLAVOR_TEXTS,
+  DAY_TO_SECONDS,
 };

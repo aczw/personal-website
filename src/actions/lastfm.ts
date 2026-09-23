@@ -164,6 +164,7 @@ const lastFm = {
           firstTrack["@attr"] ?
             firstTrack["@attr"].nowplaying === "true"
           : false,
+        date: firstTrack["date"] ? Number(firstTrack["date"].uts) : null,
       };
     },
   }),

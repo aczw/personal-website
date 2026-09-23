@@ -63,15 +63,14 @@ function getResolvedTitle(title: AniListMediaTitle) {
   );
 }
 
-const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-
 function relativeTime(date: Date) {
+  const rtf = new Intl.RelativeTimeFormat("en-US", { numeric: "auto" });
   const diffInDays = Math.ceil(
     // Calculate in terms of days
-    (date.getTime() - new Date().getTime()) / 86400000,
+    ((date.getTime() - Date.now()) * 0.001) / 86400,
   );
 
-  return rtf.format(diffInDays, "days");
+  return rtf.format(diffInDays, "day");
 }
 
 const activities: typeof data = [];
@@ -94,93 +93,80 @@ if (available) {
 }
 ---
 
-<div
-  class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 opacity-100 transition-opacity duration-500 md:grid-cols-2 starting:opacity-0"
->
+<div class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 opacity-100 transition-opacity duration-500 md:grid-cols-2 starting:opacity-0">
   <ul class="flex gap-x-pad overflow-x-auto rounded-md md:justify-between">
-    {
-      available ?
-        <>
-          {activities.map(({ media: { title, coverImage, siteUrl } }) => {
-            const resolved = getResolvedTitle(title);
+    {available ?
+      <>
+        {activities.map(({ media: { title, coverImage, siteUrl } }) => {
+          const resolved = getResolvedTitle(title);
 
-            return (
-              <li class="shrink-0">
-                <a
-                  href={siteUrl}
-                  title={resolved}
-                  target="_blank"
-                  class="block"
-                >
-                  <Image
-                    src={coverImage.large}
-                    alt={`Cover art for ${resolved}`}
-                    inferSize
-                    priority
-                    class="rounded-md bg-sweater-9"
-                    style={{ height: "4lh", width: "auto" }}
-                  />
-                </a>
-              </li>
-            );
-          })}
-        </>
-      : <>
-          {BACKUP_ENTRIES.map(({ title, cover, url }) => (
+          return (
             <li class="shrink-0">
-              <a href={url} title={title} target="_blank" class="block">
+              <a href={siteUrl} title={resolved} target="_blank" class="block">
                 <Image
-                  src={cover}
-                  alt={`Cover art for ${title}`}
+                  src={coverImage.large}
+                  alt={`Cover art for ${resolved}`}
+                  inferSize
                   priority
                   class="rounded-md bg-sweater-9"
                   style={{ height: "4lh", width: "auto" }}
                 />
               </a>
             </li>
-          ))}
-        </>
+          );
+        })}
+      </>
+    : <>
+        {BACKUP_ENTRIES.map(({ title, cover, url }) => (
+          <li class="shrink-0">
+            <a href={url} title={title} target="_blank" class="block">
+              <Image
+                src={cover}
+                alt={`Cover art for ${title}`}
+                priority
+                class="rounded-md bg-sweater-9"
+                style={{ height: "4lh", width: "auto" }}
+              />
+            </a>
+          </li>
+        ))}
+      </>
     }
   </ul>
 
-  {
-    available && activities[0] ?
-      <div class="max-w-(--content-w) space-y-pad">
-        <p
-          title={getFullDateFormatting(
-            new Date(activities[0].createdAt * 1000),
-          )}
-          class="w-fit"
-        >
-          Latest {activities[0].type === "MANGA_LIST" ? "manga" : "anime"}{" "}
-          activity from{" "}
-          <time
-            datetime={new Date(activities[0].createdAt * 1000).toISOString()}
-          >
-            {relativeTime(new Date(activities[0].createdAt * 1000))}.
-          </time>
-        </p>
-        <Aside>
-          <p>
-            {capitalize(activities[0].status)}{" "}
-            {activities[0].status.includes("complete") ?
-              activities[0].type === "MANGA_LIST" ?
-                "reading"
-              : "watching"
-            : null}{" "}
-            {activities[0].progress ? `${activities[0].progress} of` : null}{" "}
-            <Link href={activities[0].media.siteUrl} target="_blank">
-              {getResolvedTitle(activities[0].media.title)}
-            </Link>
-          </p>
-        </Aside>
-      </div>
-    : <p class="max-w-(--content-w)">
-        I've tracked most of the manga and anime I've consumed since I started
-        in 2020. Here are some of my favorites.{" "}
-        <Link href="https://anilist.co/user/czw" target="_blank">
-          View my AniList profile.
-        </Link>
+  {available && activities[0] ?
+    <div class="max-w-(--content-w) space-y-pad">
+      <p
+        title={getFullDateFormatting(new Date(activities[0].createdAt * 1000))}
+        class="w-fit"
+      >
+        Latest {activities[0].type === "MANGA_LIST" ? "manga" : "anime"}{" "}
+        activity from{" "}
+        <time datetime={new Date(activities[0].createdAt * 1000).toISOString()}>
+          {relativeTime(new Date(activities[0].createdAt * 1000))}.
+        </time>
       </p>
+      <Aside>
+        <p>
+          {capitalize(activities[0].status)}{" "}
+          {activities[0].status.includes("complete") ?
+            activities[0].type === "MANGA_LIST" ?
+              "reading"
+            : "watching"
+          : null}{" "}
+          {activities[0].progress ? `${activities[0].progress} of` : null}{" "}
+          <Link href={activities[0].media.siteUrl} target="_blank">
+            {getResolvedTitle(activities[0].media.title)}
+          </Link>
+        </p>
+      </Aside>
+    </div>
+  : <p class="max-w-(--content-w)">
+      I've tracked most of the manga and anime I've consumed since I started in
+      2020. Here are some of my favorites.{" "}
+      <Link href="https://anilist.co/user/czw" target="_blank">
+        View my AniList profile.
+      </Link>
+    </p>
   }
 </div>

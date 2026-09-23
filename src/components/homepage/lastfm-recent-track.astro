@@ -1,0 +1,124 @@
+---
+import { actions } from "astro:actions";
+import { Image } from "astro:assets";
+
+import { Disc3Icon, RotateCcwClockIcon } from "@lucide/astro";
+
+import spiralWebp from "@/assets/spiral.webp";
+
+import { DAY_TO_SECONDS, ICON_SIZE } from "@/scripts/constants";
+import MusicNotePlayer from "@/components/homepage/music-note-player.astro";
+
+const { data, error } = await Astro.callAction(
+  actions.lastFm.getRecentTrack,
+  {},
+);
+
+const available = !error;
+
+const calculateRelativeTime = (unixTimestamp: number | null): string => {
+  if (unixTimestamp === null) return "recently";
+
+  const rtf = new Intl.RelativeTimeFormat("en-US", { numeric: "auto" });
+  const diffInSeconds = unixTimestamp - Date.now() * 0.001;
+
+  const diffInDays = diffInSeconds / DAY_TO_SECONDS;
+  if (diffInDays < -1) return rtf.format(Math.ceil(diffInDays), "day");
+
+  const diffInMinutes = diffInSeconds / 60;
+  if (diffInMinutes < -1) return rtf.format(Math.ceil(diffInMinutes), "minute");
+
+  return rtf.format(Math.ceil(diffInSeconds), "second");
+};
+---
+
+<div class="opacity-100 flex gap-x-3 transition-opacity duration-600 starting:opacity-0">
+  {available ?
+    data.coverUrl ?
+      <Image
+        src={data.coverUrl}
+        alt={`Art for ${data.songName} by ${data.artist}`}
+        inferSize
+        priority
+        class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"
+        style={{ height: "5lh", width: "5lh" }}
+      />
+    : <div class="flex size-[5lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
+        <Disc3Icon size={2 * ICON_SIZE} class="stroke-icon" />
+      </div>
+
+  : <Image
+      src={spiralWebp}
+      alt='Blue parking lot with a "Building 9" label. Cover art for my playlist called "spiral."'
+      class="size-[5lh] rounded-sm shrink-0 bg-sweater-9 light:bg-sweater-2"
+    />
+  }
+
+  <div class="flex flex-col justify-between">
+    {available ?
+      <p>
+        <a
+          href={data.songUrl}
+          target="_blank"
+          rel="noopener"
+          title={data.songName}
+          class="link-primary"
+        >
+          {data.songName}
+        </a>
+        <span title={data.artist} class="line-clamp-1">
+          by{" "}
+          <span class="font-medium text-sweater-2 light:text-sweater-8">
+            {data.artist}
+          </span>
+        </span>
+        <span title={data.album} class="line-clamp-1">
+          from{" "}
+          <span class="font-medium text-sweater-2 light:text-sweater-8">
+            {data.album}
+          </span>
+        </span>
+      </p>
+    : <div>
+        <a
+          href="https://open.spotify.com/playlist/70aHsVCcPmfUOXqCtCK3xy"
+          target="_blank"
+          rel="noopener"
+          class="link-primary"
+        >
+          spiral
+        </a>
+        <p>August to September 2026</p>
+        <p>72 songs, ~4 hours</p>
+      </div>
+    }
+
+    <div
+      class="flex items-center gap-1.5"
+      title={
+        available && data.live ?
+          "live, at this current moment in time, wherever you are"
+        : null
+      }
+    >
+      {available ?
+        data.live ?
+          <MusicNotePlayer />
+        : <RotateCcwClockIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="stroke-icon"
+          />
+
+      : null}
+
+      <p class:list={["text-icon", { italic: !available }]}>
+        {available ?
+          data.live ?
+            "Playing right now."
+          : `Played ${calculateRelativeTime(data.date)}.`
+        : "starting work, post-grad"}
+      </p>
+    </div>
+  </div>
+</div>
