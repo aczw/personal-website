@@ -1,3 +1,4 @@
+import { CURRENT_TIMEZONE } from "@/scripts/constants";
 import type { ContentDate, DateKind } from "@/scripts/types";
 
 /**
@@ -6,11 +7,6 @@ import type { ContentDate, DateKind } from "@/scripts/types";
  * some constants are defined in this file instead.
  */
 const SITE_URL = "https://charleszw.com";
-
-/**
- * Might change in the future if I move.
- */
-const CURRENT_TIMEZONE = "America/Los_Angeles";
 
 /**
  * Checks that the cover image for my project covers have an aspect ratio of

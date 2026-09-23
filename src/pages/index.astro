@@ -121,24 +121,47 @@ const projects = await getEntries(
 
     <section class="mt-5 constrain px-5">
       <p>
-        I currently live in Los Angeles, where it's 12
+        I currently live in Los Angeles, where it's{" "}
+        <span id="time-hour">12</span>
         <span id="time-colon" style={{ opacity: 1 }}>
           :
         </span>
-        24 AM. Come find me!
+        <span id="time-minutes">00</span> <span id="time-period">AM</span>. Come
+        find me!
       </p>
     </section>
   </main>
 </BaseLayout>
 
 <script>
+  import { CURRENT_TIMEZONE } from "@/scripts/constants";
+
+  const hourElt = document.getElementById("time-hour") as HTMLSpanElement;
   const colonElt = document.getElementById("time-colon") as HTMLSpanElement;
+  const minsElt = document.getElementById("time-minutes") as HTMLSpanElement;
+  const periodElt = document.getElementById("time-period") as HTMLSpanElement;
+
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: CURRENT_TIMEZONE,
+  });
 
   const tick = () => {
     colonElt.style.opacity = colonElt.style.opacity === "1" ? "0" : "1";
 
-    const msIntoSeconds = Date.now() % 1000;
-    const delay = 1000 - msIntoSeconds;
+    const now = Date.now();
+
+    const parts = formatter.formatToParts(now);
+    hourElt.textContent = parts.find((part) => part.type === "hour")!.value;
+    minsElt.textContent = parts.find((part) => part.type === "minute")!.value;
+    periodElt.textContent = parts.find(
+      (part) => part.type === "dayPeriod",
+    )!.value;
+
+    const fractMs = now % 1000;
+    const delay = 1000 - fractMs;
 
     window.setTimeout(tick, delay);
   };

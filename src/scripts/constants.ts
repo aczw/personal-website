@@ -176,6 +176,7 @@ const FLAVOR_TEXTS = [
 ];
 
 const DAY_TO_SECONDS = 86400;
+const CURRENT_TIMEZONE = "America/Los_Angeles";
 
 export {
   CDN_URL,
@@ -193,4 +194,5 @@ export {
   ICON_SIZE,
   FLAVOR_TEXTS,
   DAY_TO_SECONDS,
+  CURRENT_TIMEZONE,
 };
