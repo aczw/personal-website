@@ -91,17 +91,18 @@ const projects = await getEntries(
         like I'm closing out a past chapter. Recently I've been listening to...
       </p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-x-3 gap-y-5 mt-5 lg:w-4/5">
+      <div class="flex flex-col md:flex-row gap-x-3 gap-y-5 mt-5">
         <LastFmRecentTrack server:defer>
           <div
             aria-hidden="true"
-            class="animate-pulse flex gap-x-3"
+            class="animate-pulse flex gap-x-3 w-2/5"
             slot="fallback"
           >
             <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
-            <div class="flex flex-col grow justify-between">
-              <div class="rounded-sm h-[3lh] bg-sweater-9 light:bg-sweater-2"></div>
-              <div class="rounded-sm h-lh bg-sweater-9 light:bg-sweater-2"></div>
+
+            <div class="flex flex-col grow justify-between *:bg-sweater-9 *:light:bg-sweater-2 *:rounded-sm">
+              <div class="h-[3lh]"></div>
+              <div class="h-lh"></div>
             </div>
           </div>
         </LastFmRecentTrack>
@@ -109,11 +110,17 @@ const projects = await getEntries(
         <LastFmTopStats server:defer>
           <div
             aria-hidden="true"
-            class="animate-pulse space-y-pad"
+            class="animate-pulse flex gap-x-3 w-3/5"
             slot="fallback"
           >
-            <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
-            <div class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"></div>
+            <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
+            <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
+            <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
+
+            <div class="flex flex-col grow justify-between *:bg-sweater-9 *:light:bg-sweater-2 *:rounded-sm">
+              <div class="h-lh"></div>
+              <div class="h-[3lh]"></div>
+            </div>
           </div>
         </LastFmTopStats>
       </div>
