@@ -158,6 +158,10 @@
   @apply border-(length:--border-w) border-style;
 }
 
+@utility link-primary {
+  @apply w-fit font-medium text-link-primary hover:text-link-primary-hover;
+}
+
 /* Quicker way of writing `not-dark` */
 @custom-variant light {
   @media not (prefers-color-scheme: dark) {
