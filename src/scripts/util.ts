@@ -2,13 +2,6 @@ import { CURRENT_TIMEZONE } from "@/scripts/constants";
 import type { ContentDate, DateKind } from "@/scripts/types";
 
 /**
- * Values used in astro.config.ts can't be defined in files with functions that
- * deal with Astro components/JSX syntax, which includes constants.ts. So
- * some constants are defined in this file instead.
- */
-const SITE_URL = "https://charleszw.com";
-
-/**
  * Checks that the cover image for my project covers have an aspect ratio of
  * 16:10, for no real reason other than consistency and aesthetics
  */
@@ -80,7 +73,6 @@ function capitalize(text: string): string {
 }
 
 export {
-  SITE_URL,
   isValidProjectCover,
   stripEndingSlash,
   getShortDateFormatting,

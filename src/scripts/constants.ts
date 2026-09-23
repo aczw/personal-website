@@ -5,6 +5,7 @@ import {
   type DitherSettings,
 } from "@/scripts/dither/types";
 
+const SITE_URL = "https://charleszw.com";
 const CDN_URL = "https://cdn.charleszw.com";
 
 /**
@@ -179,6 +180,7 @@ const DAY_TO_SECONDS = 86400;
 const CURRENT_TIMEZONE = "America/Los_Angeles";
 
 export {
+  SITE_URL,
   CDN_URL,
   ROUTES,
   VALID_MONTHS,

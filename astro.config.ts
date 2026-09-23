@@ -14,7 +14,7 @@ import remarkMath from "remark-math";
 import rehypeMathjax from "rehype-mathjax/chtml";
 import rehypeUnwrapImages from "rehype-unwrap-images";
 
-import { SITE_URL } from "./src/scripts/util";
+import { SITE_URL } from "./src/scripts/constants";
 
 const config = defineConfig({
   site: SITE_URL,

@@ -9,10 +9,10 @@ import type { Meta, MetaKind } from "@/scripts/types";
 import {
   capitalize,
   getShortDateFormatting,
-  SITE_URL,
   stripEndingSlash,
 } from "@/scripts/util";
 import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
+import { SITE_URL } from "@/scripts/constants";
 
 interface Props {
   meta: Meta;
@@ -158,8 +158,8 @@ const title =
       is:inline
       defer
       src="https://cloud.umami.is/script.js"
-      data-website-id="9ccfaf2d-6989-4335-ab83-606d54cdee0f"></script>
-
+      data-website-id="9ccfaf2d-6989-4335-ab83-606d54cdee0f"
+    ></script>
     <SpeedInsights />
 
     <Font cssVariable="--font-atkinson" preload />
