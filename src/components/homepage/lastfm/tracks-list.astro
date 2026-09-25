@@ -1,0 +1,151 @@
+---
+import type { ActionReturnType, actions } from "astro:actions";
+import { Image } from "astro:assets";
+
+import { Disc3Icon, RotateCcwClockIcon } from "@lucide/astro";
+
+import { DAY_TO_SECONDS, ICON_SIZE } from "@/scripts/constants";
+import MusicNotePlayer from "@/components/homepage/lastfm/music-note-player.astro";
+
+type Props = ActionReturnType<typeof actions.lastFm.getRecentTracks.orThrow>;
+
+const rtf = new Intl.RelativeTimeFormat("en-US", {
+  numeric: "auto",
+  style: "short",
+});
+
+const calculateRelativeTime = (unixTimestamp: number | null): string => {
+  if (unixTimestamp === null) return "recently";
+
+  const diffInSeconds = unixTimestamp - Date.now() * 0.001;
+
+  const diffInDays = diffInSeconds / DAY_TO_SECONDS;
+  if (diffInDays < -1) return rtf.format(Math.ceil(diffInDays), "day");
+
+  const diffInHours = diffInSeconds / 3600; // Seconds in an hour
+  if (diffInHours < -1) return rtf.format(Math.ceil(diffInHours), "hour");
+
+  const diffInMinutes = diffInSeconds / 60; // Seconds in a minute
+  if (diffInMinutes < -1) return rtf.format(Math.ceil(diffInMinutes), "minute");
+
+  return rtf.format(Math.ceil(diffInSeconds), "second");
+};
+
+const { first, rest } = Astro.props;
+---
+
+<ul class="opacity-100 transition-opacity duration-600 starting:opacity-0 grid grid-cols-1 sm:grid-cols-2 gap-3">
+  <li class="flex gap-x-3">
+    {first.coverUrl ?
+      <Image
+        src={first.coverUrl}
+        alt={`Art for ${first.songName} by ${first.artist}`}
+        width={174}
+        height={174}
+        priority
+        class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"
+        style={{ height: "5lh", width: "5lh" }}
+      />
+    : <div class="flex size-[5lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
+        <Disc3Icon size={2 * ICON_SIZE} class="stroke-icon" />
+      </div>
+    }
+
+    <div class="flex flex-col justify-between">
+      <p>
+        <a
+          href={first.songUrl}
+          target="_blank"
+          rel="noopener"
+          title={first.songName}
+          class="link-primary line-clamp-1"
+        >
+          {first.songName}
+        </a>
+        <span title={first.artist} class="line-clamp-1">
+          by{" "}
+          <span class="font-medium text-sweater-2 light:text-sweater-8">
+            {first.artist}
+          </span>
+        </span>
+        <span title={first.album} class="line-clamp-1">
+          from{" "}
+          <span class="font-medium text-sweater-2 light:text-sweater-8">
+            {first.album}
+          </span>
+        </span>
+      </p>
+
+      <div
+        class="flex items-center gap-1.5"
+        title={
+          first.live ?
+            "live, at this current moment in time, wherever you are"
+          : null
+        }
+      >
+        {first.live ?
+          <MusicNotePlayer />
+        : <RotateCcwClockIcon
+            aria-hidden="true"
+            size={ICON_SIZE}
+            class="stroke-icon"
+          />
+        }
+
+        <p class:list={["text-icon"]}>
+          {first.live ?
+            "Playing right now."
+          : `Played ${calculateRelativeTime(first.date)}.`}
+        </p>
+      </div>
+    </div>
+  </li>
+
+  <div class="flex flex-col justify-between gap-y-2">
+    {rest.map((track) => (
+      <li class="flex gap-x-3 items-center">
+        {track.coverUrl ?
+          <Image
+            src={track.coverUrl}
+            alt={`Art for ${track.songName}`}
+            width={174}
+            height={174}
+            priority
+            class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"
+            style={{ height: "2.25lh", width: "2.25lh" }}
+          />
+        : <div class="flex size-[2.25lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
+            <Disc3Icon size={ICON_SIZE} class="stroke-icon" />
+          </div>
+        }
+
+        <div class="grow">
+          <div class="line-clamp-1 space-x-3">
+            <a
+              href={track.songUrl}
+              target="_blank"
+              rel="noopener"
+              class="link-primary inline"
+            >
+              {track.songName}
+            </a>
+
+            <time
+              class="text-icon"
+              datetime={
+                track.date ? new Date(track.date * 1000).toISOString() : null
+              }
+            >
+              {calculateRelativeTime(track.date)}
+            </time>
+          </div>
+
+          <p class="text-sweater-2 light:text-sweater-8 line-clamp-1">
+            {track.artist}
+          </p>
+        </div>
+      </li>
+    ))}
+  </div>
+</ul>

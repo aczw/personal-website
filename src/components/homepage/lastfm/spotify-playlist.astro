@@ -1,0 +1,30 @@
+---
+import { Image } from "astro:assets";
+
+import spiralWebp from "@/assets/spiral.webp";
+---
+
+<div class="opacity-100 flex gap-x-3 transition-opacity duration-600 starting:opacity-0">
+  <Image
+    src={spiralWebp}
+    alt='Blue parking lot with a "Building 9" label. Cover art for my playlist called "spiral."'
+    class="size-[5lh] rounded-sm shrink-0 bg-sweater-9 light:bg-sweater-2"
+  />
+
+  <div class="flex flex-col justify-between">
+    <div>
+      <a
+        href="https://open.spotify.com/playlist/70aHsVCcPmfUOXqCtCK3xy"
+        target="_blank"
+        rel="noopener"
+        class="link-primary"
+      >
+        spiral
+      </a>
+      <p>August to September 2026</p>
+      <p>72 songs, ~4 hours</p>
+    </div>
+
+    <p class="text-icon italic">starting work, post-grad</p>
+  </div>
+</div>

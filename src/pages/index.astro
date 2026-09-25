@@ -7,7 +7,7 @@ import { ArrowRightIcon } from "@lucide/astro";
 import Eye from "@/components/eye.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
-import LastFmRecentTrack from "@/components/homepage/lastfm-recent-track.astro";
+import RecentTracks from "@/components/homepage/lastfm/recent-tracks.astro";
 import LastFmTopStats from "@/components/homepage/lastfm-top-stats.astro";
 
 const projects = await getEntries(
@@ -91,8 +91,8 @@ const projects = await getEntries(
         like I'm closing out a past chapter. Recently I've been listening to...
       </p>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
-        <LastFmRecentTrack server:defer>
+      <div class="grid grid-cols-1 gap-3 mt-5">
+        <RecentTracks server:defer>
           <div
             aria-hidden="true"
             class="animate-pulse flex gap-x-3"
@@ -105,7 +105,7 @@ const projects = await getEntries(
               <div class="h-lh"></div>
             </div>
           </div>
-        </LastFmRecentTrack>
+        </RecentTracks>
 
         <LastFmTopStats server:defer>
           <div

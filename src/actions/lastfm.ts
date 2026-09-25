@@ -4,7 +4,8 @@ import { z } from "astro/zod";
 
 import { checkResponse, checkSafeParse } from "@/actions/common";
 
-const LASTFM_API_PREFIX = "https://ws.audioscrobbler.com/2.0/";
+const API_PREFIX = "https://ws.audioscrobbler.com/2.0/";
+const USER = "zwcharl";
 
 const AttrSchema = z.object({
   user: z.string(),
@@ -27,36 +28,37 @@ const ArtistSchema = z.object({
   mbid: z.string(),
 });
 
+const RecentTrackSchema = z.object({
+  artist: z.object({
+    mbid: z.string(),
+    "#text": z.string(),
+  }),
+  streamable: z.string(),
+  image: ImageSchema,
+  mbid: z.string(),
+  album: z.object({
+    mbid: z.string(),
+    "#text": z.string(),
+  }),
+  name: z.string(),
+  "@attr": z
+    .object({
+      nowplaying: z.enum(["true", "false"]),
+    })
+    .optional(),
+  url: z.string(),
+  date: z
+    .object({
+      uts: z.string(),
+      "#text": z.string(),
+    })
+    .optional(),
+});
+type RecentTrack = z.infer<typeof RecentTrackSchema>;
+
 const RecentTracksSchema = z.object({
   recenttracks: z.object({
-    track: z.array(
-      z.object({
-        artist: z.object({
-          mbid: z.string(),
-          "#text": z.string(),
-        }),
-        streamable: z.string(),
-        image: ImageSchema,
-        mbid: z.string(),
-        album: z.object({
-          mbid: z.string(),
-          "#text": z.string(),
-        }),
-        name: z.string(),
-        "@attr": z
-          .object({
-            nowplaying: z.enum(["true", "false"]),
-          })
-          .optional(),
-        url: z.string(),
-        date: z
-          .object({
-            uts: z.string(),
-            "#text": z.string(),
-          })
-          .optional(),
-      }),
-    ),
+    track: z.array(RecentTrackSchema),
     "@attr": AttrSchema,
   }),
 });
@@ -117,16 +119,28 @@ const TopArtistsSchema = z.object({
   }),
 });
 
-function checkLastFmResponse(response: Response) {
+const checkLastFmResponse = (response: Response) => {
   checkResponse(response, "Request to Last.fm failed!");
-}
+};
+
+const getLargeCoverUrl = (track: RecentTrack) => {
+  const { image } = track;
+  let coverUrl = null;
+
+  const largeIndex = image.findIndex((cover) => cover.size === "large");
+  if (largeIndex !== -1) {
+    coverUrl = image[largeIndex]!["#text"];
+  }
+
+  return coverUrl;
+};
 
 const lastFm = {
-  getRecentTrack: defineAction({
+  getRecentTracks: defineAction({
     input: undefined,
     handler: async () => {
       const response = await fetch(
-        `${LASTFM_API_PREFIX}?method=user.getrecenttracks&user=ashzw&api_key=${LASTFM_API_KEY}&limit=1&format=json`,
+        `${API_PREFIX}?method=user.getrecenttracks&user=${USER}&api_key=${LASTFM_API_KEY}&limit=3&format=json`,
       );
 
       checkLastFmResponse(response);
@@ -134,37 +148,43 @@ const lastFm = {
       checkSafeParse(result);
 
       const {
-        recenttracks: { track },
+        recenttracks: { track: tracks },
       } = result.data!;
-      const firstTrack = track[0];
 
-      if (!firstTrack) {
+      if (tracks.length !== 3) {
         throw new ActionError({
           code: "NOT_FOUND",
-          message: "Did not find any recent tracks.",
+          message: "Did not find 3 recent tracks.",
         });
       }
 
-      const { artist, image, album, name, url } = firstTrack;
-
-      let coverUrl = null;
-      const mediumIndex = image.findIndex((cover) => cover.size === "large");
-      if (mediumIndex !== -1) {
-        coverUrl = image[mediumIndex]!["#text"];
-      }
-
-      return {
-        artist: artist["#text"],
-        coverUrl,
-        album: album["#text"],
-        songName: name,
-        songUrl: url,
-
+      const firstTrack = tracks.shift()!;
+      const first = {
+        artist: firstTrack.artist["#text"],
+        coverUrl: getLargeCoverUrl(firstTrack),
+        album: firstTrack.album["#text"],
+        songName: firstTrack.name,
+        songUrl: firstTrack.url,
         live:
           firstTrack["@attr"] ?
             firstTrack["@attr"].nowplaying === "true"
           : false,
         date: firstTrack["date"] ? Number(firstTrack["date"].uts) : null,
+      };
+
+      const rest = tracks.map((track) => {
+        return {
+          coverUrl: getLargeCoverUrl(track),
+          songName: track.name,
+          songUrl: track.url,
+          artist: track.artist["#text"],
+          date: firstTrack["date"] ? Number(firstTrack["date"].uts) : null,
+        };
+      });
+
+      return {
+        first,
+        rest,
       };
     },
   }),
@@ -173,7 +193,7 @@ const lastFm = {
     input: undefined,
     handler: async () => {
       const topTrackResponse = await fetch(
-        `${LASTFM_API_PREFIX}?method=user.gettoptracks&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
+        `${API_PREFIX}?method=user.gettoptracks&user=${USER}&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
       );
 
       checkLastFmResponse(topTrackResponse);
@@ -195,7 +215,7 @@ const lastFm = {
       }
 
       const topAlbumResponse = await fetch(
-        `${LASTFM_API_PREFIX}?method=user.gettopalbums&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
+        `${API_PREFIX}?method=user.gettopalbums&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
       );
 
       checkLastFmResponse(topAlbumResponse);
@@ -217,14 +237,14 @@ const lastFm = {
       }
 
       const topArtistResponse = await fetch(
-        `${LASTFM_API_PREFIX}?method=user.gettopartists&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
+        `${API_PREFIX}?method=user.gettopartists&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
       );
 
       checkLastFmResponse(topArtistResponse);
       const topArtistResult = TopArtistsSchema.safeParse(
         await topArtistResponse.json(),
       );
-      checkSafeParse(topAlbumResult);
+      checkSafeParse(topArtistResult);
 
       const {
         topartists: { artist },
