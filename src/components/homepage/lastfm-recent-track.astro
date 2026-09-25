@@ -25,7 +25,10 @@ const calculateRelativeTime = (unixTimestamp: number | null): string => {
   const diffInDays = diffInSeconds / DAY_TO_SECONDS;
   if (diffInDays < -1) return rtf.format(Math.ceil(diffInDays), "day");
 
-  const diffInMinutes = diffInSeconds / 60;
+  const diffInHours = diffInSeconds / 3600; // Seconds in an hour
+  if (diffInHours < -1) return rtf.format(Math.ceil(diffInHours), "hour");
+
+  const diffInMinutes = diffInSeconds / 60; // Seconds in a minute
   if (diffInMinutes < -1) return rtf.format(Math.ceil(diffInMinutes), "minute");
 
   return rtf.format(Math.ceil(diffInSeconds), "second");
