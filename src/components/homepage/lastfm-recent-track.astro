@@ -35,7 +35,7 @@ const calculateRelativeTime = (unixTimestamp: number | null): string => {
 };
 ---
 
-<div class="opacity-100 flex gap-x-3 transition-opacity duration-600 starting:opacity-0 w-2/5">
+<div class="opacity-100 flex gap-x-3 transition-opacity duration-600 starting:opacity-0">
   {available ?
     data.coverUrl ?
       <Image
@@ -65,7 +65,7 @@ const calculateRelativeTime = (unixTimestamp: number | null): string => {
           target="_blank"
           rel="noopener"
           title={data.songName}
-          class="link-primary"
+          class="link-primary line-clamp-1"
         >
           {data.songName}
         </a>

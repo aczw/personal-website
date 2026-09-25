@@ -91,11 +91,11 @@ const projects = await getEntries(
         like I'm closing out a past chapter. Recently I've been listening to...
       </p>
 
-      <div class="flex flex-col md:flex-row gap-x-3 gap-y-5 mt-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-5">
         <LastFmRecentTrack server:defer>
           <div
             aria-hidden="true"
-            class="animate-pulse flex gap-x-3 w-2/5"
+            class="animate-pulse flex gap-x-3"
             slot="fallback"
           >
             <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
@@ -110,7 +110,7 @@ const projects = await getEntries(
         <LastFmTopStats server:defer>
           <div
             aria-hidden="true"
-            class="animate-pulse flex gap-x-3 w-3/5"
+            class="animate-pulse flex gap-x-3"
             slot="fallback"
           >
             <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>

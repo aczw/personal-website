@@ -9,14 +9,16 @@ const { data, error } = await Astro.callAction(actions.lastFm.getTopStats, {});
 const available = !error;
 ---
 
-<div class="flex gap-x-3 opacity-100 transition-opacity duration-600 starting:opacity-0 w-3/5">
-  {Array.from({ length: 2 }).map(() => (
-    <Image
-      src={dummyImg}
-      alt="dummy"
-      class="aspect-square object-cover shrink-0 bg-sweater-9 light:bg-sweater-2 rounded-sm size-[5lh]"
-    />
-  ))}
+<div class="flex flex-col sm:flex-row gap-x-3 opacity-100 transition-opacity duration-600 starting:opacity-0">
+  <div class="flex gap-x-3">
+    {Array.from({ length: 2 }).map(() => (
+      <Image
+        src={dummyImg}
+        alt="dummy"
+        class="aspect-square object-cover shrink-0 bg-sweater-9 light:bg-sweater-2 rounded-sm size-[5lh] md:hidden lg:block"
+      />
+    ))}
+  </div>
 
   <div class="flex flex-col justify-between">
     <p class="font-medium text-heading">
@@ -25,7 +27,7 @@ const available = !error;
       : <>
           According to{" "}
           <a
-            href="https://www.last.fm/user/ashzw"
+            href="https://www.last.fm/user/zwcharl"
             target="_blank"
             rel="noopener"
             class="link-primary"
@@ -41,7 +43,7 @@ const available = !error;
       {available ?
         <ul class="*:line-clamp-1">
           <li title={data.track.name}>
-            <span class="sm:hidden md:inline">...song is </span>
+            ...song is{" "}
             <a
               href={data.track.url}
               target="_blank"
@@ -54,7 +56,7 @@ const available = !error;
           </li>
 
           <li title={data.album.name}>
-            <span class="sm:hidden md:inline">...album is </span>
+            ...album is{" "}
             <a
               href={data.album.url}
               target="_blank"
@@ -67,7 +69,7 @@ const available = !error;
           </li>
 
           <li title={data.artist.name}>
-            <span class="sm:hidden md:inline">...artist is </span>
+            ...artist is{" "}
             <a
               href={data.artist.url}
               target="_blank"
