@@ -26,7 +26,7 @@ import { ICON_SIZE } from "@/scripts/constants";
   // Create templates for each of the possible icons. We'll use these to
   // generate copies of each icon
   const iconTemplates: HTMLTemplateElement[] = Object.values<string>(
-    import.meta.glob("../../assets/music-indicator/*.svg", {
+    import.meta.glob("../../../assets/music-indicator/*.svg", {
       eager: true,
       query: "?raw",
       import: "default",

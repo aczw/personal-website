@@ -32,6 +32,8 @@ const calculateRelativeTime = (unixTimestamp: number | null): string => {
 };
 
 const { first, rest } = Astro.props;
+
+console.log(rest);
 ---
 
 <ul class="opacity-100 transition-opacity duration-600 starting:opacity-0 grid grid-cols-1 sm:grid-cols-2 gap-3">

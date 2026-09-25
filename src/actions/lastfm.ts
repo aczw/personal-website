@@ -148,17 +148,19 @@ const lastFm = {
       checkSafeParse(result);
 
       const {
-        recenttracks: { track: tracks },
+        recenttracks: { track },
       } = result.data!;
 
-      if (tracks.length !== 3) {
+      if (track.length < 3) {
         throw new ActionError({
           code: "NOT_FOUND",
-          message: "Did not find 3 recent tracks.",
+          message: "Did not find at least 3 recent tracks.",
         });
       }
 
+      const tracks = track.slice(0, 3);
       const firstTrack = tracks.shift()!;
+
       const first = {
         artist: firstTrack.artist["#text"],
         coverUrl: getLargeCoverUrl(firstTrack),
@@ -178,7 +180,7 @@ const lastFm = {
           songName: track.name,
           songUrl: track.url,
           artist: track.artist["#text"],
-          date: firstTrack["date"] ? Number(firstTrack["date"].uts) : null,
+          date: track["date"] ? Number(track["date"].uts) : null,
         };
       });
 
