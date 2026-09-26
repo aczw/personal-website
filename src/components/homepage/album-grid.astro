@@ -13,22 +13,20 @@ interface Props {
 const { albums } = Astro.props;
 ---
 
-<ul class="opacity-100 transition-opacity duration-600 starting:opacity-0 grid grid-cols-4 desktop:gap-3">
-  {albums.map(({ coverUrl }) => (
-    <li>
-      {coverUrl ?
-        <Image
-          src={coverUrl}
-          alt="Cover art"
-          width={174}
-          height={174}
-          priority
-          class="bg-sweater-9 desktop:rounded-sm aspect-square object-cover light:bg-sweater-2 w-full h-auto"
-        />
-      : <div class="flex aspect-square items-center justify-center desktop:rounded-sm bg-sweater-9 light:bg-sweater-2 w-full h-auto">
-          <Disc3Icon size={2 * ICON_SIZE} class="stroke-icon" />
-        </div>
-      }
-    </li>
-  ))}
-</ul>
+{albums.map(({ name, coverUrl }) => (
+  <li title={name}>
+    {coverUrl ?
+      <Image
+        src={coverUrl}
+        alt={`Cover art for ${name}`}
+        width={174}
+        height={174}
+        priority
+        class="bg-sweater-9 desktop:rounded-sm aspect-square object-cover light:bg-sweater-2 w-full h-auto"
+      />
+    : <div class="flex aspect-square items-center justify-center desktop:rounded-sm bg-sweater-9 light:bg-sweater-2 w-full h-auto">
+        <Disc3Icon size={2 * ICON_SIZE} class="stroke-icon" />
+      </div>
+    }
+  </li>
+))}

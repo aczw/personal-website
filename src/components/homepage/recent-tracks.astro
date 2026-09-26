@@ -2,13 +2,15 @@
 import { actions } from "astro:actions";
 
 import TracksList from "@/components/homepage/tracks-list.astro";
-import SpotifyPlaylist from "@/components/homepage/spotify-playlist.astro";
+import Playlists from "@/components/homepage/playlists.astro";
 
 const { data } = await Astro.callAction(actions.lastFm.getRecentTracks, {
   count: 3,
 });
 ---
 
-{data ?
-  <TracksList tracks={data} />
-: <SpotifyPlaylist />}
+<ul class="opacity-100 transition-opacity duration-600 starting:opacity-0 flex flex-col gap-3 grow justify-between">
+  {data ?
+    <TracksList tracks={data} />
+  : <Playlists />}
+</ul>

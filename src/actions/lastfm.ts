@@ -162,7 +162,10 @@ const lastFm = {
       }
 
       return album.slice(0, count).map((topAlbum) => {
-        return { coverUrl: getLargeCoverUrl(topAlbum.image) };
+        return {
+          name: topAlbum.name,
+          coverUrl: getLargeCoverUrl(topAlbum.image),
+        };
       });
     },
   }),

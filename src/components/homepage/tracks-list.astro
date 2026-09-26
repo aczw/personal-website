@@ -36,53 +36,51 @@ const calculateRelativeTime = (unixTimestamp: number | null): string => {
 const { tracks } = Astro.props;
 ---
 
-<ul class="opacity-100 transition-opacity duration-600 starting:opacity-0 flex flex-col gap-3 grow justify-between">
-  {tracks.map(({ song, artist, coverUrl, isLive, unixTimestamp }) => (
-    <li class="flex gap-x-3 items-center">
-      {coverUrl ?
-        <Image
-          src={coverUrl}
-          alt={`Art for ${song.name}`}
-          width={174}
-          height={174}
-          priority
-          class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2 size-[3.25lh]"
-        />
-      : <div class="flex size-[3.25lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
-          <Disc3Icon size={ICON_SIZE} class="stroke-icon" />
-        </div>
-      }
-
-      <div class="grow">
-        <a
-          href={song.url}
-          target="_blank"
-          rel="noopener"
-          class="link-primary line-clamp-1"
-        >
-          {song.name}
-        </a>
-
-        <p class="text-sweater-2 light:text-sweater-8 line-clamp-1">{artist}</p>
-
-        <time
-          class:list={["text-icon", { "flex items-center gap-1.5": isLive }]}
-          datetime={
-            unixTimestamp ? new Date(unixTimestamp * 1000).toISOString() : null
-          }
-          title={
-            isLive ?
-              "live, at this current moment in time, wherever you are"
-            : null
-          }
-        >
-          {isLive ?
-            <>
-              Playing right now <MusicNotePlayer />
-            </>
-          : calculateRelativeTime(unixTimestamp)}
-        </time>
+{tracks.map(({ song, artist, coverUrl, isLive, unixTimestamp }) => (
+  <li class="flex gap-x-3 items-center">
+    {coverUrl ?
+      <Image
+        src={coverUrl}
+        alt={`Art for ${song.name}`}
+        width={174}
+        height={174}
+        priority
+        class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2 size-[3.25lh]"
+      />
+    : <div class="flex size-[3.25lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
+        <Disc3Icon size={ICON_SIZE} class="stroke-icon" />
       </div>
-    </li>
-  ))}
-</ul>
+    }
+
+    <div class="grow">
+      <a
+        href={song.url}
+        target="_blank"
+        rel="noopener"
+        class="link-primary line-clamp-1"
+      >
+        {song.name}
+      </a>
+
+      <p class="text-sweater-2 light:text-sweater-8 line-clamp-1">{artist}</p>
+
+      <time
+        class:list={["text-icon", { "flex items-center gap-1.5": isLive }]}
+        datetime={
+          unixTimestamp ? new Date(unixTimestamp * 1000).toISOString() : null
+        }
+        title={
+          isLive ?
+            "live, at this current moment in time, wherever you are"
+          : null
+        }
+      >
+        {isLive ?
+          <>
+            Playing right now <MusicNotePlayer />
+          </>
+        : calculateRelativeTime(unixTimestamp)}
+      </time>
+    </div>
+  </li>
+))}
