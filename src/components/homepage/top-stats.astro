@@ -1,0 +1,12 @@
+---
+import { actions } from "astro:actions";
+
+import AlbumGrid from "@/components/homepage/album-grid.astro";
+import FavoriteAlbums from "@/components/homepage/favorite-albums.astro";
+
+const { data } = await Astro.callAction(actions.lastFm.getTopAlbums, {});
+---
+
+{data ?
+  <AlbumGrid albums={data} />
+: <FavoriteAlbums />}

@@ -1,0 +1,88 @@
+---
+import type { ActionReturnType, actions } from "astro:actions";
+import { Image } from "astro:assets";
+
+import { Disc3Icon } from "@lucide/astro";
+
+import { DAY_TO_SECONDS, ICON_SIZE } from "@/scripts/constants";
+import MusicNotePlayer from "@/components/homepage/music-note-player.astro";
+
+interface Props {
+  tracks: ActionReturnType<typeof actions.lastFm.getRecentTracks.orThrow>;
+}
+
+const rtf = new Intl.RelativeTimeFormat("en-US", {
+  numeric: "auto",
+  style: "short",
+});
+
+const calculateRelativeTime = (unixTimestamp: number | null): string => {
+  if (unixTimestamp === null) return "recently";
+
+  const diffInSeconds = unixTimestamp - Date.now() * 0.001;
+
+  const diffInDays = diffInSeconds / DAY_TO_SECONDS;
+  if (diffInDays < -1) return rtf.format(Math.ceil(diffInDays), "day");
+
+  const diffInHours = diffInSeconds / 3600; // Seconds in an hour
+  if (diffInHours < -1) return rtf.format(Math.ceil(diffInHours), "hour");
+
+  const diffInMinutes = diffInSeconds / 60; // Seconds in a minute
+  if (diffInMinutes < -1) return rtf.format(Math.ceil(diffInMinutes), "minute");
+
+  return rtf.format(Math.ceil(diffInSeconds), "second");
+};
+
+const { tracks } = Astro.props;
+---
+
+<ul class="opacity-100 px-5 md:px-0 transition-opacity duration-600 starting:opacity-0 flex flex-col gap-3">
+  {tracks.map(({ song, artist, coverUrl, isLive, unixTimestamp }) => (
+    <li class="flex gap-x-3">
+      {coverUrl ?
+        <Image
+          src={coverUrl}
+          alt={`Art for ${song.name}`}
+          width={174}
+          height={174}
+          priority
+          class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2 size-[4lh]"
+        />
+      : <div class="flex size-[4lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
+          <Disc3Icon size={ICON_SIZE} class="stroke-icon" />
+        </div>
+      }
+
+      <div class="grow">
+        <a
+          href={song.url}
+          target="_blank"
+          rel="noopener"
+          class="link-primary line-clamp-1"
+        >
+          {song.name}
+        </a>
+
+        <p class="text-sweater-2 light:text-sweater-8 line-clamp-1">{artist}</p>
+
+        <time
+          class:list={["text-icon", { "flex items-center gap-1.5": isLive }]}
+          datetime={
+            unixTimestamp ? new Date(unixTimestamp * 1000).toISOString() : null
+          }
+          title={
+            isLive ?
+              "live, at this current moment in time, wherever you are"
+            : null
+          }
+        >
+          {isLive ?
+            <>
+              Playing right now <MusicNotePlayer />
+            </>
+          : calculateRelativeTime(unixTimestamp)}
+        </time>
+      </div>
+    </li>
+  ))}
+</ul>

@@ -1,0 +1,27 @@
+---
+import type { actions, ActionReturnType } from "astro:actions";
+import { Image } from "astro:assets";
+
+interface Props {
+  albums: ActionReturnType<typeof actions.lastFm.getTopAlbums.orThrow>;
+}
+
+const { albums } = Astro.props;
+---
+
+<ul class="opacity-100 transition-opacity duration-600 starting:opacity-0 grid grid-cols-3 gap-3 w-fit">
+  {albums.map(({ coverUrl }) => (
+    <li>
+      {coverUrl ?
+        <Image
+          src={coverUrl}
+          alt="Cover art"
+          width={174}
+          height={174}
+          priority
+          class="bg-sweater-9 rounded-sm aspect-square object-cover light:bg-sweater-2 size-[4lh]"
+        />
+      : null}
+    </li>
+  ))}
+</ul>

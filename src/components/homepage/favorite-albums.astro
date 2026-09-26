@@ -1,15 +1,6 @@
----
-import { actions } from "astro:actions";
-import { Image } from "astro:assets";
+<div>favorite albums</div>
 
-import dummyImg from "@/assets/spiral.webp";
-
-const { data, error } = await Astro.callAction(actions.lastFm.getTopStats, {});
-
-const available = !error;
----
-
-<div class="flex flex-col sm:flex-row gap-x-3 opacity-100 transition-opacity duration-600 starting:opacity-0">
+<!-- <div class="flex flex-col sm:flex-row gap-x-3 opacity-100 transition-opacity duration-600 starting:opacity-0">
   <div class="flex gap-x-3">
     {Array.from({ length: 2 }).map(() => (
       <Image
@@ -84,4 +75,4 @@ const available = !error;
       : <p>...song is [this], ...album is [this], ...artist is [this]</p>}
     </div>
   </div>
-</div>
+</div> -->

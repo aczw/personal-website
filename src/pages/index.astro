@@ -7,8 +7,8 @@ import { ArrowRightIcon } from "@lucide/astro";
 import Eye from "@/components/eye.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
-import RecentTracks from "@/components/homepage/lastfm/recent-tracks.astro";
-import LastFmTopStats from "@/components/homepage/lastfm-top-stats.astro";
+import RecentTracks from "@/components/homepage/recent-tracks.astro";
+import TopStats from "@/components/homepage/top-stats.astro";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -44,7 +44,7 @@ const projects = await getEntries(
     </nav>
   </header>
 
-  <main class="mt-4">
+  <main class="mt-4 overflow-x-hidden">
     <div class="constrain px-5 space-y-3 *:sm:w-(--prose-w)">
       <p>
         Hi, welcome. Thanks for visiting my little space. I wonder how you ended
@@ -85,43 +85,51 @@ const projects = await getEntries(
       ))}
     </section>
 
-    <section class="mt-5 constrain px-5">
-      <p class="sm:w-(--prose-w)">
-        Music is how I pass the time. Every time I make a new playlist it feels
-        like I'm closing out a past chapter. Recently I've been listening to...
+    <section class="mt-5 constrain">
+      <p class="sm:w-(--prose-w) px-5">
+        Music is how I pass the time. More often than not I am listening to
+        something. Each of my playlists mean so much to me.
       </p>
 
-      <div class="grid grid-cols-1 gap-3 mt-5">
-        <RecentTracks server:defer>
-          <div
-            aria-hidden="true"
-            class="animate-pulse flex gap-x-3"
-            slot="fallback"
-          >
-            <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
+      <div class="flex flex-col md:flex-row gap-y-3 mt-3 md:px-5">
+        <div class="space-y-5 w-1/2">
+          <p>The past 7 days my top albums are...</p>
 
-            <div class="flex flex-col grow justify-between *:bg-sweater-9 *:light:bg-sweater-2 *:rounded-sm">
-              <div class="h-[3lh]"></div>
-              <div class="h-lh"></div>
+          <TopStats server:defer>
+            <div
+              aria-hidden="true"
+              class="animate-pulse flex gap-x-3"
+              slot="fallback"
+            >
+              <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
+              <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
+
+              <div class="flex flex-col grow justify-between *:bg-sweater-9 *:light:bg-sweater-2 *:rounded-sm">
+                <div class="h-lh"></div>
+                <div class="h-[3lh]"></div>
+              </div>
             </div>
-          </div>
-        </RecentTracks>
+          </TopStats>
+        </div>
 
-        <LastFmTopStats server:defer>
-          <div
-            aria-hidden="true"
-            class="animate-pulse flex gap-x-3"
-            slot="fallback"
-          >
-            <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
-            <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
+        <div class="space-y-5 w-1/2">
+          <p>Recently I've been listening to...</p>
 
-            <div class="flex flex-col grow justify-between *:bg-sweater-9 *:light:bg-sweater-2 *:rounded-sm">
-              <div class="h-lh"></div>
-              <div class="h-[3lh]"></div>
+          <RecentTracks server:defer>
+            <div
+              aria-hidden="true"
+              class="animate-pulse flex gap-x-3"
+              slot="fallback"
+            >
+              <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
+
+              <div class="flex flex-col grow justify-between *:bg-sweater-9 *:light:bg-sweater-2 *:rounded-sm">
+                <div class="h-[3lh]"></div>
+                <div class="h-lh"></div>
+              </div>
             </div>
-          </div>
-        </LastFmTopStats>
+          </RecentTracks>
+        </div>
       </div>
     </section>
 

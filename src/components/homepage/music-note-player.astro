@@ -5,7 +5,7 @@ import { ICON_SIZE } from "@/scripts/constants";
 ---
 
 <div
-  id="music-indicator"
+  id="music-note-player"
   aria-hidden="true"
   class="relative"
   style={{
@@ -20,13 +20,13 @@ import { ICON_SIZE } from "@/scripts/constants";
 <script>
   import { ICON_SIZE } from "@/scripts/constants";
 
-  const root = document.getElementById("music-indicator")!;
+  const root = document.getElementById("music-note-player")!;
   const iconSize = ICON_SIZE.toString();
 
   // Create templates for each of the possible icons. We'll use these to
   // generate copies of each icon
   const iconTemplates: HTMLTemplateElement[] = Object.values<string>(
-    import.meta.glob("../../../assets/music-indicator/*.svg", {
+    import.meta.glob("../../assets/notes/*.svg", {
       eager: true,
       query: "?raw",
       import: "default",
