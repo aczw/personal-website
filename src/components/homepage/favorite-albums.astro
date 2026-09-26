@@ -1,78 +1,59 @@
-<div>favorite albums</div>
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
 
-<!-- <div class="flex flex-col sm:flex-row gap-x-3 opacity-100 transition-opacity duration-600 starting:opacity-0">
-  <div class="flex gap-x-3">
-    {Array.from({ length: 2 }).map(() => (
-      <Image
-        src={dummyImg}
-        alt="dummy"
-        class="aspect-square object-cover shrink-0 bg-sweater-9 light:bg-sweater-2 rounded-sm size-[5lh] md:hidden lg:block"
-      />
-    ))}
-  </div>
+import nurtureJpg from "@/assets/homepage/albums/nurture.jpg";
+import facesJpg from "@/assets/homepage/albums/faces.jpg";
+import somewhereCityJpg from "@/assets/homepage/albums/somewhere-city.jpg";
+import fishmongerJpg from "@/assets/homepage/albums/fishmonger.jpg";
+import blueLipsJpg from "@/assets/homepage/albums/blue-lips.jpg";
+import isThisItJpg from "@/assets/homepage/albums/is-this-it.jpg";
+import vinceStaplesJpg from "@/assets/homepage/albums/vince-staples.jpg";
+import theSunsTiradeJpg from "@/assets/homepage/albums/the-suns-tirade.jpg";
 
-  <div class="flex flex-col justify-between">
-    <p class="font-medium text-heading">
-      {available ?
-        <>In the last 7 days, my top...</>
-      : <>
-          According to{" "}
-          <a
-            href="https://www.last.fm/user/zwcharl"
-            target="_blank"
-            rel="noopener"
-            class="link-primary"
-          >
-            Last.fm
-          </a>{" "}
-          my top...
-        </>
-      }
-    </p>
+const covers: { name: string; image: ImageMetadata }[] = [
+  {
+    name: "Nurture",
+    image: nurtureJpg,
+  },
+  {
+    name: "Faces",
+    image: facesJpg,
+  },
+  {
+    name: "Somewhere City",
+    image: somewhereCityJpg,
+  },
+  {
+    name: "fishmonger",
+    image: fishmongerJpg,
+  },
+  {
+    name: "BLUE LIPS",
+    image: blueLipsJpg,
+  },
+  {
+    name: "Is This It",
+    image: isThisItJpg,
+  },
+  {
+    name: "Vince Staples",
+    image: vinceStaplesJpg,
+  },
+  {
+    name: "The Sun's Tirade",
+    image: theSunsTiradeJpg,
+  },
+];
+---
 
-    <div>
-      {available ?
-        <ul class="*:line-clamp-1">
-          <li title={data.track.name}>
-            ...song is{" "}
-            <a
-              href={data.track.url}
-              target="_blank"
-              rel="noopener"
-              class="link-primary"
-            >
-              {data.track.name}
-            </a>{" "}
-            ({data.track.count}×)
-          </li>
-
-          <li title={data.album.name}>
-            ...album is{" "}
-            <a
-              href={data.album.url}
-              target="_blank"
-              rel="noopener"
-              class="link-primary"
-            >
-              {data.album.name}
-            </a>{" "}
-            ({data.album.count}×)
-          </li>
-
-          <li title={data.artist.name}>
-            ...artist is{" "}
-            <a
-              href={data.artist.url}
-              target="_blank"
-              rel="noopener"
-              class="link-primary"
-            >
-              {data.artist.name}
-            </a>{" "}
-            ({data.artist.count}×)
-          </li>
-        </ul>
-      : <p>...song is [this], ...album is [this], ...artist is [this]</p>}
-    </div>
-  </div>
-</div> -->
+{covers.map(({ name, image }) => (
+  <li title={name}>
+    <Image
+      src={image}
+      alt={`Cover art for ${name}`}
+      priority
+      class="bg-sweater-9 light:bg-sweater-2 desktop:rounded-sm w-full h-auto"
+    />
+  </li>
+))}

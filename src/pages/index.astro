@@ -93,20 +93,22 @@ const projects = await getEntries(
 
       <div class="flex flex-col lg:flex-row gap-x-6 gap-y-5 mt-3">
         <div class="md:w-(--prose-w) desktop:px-5 md:pr-0">
-          <p class="px-5 desktop:px-0 mb-5">
-            In the last 7 days, my top albums are...
-          </p>
-
           <TopStats server:defer>
-            <div
-              aria-hidden="true"
-              class="animate-pulse grid grid-cols-4 desktop:gap-3 *:bg-sweater-9 *:light:bg-sweater-2 *:desktop:rounded-sm *:aspect-square *:w-full *:h-auto"
-              slot="fallback"
-            >
-              {Array.from({ length: 8 }).map(() => (
-                <div></div>
-              ))}
-            </div>
+            <Fragment slot="fallback">
+              <div
+                aria-hidden="true"
+                class="px-5 desktop:px-0 mb-5 bg-sweater-9 light:bg-sweater-2 desktop:rounded-sm animate-pulse h-lh"
+              ></div>
+
+              <div
+                aria-hidden="true"
+                class="animate-pulse grid grid-cols-4 desktop:gap-3 *:bg-sweater-9 *:light:bg-sweater-2 *:desktop:rounded-sm *:aspect-square *:w-full *:h-auto"
+              >
+                {Array.from({ length: 8 }).map(() => (
+                  <div></div>
+                ))}
+              </div>
+            </Fragment>
           </TopStats>
         </div>
 
