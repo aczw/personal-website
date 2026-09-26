@@ -2,8 +2,6 @@
 import { getEntries } from "astro:content";
 import { Image } from "astro:assets";
 
-import { ArrowRightIcon } from "@lucide/astro";
-
 import Eye from "@/components/eye.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
@@ -17,7 +15,9 @@ const projects = await getEntries(
 );
 ---
 
-<BaseLayout meta={{ kind: "route", route: "home", description: "NEW" }}>
+<BaseLayout
+  meta={{ kind: "route", route: "home", description: "Under construction" }}
+>
   <header class="constrain px-5 mt-6 sm:mt-20">
     <nav class="sm:w-(--prose-w)">
       <a
@@ -36,10 +36,17 @@ const projects = await getEntries(
       </a>
 
       <div class="mt-4 flex gap-4 border-t-2 border-dashed border-line pt-0.5 *:link-primary">
-        <a href="/index">Index</a>
-        <a href="/projects">Projects</a>
-        <a href="/posts">Writing</a>
-        <a href="/about">About</a>
+        <a href="mailto:hi@fwd.czw.sh">Email</a>
+        <a href="https://www.are.na/charles-zw" target="_blank" rel="noopener">
+          Are.na
+        </a>
+        <a
+          href="https://www.linkedin.com/in/zwcharl"
+          target="_blank"
+          rel="noopener"
+        >
+          LinkedIn
+        </a>
       </div>
     </nav>
   </header>
@@ -48,7 +55,7 @@ const projects = await getEntries(
     <div class="constrain px-5 space-y-3 *:sm:w-(--prose-w)">
       <p>
         Hi, welcome. Thanks for visiting my little space. I wonder how you ended
-        up here? Please do take a look around and explore.
+        up here? This place is still under construction, so bear with me.
       </p>
       <p>Here are some projects I've worked on...</p>
     </div>
@@ -57,7 +64,7 @@ const projects = await getEntries(
       class="constrain desktop:px-5 mt-5 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3"
       aria-label="Some projects I made"
     >
-      {projects.map(({ id, data: { subtitle, cover } }, index) => (
+      {projects.map(({ data: { cover } }, index) => (
         <article class="relative space-y-1 group">
           <Image
             id={`cover-image-${index}`}
@@ -72,15 +79,6 @@ const projects = await getEntries(
             class="aspect-16/10 w-full desktop:rounded-lg bg-sweater-9 light:bg-sweater-2"
             aria-hidden="true"
           />
-          <h2 class="px-5 desktop:px-0">
-            <a
-              href={`/projects/${id}`}
-              class="after:absolute flex items-center justify-between desktop:justify-start gap-1 after:inset-0 after:z-1 group-hover:text-link-primary-hover link-primary"
-            >
-              {subtitle ? subtitle : "<NO SUBTITLE>"}
-              <ArrowRightIcon size={16} />
-            </a>
-          </h2>
         </article>
       ))}
     </section>
