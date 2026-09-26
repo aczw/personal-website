@@ -2,6 +2,10 @@
 import type { actions, ActionReturnType } from "astro:actions";
 import { Image } from "astro:assets";
 
+import { Disc3Icon } from "@lucide/astro";
+
+import { ICON_SIZE } from "@/scripts/constants";
+
 interface Props {
   albums: ActionReturnType<typeof actions.lastFm.getTopAlbums.orThrow>;
 }
@@ -21,7 +25,10 @@ const { albums } = Astro.props;
           priority
           class="bg-sweater-9 desktop:rounded-sm aspect-square object-cover light:bg-sweater-2 w-full h-auto"
         />
-      : null}
+      : <div class="flex aspect-square items-center justify-center desktop:rounded-sm bg-sweater-9 light:bg-sweater-2 w-full h-auto">
+          <Disc3Icon size={2 * ICON_SIZE} class="stroke-icon" />
+        </div>
+      }
     </li>
   ))}
 </ul>

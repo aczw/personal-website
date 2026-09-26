@@ -38,7 +38,7 @@ const { tracks } = Astro.props;
 
 <ul class="opacity-100 transition-opacity duration-600 starting:opacity-0 flex flex-col gap-3 grow justify-between">
   {tracks.map(({ song, artist, coverUrl, isLive, unixTimestamp }) => (
-    <li class="flex gap-x-3">
+    <li class="flex gap-x-3 items-center">
       {coverUrl ?
         <Image
           src={coverUrl}

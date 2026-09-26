@@ -92,24 +92,20 @@ const projects = await getEntries(
       </p>
 
       <div class="flex flex-col lg:flex-row gap-x-6 gap-y-5 mt-3">
-        <div class="space-y-5 md:w-(--prose-w) desktop:px-5 md:pr-0">
-          <p class="px-5 desktop:px-0">
+        <div class="md:w-(--prose-w) desktop:px-5 md:pr-0">
+          <p class="px-5 desktop:px-0 mb-5">
             In the last 7 days, my top albums are...
           </p>
 
           <TopStats server:defer>
             <div
               aria-hidden="true"
-              class="animate-pulse flex gap-x-3"
+              class="animate-pulse grid grid-cols-4 desktop:gap-3 *:bg-sweater-9 *:light:bg-sweater-2 *:desktop:rounded-sm *:aspect-square *:w-full *:h-auto"
               slot="fallback"
             >
-              <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
-              <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
-
-              <div class="flex flex-col grow justify-between *:bg-sweater-9 *:light:bg-sweater-2 *:rounded-sm">
-                <div class="h-lh"></div>
-                <div class="h-[3lh]"></div>
-              </div>
+              {Array.from({ length: 8 }).map(() => (
+                <div></div>
+              ))}
             </div>
           </TopStats>
         </div>
@@ -120,15 +116,15 @@ const projects = await getEntries(
           <RecentTracks server:defer>
             <div
               aria-hidden="true"
-              class="animate-pulse flex gap-x-3"
+              class="animate-pulse flex flex-col gap-3 grow justify-between *:flex *:gap-x-3"
               slot="fallback"
             >
-              <div class="size-[5lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
-
-              <div class="flex flex-col grow justify-between *:bg-sweater-9 *:light:bg-sweater-2 *:rounded-sm">
-                <div class="h-[3lh]"></div>
-                <div class="h-lh"></div>
-              </div>
+              {Array.from({ length: 3 }).map(() => (
+                <div class="*:rounded-sm *:bg-sweater-9 *:light:bg-sweater-2">
+                  <div class="size-[3.25lh]"></div>
+                  <div class="grow"></div>
+                </div>
+              ))}
             </div>
           </RecentTracks>
         </div>
