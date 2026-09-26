@@ -4,7 +4,9 @@ import { actions } from "astro:actions";
 import TracksList from "@/components/homepage/tracks-list.astro";
 import SpotifyPlaylist from "@/components/homepage/spotify-playlist.astro";
 
-const { data } = await Astro.callAction(actions.lastFm.getRecentTracks, {});
+const { data } = await Astro.callAction(actions.lastFm.getRecentTracks, {
+  count: 3,
+});
 ---
 
 {data ?

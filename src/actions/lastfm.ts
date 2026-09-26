@@ -94,10 +94,13 @@ const getLargeCoverUrl = (image: z.infer<typeof ImageSchema>) => {
 
 const lastFm = {
   getRecentTracks: defineAction({
-    input: undefined,
-    handler: async () => {
+    input: z.object({
+      count: z.int().min(1),
+    }),
+
+    handler: async ({ count }) => {
       const response = await fetch(
-        `${API_PREFIX}?method=user.getrecenttracks&user=${USER}&api_key=${LASTFM_API_KEY}&limit=3&format=json`,
+        `${API_PREFIX}?method=user.getrecenttracks&user=${USER}&api_key=${LASTFM_API_KEY}&limit=${count}&format=json`,
       );
 
       checkLastFmResponse(response);
@@ -108,14 +111,14 @@ const lastFm = {
         recenttracks: { track },
       } = result.data!;
 
-      if (track.length < 3) {
+      if (track.length < count) {
         throw new ActionError({
           code: "NOT_FOUND",
-          message: "Did not find at least 3 recent tracks.",
+          message: `Did not find at least ${count} recent tracks.`,
         });
       }
 
-      return track.slice(0, 3).map((recentTrack) => {
+      return track.slice(0, count).map((recentTrack) => {
         const attr = recentTrack["@attr"];
         const date = recentTrack["date"];
 
@@ -134,10 +137,13 @@ const lastFm = {
   }),
 
   getTopAlbums: defineAction({
-    input: undefined,
-    handler: async () => {
+    input: z.object({
+      count: z.int().min(1),
+    }),
+
+    handler: async ({ count }) => {
       const response = await fetch(
-        `${API_PREFIX}?method=user.gettopalbums&user=${USER}&api_key=${LASTFM_API_KEY}&period=7day&limit=9&format=json`,
+        `${API_PREFIX}?method=user.gettopalbums&user=${USER}&api_key=${LASTFM_API_KEY}&period=7day&limit=${count}&format=json`,
       );
 
       checkLastFmResponse(response);
@@ -148,14 +154,14 @@ const lastFm = {
         topalbums: { album },
       } = result.data!;
 
-      if (album.length < 9) {
+      if (album.length < count) {
         throw new ActionError({
           code: "NOT_FOUND",
-          message: "Did not find at least 9 albums.",
+          message: `Did not find at least ${count} albums.`,
         });
       }
 
-      return album.slice(0, 9).map((topAlbum) => {
+      return album.slice(0, count).map((topAlbum) => {
         return { coverUrl: getLargeCoverUrl(topAlbum.image) };
       });
     },

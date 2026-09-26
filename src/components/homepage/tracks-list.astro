@@ -36,7 +36,7 @@ const calculateRelativeTime = (unixTimestamp: number | null): string => {
 const { tracks } = Astro.props;
 ---
 
-<ul class="opacity-100 px-5 md:px-0 transition-opacity duration-600 starting:opacity-0 flex flex-col gap-3">
+<ul class="opacity-100 transition-opacity duration-600 starting:opacity-0 flex flex-col gap-3 grow justify-between">
   {tracks.map(({ song, artist, coverUrl, isLive, unixTimestamp }) => (
     <li class="flex gap-x-3">
       {coverUrl ?
@@ -46,9 +46,9 @@ const { tracks } = Astro.props;
           width={174}
           height={174}
           priority
-          class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2 size-[4lh]"
+          class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2 size-[3.25lh]"
         />
-      : <div class="flex size-[4lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
+      : <div class="flex size-[3.25lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
           <Disc3Icon size={ICON_SIZE} class="stroke-icon" />
         </div>
       }
