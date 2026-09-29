@@ -5,17 +5,6 @@ import query from "@/actions/anilist-query.graphql?raw";
 
 import { checkResponse, checkSafeParse } from "@/actions/common";
 
-const ANILIST_API_URL = "https://graphql.anilist.co";
-const ANILIST_USER_ID = 5422717;
-
-const variables = {
-  userId: ANILIST_USER_ID,
-  sort: "ID_DESC",
-  page: 1,
-  perPage: 15,
-  typeIn: ["ANIME_LIST", "MANGA_LIST"],
-};
-
 const MediaTitleSchema = z.object({
   english: z.string().nullable(),
   romaji: z.string().nullable(),
@@ -53,15 +42,19 @@ const QuerySchema = z.object({
     .optional(),
 });
 
-function checkAniListResponse(response: Response) {
+type MediaTitle = z.infer<typeof MediaTitleSchema>;
+
+const checkAniListResponse = (response: Response) =>
   checkResponse(response, "Request to AniList failed!");
-}
 
 const aniList = {
   getRecentActivity: defineAction({
-    input: undefined,
-    handler: async () => {
-      const response = await fetch(ANILIST_API_URL, {
+    input: z.object({
+      count: z.int().min(1),
+    }),
+
+    handler: async ({ count }) => {
+      const response = await fetch("https://graphql.anilist.co", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +62,13 @@ const aniList = {
         },
         body: JSON.stringify({
           query,
-          variables,
+          variables: {
+            userId: 5422717,
+            sort: "ID_DESC",
+            page: 1,
+            perPage: count,
+            typeIn: ["ANIME_LIST", "MANGA_LIST"],
+          },
         }),
       });
 
@@ -102,7 +101,5 @@ const aniList = {
     },
   }),
 };
-
-type MediaTitle = z.infer<typeof MediaTitleSchema>;
 
 export { aniList, type MediaTitle };

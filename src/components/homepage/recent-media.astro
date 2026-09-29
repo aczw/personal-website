@@ -4,7 +4,9 @@ import { actions } from "astro:actions";
 import AnimeMangaList from "@/components/homepage/media-list.astro";
 import FavoriteAnimeManga from "@/components/homepage/favorite-media.astro";
 
-const { data } = await Astro.callAction(actions.aniList.getRecentActivity, {});
+const { data } = await Astro.callAction(actions.aniList.getRecentActivity, {
+  count: 20,
+});
 ---
 
 {data ?

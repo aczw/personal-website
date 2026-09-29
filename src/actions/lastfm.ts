@@ -4,7 +4,7 @@ import { z } from "astro/zod";
 
 import { checkResponse, checkSafeParse } from "@/actions/common";
 
-const API_PREFIX = "https://ws.audioscrobbler.com/2.0/";
+const URL = "https://ws.audioscrobbler.com/2.0/";
 const USER = "zwcharl";
 
 const AttrSchema = z.object({
@@ -77,9 +77,8 @@ const TopAlbumsSchema = z.object({
   }),
 });
 
-const checkLastFmResponse = (response: Response) => {
+const checkLastFmResponse = (response: Response) =>
   checkResponse(response, "Request to Last.fm failed!");
-};
 
 const getLargeCoverUrl = (image: z.infer<typeof ImageSchema>) => {
   let coverUrl = null;
@@ -100,7 +99,7 @@ const lastFm = {
 
     handler: async ({ count }) => {
       const response = await fetch(
-        `${API_PREFIX}?method=user.getrecenttracks&user=${USER}&api_key=${LASTFM_API_KEY}&limit=${count}&format=json`,
+        `${URL}?method=user.getrecenttracks&user=${USER}&api_key=${LASTFM_API_KEY}&limit=${count}&format=json`,
       );
 
       checkLastFmResponse(response);
@@ -143,7 +142,7 @@ const lastFm = {
 
     handler: async ({ count }) => {
       const response = await fetch(
-        `${API_PREFIX}?method=user.gettopalbums&user=${USER}&api_key=${LASTFM_API_KEY}&period=7day&limit=${count}&format=json`,
+        `${URL}?method=user.gettopalbums&user=${USER}&api_key=${LASTFM_API_KEY}&period=7day&limit=${count}&format=json`,
       );
 
       checkLastFmResponse(response);

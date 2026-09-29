@@ -4,8 +4,7 @@ import type { ActionReturnType, actions } from "astro:actions";
 
 import type { MediaTitle } from "@/actions/anilist";
 import { capitalize, getFullDateFormatting } from "@/scripts/util";
-import Link from "../link.astro";
-import Aside from "../mdx/aside.astro";
+import Aside from "@/components/mdx/aside.astro";
 
 interface Props {
   activities: ActionReturnType<
@@ -92,9 +91,14 @@ const first = unique[0]!;
           : "watching"
         : null}{" "}
         {first.progress ? `${first.progress} of` : null}{" "}
-        <Link href={first.media.siteUrl} target="_blank">
+        <a
+          href={first.media.siteUrl}
+          target="_blank"
+          rel="noopener"
+          class="link-primary font-medium"
+        >
           {getResolvedTitle(first.media.title)}
-        </Link>
+        </a>
       </p>
     </Aside>
   </div>
