@@ -140,10 +140,21 @@ const projects = await getEntries(
         my rotation lately (probably something embarrassing)...
       </p>
 
-      <RecentMedia server:defer />
+      <RecentMedia server:defer>
+        <div
+          aria-hidden="true"
+          slot="fallback"
+          class="space-y-5 animate-pulse *:mx-5"
+        >
+          <div class="sm:w-(--prose-w)">
+            <div class="bg-sweater-9 light:bg-sweater-2 h-lh sm:mr-5 rounded-sm"></div>
+          </div>
+          <div class="h-[5.25lh] rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
+        </div>
+      </RecentMedia>
     </section>
 
-    <section class="my-5 constrain px-5">
+    <section class="mt-5 mb-6 sm:mb-20 constrain px-5">
       <p>
         I currently live in Los Angeles, where it's{" "}
         <span id="time-hour">12</span>
