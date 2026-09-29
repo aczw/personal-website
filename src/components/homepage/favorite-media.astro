@@ -1,0 +1,70 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+import yourLieInAprilPng from "@/assets/anilist/your-lie-in-april.png";
+import reZeroJpg from "@/assets/anilist/rezero.jpg";
+import bloomIntoYouJpg from "@/assets/anilist/bloom-into-you.jpg";
+import gijiHaremJpg from "@/assets/anilist/giji-harem.jpg";
+import chainsawManPng from "@/assets/anilist/chainsaw-man.png";
+
+import Link from "../link.astro";
+
+const entries: {
+  title: string;
+  cover: ImageMetadata;
+  url: string;
+}[] = [
+  {
+    title: "Your lie in April",
+    cover: yourLieInAprilPng,
+    url: "https://anilist.co/anime/20665/Your-lie-in-April",
+  },
+  {
+    title: "Re:ZERO",
+    cover: reZeroJpg,
+    url: "https://anilist.co/anime/21355/ReZERO-Starting-Life-in-Another-World",
+  },
+  {
+    title: "Bloom Into You",
+    cover: bloomIntoYouJpg,
+    url: "https://anilist.co/manga/86218/Bloom-Into-You",
+  },
+  {
+    title: "Giji Harem",
+    cover: gijiHaremJpg,
+    url: "https://anilist.co/manga/105577/Giji-Harem",
+  },
+  {
+    title: "Chainsaw Man",
+    cover: chainsawManPng,
+    url: "https://anilist.co/manga/105778/Chainsaw-Man",
+  },
+];
+---
+
+<div class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 opacity-100 transition-opacity duration-500 md:grid-cols-2 starting:opacity-0">
+  <ul class="flex gap-x-pad overflow-x-auto rounded-md md:justify-between">
+    {entries.map(({ title, cover, url }) => (
+      <li class="shrink-0">
+        <a href={url} title={title} target="_blank" class="block">
+          <Image
+            src={cover}
+            alt={`Cover art for ${title}`}
+            priority
+            class="rounded-md bg-sweater-9"
+            style={{ height: "4lh", width: "auto" }}
+          />
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <p class="max-w-(--content-w)">
+    I've tracked most of the manga and anime I've consumed since I started in
+    2020. Here are some of my favorites.{" "}
+    <Link href="https://anilist.co/user/czw" target="_blank">
+      View my AniList profile.
+    </Link>
+  </p>
+</div>

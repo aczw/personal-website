@@ -103,6 +103,6 @@ const aniList = {
   }),
 };
 
-type AniListMediaTitle = z.infer<typeof MediaTitleSchema>;
+type MediaTitle = z.infer<typeof MediaTitleSchema>;
 
-export { aniList, type AniListMediaTitle };
+export { aniList, type MediaTitle };

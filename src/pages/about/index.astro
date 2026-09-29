@@ -12,7 +12,7 @@ import CommonLayout from "@/layouts/common-layout.astro";
 import Link from "@/components/link.astro";
 import RecentTracks from "@/components/homepage/recent-tracks.astro";
 import TopStats from "@/components/homepage/top-stats.astro";
-import AniListRecentActivity from "@/components/anilist-recent-activity.astro";
+import RecentMedia from "@/components/homepage/recent-media.astro";
 
 type AboutPicture = {
   id: string;
@@ -232,7 +232,7 @@ const ABOUT_PICTURES: AboutPicture[] = [
         <h2 id="anilist" class="mb-pad text-xl font-bold text-heading">
           Anilist
         </h2>
-        <AniListRecentActivity server:defer>
+        <RecentMedia server:defer>
           <div
             class="grid animate-pulse grid-cols-1 gap-x-pad-4 gap-y-pad-2 *:h-[4lh] *:rounded-md *:bg-sweater-9 md:grid-cols-2 light:*:bg-sweater-2"
             slot="fallback"
@@ -240,7 +240,7 @@ const ABOUT_PICTURES: AboutPicture[] = [
             <div></div>
             <div></div>
           </div>
-        </AniListRecentActivity>
+        </RecentMedia>
       </section>
     </div>
   </main>

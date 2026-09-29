@@ -9,6 +9,7 @@ import BaseLayout from "@/layouts/base-layout.astro";
 import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
 import RecentTracks from "@/components/homepage/recent-tracks.astro";
 import TopStats from "@/components/homepage/top-stats.astro";
+import RecentMedia from "@/components/homepage/recent-media.astro";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -131,6 +132,15 @@ const projects = await getEntries(
           </RecentTracks>
         </div>
       </div>
+    </section>
+
+    <section class="mt-5 constrain px-5">
+      <p class="sm:w-(--prose-w) mb-5">
+        I read a lot of manga and sometimes watch anime. Here is what's been in
+        my rotation lately (probably something embarrassing)...
+      </p>
+
+      <RecentMedia server:defer />
     </section>
 
     <section class="my-5 constrain px-5">
