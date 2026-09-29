@@ -164,6 +164,7 @@ const lastFm = {
       return album.slice(0, count).map((topAlbum) => {
         return {
           name: topAlbum.name,
+          albumUrl: topAlbum.url,
           coverUrl: getLargeCoverUrl(topAlbum.image),
         };
       });
