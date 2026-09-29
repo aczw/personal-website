@@ -3,8 +3,7 @@ import { Image } from "astro:assets";
 import type { ActionReturnType, actions } from "astro:actions";
 
 import type { MediaTitle } from "@/actions/anilist";
-import { capitalize, getFullDateFormatting } from "@/scripts/util";
-import Aside from "@/components/mdx/aside.astro";
+import { calculateRelativeTime } from "@/scripts/util";
 
 interface Props {
   activities: ActionReturnType<
@@ -20,16 +19,6 @@ const getResolvedTitle = (title: MediaTitle) => {
   );
 };
 
-const relativeTime = (date: Date) => {
-  const rtf = new Intl.RelativeTimeFormat("en-US", { numeric: "auto" });
-  const diffInDays = Math.ceil(
-    // Calculate in terms of days
-    ((date.getTime() - Date.now()) * 0.001) / 86400,
-  );
-
-  return rtf.format(diffInDays, "day");
-};
-
 const { activities } = Astro.props;
 
 const unique: typeof activities = [];
@@ -40,66 +29,62 @@ for (const activity of activities) {
     unique.push(activity);
     count++;
 
-    // Only the 5 most recent unique entries
-    if (count === 5) {
+    if (count === 6) {
       break;
     }
   }
 }
 
 const first = unique[0]!;
+
+const format = new Intl.RelativeTimeFormat("en-US", {
+  numeric: "auto",
+  style: "long",
+});
 ---
 
-<div class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 opacity-100 transition-opacity duration-500 md:grid-cols-2 starting:opacity-0">
-  <ul class="flex gap-x-pad overflow-x-auto rounded-md md:justify-between">
+<div class="space-y-5 opacity-100 transition-opacity duration-600 starting:opacity-0">
+  <p class="px-5 sm:w-(--prose-w)">
+    Status: {first.status}{" "}
+    {first.status.includes("complete") ?
+      first.type === "MANGA_LIST" ?
+        "reading"
+      : "watching"
+    : null}{" "}
+    {first.progress ? `${first.progress} of` : null}{" "}
+    <a
+      href={first.media.siteUrl}
+      target="_blank"
+      rel="noopener"
+      class="link-primary"
+    >
+      {getResolvedTitle(first.media.title)}
+    </a>{" "}
+    {calculateRelativeTime(format, first.createdAt)}.
+  </p>
+
+  <ul class="flex items-end gap-x-3 overflow-x-auto rounded-sm px-5">
     {unique.map(({ media: { title, coverImage, siteUrl } }) => {
-      const resolved = getResolvedTitle(title);
+      const resolvedTitle = getResolvedTitle(title);
 
       return (
         <li class="shrink-0">
-          <a href={siteUrl} title={resolved} target="_blank" class="block">
+          <a
+            href={siteUrl}
+            title={resolvedTitle}
+            target="_blank"
+            rel="noopener"
+          >
             <Image
               src={coverImage.large}
-              alt={`Cover art for ${resolved}`}
+              alt={`Cover art for ${resolvedTitle}`}
               inferSize
               priority
-              class="rounded-md bg-sweater-9"
-              style={{ height: "4lh", width: "auto" }}
+              class="rounded-sm bg-sweater-9 light:bg-sweater-2 w-auto h-[5.25lh]"
             />
           </a>
         </li>
       );
     })}
   </ul>
-
-  <div class="max-w-(--content-w) space-y-pad">
-    <p
-      title={getFullDateFormatting(new Date(first.createdAt * 1000))}
-      class="w-fit"
-    >
-      Latest {first.type === "MANGA_LIST" ? "manga" : "anime"} activity from{" "}
-      <time datetime={new Date(first.createdAt * 1000).toISOString()}>
-        {relativeTime(new Date(first.createdAt * 1000))}.
-      </time>
-    </p>
-    <Aside>
-      <p>
-        {capitalize(first.status)}{" "}
-        {first.status.includes("complete") ?
-          first.type === "MANGA_LIST" ?
-            "reading"
-          : "watching"
-        : null}{" "}
-        {first.progress ? `${first.progress} of` : null}{" "}
-        <a
-          href={first.media.siteUrl}
-          target="_blank"
-          rel="noopener"
-          class="link-primary font-medium"
-        >
-          {getResolvedTitle(first.media.title)}
-        </a>
-      </p>
-    </Aside>
-  </div>
 </div>
