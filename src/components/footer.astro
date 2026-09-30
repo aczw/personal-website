@@ -4,8 +4,18 @@ import { ArrowUpToLineIcon } from "@lucide/astro";
 import { ICON_SIZE } from "@/scripts/constants";
 ---
 
-<footer class="constrain px-5 my-6 sm:mb-20">
-  <div class="border-t-2 prose border-dashed border-line pt-0.5 space-y-3">
+<footer class="constrain px-5 mt-5 mb-6 sm:mb-20">
+  <p class="prose">
+    Please reach out to say hello, random messages are nice. I live in Los
+    Angeles, where it's <span id="time-hour">12</span>
+    <span id="time-colon" style={{ opacity: 1 }}>
+      :
+    </span>
+    <span id="time-minutes">00</span> <span id="time-period">AM</span>. Come
+    find me!
+  </p>
+
+  <div class="mt-6 border-t-2 prose border-dashed border-line pt-0.5 space-y-3">
     <div class="flex gap-3 justify-between items-center">
       <div class="flex gap-4 *:link-primary">
         <a href="mailto:hi@fwd.czw.sh">Email</a>
@@ -51,7 +61,6 @@ import { ICON_SIZE } from "@/scripts/constants";
     "Can't you see I'm trying? / I don't even like it",
     "Ziptied up, can't move my arms",
     "I burn up, burn out / I shouldn't do this to myself",
-    "I stay, no fake, steamin' tea and Malibu",
     "These contagious idealizations aren't conserving any fuel",
     "Just wanna be like one of them / But now I don't, I ran away / I ran away, I ran away",
     "And I hardly fall apart, but this time I'm diminished",
@@ -109,4 +118,40 @@ import { ICON_SIZE } from "@/scripts/constants";
   flavorElt.addEventListener("click", showFlavorText);
 
   showFlavorText();
+</script>
+
+<script>
+  import { CURRENT_TIMEZONE } from "@/scripts/constants";
+
+  const hourElt = document.getElementById("time-hour") as HTMLSpanElement;
+  const colonElt = document.getElementById("time-colon") as HTMLSpanElement;
+  const minsElt = document.getElementById("time-minutes") as HTMLSpanElement;
+  const periodElt = document.getElementById("time-period") as HTMLSpanElement;
+
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: CURRENT_TIMEZONE,
+  });
+
+  const tick = () => {
+    colonElt.style.opacity = colonElt.style.opacity === "1" ? "0" : "1";
+
+    const now = Date.now();
+
+    const parts = formatter.formatToParts(now);
+    hourElt.textContent = parts.find((part) => part.type === "hour")!.value;
+    minsElt.textContent = parts.find((part) => part.type === "minute")!.value;
+    periodElt.textContent = parts.find(
+      (part) => part.type === "dayPeriod",
+    )!.value;
+
+    const fractMs = now % 1000;
+    const delay = 1000 - fractMs;
+
+    window.setTimeout(tick, delay);
+  };
+
+  tick();
 </script>
