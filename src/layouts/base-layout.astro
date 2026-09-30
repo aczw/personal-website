@@ -11,7 +11,6 @@ import {
   getShortDateFormatting,
   stripEndingSlash,
 } from "@/scripts/util";
-import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
 import { SITE_URL } from "@/scripts/constants";
 
 interface Props {
@@ -161,6 +160,5 @@ const title =
 
   <body>
     <slot />
-    <ScreenSizeIndicator />
   </body>
 </html>

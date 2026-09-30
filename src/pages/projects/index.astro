@@ -9,6 +9,7 @@ import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
+import Footer from "@/components/footer.astro";
 
 const featuredProjectIds = [
   "cuda-path-tracer",
@@ -53,7 +54,7 @@ const description =
               class="desktop:rounded-sm"
             ></video>
 
-            <div class="flex sm:flex-col md:flex-row gap-x-3 items-center sm:items-start md:items-center justify-between sm:justify-start px-5 desktop:px-0">
+            <div class="flex sm:flex-col md:flex-row gap-x-4 items-center sm:items-start md:items-center justify-between sm:justify-start px-5 desktop:px-0">
               <h3>
                 <a
                   href={`/projects/${id}`}
@@ -85,7 +86,7 @@ const description =
           const isFeatured = isFeaturedProject(id);
 
           return (
-            <article class="border-t-2 border-dashed border-line relative px-5 desktop:px-0 pt-2 pb-5 grid grid-cols-2 gap-x-3">
+            <article class="border-t-2 border-dashed border-line relative px-5 desktop:px-0 pt-2 not-last:pb-5 grid grid-cols-2 gap-x-3">
               <div class="flex gap-x-3">
                 <Image
                   src={cover.img}
@@ -123,5 +124,7 @@ const description =
         })}
       </div>
     </section>
+
+    <Footer />
   </main>
 </BaseLayout>

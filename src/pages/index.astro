@@ -10,6 +10,7 @@ import RecentTracks from "@/components/homepage/recent-tracks.astro";
 import TopStats from "@/components/homepage/top-stats.astro";
 import RecentMedia from "@/components/homepage/recent-media.astro";
 import Header from "@/components/header.astro";
+import Footer from "@/components/footer.astro";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -137,7 +138,7 @@ const projects = await getEntries(
       </RecentMedia>
     </section>
 
-    <section class="mt-5 mb-6 sm:mb-20 constrain px-5">
+    <section class="mt-5 constrain px-5">
       <h2 class="sr-only">Contact</h2>
 
       <p class="prose">
@@ -151,6 +152,8 @@ const projects = await getEntries(
       </p>
     </section>
   </main>
+
+  <Footer />
 </BaseLayout>
 
 <script>
