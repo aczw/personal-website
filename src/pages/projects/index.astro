@@ -18,6 +18,8 @@ const featuredProjectIds = [
   "door",
 ];
 
+const notProjectsTODO = ["deth", "dgdg", "fireball", "moore-chair"];
+
 const isFeaturedProject = (id: string) => featuredProjectIds.includes(id);
 
 const projects = await getCollection("projects");
@@ -77,51 +79,55 @@ const description =
     <section class="constrain mt-5">
       <h2 class="sr-only">All projects</h2>
       <p class="prose px-5">
-        And here's everything in list form. They're sorted by date, so the
-        oldest project is at the very bottom.
+        And here's everything in a list. They're sorted by date, so the oldest
+        project is at the very bottom.
       </p>
 
-      <div class="desktop:px-5 mt-5">
-        {projects.map(({ id, data: { name, blurb, metadata, cover } }) => {
-          const isFeatured = isFeaturedProject(id);
+      <div class="px-5 mt-5">
+        {projects
+          .filter(({ id }) => !notProjectsTODO.includes(id))
+          .map(({ id, data: { name, blurb, metadata, cover } }) => {
+            const isFeatured = isFeaturedProject(id);
 
-          return (
-            <article class="border-t-2 border-dashed border-line relative px-5 desktop:px-0 pt-2 not-last:pb-5 grid grid-cols-2 gap-x-3">
-              <div class="flex gap-x-3">
-                <Image
-                  src={cover.img}
-                  alt={cover.alt}
-                  style={{ width: "9rem", height: "auto" }}
-                  class="rounded-sm"
-                />
-
-                <div>
-                  <h3>
-                    <a
-                      href={`/projects/${id}`}
-                      class:list={[
-                        "after:absolute after:inset-0 after:z-1 link-primary",
-                        { "flex gap-1.5 items-center": isFeatured },
-                      ]}
-                    >
-                      {name}{" "}
-                      {isFeatured ?
-                        <StarIcon size={0.85 * ICON_SIZE} />
-                      : null}
-                    </a>
-                  </h3>
-                  <ContentDate
-                    date={metadata.date}
-                    class="text-link-secondary"
+            return (
+              <article class="border-t-2 border-dashed border-line relative pt-2 not-last:pb-5 grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-2">
+                <div class="flex flex-col desktop:flex-row gap-3">
+                  <Image
+                    src={cover.img}
+                    alt={cover.alt}
+                    class="rounded-sm desktop:w-36 h-auto"
                   />
-                  <TechList tech={metadata.tech} class="text-link-secondary" />
-                </div>
-              </div>
 
-              <p>{blurb}</p>
-            </article>
-          );
-        })}
+                  <div>
+                    <h3>
+                      <a
+                        href={`/projects/${id}`}
+                        class:list={[
+                          "after:absolute after:inset-0 after:z-1 link-primary",
+                          { "flex gap-1.5 items-center": isFeatured },
+                        ]}
+                      >
+                        {name}{" "}
+                        {isFeatured ?
+                          <StarIcon size={0.85 * ICON_SIZE} />
+                        : null}
+                      </a>
+                    </h3>
+                    <ContentDate
+                      date={metadata.date}
+                      class="text-link-secondary"
+                    />
+                    <TechList
+                      tech={metadata.tech}
+                      class="text-link-secondary"
+                    />
+                  </div>
+                </div>
+
+                <p class="max-w-(--prose-w) lg:w-auto">{blurb}</p>
+              </article>
+            );
+          })}
       </div>
     </section>
 
