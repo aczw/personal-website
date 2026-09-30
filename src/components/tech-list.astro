@@ -1,23 +1,23 @@
 ---
-import Slash from "@/components/slash.astro";
-import type { HTMLAttributes } from "astro/types";
-
-type Props = HTMLAttributes<"li"> & {
+interface Props {
   tech: string[];
-};
+}
 
-const { tech: techList, class: className, ...props } = Astro.props;
+const { tech } = Astro.props;
 ---
 
-<ul class:list={["flex flex-wrap gap-x-1", className]} {...props}>
-  {
-    techList.map((tech, index) => (
-      <li>
-        {tech}
-        {index !== techList.length - 1 ?
-          <Slash class="leading-none" />
-        : null}
-      </li>
-    ))
-  }
+<ul class="flex flex-wrap gap-x-1 leading-none">
+  {tech.map((item, index) => (
+    <li class="text-link-secondary">
+      {item}{" "}
+      {index !== tech.length - 1 ?
+        <span
+          aria-hidden="true"
+          class="text-sweater-7 select-none light:text-sweater-4"
+        >
+          /
+        </span>
+      : null}
+    </li>
+  ))}
 </ul>

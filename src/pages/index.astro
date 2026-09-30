@@ -4,12 +4,12 @@ import { Image } from "astro:assets";
 
 import { ArrowRightIcon } from "@lucide/astro";
 
-import Eye from "@/components/eye.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
-import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
+import { HOMEPAGE_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import RecentTracks from "@/components/homepage/recent-tracks.astro";
 import TopStats from "@/components/homepage/top-stats.astro";
 import RecentMedia from "@/components/homepage/recent-media.astro";
+import Header from "@/components/header.astro";
 
 const projects = await getEntries(
   HOMEPAGE_PROJECTS.map((id) => {
@@ -19,34 +19,12 @@ const projects = await getEntries(
 ---
 
 <BaseLayout meta={{ kind: "route", route: "home", description: "NEW" }}>
-  <header class="constrain px-5 mt-6 sm:mt-20">
-    <nav class="sm:w-(--prose-w)">
-      <a
-        href="/"
-        title="Home"
-        aria-label="Go to the homepage"
-        class="group flex w-fit items-center gap-1.5"
-      >
-        <Eye
-          size={3.5}
-          class="fill-sweater-5 group-hover:fill-sweater-4 light:fill-sweater-6 light:group-hover:fill-sweater-7"
-        />
-        <span class="text-lg/1 leading-none font-medium text-sweater-5 group-hover:text-sweater-4 light:text-sweater-6 light:group-hover:text-sweater-7">
-          Charles Wang
-        </span>
-      </a>
+  <Header />
 
-      <div class="mt-4 flex gap-4 border-t-2 border-dashed border-line pt-0.5 *:link-primary">
-        <a href="/index">Index</a>
-        <a href="/projects">Projects</a>
-        <a href="/posts">Writing</a>
-        <a href="/about">About</a>
-      </div>
-    </nav>
-  </header>
+  <main class="overflow-x-hidden">
+    <h1 class="sr-only">Charles Wang</h1>
 
-  <main class="mt-4 overflow-x-hidden">
-    <div class="constrain px-5 space-y-3 *:sm:w-(--prose-w)">
+    <div class="constrain px-5 space-y-3 *:prose">
       <p>
         Hi, welcome. Thanks for visiting my little space. I wonder how you ended
         up here? Please do take a look around and explore.
@@ -54,12 +32,11 @@ const projects = await getEntries(
       <p>Here are some projects I've worked on...</p>
     </div>
 
-    <section
-      class="constrain desktop:px-5 mt-5 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3"
-      aria-label="Some projects I made"
-    >
+    <section class="constrain desktop:px-5 mt-5 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3">
+      <h2 class="sr-only">Projects I've worked on</h2>
+
       {projects.map(({ id, data: { subtitle, cover } }, index) => (
-        <article class="relative space-y-1 group">
+        <article class="relative space-y-1">
           <Image
             id={`cover-image-${index}`}
             src={cover.img}
@@ -73,27 +50,31 @@ const projects = await getEntries(
             class="aspect-16/10 w-full desktop:rounded-lg bg-sweater-9 light:bg-sweater-2"
             aria-hidden="true"
           />
-          <h2 class="px-5 desktop:px-0">
+          <h3 class="px-5 desktop:px-0">
             <a
               href={`/projects/${id}`}
-              class="after:absolute flex items-center justify-between desktop:justify-start gap-1 after:inset-0 after:z-1 group-hover:text-link-primary-hover link-primary"
+              class="after:absolute flex items-center justify-between desktop:justify-start gap-1 after:inset-0 after:z-1 link-primary"
             >
               {subtitle ? subtitle : "<NO SUBTITLE>"}
-              <ArrowRightIcon size={16} />
+              <ArrowRightIcon size={ICON_SIZE} />
             </a>
-          </h2>
+          </h3>
         </article>
       ))}
     </section>
 
     <section class="mt-5 constrain">
-      <p class="sm:w-(--prose-w) px-5">
+      <h2 class="sr-only">Music I've been listening to</h2>
+
+      <p class="prose px-5">
         Music is how I pass the time. More often than not I am listening to
         something. I make a lot of playlists and they make me.
       </p>
 
       <div class="flex flex-col lg:flex-row gap-x-6 gap-y-5 mt-3">
         <div class="md:w-(--prose-w) desktop:px-5 md:pr-0">
+          <h3 class="sr-only">Top albums</h3>
+
           <TopStats server:defer>
             <Fragment slot="fallback">
               <div
@@ -114,7 +95,7 @@ const projects = await getEntries(
         </div>
 
         <div class="grow flex flex-col gap-y-5 pr-5 pl-5 lg:pl-0">
-          <p>Recently I've been listening to...</p>
+          <h3>Recently I've been listening to...</h3>
 
           <RecentTracks server:defer>
             <div
@@ -135,7 +116,9 @@ const projects = await getEntries(
     </section>
 
     <section class="mt-5 constrain">
-      <p class="sm:w-(--prose-w) mb-3 px-5">
+      <h2 class="sr-only">Manga and anime I've been consuming</h2>
+
+      <p class="prose mb-3 px-5">
         I read a lot of manga and sometimes watch anime. Here is what's been in
         my rotation lately (probably something embarrassing)...
       </p>
@@ -146,7 +129,7 @@ const projects = await getEntries(
           slot="fallback"
           class="space-y-5 animate-pulse *:mx-5"
         >
-          <div class="sm:w-(--prose-w)">
+          <div class="prose">
             <div class="bg-sweater-9 light:bg-sweater-2 h-lh sm:mr-5 rounded-sm"></div>
           </div>
           <div class="h-[5.25lh] rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
@@ -155,7 +138,9 @@ const projects = await getEntries(
     </section>
 
     <section class="mt-5 mb-6 sm:mb-20 constrain px-5">
-      <p class="sm:w-(--prose-w)">
+      <h2 class="sr-only">Contact</h2>
+
+      <p class="prose">
         Please reach out to say hello, random messages are nice. I live in Los
         Angeles, where it's <span id="time-hour">12</span>
         <span id="time-colon" style={{ opacity: 1 }}>

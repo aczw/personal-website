@@ -12,14 +12,7 @@ const CDN_URL = "https://cdn.charleszw.com";
  * Essentially maps to every unique page on the site except for
  * content collection entries.
  */
-const ROUTES = [
-  "home",
-  "404",
-  "projects",
-  "posts",
-  "gallery",
-  "about",
-] as const;
+const ROUTES = ["home", "404", "projects", "posts", "about"] as const;
 
 const VALID_MONTHS = [
   "January",
@@ -46,17 +39,6 @@ const HOMEPAGE_PROJECTS = [
   "mini-minecraft",
 ] as const satisfies readonly [string, string, string];
 
-const DISABLED_PROJECTS = [
-  "cuda-boids", // code
-  "deth", // game
-  "dgdg", // game
-  "fireball", // code
-  "glsl-path-tracer", // code
-  "moore-chair", // visual(3d)
-  "pbr-renderer", // code
-  "racecar",
-  "rcw", // game
-];
 const DISABLED_POSTS = ["dithering"];
 
 /**
@@ -185,7 +167,6 @@ export {
   ROUTES,
   VALID_MONTHS,
   HOMEPAGE_PROJECTS,
-  DISABLED_PROJECTS,
   DISABLED_POSTS,
   SWEATER_1,
   SWEATER_3,

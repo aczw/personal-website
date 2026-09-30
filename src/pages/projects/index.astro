@@ -1,90 +1,76 @@
 ---
 import { getCollection } from "astro:content";
 
-import { SquareArrowRightIcon } from "@lucide/astro";
+import { ArrowRightIcon, SquareArrowRightIcon } from "@lucide/astro";
 
 import CommonLayout from "@/layouts/common-layout.astro";
 import ProjectCover from "@/components/project-cover.astro";
-import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
+import { CDN_URL, DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
+import Header from "@/components/header.astro";
 
-const WITH_VIDEOS = [
-  // "racecar",
+const featuredProjectIds = [
   "cuda-path-tracer",
+  "catanks",
   "mini-minecraft",
   "door",
 ];
 
-const projects = (await getCollection("projects"))
-  .filter((project) => !DISABLED_PROJECTS.includes(project.id))
-  .sort((a, b) => a.data.order - b.data.order);
+const entries = await getCollection("projects");
+const featured = entries.filter(({ id }) => featuredProjectIds.includes(id));
+const projects = entries.filter(({ id }) => !featuredProjectIds.includes(id));
 
 const description =
-  "Write-ups and technical breakdowns for some of my favorite projects.";
+  "Projects contain write-ups with technical details and breakdowns of the development process.";
 ---
 
-<CommonLayout
-  meta={{
-    kind: "route",
-    route: "projects",
-    description,
-  }}
-  headerLinks={[]}
->
-  <main class="space-y-pad-4 pt-pad pb-pad-4 desktop:pt-0">
-    <hgroup
-      class="mx-auto grid w-full grid-cols-1 gap-x-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w) xl:gap-x-pad-4"
-    >
-      <h1 class="text-5xl font-bold text-heading">Portfolio</h1>
-      <p class="mt-1.5 max-w-(--content-w)">{description}</p>
-    </hgroup>
+<BaseLayout meta={{ kind: "route", route: "projects", description }}>
+  <Header />
 
-    <div
-      class="mx-auto grid max-w-(--real-wide-w) grid-cols-1 gap-pad-2 desktop:px-pad-2 sm:grid-cols-2 xl:gap-pad-4"
-    >
-      {
-        projects.map(({ id, data: { name, blurb, metadata, cover } }) => (
-          <section aria-labelledby={id} class="group relative">
-            <ProjectCover
-              id={id}
-              cover={cover}
-              useVideo={WITH_VIDEOS.includes(id) ? { small: true } : null}
-              class="mb-pad overflow-hidden desktop:rounded-xl"
-            />
-
-            <h2
-              id={id}
-              class="mb-1.5 flex items-center justify-between px-pad-2 text-lg leading-[1.1] font-bold text-link-primary transition-colors group-hover:text-link-primary-hover desktop:px-0 sm:text-xl"
-            >
-              <a
-                href={`/projects/${id}`}
-                class="after:absolute after:inset-0 after:z-1 after:rounded-3xl"
-              >
-                {name}
-              </a>
-
-              <SquareArrowRightIcon
-                aria-hidden="true"
-                size={ICON_SIZE}
-                class="shrink-0 stroke-icon sm:hidden"
-              />
-            </h2>
-
-            <div class="mb-1 grid grid-cols-1 gap-x-pad-2 gap-y-1.5 px-pad-2 *:text-link-secondary *:transition-colors *:group-hover:text-link-secondary-hover desktop:px-0 lg:grid-cols-2 lg:text-lg xl:gap-x-0">
-              <ContentDate
-                date={metadata.date}
-                class="hidden leading-none md:inline-block"
-              />
-              <TechList tech={metadata.tech} class="*:leading-none" />
-            </div>
-
-            <p class="hidden max-w-(--content-w) text-sweater-2 transition-colors group-hover:text-sweater-1 desktop:block light:text-sweater-8 light:group-hover:text-sweater-10">
-              {blurb}
-            </p>
-          </section>
-        ))
-      }
+  <main>
+    <div class="constrain px-5">
+      <h1 class="sr-only">Projects</h1>
+      <p class="prose">
+        {description} You should probably look at these first.
+      </p>
     </div>
+
+    <section class="constrain">
+      <h2 class="sr-only">Featured</h2>
+
+      <ul class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 lg:w-220 desktop:px-5">
+        {featured.map(({ id, data: { name, metadata } }) => (
+          <li class="relative space-y-1">
+            <video
+              crossorigin="anonymous"
+              muted
+              playsinline
+              loop
+              autoplay
+              preload="auto"
+              src={`${CDN_URL}/projects/${id}/cover.mp4`}
+              class="desktop:rounded-sm"
+            ></video>
+
+            <div class="flex sm:flex-col md:flex-row gap-x-3 items-center sm:items-start md:items-center justify-between sm:justify-start px-5 desktop:px-0">
+              <h3>
+                <a
+                  href={`/projects/${id}`}
+                  class="after:absolute after:inset-0 after:z-1 link-primary"
+                >
+                  {name}
+                </a>
+              </h3>
+
+              <TechList tech={metadata.tech} />
+            </div>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section></section>
   </main>
-</CommonLayout>
+</BaseLayout>

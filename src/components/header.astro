@@ -1,46 +1,29 @@
 ---
-import type { HTMLAttributes } from "astro/types";
-
 import Eye from "@/components/eye.astro";
-import Slash from "@/components/slash.astro";
-import type { HeaderLink } from "@/scripts/types";
-
-type Props = HTMLAttributes<"header"> & {
-  links: HeaderLink[];
-};
-
-const { links, class: className, ...props } = Astro.props;
 ---
 
-<header
-  class:list={[
-    "mx-auto w-full px-pad-2 pt-pad-2 desktop:mt-10 desktop:w-4/5 desktop:p-pad lg:w-(--real-header-w)",
-    className,
-  ]}
-  {...props}
->
-  <nav class="flex items-center gap-x-1.75 leading-none font-bold">
-    <a href="/" title="Home" aria-label="Go to home" class="block">
+<header class="constrain px-5 mt-6 mb-4 sm:mt-20">
+  <nav class="prose">
+    <a
+      href="/"
+      title="Home"
+      aria-label="Go to the homepage"
+      class="group flex w-fit items-center gap-1.5"
+    >
       <Eye
-        aria-hidden="true"
-        class="fill-link-primary transition-[fill_rotate] hover:-rotate-13 hover:fill-link-primary-hover"
+        size={3.5}
+        class="fill-sweater-5 group-hover:fill-sweater-4 light:fill-sweater-6 light:group-hover:fill-sweater-7"
       />
+      <span class="text-lg/1 leading-none font-medium text-sweater-5 group-hover:text-sweater-4 light:text-sweater-6 light:group-hover:text-sweater-7">
+        Charles Wang
+      </span>
     </a>
 
-    <Slash class="text-[2.15rem]" />
-
-    {
-      links.map(({ href, text }) => (
-        <>
-          <a
-            href={href}
-            class="text-[2.15em] text-link-primary transition-colors hover:text-link-primary-hover"
-          >
-            {text}
-          </a>
-          <Slash class="text-[2.15rem]" />
-        </>
-      ))
-    }
+    <div class="mt-4 flex gap-4 border-t-2 border-dashed border-line pt-0.5 *:link-primary">
+      <a href="/index">Index</a>
+      <a href="/projects">Projects</a>
+      <a href="/posts">Writing</a>
+      <a href="/about">About</a>
+    </div>
   </nav>
 </header>

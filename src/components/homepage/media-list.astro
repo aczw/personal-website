@@ -44,7 +44,7 @@ const format = new Intl.RelativeTimeFormat("en-US", {
 ---
 
 <div class="space-y-5 opacity-100 transition-opacity duration-600 starting:opacity-0">
-  <p class="px-5 sm:w-(--prose-w)">
+  <p class="px-5 prose">
     {capitalize(calculateRelativeTime(format, first.createdAt))}, I{" "}
     {first.status}{" "}
     {first.status.includes("complete") ?
