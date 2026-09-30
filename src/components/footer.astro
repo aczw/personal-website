@@ -1,94 +1,96 @@
 ---
-import {
-  ToolCaseIcon,
-  FeatherIcon,
-  ComponentIcon,
-  InfoIcon,
-  ArrowUpToLineIcon,
-} from "@lucide/astro";
+import { ArrowUpToLineIcon } from "@lucide/astro";
 
-import MusicIndicator from "@/components/music-indicator.astro";
 import { ICON_SIZE } from "@/scripts/constants";
-import Link from "@/components/link.astro";
 ---
 
-<footer
-  class="overflow-x-clip border-t-(length:--border-w) border-style desktop:mb-10"
->
-  <div
-    class="mx-auto grid w-full grid-cols-1 items-start gap-x-pad-4 gap-y-pad-3 px-pad-2 pt-pad-2 pb-pad-2 desktop:w-4/5 desktop:px-pad desktop:pt-pad-4 sm:grid-cols-2 lg:w-(--real-header-w)"
-  >
-    <a
-      href="#"
-      class="flex items-center justify-between font-bold text-link-secondary transition-colors hover:text-link-secondary-hover"
-      data-umami-event="footer-back-to-top"
-      >Back to top <ArrowUpToLineIcon size={ICON_SIZE} class="stroke-icon" /></a
-    >
+<footer class="constrain px-5 mt-5 mb-6 sm:mb-20">
+  <p class="prose">
+    Please reach out to say hello, random messages are nice. I currently live in
+    Los Angeles, where it's <span id="time-hour">12</span>
+    <span id="time-colon" style={{ opacity: 1 }}>
+      :
+    </span>
+    <span id="time-minutes">00</span> <span id="time-period">AM</span>. Come
+    find me!
+  </p>
 
-    <div class="space-y-pad-3">
-      <div
-        class="grid grid-cols-2 gap-x-pad-2 gap-y-0.5 font-bold *:flex *:items-center *:justify-between *:gap-x-pad *:text-link-primary *:transition-colors *:hover:text-link-primary-hover md:text-lg"
-      >
-        <a href="/projects">
-          Portfolio <ToolCaseIcon
-            aria-hidden="true"
-            size={ICON_SIZE}
-            class="shrink-0 stroke-icon"
-          />
+  <div class="mt-6 border-t-2 prose border-dashed border-line pt-0.5 space-y-3">
+    <div class="flex gap-3 justify-between items-center">
+      <div class="flex gap-4 *:link-primary">
+        <a href="mailto:hi@fwd.czw.sh">Email</a>
+        <a href="https://www.are.na/charles-zw" target="_blank" rel="noopener">
+          Are.na
         </a>
-        <a href="/posts">
-          Writing <FeatherIcon
-            aria-hidden="true"
-            size={ICON_SIZE}
-            class="shrink-0 stroke-icon"
-          />
-        </a>
-        <p class="opacity-20 select-none" title="PARDON OUR DUST!">
-          Gallery <ComponentIcon
-            aria-hidden="true"
-            size={ICON_SIZE}
-            class="shrink-0 stroke-icon"
-          />
-        </p>
-        <a href="/about">
-          About <MusicIndicator size={ICON_SIZE} server:defer>
-            <InfoIcon
-              aria-hidden="true"
-              slot="fallback"
-              size={ICON_SIZE}
-              class="shrink-0 stroke-icon"
-            />
-          </MusicIndicator>
-        </a>
-      </div>
-
-      <div class="grid grid-cols-2 gap-x-pad-2 gap-y-0.5">
-        <Link href="https://twitter.com/zwcharl" target="_blank">Twitter</Link>
-        <Link href="https://are.na/charles-zw" target="_blank">Are.na</Link>
-        <Link href="https://linkedin.com/in/zwcharl" target="_blank"
-          >LinkedIn</Link
+        <a
+          href="https://www.linkedin.com/in/zwcharl"
+          target="_blank"
+          rel="noopener"
         >
-        <Link href="https://github.com/aczw" target="_blank">GitHub</Link>
+          LinkedIn
+        </a>
       </div>
 
-      <q
-        id="flavor"
-        class="block h-[2lh] w-75 cursor-default text-sm leading-snug text-pretty text-sweater-7 italic before:content-none after:content-none desktop:w-87.5 desktop:text-base light:text-sweater-4"
-        style={{ opacity: 0 }}
-        data-umami-event="footer-flavor-text"
+      <a
+        href="#"
+        class="text-link-secondary flex items-center gap-1.5 hover:text-link-secondary-hover"
       >
-      </q>
+        Back to top <ArrowUpToLineIcon size={ICON_SIZE} />
+      </a>
     </div>
+
+    <q
+      id="flavor"
+      class="block h-[2lh] w-75 cursor-default text-sm leading-snug text-pretty text-sweater-7 italic before:content-none after:content-none light:text-sweater-4"
+      style={{ opacity: 0 }}
+    ></q>
   </div>
 </footer>
 
 <script>
-  import { FLAVOR_TEXTS } from "@/scripts/constants";
+  const flavorTexts = [
+    "Waiting for something to happen?",
+    "You carve into the bridge / It might not be so bad to die",
+    "We forgot our roots before and trust me, things they fell apart",
+    "You are drinkin' from a shallow soul",
+    "Well, I'ma be here for a while, longer than I did expect to",
+    "But I never run out of jet fuel",
+    "I think I'm starting to like myself / I think I'm right where I need to be",
+    "We're so right 'bout everything that we say / We're so cool",
+    "Just admit it, you don't have a world that you're up against",
+    "Can't you see I'm trying? / I don't even like it",
+    "Ziptied up, can't move my arms",
+    "I burn up, burn out / I shouldn't do this to myself",
+    "These contagious idealizations aren't conserving any fuel",
+    "Just wanna be like one of them / But now I don't, I ran away / I ran away, I ran away",
+    "And I hardly fall apart, but this time I'm diminished",
+    "And I guess I'd say I'll see you soon / But the truth is that I see you now",
+    "No, you don't need to run / Stay with me, my blood",
+    "It's the middle of the night / And I'll never be alright again",
+    "Sway back and forth / Hit the floor / Find someone to die for",
+    "Divin' off the stage in the crowd, it's a mosh pit",
+    "Sit and watch the stoop lights flicker",
+    "And I've been thinking for days / Trying to find my worth",
+    "I can touch my toes / Without bending over / What is happening to me?",
+    "自分たちの生活のトラックを失う方法です",
+    "So stupid / So put your hands down / Don't try to sing along",
+    "We can't keep this up / I'm worried you might have a breakdown",
+    "Breathe out / So I can breathe you in / Hold you in",
+    "I get high off, high off / Feeling half alive, well / I don't wanna be a freak, I don't",
+    "You placed a crown of marigolds on my head",
+    "I want out of this world / I won't lie anymore, I can't love anymore",
+    "I love myself way more than I love you / And I think about killing myself",
+    "It's not right, it's not true, it's not right / It's not how we used to do",
+    "It's not your fault / It's my own fault / I'm not human at all",
+    "The disco ball in my mouth insinuates I'm ballin'",
+    "There's no hit records on a demo / No, don't hurt me again",
+    "Hand me your eyes, oversized / I can see through my disguise",
+    "I wish that I could turn back time / 'Cause now the guilt is all mine",
+    "I'll tell 'em / You have no plans for me / I will set my soul on fire",
+  ];
 
-  const flavorElt = document.getElementById("flavor")!;
-
-  function showFlavorText() {
-    let text = FLAVOR_TEXTS[Math.floor(Math.random() * FLAVOR_TEXTS.length)]!;
+  const showFlavorText = () => {
+    let text = flavorTexts[Math.floor(Math.random() * flavorTexts.length)]!;
     if (text.includes("/")) {
       text = text
         .split("/")
@@ -110,9 +112,46 @@ import Link from "@/components/link.astro";
         animation.commitStyles();
         animation.cancel();
       });
-  }
+  };
 
+  const flavorElt = document.getElementById("flavor")!;
   flavorElt.addEventListener("click", showFlavorText);
 
   showFlavorText();
+</script>
+
+<script>
+  import { CURRENT_TIMEZONE } from "@/scripts/constants";
+
+  const hourElt = document.getElementById("time-hour") as HTMLSpanElement;
+  const colonElt = document.getElementById("time-colon") as HTMLSpanElement;
+  const minsElt = document.getElementById("time-minutes") as HTMLSpanElement;
+  const periodElt = document.getElementById("time-period") as HTMLSpanElement;
+
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone: CURRENT_TIMEZONE,
+  });
+
+  const tick = () => {
+    colonElt.style.opacity = colonElt.style.opacity === "1" ? "0" : "1";
+
+    const now = Date.now();
+
+    const parts = formatter.formatToParts(now);
+    hourElt.textContent = parts.find((part) => part.type === "hour")!.value;
+    minsElt.textContent = parts.find((part) => part.type === "minute")!.value;
+    periodElt.textContent = parts.find(
+      (part) => part.type === "dayPeriod",
+    )!.value;
+
+    const fractMs = now % 1000;
+    const delay = 1000 - fractMs;
+
+    window.setTimeout(tick, delay);
+  };
+
+  tick();
 </script>

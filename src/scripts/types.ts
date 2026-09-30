@@ -23,8 +23,7 @@ type CollectionKind = {
 }[CollectionKey];
 
 type Meta =
-  | { kind: "route"; route: Route; description: string }
-  | CollectionKind;
+  { kind: "route"; route: Route; description: string } | CollectionKind;
 type MetaKind = Meta["kind"];
 
 type SimpleDate = z.infer<typeof SimpleDateSchema>;
@@ -32,10 +31,17 @@ type RangedDate = z.infer<typeof RangedDateSchema>;
 type ContentDate = z.infer<typeof DateSchema>;
 
 type DateKind =
-  | { kind: "simple"; date: SimpleDate }
-  | { kind: "ranged"; date: RangedDate };
+  { kind: "simple"; date: SimpleDate } | { kind: "ranged"; date: RangedDate };
 
 type HeaderLink = { href: string; text: string };
+
+type Err = { kind: "err"; message: string };
+type Result<T> =
+  | {
+      kind: "ok";
+      data: T;
+    }
+  | Err;
 
 export type {
   Route,
@@ -46,4 +52,6 @@ export type {
   ContentDate,
   DateKind,
   HeaderLink,
+  Err,
+  Result,
 };

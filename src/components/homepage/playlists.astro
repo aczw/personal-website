@@ -1,0 +1,57 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+import spiralWebp from "@/assets/homepage/playlists/spiral.webp";
+import fixerWebp from "@/assets/homepage/playlists/fixer.webp";
+import tryWebp from "@/assets/homepage/playlists/try.webp";
+
+const playlists: {
+  name: string;
+  url: string;
+  timeRange: string;
+  info: string;
+  image: ImageMetadata;
+}[] = [
+  {
+    name: "spiral",
+    url: "https://open.spotify.com/playlist/70aHsVCcPmfUOXqCtCK3xy",
+    timeRange: "August to September 2026",
+    info: "72 songs, ~4.25 hours",
+    image: spiralWebp,
+  },
+  {
+    name: "fixer",
+    url: "https://open.spotify.com/playlist/0m5R6kkc14czqWzwHQQXmu",
+    timeRange: "June to July 2026",
+    info: "78 songs, ~4 hours",
+    image: fixerWebp,
+  },
+  {
+    name: "try",
+    url: "https://open.spotify.com/playlist/3yrPPsiBrhsTe1G1JQBT9v",
+    timeRange: "April to May 2026",
+    info: "125 songs, ~8.5 hours",
+    image: tryWebp,
+  },
+];
+---
+
+{playlists.map(({ name, url, timeRange, info, image }) => (
+  <li class="flex gap-x-3 items-center">
+    <Image
+      src={image}
+      alt={`Playlist art for ${name}`}
+      priority
+      class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2 size-[3.25lh]"
+    />
+
+    <div class="grow">
+      <a href={url} target="_blank" rel="noopener" class="link-primary">
+        {name}
+      </a>
+      <p>{timeRange}</p>
+      <p class="text-icon">{info}</p>
+    </div>
+  </li>
+))}

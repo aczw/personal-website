@@ -9,21 +9,18 @@
 }
 
 @theme {
-  /* See https://font.subf.dev/en/playground for what each value means */
+  /* See https://font.subf.dev/en/playground to see what each value means */
   --font-mono--font-feature-settings:
     "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";
 
   /* Monospace text should be a little smaller than display text. Otherwise
-   * it looks too large. */
+   * it just looks too large. */
   --text-mono: 0.85rem;
 
   --spacing-pad: --spacing(2.5);
   --spacing-pad-2: calc(var(--spacing-pad) * 2);
   --spacing-pad-3: calc(var(--spacing-pad) * 3);
   --spacing-pad-4: calc(var(--spacing-pad-2) * 2);
-
-  /* This should stay in sync with the ICON_SIZE constant. */
-  --spacing-icon: 18px;
 
   /* Primitives */
   --color-sweater-1: #e1dfff;
@@ -45,24 +42,27 @@
   --color-icon: var(--icon);
   --color-heading: var(--heading);
 
-  /* A good indicator for when we're beyond phone width territory. As an
-   * example, the iPhone 14 Pro Max has a screen width of 430px. */
-  --breakpoint-desktop: 480px;
+  /* A good indicator for when we're beyond mobile territory. Equals 480px */
+  --breakpoint-desktop: 30rem;
 }
 
 @layer base {
   :root {
     color-scheme: light dark;
 
+    --max-w: 75rem; /* 1200px */
+    --prose-w: 34.375rem; /* 550px */
+
     --border-w: 2px;
 
-    --header-w: 800px;
+    --header-w: 50rem; /* 800px */
     --real-header-w: calc(var(--header-w) + var(--spacing-pad-2));
 
-    --wide-w: 1200px;
+    --wide-w: 75rem; /* 1200px */
     --real-wide-w: calc(var(--wide-w) + var(--spacing-pad-4));
 
-    --line: var(--color-sweater-9);
+    --line: var(--color-sweater-8);
+
     --link-primary: var(--color-sweater-3);
     --link-primary-hover: var(--color-sweater-1);
     --link-secondary: var(--color-sweater-5);
@@ -71,7 +71,8 @@
     --heading: var(--color-sweater-2);
 
     @variant light {
-      --line: var(--color-sweater-2);
+      --line: var(--color-sweater-3);
+
       --link-primary: var(--color-sweater-7);
       --link-primary-hover: var(--color-sweater-9);
       --link-secondary: var(--color-sweater-6);
@@ -139,6 +140,10 @@
   }
 }
 
+@utility constrain {
+  @apply mx-auto max-w-[calc(var(--max-w)+2.5rem)];
+}
+
 @utility maple {
   @apply font-mono text-mono;
 }
@@ -149,6 +154,14 @@
 
 @utility bordered {
   @apply border-(length:--border-w) border-style;
+}
+
+@utility link-primary {
+  @apply w-fit font-medium text-link-primary hover:text-link-primary-hover;
+}
+
+@utility prose {
+  @apply sm:w-(--prose-w);
 }
 
 /* Quicker way of writing `not-dark` */

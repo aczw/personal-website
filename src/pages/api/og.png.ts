@@ -70,10 +70,6 @@ const GET: APIRoute = async (ctx) => {
         };
         break;
 
-      case "gallery":
-        content = { title: "Gallery", subtitles: ["Everything I've done"] };
-        break;
-
       case "about":
         content = { title: "About", subtitles: ["Who I am"] };
         break;

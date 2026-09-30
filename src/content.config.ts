@@ -5,7 +5,6 @@ import { glob } from "astro/loaders";
 import {
   BlurbSchema,
   DateSchema,
-  GalleryCommonSchema as common,
   ImageSchema,
   LinkSchema,
   SourceHrefSchema,
@@ -15,7 +14,7 @@ import {
 const projects = defineCollection({
   loader: glob({
     pattern: "**/*.mdx",
-    base: "./src/content/projects",
+    base: "./content/projects",
     retainBody: false,
   }),
   schema: ({ image }) =>
@@ -43,7 +42,7 @@ const projects = defineCollection({
 const posts = defineCollection({
   loader: glob({
     pattern: "**/*.mdx",
-    base: "./src/content/posts",
+    base: "./content/posts",
     retainBody: false,
   }),
   schema: ({ image }) =>
@@ -55,39 +54,9 @@ const posts = defineCollection({
     }),
 });
 
-const gallery = defineCollection({
-  loader: glob({
-    pattern: "**/*.mdx",
-    base: "./src/content/gallery",
-    retainBody: true,
-  }),
-  schema: z.discriminatedUnion("type", [
-    z.object({
-      ...common.shape,
-      type: z.literal("visual"),
-      category: z.enum(["3d", "traditional", "digital", "cover-art"]),
-    }),
-    z.object({
-      ...common.shape,
-      type: z.literal("code"),
-      languages: z.string().array(), // Make it broad for now
-      libraries: z.string().array(),
-      sourceHref: SourceHrefSchema.optional(),
-    }),
-    z.object({
-      ...common.shape,
-      type: z.literal("game"),
-      stores: z.url().array(),
-      engine: z.enum(["unity", "unreal", "godot", "custom"]),
-      sourceHref: SourceHrefSchema.optional(),
-    }),
-  ]),
-});
-
 const collections = {
   projects,
   posts,
-  gallery,
 };
 
 export { collections, ImageSchema };

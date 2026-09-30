@@ -1,4 +1,6 @@
 ---
+import { Font } from "astro:assets";
+
 import SpeedInsights from "@vercel/speed-insights/astro";
 
 import "@/styles/main.css";
@@ -7,11 +9,9 @@ import type { Meta, MetaKind } from "@/scripts/types";
 import {
   capitalize,
   getShortDateFormatting,
-  SITE_URL,
   stripEndingSlash,
 } from "@/scripts/util";
-import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
-import { Font } from "astro:assets";
+import { SITE_URL } from "@/scripts/constants";
 
 interface Props {
   meta: Meta;
@@ -33,7 +33,7 @@ const head: Head = (() => {
           case "home":
             return "";
           case "projects":
-            return "Portfolio";
+            return "Projects";
           case "posts":
             return "Writing";
           default:
@@ -70,13 +70,6 @@ const head: Head = (() => {
         og: `?posts=${id}`,
       };
     }
-
-    case "gallery":
-      return {
-        title: "Gallery TODO",
-        description: "Gallery TODO",
-        og: `?gallery=TODO`,
-      };
 
     default:
       throw new Error("Unhandled meta kind!");
@@ -157,8 +150,8 @@ const title =
       is:inline
       defer
       src="https://cloud.umami.is/script.js"
-      data-website-id="9ccfaf2d-6989-4335-ab83-606d54cdee0f"></script>
-
+      data-website-id="9ccfaf2d-6989-4335-ab83-606d54cdee0f"
+    ></script>
     <SpeedInsights />
 
     <Font cssVariable="--font-atkinson" preload />
@@ -167,6 +160,5 @@ const title =
 
   <body>
     <slot />
-    <ScreenSizeIndicator />
   </body>
 </html>

@@ -4,7 +4,8 @@ import { z } from "astro/zod";
 
 import { checkResponse, checkSafeParse } from "@/actions/common";
 
-const LASTFM_API_PREFIX = "https://ws.audioscrobbler.com/2.0/";
+const URL = "https://ws.audioscrobbler.com/2.0/";
+const USER = "zwcharl";
 
 const AttrSchema = z.object({
   user: z.string(),
@@ -20,12 +21,6 @@ const ImageSchema = z.array(
     "#text": z.string(),
   }),
 );
-
-const ArtistSchema = z.object({
-  url: z.string(),
-  name: z.string(),
-  mbid: z.string(),
-});
 
 const RecentTracksSchema = z.object({
   recenttracks: z.object({
@@ -61,33 +56,15 @@ const RecentTracksSchema = z.object({
   }),
 });
 
-const TopTracksSchema = z.object({
-  toptracks: z.object({
-    track: z.array(
-      z.object({
-        streamable: z.object({
-          fulltrack: z.string(),
-          "#text": z.string(),
-        }),
-        mbid: z.string(),
-        name: z.string(),
-        image: ImageSchema,
-        artist: ArtistSchema,
-        url: z.string(),
-        duration: z.string(),
-        "@attr": z.object({ rank: z.string() }),
-        playcount: z.string(),
-      }),
-    ),
-    "@attr": AttrSchema,
-  }),
-});
-
 const TopAlbumsSchema = z.object({
   topalbums: z.object({
     album: z.array(
       z.object({
-        artist: ArtistSchema,
+        artist: z.object({
+          url: z.string(),
+          name: z.string(),
+          mbid: z.string(),
+        }),
         image: ImageSchema,
         mbid: z.string(),
         url: z.string(),
@@ -100,33 +77,29 @@ const TopAlbumsSchema = z.object({
   }),
 });
 
-const TopArtistsSchema = z.object({
-  topartists: z.object({
-    artist: z.array(
-      z.object({
-        streamable: z.string(),
-        image: ImageSchema,
-        mbid: z.string(),
-        url: z.string(),
-        playcount: z.string(),
-        "@attr": z.object({ rank: z.string() }),
-        name: z.string(),
-      }),
-    ),
-    "@attr": AttrSchema,
-  }),
-});
-
-function checkLastFmResponse(response: Response) {
+const checkLastFmResponse = (response: Response) =>
   checkResponse(response, "Request to Last.fm failed!");
-}
+
+const getLargeCoverUrl = (image: z.infer<typeof ImageSchema>) => {
+  let coverUrl = null;
+
+  const largeIndex = image.findIndex((cover) => cover.size === "large");
+  if (largeIndex !== -1) {
+    coverUrl = image[largeIndex]!["#text"];
+  }
+
+  return coverUrl;
+};
 
 const lastFm = {
-  getRecentTrack: defineAction({
-    input: undefined,
-    handler: async () => {
+  getRecentTracks: defineAction({
+    input: z.object({
+      count: z.int().min(1),
+    }),
+
+    handler: async ({ count }) => {
       const response = await fetch(
-        `${LASTFM_API_PREFIX}?method=user.getrecenttracks&user=ashzw&api_key=${LASTFM_API_KEY}&limit=1&format=json`,
+        `${URL}?method=user.getrecenttracks&user=${USER}&api_key=${LASTFM_API_KEY}&limit=${count}&format=json`,
       );
 
       checkLastFmResponse(response);
@@ -136,126 +109,64 @@ const lastFm = {
       const {
         recenttracks: { track },
       } = result.data!;
-      const firstTrack = track[0];
 
-      if (!firstTrack) {
+      if (track.length < count) {
         throw new ActionError({
           code: "NOT_FOUND",
-          message: "Did not find any recent tracks.",
+          message: `Did not find at least ${count} recent tracks.`,
         });
       }
 
-      const { artist, image, album, name, url } = firstTrack;
+      return track.slice(0, count).map((recentTrack) => {
+        const attr = recentTrack["@attr"];
+        const date = recentTrack["date"];
 
-      let coverUrl = null;
-      const mediumIndex = image.findIndex((cover) => cover.size === "large");
-      if (mediumIndex !== -1) {
-        coverUrl = image[mediumIndex]!["#text"];
-      }
-
-      return {
-        artist: artist["#text"],
-        coverUrl,
-        album: album["#text"],
-        songName: name,
-        songUrl: url,
-
-        live:
-          firstTrack["@attr"] ?
-            firstTrack["@attr"].nowplaying === "true"
-          : false,
-      };
+        return {
+          song: {
+            name: recentTrack.name,
+            url: recentTrack.url,
+          },
+          artist: recentTrack.artist["#text"],
+          coverUrl: getLargeCoverUrl(recentTrack.image),
+          isLive: attr ? attr.nowplaying === "true" : false,
+          unixTimestamp: date ? Number(date.uts) : null,
+        };
+      });
     },
   }),
 
-  getTopStats: defineAction({
-    input: undefined,
-    handler: async () => {
-      const topTrackResponse = await fetch(
-        `${LASTFM_API_PREFIX}?method=user.gettoptracks&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
+  getTopAlbums: defineAction({
+    input: z.object({
+      count: z.int().min(1),
+    }),
+
+    handler: async ({ count }) => {
+      const response = await fetch(
+        `${URL}?method=user.gettopalbums&user=${USER}&api_key=${LASTFM_API_KEY}&period=7day&limit=${count}&format=json`,
       );
 
-      checkLastFmResponse(topTrackResponse);
-      const topTrackResult = TopTracksSchema.safeParse(
-        await topTrackResponse.json(),
-      );
-      checkSafeParse(topTrackResult);
-
-      const {
-        toptracks: { track },
-      } = topTrackResult.data!;
-      const firstTrack = track[0];
-
-      if (!firstTrack) {
-        throw new ActionError({
-          code: "NOT_FOUND",
-          message: "Did not find any top tracks.",
-        });
-      }
-
-      const topAlbumResponse = await fetch(
-        `${LASTFM_API_PREFIX}?method=user.gettopalbums&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
-      );
-
-      checkLastFmResponse(topAlbumResponse);
-      const topAlbumResult = TopAlbumsSchema.safeParse(
-        await topAlbumResponse.json(),
-      );
-      checkSafeParse(topAlbumResult);
+      checkLastFmResponse(response);
+      const result = TopAlbumsSchema.safeParse(await response.json());
+      checkSafeParse(result);
 
       const {
         topalbums: { album },
-      } = topAlbumResult.data!;
-      const firstAlbum = album[0];
+      } = result.data!;
 
-      if (!firstAlbum) {
+      if (album.length < count) {
         throw new ActionError({
           code: "NOT_FOUND",
-          message: "Did not find any top albums.",
+          message: `Did not find at least ${count} albums.`,
         });
       }
 
-      const topArtistResponse = await fetch(
-        `${LASTFM_API_PREFIX}?method=user.gettopartists&user=ashzw&api_key=${LASTFM_API_KEY}&period=7day&limit=1&format=json`,
-      );
-
-      checkLastFmResponse(topArtistResponse);
-      const topArtistResult = TopArtistsSchema.safeParse(
-        await topArtistResponse.json(),
-      );
-      checkSafeParse(topAlbumResult);
-
-      const {
-        topartists: { artist },
-      } = topArtistResult.data!;
-      const firstArtist = artist[0];
-
-      if (!firstArtist) {
-        throw new ActionError({
-          code: "NOT_FOUND",
-          message: "Did not find any top artists.",
-        });
-      }
-
-      return {
-        track: {
-          name: firstTrack.name,
-          url: firstTrack.url,
-          count: Number(firstTrack.playcount),
-        },
-
-        album: {
-          name: firstAlbum.name,
-          url: firstAlbum.url,
-          count: Number(firstAlbum.playcount),
-        },
-
-        artist: {
-          name: firstArtist.name,
-          url: firstArtist.url,
-          count: Number(firstArtist.playcount),
-        },
-      };
+      return album.slice(0, count).map((topAlbum) => {
+        return {
+          name: topAlbum.name,
+          albumUrl: topAlbum.url,
+          coverUrl: getLargeCoverUrl(topAlbum.image),
+        };
+      });
     },
   }),
 };

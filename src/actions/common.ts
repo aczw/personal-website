@@ -1,7 +1,7 @@
 import { ActionError } from "astro:actions";
 import { type ZodSafeParseResult } from "astro/zod";
 
-function checkResponse(response: Response, initialMessage: string) {
+const checkResponse = (response: Response, initialMessage: string) => {
   if (!response.ok) {
     let message = initialMessage;
 
@@ -14,9 +14,9 @@ function checkResponse(response: Response, initialMessage: string) {
       message,
     });
   }
-}
+};
 
-function checkSafeParse<Out>(result: ZodSafeParseResult<Out>) {
+const checkSafeParse = <Out>(result: ZodSafeParseResult<Out>) => {
   if (!result.success) {
     console.error("[Zod]", result.error.issues);
 
@@ -25,6 +25,6 @@ function checkSafeParse<Out>(result: ZodSafeParseResult<Out>) {
       message: "Failed to parse response!",
     });
   }
-}
+};
 
 export { checkResponse, checkSafeParse };

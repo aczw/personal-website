@@ -1,16 +1,5 @@
+import { CURRENT_TIMEZONE, DAY_TO_SECONDS } from "@/scripts/constants";
 import type { ContentDate, DateKind } from "@/scripts/types";
-
-/**
- * Values used in astro.config.ts can't be defined in files with functions that
- * deal with Astro components/JSX syntax, which includes constants.ts. So
- * some constants are defined in this file instead.
- */
-const SITE_URL = "https://charleszw.com";
-
-/**
- * Might change in the future if I move.
- */
-const CURRENT_TIMEZONE = "America/New_York";
 
 /**
  * Checks that the cover image for my project covers have an aspect ratio of
@@ -83,8 +72,27 @@ function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
+const calculateRelativeTime = (
+  rtf: Intl.RelativeTimeFormat,
+  unixTimestamp: number | null,
+): string => {
+  if (unixTimestamp === null) return "recently";
+
+  const diffInSeconds = unixTimestamp - Date.now() * 0.001;
+
+  const diffInDays = diffInSeconds / DAY_TO_SECONDS;
+  if (diffInDays < -1) return rtf.format(Math.ceil(diffInDays), "day");
+
+  const diffInHours = diffInSeconds / 3600; // Seconds in an hour
+  if (diffInHours < -1) return rtf.format(Math.ceil(diffInHours), "hour");
+
+  const diffInMinutes = diffInSeconds / 60; // Seconds in a minute
+  if (diffInMinutes < -1) return rtf.format(Math.ceil(diffInMinutes), "minute");
+
+  return rtf.format(Math.ceil(diffInSeconds), "second");
+};
+
 export {
-  SITE_URL,
   isValidProjectCover,
   stripEndingSlash,
   getShortDateFormatting,
@@ -92,4 +100,5 @@ export {
   getMonthDayDateFormatting,
   getDateKind,
   capitalize,
+  calculateRelativeTime,
 };
