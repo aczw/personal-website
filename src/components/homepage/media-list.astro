@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import type { ActionReturnType, actions } from "astro:actions";
 
 import type { MediaTitle } from "@/actions/anilist";
-import { calculateRelativeTime } from "@/scripts/util";
+import { calculateRelativeTime, capitalize } from "@/scripts/util";
 
 interface Props {
   activities: ActionReturnType<
@@ -45,7 +45,8 @@ const format = new Intl.RelativeTimeFormat("en-US", {
 
 <div class="space-y-5 opacity-100 transition-opacity duration-600 starting:opacity-0">
   <p class="px-5 sm:w-(--prose-w)">
-    Status: {first.status}{" "}
+    {capitalize(calculateRelativeTime(format, first.createdAt))}, I{" "}
+    {first.status}{" "}
     {first.status.includes("complete") ?
       first.type === "MANGA_LIST" ?
         "reading"
@@ -59,8 +60,8 @@ const format = new Intl.RelativeTimeFormat("en-US", {
       class="link-primary"
     >
       {getResolvedTitle(first.media.title)}
-    </a>{" "}
-    {calculateRelativeTime(format, first.createdAt)}.
+    </a>
+    .
   </p>
 
   <ul class="flex items-end gap-x-3 overflow-x-auto rounded-sm px-5">
