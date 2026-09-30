@@ -42,8 +42,7 @@
   --color-icon: var(--icon);
   --color-heading: var(--heading);
 
-  /* A good indicator for when we're beyond phone width territory. As an
-   * example, the iPhone 14 Pro Max has a screen width of 430px. */
+  /* A good indicator for when we're beyond mobile territory. */
   --breakpoint-desktop: 480px;
 }
 

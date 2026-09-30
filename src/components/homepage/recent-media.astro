@@ -1,0 +1,14 @@
+---
+import { actions } from "astro:actions";
+
+import MediaList from "@/components/homepage/media-list.astro";
+import FavoriteMedia from "@/components/homepage/favorite-media.astro";
+
+const { data } = await Astro.callAction(actions.aniList.getRecentActivity, {
+  count: 20,
+});
+---
+
+{data ?
+  <MediaList activities={data} />
+: <FavoriteMedia />}

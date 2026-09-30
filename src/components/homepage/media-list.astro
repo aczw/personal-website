@@ -1,0 +1,92 @@
+---
+import { Image } from "astro:assets";
+import type { ActionReturnType, actions } from "astro:actions";
+
+import type { MediaTitle } from "@/actions/anilist";
+import { calculateRelativeTime, capitalize } from "@/scripts/util";
+
+interface Props {
+  activities: ActionReturnType<
+    typeof actions.aniList.getRecentActivity.orThrow
+  >;
+}
+
+const getResolvedTitle = (title: MediaTitle) => {
+  return (
+    title.english ? title.english
+    : title.romaji ? title.romaji
+    : title.native
+  );
+};
+
+const { activities } = Astro.props;
+
+const unique: typeof activities = [];
+let count = 0;
+
+for (const activity of activities) {
+  if (unique.findIndex((act) => act.media.id === activity.media.id) === -1) {
+    unique.push(activity);
+    count++;
+
+    if (count === 6) {
+      break;
+    }
+  }
+}
+
+const first = unique[0]!;
+
+const format = new Intl.RelativeTimeFormat("en-US", {
+  numeric: "auto",
+  style: "long",
+});
+---
+
+<div class="space-y-5 opacity-100 transition-opacity duration-600 starting:opacity-0">
+  <p class="px-5 sm:w-(--prose-w)">
+    {capitalize(calculateRelativeTime(format, first.createdAt))}, I{" "}
+    {first.status}{" "}
+    {first.status.includes("complete") ?
+      first.type === "MANGA_LIST" ?
+        "reading"
+      : "watching"
+    : null}{" "}
+    {first.progress ? `${first.progress} of` : null}{" "}
+    <a
+      href={first.media.siteUrl}
+      target="_blank"
+      rel="noopener"
+      class="link-primary"
+    >
+      {getResolvedTitle(first.media.title)}
+    </a>
+    .
+  </p>
+
+  <ul class="flex items-end gap-x-3 overflow-x-auto rounded-sm px-5">
+    {unique.map(({ media: { title, coverImage, siteUrl } }) => {
+      const resolvedTitle = getResolvedTitle(title);
+
+      return (
+        <li class="shrink-0">
+          <a
+            href={siteUrl}
+            title={resolvedTitle}
+            target="_blank"
+            rel="noopener"
+          >
+            <Image
+              src={coverImage.large}
+              alt={`Cover art for ${resolvedTitle}`}
+              inferSize
+              priority
+              class="rounded-sm bg-sweater-9 light:bg-sweater-2 w-auto"
+              style={{ width: "auto", height: "5.25lh" }}
+            />
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+</div>

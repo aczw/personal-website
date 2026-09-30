@@ -4,34 +4,18 @@ import { Image } from "astro:assets";
 
 import { Disc3Icon } from "@lucide/astro";
 
-import { DAY_TO_SECONDS, ICON_SIZE } from "@/scripts/constants";
+import { ICON_SIZE } from "@/scripts/constants";
 import MusicNotePlayer from "@/components/homepage/music-note-player.astro";
+import { calculateRelativeTime } from "@/scripts/util";
 
 interface Props {
   tracks: ActionReturnType<typeof actions.lastFm.getRecentTracks.orThrow>;
 }
 
-const rtf = new Intl.RelativeTimeFormat("en-US", {
+const format = new Intl.RelativeTimeFormat("en-US", {
   numeric: "auto",
   style: "short",
 });
-
-const calculateRelativeTime = (unixTimestamp: number | null): string => {
-  if (unixTimestamp === null) return "recently";
-
-  const diffInSeconds = unixTimestamp - Date.now() * 0.001;
-
-  const diffInDays = diffInSeconds / DAY_TO_SECONDS;
-  if (diffInDays < -1) return rtf.format(Math.ceil(diffInDays), "day");
-
-  const diffInHours = diffInSeconds / 3600; // Seconds in an hour
-  if (diffInHours < -1) return rtf.format(Math.ceil(diffInHours), "hour");
-
-  const diffInMinutes = diffInSeconds / 60; // Seconds in a minute
-  if (diffInMinutes < -1) return rtf.format(Math.ceil(diffInMinutes), "minute");
-
-  return rtf.format(Math.ceil(diffInSeconds), "second");
-};
 
 const { tracks } = Astro.props;
 ---
@@ -65,7 +49,10 @@ const { tracks } = Astro.props;
       <p class="text-sweater-2 light:text-sweater-8 line-clamp-1">{artist}</p>
 
       <time
-        class:list={["text-icon", { "flex items-center gap-1.5": isLive }]}
+        class:list={[
+          "text-icon w-fit",
+          { "flex items-center gap-1.5": isLive },
+        ]}
         datetime={
           unixTimestamp ? new Date(unixTimestamp * 1000).toISOString() : null
         }
@@ -79,7 +66,7 @@ const { tracks } = Astro.props;
           <>
             Playing right now <MusicNotePlayer />
           </>
-        : calculateRelativeTime(unixTimestamp)}
+        : calculateRelativeTime(format, unixTimestamp)}
       </time>
     </div>
   </li>
