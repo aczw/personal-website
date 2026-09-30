@@ -1,14 +1,16 @@
 ---
-interface Props {
-  tech: string[];
-}
+import type { HTMLAttributes } from "astro/types";
 
-const { tech } = Astro.props;
+type Props = HTMLAttributes<"ul"> & {
+  tech: string[];
+};
+
+const { tech, class: className, ...props } = Astro.props;
 ---
 
-<ul class="flex flex-wrap gap-x-1 leading-none">
+<ul class:list={["flex flex-wrap gap-x-1", className]} {...props}>
   {tech.map((item, index) => (
-    <li class="text-link-secondary">
+    <li>
       {item}{" "}
       {index !== tech.length - 1 ?
         <span

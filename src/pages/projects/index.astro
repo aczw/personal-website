@@ -1,11 +1,10 @@
 ---
+import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
-import { ArrowRightIcon, SquareArrowRightIcon } from "@lucide/astro";
+import { StarIcon } from "@lucide/astro";
 
-import CommonLayout from "@/layouts/common-layout.astro";
-import ProjectCover from "@/components/project-cover.astro";
-import { CDN_URL, DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
+import { CDN_URL, ICON_SIZE } from "@/scripts/constants";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
@@ -18,12 +17,13 @@ const featuredProjectIds = [
   "door",
 ];
 
-const entries = await getCollection("projects");
-const featured = entries.filter(({ id }) => featuredProjectIds.includes(id));
-const projects = entries.filter(({ id }) => !featuredProjectIds.includes(id));
+const isFeaturedProject = (id: string) => featuredProjectIds.includes(id);
+
+const projects = await getCollection("projects");
+const featured = projects.filter(({ id }) => isFeaturedProject(id));
 
 const description =
-  "Projects contain write-ups with technical details and breakdowns of the development process.";
+  "Projects contain write-ups with technical details, explanations, and breakdowns of their development process.";
 ---
 
 <BaseLayout meta={{ kind: "route", route: "projects", description }}>
@@ -32,13 +32,12 @@ const description =
   <main>
     <div class="constrain px-5">
       <h1 class="sr-only">Projects</h1>
-      <p class="prose">
-        {description} You should probably look at these first.
-      </p>
+      <p class="prose">{description}</p>
     </div>
 
-    <section class="constrain">
+    <section class="constrain mt-3">
       <h2 class="sr-only">Featured</h2>
+      <p class="prose px-5">You should probably look at these first.</p>
 
       <ul class="mt-5 grid grid-cols-1 sm:grid-cols-2 gap-3 lg:w-220 desktop:px-5">
         {featured.map(({ id, data: { name, metadata } }) => (
@@ -64,13 +63,65 @@ const description =
                 </a>
               </h3>
 
-              <TechList tech={metadata.tech} />
+              <TechList
+                tech={metadata.tech}
+                class="leading-none text-link-secondary"
+              />
             </div>
           </li>
         ))}
       </ul>
     </section>
 
-    <section></section>
+    <section class="constrain mt-5">
+      <h2 class="sr-only">All projects</h2>
+      <p class="prose px-5">
+        And here's everything in list form. They're sorted by date, so the
+        oldest project is at the very bottom.
+      </p>
+
+      <div class="desktop:px-5 mt-5">
+        {projects.map(({ id, data: { name, blurb, metadata, cover } }) => {
+          const isFeatured = isFeaturedProject(id);
+
+          return (
+            <article class="border-t-2 border-dashed border-line relative px-5 desktop:px-0 pt-2 pb-5 grid grid-cols-2 gap-x-3">
+              <div class="flex gap-x-3">
+                <Image
+                  src={cover.img}
+                  alt={cover.alt}
+                  style={{ width: "9rem", height: "auto" }}
+                  class="rounded-sm"
+                />
+
+                <div>
+                  <h3>
+                    <a
+                      href={`/projects/${id}`}
+                      class:list={[
+                        "after:absolute after:inset-0 after:z-1 link-primary",
+                        { "flex gap-1.5 items-center": isFeatured },
+                      ]}
+                    >
+                      {name}{" "}
+                      {isFeatured ?
+                        <StarIcon size={0.85 * ICON_SIZE} />
+                      : null}
+                    </a>
+                  </h3>
+                  <ContentDate
+                    date={metadata.date}
+                    class="text-link-secondary"
+                  />
+                  <TechList tech={metadata.tech} class="text-link-secondary" />
+                </div>
+              </div>
+
+              <p>{blurb}</p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
   </main>
 </BaseLayout>
