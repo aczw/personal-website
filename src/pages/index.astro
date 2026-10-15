@@ -36,7 +36,7 @@ const projects = await getEntries(
     <section class="constrain desktop:px-5 mt-5 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3">
       <h2 class="sr-only">Projects I've worked on</h2>
 
-      {projects.map(({ id, data: { subtitle, cover } }, index) => (
+      {projects.map(({ data: { cover } }, index) => (
         <article class="relative space-y-1">
           <Image
             id={`cover-image-${index}`}
