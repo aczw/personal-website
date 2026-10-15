@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
-import { StarIcon } from "@lucide/astro";
+import { ArrowRightIcon, StarIcon } from "@lucide/astro";
 
 import { CDN_URL, ICON_SIZE } from "@/scripts/constants";
 import TechList from "@/components/tech-list.astro";
@@ -11,12 +11,7 @@ import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
 import Footer from "@/components/footer.astro";
 
-const featuredProjectIds = [
-  "cuda-path-tracer",
-  "catanks",
-  "mini-minecraft",
-  "door",
-];
+const featuredProjectIds = ["cuda-pt", "catanks", "mini-minecraft", "door"];
 
 const notProjectsTODO = ["deth", "dgdg", "fireball", "moore-chair"];
 
@@ -38,48 +33,48 @@ const description =
       <p class="prose">{description}</p>
     </div>
 
-    <section class="constrain mt-3">
-      <h2 class="sr-only">Featured</h2>
+    <section class="constrain mt-5">
+      <h2 class="font-medium text-heading px-5">Featured</h2>
       <p class="prose px-5">You should probably look at these first.</p>
 
-      <div class="mt-5 px-5 space-y-2">
+      <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:px-5">
         {featured.map(({ id, data: { name, blurb, metadata } }) => (
-          <article class="relative flex gap-3 border-t-2 border-dashed border-line pt-1 pb-1.5">
-            <h3 class="w-48 shrink-0">
-              <a
-                href={`/projects/${id}`}
-                class="after:absolute after:inset-0 after:z-1 link-primary"
-              >
-                {name}
-              </a>
-            </h3>
+          <article class="relative flex flex-col gap-y-2">
+            <video
+              crossorigin="anonymous"
+              muted
+              playsinline
+              loop
+              autoplay
+              preload="auto"
+              src={`${CDN_URL}/projects/${id}/cover.mp4`}
+              class="sm:rounded-sm"
+            ></video>
 
-            <div class="w-56 shrink-0">
-              <video
-                crossorigin="anonymous"
-                muted
-                playsinline
-                loop
-                autoplay
-                preload="auto"
-                src={`${CDN_URL}/projects/${id}/cover.mp4`}
-                class="desktop:rounded-xs w-auto h-[3.5lh] shrink-0"
-              ></video>
+            <div class="px-5 sm:px-0">
+              <h3 class="flex items-center gap-1 link-primary justify-between desktop:justify-start w-full">
+                <a
+                  href={`/projects/${id}`}
+                  class="after:absolute after:inset-0 after:z-1"
+                >
+                  {name}
+                </a>
+                <ArrowRightIcon size={ICON_SIZE} />
+              </h3>
+              <ContentDate
+                date={metadata.date}
+                class="text-link-secondary leading-none"
+              />
             </div>
 
-            <div class="w-64 shrink-0">
-              <ContentDate date={metadata.date} class="text-link-secondary" />
-              <TechList tech={metadata.tech} class="text-link-secondary" />
-            </div>
-
-            <p class="max-w-(--prose-w) grow">{blurb}</p>
+            <p class="px-5 sm:px-0">{blurb}</p>
           </article>
         ))}
       </div>
     </section>
 
-    <section class="constrain mt-5">
-      <h2 class="sr-only">All projects</h2>
+    <section class="constrain mt-7">
+      <h2 class="font-medium text-heading px-5">All projects</h2>
       <p class="prose px-5">
         And here's everything in a list. They're sorted by date, so the oldest
         project is at the very bottom.

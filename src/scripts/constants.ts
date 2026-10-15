@@ -34,7 +34,7 @@ const VALID_MONTHS = [
  * There are exactly three tiles on the homepage which is enforced here.
  */
 const HOMEPAGE_PROJECTS = [
-  "cuda-path-tracer",
+  "cuda-pt",
   "catanks",
   "mini-minecraft",
 ] as const satisfies readonly [string, string, string];
