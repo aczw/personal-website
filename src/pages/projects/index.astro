@@ -2,7 +2,7 @@
 import { Image } from "astro:assets";
 import { getCollection } from "astro:content";
 
-import { ArrowRightIcon, StarIcon } from "@lucide/astro";
+import { ArrowRightIcon } from "@lucide/astro";
 
 import { ICON_SIZE } from "@/scripts/constants";
 import TechList from "@/components/tech-list.astro";
@@ -35,7 +35,9 @@ const description =
     </div>
 
     <section class="constrain mt-5">
-      <h2 class="font-medium text-heading px-5">Featured</h2>
+      <h2 id="featured" class="font-medium text-heading px-5">
+        Featured
+      </h2>
       <p class="prose px-5">You should probably look at these first.</p>
 
       <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:px-5">
@@ -72,55 +74,49 @@ const description =
     </section>
 
     <section class="constrain mt-7">
-      <h2 class="font-medium text-heading px-5">All projects</h2>
+      <h2 id="everything-else" class="font-medium text-heading px-5">
+        Everything else
+      </h2>
       <p class="prose px-5">
-        And here's everything in a list. They're sorted by date, so the oldest
+        And here are the others in a list. They're sorted by date, so the oldest
         project is at the very bottom.
       </p>
 
       <div class="px-5 mt-5">
         {projects
           .filter(({ id }) => !notProjectsTODO.includes(id))
-          .map(({ id, data: { name, description, metadata, coverImage } }) => {
-            const isFeatured = isFeaturedProject(id);
+          .filter(({ id }) => !isFeaturedProject(id))
+          .map(({ id, data: { name, description, metadata, coverImage } }) => (
+            <article class="border-t-2 border-dashed border-line relative pt-2 not-last:pb-2 flex gap-x-3 group">
+              <Image
+                src={coverImage.data}
+                alt={coverImage.alt}
+                class="rounded-xs w-auto h-[2lh] lg:h-lh"
+              />
 
-            return (
-              <article class="border-t-2 border-dashed border-line relative pt-2 not-last:pb-5 grid grid-cols-1 lg:grid-cols-2 gap-x-3 gap-y-2">
-                <div class="flex flex-col desktop:flex-row gap-3">
-                  <Image
-                    src={coverImage.data}
-                    alt={coverImage.alt}
-                    class="rounded-sm w-auto h-[2lh]"
-                  />
+              <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 w-full">
+                <div class="flex flex-col sm:flex-row gap-x-1.5 col-span-2">
+                  <h3>
+                    <a
+                      href={`/projects/${id}`}
+                      class:list={[
+                        "after:absolute after:inset-0 after:z-1 link-primary",
+                      ]}
+                    >
+                      {name}
+                    </a>
+                  </h3>
 
-                  <div>
-                    <h3>
-                      <a
-                        href={`/projects/${id}`}
-                        class:list={[
-                          "after:absolute after:inset-0 after:z-1 link-primary",
-                          { "flex gap-1.5 items-center": isFeatured },
-                        ]}
-                      >
-                        {name}{" "}
-                        {isFeatured && <StarIcon size={0.85 * ICON_SIZE} />}
-                      </a>
-                    </h3>
-                    <ContentDate
-                      date={metadata.date}
-                      class="text-link-secondary"
-                    />
-                    <TechList
-                      tech={metadata.tech}
-                      class="text-link-secondary"
-                    />
-                  </div>
+                  <p class="text-link-secondary group-hover:text-link-secondary-hover">
+                    {description.short}
+                  </p>
                 </div>
 
-                <p class="max-w-(--prose-w) lg:w-auto">{description.short}</p>
-              </article>
-            );
-          })}
+                <ContentDate date={metadata.date} class="hidden sm:block" />
+                <TechList tech={metadata.tech} class="hidden sm:flex" />
+              </div>
+            </article>
+          ))}
       </div>
     </section>
 
