@@ -9,11 +9,10 @@ import { isValidProjectCover } from "@/scripts/util";
 interface Props {
   id: string;
   cover: z.infer<ReturnType<typeof ImageSchema>>;
-  useVideo: { small: boolean } | null;
   class?: string;
 }
 
-const { id, cover, class: className, useVideo } = Astro.props;
+const { id, cover, class: className } = Astro.props;
 const path = `${CDN_URL}/projects/${id}`;
 
 if (!isValidProjectCover(cover.img.width, cover.img.height)) {
@@ -23,37 +22,17 @@ if (!isValidProjectCover(cover.img.width, cover.img.height)) {
 }
 ---
 
-<project-cover
+<div
   class:list={["relative block aspect-16/10 *:absolute *:inset-0", className]}
-  data-use-video={useVideo ? "true" : "false"}
 >
   <Image src={cover.img} alt={cover.alt} priority class="bg-sweater-9" />
 
-  {useVideo && (
-    <div
-      style={{ opacity: 0 }}
-      class="w-full transition-opacity motion-reduce:hidden"
-    >
-      {/* Setting opacity directly on video element doesn't seem to work */}
-      <video
-        autoplay
-        loop
-        muted
-        playsinline
-        preload="auto"
-        class="h-full w-full"
-      >
-        <source
-          src={`${path}/${useVideo.small ? "cover-small" : "cover"}.webm`}
-          type="video/webm"
-        />
-        <source src={`${path}/cover.mp4`} type="video/mp4" />
-      </video>
-    </div>
-  )}
-</project-cover>
-
-<script>
-  import { ProjectCover } from "@/scripts/project-cover";
-  customElements.define("project-cover", ProjectCover);
-</script>
+  <div
+    style={{ opacity: 0 }}
+    class="w-full transition-opacity motion-reduce:hidden"
+  >
+    <video autoplay loop muted playsinline preload="auto" class="h-full w-full">
+      <source src={`${path}/cover.mp4`} type="video/mp4" />
+    </video>
+  </div>
+</div>
