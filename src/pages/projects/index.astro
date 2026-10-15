@@ -42,9 +42,9 @@ const description =
       <h2 class="sr-only">Featured</h2>
       <p class="prose px-5">You should probably look at these first.</p>
 
-      <div class="mt-5 px-5">
+      <div class="mt-5 px-5 space-y-2">
         {featured.map(({ id, data: { name, blurb, metadata } }) => (
-          <article class="relative flex py-2 gap-3 border-t-2 border-dashed border-line">
+          <article class="relative flex gap-3">
             <video
               crossorigin="anonymous"
               muted
@@ -53,25 +53,30 @@ const description =
               autoplay
               preload="auto"
               src={`${CDN_URL}/projects/${id}/cover.mp4`}
-              class="desktop:rounded-sm h-[3.5lh]"
+              class="desktop:rounded-xs w-auto h-[3lh] shrink-0"
             ></video>
 
-            <div class="flex gap-x-5 w-full">
-              <h3 class="w-1/4">
-                <a
-                  href={`/projects/${id}`}
-                  class="after:absolute after:inset-0 after:z-1 link-primary"
-                >
-                  {name}
-                </a>
-              </h3>
+            <div class="border-t-2 border-dashed border-line pt-1 grow">
+              <div class="flex gap-x-5 w-full">
+                <h3 class="w-1/4">
+                  <a
+                    href={`/projects/${id}`}
+                    class="after:absolute after:inset-0 after:z-1 link-primary"
+                  >
+                    {name}
+                  </a>
+                </h3>
 
-              <div class="w-1/3">
-                <ContentDate date={metadata.date} class="text-link-secondary" />
-                <TechList tech={metadata.tech} class="text-link-secondary" />
+                <div class="w-1/3">
+                  <ContentDate
+                    date={metadata.date}
+                    class="text-link-secondary"
+                  />
+                  <TechList tech={metadata.tech} class="text-link-secondary" />
+                </div>
+
+                <p class="max-w-(--prose-w) h-[3lh]">{blurb}</p>
               </div>
-
-              <p class="max-w-(--prose-w)">{blurb}</p>
             </div>
           </article>
         ))}
