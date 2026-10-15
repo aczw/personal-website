@@ -29,30 +29,28 @@ if (!isValidProjectCover(cover.img.width, cover.img.height)) {
 >
   <Image src={cover.img} alt={cover.alt} priority class="bg-sweater-9" />
 
-  {
-    useVideo ?
-      <div
-        style={{ opacity: 0 }}
-        class="w-full transition-opacity motion-reduce:hidden"
+  {useVideo && (
+    <div
+      style={{ opacity: 0 }}
+      class="w-full transition-opacity motion-reduce:hidden"
+    >
+      {/* Setting opacity directly on video element doesn't seem to work */}
+      <video
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+        class="h-full w-full"
       >
-        {/* Setting opacity directly on video element doesn't seem to work */}
-        <video
-          autoplay
-          loop
-          muted
-          playsinline
-          preload="auto"
-          class="h-full w-full"
-        >
-          <source
-            src={`${path}/${useVideo.small ? "cover-small" : "cover"}.webm`}
-            type="video/webm"
-          />
-          <source src={`${path}/cover.mp4`} type="video/mp4" />
-        </video>
-      </div>
-    : null
-  }
+        <source
+          src={`${path}/${useVideo.small ? "cover-small" : "cover"}.webm`}
+          type="video/webm"
+        />
+        <source src={`${path}/cover.mp4`} type="video/mp4" />
+      </video>
+    </div>
+  )}
 </project-cover>
 
 <script>

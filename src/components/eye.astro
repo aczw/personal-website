@@ -7,8 +7,8 @@ type Props = Omit<HTMLAttributes<"svg">, "xmlns" | "viewBox" | "style"> & {
 
 const DEFAULT_EYE_SIZE = 7;
 
-const { class: className, size, ...props } = Astro.props;
-const length = `calc(${size ? size : DEFAULT_EYE_SIZE} * var(--spacing))`;
+const { class: className, size = DEFAULT_EYE_SIZE, ...props } = Astro.props;
+const length = `calc(${size} * var(--spacing))`;
 
 if (
   className?.includes("w-") ||

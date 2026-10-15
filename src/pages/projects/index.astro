@@ -88,7 +88,7 @@ const description =
       <div class="px-5 mt-5">
         {projects
           .filter(({ id }) => !notProjectsTODO.includes(id))
-          .map(({ id, data: { name, blurb, metadata, cover } }) => {
+          .map(({ id, data: { name, subtitle, metadata, cover } }) => {
             const isFeatured = isFeaturedProject(id);
 
             return (
@@ -97,7 +97,7 @@ const description =
                   <Image
                     src={cover.img}
                     alt={cover.alt}
-                    class="rounded-sm desktop:w-36 h-auto"
+                    class="rounded-sm w-auto h-[2lh]"
                   />
 
                   <div>
@@ -110,9 +110,7 @@ const description =
                         ]}
                       >
                         {name}{" "}
-                        {isFeatured ?
-                          <StarIcon size={0.85 * ICON_SIZE} />
-                        : null}
+                        {isFeatured && <StarIcon size={0.85 * ICON_SIZE} />}
                       </a>
                     </h3>
                     <ContentDate
@@ -126,7 +124,9 @@ const description =
                   </div>
                 </div>
 
-                <p class="max-w-(--prose-w) lg:w-auto">{blurb}</p>
+                <p class="max-w-(--prose-w) lg:w-auto">
+                  {subtitle || "<NO SUBTITLE>"}
+                </p>
               </article>
             );
           })}
