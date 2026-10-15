@@ -44,40 +44,35 @@ const description =
 
       <div class="mt-5 px-5 space-y-2">
         {featured.map(({ id, data: { name, blurb, metadata } }) => (
-          <article class="relative flex gap-3">
-            <video
-              crossorigin="anonymous"
-              muted
-              playsinline
-              loop
-              autoplay
-              preload="auto"
-              src={`${CDN_URL}/projects/${id}/cover.mp4`}
-              class="desktop:rounded-xs w-auto h-[3lh] shrink-0"
-            ></video>
+          <article class="relative flex gap-3 border-t-2 border-dashed border-line pt-1 pb-1.5">
+            <h3 class="w-48 shrink-0">
+              <a
+                href={`/projects/${id}`}
+                class="after:absolute after:inset-0 after:z-1 link-primary"
+              >
+                {name}
+              </a>
+            </h3>
 
-            <div class="border-t-2 border-dashed border-line pt-1 grow">
-              <div class="flex gap-x-5 w-full">
-                <h3 class="w-1/4">
-                  <a
-                    href={`/projects/${id}`}
-                    class="after:absolute after:inset-0 after:z-1 link-primary"
-                  >
-                    {name}
-                  </a>
-                </h3>
-
-                <div class="w-1/3">
-                  <ContentDate
-                    date={metadata.date}
-                    class="text-link-secondary"
-                  />
-                  <TechList tech={metadata.tech} class="text-link-secondary" />
-                </div>
-
-                <p class="max-w-(--prose-w) h-[3lh]">{blurb}</p>
-              </div>
+            <div class="w-56 shrink-0">
+              <video
+                crossorigin="anonymous"
+                muted
+                playsinline
+                loop
+                autoplay
+                preload="auto"
+                src={`${CDN_URL}/projects/${id}/cover.mp4`}
+                class="desktop:rounded-xs w-auto h-[3.5lh] shrink-0"
+              ></video>
             </div>
+
+            <div class="w-64 shrink-0">
+              <ContentDate date={metadata.date} class="text-link-secondary" />
+              <TechList tech={metadata.tech} class="text-link-secondary" />
+            </div>
+
+            <p class="max-w-(--prose-w) grow">{blurb}</p>
           </article>
         ))}
       </div>
