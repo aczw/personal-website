@@ -11,7 +11,6 @@ import {
   getShortDateFormatting,
   stripEndingSlash,
 } from "@/scripts/util";
-import ScreenSizeIndicator from "@/components/screen-size-indicator.astro";
 import { SITE_URL } from "@/scripts/constants";
 
 interface Props {
@@ -34,7 +33,7 @@ const head: Head = (() => {
           case "home":
             return "";
           case "projects":
-            return "Portfolio";
+            return "Projects";
           case "posts":
             return "Writing";
           default:
@@ -71,13 +70,6 @@ const head: Head = (() => {
         og: `?posts=${id}`,
       };
     }
-
-    case "gallery":
-      return {
-        title: "Gallery TODO",
-        description: "Gallery TODO",
-        og: `?gallery=TODO`,
-      };
 
     default:
       throw new Error("Unhandled meta kind!");
@@ -168,6 +160,5 @@ const title =
 
   <body>
     <slot />
-    <ScreenSizeIndicator />
   </body>
 </html>

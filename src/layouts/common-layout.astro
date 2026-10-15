@@ -8,11 +8,11 @@ import type { HeaderLink } from "@/scripts/types";
 
 type Props = ComponentProps<typeof BaseLayout> & { headerLinks: HeaderLink[] };
 
-const { headerLinks, ...props } = Astro.props;
+const { ...props } = Astro.props;
 ---
 
 <BaseLayout {...props}>
-  <Header links={headerLinks} />
+  <Header />
   <slot />
   <Footer />
 </BaseLayout>
