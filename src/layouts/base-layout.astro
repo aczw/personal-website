@@ -52,7 +52,7 @@ const head: Head = (() => {
       const { data, id } = meta.projectsEntry;
       return {
         title: data.name,
-        description: data.blurb,
+        description: data.description.long,
         og: `?projects=${id}`,
       };
     }

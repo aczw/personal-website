@@ -21,7 +21,7 @@ const projects = defineCollection({
     z.object({
       name: z.string(),
       description: z.strictObject({
-        short: z.string().refine((subtitle) => subtitle.length <= 40),
+        short: z.string().refine((text) => text.length <= 40),
         long: LongDescriptionSchema,
       }),
       metadata: z.strictObject({

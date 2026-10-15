@@ -38,7 +38,7 @@ const description =
       <p class="prose px-5">You should probably look at these first.</p>
 
       <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:px-5">
-        {featured.map(({ id, data: { name, blurb, metadata } }) => (
+        {featured.map(({ id, data: { name, description, metadata } }) => (
           <article class="relative flex flex-col gap-y-2">
             <video
               crossorigin="anonymous"
@@ -67,7 +67,7 @@ const description =
               />
             </div>
 
-            <p class="px-5 sm:px-0">{blurb}</p>
+            <p class="px-5 sm:px-0">{description.long}</p>
           </article>
         ))}
       </div>
@@ -83,7 +83,7 @@ const description =
       <div class="px-5 mt-5">
         {projects
           .filter(({ id }) => !notProjectsTODO.includes(id))
-          .map(({ id, data: { name, subtitle, metadata, cover } }) => {
+          .map(({ id, data: { name, description, metadata, cover } }) => {
             const isFeatured = isFeaturedProject(id);
 
             return (
@@ -119,9 +119,7 @@ const description =
                   </div>
                 </div>
 
-                <p class="max-w-(--prose-w) lg:w-auto">
-                  {subtitle || "<NO SUBTITLE>"}
-                </p>
+                <p class="max-w-(--prose-w) lg:w-auto">{description.short}</p>
               </article>
             );
           })}

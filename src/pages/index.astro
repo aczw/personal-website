@@ -36,7 +36,7 @@ const projects = await getEntries(
     <section class="constrain desktop:px-5 mt-5 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3">
       <h2 class="sr-only">Projects I've worked on</h2>
 
-      {projects.map(({ id, data: { subtitle, cover } }, index) => (
+      {projects.map(({ id, data: { description, cover } }, index) => (
         <article class="relative space-y-1">
           <Image
             id={`cover-image-${index}`}
@@ -56,7 +56,7 @@ const projects = await getEntries(
               href={`/projects/${id}`}
               class="after:absolute flex items-center justify-between desktop:justify-start gap-1 after:inset-0 after:z-1 link-primary w-full"
             >
-              {subtitle || "<NO SUBTITLE>"}
+              {description.short}
               <ArrowRightIcon size={ICON_SIZE} />
             </a>
           </h3>

@@ -3,7 +3,7 @@ import { z } from "astro/zod";
 
 import { VALID_MONTHS } from "@/scripts/constants";
 
-const LongDescriptionSchema = z.string().refine((blurb) => blurb.length <= 170);
+const LongDescriptionSchema = z.string().refine((text) => text.length <= 170);
 
 const ImageSchema = (image: ImageFunction) =>
   z.object({

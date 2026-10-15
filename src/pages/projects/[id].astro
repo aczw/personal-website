@@ -31,8 +31,7 @@ const project = await getEntry("projects", id)!;
 const {
   data: {
     name,
-    subtitle,
-    blurb,
+    description,
     metadata: { tech, date, link, sourceHref },
     cover,
   },
@@ -56,13 +55,11 @@ const { Content } = await render(project);
         {name}
       </h1>
 
-      {subtitle && (
-        <p class="mt-1 text-2xl text-sweater-2 desktop:text-4xl light:text-sweater-7">
-          {subtitle}
-        </p>
-      )}
+      <p class="mt-1 text-2xl text-sweater-2 desktop:text-4xl light:text-sweater-7">
+        {description.short}
+      </p>
 
-      <p class="mt-1.5 max-w-(--content-w)">{blurb}</p>
+      <p class="mt-1.5 max-w-(--content-w)">{description.long}</p>
     </section>
 
     <section
