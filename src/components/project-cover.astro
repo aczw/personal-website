@@ -50,17 +50,13 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
 </div>
 
 <script>
+  import { commitStyleAnimation } from "@/scripts/util";
+
   const keyframeOpts: KeyframeAnimationOptions = {
     duration: 600,
     // https://easings.net/#easeInOutExpo
     easing: "cubic-bezier(0.87, 0, 0.13, 1)",
     fill: "forwards",
-  };
-
-  const commitStyleAnimation = (ev: AnimationPlaybackEvent) => {
-    const animation = ev.currentTarget as Animation;
-    animation.commitStyles();
-    animation.cancel();
   };
 
   const isVideoReady = (videoElt: HTMLVideoElement) => {

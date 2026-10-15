@@ -50,6 +50,8 @@ import { ICON_SIZE } from "@/scripts/constants";
 </footer>
 
 <script>
+  import { commitStyleAnimation } from "@/scripts/util";
+
   const flavorTexts = [
     "Waiting for something to happen?",
     "You carve into the bridge / It might not be so bad to die",
@@ -109,11 +111,7 @@ import { ICON_SIZE } from "@/scripts/constants";
         easing: "ease-out",
         fill: "forwards",
       })
-      .addEventListener("finish", (ev) => {
-        const animation = ev.currentTarget as Animation;
-        animation.commitStyles();
-        animation.cancel();
-      });
+      .addEventListener("finish", commitStyleAnimation);
   };
 
   const flavorElt = document.getElementById("flavor")!;

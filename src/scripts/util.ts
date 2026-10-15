@@ -92,6 +92,12 @@ const calculateRelativeTime = (
   return rtf.format(Math.ceil(diffInSeconds), "second");
 };
 
+const commitStyleAnimation = (ev: AnimationPlaybackEvent) => {
+  const animation = ev.currentTarget as Animation;
+  animation.commitStyles();
+  animation.cancel();
+};
+
 export {
   isValidProjectCover,
   stripEndingSlash,
@@ -101,4 +107,5 @@ export {
   getDateKind,
   capitalize,
   calculateRelativeTime,
+  commitStyleAnimation,
 };
