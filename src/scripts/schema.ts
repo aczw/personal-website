@@ -3,10 +3,7 @@ import { z } from "astro/zod";
 
 import { VALID_MONTHS } from "@/scripts/constants";
 
-const BlurbSchema = z.string().refine((blurb) => blurb.length <= 170, {
-  error:
-    "Blurb should be 170 characters or less (so it looks nice in previews).",
-});
+const LongDescriptionSchema = z.string().refine((blurb) => blurb.length <= 170);
 
 const ImageSchema = (image: ImageFunction) =>
   z.object({
@@ -74,7 +71,7 @@ const TechSchema = z.string().array();
 const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 
 export {
-  BlurbSchema,
+  LongDescriptionSchema,
   ImageSchema,
   LinkSchema,
   SourceHrefSchema,

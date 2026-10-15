@@ -3,7 +3,7 @@ import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
 import {
-  BlurbSchema,
+  LongDescriptionSchema,
   DateSchema,
   ImageSchema,
   LinkSchema,
@@ -20,21 +20,16 @@ const projects = defineCollection({
   schema: ({ image }) =>
     z.object({
       name: z.string(),
-      subtitle: z
-        .string()
-        .refine((subtitle) => subtitle.length <= 40, {
-          error:
-            "Subtitle should be extremely short. Use a blurb for longer content.",
-        })
-        .optional(),
-      blurb: BlurbSchema,
-      metadata: z.object({
+      description: z.strictObject({
+        short: z.string().refine((subtitle) => subtitle.length <= 40),
+        long: LongDescriptionSchema,
+      }),
+      metadata: z.strictObject({
         tech: TechSchema,
         link: LinkSchema.optional(),
         sourceHref: SourceHrefSchema.optional(),
         date: DateSchema,
       }),
-      order: z.number(),
       cover: ImageSchema(image),
     }),
 });
@@ -48,7 +43,7 @@ const posts = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      blurb: BlurbSchema.optional(),
+      blurb: LongDescriptionSchema.optional(),
       posted: z.date(),
       cover: ImageSchema(image).optional(),
     }),
