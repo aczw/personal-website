@@ -1,4 +1,5 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import { Image } from "astro:assets";
 import type { z } from "astro/zod";
 
@@ -6,33 +7,114 @@ import type { ImageSchema } from "@/content.config";
 import { CDN_URL } from "@/scripts/constants";
 import { isValidProjectCover } from "@/scripts/util";
 
-interface Props {
-  id: string;
-  cover: z.infer<ReturnType<typeof ImageSchema>>;
-  class?: string;
-}
+type Props = HTMLAttributes<"div"> & {
+  projectId: string;
+  coverImage: z.infer<ReturnType<typeof ImageSchema>>;
+};
 
-const { id, cover, class: className } = Astro.props;
-const path = `${CDN_URL}/projects/${id}`;
+const { projectId, coverImage, class: className, ...props } = Astro.props;
 
-if (!isValidProjectCover(cover.data.width, cover.data.height)) {
+if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
   throw new Error(
-    `Error rendering ${id}: project cover images must have an aspect ratio of 16:10!`,
+    `Project cover image for "${projectId}" does not have 16:10 aspect ratio`,
   );
 }
 ---
 
 <div
-  class:list={["relative block aspect-16/10 *:absolute *:inset-0", className]}
+  class:list={[
+    "relative aspect-16/10 overflow-hidden *:absolute *:inset-0",
+    className,
+  ]}
+  {...props}
 >
-  <Image src={cover.data} alt={cover.alt} priority class="bg-sweater-9" />
+  <Image
+    src={coverImage.data}
+    alt={coverImage.alt}
+    priority
+    decoding="async"
+    class="bg-sweater-9 light:bg-sweater-2"
+  />
 
-  <div
-    style={{ opacity: 0 }}
-    class="w-full transition-opacity motion-reduce:hidden"
-  >
-    <video autoplay loop muted playsinline preload="auto" class="h-full w-full">
-      <source src={`${path}/cover.mp4`} type="video/mp4" />
-    </video>
-  </div>
+  <video
+    crossorigin="anonymous"
+    muted
+    playsinline
+    loop
+    autoplay
+    preload="auto"
+    src={`${CDN_URL}/projects/${projectId}/cover.mp4`}
+    class="project-cover-video scale-50 opacity-0 blur-2xl"
+    data-loaded="false"
+  ></video>
 </div>
+
+<script>
+  const keyframeOpts: KeyframeAnimationOptions = {
+    duration: 600,
+    // https://easings.net/#easeInOutExpo
+    easing: "cubic-bezier(0.87, 0, 0.13, 1)",
+    fill: "forwards",
+  };
+
+  const commitStyleAnimation = (ev: AnimationPlaybackEvent) => {
+    const animation = ev.currentTarget as Animation;
+    animation.commitStyles();
+    animation.cancel();
+  };
+
+  const isVideoReady = (videoElt: HTMLVideoElement) => {
+    return videoElt.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA;
+  };
+
+  const checkAndTransitionVideo = (
+    imageElt: HTMLImageElement,
+    videoElt: HTMLVideoElement,
+  ) => {
+    if (!isVideoReady(videoElt) || videoElt.dataset["loaded"]! === "true") {
+      return;
+    }
+
+    videoElt.dataset["loaded"] = "true";
+    videoElt
+      .animate([{ scale: 1.0, opacity: 1, filter: "none" }], keyframeOpts)
+      .addEventListener("finish", commitStyleAnimation);
+
+    imageElt
+      .animate(
+        [{ scale: 0.5, opacity: 0, filter: "blur(var(--blur-2xl))" }],
+        keyframeOpts,
+      )
+      .addEventListener("finish", (ev) => {
+        commitStyleAnimation(ev);
+        imageElt.remove();
+      });
+  };
+
+  document
+    .querySelectorAll<HTMLVideoElement>("video.project-cover-video")
+    .forEach((videoElt) => {
+      const imageElt = videoElt.previousElementSibling as HTMLImageElement;
+
+      if (isVideoReady(videoElt)) {
+        videoElt.dataset["loaded"] = "true";
+
+        // If video is immediately ready, skip the transition animation
+        // and fade directly instead
+        videoElt.classList.remove("scale-50", "blur-2xl");
+        videoElt
+          .animate([{ opacity: 1 }], keyframeOpts)
+          .addEventListener("finish", (ev) => {
+            commitStyleAnimation(ev);
+            imageElt.remove();
+          });
+      } else {
+        videoElt.addEventListener("progress", () =>
+          checkAndTransitionVideo(imageElt, videoElt),
+        );
+        videoElt.addEventListener("canplaythrough", () =>
+          checkAndTransitionVideo(imageElt, videoElt),
+        );
+      }
+    });
+</script>
