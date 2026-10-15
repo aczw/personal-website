@@ -30,7 +30,7 @@ const projects = defineCollection({
         sourceHref: SourceHrefSchema.optional(),
         date: DateSchema,
       }),
-      cover: ImageSchema(image),
+      coverImage: ImageSchema(image),
     }),
 });
 
