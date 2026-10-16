@@ -33,7 +33,7 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
     alt={coverImage.alt}
     priority
     decoding="async"
-    class="bg-sweater-9 light:bg-sweater-2"
+    class="bg-sweater-9 light:bg-sweater-2 w-full h-auto"
   />
 
   <video
@@ -44,7 +44,7 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
     autoplay
     preload="auto"
     src={`${CDN_URL}/projects/${projectId}/cover.mp4`}
-    class="project-cover-video scale-50 opacity-0 blur-2xl"
+    class="project-cover-video scale-50 opacity-0 blur-2xl w-full h-auto bg-sweater-9 light:bg-sweater-2"
     data-loaded="false"
   ></video>
 </div>
@@ -53,7 +53,7 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
   import { commitStyleAnimation } from "@/scripts/util";
 
   const keyframeOpts: KeyframeAnimationOptions = {
-    duration: 600,
+    duration: 500,
     // https://easings.net/#easeInOutExpo
     easing: "cubic-bezier(0.87, 0, 0.13, 1)",
     fill: "forwards",

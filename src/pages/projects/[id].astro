@@ -9,14 +9,15 @@ import {
   WrenchIcon,
 } from "@lucide/astro";
 
-import CommonLayout from "@/layouts/common-layout.astro";
+import BaseLayout from "@/layouts/base-layout.astro";
 import MdxContent from "@/components/mdx-content.astro";
 import ProjectCover from "@/components/project-cover.astro";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import { isValidProjectCover } from "@/scripts/util";
 import { ICON_SIZE } from "@/scripts/constants";
-import Link from "@/components/link.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection("projects");
@@ -41,117 +42,94 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 
-const numMetadata = 2 + (link ? 1 : 0) + (sourceHref ? 1 : 0);
 const { Content } = await render(project);
 ---
 
-<CommonLayout
-  meta={{ kind: "projects", projectsEntry: project }}
-  headerLinks={[{ href: "/projects", text: "Portfolio" }]}
->
+<BaseLayout meta={{ kind: "projects", projectsEntry: project }}>
+  <Header />
+
   <main>
-    <section class="mx-auto mb-pad-4 w-full px-pad-2 pt-pad desktop:w-4/5 desktop:px-pad desktop:pt-0 lg:w-(--real-header-w)">
-      <h1 class="text-[2.65rem] leading-none font-bold text-heading sm:text-5xl">
-        {name}
-      </h1>
+    <div class="constrain lg:px-5">
+      <ProjectCover
+        projectId={id}
+        coverImage={coverImage}
+        class="lg:rounded-lg"
+      />
 
-      <p class="mt-1 text-2xl text-sweater-2 desktop:text-4xl light:text-sweater-7">
-        {description.short}
-      </p>
+      <hgroup class="px-5 lg:px-0 mt-5">
+        <h1 class="text-heading font-medium text-lg/tight">{name}</h1>
+        <p class="text-lg/tight text-heading">{description.short}</p>
+        <p class="prose mt-3">{description.long}</p>
+      </hgroup>
+    </div>
 
-      <p class="mt-1.5 max-w-(--content-w)">{description.long}</p>
+    <section class="constrain px-5 mt-5">
+      <h2 class="sr-only">Overview</h2>
+
+      <dl class="prose grid grid-cols-2 *:col-span-2 *:grid *:grid-cols-subgrid *:border-t-2 *:border-dashed *:border-line">
+        <div>
+          <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-dashed border-line py-1 pr-3">
+            Made with <WrenchIcon size={ICON_SIZE} class="stroke-icon" />
+          </dt>
+          <dd class="py-1 pl-3">
+            <TechList tech={tech} />
+          </dd>
+        </div>
+
+        <div>
+          <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-dashed border-line py-1 pr-3">
+            Duration <CalendarFoldIcon size={ICON_SIZE} class="stroke-icon" />
+          </dt>
+          <dd class="py-1 pl-3">
+            <ContentDate date={date} />
+          </dd>
+        </div>
+
+        {link && (
+          <div>
+            <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-dashed border-line py-1 pr-3">
+              {link.text}{" "}
+              <ExternalLinkIcon size={ICON_SIZE} class="stroke-icon" />
+            </dt>
+            <dd class="py-1 pl-3 relative">
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener"
+                class="link-primary after:absolute after:inset-0 after:z-1"
+              >
+                {
+                  /* Get rid of https:// and only show domain */
+                  link.href.slice(8).split("/")[0]
+                }
+              </a>
+            </dd>
+          </div>
+        )}
+
+        {sourceHref && (
+          <div>
+            <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-dashed border-line py-1 pr-3">
+              Source
+              <FileCodeIcon size={ICON_SIZE} class="stroke-icon" />
+            </dt>
+            <dd class="py-1 pl-3 relative">
+              <a
+                href={sourceHref}
+                target="_blank"
+                rel="noopener"
+                class="link-primary after:absolute after:inset-0 after:z-1"
+              >
+                View on GitHub
+              </a>
+            </dd>
+          </div>
+        )}
+      </dl>
     </section>
 
-    <section
-      aria-label="Overview"
-      class="mb-pad-2 space-y-pad-2 desktop:mb-pad-4 desktop:space-y-pad-4"
-    >
-      <div class="mx-auto max-w-(--real-wide-w) md:px-pad-2">
-        <ProjectCover
-          projectId={id}
-          coverImage={coverImage}
-          class="overflow-hidden md:rounded-xl"
-        />
-      </div>
-
-      <div class="mx-auto w-full px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)">
-        <dl
-          aria-label="Metadata"
-          class="grid grid-cols-1 gap-y-pad border-style *:flex *:gap-x-pad *:border-style **:leading-tight desktop:-mx-pad desktop:gap-y-0 desktop:border-t-(length:--border-w) desktop:border-l-(length:--border-w) desktop:*:border-r-(length:--border-w) desktop:*:border-b-(length:--border-w) desktop:*:p-pad md:grid-cols-(--initial-grid-cols)"
-          style={`--initial-grid-cols: repeat(${numMetadata % 2 === 0 ? 2 : numMetadata}, minmax(0, 1fr));`}
-        >
-          <div>
-            <div class="grow space-y-0.5">
-              <dt class="font-bold text-heading">Made with</dt>
-              <dd>
-                <TechList tech={tech} />
-              </dd>
-            </div>
-            <WrenchIcon
-              aria-hidden="true"
-              size={ICON_SIZE}
-              class="shrink-0 stroke-icon"
-            />
-          </div>
-
-          <div>
-            <div class="grow space-y-0.5">
-              <dt class="font-bold text-heading">Duration</dt>
-              <dd>
-                <ContentDate date={date} class="" />
-              </dd>
-            </div>
-            <CalendarFoldIcon
-              aria-hidden="true"
-              size={ICON_SIZE}
-              class="shrink-0 stroke-icon"
-            />
-          </div>
-
-          {link && (
-            <div>
-              <div class="grow space-y-0.5">
-                <dt class="font-bold wrap-anywhere text-heading">
-                  {link.text}
-                </dt>
-                <dd>
-                  <Link target="_blank" href={link.href} class="break-all">
-                    {
-                      /* Get rid of https:// and only show domains */
-                      link.href.slice(8).split("/")[0]
-                    }
-                  </Link>
-                </dd>
-              </div>
-              <ExternalLinkIcon
-                aria-hidden="true"
-                size={ICON_SIZE}
-                class="shrink-0 stroke-icon"
-              />
-            </div>
-          )}
-
-          {sourceHref && (
-            <div>
-              <div class="grow space-y-0.5">
-                <dt class="font-bold text-heading">Source</dt>
-                <dd>
-                  <Link target="_blank" href={sourceHref} class="">
-                    View on GitHub
-                  </Link>
-                </dd>
-              </div>
-              <FileCodeIcon
-                aria-hidden="true"
-                size={ICON_SIZE}
-                class="shrink-0 stroke-icon"
-              />
-            </div>
-          )}
-        </dl>
-      </div>
-    </section>
-
-    <MdxContent aria-label="Write-up" content={Content} />
+    <MdxContent content={Content} />
   </main>
-</CommonLayout>
+
+  <Footer />
+</BaseLayout>

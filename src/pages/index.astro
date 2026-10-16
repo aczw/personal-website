@@ -33,7 +33,7 @@ const projects = await getEntries(
       <p>Here are some projects I've worked on...</p>
     </div>
 
-    <section class="constrain desktop:px-5 mt-5 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3">
+    <section class="constrain desktop:px-5 mt-7 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3">
       <h2 class="sr-only">Projects I've worked on</h2>
 
       {projects.map(({ id, data: { description, coverImage } }, index) => (
@@ -80,7 +80,7 @@ const projects = await getEntries(
             <Fragment slot="fallback">
               <div
                 aria-hidden="true"
-                class="px-5 desktop:px-0 mb-5 bg-sweater-9 light:bg-sweater-2 desktop:rounded-sm animate-pulse h-lh"
+                class="px-5 desktop:px-0 mb-7 bg-sweater-9 light:bg-sweater-2 desktop:rounded-sm animate-pulse h-lh"
               ></div>
 
               <div
@@ -95,7 +95,7 @@ const projects = await getEntries(
           </TopStats>
         </div>
 
-        <div class="grow flex flex-col gap-y-5 pr-5 pl-5 lg:pl-0">
+        <div class="grow flex flex-col gap-y-7 pr-5 pl-5 lg:pl-0">
           <h3>Recently I've been listening to...</h3>
 
           <RecentTracks server:defer>
@@ -116,7 +116,7 @@ const projects = await getEntries(
       </div>
     </section>
 
-    <section class="mt-5 constrain">
+    <section class="mt-7 constrain">
       <h2 class="sr-only">Manga and anime I've been consuming</h2>
 
       <p class="prose mb-3 px-5">
@@ -128,7 +128,7 @@ const projects = await getEntries(
         <div
           aria-hidden="true"
           slot="fallback"
-          class="space-y-5 animate-pulse *:mx-5"
+          class="space-y-7 animate-pulse *:mx-5"
         >
           <div class="prose">
             <div class="bg-sweater-9 light:bg-sweater-2 h-lh sm:mr-5 rounded-sm"></div>

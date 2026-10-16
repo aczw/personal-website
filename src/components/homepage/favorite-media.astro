@@ -41,8 +41,10 @@ const entries: {
 ];
 ---
 
-<div class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 opacity-100 transition-opacity duration-500 md:grid-cols-2 starting:opacity-0">
-  <ul class="flex gap-x-pad overflow-x-auto rounded-md md:justify-between">
+<div class="space-y-7 opacity-100 transition-opacity duration-600 starting:opacity-0">
+  <p class="px-5 prose">Here are some of my favorites.</p>
+
+  <ul class="flex items-end gap-x-3 overflow-x-auto rounded-sm px-5">
     {entries.map(({ title, cover, url }) => (
       <li class="shrink-0">
         <a href={url} title={title} target="_blank" rel="noopener">
@@ -50,24 +52,11 @@ const entries: {
             src={cover}
             alt={`Cover art for ${title}`}
             priority
-            class="rounded-md bg-sweater-9"
-            style={{ height: "4lh", width: "auto" }}
+            class="rounded-sm bg-sweater-9 light:bg-sweater-2"
+            style={{ width: "auto", height: "5.25lh" }}
           />
         </a>
       </li>
     ))}
   </ul>
-
-  <p class="max-w-(--content-w)">
-    I've tracked most of the manga and anime I've consumed since I started in
-    2020. Here are some of my favorites.{" "}
-    <a
-      href="https://anilist.co/user/czw"
-      target="_blank"
-      rel="noopener"
-      class="link-primary"
-    >
-      View my AniList profile.
-    </a>
-  </p>
 </div>

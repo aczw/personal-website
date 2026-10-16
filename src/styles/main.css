@@ -51,15 +51,13 @@
     color-scheme: light dark;
 
     --max-w: 75rem; /* 1200px */
+    --wide-w: 56.25rem; /* 900px */
     --prose-w: 34.375rem; /* 550px */
 
     --border-w: 2px;
 
     --header-w: 50rem; /* 800px */
     --real-header-w: calc(var(--header-w) + var(--spacing-pad-2));
-
-    --wide-w: 75rem; /* 1200px */
-    --real-wide-w: calc(var(--wide-w) + var(--spacing-pad-4));
 
     --line: var(--color-sweater-8);
 

@@ -43,7 +43,7 @@ const format = new Intl.RelativeTimeFormat("en-US", {
 });
 ---
 
-<div class="space-y-5 opacity-100 transition-opacity duration-600 starting:opacity-0">
+<div class="space-y-7 opacity-100 transition-opacity duration-600 starting:opacity-0">
   <p class="px-5 prose">
     {capitalize(calculateRelativeTime(format, first.createdAt))}, I{" "}
     {first.status}{" "}
@@ -81,7 +81,7 @@ const format = new Intl.RelativeTimeFormat("en-US", {
               alt={`Cover art for ${resolvedTitle}`}
               inferSize
               priority
-              class="rounded-sm bg-sweater-9 light:bg-sweater-2 w-auto"
+              class="rounded-sm bg-sweater-9 light:bg-sweater-2"
               style={{ width: "auto", height: "5.25lh" }}
             />
           </a>
