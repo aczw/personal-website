@@ -12,35 +12,31 @@ type Props = HTMLAttributes<"article"> & {
   content: AstroComponentFactory;
 };
 
-const { content: Content, class: className, ...props } = Astro.props;
+const { content: Content, ...props } = Astro.props;
 ---
 
-<Fragment>
-  <article class:list={["mdx", className]} {...props}>
-    <Content
-      components={{
-        h2: H2,
-        h3: H3,
-        h4: H4,
-        blockquote: Aside,
-        a: Anchor,
-      }}
-    />
-  </article>
+<article class="mdx mt-7" {...props}>
+  <Content
+    components={{
+      h2: H2,
+      h3: H3,
+      h4: H4,
+      blockquote: Aside,
+      a: Anchor,
+    }}
+  />
+</article>
 
-  <dialog
-    class="fixed top-1/2 left-1/2 mb-0 w-full max-w-(--real-wide-w) transform-[translate(-50%,-50%)] bg-transparent outline-0 backdrop:bg-sweater-10/85 light:backdrop:bg-sweater-1/85"
-  >
-    <div class="p-pad-2">
-      <img
-        loading="eager"
-        decoding="sync"
-        fetchpriority="high"
-        class="mx-auto max-h-[80vh] cursor-zoom-out rounded-xl select-none"
-      />
-    </div>
-  </dialog>
-</Fragment>
+<dialog class="fixed top-1/2 left-1/2 mb-0 w-full max-w-(--max-w) transform-[translate(-50%,-50%)] bg-transparent outline-0 backdrop:bg-sweater-10/85 light:backdrop:bg-sweater-1/85">
+  <div class="p-5">
+    <img
+      loading="eager"
+      decoding="sync"
+      fetchpriority="high"
+      class="mx-auto max-h-[80vh] cursor-zoom-out rounded-sm select-none"
+    />
+  </div>
+</dialog>
 
 <script>
   const dialogElt = document.querySelector("dialog");
@@ -50,12 +46,12 @@ const { content: Content, class: className, ...props } = Astro.props;
   /**
    * @see https://cassidoo.co/post/html-dialog-on-image-click
    */
-  function makeMediaZoomable() {
+  const makeMediaZoomable = () => {
     // Only activate on desktop
     if (!window.matchMedia("(hover: hover)").matches) return;
 
     if (!dialogElt || !dialogImgElt) {
-      console.error("Dialog and/or dialog image not found!");
+      console.error("Dialog and/or dialog image not found");
       return;
     }
 
@@ -85,7 +81,7 @@ const { content: Content, class: className, ...props } = Astro.props;
       dialogImgElt.srcset = "";
       dialogImgElt.alt = "";
     });
-  }
+  };
 
   makeMediaZoomable();
 </script>

@@ -1,0 +1,47 @@
+@utility mdx {
+  @apply constrain space-y-4;
+
+  > * {
+    @apply prose px-5;
+
+    /* Remove spacing from elements preceding LaTeX, because we're
+     * overriding its spacing later. */
+    &:has(+ mjx-container) {
+      @apply mb-0;
+    }
+  }
+
+  /* All outdented elements will span the full screen width on mobile,
+   * therefore we need to remove its border radius. */
+  .mdx-outdent *,
+  .mdx-full * {
+    @apply rounded-none desktop:rounded-xl;
+  }
+
+  /* Not supported on mobile. */
+  @media (hover: hover) {
+    img:not([data-no-zoom]) {
+      @apply cursor-zoom-in transition-transform active:scale-97;
+    }
+  }
+}
+
+@utility mdx-outdent {
+  @apply px-0;
+
+  figcaption {
+    @apply ml-5 max-w-[calc(var(--prose-w)-(5*var(--spacing)))];
+  }
+}
+
+@utility mdx-wide {
+  @apply w-(--wide-w);
+}
+
+@utility mdx-full {
+  @apply mdx-wide;
+}
+
+@utility mdx-grid-2 {
+  @apply grid grid-cols-1 gap-pad-2 sm:grid-cols-2;
+}

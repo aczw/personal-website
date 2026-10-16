@@ -59,7 +59,7 @@ After performing input validation with Zod, I insert the values into the databas
 
 Any random generator will have a probability of a collision, and [this calculator](https://zelark.github.io/nano-id-cc) estimates that 266,000 short links need to be generated before we reach a _one percent_ probability of a collision. This is a very tiny number, and if it happens I should probably buy a lottery ticket, but I check anyway by querying the database:
 
-<div class="mdx-bleed">
+<div class="mdx-wide">
 
 ```js title="src/pages/api/create.ts"
 let short;
@@ -82,7 +82,7 @@ All potential redirects are handled in `[...slug].astro` inside the frontmatter.
 
 If no short URL exists in the database, then I simply redirect to the home page.
 
-<div class="mdx-bleed">
+<div class="mdx-wide">
 
 ```astro title="src/pages/[...slug].astro"
 ---
@@ -107,7 +107,7 @@ if (!exist) {
 
 Astro has a built-in way of dynamically modifying the response returned by the server. In particular, I set the status code to `301` and set the `Location` header to the original URL.
 
-<div class="mdx-bleed">
+<div class="mdx-wide">
 
 ```astro title="src/pages/[...slug].astro" ins={17-18} collapse={2-15}
 ---
