@@ -14,8 +14,8 @@
   /* All outdented elements will span the full screen width on mobile,
    * therefore we need to remove its border radius. */
   .mdx-outdent *,
-  .mdx-full * {
-    @apply rounded-none desktop:rounded-xl;
+  .mdx-out-wide * {
+    @apply rounded-none md:rounded-sm;
   }
 
   /* Not supported on mobile. */
@@ -27,21 +27,25 @@
 }
 
 @utility mdx-outdent {
-  @apply px-0;
+  @apply px-0 md:px-5;
 
   figcaption {
-    @apply ml-5 max-w-[calc(var(--prose-w)-(5*var(--spacing)))];
+    @apply ml-5 max-w-[calc(var(--prose-w)-(2*5*var(--spacing)))] md:ml-0;
   }
 }
 
-@utility mdx-wide {
-  @apply w-(--wide-w);
+@utility mdx-w-wide {
+  @apply w-auto max-w-(--wide-w);
 }
 
-@utility mdx-full {
-  @apply mdx-wide;
+@utility mdx-w-max {
+  @apply w-auto;
+}
+
+@utility mdx-out-wide {
+  @apply mdx-outdent mdx-w-wide;
 }
 
 @utility mdx-grid-2 {
-  @apply grid grid-cols-1 gap-pad-2 sm:grid-cols-2;
+  @apply grid grid-cols-1 gap-3 sm:grid-cols-2;
 }

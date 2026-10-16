@@ -45,7 +45,7 @@ Since every link in my vault uses the shortest path possible—plus, none of my 
 
 This is thanks to Quartz’s Obsidian support. Make sure to set the markdownLinkResolution option to shortest for the CrawlLinks plugin, like so:
 
-<div class="mdx-wide">
+<div class="mdx-w-wide">
 
 ```ts title="quartz.config.ts"
 const config: QuartzConfig = {
@@ -60,7 +60,7 @@ const config: QuartzConfig = {
 
 Since I’ll be making copies of my notes, the file creation date on disk will not be accurate. Fortunately, I keep track of when each note was created and modified via frontmatter within the note itself. I tell Quartz to use and display that instead.
 
-<div class="mdx-wide">
+<div class="mdx-w-wide">
 
 ```ts title="quartz.config.ts" ins={5}
 const config: QuartzConfig = {
@@ -84,7 +84,7 @@ Most of the time was spent on making things look ✨*pretty*✨
 
 I customized Quartz to use the same color scheme as this website. I also created a light mode version,[^3] and honestly I think it looks even better than dark:
 
-<div class="mdx-full">
+<div class="mdx-out-wide">
   ![Homepage of the my Quartz site, displayed in light purple
   colors.](quartz-light.png)
 </div>
@@ -139,7 +139,7 @@ Following [Quartz’s advice](https://quartz.jzhao.xyz/features/private-pages), 
 
 Here is the entirety of my workflow file:
 
-<div class="mdx-wide">
+<div class="mdx-w-wide">
 
 ```yaml title=".github/workflows/update-content.yml"
 name: Update vault content

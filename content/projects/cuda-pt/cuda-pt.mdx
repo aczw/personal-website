@@ -138,7 +138,7 @@ The Lambertian BRDF says that for an outgoing ray $\omega_o$, the scattering of 
 
 After adding it, obviously I had to test this material out on the classics.
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   <div class="mdx-grid-2">
     ![](renders/diffuse/sphere-800x800-5000.png)
     ![](renders/diffuse/stanford_dragon-800x800-5000.png)
@@ -197,7 +197,7 @@ We will combine them both later to create dielectrics.
 
 First, complete reflection.
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   <div class="mdx-grid-2">
     ![](renders/perf-spec-dielectric/pure_reflection-800x800-5000.png)
     ![](renders/perf-spec-dielectric/pure_reflection_inv-800x800-5000.png)
@@ -215,7 +215,7 @@ Transmission was much trickier to implement. Two things in particular stood out.
 
 First, IORs are always defined relative to _something_.[^4] At a given intersection point, we always need to know what medium we're _entering_ and what medium we're _leaving_, because that affects the IOR ratio. How I keep track of this is to store an additional enum in my `Intersection` data struct that informs me whether the intersection was with the outside of a surface, or inside. Depending on the surface, we may have to flip the IOR.
 
-<div class="mdx-wide">
+<div class="mdx-w-wide">
 
 ```cpp
 /// Tracks which side of the geometry the intersection is at.
@@ -236,7 +236,7 @@ Second, there are cases where the incident angle is so large that a refraction a
 
 Keeping these two things in mind, we can get transmission working.
 
-<figure class="mdx-wide">
+<figure class="mdx-w-wide">
   <div class="mdx-grid-2">
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.0.png)
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.55.png)
@@ -256,7 +256,7 @@ To make our path tracing a little easier (and to piggyback off of the wonders of
 
 What should the probability be? A simple solution is to set it to 50/50. However, this wouldn't result in an accurate physical render because we're not considering the Fresnel coefficients that dictate how much light is reflected and refracted at an intersection.
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   <div class="mdx-grid-2">
     ![](fresnel-half-half.png) ![](fresnel-accurate.png)
   </div>
@@ -265,7 +265,7 @@ What should the probability be? A simple solution is to set it to 50/50. However
 
 While both renders use the IOR of glass, the second one looks more real because we're considering the Fresnel reflectance term when randomly deciding to reflect or refract the ray:
 
-<div class="mdx-wide">
+<div class="mdx-w-wide">
 
 ```cpp
 auto rng = make_seeded_random_engine(curr_iter, index, curr_depth);
@@ -302,7 +302,7 @@ Schlick appears to be 0.119% faster, which is not significant enough to make a c
 
 While I did not implement anything close to actual PBR techniques, I was curious how far I could take my pre-existing diffuse and perfectly specular shading models to mimic it. I only had time to introduce a _roughness_ slider that simply lerps between the diffuse and specular ray directions:
 
-<div class="mdx-wide">
+<div class="mdx-w-wide">
 
 ```cpp
 auto rng = make_seeded_random_engine(curr_iter, index, curr_depth);
@@ -321,7 +321,7 @@ segment.ray = {
 
 I got this idea while watching Sebastian Lague's [Coding Adventure: Ray Tracing](https://www.youtube.com/watch?v=Qz0KTGYJtUk) video. Well, how ~~bad~~ good is it?
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   ![](renders/roughness_test-1200x800-5000.png)
   <figcaption>
     1200×800 / 5000 samples / Roughness, left to right: 0.0, 0.2, 0.45, 0.65,
@@ -341,7 +341,7 @@ It's easy to think of the rendered world only in terms of pixels, but there usua
 
 The solution is to add some randomness such that multiple different areas _within_ a pixel have an opportunity to be sampled.
 
-<div class="mdx-wide">
+<div class="mdx-w-wide">
 
 ```cpp
 int index = blockIdx.x * blockDim.x + threadIdx.x;
@@ -362,14 +362,14 @@ x += uniform_01(rng);
 
 That's it! We add a random value between $[0.0,1.0)$ so that the ray direction generated will never be the same for a given pixel.
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   <div class="grid grid-cols-2 desktop:gap-pad sm:gap-pad-2">
     ![](stochastic-on.png) ![](stochastic-on-detail.png)
   </div>
   <figcaption>__Stochastic sampling.__ 1000×1000 / 10k samples</figcaption>
 </figure>
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   <div class="grid grid-cols-2 desktop:gap-pad sm:gap-pad-2">
     ![](stochastic-off.png) ![](stochastic-off-detail.png)
   </div>
@@ -388,7 +388,7 @@ Once again, PBRT v4 is a great resource and has a [section on thin lens models](
 
 The idea is we sample a random point on the lens (which is thin enough to simply be considered a circle), and use that as the initial camera ray's origin.
 
-<div class="mdx-wide">
+<div class="mdx-w-wide">
 
 ```cpp
 thrust::default_random_engine rng = make_seeded_random_engine(curr_iter, index, max_depth);
@@ -403,7 +403,7 @@ glm::vec2 lens_point = settings.lens_radius * sample;
 
 We also adjust the ray direction such that it intersects with the imaginary focus point. This is what allows us to "focus" a particular slice of the scene, and blur everything else.
 
-<div class="mdx-wide">
+<div class="mdx-w-wide">
 
 ```cpp
 // We want the relative distance from the camera to the plane of focus, so it
@@ -421,7 +421,7 @@ ray.direction = glm::normalize(focus - ray.origin);
 
 With that, we get DOF!
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   <div class="mdx-grid-2">
     ![](renders/dof/dof-800x800-5000-12-bunny.png)
     ![](renders/dof/dof-800x800-5000-12-sphere.png)
@@ -462,7 +462,7 @@ for (const auto& [data, idx] : unique_data) {
 
 By using a map, checking whether a data point is unique is now on average $O(1)$ instead of linear.
 
-<div class="mdx-wide">![](graphs/map-vs-vector-tri-build-time.png)</div>
+<div class="mdx-w-wide">![](graphs/map-vs-vector-tri-build-time.png)</div>
 
 The graph is a little comical and clearly demonstrates the exponential operation time. Yes, the 1532.75 seconds for `stanford_dragon` meant that my original implementation caused scene loading to take over 25 minutes. I am glad that it's fixed.
 
@@ -472,7 +472,7 @@ A mesh is just a giant list of triangles that encompass it. Since the primitives
 
 My first implementation was simple and naive. For each triangle in the mesh, we perform a ray-triangle intersection test. If successful, we calculate intersection terms and return early. However, this logic is incorrect because it may not necesarily return the intersection with the _smallest_ `t` value.
 
-<div class="mdx-wide mdx-grid-2">
+<div class="mdx-w-wide mdx-grid-2">
   <figure>
     ![](not-taking-t-min.png)
     <figcaption>Not taking the minimum `t` value</figcaption>
@@ -497,7 +497,7 @@ Running Nsight Systems on my executable confirms this. In terms of CUDA operatio
 
 If we show the kernel operations in the Events View and sort by duration, we can also see that `kernel::find_intersections` takes up all the spots at the top of the list, meaning it makes up the bulk of our compute time.
 
-<figure class="mdx-wide">
+<figure class="mdx-w-wide">
   ![](nsight-isect-longest.png)
   <figcaption>Intersections all the way down</figcaption>
 </figure>
@@ -594,7 +594,7 @@ Instead, we have to maintain a _stack_ of nodes that we haven't processed. Then,
 
 So, how much do BVHs improve performance?
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   ![](graphs/isect-culling.png)
   <figcaption>I'm making a lot of funny charts, aren't I?</figcaption>
 </figure>
@@ -630,7 +630,7 @@ By grouping paths with the same materials together, they all benefit from the ca
 
 Here are some failed renders that I thought looked pretty cool.
 
-<div class="mdx-full mdx-grid-2">
+<div class="mdx-out-wide mdx-grid-2">
   <figure>
     ![](bloopers/cornell.2025-09-23_00-10-10z.3978samp.png)
     <figcaption>The seed for my random number generator was off</figcaption>

@@ -33,7 +33,7 @@ The natural pick for me was anything from [OMORI](https://www.omori-game.com/). 
 
 > I should mention that there will be light spoilers for the game from this point onwards.
 
-<div class="mdx-grid-2 mdx-full">
+<div class="mdx-grid-2 mdx-out-wide">
   <figure>
     ![OMORI characters looking at photobook on a picnic blanket in a forest.](ca-1.png)
     <figcaption>
@@ -64,7 +64,7 @@ Homework is still homework and there were two shaders I was required to create.
 
 ### Toon shading
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   ![Screenshot of Unity Shader Graph for my toon shader](toon.png)
   <figcaption>Shader Graph for my toon shader.</figcaption>
 </figure>
@@ -81,7 +81,7 @@ Another requirement we had to meet was to create an additional shader that anima
 
 It's a bit hard to explain, so here's a YouTube video.
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   <YouTube id="2D1VBDjamoA" title="OMORI - Sweetheart" start={182} />
   <figcaption>
     Here's the [direct link](https://youtu.be/2D1VBDjamoA?t=182) if the embed
@@ -112,7 +112,7 @@ I can now "animate" these textures by rotating them by a random amount. To emula
 
 Hopefully the image conveys my implementation visually. Each of those steps are a value I plug into my UV rotation. That results in this final output:
 
-<figure class="mdx-full">
+<figure class="mdx-out-wide">
   <VideoGif
     content={{ collection: "projects", folder: frontmatter.slug }}
     name="door-anim-tex"
@@ -153,7 +153,7 @@ However, outlines in OMORI seem to be made up of three overlapping parts: a gree
 
 We need three outlines, so we do exactly that. Each outline has a different color and has its UVs slightly offset to give us the chromatic aberration look. I also use the Random Range node to vary the outline thickness based on screen position. Finally, I replace the solid outline with the scribble texture and animate it using the same method as the surface shader.
 
-<div class="mdx-full">
+<div class="mdx-out-wide">
   ![The same sphere and plane but now rendered using OMORI's
   outlines.](cool-outlines.png)
 </div>
@@ -164,7 +164,7 @@ I found all the models on Sketchfab. They are [credited in the README here](http
 
 Speaking of laptop, I created a custom shader that specifically draws a texture to the screen geometry.
 
-<div class="mdx-full">
+<div class="mdx-out-wide">
   ![Unity scene view of the laptop screen with the shader
   applied.](laptop-screen.png)
 </div>
@@ -179,7 +179,7 @@ I couldn't figure out how to achieve this effect using Unity UI or another rende
 
 As the image below betrays, the purple scrolling background you see is actually a giant plane that is perpendicular to the camera view vector. I made it a child of the camera so any transforms are applied to the plane as well.
 
-<div class="mdx-full">
+<div class="mdx-out-wide">
   ![Unity scene view of the background plane being projected along our camera's
   view vector.](bg-hack.png)
 </div>
@@ -190,7 +190,7 @@ I scroll the UVs of an image in a shader that I specifically wrote for the backg
 
 Press spacebar to toggle between two different views.
 
-<div class="mdx-full">
+<div class="mdx-out-wide">
   ![Alternative scene view when spacebar is pressed. Everything becomes darker,
   redder, and scarier.](horror.png)
 </div>
