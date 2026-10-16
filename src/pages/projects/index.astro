@@ -38,7 +38,7 @@ const description =
       <h2 class="sr-only">Featured</h2>
       <p class="prose px-5">You should probably look at these first.</p>
 
-      <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:px-5">
+      <div class="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:px-5">
         {featured.map(
           ({ id, data: { name, description, metadata, coverImage } }) => (
             <article class="relative flex flex-col gap-y-2 group">
@@ -71,16 +71,12 @@ const description =
       </div>
     </section>
 
-    <section class="constrain mt-5">
+    <section class="constrain mt-7">
       <h2 id="everything-else" class="font-medium text-heading px-5">
         Everything else
       </h2>
-      <p class="prose px-5">
-        And here are the others in a list. They're sorted by date, so the oldest
-        project is at the very bottom.
-      </p>
 
-      <div class="px-5 mt-5">
+      <div class="px-5 mt-3">
         {projects
           .filter(({ id }) => !notProjectsTODO.includes(id))
           .filter(({ id }) => !isFeaturedProject(id))

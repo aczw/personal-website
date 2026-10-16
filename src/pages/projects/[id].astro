@@ -53,17 +53,17 @@ const { Content } = await render(project);
       <ProjectCover
         projectId={id}
         coverImage={coverImage}
-        class="lg:rounded-lg"
+        class="lg:rounded-lg mt-5"
       />
 
-      <hgroup class="px-5 lg:px-0 mt-5">
+      <hgroup class="px-5 lg:px-0 mt-7">
         <h1 class="text-heading font-medium text-lg/tight">{name}</h1>
         <p class="text-lg/tight text-heading">{description.short}</p>
         <p class="prose mt-3">{description.long}</p>
       </hgroup>
     </div>
 
-    <section class="constrain px-5 mt-5">
+    <section class="constrain px-5 mt-7">
       <h2 class="sr-only">Overview</h2>
 
       <dl class="prose grid grid-cols-2 *:col-span-2 *:grid *:grid-cols-subgrid *:border-t-2 *:border-dashed *:border-line">
