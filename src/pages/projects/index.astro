@@ -34,16 +34,14 @@ const description =
       <p class="prose">{description}</p>
     </div>
 
-    <section class="constrain mt-5">
-      <h2 id="featured" class="font-medium text-heading px-5">
-        Featured
-      </h2>
+    <section class="constrain mt-3">
+      <h2 class="sr-only">Featured</h2>
       <p class="prose px-5">You should probably look at these first.</p>
 
       <div class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:px-5">
         {featured.map(
           ({ id, data: { name, description, metadata, coverImage } }) => (
-            <article class="relative flex flex-col gap-y-2">
+            <article class="relative flex flex-col gap-y-2 group">
               <ProjectCover
                 projectId={id}
                 coverImage={coverImage}
@@ -62,7 +60,7 @@ const description =
                 </h3>
                 <ContentDate
                   date={metadata.date}
-                  class="text-link-secondary leading-none"
+                  class="text-link-secondary leading-none group-hover:text-link-secondary-hover"
                 />
               </div>
 
@@ -73,7 +71,7 @@ const description =
       </div>
     </section>
 
-    <section class="constrain mt-7">
+    <section class="constrain mt-5">
       <h2 id="everything-else" class="font-medium text-heading px-5">
         Everything else
       </h2>
