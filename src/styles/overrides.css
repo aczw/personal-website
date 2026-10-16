@@ -92,12 +92,7 @@
   /* Make tab headers bold */
   figure.frame.has-title {
     figcaption.header .title {
-      @apply font-bold text-heading;
-    }
-
-    pre code {
-      /* Decrease vertical padding when there's a title. */
-      --ec-codePadBlk: var(--spacing-pad);
+      @apply font-medium;
     }
   }
 

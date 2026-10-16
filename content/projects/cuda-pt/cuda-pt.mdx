@@ -215,20 +215,16 @@ Transmission was much trickier to implement. Two things in particular stood out.
 
 First, IORs are always defined relative to _something_.[^4] At a given intersection point, we always need to know what medium we're _entering_ and what medium we're _leaving_, because that affects the IOR ratio. How I keep track of this is to store an additional enum in my `Intersection` data struct that informs me whether the intersection was with the outside of a surface, or inside. Depending on the surface, we may have to flip the IOR.
 
-<div class="mdx-w-wide">
-
 ```cpp
-/// Tracks which side of the geometry the intersection is at.
+// Tracks which side of the geometry the intersection is at.
 enum class Surface : char { Inside, Outside };
 
-/// GLSL/GLM refract expects the IOR ratio to be incident over target, so we treat
-/// the default as us starting from inside the material.
+// GLSL/GLM refract expects the IOR ratio to be incident over target, so we treat
+// the default as us starting from inside the material.
 if (isect.surface == Surface::Outside) {
   eta = 1.f / eta;
 }
 ```
-
-</div>
 
 Second, there are cases where the incident angle is so large that a refraction actually _reflects back into_ the original medium. This is called [total internal reflection](https://en.wikipedia.org/wiki/Total_internal_reflection), and we have to check for this possibility. `glm::refract` returns zero when this occurs, which I check for and return `std::nullopt`, indicating that no transmissive ray could be generated for this intersection.
 
@@ -265,8 +261,6 @@ What should the probability be? A simple solution is to set it to 50/50. However
 
 While both renders use the IOR of glass, the second one looks more real because we're considering the Fresnel reflectance term when randomly deciding to reflect or refract the ray:
 
-<div class="mdx-w-wide">
-
 ```cpp
 auto rng = make_seeded_random_engine(curr_iter, index, curr_depth);
 thrust::uniform_real_distribution<float> uniform_01;
@@ -281,8 +275,6 @@ if (uniform_01(rng) < refl_term) {
   // Treat ray as pure transmission
 }
 ```
-
-</div>
 
 In real life, calculating the reflectance term requires solving the [Fresnel equations](https://en.wikipedia.org/wiki/Fresnel_equations). However, this is graphics so we can cheat! A popular alternative is to use Schlick's approximation, first demonstrated in 1994, which computes the term in a more efficient and simple manner. Here are some resources that helped me:
 
@@ -302,8 +294,6 @@ Schlick appears to be 0.119% faster, which is not significant enough to make a c
 
 While I did not implement anything close to actual PBR techniques, I was curious how far I could take my pre-existing diffuse and perfectly specular shading models to mimic it. I only had time to introduce a _roughness_ slider that simply lerps between the diffuse and specular ray directions:
 
-<div class="mdx-w-wide">
-
 ```cpp
 auto rng = make_seeded_random_engine(curr_iter, index, curr_depth);
 
@@ -316,8 +306,6 @@ segment.ray = {
     .direction = glm::lerp(spec_dir, diffuse_dir, material.roughness),
 };
 ```
-
-</div>
 
 I got this idea while watching Sebastian Lague's [Coding Adventure: Ray Tracing](https://www.youtube.com/watch?v=Qz0KTGYJtUk) video. Well, how ~~bad~~ good is it?
 
@@ -341,8 +329,6 @@ It's easy to think of the rendered world only in terms of pixels, but there usua
 
 The solution is to add some randomness such that multiple different areas _within_ a pixel have an opportunity to be sampled.
 
-<div class="mdx-w-wide">
-
 ```cpp
 int index = blockIdx.x * blockDim.x + threadIdx.x;
 
@@ -357,8 +343,6 @@ thrust::uniform_real_distribution<float> uniform_01;
 y += uniform_01(rng);
 x += uniform_01(rng);
 ```
-
-</div>
 
 That's it! We add a random value between $[0.0,1.0)$ so that the ray direction generated will never be the same for a given pixel.
 
@@ -388,8 +372,6 @@ Once again, PBRT v4 is a great resource and has a [section on thin lens models](
 
 The idea is we sample a random point on the lens (which is thin enough to simply be considered a circle), and use that as the initial camera ray's origin.
 
-<div class="mdx-w-wide">
-
 ```cpp
 thrust::default_random_engine rng = make_seeded_random_engine(curr_iter, index, max_depth);
 thrust::uniform_real_distribution<float> uniform_01;
@@ -399,11 +381,7 @@ glm::vec2 sample = sample_uniform_disk_concentric(uniform_01(rng), uniform_01(rn
 glm::vec2 lens_point = settings.lens_radius * sample;
 ```
 
-</div>
-
 We also adjust the ray direction such that it intersects with the imaginary focus point. This is what allows us to "focus" a particular slice of the scene, and blur everything else.
-
-<div class="mdx-w-wide">
 
 ```cpp
 // We want the relative distance from the camera to the plane of focus, so it
@@ -416,8 +394,6 @@ glm::vec3 focus = ray.at(t);
 ray.origin += glm::vec3(lens_point.x, lens_point.y, 0.f);
 ray.direction = glm::normalize(focus - ray.origin);
 ```
-
-</div>
 
 With that, we get DOF!
 
