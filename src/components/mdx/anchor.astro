@@ -1,22 +1,20 @@
 ---
 /**
- * Couple of things going on:
- *
- * - If the link is normal, then this collapses to <Link target="_blank"><slot /></Link>
- * - If the link is related to footnotes (so either the footnote itself or the back ref), then
- *   we remove target="_blank" because we don't want to open a new tab
- * - If the link is the footnote itself, then we disable underline, add "[]" brackets, and add
+ * - If the link is normal, then this collapses to <a>
+ * - If the link is related to footnotes (so either the footnote itself or
+ *   the back ref), then we remove target="_blank"
+ * - If the link is the footnote itself, we add "[]" brackets and
  *   some scroll top margin
  * - If the link is the back ref, we replace everything with the arrow icon
  *
- * Essentially we've hijacked MDX's HTML output to replace it with our own.
+ * Essentially we hijack MDX's HTML output to replace it with our own.
  */
 
 import type { HTMLAttributes } from "astro/types";
 
 import { Undo2Icon } from "@lucide/astro";
 
-import Link from "@/components/link.astro";
+import { ICON_SIZE } from "@/scripts/constants";
 
 type Props = Omit<HTMLAttributes<"a">, "target" | "class">;
 
@@ -24,7 +22,7 @@ const href = Astro.props.href;
 
 if (!href || typeof href !== "string") {
   throw new Error(
-    '"href" attribute doesn\'t exist on anchor or we mistakenly passed in a URL.',
+    '"href" doesn\'t exist on anchor or we mistakenly passed in a URL object.',
   );
 }
 
@@ -33,17 +31,17 @@ const isFootnote = href.startsWith("#user-content-fn-");
 const isBackRef = href.startsWith("#user-content-fnref-");
 ---
 
-<Link
-  target={isFootnoteRelated ? undefined : "_blank"}
-  class:list={[{ "scroll-mt-96": isFootnote }]}
-  noUnderline={isFootnote}
+<a
+  target={isFootnoteRelated ? null : "_blank"}
+  rel={isFootnoteRelated ? null : "noopener"}
+  class:list={["w-fit link-primary", { "scroll-mt-96": isFootnote }]}
   {...Astro.props}
-  >{
-    isBackRef ? <Undo2Icon size={15} />
-    : isFootnote ?
-      <>
-        [<slot />]
-      </>
-    : <slot />
-  }</Link
 >
+  {isBackRef ?
+    <Undo2Icon size={ICON_SIZE} />
+  : isFootnote ?
+    <>
+      [<slot />]
+    </>
+  : <slot />}
+</a>

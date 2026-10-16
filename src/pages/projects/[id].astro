@@ -57,7 +57,7 @@ const { Content } = await render(project);
       />
 
       <hgroup class="px-5 lg:px-0 mt-7">
-        <h1 class="text-heading font-medium text-lg/tight">{name}</h1>
+        <h1 class="text-heading font-medium text-xl/tight">{name}</h1>
         <p class="text-lg/tight text-heading">{description.short}</p>
         <p class="prose mt-3">{description.long}</p>
       </hgroup>
@@ -66,9 +66,9 @@ const { Content } = await render(project);
     <section class="constrain px-5 mt-7">
       <h2 class="sr-only">Overview</h2>
 
-      <dl class="prose grid grid-cols-2 *:col-span-2 *:grid *:grid-cols-subgrid *:border-t-2 *:border-dashed *:border-line">
+      <dl class="prose grid grid-cols-2 *:col-span-2 *:grid *:grid-cols-subgrid *:border-t-2 *:border-style">
         <div>
-          <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-dashed border-line py-1 pr-3">
+          <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-style py-1 pr-3">
             Made with <WrenchIcon size={ICON_SIZE} class="stroke-icon" />
           </dt>
           <dd class="py-1 pl-3">
@@ -77,7 +77,7 @@ const { Content } = await render(project);
         </div>
 
         <div>
-          <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-dashed border-line py-1 pr-3">
+          <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-style py-1 pr-3">
             Duration <CalendarFoldIcon size={ICON_SIZE} class="stroke-icon" />
           </dt>
           <dd class="py-1 pl-3">
@@ -87,7 +87,7 @@ const { Content } = await render(project);
 
         {link && (
           <div>
-            <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-dashed border-line py-1 pr-3">
+            <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-style py-1 pr-3">
               {link.text}{" "}
               <ExternalLinkIcon size={ICON_SIZE} class="stroke-icon" />
             </dt>
@@ -109,7 +109,7 @@ const { Content } = await render(project);
 
         {sourceHref && (
           <div>
-            <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-dashed border-line py-1 pr-3">
+            <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-style py-1 pr-3">
               Source
               <FileCodeIcon size={ICON_SIZE} class="stroke-icon" />
             </dt>
