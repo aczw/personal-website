@@ -50,10 +50,7 @@
     --wide-w: 56.25rem; /* 900px */
     --prose-w: 34.375rem; /* 550px */
 
-    --border-w: 2px;
-
     --line: var(--color-sweater-8);
-
     --link-primary: var(--color-sweater-3);
     --link-primary-hover: var(--color-sweater-1);
     --link-secondary: var(--color-sweater-5);
@@ -63,7 +60,6 @@
 
     @variant light {
       --line: var(--color-sweater-3);
-
       --link-primary: var(--color-sweater-7);
       --link-primary-hover: var(--color-sweater-9);
       --link-secondary: var(--color-sweater-6);
@@ -74,10 +70,7 @@
   }
 
   html {
-    @apply bg-sweater-10 text-sweater-1;
-
-    scrollbar-gutter: stable;
-    scrollbar-width: thin;
+    @apply scrollbar-thin scrollbar-gutter-stable bg-sweater-10 text-sweater-1;
 
     &::selection {
       @apply bg-sweater-8 text-sweater-3;
@@ -103,16 +96,6 @@
   h6 {
     overflow-wrap: break-word;
     text-wrap: pretty;
-
-    /* An ABSOLUTELY INSANE HACK that detects if we're on WebKit on iOS,
-     * and disables text wrap. I don't like the behavior of `pretty` on it,
-     * as it tries to keep every line width the same. In the future if/when
-     * the `avoid-orphans` value is shipped, I can remove this.
-     *
-     * See also https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/-webkit-touch-callout#browser_compatibility. */
-    @supports (-webkit-touch-callout: none) {
-      text-wrap: wrap;
-    }
   }
 
   img,
@@ -141,10 +124,6 @@
 
 @utility border-style {
   @apply border-dashed border-line;
-}
-
-@utility bordered {
-  @apply border-(length:--border-w) border-style;
 }
 
 @utility link-primary {

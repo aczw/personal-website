@@ -76,7 +76,13 @@
   --ec-codePadBlk: --spacing(5);
   --ec-codePadInl: --spacing(5);
   --ec-uiPadInl: --spacing(5);
-  --ec-uiPadBlk: --spacing(1.5);
+  --ec-uiPadBlk: --spacing(1);
+
+  @variant sm {
+    --ec-codePadBlk: --spacing(3);
+    --ec-codePadInl: --spacing(3);
+    --ec-uiPadInl: --spacing(3);
+  }
 }
 
 /* Force Tweakpane to use my Maple Mono settings */
@@ -86,7 +92,7 @@
 
 .expressive-code {
   * {
-    scrollbar-width: thin;
+    @apply scrollbar-thin;
   }
 
   /* Make tab headers bold */

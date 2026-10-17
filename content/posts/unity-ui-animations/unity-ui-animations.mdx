@@ -126,7 +126,7 @@ To control the duration, we first must specify one. Let’s say we want this ani
 
 The for loop above defines the animation in terms of frame count, but as we’ve mentioned earlier this is not ideal.[^2] Instead we will want to query how much _time_ has passed since the last frame, and increment our elapsed time by that amount. This value is accessible via `Time.deltaTime`.
 
-<figure>
+<figure class="outdent-wide">
   ![Diagram depicting a smaller Time.deltaTime value for higher framerates and
   vice versa for lower framerates.](framerate-deltatime.png)
   <figcaption>

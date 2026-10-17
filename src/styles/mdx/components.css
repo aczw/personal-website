@@ -125,7 +125,7 @@
     figure.frame figcaption.header {
       --header-border-radius: 0px;
 
-      @variant md {
+      @variant sm {
         --header-border-radius: var(--radius-lg);
       }
 
@@ -133,7 +133,7 @@
         border-radius: 0px;
         border-top-right-radius: var(--tab-border-radius);
 
-        @variant md {
+        @variant sm {
           border-radius: var(--radius-lg) var(--radius-lg) 0px 0px;
         }
       }
