@@ -72,28 +72,35 @@ const { Content } = await render(project);
 
       <dl
         class:list={[
-          "grid grid-cols-1 gap-x-3 gap-y-1.5 md:gap-y-3 max-w-(--wide-w) border-t-2 border-style pt-1.5",
+          "grid grid-cols-1 gap-3 md:gap-y-3 max-w-(--wide-w) border-t-0 border-style pt-1.5",
           { "md:grid-cols-2": numMetadata % 2 === 0 },
           { "md:grid-cols-3": numMetadata === 3 },
         ]}
       >
-        <div class="">
-          <dt class="font-medium text-heading leading-tight">Made with</dt>
+        <div>
+          <dt class="font-medium text-heading leading-tight flex items-center gap-2 justify-between md:justify-start">
+            Made with <WrenchIcon size={ICON_SIZE} class="stroke-icon" />
+          </dt>
           <dd>
             <TechList tech={tech} />
           </dd>
         </div>
 
-        <div class="">
-          <dt class="font-medium text-heading leading-tight">Duration</dt>
+        <div>
+          <dt class="font-medium text-heading leading-tight flex items-center gap-2 justify-between md:justify-start">
+            Duration <CalendarFoldIcon size={ICON_SIZE} class="stroke-icon" />
+          </dt>
           <dd>
             <ContentDate date={date} />
           </dd>
         </div>
 
         {link && (
-          <div class="">
-            <dt class="font-medium text-heading leading-tight">{link.text}</dt>
+          <div>
+            <dt class="font-medium text-heading leading-tight flex items-center gap-2 justify-between md:justify-start">
+              {link.text}{" "}
+              <ExternalLinkIcon size={ICON_SIZE} class="stroke-icon" />
+            </dt>
             <dd>
               <a
                 href={link.href}
@@ -111,8 +118,10 @@ const { Content } = await render(project);
         )}
 
         {sourceHref && (
-          <div class="">
-            <dt class="font-medium text-heading leading-tight">Source</dt>
+          <div>
+            <dt class="font-medium text-heading leading-tight flex items-center gap-2 justify-between md:justify-start">
+              Source <FileCodeIcon size={ICON_SIZE} class="stroke-icon" />
+            </dt>
             <dd>
               <a
                 href={sourceHref}
