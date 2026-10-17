@@ -91,7 +91,7 @@ It's a bit hard to explain, so here's a YouTube video.
 
 To create the drawn look as seen in-game, I drew two textures using Procreate's default pencil brushes. The lighter one emphasizes the scribbles more by being more sparse.
 
-<div class="gap-pad-2 grid grid-cols-2">
+<div class="wide grid grid-cols-2 gap-3">
   ![White square with lighter black scribbles all over it.](tex-light.png)
   ![White square with heavier black scribbles all over it.](tex-heavy.png)
 </div>
@@ -135,13 +135,13 @@ For outlines I turned to the [Roberts cross operator](https://en.wikipedia.org/w
 
 This gives us basic outlines.
 
-<div class="outdent">
+<div class="outdent-wide">
   ![A sphere floating above a plane with black outlines.](basic-outlines.png)
 </div>
 
 However, outlines in OMORI seem to be made up of three overlapping parts: a green, pink, and purple part. Zooming in on the second concept art you can see it very clearly.
 
-<figure class="mx-auto">
+<figure class="max-w-75">
   <Image
     src={import("./outline-example.png")}
     alt="Close-up of Mari's elbow, showcasing the multicolored
@@ -164,7 +164,7 @@ I found all the models on Sketchfab. They are [credited in the README here](http
 
 Speaking of laptop, I created a custom shader that specifically draws a texture to the screen geometry.
 
-<div class="outdent-wide">
+<div class="wide">
   ![Unity scene view of the laptop screen with the shader
   applied.](laptop-screen.png)
 </div>
