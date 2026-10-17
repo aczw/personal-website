@@ -4,10 +4,11 @@
     @apply font-medium;
   }
 
+  /* For plain media, we always make them span the max possible width. */
   img,
   video,
   iframe {
-    @apply w-auto;
+    @apply rounded-xl;
   }
 
   code {
@@ -56,7 +57,7 @@
   }
 
   table {
-    @apply mdx-w-max border-y-2 border-style md:ml-5 md:prose;
+    @apply border-y-2 border-style md:ml-5 md:prose;
 
     thead {
       @apply border-b-2 border-style font-medium text-heading;
@@ -106,7 +107,7 @@
 
 /* Technically an override, but it's MDX-specific so it's here. */
 .expressive-code {
-  @apply mdx-w-max px-0 md:mdx-w-wide md:px-5;
+  @apply px-0 md:px-5;
 
   pre {
     --ec-brdRad: 0px;

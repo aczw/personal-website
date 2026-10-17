@@ -18,11 +18,6 @@
    * it just looks too large. */
   --text-mono: 0.85rem;
 
-  --spacing-pad: --spacing(2.5);
-  --spacing-pad-2: calc(var(--spacing-pad) * 2);
-  --spacing-pad-3: calc(var(--spacing-pad) * 3);
-  --spacing-pad-4: calc(var(--spacing-pad-2) * 2);
-
   /* Primitives */
   --color-sweater-1: #e1dfff;
   --color-sweater-2: #d6d3ff;
@@ -56,9 +51,6 @@
     --prose-w: 34.375rem; /* 550px */
 
     --border-w: 2px;
-
-    --header-w: 50rem; /* 800px */
-    --real-header-w: calc(var(--header-w) + var(--spacing-pad-2));
 
     --line: var(--color-sweater-8);
 

@@ -124,7 +124,7 @@ In each execution of the loop, until we've reached the max number of samples:
 
 One of my first new additions to the base code is adding a Lambertian diffuse shading model. What makes this model great is how easy it is to conceptualize and implement. ""
 
-<figure class="mdx-w-wide">
+<figure class="wide">
   ![An eye is looking at a hemisphere centered at the intersection between the
   surface normal and the outgoing direction.](pbrt-diffuse.png)
   <figcaption>
@@ -138,7 +138,7 @@ The Lambertian BRDF says that for an outgoing ray $\omega_o$, the scattering of 
 
 After adding it, obviously I had to test this material out on the classics.
 
-<figure class="mdx-out-max">
+<figure class="outdent-max">
   <div class="mdx-grid">
     ![](renders/diffuse/sphere-800x800-5000.png)
     ![](renders/diffuse/stanford_dragon-800x800-5000.png)
@@ -177,7 +177,7 @@ segment.ray = {
 
 What's the opposite of the diffuse shading model? I... don't know the answer, but collapsing from an infinite set of $\omega_i$ to a _discrete_ set of possibilities sounds right to me.
 
-<figure class="mdx-w-wide">
+<figure class="wide">
   ![An eye is looking at a hemisphere centered at the intersection between the
   surface normal and the outgoing direction. There is a strip of geometry that
   is pointing in the direction of reflection of the outgoing
@@ -197,7 +197,7 @@ We will combine them both later to create dielectrics.
 
 First, complete reflection.
 
-<figure class="mdx-out-wide">
+<figure class="outdent-wide">
   <div class="mdx-grid">
     ![](renders/perf-spec-dielectric/pure_reflection-800x800-5000.png)
     ![](renders/perf-spec-dielectric/pure_reflection_inv-800x800-5000.png)
@@ -232,7 +232,7 @@ Second, there are cases where the incident angle is so large that a refraction a
 
 Keeping these two things in mind, we can get transmission working.
 
-<figure class="mdx-w-wide">
+<figure class="wide">
   <div class="mdx-grid">
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.0.png)
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.55.png)
@@ -252,7 +252,7 @@ To make our path tracing a little easier (and to piggyback off of the wonders of
 
 What should the probability be? A simple solution is to set it to 50/50. However, this wouldn't result in an accurate physical render because we're not considering the Fresnel coefficients that dictate how much light is reflected and refracted at an intersection.
 
-<figure class="mdx-out-wide">
+<figure class="outdent-wide">
   <div class="mdx-grid">
     ![](fresnel-half-half.png) ![](fresnel-accurate.png)
   </div>
@@ -309,7 +309,7 @@ segment.ray = {
 
 I got this idea while watching Sebastian Lague's [Coding Adventure: Ray Tracing](https://www.youtube.com/watch?v=Qz0KTGYJtUk) video. Well, how ~~bad~~ good is it?
 
-<figure class="mdx-out-wide">
+<figure class="outdent-wide">
   ![](renders/roughness_test-1200x800-5000.png)
   <figcaption>
     1200×800 / 5000 samples / Roughness, left to right: 0.0, 0.2, 0.45, 0.65,
@@ -346,15 +346,15 @@ x += uniform_01(rng);
 
 That's it! We add a random value between $[0.0,1.0)$ so that the ray direction generated will never be the same for a given pixel.
 
-<figure class="mdx-out-wide">
-  <div class="grid grid-cols-2 desktop:gap-pad sm:gap-pad-2">
+<figure class="outdent-wide">
+  <div class="desktop:gap-pad sm:gap-pad-2 grid grid-cols-2">
     ![](stochastic-on.png) ![](stochastic-on-detail.png)
   </div>
   <figcaption>__Stochastic sampling.__ 1000×1000 / 10k samples</figcaption>
 </figure>
 
-<figure class="mdx-out-wide">
-  <div class="grid grid-cols-2 desktop:gap-pad sm:gap-pad-2">
+<figure class="outdent-wide">
+  <div class="desktop:gap-pad sm:gap-pad-2 grid grid-cols-2">
     ![](stochastic-off.png) ![](stochastic-off-detail.png)
   </div>
   <figcaption>__No stochastic sampling.__ 1000×1000 / 10k samples</figcaption>
@@ -397,7 +397,7 @@ ray.direction = glm::normalize(focus - ray.origin);
 
 With that, we get DOF!
 
-<figure class="mdx-out-max">
+<figure class="outdent-max">
   <div class="mdx-grid">
     ![](renders/dof/dof-800x800-5000-12-bunny.png)
     ![](renders/dof/dof-800x800-5000-12-sphere.png)
@@ -438,7 +438,7 @@ for (const auto& [data, idx] : unique_data) {
 
 By using a map, checking whether a data point is unique is now on average $O(1)$ instead of linear.
 
-<div class="mdx-w-wide">![](graphs/map-vs-vector-tri-build-time.png)</div>
+<div class="wide">![](graphs/map-vs-vector-tri-build-time.png)</div>
 
 The graph is a little comical and clearly demonstrates the exponential operation time. Yes, the 1532.75 seconds for `stanford_dragon` meant that my original implementation caused scene loading to take over 25 minutes. I am glad that it's fixed.
 
@@ -448,7 +448,7 @@ A mesh is just a giant list of triangles that encompass it. Since the primitives
 
 My first implementation was simple and naive. For each triangle in the mesh, we perform a ray-triangle intersection test. If successful, we calculate intersection terms and return early. However, this logic is incorrect because it may not necesarily return the intersection with the _smallest_ `t` value.
 
-<div class="mdx-grid mdx-w-wide">
+<div class="wide mdx-grid">
   <figure>
     ![](not-taking-t-min.png)
     <figcaption>Not taking the minimum `t` value</figcaption>
@@ -570,7 +570,7 @@ Instead, we have to maintain a _stack_ of nodes that we haven't processed. Then,
 
 So, how much do BVHs improve performance?
 
-<figure class="mdx-out-wide">
+<figure class="outdent-wide">
   ![](graphs/isect-culling.png)
   <figcaption>I'm making a lot of funny charts, aren't I?</figcaption>
 </figure>
@@ -606,7 +606,7 @@ By grouping paths with the same materials together, they all benefit from the ca
 
 Here are some failed renders that I thought looked pretty cool.
 
-<div class="mdx-out-wide mdx-grid">
+<div class="outdent-wide mdx-grid">
   <figure>
     ![](bloopers/cornell.2025-09-23_00-10-10z.3978samp.png)
     <figcaption>The seed for my random number generator was off</figcaption>

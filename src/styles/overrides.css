@@ -104,5 +104,5 @@
 
 /* Increase vertical spacing around LaTeX */
 .mdx > mjx-container[jax="CHTML"][display="true"] {
-  @apply my-pad-3;
+  @apply my-7;
 }

@@ -59,7 +59,7 @@ After performing input validation with Zod, I insert the values into the databas
 
 Any random generator will have a probability of a collision, and [this calculator](https://zelark.github.io/nano-id-cc) estimates that 266,000 short links need to be generated before we reach a _one percent_ probability of a collision. This is a very tiny number, and if it happens I should probably buy a lottery ticket, but I check anyway by querying the database:
 
-<div class="mdx-w-wide">
+<div class="wide">
 
 ```js title="src/pages/api/create.ts"
 let short;
@@ -82,7 +82,7 @@ All potential redirects are handled in `[...slug].astro` inside the frontmatter.
 
 If no short URL exists in the database, then I simply redirect to the home page.
 
-<div class="mdx-w-wide">
+<div class="wide">
 
 ```astro title="src/pages/[...slug].astro"
 ---
@@ -107,7 +107,7 @@ if (!exist) {
 
 Astro has a built-in way of dynamically modifying the response returned by the server. In particular, I set the status code to `301` and set the `Location` header to the original URL.
 
-<div class="mdx-w-wide">
+<div class="wide">
 
 ```astro title="src/pages/[...slug].astro" ins={17-18} collapse={2-15}
 ---
@@ -159,7 +159,7 @@ Choosing colors is hard, so I used [RandomA11y](https://randoma11y.com) to gener
 
 Most of the frontend isn't too noteworthy, but I do want to talk about one thing. While writing the copy to clipboard functionality I noticed one tiny, small, insignificant detail. It occurred whenever I clicked on the button:
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   <VideoGif
     content={{ collection: "posts", folder: frontmatter.slug }}
     name="copy-bad"
@@ -181,7 +181,7 @@ The key part is that both elements remain in the DOM tree; I'm just hiding one b
 
 I then attached an event listener to the button and used `setTimeout()` to revert the changes after a short duration. Now the button width remains the same:
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   <VideoGif
     content={{ collection: "posts", folder: frontmatter.slug }}
     name="copy-good"

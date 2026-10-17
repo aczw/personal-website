@@ -7,10 +7,10 @@ type Props = Omit<HTMLAttributes<"div">, "title"> & {
   start?: number;
 };
 
-const { id, title, start, class: className, ...props } = Astro.props;
+const { id, title, start, ...props } = Astro.props;
 ---
 
-<div class={className} {...props}>
+<div {...props}>
   <iframe
     src={`https://www.youtube-nocookie.com/embed/${id}${start ? `?start=${start}` : ""}`}
     title={title}
@@ -18,5 +18,6 @@ const { id, title, start, class: className, ...props } = Astro.props;
     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
     referrerpolicy="strict-origin-when-cross-origin"
     allowfullscreen
-    class="aspect-560/315"></iframe>
+    class="aspect-560/315"
+  ></iframe>
 </div>

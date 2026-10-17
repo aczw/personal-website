@@ -18,7 +18,7 @@ slug: mini-minecraft
 
 First, let's take a look at this snazzy ~2.5 minute showcase reel that I made ~~at 6 AM after pulling an all nighter finishing the project~~.
 
-<figure class="mdx-out-wide">
+<figure class="outdent-wide">
   <div
     class="overflow-hidden rounded-xl"
     style="padding:56.25% 0 0 0;position:relative;"
@@ -91,7 +91,7 @@ Chunking our terrain helps a lot when we draw our blocks. For instance, my teamm
 
 A block has six faces. Each face uses two triangles. If we render every face of every non-`EMPTY` block of every chunk, every single frame, our GPU would catch on fire and explode. There's no point in rendering faces that are hidden by another block. The player never sees it.
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   ![Two blocks are right next to each other. The face in between does not need
   to be rendered.](face-culling.png)
 </div>
@@ -114,7 +114,7 @@ std::unordered_map<Direction, Chunk*> neighbors;
 
 If you were to noclip below the ground, it now looks "hollowed out." What you're seeing below is what our caves look like... on the outside! The player is technically inside solid `STONE` right now, but it's just not being drawn.
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   ![Since we're not rendering any blocks inside the terrain, we can see
   snake-like caves underground.](hollowed-caves.png)
 </div>
@@ -140,7 +140,7 @@ int stride = 4 + 4 + 2 + 1;
 
 The [`stride` parameter](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml) in `glVertexAttribPointer` was difficult to wrap my head around. All it does is tell the GPU when the data for the next vertex starts. To the GPU, our VBO is just a really, really long sequence of floats. So, we have to specify the size of each attribute.
 
-<div class="mdx-outdent">
+<div class="outdent">
   ![In a stream of floats, we specify the first four to be for position, the
   next four to be for normals, and so on.](interleaved-vbo.png)
 </div>
@@ -151,7 +151,7 @@ For example, `position` takes up four floats, while `anim` only uses one.
 
 All the block textures in our game live in a 256x256 PNG sprite. Each block face texture is 16x16 pixels, so we can refer to specific textures using a coordinate system. For example, the dirt texture's lower-left corner is located at (2, 1) on our imaginary grid.
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   ![A dirt face texture at coordinate (2, 1) corresponds to (2/16, 1/16) in UV
   coordinates.](block-uv.png)
 </div>
@@ -204,7 +204,7 @@ This solves our issue because transparent blocks now have the correct fragment c
 
 If we fly really high up into the air, you'll see a circular fog that surrounds the player and slowly fades blocks into the distance.
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   ![Blocks slowly fade into the distance in a circular radius around the
   player.](distance-fog.png)
 </div>
@@ -215,14 +215,14 @@ This value is used to lerp between the original block color and the sampled sky 
 
 So, what is `max_distance`? At all times, we only render a specific number of chunks around the player: a 12x12 group of chunks, to be exact. The player is always at the center of this group, so the max distance (the circle's radius) is always at most 96 blocks.
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   ![Diagram depicting the fog starting roughly around 96 blocks around the
   player in all directions.](distance-fog-diagram.png)
 </div>
 
 So, the distance fog plays a second role: to stop the player from seeing chunks appear and disappear as they move. But, it's worth it to implement for aesthetics alone, I think:
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   ![A beautiful sunrise over the desert.](distance-fog-pretty.png)
 </div>
 
@@ -230,7 +230,7 @@ So, the distance fog plays a second role: to stop the player from seeing chunks 
 
 Our engine features a day cycle. We see the sun during the day, and the moon and stars at night. Clouds are always visible. In between, sunsets and sunrises transition us nicely.
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   ![A diagram depicting what percentage of a day we spend in day, in night, and
   how long it takes to transition.](day-night-cycle.png)
 </div>
@@ -250,7 +250,7 @@ The skybox is _not_ a cubemap. We're actually drawing to a screen space quad. To
 
 Depending on the direction of the ray, we can decide different colors to give to every single pixel. The picture below, for example, maps the literal ray direction to RGB values.
 
-<div class="mdx-outdent">
+<div class="outdent">
   ![The sky is split into green, red, and black depending on the direction of
   the ray.](skybox-uv.png)
 </div>
@@ -386,7 +386,7 @@ void UI::render_ui() {
 
 We're allowed to define our UI element positions on a relative 0.0-1.0 scale because the `UI` class takes care of transforming it into actual positions on our current screen resolution. Furthermore, the x-values are offset by a `margin` that centers everything.
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   ![Diagram showing how the UI is scaled up and doesn't matter what screen
   resolution we are.](ui-scaling.png)
 </div>
@@ -424,7 +424,7 @@ The end result? Very, very basic text rendering.
 
 > Fun fact: the font below comes from a heavily-customized Minecraft texture pack that I made over quarantine! If I didn't have a bitmap font like this ready, all of this probably wouldn't have happened.
 
-<div class="mdx-outdent">
+<div class="outdent">
   ![The font bitmap file is open in Photoshop.](font-ps.png)
 </div>
 
@@ -454,7 +454,7 @@ From there, I was able to render a single character, and then a string, which is
 
 I did have time to, however, add an in-game debug mode that shows the player's current position, as well as the current chunk (press F3 just like Minecraft):
 
-<div class="mdx-out-wide">
+<div class="outdent-wide">
   ![Debug mode is turned on, and shows the current player position as (32, 158,
   32) and chunk coordinate as (32, 32).](debug-mode.png)
 </div>

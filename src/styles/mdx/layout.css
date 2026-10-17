@@ -1,8 +1,13 @@
 @utility mdx {
-  @apply constrain space-y-4;
+  @apply grid space-y-4;
 
-  > :where(:not(img, video, iframe)) {
-    @apply px-5 sm:w-[calc(var(--prose-w)+2*5*var(--spacing))];
+  grid-template-columns:
+    minmax(--spacing(5), 1fr)
+    minmax(0, var(--max-w))
+    minmax(--spacing(5), 1fr);
+
+  > * {
+    @apply col-2 prose;
 
     /* Remove margin from elements preceding LaTeX, because we're
      * overriding it later. */
@@ -11,43 +16,38 @@
     }
   }
 
-  /* All outdented elements will span the full screen width on mobile. */
-  .mdx-outdent *,
-  .mdx-out-wide *,
-  .mdx-out-max * {
-    @apply rounded-none md:rounded-sm;
-  }
-
   /* Not supported on mobile. */
   @media (hover: hover) {
     img:not([data-no-zoom]) {
       @apply cursor-zoom-in transition-transform active:scale-97;
     }
   }
-}
 
-@utility mdx-outdent {
-  @apply px-0 md:px-5;
+  .outdent,
+  .outdent-wide,
+  .outdent-max {
+    @apply col-span-full sm:col-2;
 
-  figcaption {
-    @apply ml-5 max-w-[calc(var(--prose-w)-(2*5*var(--spacing)))] md:ml-0;
+    img,
+    video,
+    iframe {
+      @apply rounded-none sm:rounded-xl;
+    }
+
+    figcaption {
+      @apply prose pl-5 sm:pl-0;
+    }
   }
-}
 
-@utility mdx-w-wide {
-  @apply w-full max-w-(--wide-w);
-}
+  .wide,
+  .outdent-wide {
+    @apply h-auto w-full max-w-(--wide-w);
+  }
 
-@utility mdx-w-max {
-  @apply w-full;
-}
-
-@utility mdx-out-wide {
-  @apply mdx-outdent mdx-w-wide;
-}
-
-@utility mdx-out-max {
-  @apply mdx-outdent mdx-w-max;
+  .max,
+  .outdent-max {
+    @apply h-auto w-full max-w-full;
+  }
 }
 
 @utility mdx-grid {
