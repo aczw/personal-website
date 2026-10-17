@@ -32,57 +32,45 @@ const {
   data: { title, blurb, posted, cover },
 } = post;
 
-if (cover && !isValidProjectCover(cover.img.width, cover.img.height)) {
+if (cover && !isValidProjectCover(cover.data.width, cover.data.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 
-const { Content, remarkPluginFrontmatter } = await render(post);
-const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
+const { Content } = await render(post);
 ---
 
 <BaseLayout meta={{ kind: "posts", postsEntry: post }}>
   <Header links={[{ href: "/posts", text: "Writing" }]} />
 
   <main class="pt-pad desktop:pt-0">
-    <section
-      class="mx-auto mb-pad-4 w-full px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
-    >
-      <h1
-        class="text-[2.65rem] leading-none font-bold text-heading sm:text-5xl"
-      >
+    <section class="mx-auto mb-pad-4 w-full px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)">
+      <h1 class="text-[2.65rem] leading-none font-bold text-heading sm:text-5xl">
         {title}
       </h1>
 
-      <p
-        class="mt-1 -mb-2 text-xl text-sweater-2 desktop:mb-0 desktop:text-2xl sm:text-4xl light:text-sweater-7"
-      >
+      <p class="mt-1 -mb-2 text-xl text-sweater-2 desktop:mb-0 desktop:text-2xl sm:text-4xl light:text-sweater-7">
         {blurb}
       </p>
     </section>
 
     <section aria-label="Overview" class="mb-pad-2 desktop:mb-pad-4">
-      {
-        cover && (
-          <div class="mx-auto mb-pad-2 max-w-(--real-wide-w) desktop:mb-pad-4 md:px-pad-2">
-            <Image
-              src={cover.img}
-              alt={cover.alt}
-              priority
-              class="md:rounded-xl"
-            />
-          </div>
-        )
-      }
+      {cover && (
+        <div class="mx-auto mb-pad-2 max-w-(--real-wide-w) desktop:mb-pad-4 md:px-pad-2">
+          <Image
+            src={cover.data}
+            alt={cover.alt}
+            priority
+            class="md:rounded-xl"
+          />
+        </div>
+      )}
 
-      <div
-        class="mx-auto w-full px-pad-2 *:space-y-0.5 **:leading-tight desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
-      >
-        <dl
-          class="grid max-w-(--content-w) grid-cols-1 gap-x-pad-2 gap-y-pad sm:grid-cols-2"
-        >
+      <div class="mx-auto w-full px-pad-2 *:space-y-0.5 **:leading-tight desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)">
+        <dl class="grid max-w-(--content-w) grid-cols-1 gap-x-pad-2 gap-y-pad sm:grid-cols-2">
           <div>
             <dt class="flex justify-between font-bold text-heading">
-              Posted <CalendarFoldIcon
+              Posted{" "}
+              <CalendarFoldIcon
                 aria-hidden="true"
                 size={ICON_SIZE}
                 class="shrink-0 stroke-icon"
@@ -100,16 +88,14 @@ const numMinutes = Math.round(remarkPluginFrontmatter["stats"]["minutes"]);
 
           <div>
             <dt class="flex justify-between font-bold text-heading">
-              Length <BookOpenIcon
+              Length{" "}
+              <BookOpenIcon
                 aria-hidden="true"
                 size={ICON_SIZE}
                 class="shrink-0 stroke-icon"
               />
             </dt>
-            <dd>
-              {numMinutes}
-              {numMinutes > 1 ? "minutes" : "minute"}
-            </dd>
+            <dd>Infinity minutes</dd>
           </div>
         </dl>
       </div>

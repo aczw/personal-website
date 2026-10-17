@@ -3,14 +3,11 @@ import { z } from "astro/zod";
 
 import { VALID_MONTHS } from "@/scripts/constants";
 
-const BlurbSchema = z.string().refine((blurb) => blurb.length <= 170, {
-  error:
-    "Blurb should be 170 characters or less (so it looks nice in previews).",
-});
+const LongDescriptionSchema = z.string().refine((text) => text.length <= 170);
 
 const ImageSchema = (image: ImageFunction) =>
-  z.object({
-    img: image(),
+  z.strictObject({
+    data: image(),
     alt: z.string(),
   });
 
@@ -73,19 +70,8 @@ const TechSchema = z.string().array();
 
 const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 
-const GalleryCommonSchema = z.object({
-  title: z.string().optional(),
-  blurb: BlurbSchema,
-  date: z.date(),
-  uses: TechSchema,
-  numMembers: z.int().min(2).optional(),
-  cover: z.object({
-    alt: z.string(),
-  }),
-});
-
 export {
-  BlurbSchema,
+  LongDescriptionSchema,
   ImageSchema,
   LinkSchema,
   SourceHrefSchema,
@@ -93,5 +79,4 @@ export {
   RangedDateSchema,
   TechSchema,
   DateSchema,
-  GalleryCommonSchema,
 };

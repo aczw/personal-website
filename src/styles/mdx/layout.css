@@ -1,0 +1,55 @@
+@utility mdx {
+  @apply constrain space-y-4;
+
+  > :where(:not(img, video, iframe)) {
+    @apply px-5 sm:w-[calc(var(--prose-w)+2*5*var(--spacing))];
+
+    /* Remove margin from elements preceding LaTeX, because we're
+     * overriding it later. */
+    &:has(+ mjx-container) {
+      @apply mb-0;
+    }
+  }
+
+  /* All outdented elements will span the full screen width on mobile. */
+  .mdx-outdent *,
+  .mdx-out-wide *,
+  .mdx-out-max * {
+    @apply rounded-none md:rounded-sm;
+  }
+
+  /* Not supported on mobile. */
+  @media (hover: hover) {
+    img:not([data-no-zoom]) {
+      @apply cursor-zoom-in transition-transform active:scale-97;
+    }
+  }
+}
+
+@utility mdx-outdent {
+  @apply px-0 md:px-5;
+
+  figcaption {
+    @apply ml-5 max-w-[calc(var(--prose-w)-(2*5*var(--spacing)))] md:ml-0;
+  }
+}
+
+@utility mdx-w-wide {
+  @apply w-full max-w-(--wide-w);
+}
+
+@utility mdx-w-max {
+  @apply w-full;
+}
+
+@utility mdx-out-wide {
+  @apply mdx-outdent mdx-w-wide;
+}
+
+@utility mdx-out-max {
+  @apply mdx-outdent mdx-w-max;
+}
+
+@utility mdx-grid {
+  @apply grid grid-cols-1 gap-3 md:grid-cols-2;
+}

@@ -1,0 +1,135 @@
+@utility mdx {
+  b,
+  strong {
+    @apply font-medium;
+  }
+
+  img,
+  video,
+  iframe {
+    @apply w-auto;
+  }
+
+  code {
+    @apply rounded-sm bg-sweater-9 px-1 py-px maple wrap-anywhere light:bg-sweater-2;
+  }
+
+  del {
+    @apply cursor-not-allowed text-sweater-6 line-through light:text-sweater-5;
+  }
+
+  ul {
+    @apply ml-5 list-outside list-["➔"] space-y-1.5 sm:pr-10;
+
+    /* <ul> as a child of <li> */
+    li > & {
+      @apply pt-1.5;
+    }
+  }
+
+  ol {
+    @apply ml-5 list-outside list-decimal space-y-1.5;
+  }
+
+  li {
+    @apply pl-2;
+
+    &::marker {
+      @apply text-sweater-5 light:text-sweater-7;
+    }
+  }
+
+  figcaption {
+    @apply mt-1.5 text-sm font-medium text-heading *:inline;
+
+    &::before {
+      @apply inline-block translate-y-0.5 scale-95 pr-1.5;
+
+      content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkNmQzZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodC1pY29uIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodCI+PHBvbHlsaW5lIHBvaW50cz0iMTUgMTAgMjAgMTUgMTUgMjAiLz48cGF0aCBkPSJNNCA0djdhNCA0IDAgMCAwIDQgNGgxMiIvPjwvc3ZnPg==") /
+        "";
+
+      @variant light {
+        content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTEwIDYuNjY2NjdMMTMuMzMzMyAxMEwxMCAxMy4zMzMzIiBzdHJva2U9IiM0ODQzOTAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yLjY2NjYzIDIuNjY2NjdWNy4zMzMzNEMyLjY2NjYzIDguMDQwNTggMi45NDc1OCA4LjcxODg2IDMuNDQ3NjcgOS4yMTg5NkMzLjk0Nzc3IDkuNzE5MDUgNC42MjYwNSAxMCA1LjMzMzI5IDEwSDEzLjMzMzMiIHN0cm9rZT0iIzQ4NDM5MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+") /
+          "";
+      }
+    }
+  }
+
+  table {
+    @apply mdx-w-max border-y-2 border-style md:ml-5 md:prose;
+
+    thead {
+      @apply border-b-2 border-style font-medium text-heading;
+
+      th {
+        @apply px-3 py-1 not-last:border-r-2 not-last:border-style md:pl-0 md:not-first:pl-3;
+      }
+    }
+
+    tr {
+      @apply not-last:border-b-2 not-last:border-style;
+
+      td {
+        @apply px-3 py-1 not-first:pl-3 not-last:border-r-2 not-last:border-style md:pl-0;
+      }
+    }
+  }
+
+  section[data-footnotes] {
+    @apply mb-0 ml-5 pl-0 text-sm sm:pr-10;
+
+    /* In footnotes, monospaced text should be even smaller. */
+    --text-mono: 0.8rem;
+
+    > h2#footnote-label {
+      @apply mt-7 mb-4 border-t-2 border-style pt-7;
+    }
+
+    > ol {
+      > li > p:has(> a[data-footnote-backref]) {
+        display: inline;
+      }
+
+      a[data-footnote-backref] {
+        display: inline;
+
+        > svg {
+          @apply -translate-y-0.5 scale-90;
+
+          stroke-width: 2.5px;
+          display: inline;
+        }
+      }
+    }
+  }
+}
+
+/* Technically an override, but it's MDX-specific so it's here. */
+.expressive-code {
+  @apply mdx-w-max px-0 md:mdx-w-wide md:px-5;
+
+  pre {
+    --ec-brdRad: 0px;
+
+    @variant md {
+      --ec-brdRad: var(--radius-lg);
+    }
+  }
+
+  figure.frame figcaption.header {
+    --header-border-radius: 0px;
+
+    @variant md {
+      --header-border-radius: var(--radius-lg);
+    }
+
+    .title {
+      border-radius: 0px;
+      border-top-right-radius: var(--tab-border-radius);
+
+      @variant md {
+        border-radius: var(--radius-lg) var(--radius-lg) 0px 0px;
+      }
+    }
+  }
+}

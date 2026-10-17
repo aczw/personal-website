@@ -1,0 +1,59 @@
+---
+import type { ImageMetadata } from "astro";
+import { Image } from "astro:assets";
+
+import nurtureJpg from "@/assets/homepage/albums/nurture.jpg";
+import facesJpg from "@/assets/homepage/albums/faces.jpg";
+import somewhereCityJpg from "@/assets/homepage/albums/somewhere-city.jpg";
+import fishmongerJpg from "@/assets/homepage/albums/fishmonger.jpg";
+import blueLipsJpg from "@/assets/homepage/albums/blue-lips.jpg";
+import isThisItJpg from "@/assets/homepage/albums/is-this-it.jpg";
+import vinceStaplesJpg from "@/assets/homepage/albums/vince-staples.jpg";
+import theSunsTiradeJpg from "@/assets/homepage/albums/the-suns-tirade.jpg";
+
+const covers: { name: string; image: ImageMetadata }[] = [
+  {
+    name: "Nurture",
+    image: nurtureJpg,
+  },
+  {
+    name: "Faces",
+    image: facesJpg,
+  },
+  {
+    name: "Somewhere City",
+    image: somewhereCityJpg,
+  },
+  {
+    name: "fishmonger",
+    image: fishmongerJpg,
+  },
+  {
+    name: "BLUE LIPS",
+    image: blueLipsJpg,
+  },
+  {
+    name: "Is This It",
+    image: isThisItJpg,
+  },
+  {
+    name: "Vince Staples",
+    image: vinceStaplesJpg,
+  },
+  {
+    name: "The Sun's Tirade",
+    image: theSunsTiradeJpg,
+  },
+];
+---
+
+{covers.map(({ name, image }) => (
+  <li title={name}>
+    <Image
+      src={image}
+      alt={`Cover art for ${name}`}
+      priority
+      class="bg-sweater-9 light:bg-sweater-2 desktop:rounded-sm w-full h-auto"
+    />
+  </li>
+))}
