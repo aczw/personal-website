@@ -8,7 +8,7 @@
   img,
   video,
   iframe {
-    @apply rounded-xl;
+    @apply w-full rounded-sm;
   }
 
   code {
@@ -57,13 +57,13 @@
   }
 
   table {
-    @apply border-y-2 border-style md:ml-5 md:prose;
+    @apply col-span-full border-y-2 border-style sm:col-2;
 
     thead {
-      @apply border-b-2 border-style font-medium text-heading;
+      @apply border-b-2 border-style text-heading;
 
       th {
-        @apply px-3 py-1 not-last:border-r-2 not-last:border-style md:pl-0 md:not-first:pl-3;
+        @apply px-3 py-1 font-medium not-last:border-r-2 not-last:border-style md:pl-0 md:not-first:pl-3;
       }
     }
 
@@ -77,13 +77,13 @@
   }
 
   section[data-footnotes] {
-    @apply mb-0 ml-5 pl-0 text-sm sm:pr-10;
+    @apply mb-0 text-sm;
 
     /* In footnotes, monospaced text should be even smaller. */
     --text-mono: 0.8rem;
 
     > h2#footnote-label {
-      @apply mt-7 mb-4 border-t-2 border-style pt-7;
+      @apply mt-3 mb-4 border-t-2 border-style pt-7;
     }
 
     > ol {
@@ -105,31 +105,37 @@
   }
 }
 
-/* Technically an override, but it's MDX-specific so it's here. */
-.expressive-code {
-  @apply px-0 md:px-5;
-
-  pre {
-    --ec-brdRad: 0px;
-
-    @variant md {
-      --ec-brdRad: var(--radius-lg);
-    }
+/* MDX-specific overrides. */
+.mdx {
+  mjx-container[jax="CHTML"][display="true"] {
+    @apply mt-3 mb-7;
   }
 
-  figure.frame figcaption.header {
-    --header-border-radius: 0px;
+  .expressive-code {
+    @apply col-span-full w-full sm:col-2 sm:w-fit sm:max-w-[min(var(--wide-w),100%)] sm:min-w-[min(var(--prose-w),100%)];
 
-    @variant md {
-      --header-border-radius: var(--radius-lg);
+    pre {
+      --ec-brdRad: 0px;
+
+      @variant sm {
+        --ec-brdRad: var(--radius-lg);
+      }
     }
 
-    .title {
-      border-radius: 0px;
-      border-top-right-radius: var(--tab-border-radius);
+    figure.frame figcaption.header {
+      --header-border-radius: 0px;
 
       @variant md {
-        border-radius: var(--radius-lg) var(--radius-lg) 0px 0px;
+        --header-border-radius: var(--radius-lg);
+      }
+
+      .title {
+        border-radius: 0px;
+        border-top-right-radius: var(--tab-border-radius);
+
+        @variant md {
+          border-radius: var(--radius-lg) var(--radius-lg) 0px 0px;
+        }
       }
     }
   }

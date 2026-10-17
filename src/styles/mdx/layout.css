@@ -8,12 +8,6 @@
 
   > * {
     @apply col-2 prose;
-
-    /* Remove margin from elements preceding LaTeX, because we're
-     * overriding it later. */
-    &:has(+ mjx-container) {
-      @apply mb-0;
-    }
   }
 
   /* Not supported on mobile. */
@@ -31,7 +25,7 @@
     img,
     video,
     iframe {
-      @apply rounded-none sm:rounded-xl;
+      @apply rounded-none sm:rounded-sm;
     }
 
     figcaption {
@@ -48,8 +42,8 @@
   .outdent-max {
     @apply h-auto w-full max-w-full;
   }
-}
 
-@utility mdx-grid {
-  @apply grid grid-cols-1 gap-3 md:grid-cols-2;
+  .gallery {
+    @apply grid grid-cols-1 gap-3 md:grid-cols-2;
+  }
 }
