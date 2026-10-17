@@ -54,17 +54,17 @@ const { Content } = await render(project);
 
   <main>
     <div class="constrain lg:px-5">
-      <ProjectCover
-        projectId={id}
-        coverImage={coverImage}
-        class="lg:rounded-lg mt-5"
-      />
-
-      <hgroup class="px-5 lg:px-0 mt-7">
+      <hgroup class="px-5 lg:px-0 mt-5">
         <h1 class="text-heading font-medium text-xl/tight">{name}</h1>
         <p class="text-lg/tight text-heading">{description.short}</p>
         <p class="prose mt-3">{description.long}</p>
       </hgroup>
+
+      <ProjectCover
+        projectId={id}
+        coverImage={coverImage}
+        class="lg:rounded-lg mt-7"
+      />
     </div>
 
     <section class="mt-7 constrain px-5">
@@ -72,7 +72,7 @@ const { Content } = await render(project);
 
       <dl
         class:list={[
-          "grid grid-cols-1 gap-3 md:gap-y-3 max-w-(--wide-w) border-t-0 border-style pt-1.5",
+          "grid grid-cols-1 gap-3 md:gap-y-3 max-w-(--prose-w) md:max-w-150 border-t-0 border-style pt-1.5",
           { "md:grid-cols-2": numMetadata % 2 === 0 },
           { "md:grid-cols-3": numMetadata === 3 },
         ]}
