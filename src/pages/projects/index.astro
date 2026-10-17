@@ -76,12 +76,12 @@ const description =
         Everything else
       </h2>
 
-      <div class="px-5 mt-3">
+      <div class="px-5 mt-7">
         {projects
           .filter(({ id }) => !notProjectsTODO.includes(id))
           .filter(({ id }) => !isFeaturedProject(id))
           .map(({ id, data: { name, description, metadata, coverImage } }) => (
-            <article class="border-t-2 border-style relative pt-2 not-last:pb-2 flex gap-x-3 group">
+            <article class="relative not-last:pb-3 flex gap-x-3 group">
               <Image
                 src={coverImage.data}
                 alt={coverImage.alt}
