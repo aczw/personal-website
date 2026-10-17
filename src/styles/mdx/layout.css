@@ -1,7 +1,7 @@
 @utility mdx {
   @apply constrain space-y-4;
 
-  > * {
+  > :where(:not(img, video, iframe)) {
     @apply px-5 sm:w-[calc(var(--prose-w)+2*5*var(--spacing))];
 
     /* Remove margin from elements preceding LaTeX, because we're
@@ -35,7 +35,7 @@
 }
 
 @utility mdx-w-wide {
-  @apply w-auto max-w-(--wide-w);
+  @apply w-full max-w-(--wide-w);
 }
 
 @utility mdx-w-max {

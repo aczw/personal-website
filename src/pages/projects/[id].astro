@@ -42,6 +42,10 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 
+let numMetadata = 2;
+if (link) numMetadata += 1;
+if (sourceHref) numMetadata += 1;
+
 const { Content } = await render(project);
 ---
 
@@ -63,40 +67,39 @@ const { Content } = await render(project);
       </hgroup>
     </div>
 
-    <section class="constrain px-5 mt-7">
+    <section class="mt-7 constrain px-5">
       <h2 class="sr-only">Overview</h2>
 
-      <dl class="prose grid grid-cols-2 *:col-span-2 *:grid *:grid-cols-subgrid *:border-t-2 *:border-style">
-        <div>
-          <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-style py-1 pr-3">
-            Made with <WrenchIcon size={ICON_SIZE} class="stroke-icon" />
-          </dt>
-          <dd class="py-1 pl-3">
+      <dl
+        class:list={[
+          "grid grid-cols-1 gap-x-3 gap-y-1.5 md:gap-y-3 max-w-(--wide-w) border-t-2 border-style pt-1.5",
+          { "md:grid-cols-2": numMetadata % 2 === 0 },
+          { "md:grid-cols-3": numMetadata === 3 },
+        ]}
+      >
+        <div class="">
+          <dt class="font-medium text-heading leading-tight">Made with</dt>
+          <dd>
             <TechList tech={tech} />
           </dd>
         </div>
 
-        <div>
-          <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-style py-1 pr-3">
-            Duration <CalendarFoldIcon size={ICON_SIZE} class="stroke-icon" />
-          </dt>
-          <dd class="py-1 pl-3">
+        <div class="">
+          <dt class="font-medium text-heading leading-tight">Duration</dt>
+          <dd>
             <ContentDate date={date} />
           </dd>
         </div>
 
         {link && (
-          <div>
-            <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-style py-1 pr-3">
-              {link.text}{" "}
-              <ExternalLinkIcon size={ICON_SIZE} class="stroke-icon" />
-            </dt>
-            <dd class="py-1 pl-3 relative">
+          <div class="">
+            <dt class="font-medium text-heading leading-tight">{link.text}</dt>
+            <dd>
               <a
                 href={link.href}
                 target="_blank"
                 rel="noopener"
-                class="link-primary after:absolute after:inset-0 after:z-1"
+                class="link-primary"
               >
                 {
                   /* Get rid of https:// and only show domain */
@@ -108,17 +111,14 @@ const { Content } = await render(project);
         )}
 
         {sourceHref && (
-          <div>
-            <dt class="font-medium text-heading flex items-center gap-2 justify-between border-r-2 border-style py-1 pr-3">
-              Source
-              <FileCodeIcon size={ICON_SIZE} class="stroke-icon" />
-            </dt>
-            <dd class="py-1 pl-3 relative">
+          <div class="">
+            <dt class="font-medium text-heading leading-tight">Source</dt>
+            <dd>
               <a
                 href={sourceHref}
                 target="_blank"
                 rel="noopener"
-                class="link-primary after:absolute after:inset-0 after:z-1"
+                class="link-primary"
               >
                 View on GitHub
               </a>

@@ -7,7 +7,7 @@
   img,
   video,
   iframe {
-    @apply w-full rounded-sm;
+    @apply w-auto;
   }
 
   code {
