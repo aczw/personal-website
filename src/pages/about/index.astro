@@ -9,7 +9,6 @@ import imageAsa from "@/assets/about/asa.jpg";
 import imageBirthday from "@/assets/about/birthday.jpg";
 
 import CommonLayout from "@/layouts/common-layout.astro";
-import Link from "@/components/link.astro";
 import RecentTracks from "@/components/homepage/recent-tracks.astro";
 import TopStats from "@/components/homepage/top-stats.astro";
 import RecentMedia from "@/components/homepage/recent-media.astro";
@@ -55,21 +54,37 @@ const ABOUT_PICTURES: AboutPicture[] = [
         </p>
         <p class="md:row-start-2">
           I help out with (and used to co-lead){" "}
-          <Link href="https://pennupgrade.com" target="_blank">
+          <a
+            href="https://pennupgrade.com"
+            target="_blank"
+            rel="noopener"
+            class="link-primary"
+          >
             UPGRADE
-          </Link>
+          </a>
           , our game dev club, and run communications as part of the{" "}
-          <Link href="https://cg.cis.upenn.edu" target="_blank">
+          <a
+            href="https://cg.cis.upenn.edu"
+            target="_blank"
+            rel="noopener"
+            class="link-primary"
+          >
             CG@Penn
-          </Link>{" "}
+          </a>{" "}
           student board.
         </p>
         <p class="md:row-start-2">
           Last summer, I interned at Snap Inc. and hacked on their rendering
           engine. It was fun! Before that, I was at TikTok.{" "}
-          <Link href="/resume" target="_blank" data-umami-event="resume">
+          <a
+            href="/resume"
+            target="_blank"
+            data-umami-event="resume"
+            rel="noopener"
+            class="link-primary"
+          >
             Here's my resume.
-          </Link>
+          </a>
         </p>
       </div>
     </div>
@@ -171,21 +186,41 @@ const ABOUT_PICTURES: AboutPicture[] = [
         <p>
           I welcome random messages from strangers. Please reach out to say
           hello! You can find me on{" "}
-          <Link href="https://twitter.com/zwcharl" target="_blank">
+          <a
+            href="https://twitter.com/zwcharl"
+            target="_blank"
+            rel="noopener"
+            class="link-primary"
+          >
             Twitter
-          </Link>
+          </a>
           ,{" "}
-          <Link href="https://are.na/charles-zw" target="_blank">
+          <a
+            href="https://are.na/charles-zw"
+            target="_blank"
+            rel="noopener"
+            class="link-primary"
+          >
             Are.na
-          </Link>
+          </a>
           ,{" "}
-          <Link href="https://linkedin.com/in/zwcharl" target="_blank">
+          <a
+            href="https://linkedin.com/in/zwcharl"
+            target="_blank"
+            rel="noopener"
+            class="link-primary"
+          >
             LinkedIn
-          </Link>
+          </a>
           , and{" "}
-          <Link href="https://github.com/aczw" target="_blank">
+          <a
+            href="https://github.com/aczw"
+            target="_blank"
+            rel="noopener"
+            class="link-primary"
+          >
             GitHub
-          </Link>
+          </a>
           . My email is{" "}
           <span class="inline-code">
             zwcharl &lt;at&gt; gmail &lt;dot&gt; com

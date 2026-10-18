@@ -6,13 +6,11 @@ posted: 2025-04-15T20:39:15-04
 slug: unity-ui-animations
 ---
 
-import Link from "@/components/link.astro";
-
 I’ve been writing UI code in Unity for almost 2 years now, and during this time I’ve worked out my own way of handling animations. While working on the v1.0 release of [PennBoy](https://pennupgrade.itch.io/pennboy) I extracted the pattern out into a single, standalone function.
 
 I thought it might be interesting to talk a little about my process and how I got here. At the end I show how you can build on top of it to create your own generic tweening utilities.
 
-> Don’t care about the exposition? <Link href="#the-actual-code">Skip to the code here</Link>.
+> Don’t care about the exposition? <a href="#the-actual-code" class="link-primary">Skip to the code here</a>.
 
 ## First steps
 
@@ -113,7 +111,7 @@ private IEnumerator MoveTenXUnits() {
 }
 ```
 
-Funnily enough our code now looks identical to our <Link href="#first-steps">first attempt</Link>. However, this function is already better in a number of ways.
+Funnily enough our code now looks identical to our <a href="#first-steps">first attempt</a>. However, this function is already better in a number of ways.
 
 - Unity has established ways of [starting](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/MonoBehaviour.StartCoroutine.html) and [stopping](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/MonoBehaviour.StopCoroutine.html) a coroutine that can be called anywhere and anytime.
 - Coroutines abstract away implementation details. No more manual counters or checks within `Update()`.
