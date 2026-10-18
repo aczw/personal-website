@@ -9,7 +9,7 @@ const { data } = await Astro.callAction(actions.lastFm.getRecentTracks, {
 });
 ---
 
-<ul class="opacity-100 transition-opacity duration-600 starting:opacity-0 flex flex-col gap-3 grow justify-between">
+<ul class="flex grow flex-col justify-between gap-3 opacity-100 transition-opacity duration-600 starting:opacity-0">
   {data ?
     <TracksList tracks={data} />
   : <Playlists />}

@@ -17,5 +17,7 @@ const { target, title, class: className, noUnderline, ...props } = Astro.props;
     { underline: noUnderline !== true },
     className,
   ]}
-  {...props}><slot /></a
+  {...props}
 >
+  <slot />
+</a>

@@ -34,7 +34,7 @@ const isBackRef = href.startsWith("#user-content-fnref-");
 <a
   target={isFootnoteRelated ? null : "_blank"}
   rel={isFootnoteRelated ? null : "noopener"}
-  class:list={["w-fit link-primary", { "scroll-mt-4": isFootnote }]}
+  class:list={["link-primary w-fit", { "scroll-mt-4": isFootnote }]}
   {...Astro.props}
 >
   {isBackRef ?

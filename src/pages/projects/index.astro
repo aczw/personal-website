@@ -69,16 +69,16 @@ const description =
       <h2 class="sr-only">Featured</h2>
       <p class="prose px-5">Take a look at these first.</p>
 
-      <div class="mt-7 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:px-5">
+      <div class="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:px-5 lg:grid-cols-4">
         {featured.map(({ id, data: { name, description, coverImage } }) => (
-          <article class="relative group">
+          <article class="group relative">
             <ProjectCover
               projectId={id}
               coverImage={coverImage}
               class="sm:rounded-sm"
             />
 
-            <h3 class="flex mt-2 items-center gap-1 link-primary justify-between desktop:justify-start w-full px-5 sm:px-0">
+            <h3 class="mt-2 flex link-primary w-full items-center justify-between gap-1 px-5 desktop:justify-start sm:px-0">
               <a
                 href={`/projects/${id}`}
                 class="after:absolute after:inset-0 after:z-1"
@@ -88,34 +88,35 @@ const description =
               <ArrowRightIcon size={ICON_SIZE} />
             </h3>
 
-            <p class="sm:px-0 px-5">{description.long}</p>
+            <p class="px-5 sm:px-0">{description.long}</p>
           </article>
         ))}
       </div>
     </section>
 
     <section class="constrain mt-7">
-      <h2 id="everything-else" class="font-medium text-heading px-5">
+      <h2 id="everything-else" class="px-5 font-medium text-heading">
         Everything else
       </h2>
       <p class="prose px-5">Most recent projects are listed at the top.</p>
 
-      <div class="px-5 mt-7">
+      <div class="mt-7 px-5">
         {rest.map(
           ({ id, data: { name, description, metadata, coverImage } }) => (
-            <article class="relative w-fit not-last:pb-3 flex gap-x-3 group">
+            <article class="group relative flex w-fit gap-x-3 not-last:pb-3">
               <Image
                 src={coverImage.data}
                 alt={coverImage.alt}
-                class="rounded-xs w-auto h-[2lh] lg:h-lh bg-sweater-9 light:bg-sweater-2"
+                decoding="async"
+                class="h-[2lh] w-auto rounded-xs bg-sweater-9 lg:h-lh light:bg-sweater-2"
               />
 
-              <div class="flex gap-x-3 flex-col lg:flex-row">
+              <div class="flex flex-col gap-x-3 lg:flex-row">
                 <h3>
                   <a
                     href={`/projects/${id}`}
                     class:list={[
-                      "after:absolute after:inset-0 after:z-1 link-primary",
+                      "link-primary after:absolute after:inset-0 after:z-1",
                     ]}
                   >
                     {name}
@@ -123,7 +124,7 @@ const description =
                 </h3>
 
                 <div class="flex gap-x-3">
-                  <p class="hidden sm:block text-link-secondary group-hover:text-link-secondary-hover">
+                  <p class="hidden text-link-secondary group-hover:text-link-secondary-hover sm:block">
                     {description.short}
                   </p>
 

@@ -45,7 +45,7 @@
     "eslint-plugin-mdx": "^3.8.1",
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.1",
-    "prettier-plugin-tailwindcss": "^0.8.1",
+    "prettier-plugin-tailwindcss": "^0.0.0-insiders.5b27f94",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.71.2"
   },

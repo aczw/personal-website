@@ -21,7 +21,7 @@ const { tracks } = Astro.props;
 ---
 
 {tracks.map(({ song, artist, coverUrl, isLive, unixTimestamp }) => (
-  <li class="flex gap-x-3 items-center">
+  <li class="flex items-center gap-x-3">
     {coverUrl ?
       <Image
         src={coverUrl}
@@ -29,7 +29,7 @@ const { tracks } = Astro.props;
         width={174}
         height={174}
         priority
-        class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2 size-[3.25lh]"
+        class="size-[3.25lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"
       />
     : <div class="flex size-[3.25lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
         <Disc3Icon size={ICON_SIZE} class="stroke-icon" />
@@ -41,16 +41,16 @@ const { tracks } = Astro.props;
         href={song.url}
         target="_blank"
         rel="noopener"
-        class="link-primary line-clamp-1"
+        class="line-clamp-1 link-primary"
       >
         {song.name}
       </a>
 
-      <p class="text-sweater-2 light:text-sweater-8 line-clamp-1">{artist}</p>
+      <p class="line-clamp-1 text-sweater-2 light:text-sweater-8">{artist}</p>
 
       <time
         class:list={[
-          "text-icon w-fit",
+          "w-fit text-icon",
           { "flex items-center gap-1.5": isLive },
         ]}
         datetime={

@@ -11,7 +11,7 @@ const { id, ...props } = Astro.props;
   class="scroll-mt-4 text-base/tight font-medium text-link-primary hover:text-link-primary-hover"
   {...props}
 >
-  <a href={`#${id}`} class="w-full block">
+  <a href={`#${id}`} class="block w-full">
     <slot />
   </a>
 </h4>

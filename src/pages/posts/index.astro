@@ -44,7 +44,7 @@ const description =
       <p class="prose">{description}</p>
     </div>
 
-    <section class="mt-7 constrain">
+    <section class="constrain mt-7">
       <h2 class="sr-only">Entries</h2>
 
       <div class="px-5 [--date-w:8rem] sm:[--date-w:15rem]">
@@ -52,12 +52,12 @@ const description =
           <Fragment>
             <h3
               id={year.toString()}
-              class="font-medium text-heading sm:sr-only not-first:mt-3"
+              class="font-medium text-heading not-first:mt-3 sm:sr-only"
             >
               {year}
             </h3>
 
-            <ul class="mt-3 sm:mt-0 *:grid *:grid-cols-[var(--date-w)_minmax(0,1fr)] sm:*:min-w-(--prose-w) *:w-fit pb-1">
+            <ul class="mt-3 pb-1 *:grid *:w-fit *:grid-cols-[var(--date-w)_minmax(0,1fr)] sm:mt-0 sm:*:min-w-(--prose-w)">
               {posts.map(({ data: { title, posted }, id }, index) => {
                 const monthDay = getMonthDayDateFormatting(posted);
                 const [month, day] = monthDay.split(" ");

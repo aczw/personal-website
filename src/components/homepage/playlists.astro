@@ -38,12 +38,12 @@ const playlists: {
 ---
 
 {playlists.map(({ name, url, timeRange, info, image }) => (
-  <li class="flex gap-x-3 items-center">
+  <li class="flex items-center gap-x-3">
     <Image
       src={image}
       alt={`Playlist art for ${name}`}
       priority
-      class="shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2 size-[3.25lh]"
+      class="size-[3.25lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"
     />
 
     <div class="grow">

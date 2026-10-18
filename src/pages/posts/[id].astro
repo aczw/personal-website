@@ -43,7 +43,7 @@ const { Content } = await render(post);
   <main>
     <div class="constrain md:px-5">
       <div class="px-5 md:px-0">
-        <h1 class="text-heading font-medium text-xl/tight">{title}</h1>
+        <h1 class="text-xl/tight font-medium text-heading">{title}</h1>
         {blurb && <p class="text-lg/tight text-heading">{blurb}</p>}
       </div>
 
@@ -51,13 +51,13 @@ const { Content } = await render(post);
         <Image
           src={cover.data}
           alt={cover.alt}
-          class="max-w-(--wide-w) md:rounded-lg mt-7"
+          class="mt-7 max-w-(--wide-w) md:rounded-lg"
         />
       )}
     </div>
 
-    <section class="mt-7 constrain px-5">
-      <h2 class="font-medium text-heading flex items-center gap-2">
+    <section class="constrain mt-7 px-5">
+      <h2 class="flex items-center gap-2 font-medium text-heading">
         Posted <CalendarFoldIcon size={ICON_SIZE} class="stroke-icon" />
       </h2>
       <time

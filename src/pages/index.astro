@@ -25,7 +25,7 @@ const projects = await getEntries(
   <main class="overflow-x-hidden">
     <h1 class="sr-only">Charles Wang</h1>
 
-    <div class="constrain px-5 space-y-3 *:prose">
+    <div class="constrain space-y-3 px-5 *:prose">
       <p>
         Hi, welcome. Thanks for visiting my little space. I wonder how you ended
         up here? Please do take a look around and explore.
@@ -33,7 +33,7 @@ const projects = await getEntries(
       <p>Here are some projects I've worked on...</p>
     </div>
 
-    <section class="constrain desktop:px-5 mt-7 space-y-1 grid grid-cols-1 md:grid-cols-3 gap-3">
+    <section class="constrain mt-7 grid grid-cols-1 gap-3 space-y-1 desktop:px-5 md:grid-cols-3">
       <h2 class="sr-only">Projects I've worked on</h2>
 
       {projects.map(({ id, data: { description, coverImage } }, index) => (
@@ -42,19 +42,19 @@ const projects = await getEntries(
             id={`cover-image-${index}`}
             src={coverImage.data}
             alt={coverImage.alt}
-            class="aspect-16/10 w-full h-auto desktop:rounded-lg bg-sweater-9 light:bg-sweater-2 hidden"
+            class="hidden aspect-16/10 h-auto w-full bg-sweater-9 desktop:rounded-lg light:bg-sweater-2"
             loading="lazy"
             decoding="async"
           />
           <canvas
             id={`tile-${index}`}
-            class="aspect-16/10 w-full desktop:rounded-lg bg-sweater-9 light:bg-sweater-2"
+            class="aspect-16/10 w-full bg-sweater-9 desktop:rounded-lg light:bg-sweater-2"
             aria-hidden="true"
           />
           <h3 class="px-5 desktop:px-0">
             <a
               href={`/projects/${id}`}
-              class="after:absolute flex items-center justify-between desktop:justify-start gap-1 after:inset-0 after:z-1 link-primary w-full"
+              class="flex link-primary w-full items-center justify-between gap-1 after:absolute after:inset-0 after:z-1 desktop:justify-start"
             >
               {description.short}
               <ArrowRightIcon size={ICON_SIZE} />
@@ -64,7 +64,7 @@ const projects = await getEntries(
       ))}
     </section>
 
-    <section class="mt-5 constrain">
+    <section class="constrain mt-5">
       <h2 class="sr-only">Music I've been listening to</h2>
 
       <p class="prose px-5">
@@ -72,20 +72,20 @@ const projects = await getEntries(
         something. I make a lot of playlists and they make me.
       </p>
 
-      <div class="flex flex-col lg:flex-row gap-x-6 gap-y-5 mt-3">
-        <div class="md:w-(--prose-w) desktop:px-5 md:pr-0">
+      <div class="mt-3 flex flex-col gap-x-6 gap-y-5 lg:flex-row">
+        <div class="desktop:px-5 md:w-(--prose-w) md:pr-0">
           <h3 class="sr-only">Top albums</h3>
 
           <TopStats server:defer>
             <Fragment slot="fallback">
               <div
                 aria-hidden="true"
-                class="px-5 desktop:px-0 mb-7 bg-sweater-9 light:bg-sweater-2 desktop:rounded-sm animate-pulse h-lh"
+                class="mb-7 h-lh animate-pulse bg-sweater-9 px-5 desktop:rounded-sm desktop:px-0 light:bg-sweater-2"
               ></div>
 
               <div
                 aria-hidden="true"
-                class="animate-pulse grid grid-cols-4 desktop:gap-3 *:bg-sweater-9 *:light:bg-sweater-2 *:desktop:rounded-sm *:aspect-square *:w-full *:h-auto"
+                class="grid animate-pulse grid-cols-4 *:aspect-square *:h-auto *:w-full *:bg-sweater-9 desktop:gap-3 *:desktop:rounded-sm *:light:bg-sweater-2"
               >
                 {Array.from({ length: 8 }).map(() => (
                   <div></div>
@@ -95,13 +95,13 @@ const projects = await getEntries(
           </TopStats>
         </div>
 
-        <div class="grow flex flex-col gap-y-7 pr-5 pl-5 lg:pl-0">
+        <div class="flex grow flex-col gap-y-7 pr-5 pl-5 lg:pl-0">
           <h3>Recently I've been listening to...</h3>
 
           <RecentTracks server:defer>
             <div
               aria-hidden="true"
-              class="animate-pulse flex flex-col gap-3 grow justify-between *:flex *:gap-x-3"
+              class="flex grow animate-pulse flex-col justify-between gap-3 *:flex *:gap-x-3"
               slot="fallback"
             >
               {Array.from({ length: 3 }).map(() => (
@@ -116,10 +116,10 @@ const projects = await getEntries(
       </div>
     </section>
 
-    <section class="mt-7 constrain">
+    <section class="constrain mt-7">
       <h2 class="sr-only">Manga and anime I've been consuming</h2>
 
-      <p class="prose mb-3 px-5">
+      <p class="mb-3 prose px-5">
         I read a lot of manga and sometimes watch anime.
       </p>
 
@@ -127,10 +127,10 @@ const projects = await getEntries(
         <div
           aria-hidden="true"
           slot="fallback"
-          class="space-y-7 animate-pulse *:mx-5"
+          class="animate-pulse space-y-7 *:mx-5"
         >
           <div class="prose">
-            <div class="bg-sweater-9 light:bg-sweater-2 h-[2lh] sm:mr-5 rounded-sm"></div>
+            <div class="h-[2lh] rounded-sm bg-sweater-9 sm:mr-5 light:bg-sweater-2"></div>
           </div>
           <div class="h-[5.25lh] rounded-sm bg-sweater-9 light:bg-sweater-2"></div>
         </div>

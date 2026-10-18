@@ -55,30 +55,30 @@ const { Content } = await render(project);
   <main>
     <div class="constrain lg:px-5">
       <hgroup class="px-5 lg:px-0">
-        <h1 class="text-heading font-medium text-xl/tight">{name}</h1>
+        <h1 class="text-xl/tight font-medium text-heading">{name}</h1>
         <p class="text-lg/tight text-heading">{description.short}</p>
-        <p class="prose mt-3">{description.long}</p>
+        <p class="mt-3 prose">{description.long}</p>
       </hgroup>
 
       <ProjectCover
         projectId={id}
         coverImage={coverImage}
-        class="lg:rounded-lg mt-7"
+        class="mt-7 lg:rounded-lg"
       />
     </div>
 
-    <section class="mt-7 constrain px-5">
+    <section class="constrain mt-7 px-5">
       <h2 class="sr-only">Overview</h2>
 
       <dl
         class:list={[
-          "grid grid-cols-1 gap-3 md:gap-y-3 max-w-(--prose-w) md:max-w-150 border-t-0 border-style pt-1.5",
+          "grid max-w-(--prose-w) grid-cols-1 gap-3 border-t-0 border-style pt-1.5 md:max-w-150 md:gap-y-3",
           { "md:grid-cols-2": numMetadata % 2 === 0 },
           { "md:grid-cols-3": numMetadata === 3 },
         ]}
       >
         <div>
-          <dt class="font-medium text-heading leading-tight flex items-center gap-2 justify-between md:justify-start">
+          <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
             Made with <WrenchIcon size={ICON_SIZE} class="stroke-icon" />
           </dt>
           <dd>
@@ -87,7 +87,7 @@ const { Content } = await render(project);
         </div>
 
         <div>
-          <dt class="font-medium text-heading leading-tight flex items-center gap-2 justify-between md:justify-start">
+          <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
             Duration <CalendarFoldIcon size={ICON_SIZE} class="stroke-icon" />
           </dt>
           <dd>
@@ -97,7 +97,7 @@ const { Content } = await render(project);
 
         {link && (
           <div>
-            <dt class="font-medium text-heading leading-tight flex items-center gap-2 justify-between md:justify-start">
+            <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
               {link.text}{" "}
               <ExternalLinkIcon size={ICON_SIZE} class="stroke-icon" />
             </dt>
@@ -119,7 +119,7 @@ const { Content } = await render(project);
 
         {sourceHref && (
           <div>
-            <dt class="font-medium text-heading leading-tight flex items-center gap-2 justify-between md:justify-start">
+            <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
               Source <FileCodeIcon size={ICON_SIZE} class="stroke-icon" />
             </dt>
             <dd>

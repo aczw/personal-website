@@ -23,9 +23,9 @@ const { albums } = Astro.props;
           width={174}
           height={174}
           priority
-          class="bg-sweater-9 desktop:rounded-sm aspect-square object-cover light:bg-sweater-2 w-full h-auto"
+          class="aspect-square h-auto w-full bg-sweater-9 object-cover desktop:rounded-sm light:bg-sweater-2"
         />
-      : <div class="flex aspect-square items-center justify-center desktop:rounded-sm bg-sweater-9 light:bg-sweater-2 w-full h-auto">
+      : <div class="flex aspect-square h-auto w-full items-center justify-center bg-sweater-9 desktop:rounded-sm light:bg-sweater-2">
           <Disc3Icon size={2 * ICON_SIZE} class="stroke-icon" />
         </div>
       }

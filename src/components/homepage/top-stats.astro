@@ -9,13 +9,13 @@ const { data } = await Astro.callAction(actions.lastFm.getTopAlbums, {
 });
 ---
 
-<p class="px-5 desktop:px-0 mb-7 opacity-100 transition-opacity duration-600 starting:opacity-0">
+<p class="mb-7 px-5 opacity-100 transition-opacity duration-600 desktop:px-0 starting:opacity-0">
   {data ?
     "In the last 7 days, my top albums are..."
   : "Some of my favorite albums of all time are..."}
 </p>
 
-<ul class="opacity-100 transition-opacity duration-600 starting:opacity-0 grid grid-cols-4 desktop:gap-3">
+<ul class="grid grid-cols-4 opacity-100 transition-opacity duration-600 desktop:gap-3 starting:opacity-0">
   {data ?
     <AlbumGrid albums={data} />
   : <FavoriteAlbums />}
