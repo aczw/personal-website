@@ -55,8 +55,8 @@ const { Content } = await render(project);
   <main>
     <div class="constrain lg:px-5">
       <hgroup class="px-5 lg:px-0">
-        <h1 class="text-xl/tight font-medium text-heading">{name}</h1>
-        <p class="text-lg/tight text-heading">{description.short}</p>
+        <h1 class="text-xl/tight font-medium heading">{name}</h1>
+        <p class="text-lg/tight heading">{description.short}</p>
         <p class="mt-3 prose">{description.long}</p>
       </hgroup>
 
@@ -78,7 +78,7 @@ const { Content } = await render(project);
         ]}
       >
         <div>
-          <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
+          <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
             Made with <WrenchIcon size={ICON_SIZE} class="icon" />
           </dt>
           <dd>
@@ -87,7 +87,7 @@ const { Content } = await render(project);
         </div>
 
         <div>
-          <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
+          <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
             Duration <CalendarFoldIcon size={ICON_SIZE} class="icon" />
           </dt>
           <dd>
@@ -97,7 +97,7 @@ const { Content } = await render(project);
 
         {link && (
           <div>
-            <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
+            <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
               {link.label} <ExternalLinkIcon size={ICON_SIZE} class="icon" />
             </dt>
             <dd>
@@ -118,7 +118,7 @@ const { Content } = await render(project);
 
         {sourceHref && (
           <div>
-            <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
+            <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
               Source <FileCodeIcon size={ICON_SIZE} class="icon" />
             </dt>
             <dd>

@@ -29,8 +29,6 @@
   --color-sweater-9: #1d193d;
   --color-sweater-10: #0a0919;
 
-  --color-heading: var(--heading);
-
   /* A good indicator for when we're beyond mobile territory. Equals 480px */
   --breakpoint-desktop: 30rem;
 }
@@ -42,12 +40,6 @@
     --max-w: 75rem; /* 1200px */
     --wide-w: 56.25rem; /* 900px */
     --prose-w: 34.375rem; /* 550px */
-
-    --heading: var(--color-sweater-2);
-
-    @variant light {
-      --heading: var(--color-sweater-8);
-    }
   }
 
   html {
@@ -117,6 +109,10 @@
 
 @utility icon {
   @apply stroke-sweater-6 light:stroke-sweater-5;
+}
+
+@utility heading {
+  @apply text-sweater-2 light:text-sweater-8;
 }
 
 @utility prose {

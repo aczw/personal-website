@@ -46,8 +46,8 @@ const { Content } = await render(post);
   <main>
     <div class="constrain md:px-5">
       <div class="px-5 md:px-0">
-        <h1 class="text-xl/tight font-medium text-heading">{title}</h1>
-        {blurb && <p class="text-lg/tight text-heading">{blurb}</p>}
+        <h1 class="text-xl/tight font-medium heading">{title}</h1>
+        {blurb && <p class="text-lg/tight heading">{blurb}</p>}
       </div>
 
       {coverImage && (
@@ -60,7 +60,7 @@ const { Content } = await render(post);
     </div>
 
     <section class="constrain mt-7 px-5">
-      <h2 class="flex items-center gap-2 font-medium text-heading">
+      <h2 class="flex items-center gap-2 font-medium heading">
         Posted <CalendarFoldIcon size={ICON_SIZE} class="icon" />
       </h2>
       <time

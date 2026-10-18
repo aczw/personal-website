@@ -41,7 +41,7 @@
   }
 
   figcaption {
-    @apply mt-1.5 text-sm font-medium text-heading *:inline;
+    @apply mt-1.5 text-sm font-medium heading *:inline;
 
     &::before {
       @apply inline-block translate-y-0.5 scale-95 pr-1.5;
@@ -60,7 +60,7 @@
     @apply col-span-full border-y-2 border-style sm:col-2;
 
     thead {
-      @apply border-b-2 border-style text-heading;
+      @apply border-b-2 border-style heading;
 
       th {
         @apply px-3 py-1 font-medium not-last:border-r-2 not-last:border-style md:pl-0 md:not-first:pl-3;

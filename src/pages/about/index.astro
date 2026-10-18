@@ -42,12 +42,12 @@ const ABOUT_PICTURES: AboutPicture[] = [
   headerLinks={[]}
 >
   <main class="space-y-pad-4 pt-pad pb-pad-4 desktop:pt-0">
-    <div class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)">
-      <h1 id="about" class="text-5xl font-bold text-heading">
+    <div class="space-y-pad-4 px-pad-2 desktop:px-pad mx-auto w-full desktop:w-4/5 lg:w-(--real-header-w)">
+      <h1 id="about" class="text-5xl font-bold heading">
         About
       </h1>
 
-      <div class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 md:grid-cols-2">
+      <div class="gap-x-pad-4 gap-y-pad-2 grid grid-cols-1 md:grid-cols-2">
         <p>
           I'm a fourth year student in the Digital Media Design program at the
           University of Pennsylvania.
@@ -91,7 +91,7 @@ const ABOUT_PICTURES: AboutPicture[] = [
 
     <section
       aria-label="Pictures"
-      class="mx-auto grid max-w-(--real-wide-w) grid-cols-2 items-center *:min-w-0 desktop:gap-pad-2 desktop:px-pad-4 desktop:*:rounded-xl md:grid-cols-4 xl:gap-x-pad-4"
+      class="desktop:gap-pad-2 desktop:px-pad-4 xl:gap-x-pad-4 mx-auto grid max-w-(--real-wide-w) grid-cols-2 items-center *:min-w-0 desktop:*:rounded-xl md:grid-cols-4"
       style={{
         "--img-max-h": "25rem",
       }}
@@ -164,7 +164,7 @@ const ABOUT_PICTURES: AboutPicture[] = [
       />
     </section>
 
-    <div class="mx-auto grid w-full grid-cols-1 gap-x-pad-4 gap-y-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w)">
+    <div class="gap-x-pad-4 gap-y-pad-2 px-pad-2 desktop:px-pad mx-auto grid w-full grid-cols-1 desktop:w-4/5 md:grid-cols-2 lg:w-(--real-header-w)">
       <p>
         I'm interested in computer graphics, specifically real-time rendering,
         and game engine development. I grew up making art and designing things,
@@ -178,9 +178,9 @@ const ABOUT_PICTURES: AboutPicture[] = [
       </p>
     </div>
 
-    <div class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)">
+    <div class="space-y-pad-4 px-pad-2 desktop:px-pad mx-auto w-full desktop:w-4/5 lg:w-(--real-header-w)">
       <section class="max-w-(--content-w)">
-        <h2 id="contact" class="mb-pad text-xl font-bold text-heading">
+        <h2 id="contact" class="mb-pad text-xl font-bold heading">
           Contact
         </h2>
         <p>
@@ -229,18 +229,15 @@ const ABOUT_PICTURES: AboutPicture[] = [
         </p>
       </section>
 
-      <section class="grid grid-cols-1 gap-x-pad-4 sm:grid-cols-2">
-        <h2
-          id="music"
-          class="col-span-full mb-pad text-xl font-bold text-heading"
-        >
+      <section class="gap-x-pad-4 grid grid-cols-1 sm:grid-cols-2">
+        <h2 id="music" class="mb-pad col-span-full text-xl font-bold heading">
           Music
         </h2>
 
         <RecentTracks server:defer>
           <div
             aria-hidden="true"
-            class="mb-pad-2 animate-pulse space-y-pad sm:mb-0"
+            class="mb-pad-2 space-y-pad animate-pulse sm:mb-0"
             slot="fallback"
           >
             <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
@@ -254,7 +251,7 @@ const ABOUT_PICTURES: AboutPicture[] = [
         <TopStats server:defer>
           <div
             aria-hidden="true"
-            class="animate-pulse space-y-pad"
+            class="space-y-pad animate-pulse"
             slot="fallback"
           >
             <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
@@ -264,12 +261,12 @@ const ABOUT_PICTURES: AboutPicture[] = [
       </section>
 
       <section>
-        <h2 id="anilist" class="mb-pad text-xl font-bold text-heading">
+        <h2 id="anilist" class="mb-pad text-xl font-bold heading">
           Anilist
         </h2>
         <RecentMedia server:defer>
           <div
-            class="grid animate-pulse grid-cols-1 gap-x-pad-4 gap-y-pad-2 *:h-[4lh] *:rounded-md *:bg-sweater-9 md:grid-cols-2 light:*:bg-sweater-2"
+            class="gap-x-pad-4 gap-y-pad-2 grid animate-pulse grid-cols-1 *:h-[4lh] *:rounded-md *:bg-sweater-9 md:grid-cols-2 light:*:bg-sweater-2"
             slot="fallback"
           >
             <div></div>
