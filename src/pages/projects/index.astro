@@ -94,13 +94,13 @@ const description =
       </div>
     </section>
 
-    <section class="constrain mt-7">
-      <h2 id="everything-else" class="px-5 font-medium text-heading">
+    <section class="constrain mt-7 px-5">
+      <h2 id="everything-else" class="font-medium text-heading">
         Everything else
       </h2>
-      <p class="prose px-5">Most recent projects are listed at the top.</p>
+      <p class="prose">Most recent projects are listed at the top.</p>
 
-      <div class="mt-7 px-5">
+      <div class="mt-7">
         {rest.map(
           ({ id, data: { name, description, metadata, coverImage } }) => (
             <article class="group relative flex w-fit gap-x-3 not-last:pb-3">
