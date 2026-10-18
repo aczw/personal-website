@@ -18,7 +18,6 @@
    * it just looks too large. */
   --text-mono: 0.85rem;
 
-  /* Primitives */
   --color-sweater-1: #e1dfff;
   --color-sweater-2: #d6d3ff;
   --color-sweater-3: #c3bdff;
@@ -30,8 +29,9 @@
   --color-sweater-9: #1d193d;
   --color-sweater-10: #0a0919;
 
-  --color-line: var(--line);
-  --color-link-primary: var(--link-primary);
+  --color-line: var(--color-line-auto);
+  --color-link-primary: var(--color-link-primary-auto);
+
   --color-link-primary-hover: var(--link-primary-hover);
   --color-link-secondary: var(--link-secondary);
   --color-link-secondary-hover: var(--link-secondary-hover);
@@ -50,8 +50,9 @@
     --wide-w: 56.25rem; /* 900px */
     --prose-w: 34.375rem; /* 550px */
 
-    --line: var(--color-sweater-8);
-    --link-primary: var(--color-sweater-3);
+    --color-line-auto: var(--color-sweater-8);
+    --color-link-primary-auto: var(--color-sweater-3);
+
     --link-primary-hover: var(--color-sweater-1);
     --link-secondary: var(--color-sweater-5);
     --link-secondary-hover: var(--color-sweater-4);
@@ -59,8 +60,9 @@
     --heading: var(--color-sweater-2);
 
     @variant light {
-      --line: var(--color-sweater-3);
-      --link-primary: var(--color-sweater-7);
+      --color-line-auto: var(--color-sweater-3);
+      --color-link-primary-auto: var(--color-sweater-7);
+
       --link-primary-hover: var(--color-sweater-9);
       --link-secondary: var(--color-sweater-6);
       --link-secondary-hover: var(--color-sweater-7);
