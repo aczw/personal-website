@@ -1,7 +1,7 @@
 ---
-name: CUDA Boids
+name: Simulating boids
 description:
-  short: GPU-accelerated flocking simulation
+  short: GPU-accelerated flocking
   long: I implemented the three basic rules for boids simulation using three different optimization strategies, and conduct some performance analysis on each.
 metadata:
   tech:
@@ -11,10 +11,10 @@ metadata:
   date: September 2025
   sourceHref: https://github.com/aczw/Project1-CUDA-Flocking
 coverImage:
-  data: cuda-boids.png
+  data: boids.png
   alt: 50,000 small blue particles are somewhat grouped together, forming a bird-like flocking pattern. The entire swarm takes on the shape of a cube.
 
-slug: cuda-boids
+slug: boids
 ---
 
 In this project I implemented the classical boids flocking simulation with CUDA. The implementation is based on pseudocode from [Conrad Parker's notes](https://vergenet.net/~conrad/boids/pseudocode.html) and modified in order to take advantage of the GPU. In particular, I launch a new thread for each boid to update its velocity and position.
@@ -61,10 +61,10 @@ The first set of graphs look at how the average framerate varies across the boid
 >
 > I don't include them here because they largely follow the same shape, just with lower framerates across the board.
 
-<figure>
-  <div className="grid grid-cols-1 gap-pad sm:grid-cols-2">
-    <div className="sm:col-span-2">![](boids_novis_256.png)</div>
-    ![](boids_novis_64.png) ![](boids_novis_1024.png)
+<figure class="outdent-wide">
+  <div class="gallery">
+    <div class="md:col-span-2">![](count-256.png)</div>
+    ![](count-64.png) ![](count-1024.png)
   </div>
   <figcaption>
     In counterclockwise order, top to bottom: block sizes of 256, 64, and 1024.
@@ -79,10 +79,10 @@ Coherent uniform consistently performed better than scattered uniform, and both 
 
 The second set of graphics look more closely at how the average framerate varies across the different block sizes. I selectively picked benchmarks for boid counts of 25k, 100k, and 750k.
 
-<figure>
-  <div className="grid grid-cols-1 gap-pad sm:grid-cols-2">
-    <div className="sm:col-span-2">![](block_novis_100k.png)</div>
-    ![](block_novis_25k.png) ![](block_novis_750k.png)
+<figure class="outdent-wide">
+  <div class="gallery">
+    <div class="md:col-span-2">![](block-100k.png)</div>
+    ![](block-25k.png) ![](block-750k.png)
   </div>
   <figcaption>
     In counterclockwise order, top to bottom: boids counts of 100k, 25k, and
