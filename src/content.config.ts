@@ -6,9 +6,6 @@ import {
   LongDescriptionSchema,
   DateSchema,
   ImageSchema,
-  LinkSchema,
-  SourceHrefSchema,
-  TechSchema,
 } from "@/scripts/schema";
 
 const projects = defineCollection({
@@ -25,9 +22,19 @@ const projects = defineCollection({
         long: LongDescriptionSchema,
       }),
       metadata: z.strictObject({
-        tech: TechSchema,
-        link: LinkSchema.optional(),
-        sourceHref: SourceHrefSchema.optional(),
+        tech: z.string().array(),
+        link: z
+          .object({
+            href: z.url(),
+            label: z.string(),
+          })
+          .optional(),
+        sourceHref: z
+          .url()
+          .refine((url) => url.startsWith("https://github.com/"), {
+            error: "Source code is assumed to be hosted on GitHub",
+          })
+          .optional(),
         date: DateSchema,
       }),
       coverImage: ImageSchema(image),
@@ -43,9 +50,9 @@ const posts = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      blurb: LongDescriptionSchema.optional(),
+      description: LongDescriptionSchema.optional(),
       posted: z.date(),
-      cover: ImageSchema(image).optional(),
+      coverImage: ImageSchema(image).optional(),
     }),
 });
 
@@ -54,4 +61,4 @@ const collections = {
   posts,
 };
 
-export { collections, ImageSchema };
+export { collections };

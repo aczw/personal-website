@@ -27,10 +27,13 @@ const { id } = Astro.params;
 const post = await getEntry("posts", id)!;
 
 const {
-  data: { title, blurb, posted, cover },
+  data: { title, description: blurb, posted, coverImage },
 } = post;
 
-if (cover && !isValidProjectCover(cover.data.width, cover.data.height)) {
+if (
+  coverImage &&
+  !isValidProjectCover(coverImage.data.width, coverImage.data.height)
+) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 
@@ -47,10 +50,10 @@ const { Content } = await render(post);
         {blurb && <p class="text-lg/tight text-heading">{blurb}</p>}
       </div>
 
-      {cover && (
+      {coverImage && (
         <Image
-          src={cover.data}
-          alt={cover.alt}
+          src={coverImage.data}
+          alt={coverImage.alt}
           class="mt-7 max-w-(--wide-w) md:rounded-lg"
         />
       )}

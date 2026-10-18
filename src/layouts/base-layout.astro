@@ -60,8 +60,8 @@ const head: Head = (() => {
     case "posts": {
       const { data, id } = meta.postsEntry;
       const description =
-        data.blurb !== undefined ?
-          data.blurb
+        data.description !== undefined ?
+          data.description
         : `Posted on ${getShortDateFormatting(data.posted)}`;
 
       return {
