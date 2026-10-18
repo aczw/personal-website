@@ -1,24 +1,26 @@
 ---
 import { Image } from "astro:assets";
-import { getCollection } from "astro:content";
+import { getCollection, type CollectionEntry } from "astro:content";
 
 import { ArrowRightIcon } from "@lucide/astro";
 
-import { ICON_SIZE } from "@/scripts/constants";
+import { HOMEPAGE_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import TechList from "@/components/tech-list.astro";
 import BaseLayout from "@/layouts/base-layout.astro";
 import Header from "@/components/header.astro";
 import Footer from "@/components/footer.astro";
 import ProjectCover from "@/components/project-cover.astro";
 
-const featuredProjectIds = ["cuda-pt", "catanks", "mini-minecraft", "door"];
-
+const featuredProjectIds = [...HOMEPAGE_PROJECTS, "door"];
 const notProjectsTODO = ["deth", "dgdg", "fireball", "moore-chair"];
 
-const isFeaturedProject = (id: string) => featuredProjectIds.includes(id);
-
 const projects = await getCollection("projects");
-const featured = projects.filter(({ id }) => isFeaturedProject(id));
+
+const featured: CollectionEntry<"projects">[] = [];
+featuredProjectIds.forEach((id) => {
+  const index = projects.findIndex((project) => project.id === id);
+  if (index !== -1) featured.push(...projects.splice(index, 1));
+});
 
 const description =
   "Projects contain write-ups with technical details, explanations, and breakdowns of their development process.";
@@ -71,7 +73,6 @@ const description =
       <div class="px-5 mt-7">
         {projects
           .filter(({ id }) => !notProjectsTODO.includes(id))
-          .filter(({ id }) => !isFeaturedProject(id))
           .map(({ id, data: { name, description, metadata, coverImage } }) => (
             <article class="relative w-fit not-last:pb-3 flex gap-x-3 group">
               <Image
