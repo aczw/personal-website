@@ -33,8 +33,6 @@ type ContentDate = z.infer<typeof DateSchema>;
 type DateKind =
   { kind: "simple"; date: SimpleDate } | { kind: "ranged"; date: RangedDate };
 
-type HeaderLink = { href: string; text: string };
-
 type Err = { kind: "err"; message: string };
 type Result<T> =
   | {
@@ -51,7 +49,6 @@ export type {
   RangedDate,
   ContentDate,
   DateKind,
-  HeaderLink,
   Err,
   Result,
 };
