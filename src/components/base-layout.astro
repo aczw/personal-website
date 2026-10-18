@@ -162,3 +162,66 @@ const title =
     <slot />
   </body>
 </html>
+
+<style is:global>
+  @reference "@/styles/main.css";
+
+  :root {
+    color-scheme: light dark;
+
+    --max-w: 75rem; /* 1200px */
+    --wide-w: 56.25rem; /* 900px */
+    --prose-w: 34.375rem; /* 550px */
+  }
+
+  html {
+    background-color: var(--color-sweater-10);
+    color: var(--color-sweater-1);
+
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+
+    &::selection {
+      background-color: var(--color-sweater-8);
+      color: var(--color-sweater-3);
+    }
+
+    @variant light {
+      background-color: var(--color-sweater-1);
+      color: var(--color-sweater-10);
+
+      &::selection {
+        background-color: var(--color-sweater-3);
+        color: var(--color-sweater-8);
+      }
+    }
+  }
+
+  p,
+  a,
+  li,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+  }
+
+  img,
+  video {
+    font-size: italic;
+
+    &::selection {
+      background-color: var(--color-sweater-5);
+    }
+
+    @variant light {
+      &::selection {
+        background-color: var(--color-sweater-3);
+      }
+    }
+  }
+</style>

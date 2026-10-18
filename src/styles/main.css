@@ -18,6 +18,7 @@
    * it just looks too large. */
   --text-mono: 0.85rem;
 
+  --color-*: initial;
   --color-sweater-1: #e1dfff;
   --color-sweater-2: #d6d3ff;
   --color-sweater-3: #c3bdff;
@@ -33,57 +34,14 @@
   --breakpoint-desktop: 30rem;
 }
 
-@layer base {
-  :root {
-    color-scheme: light dark;
+@view-transition {
+  navigation: auto;
+}
 
-    --max-w: 75rem; /* 1200px */
-    --wide-w: 56.25rem; /* 900px */
-    --prose-w: 34.375rem; /* 550px */
-  }
-
-  html {
-    @apply scrollbar-thin scrollbar-gutter-stable bg-sweater-10 text-sweater-1;
-
-    &::selection {
-      @apply bg-sweater-8 text-sweater-3;
-    }
-
-    @variant light {
-      @apply bg-sweater-1 text-sweater-10;
-
-      &::selection {
-        @apply bg-sweater-3 text-sweater-8;
-      }
-    }
-  }
-
-  p,
-  a,
-  li,
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    overflow-wrap: break-word;
-    text-wrap: pretty;
-  }
-
-  img,
-  video {
-    font-style: italic;
-
-    &::selection {
-      background-color: var(--color-sweater-5);
-    }
-
-    @variant light {
-      &::selection {
-        background-color: var(--color-sweater-2);
-      }
-    }
+/* Quicker way of writing `not-dark` */
+@custom-variant light {
+  @media not (prefers-color-scheme: dark) {
+    @slot;
   }
 }
 
@@ -117,15 +75,4 @@
 
 @utility prose {
   @apply sm:w-(--prose-w);
-}
-
-/* Quicker way of writing `not-dark` */
-@custom-variant light {
-  @media not (prefers-color-scheme: dark) {
-    @slot;
-  }
-}
-
-@view-transition {
-  navigation: auto;
 }
