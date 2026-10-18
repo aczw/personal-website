@@ -438,7 +438,7 @@ for (const auto& [data, idx] : unique_data) {
 
 By using a map, checking whether a data point is unique is now on average $O(1)$ instead of linear.
 
-<div class="wide">![](graphs/map-vs-vector-tri-build-time.png)</div>
+<div class="outdent-wide">![](graphs/map-vs-vector-tri-build-time.png)</div>
 
 The graph is a little comical and clearly demonstrates the exponential operation time. Yes, the 1532.75 seconds for `stanford_dragon` meant that my original implementation caused scene loading to take over 25 minutes. I am glad that it's fixed.
 

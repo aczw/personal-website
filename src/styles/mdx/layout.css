@@ -28,8 +28,8 @@
       @apply rounded-none sm:rounded-sm;
     }
 
-    figcaption {
-      @apply prose pl-5 sm:pl-0;
+    > figcaption {
+      @apply prose max-w-full pl-5 sm:pl-0;
     }
   }
 
