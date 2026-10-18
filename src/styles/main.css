@@ -29,8 +29,6 @@
   --color-sweater-9: #1d193d;
   --color-sweater-10: #0a0919;
 
-  --color-link-secondary: var(--link-secondary);
-  --color-link-secondary-hover: var(--link-secondary-hover);
   --color-icon: var(--icon);
   --color-heading: var(--heading);
 
@@ -46,14 +44,10 @@
     --wide-w: 56.25rem; /* 900px */
     --prose-w: 34.375rem; /* 550px */
 
-    --link-secondary: var(--color-sweater-5);
-    --link-secondary-hover: var(--color-sweater-4);
     --icon: var(--color-sweater-6);
     --heading: var(--color-sweater-2);
 
     @variant light {
-      --link-secondary: var(--color-sweater-6);
-      --link-secondary-hover: var(--color-sweater-7);
       --icon: var(--color-sweater-5);
       --heading: var(--color-sweater-8);
     }
@@ -118,6 +112,10 @@
 
 @utility link-primary {
   @apply w-fit font-medium text-sweater-3 hover:text-sweater-1 light:text-sweater-7 light:hover:text-sweater-9;
+}
+
+@utility link-secondary {
+  @apply text-sweater-5 hover:text-sweater-4 light:text-sweater-6 light:hover:text-sweater-7;
 }
 
 @utility prose {
