@@ -6,12 +6,8 @@ type Props = HTMLAttributes<"h3">;
 const { id, ...props } = Astro.props;
 ---
 
-<h3
-  id={id}
-  class="scroll-mt-4 text-lg/tight font-medium text-link-primary hover:text-link-primary-hover"
-  {...props}
->
-  <a href={`#${id}`} class="block w-full">
+<h3 id={id} class="scroll-mt-4 text-lg/tight link-primary w-full" {...props}>
+  <a href={`#${id}`} class="block">
     <slot />
   </a>
 </h3>

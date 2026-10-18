@@ -8,10 +8,10 @@ const { id, ...props } = Astro.props;
 
 <h2
   id={id}
-  class="mt-5 scroll-mt-4 text-xl/tight font-medium text-link-primary hover:text-link-primary-hover"
+  class="mt-5 scroll-mt-4 text-xl/tight link-primary w-full"
   {...props}
 >
-  <a href={`#${id}`} class="block w-full">
+  <a href={`#${id}`} class="block">
     <slot />
   </a>
 </h2>
