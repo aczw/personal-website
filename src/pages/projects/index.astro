@@ -46,14 +46,11 @@ const deriveTimestamp = (date: ContentDate): number => {
   }
 };
 
-const rest = projects
-  // TODO
-  .filter(({ id }) => !["deth", "dgdg", "fireball", "moore-chair"].includes(id))
-  .sort(
-    (a, b) =>
-      deriveTimestamp(b.data.metadata.date) -
-      deriveTimestamp(a.data.metadata.date),
-  );
+const rest = projects.sort(
+  (a, b) =>
+    deriveTimestamp(b.data.metadata.date) -
+    deriveTimestamp(a.data.metadata.date),
+);
 
 const description =
   "Projects contain write-ups with technical details, explanations, and breakdowns of their development process.";

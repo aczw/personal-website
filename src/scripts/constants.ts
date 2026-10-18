@@ -39,8 +39,6 @@ const HOMEPAGE_PROJECTS = [
   "mini-minecraft",
 ] as const satisfies readonly [string, string, string];
 
-const DISABLED_POSTS = ["dithering"];
-
 /**
  * Corresponds to CSS var(--color-sweater-1).
  */
@@ -122,7 +120,6 @@ export {
   ROUTES,
   VALID_MONTHS,
   HOMEPAGE_PROJECTS,
-  DISABLED_POSTS,
   SWEATER_1,
   SWEATER_3,
   SWEATER_8,

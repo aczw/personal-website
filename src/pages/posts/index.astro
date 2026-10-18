@@ -6,7 +6,6 @@ import {
   getFullDateFormatting,
   getMonthDayDateFormatting,
 } from "@/scripts/util";
-import { DISABLED_POSTS } from "@/scripts/constants";
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
 
@@ -58,7 +57,7 @@ const description =
               {year}
             </h3>
 
-            <ul class="mt-3 sm:mt-0 *:grid *:grid-cols-[var(--date-w)_minmax(0,1fr)] sm:*:w-(--prose-w)">
+            <ul class="mt-3 sm:mt-0 *:grid *:grid-cols-[var(--date-w)_minmax(0,1fr)] sm:*:min-w-(--prose-w) *:w-fit pb-1">
               {posts.map(({ data: { title, posted }, id }, index) => {
                 const monthDay = getMonthDayDateFormatting(posted);
                 const [month, day] = monthDay.split(" ");
@@ -72,7 +71,7 @@ const description =
                   posted.getUTCMonth();
 
                 return (
-                  <li class="group relative">
+                  <li class="group relative not-last:pb-1">
                     <time
                       datetime={posted.toISOString()}
                       title={getFullDateFormatting(posted)}
