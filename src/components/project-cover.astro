@@ -44,20 +44,13 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
     autoplay
     preload="auto"
     src={`${CDN_URL}/projects/${projectId}/cover.mp4`}
-    class="project-cover-video scale-50 opacity-0 blur-2xl w-full h-auto bg-sweater-9 light:bg-sweater-2"
+    class="project-cover-video opacity-0 w-full h-auto bg-sweater-9 light:bg-sweater-2"
     data-loaded="false"
   ></video>
 </div>
 
 <script>
   import { commitStyleAnimation } from "@/scripts/util";
-
-  const keyframeOpts: KeyframeAnimationOptions = {
-    duration: 500,
-    // https://easings.net/#easeInOutExpo
-    easing: "cubic-bezier(0.87, 0, 0.13, 1)",
-    fill: "forwards",
-  };
 
   const isVideoReady = (videoElt: HTMLVideoElement) => {
     return videoElt.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA;
@@ -73,14 +66,12 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
 
     videoElt.dataset["loaded"] = "true";
     videoElt
-      .animate([{ scale: 1.0, opacity: 1, filter: "none" }], keyframeOpts)
-      .addEventListener("finish", commitStyleAnimation);
-
-    imageElt
-      .animate(
-        [{ scale: 0.5, opacity: 0, filter: "blur(var(--blur-2xl))" }],
-        keyframeOpts,
-      )
+      .animate([{ opacity: 1 }], {
+        duration: 700,
+        // https://easings.net/#easeInOutExpo
+        easing: "cubic-bezier(0.87, 0, 0.13, 1)",
+        fill: "forwards",
+      })
       .addEventListener("finish", (ev) => {
         commitStyleAnimation(ev);
         imageElt.remove();
@@ -93,17 +84,7 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
       const imageElt = videoElt.previousElementSibling as HTMLImageElement;
 
       if (isVideoReady(videoElt)) {
-        videoElt.dataset["loaded"] = "true";
-
-        // If video is immediately ready, skip the transition animation
-        // and fade directly instead
-        videoElt.classList.remove("scale-50", "blur-2xl");
-        videoElt
-          .animate([{ opacity: 1 }], keyframeOpts)
-          .addEventListener("finish", (ev) => {
-            commitStyleAnimation(ev);
-            imageElt.remove();
-          });
+        checkAndTransitionVideo(imageElt, videoElt);
       } else {
         videoElt.addEventListener("progress", () =>
           checkAndTransitionVideo(imageElt, videoElt),

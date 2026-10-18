@@ -1,15 +1,12 @@
 ---
 import { getCollection } from "astro:content";
 
-import { SquareArrowRightIcon } from "@lucide/astro";
-
 import BaseLayout from "@/layouts/base-layout.astro";
 import {
   getFullDateFormatting,
   getMonthDayDateFormatting,
 } from "@/scripts/util";
-import { DISABLED_POSTS, ICON_SIZE } from "@/scripts/constants";
-import Link from "@/components/link.astro";
+import { DISABLED_POSTS } from "@/scripts/constants";
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
 
