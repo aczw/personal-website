@@ -14,7 +14,7 @@ import { ICON_SIZE } from "@/scripts/constants";
   }}
   data-icon-size={ICON_SIZE}
 >
-  <MusicIcon size={ICON_SIZE} class="absolute inset-0 stroke-icon" />
+  <MusicIcon size={ICON_SIZE} class="absolute inset-0 icon" />
 </div>
 
 <script>
@@ -42,7 +42,7 @@ import { ICON_SIZE } from "@/scripts/constants";
     iconSvg.removeAttribute("stroke-width");
     iconSvg.style.cssText =
       "position: absolute; bottom: 0px; pointer-events: none";
-    iconSvg.classList.add("stroke-icon");
+    iconSvg.classList.add("icon");
 
     return template;
   });

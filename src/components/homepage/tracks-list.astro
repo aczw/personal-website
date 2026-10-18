@@ -32,7 +32,7 @@ const { tracks } = Astro.props;
         class="size-[3.25lh] shrink-0 rounded-sm bg-sweater-9 light:bg-sweater-2"
       />
     : <div class="flex size-[3.25lh] shrink-0 items-center justify-center rounded-sm bg-sweater-9 light:bg-sweater-2">
-        <Disc3Icon size={ICON_SIZE} class="stroke-icon" />
+        <Disc3Icon size={ICON_SIZE} class="icon" />
       </div>
     }
 
@@ -50,7 +50,7 @@ const { tracks } = Astro.props;
 
       <time
         class:list={[
-          "w-fit text-icon",
+          "w-fit text-sweater-6",
           { "flex items-center gap-1.5": isLive },
         ]}
         datetime={

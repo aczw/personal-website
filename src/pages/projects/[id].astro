@@ -79,7 +79,7 @@ const { Content } = await render(project);
       >
         <div>
           <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
-            Made with <WrenchIcon size={ICON_SIZE} class="stroke-icon" />
+            Made with <WrenchIcon size={ICON_SIZE} class="icon" />
           </dt>
           <dd>
             <TechList tech={tech} />
@@ -88,7 +88,7 @@ const { Content } = await render(project);
 
         <div>
           <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
-            Duration <CalendarFoldIcon size={ICON_SIZE} class="stroke-icon" />
+            Duration <CalendarFoldIcon size={ICON_SIZE} class="icon" />
           </dt>
           <dd>
             <ContentDate date={date} />
@@ -98,8 +98,7 @@ const { Content } = await render(project);
         {link && (
           <div>
             <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
-              {link.label}{" "}
-              <ExternalLinkIcon size={ICON_SIZE} class="stroke-icon" />
+              {link.label} <ExternalLinkIcon size={ICON_SIZE} class="icon" />
             </dt>
             <dd>
               <a
@@ -120,7 +119,7 @@ const { Content } = await render(project);
         {sourceHref && (
           <div>
             <dt class="flex items-center justify-between gap-2 leading-tight font-medium text-heading md:justify-start">
-              Source <FileCodeIcon size={ICON_SIZE} class="stroke-icon" />
+              Source <FileCodeIcon size={ICON_SIZE} class="icon" />
             </dt>
             <dd>
               <a

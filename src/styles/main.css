@@ -29,7 +29,6 @@
   --color-sweater-9: #1d193d;
   --color-sweater-10: #0a0919;
 
-  --color-icon: var(--icon);
   --color-heading: var(--heading);
 
   /* A good indicator for when we're beyond mobile territory. Equals 480px */
@@ -44,11 +43,9 @@
     --wide-w: 56.25rem; /* 900px */
     --prose-w: 34.375rem; /* 550px */
 
-    --icon: var(--color-sweater-6);
     --heading: var(--color-sweater-2);
 
     @variant light {
-      --icon: var(--color-sweater-5);
       --heading: var(--color-sweater-8);
     }
   }
@@ -116,6 +113,10 @@
 
 @utility link-secondary {
   @apply text-sweater-5 hover:text-sweater-4 light:text-sweater-6 light:hover:text-sweater-7;
+}
+
+@utility icon {
+  @apply stroke-sweater-6 light:stroke-sweater-5;
 }
 
 @utility prose {

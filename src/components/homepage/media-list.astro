@@ -43,51 +43,43 @@ const format = new Intl.RelativeTimeFormat("en-US", {
 });
 ---
 
-<div class="space-y-7 opacity-100 transition-opacity duration-600 starting:opacity-0">
-  <p class="prose px-5">
-    Here's my (probably embarrassing) rotation lately.{" "}
-    {capitalize(calculateRelativeTime(format, first.createdAt))}, I{" "}
-    {first.status}{" "}
-    {first.status.includes("complete") ?
-      first.type === "MANGA_LIST" ?
-        "reading"
-      : "watching"
-    : null}{" "}
-    {first.progress ? `${first.progress} of` : null}{" "}
-    <a
-      href={first.media.siteUrl}
-      target="_blank"
-      rel="noopener"
-      class="link-primary"
-    >
-      {getResolvedTitle(first.media.title)}
-    </a>
-    .
-  </p>
+<p class="prose px-5">
+  Here's my (probably embarrassing) rotation lately.{" "}
+  {capitalize(calculateRelativeTime(format, first.createdAt))}, I {first.status}{" "}
+  {first.status.includes("complete") ?
+    first.type === "MANGA_LIST" ?
+      "reading"
+    : "watching"
+  : null}{" "}
+  {first.progress ? `${first.progress} of` : null}{" "}
+  <a
+    href={first.media.siteUrl}
+    target="_blank"
+    rel="noopener"
+    class="link-primary"
+  >
+    {getResolvedTitle(first.media.title)}
+  </a>
+  .
+</p>
 
-  <ul class="flex items-end gap-x-3 overflow-x-auto rounded-sm px-5">
-    {unique.map(({ media: { title, coverImage, siteUrl } }) => {
-      const resolvedTitle = getResolvedTitle(title);
+<ul class="flex items-end gap-x-3 overflow-x-auto rounded-sm px-5">
+  {unique.map(({ media: { title, coverImage, siteUrl } }) => {
+    const resolvedTitle = getResolvedTitle(title);
 
-      return (
-        <li class="shrink-0">
-          <a
-            href={siteUrl}
-            title={resolvedTitle}
-            target="_blank"
-            rel="noopener"
-          >
-            <Image
-              src={coverImage.large}
-              alt={`Cover art for ${resolvedTitle}`}
-              inferSize
-              priority
-              class="rounded-sm bg-sweater-9 light:bg-sweater-2"
-              style={{ width: "auto", height: "5.25lh" }}
-            />
-          </a>
-        </li>
-      );
-    })}
-  </ul>
-</div>
+    return (
+      <li class="shrink-0">
+        <a href={siteUrl} title={resolvedTitle} target="_blank" rel="noopener">
+          <Image
+            src={coverImage.large}
+            alt={`Cover art for ${resolvedTitle}`}
+            inferSize
+            priority
+            class="rounded-sm bg-sweater-9 light:bg-sweater-2"
+            style={{ width: "auto", height: "5.25lh" }}
+          />
+        </a>
+      </li>
+    );
+  })}
+</ul>

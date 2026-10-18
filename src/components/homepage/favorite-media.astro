@@ -53,34 +53,32 @@ const entries: {
 ];
 ---
 
-<div class="space-y-7 opacity-100 transition-opacity duration-600 starting:opacity-0">
-  <p class="prose px-5">
-    Here are some of my favorites, in no particular order. I've been tracking
-    everything{" "}
-    <a
-      href="https://anilist.co/user/czw"
-      target="_blank"
-      rel="noopener"
-      class="link-primary"
-    >
-      on AniList
-    </a>{" "}
-    since I started in 2020. (Follow me.)
-  </p>
+<p class="prose px-5">
+  Here are some of my favorites, in no particular order. I've been tracking
+  everything{" "}
+  <a
+    href="https://anilist.co/user/czw"
+    target="_blank"
+    rel="noopener"
+    class="link-primary"
+  >
+    on AniList
+  </a>{" "}
+  since I started in 2020. (Follow me.)
+</p>
 
-  <ul class="flex items-end gap-x-3 overflow-x-auto rounded-sm px-5">
-    {entries.map(({ title, cover, url }) => (
-      <li class="shrink-0">
-        <a href={url} title={title} target="_blank" rel="noopener">
-          <Image
-            src={cover}
-            alt={`Cover art for ${title}`}
-            priority
-            class="rounded-sm bg-sweater-9 light:bg-sweater-2"
-            style={{ width: "auto", height: "5.25lh" }}
-          />
-        </a>
-      </li>
-    ))}
-  </ul>
-</div>
+<ul class="flex items-end gap-x-3 overflow-x-auto rounded-sm px-5">
+  {entries.map(({ title, cover, url }) => (
+    <li class="shrink-0">
+      <a href={url} title={title} target="_blank" rel="noopener">
+        <Image
+          src={cover}
+          alt={`Cover art for ${title}`}
+          priority
+          class="rounded-sm bg-sweater-9 light:bg-sweater-2"
+          style={{ width: "auto", height: "5.25lh" }}
+        />
+      </a>
+    </li>
+  ))}
+</ul>
