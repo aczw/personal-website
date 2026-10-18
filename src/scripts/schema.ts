@@ -43,7 +43,7 @@ const SimpleDateSchema = z.string().refine(
 
     return true;
   },
-  { message: "Simple date string should be of the form: <month> <year>" },
+  { error: "Simple date string should be of the form: <month> <year>" },
 );
 
 const RangedDateSchema = z.object({
