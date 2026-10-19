@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 @theme inline {
   --font-sans: var(--font-atkinson);
   --font-mono: var(--font-maple);

@@ -1,6 +1,7 @@
 import { CDN_URL } from "@/scripts/constants";
-import type { GlCtx } from "@/scripts/homepage/gfx";
+import type { GlCtx } from "@/scripts/gfx";
 import type { Result } from "@/scripts/types";
+import { lerp } from "@/scripts/util";
 
 type State =
   | { kind: "init-proc"; delayDuration: number }
@@ -162,10 +163,6 @@ const checkToAdvanceState = (gl: GlCtx, tile: Tile, elapsed: number) => {
     case "video":
       break;
   }
-};
-
-const lerp = (a: number, b: number, t: number): number => {
-  return a * (1 - t) + b * t;
 };
 
 const getUniformsForState = (state: State, elapsed: number): FrameUniforms => {

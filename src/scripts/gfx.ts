@@ -1,6 +1,3 @@
-import vertSrc from "@/shaders/quad.vert.glsl?raw";
-import fragSrc from "@/shaders/tile.frag.glsl?raw";
-
 import type { Result, Err } from "@/scripts/types";
 
 /**
@@ -40,7 +37,7 @@ const createAndCompileShader = (
   return { kind: "ok", data: shader };
 };
 
-const initialize = (): Result<Gfx> => {
+const initialize = (vertSrc: string, fragSrc: string): Result<Gfx> => {
   const offCanvas = new OffscreenCanvas(CANVAS_WIDTH, CANVAS_HEIGHT);
   const gl = offCanvas.getContext("webgl2", {
     depth: false,
@@ -86,4 +83,25 @@ const initialize = (): Result<Gfx> => {
   return { kind: "ok", data: { offCanvas, gl, program, vao } };
 };
 
-export { type GlCtx, initialize as initializeGfx };
+/**
+ * @see https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
+ */
+const checkForResize = (
+  gl: GlCtx,
+  offCanvas: OffscreenCanvas,
+  elt: HTMLCanvasElement,
+  dimensionsUnif: WebGLUniformLocation | null,
+) => {
+  if (
+    offCanvas.width !== elt.clientWidth ||
+    offCanvas.height !== elt.clientHeight
+  ) {
+    offCanvas.width = elt.clientWidth;
+    offCanvas.height = elt.clientHeight;
+
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+    gl.uniform2i(dimensionsUnif, gl.canvas.width, gl.canvas.height);
+  }
+};
+
+export { type GlCtx, initialize as initializeGfx, checkForResize };

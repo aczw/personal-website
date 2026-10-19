@@ -98,6 +98,10 @@ const commitStyleAnimation = (ev: AnimationPlaybackEvent) => {
   animation.cancel();
 };
 
+const lerp = (a: number, b: number, t: number): number => {
+  return a * (1 - t) + b * t;
+};
+
 export {
   isValidProjectCover,
   stripEndingSlash,
@@ -108,4 +112,5 @@ export {
   capitalize,
   calculateRelativeTime,
   commitStyleAnimation,
+  lerp,
 };

@@ -142,13 +142,17 @@ const projects = await getEntries(
 </BaseLayout>
 
 <script>
+  import vertSrc from "@/shaders/quad.vert.glsl?raw";
+  import fragSrc from "@/shaders/tile.frag.glsl?raw";
+
   import { HOMEPAGE_PROJECTS } from "@/scripts/constants";
-  import { initializeGfx } from "@/scripts/homepage/gfx";
+  import { checkForResize, initializeGfx } from "@/scripts/gfx";
   import {
     checkToAdvanceState,
     createTile,
     getUniformsForState,
-  } from "@/scripts/homepage/tile";
+  } from "@/scripts/tile";
+  import { setColorScheme } from "@/scripts/noise";
 
   const displayCoverImages = () =>
     HOMEPAGE_PROJECTS.forEach((_, index) => {
@@ -164,7 +168,7 @@ const projects = await getEntries(
     });
 
   const run = () => {
-    const gfxRes = initializeGfx();
+    const gfxRes = initializeGfx(vertSrc, fragSrc);
 
     if (gfxRes.kind === "err") {
       console.error(`Error initializing graphics context: ${gfxRes.message}`);
@@ -207,21 +211,18 @@ const projects = await getEntries(
     const directionUnif = gl.getUniformLocation(program, "u_direction");
     const offsetUnif = gl.getUniformLocation(program, "u_offset");
 
-    const toggleColorScheme = (prefersDark: boolean) => {
-      if (prefersDark) {
-        gl.uniform3f(colorAUnif, 0.11372, 0.09803, 0.23921); // sweater-7
-        gl.uniform3f(colorBUnif, 0.28235, 0.26274, 0.5647); // sweater-9
-      } else {
-        gl.uniform3f(colorAUnif, 0.83921, 0.82745, 1.0); // sweater-4
-        gl.uniform3f(colorBUnif, 0.67843, 0.65098, 1.0); // sweater-2
-      }
-    };
-
-    const prefersDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-    prefersDarkQuery.addEventListener("change", (ev) =>
-      toggleColorScheme(ev.matches),
-    );
-    toggleColorScheme(prefersDarkQuery.matches);
+    setColorScheme(gl, {
+      a: {
+        location: colorAUnif,
+        light: { r: 0.83921, g: 0.82745, b: 1.0 }, // sweater-2
+        dark: { r: 0.11372, g: 0.09803, b: 0.23921 }, // sweater-9
+      },
+      b: {
+        location: colorBUnif,
+        light: { r: 0.67843, g: 0.65098, b: 1.0 }, // sweater-4
+        dark: { r: 0.28235, g: 0.26274, b: 0.5647 }, // sweater-7
+      },
+    });
 
     // The timestamp at which the draw loop actually begins running, which
     // will likely be lagging behind page load
@@ -235,17 +236,7 @@ const projects = await getEntries(
       tiles.forEach((tile) => {
         const { canvasElt, proc } = tile;
 
-        // https://webgl2fundamentals.org/webgl/lessons/webgl-resizing-the-canvas.html
-        if (
-          offCanvas.width !== canvasElt.clientWidth ||
-          offCanvas.height !== canvasElt.clientHeight
-        ) {
-          offCanvas.width = canvasElt.clientWidth;
-          offCanvas.height = canvasElt.clientHeight;
-
-          gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-          gl.uniform2i(dimensionsUnif, gl.canvas.width, gl.canvas.height);
-        }
+        checkForResize(gl, offCanvas, canvasElt, dimensionsUnif);
 
         // Mutates tile state in place
         checkToAdvanceState(gl, tile, elapsed);
