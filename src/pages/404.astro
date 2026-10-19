@@ -3,7 +3,7 @@ import BaseLayout from "@/components/base-layout.astro";
 import Header from "@/components/header.astro";
 
 const description =
-  "Sorry, this page does not exist. How did you end up here??";
+  "Sorry, this page does not exist. How did you end up like this?";
 ---
 
 <BaseLayout
@@ -17,9 +17,17 @@ const description =
 
   <main>
     <hgroup class="constrain px-5">
-      <h1 class="font-medium heading">Page not found</h1>
-      <p>{description}</p>
+      <h1 class="sr-only">Page not found</h1>
+      <p class="prose">
+        {description} Well, since you're here, you might as well...
+      </p>
     </hgroup>
+
+    <section class="constrain mt-5">
+      <button class="link-primary px-5" onclick='alert("hello");'>
+        Play with the background
+      </button>
+    </section>
 
     <canvas
       id="noise"
