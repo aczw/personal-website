@@ -153,7 +153,7 @@ const { content: Content, ...props } = Astro.props;
 
     :global(ol) {
       margin-left: --spacing(5);
-      list-style: outside;
+      list-style-position: outside;
       list-style-type: decimal;
 
       & > :global(:not(:last-child)) {
@@ -183,12 +183,12 @@ const { content: Content, ...props } = Astro.props;
 
       @apply border-style;
 
-      thead {
+      :global(thead) {
         border-bottom-width: 2px;
 
         @apply border-style heading;
 
-        th {
+        :global(th) {
           padding: --spacing(1) --spacing(5);
           font-weight: 500;
 
@@ -208,14 +208,14 @@ const { content: Content, ...props } = Astro.props;
         }
       }
 
-      tr {
+      :global(tr) {
         &:not(:last-child) {
           border-bottom-width: 2px;
 
           @apply border-style;
         }
 
-        td {
+        :global(td) {
           padding: --spacing(1) --spacing(5);
 
           &:not(:first-child) {
@@ -282,7 +282,7 @@ const { content: Content, ...props } = Astro.props;
         grid-column: 2;
         width: fit-content;
         max-width: min(var(--wide-w), 100%);
-        min-width: min(var(--prose-w), 100%;);
+        min-width: min(var(--prose-w), 100%);
       }
 
       :global(pre) {
