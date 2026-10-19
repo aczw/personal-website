@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-@import "./overrides.css";
 
 @theme inline {
   --font-sans: var(--font-atkinson);
