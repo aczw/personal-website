@@ -1,7 +1,7 @@
+import { CURRENT_TIMEZONE } from "@/scripts/constants";
 import type { ContentDate, DateKind } from "@/scripts/types";
 
 const DAY_TO_SECONDS = 86400;
-const CURRENT_TIMEZONE = "America/Los_Angeles";
 
 /**
  * Checks that the cover image for my project covers have an aspect ratio of
