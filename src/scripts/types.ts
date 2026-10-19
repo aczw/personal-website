@@ -6,9 +6,12 @@ import type {
   RangedDateSchema,
   SimpleDateSchema,
 } from "@/scripts/schema";
-import type { ROUTES } from "@/scripts/constants";
 
-type Route = (typeof ROUTES)[number];
+/**
+ * Essentially maps to every unique page on the site except for
+ * content collection entries.
+ */
+type Route = "home" | "404" | "projects" | "posts" | "about";
 
 /**
  * Maps every content collection name to a literal "kind" and creates a

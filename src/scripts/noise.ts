@@ -1,11 +1,23 @@
-import type { Color } from "@/scripts/dither/types";
 import type { GlCtx } from "@/scripts/gfx";
+
+const DitherMode = {
+  NOISE: 0,
+  ORDERED: 1,
+} as const;
+
+const BayerMatrixSize = {
+  TWO_BY_TWO: 0,
+  FOUR_BY_FOUR: 1,
+  EIGHT_BY_EIGHT: 2,
+} as const;
 
 type UniformValue = {
   location: WebGLUniformLocation | null;
   light: Color;
   dark: Color;
 };
+
+type Color = { r: number; g: number; b: number };
 
 const setColorScheme = (
   gl: GlCtx,
@@ -33,4 +45,4 @@ const setColorScheme = (
   toggleColorScheme(prefersDarkQuery.matches);
 };
 
-export { setColorScheme };
+export { DitherMode, BayerMatrixSize, setColorScheme, type Color };
