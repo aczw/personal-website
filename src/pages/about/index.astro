@@ -341,10 +341,6 @@ const ABOUT_PICTURES: AboutPicture[] = [
           picturesBtn
             .animate([{ rotate: "0deg" }], KEYFRAME_OPTS)
             .addEventListener("finish", handleAnimationFinish);
-
-          if (window.umami) {
-            window.umami.track("about-picture-finished");
-          }
         }
       });
   }
