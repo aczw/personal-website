@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@import "./mdx/layout.css";
-@import "./mdx/components.css";
 @import "./overrides.css";
 
 @theme inline {
