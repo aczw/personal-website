@@ -278,11 +278,53 @@ const { content: Content, ...props } = Astro.props;
       grid-column: 1 / -1;
       width: 100%;
 
+      --ec-tm-markBrdCol: --alpha(var(--color-sweater-2) / 30%);
+      --ec-tm-markBg: --alpha(var(--color-sweater-2) / 10%);
+
+      /* Taken from Rosé Pine palette */
+      --ec-tm-insBg: --alpha(#9ccfd8 / 25%);
+      --ec-tm-insBrdCol: --alpha(#9ccfd8 / 50%);
+      --ec-tm-insDiffIndCol: --alpha(#9ccfd8 / 65%);
+      --ec-tm-delBg: --alpha(#eb6f92 / 25%);
+      --ec-tm-delBrdCol: --alpha(#eb6f92 / 50%);
+      --ec-tm-delDiffIndCol: --alpha(#eb6f92 / 65%);
+
+      --ec-codePadBlk: --spacing(5);
+      --ec-codePadInl: --spacing(5);
+      --ec-uiPadInl: --spacing(5);
+      --ec-uiPadBlk: --spacing(1);
+
+      @variant light {
+        --ec-tm-markBrdCol: --alpha(var(--color-sweater-9) / 30%);
+        --ec-tm-markBg: --alpha(var(--color-sweater-9) / 10%);
+
+        /* Taken from Rosé Pine Dawn palette */
+        --ec-tm-insBg: --alpha(#56949f / 25%);
+        --ec-tm-insBrdCol: --alpha(#56949f / 50%);
+        --ec-tm-insDiffIndCol: --alpha(#56949f / 65%);
+        --ec-tm-delBg: --alpha(#b4637a / 25%);
+        --ec-tm-delBrdCol: --alpha(#b4637a / 50%);
+        --ec-tm-delDiffIndCol: --alpha(#b4637a / 65%);
+      }
+
       @variant sm {
         grid-column: 2;
         width: fit-content;
         max-width: min(var(--wide-w), 100%);
         min-width: min(var(--prose-w), 100%);
+
+        --ec-codePadBlk: --spacing(3);
+        --ec-codePadInl: --spacing(3);
+        --ec-uiPadInl: --spacing(3);
+      }
+
+      :global(*) {
+        scrollbar-width: thin;
+      }
+
+      /* Force EC code blocks to use my Maple Mono settings */
+      :global(pre *) {
+        @apply maple;
       }
 
       :global(pre) {
@@ -301,6 +343,7 @@ const { content: Content, ...props } = Astro.props;
         }
 
         :global(.title) {
+          font-weight: 500;
           border-radius: 0px;
           border-top-right-radius: var(--tab-border-radius);
 

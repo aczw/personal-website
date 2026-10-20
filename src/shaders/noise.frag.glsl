@@ -17,7 +17,7 @@ in vec2 frag_uv;
 
 out vec4 out_color;
 
-const int PIXEL_SIZE = 216;
+const int PIXEL_SIZE = 120;
 const float QUANTIZED_COLOR_COUNT = 5.f;
 const float PROC_SPEED_MULT = 0.35f;
 const float CELL_DENSITY = 0.7f;
