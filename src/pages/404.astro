@@ -150,13 +150,14 @@ const description = "Sorry, this page does not exist. How did this happen?";
       },
       ditherSize: 7,
       direction: { x: 1, y: 1 },
+      offset: { x: 0.0, y: 0.0 },
     };
 
     gl.uniform3f(colorAUnif, data.color.a.r, data.color.a.g, data.color.a.b);
     gl.uniform3f(colorBUnif, data.color.b.r, data.color.b.g, data.color.b.b);
     gl.uniform1i(ditherSizeUnif, data.ditherSize);
     gl.uniform2f(directionUnif, -data.direction.x, data.direction.y);
-    gl.uniform2f(offsetUnif, 0.0, 0.0);
+    gl.uniform2f(offsetUnif, data.offset.x, data.offset.y);
 
     const pane = new Pane({
       container: document.getElementById("pane-container")!,
@@ -243,6 +244,11 @@ const description = "Sorry, this page does not exist. How did this happen?";
       })
       .on("change", (ev) => {
         gl.uniform2f(directionUnif, -ev.value.x, ev.value.y);
+      });
+    settings
+      .addBinding(data, "offset", { label: "Offset", picker: "inline" })
+      .on("change", (ev) => {
+        gl.uniform2f(offsetUnif, ev.value.x, ev.value.y);
       });
 
     const draw: FrameRequestCallback = (now) => {
