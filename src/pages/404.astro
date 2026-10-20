@@ -56,7 +56,13 @@ const description = "Sorry, this page does not exist. How did this happen?";
     checkForResize,
     initializeGfx,
   } from "@/scripts/gfx";
-  import { setColorScheme } from "@/scripts/noise";
+  import {
+    setColorScheme,
+    SWEATER_1,
+    SWEATER_10,
+    SWEATER_3,
+    SWEATER_9,
+  } from "@/scripts/noise";
   import { commitStyleAnimation, lerp } from "@/scripts/util";
   import { KEYFRAME_ANIM_OPTS } from "@/scripts/constants";
 
@@ -89,16 +95,16 @@ const description = "Sorry, this page does not exist. How did this happen?";
     const directionUnif = gl.getUniformLocation(program, "u_direction");
     const offsetUnif = gl.getUniformLocation(program, "u_offset");
 
-    setColorScheme(gl, {
+    const prefersDarkQuery = setColorScheme(gl, {
       a: {
         location: colorAUnif,
-        light: { r: 0.7647, g: 0.74117, b: 1.0 }, // sweater-3
-        dark: { r: 0.11372, g: 0.09803, b: 0.23921 }, // sweater-9
+        light: SWEATER_3,
+        dark: SWEATER_9,
       },
       b: {
         location: colorBUnif,
-        light: { r: 0.88235, g: 0.8745, b: 1.0 }, // sweater-1
-        dark: { r: 0.03921, g: 0.03529, b: 0.09803 }, // sweater-10
+        light: SWEATER_1,
+        dark: SWEATER_10,
       },
     });
     gl.uniform1i(ditherSizeUnif, 7);
@@ -156,9 +162,13 @@ const description = "Sorry, this page does not exist. How did this happen?";
       hidePage();
     });
 
-    const params = {
+    const data = {
       dimensions: `${CANVAS_WIDTH}×${CANVAS_HEIGHT}`,
       backend: "WebGL 2",
+      color: {
+        a: prefersDarkQuery ? SWEATER_9 : SWEATER_3,
+        b: prefersDarkQuery ? SWEATER_10 : SWEATER_1,
+      },
     };
 
     const pane = new Pane({
@@ -170,7 +180,7 @@ const description = "Sorry, this page does not exist. How did this happen?";
       view: "fpsgraph",
       label: "FPS",
       min: 0,
-      max: 120,
+      max: 60,
       rows: 1,
     }) as FpsGraphBladeApi;
     drawBlade.on("tick", (ev) => {
@@ -180,14 +190,16 @@ const description = "Sorry, this page does not exist. How did this happen?";
       }
     });
 
-    pane.addBinding(params, "dimensions", {
+    pane.addBinding(data, "dimensions", {
       readonly: true,
       label: "Dimensions",
     });
-    pane.addBinding(params, "backend", {
+    pane.addBinding(data, "backend", {
       readonly: true,
       label: "Backend",
     });
+
+    pane.addBlade({ view: "separator" });
 
     pane
       .addButton({
@@ -201,13 +213,39 @@ const description = "Sorry, this page does not exist. How did this happen?";
         }
       });
 
+    pane.addBlade({ view: "separator" });
+
+    const settings = pane.addFolder({
+      title: "Settings",
+      expanded: false,
+    });
+
+    settings
+      .addBinding(data.color, "a", {
+        label: "Color A",
+        color: { type: "float" },
+        picker: "inline",
+      })
+      .on("change", (ev) => {
+        gl.uniform3f(colorAUnif, ev.value.r, ev.value.g, ev.value.b);
+      });
+    settings
+      .addBinding(data.color, "b", {
+        label: "Color B",
+        color: { type: "float" },
+        picker: "inline",
+      })
+      .on("change", (ev) => {
+        gl.uniform3f(colorBUnif, ev.value.r, ev.value.g, ev.value.b);
+      });
+
     const draw: FrameRequestCallback = (now) => {
       drawBlade.begin();
       const elapsed = now * 0.001;
 
       gl.uniform1f(timeUnif, elapsed);
       checkForResize(gl, offCanvas, canvasElt, dimensionsUnif);
-      params.dimensions = `${gl.canvas.width}×${gl.canvas.height}`;
+      data.dimensions = `${gl.canvas.width}×${gl.canvas.height}`;
       const t = Math.min(elapsed / 5, 1);
       gl.uniform1f(biasUnif, lerp(0.0, -1.0, Math.pow(1 - t, 5)));
 

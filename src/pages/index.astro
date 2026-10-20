@@ -152,7 +152,13 @@ const projects = await getEntries(
     createTile,
     getUniformsForState,
   } from "@/scripts/tile";
-  import { setColorScheme } from "@/scripts/noise";
+  import {
+    setColorScheme,
+    SWEATER_2,
+    SWEATER_4,
+    SWEATER_7,
+    SWEATER_9,
+  } from "@/scripts/noise";
 
   const displayCoverImages = () =>
     HOMEPAGE_PROJECTS.forEach((_, index) => {
@@ -214,13 +220,13 @@ const projects = await getEntries(
     setColorScheme(gl, {
       a: {
         location: colorAUnif,
-        light: { r: 0.83921, g: 0.82745, b: 1.0 }, // sweater-2
-        dark: { r: 0.11372, g: 0.09803, b: 0.23921 }, // sweater-9
+        light: SWEATER_2,
+        dark: SWEATER_9,
       },
       b: {
         location: colorBUnif,
-        light: { r: 0.67843, g: 0.65098, b: 1.0 }, // sweater-4
-        dark: { r: 0.28235, g: 0.26274, b: 0.5647 }, // sweater-7
+        light: SWEATER_4,
+        dark: SWEATER_7,
       },
     });
 
