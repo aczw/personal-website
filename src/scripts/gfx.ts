@@ -104,4 +104,10 @@ const checkForResize = (
   }
 };
 
-export { type GlCtx, initialize as initializeGfx, checkForResize };
+export {
+  CANVAS_WIDTH,
+  CANVAS_HEIGHT,
+  type GlCtx,
+  initialize as initializeGfx,
+  checkForResize,
+};

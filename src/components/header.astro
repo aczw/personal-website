@@ -1,8 +1,12 @@
 ---
+import type { HTMLAttributes } from "astro/types";
+
 import Eye from "@/components/eye.astro";
+
+type Props = Omit<HTMLAttributes<"header">, "class">;
 ---
 
-<header class="constrain mt-6 mb-4 px-5 sm:mt-20">
+<header class="constrain mt-6 mb-4 px-5 sm:mt-20" {...Astro.props}>
   <nav class="prose">
     <a
       href="/"

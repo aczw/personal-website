@@ -12,13 +12,13 @@ const description = "Sorry, this page does not exist. How did this happen?";
     description,
   }}
 >
-  <Header />
+  <Header id="header" />
 
-  <main id="main">
-    <hgroup class="constrain px-5">
+  <main>
+    <hgroup id="content" class="constrain px-5">
       <h1 class="sr-only">Page not found</h1>
       <p class="prose">
-        {description} Since you're here now anyway, you might as well{" "}
+        {description} Oh well. Since you're here now anyway, you might as well{" "}
         <button id="open-pane" class="inline link-primary">
           play with the background
         </button>
@@ -31,7 +31,9 @@ const description = "Sorry, this page does not exist. How did this happen?";
       class="absolute inset-0 -z-1 h-full w-full bg-sweater-10 light:bg-sweater-1"
     ></canvas>
 
-    <div id="pane-container" class="absolute inset-x-10 bottom-10"></div>
+    <div class="absolute inset-x-5 bottom-5">
+      <div id="pane-container" class="mx-auto w-full desktop:max-w-100"></div>
+    </div>
   </main>
 </BaseLayout>
 
@@ -40,10 +42,18 @@ const description = "Sorry, this page does not exist. How did this happen?";
   import fragSrc from "@/shaders/noise.frag.glsl?raw";
 
   import { Pane } from "tweakpane";
+  import * as TpEssentialsPlugin from "@tweakpane/plugin-essentials";
+  import type { FpsGraphBladeApi } from "@tweakpane/plugin-essentials";
 
-  import { checkForResize, initializeGfx } from "@/scripts/gfx";
+  import {
+    CANVAS_HEIGHT,
+    CANVAS_WIDTH,
+    checkForResize,
+    initializeGfx,
+  } from "@/scripts/gfx";
   import { setColorScheme } from "@/scripts/noise";
-  import { lerp } from "@/scripts/util";
+  import { commitStyleAnimation, lerp } from "@/scripts/util";
+  import { KEYFRAME_ANIM_OPTS } from "@/scripts/constants";
 
   const run = () => {
     const gfxRes = initializeGfx(vertSrc, fragSrc);
@@ -90,20 +100,64 @@ const description = "Sorry, this page does not exist. How did this happen?";
     gl.uniform2f(directionUnif, 1, 1);
     gl.uniform2f(offsetUnif, 0.0, 0.0);
 
-    const openPaneBtn = document.getElementById(
-      "open-pane",
-    ) as HTMLButtonElement;
-    openPaneBtn.addEventListener("click", () => {
-      const pane = new Pane({
-        container: document.getElementById("pane-container")!,
-      });
+    document.getElementById("open-pane")!.addEventListener("click", () => {
+      const headerElt = document.getElementById("header")!;
+      const contentElt = document.getElementById("content")!;
+
+      headerElt
+        .animate([{ opacity: 0 }], KEYFRAME_ANIM_OPTS)
+        .addEventListener("finish", (ev) => {
+          commitStyleAnimation(ev);
+          headerElt.style.display = "none";
+        });
+      contentElt
+        .animate([{ opacity: 0 }], KEYFRAME_ANIM_OPTS)
+        .addEventListener("finish", (ev) => {
+          commitStyleAnimation(ev);
+          contentElt.style.display = "none";
+        });
+    });
+
+    const params = {
+      dimensions: `${CANVAS_WIDTH}×${CANVAS_HEIGHT}`,
+      backend: "WebGL 2",
+    };
+
+    const pane = new Pane({
+      container: document.getElementById("pane-container")!,
+    });
+    pane.registerPlugin(TpEssentialsPlugin);
+
+    const drawBlade = pane.addBlade({
+      view: "fpsgraph",
+      label: "FPS",
+      min: 0,
+      max: 120,
+      rows: 1.5,
+    }) as FpsGraphBladeApi;
+    drawBlade.on("tick", (ev) => {
+      // Dynamically adjust FPS max bound
+      if (ev.target.fps && ev.target.fps > ev.target.max) {
+        ev.target.max = ev.target.fps + 15;
+      }
+    });
+
+    pane.addBinding(params, "dimensions", {
+      readonly: true,
+      label: "Dimensions",
+    });
+    pane.addBinding(params, "backend", {
+      readonly: true,
+      label: "Backend",
     });
 
     const draw: FrameRequestCallback = (now) => {
+      drawBlade.begin();
       const elapsed = now * 0.001;
 
       gl.uniform1f(timeUnif, elapsed);
       checkForResize(gl, offCanvas, canvasElt, dimensionsUnif);
+      params.dimensions = `${gl.canvas.width}×${gl.canvas.height}`;
       const t = Math.min(elapsed / 5, 1);
       gl.uniform1f(biasUnif, lerp(0.0, -1.0, Math.pow(1 - t, 5)));
 
@@ -112,6 +166,7 @@ const description = "Sorry, this page does not exist. How did this happen?";
 
       bitmapCtx.transferFromImageBitmap(offCanvas.transferToImageBitmap());
 
+      drawBlade.end();
       requestAnimationFrame(draw);
     };
 

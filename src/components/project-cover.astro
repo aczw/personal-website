@@ -3,7 +3,7 @@ import type { HTMLAttributes } from "astro/types";
 import { Image } from "astro:assets";
 import type { z } from "astro/zod";
 
-import type { ImageSchema } from "@/content.config";
+import type { ImageSchema } from "@/scripts/schema";
 import { CDN_URL } from "@/scripts/constants";
 import { isValidProjectCover } from "@/scripts/util";
 
@@ -32,7 +32,7 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
     src={coverImage.data}
     alt={coverImage.alt}
     decoding="async"
-    class="bg-sweater-9 light:bg-sweater-2 w-full h-auto"
+    class="h-auto w-full bg-sweater-9 light:bg-sweater-2"
   />
 
   <video
@@ -43,12 +43,13 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
     autoplay
     preload="auto"
     src={`${CDN_URL}/projects/${projectId}/cover.mp4`}
-    class="project-cover-video opacity-0 w-full h-auto bg-sweater-9 light:bg-sweater-2"
+    class="project-cover-video h-auto w-full bg-sweater-9 opacity-0 light:bg-sweater-2"
     data-loaded="false"
   ></video>
 </div>
 
 <script>
+  import { KEYFRAME_ANIM_OPTS } from "@/scripts/constants";
   import { commitStyleAnimation } from "@/scripts/util";
 
   const isVideoReady = (videoElt: HTMLVideoElement) => {
@@ -65,12 +66,7 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
 
     videoElt.dataset["loaded"] = "true";
     videoElt
-      .animate([{ opacity: 1 }], {
-        duration: 700,
-        // https://easings.net/#easeInOutExpo
-        easing: "cubic-bezier(0.87, 0, 0.13, 1)",
-        fill: "forwards",
-      })
+      .animate([{ opacity: 1 }], KEYFRAME_ANIM_OPTS)
       .addEventListener("finish", (ev) => {
         commitStyleAnimation(ev);
         imageElt.remove();
