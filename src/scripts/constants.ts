@@ -31,7 +31,7 @@ const ICON_SIZE = 16;
 const CURRENT_TIMEZONE = "America/Los_Angeles";
 
 const KEYFRAME_ANIM_OPTS: KeyframeAnimationOptions = {
-  duration: 700,
+  duration: 500,
   // https://easings.net/#easeInOutExpo
   easing: "cubic-bezier(0.87, 0, 0.13, 1)",
   fill: "forwards",
