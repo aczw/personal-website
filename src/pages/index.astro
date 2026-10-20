@@ -152,7 +152,12 @@ const projects = await getEntries(
     createTile,
     getUniformsForState,
   } from "@/scripts/tile";
-  import { SWEATER_2, SWEATER_4, SWEATER_7, SWEATER_9 } from "@/scripts/noise";
+  import {
+    SWEATER_2,
+    SWEATER_4,
+    SWEATER_7,
+    SWEATER_9,
+  } from "@/scripts/palette";
 
   const displayCoverImages = () =>
     HOMEPAGE_PROJECTS.forEach((_, index) => {
@@ -177,6 +182,9 @@ const projects = await getEntries(
     }
 
     const { offCanvas, gl, program } = gfxRes.data;
+
+    gl.activeTexture(gl.TEXTURE0);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
     const tileResArr = HOMEPAGE_PROJECTS.map((projectId, index) =>
       createTile(gl, projectId, index),

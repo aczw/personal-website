@@ -74,8 +74,6 @@ const initialize = (vertSrc: string, fragSrc: string): Result<Gfx> => {
   }
 
   gl.useProgram(program);
-  gl.activeTexture(gl.TEXTURE0);
-  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
 
   const vao = gl.createVertexArray();
   gl.bindVertexArray(vao);

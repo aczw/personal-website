@@ -61,15 +61,24 @@ const description = "Sorry, this page does not exist. How did this happen?";
     initializeGfx,
   } from "@/scripts/gfx";
   import {
-    BayerMatrix,
-    DitherMode,
     SWEATER_1,
     SWEATER_10,
     SWEATER_3,
     SWEATER_9,
-  } from "@/scripts/noise";
+  } from "@/scripts/palette";
   import { commitStyleAnimation, lerp } from "@/scripts/util";
   import { KEYFRAME_ANIM_OPTS } from "@/scripts/constants";
+
+  const DitherMode = {
+    NOISE: 0,
+    ORDERED: 1,
+  } as const;
+
+  const BayerMatrix = {
+    TWO_BY_TWO: 0,
+    FOUR_BY_FOUR: 1,
+    EIGHT_BY_EIGHT: 2,
+  } as const;
 
   const run = () => {
     const gfxRes = initializeGfx(vertSrc, fragSrc);

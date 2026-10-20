@@ -211,10 +211,4 @@ const getUniformsForState = (state: State, elapsed: number): FrameUniforms => {
   }
 };
 
-export {
-  type Direction,
-  type Tile,
-  createTile,
-  checkToAdvanceState,
-  getUniformsForState,
-};
+export { createTile, checkToAdvanceState, getUniformsForState };
