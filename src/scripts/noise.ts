@@ -1,5 +1,3 @@
-import type { GlCtx } from "@/scripts/gfx";
-
 const DitherMode = {
   NOISE: 0,
   ORDERED: 1,
@@ -11,41 +9,7 @@ const BayerMatrixSize = {
   EIGHT_BY_EIGHT: 2,
 } as const;
 
-type UniformValue = {
-  location: WebGLUniformLocation | null;
-  light: Color;
-  dark: Color;
-};
-
 type Color = { r: number; g: number; b: number };
-
-const setColorScheme = (
-  gl: GlCtx,
-  uniforms: {
-    a: UniformValue;
-    b: UniformValue;
-  },
-): MediaQueryList => {
-  const { a, b } = uniforms;
-  const prefersDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
-
-  const toggleColorScheme = (prefersDark: boolean) => {
-    if (prefersDark) {
-      gl.uniform3f(a.location, a.dark.r, a.dark.g, a.dark.b);
-      gl.uniform3f(b.location, b.dark.r, b.dark.g, b.dark.b);
-    } else {
-      gl.uniform3f(a.location, a.light.r, a.light.g, a.light.b);
-      gl.uniform3f(b.location, b.light.r, b.light.g, b.light.b);
-    }
-  };
-
-  prefersDarkQuery.addEventListener("change", (ev) =>
-    toggleColorScheme(ev.matches),
-  );
-  toggleColorScheme(prefersDarkQuery.matches);
-
-  return prefersDarkQuery;
-};
 
 const SWEATER_1: Color = { r: 0.88235, g: 0.8745, b: 1.0 };
 const SWEATER_2: Color = { r: 0.83921, g: 0.82745, b: 1.0 };
@@ -58,7 +22,6 @@ const SWEATER_10: Color = { r: 0.03921, g: 0.03529, b: 0.09803 };
 export {
   DitherMode,
   BayerMatrixSize,
-  setColorScheme,
   type Color,
   SWEATER_1,
   SWEATER_2,

@@ -217,18 +217,21 @@ const projects = await getEntries(
     const directionUnif = gl.getUniformLocation(program, "u_direction");
     const offsetUnif = gl.getUniformLocation(program, "u_offset");
 
-    setColorScheme(gl, {
-      a: {
-        location: colorAUnif,
-        light: SWEATER_2,
-        dark: SWEATER_9,
-      },
-      b: {
-        location: colorBUnif,
-        light: SWEATER_4,
-        dark: SWEATER_7,
-      },
-    });
+    const toggleColorScheme = (prefersDark: boolean) => {
+      if (prefersDark) {
+        gl.uniform3f(colorAUnif, SWEATER_9.r, SWEATER_9.g, SWEATER_9.b);
+        gl.uniform3f(colorBUnif, SWEATER_7.r, SWEATER_7.g, SWEATER_7.b);
+      } else {
+        gl.uniform3f(colorAUnif, SWEATER_2.r, SWEATER_2.g, SWEATER_2.b);
+        gl.uniform3f(colorBUnif, SWEATER_4.r, SWEATER_4.g, SWEATER_4.b);
+      }
+    };
+
+    const prefersDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    prefersDarkQuery.addEventListener("change", (ev) =>
+      toggleColorScheme(ev.matches),
+    );
+    toggleColorScheme(prefersDarkQuery.matches);
 
     // The timestamp at which the draw loop actually begins running, which
     // will likely be lagging behind page load
