@@ -14,12 +14,12 @@ const description = "Sorry, this page does not exist. How did this happen?";
 >
   <Header />
 
-  <main>
+  <main id="main">
     <hgroup class="constrain px-5">
       <h1 class="sr-only">Page not found</h1>
       <p class="prose">
         {description} Since you're here now anyway, you might as well{" "}
-        <button class="inline link-primary" onclick='alert("hello");'>
+        <button id="open-pane" class="inline link-primary">
           play with the background
         </button>
         .
@@ -30,12 +30,16 @@ const description = "Sorry, this page does not exist. How did this happen?";
       id="noise"
       class="absolute inset-0 -z-1 h-full w-full bg-sweater-10 light:bg-sweater-1"
     ></canvas>
+
+    <div id="pane-container" class="absolute inset-x-10 bottom-10"></div>
   </main>
 </BaseLayout>
 
 <script>
   import vertSrc from "@/shaders/quad.vert.glsl?raw";
   import fragSrc from "@/shaders/noise.frag.glsl?raw";
+
+  import { Pane } from "tweakpane";
 
   import { checkForResize, initializeGfx } from "@/scripts/gfx";
   import { setColorScheme } from "@/scripts/noise";
@@ -86,6 +90,15 @@ const description = "Sorry, this page does not exist. How did this happen?";
     gl.uniform2f(directionUnif, 1, 1);
     gl.uniform2f(offsetUnif, 0.0, 0.0);
 
+    const openPaneBtn = document.getElementById(
+      "open-pane",
+    ) as HTMLButtonElement;
+    openPaneBtn.addEventListener("click", () => {
+      const pane = new Pane({
+        container: document.getElementById("pane-container")!,
+      });
+    });
+
     const draw: FrameRequestCallback = (now) => {
       const elapsed = now * 0.001;
 
@@ -110,12 +123,12 @@ const description = "Sorry, this page does not exist. How did this happen?";
 
 <style>
   main {
-    /* Make Tweakpane use Maple Mono */
-    --tp-base-font-family: var(--font-mono);
-
     /* Force Tweakpane to use my Maple Mono settings */
-    .panel-container {
+    #pane-container {
       font-feature-settings: var(--font-mono--font-feature-settings);
+
+      /* Make Tweakpane use Maple Mono */
+      --tp-base-font-family: var(--font-mono);
     }
   }
 </style>
