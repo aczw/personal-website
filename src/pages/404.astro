@@ -19,7 +19,12 @@ const description = "Sorry, this page does not exist. How did this happen?";
       <h1 class="sr-only">Page not found</h1>
       <p class="prose">
         {description} Oh well. Since you're here now anyway, you might as well{" "}
-        <button id="open-pane" class="inline link-primary">
+        <button
+          id="open-pane"
+          class="inline link-primary rounded-sm bg-sweater-9 px-1.25 hover:bg-sweater-8 light:bg-sweater-2 light:hover:bg-sweater-3"
+          data-init="false"
+          data-show="true"
+        >
           play with the background
         </button>
         .
@@ -100,22 +105,55 @@ const description = "Sorry, this page does not exist. How did this happen?";
     gl.uniform2f(directionUnif, 1, 1);
     gl.uniform2f(offsetUnif, 0.0, 0.0);
 
-    document.getElementById("open-pane")!.addEventListener("click", () => {
-      const headerElt = document.getElementById("header")!;
-      const contentElt = document.getElementById("content")!;
+    const openPaneBtn = document.getElementById(
+      "open-pane",
+    )! as HTMLButtonElement;
+    const headerElt = document.getElementById("header")!;
+    const contentElt = document.getElementById("content")!;
 
+    const hidePage = () => {
       headerElt
         .animate([{ opacity: 0 }], KEYFRAME_ANIM_OPTS)
         .addEventListener("finish", (ev) => {
           commitStyleAnimation(ev);
           headerElt.style.display = "none";
+          openPaneBtn.dataset["show"] = "false";
         });
       contentElt
         .animate([{ opacity: 0 }], KEYFRAME_ANIM_OPTS)
         .addEventListener("finish", (ev) => {
           commitStyleAnimation(ev);
           contentElt.style.display = "none";
+          openPaneBtn.dataset["show"] = "false";
         });
+    };
+    const showPage = () => {
+      headerElt.style.display = "block";
+      contentElt.style.display = "block";
+      openPaneBtn.dataset["show"] = "true";
+      headerElt
+        .animate([{ opacity: 1 }], KEYFRAME_ANIM_OPTS)
+        .addEventListener("finish", commitStyleAnimation);
+      contentElt
+        .animate([{ opacity: 1 }], KEYFRAME_ANIM_OPTS)
+        .addEventListener("finish", commitStyleAnimation);
+    };
+
+    openPaneBtn.addEventListener("click", () => {
+      if (openPaneBtn.dataset["init"] === "true") return;
+
+      openPaneBtn.dataset["init"] = "true";
+      openPaneBtn.classList.remove(
+        "link-primary",
+        "rounded-sm",
+        "bg-sweater-9",
+        "px-1.25",
+        "hover:bg-sweater-8",
+        "light:bg-sweater-2",
+        "light:hover:bg-sweater-3",
+      );
+
+      hidePage();
     });
 
     const params = {
@@ -133,7 +171,7 @@ const description = "Sorry, this page does not exist. How did this happen?";
       label: "FPS",
       min: 0,
       max: 120,
-      rows: 1.5,
+      rows: 1,
     }) as FpsGraphBladeApi;
     drawBlade.on("tick", (ev) => {
       // Dynamically adjust FPS max bound
@@ -150,6 +188,18 @@ const description = "Sorry, this page does not exist. How did this happen?";
       readonly: true,
       label: "Backend",
     });
+
+    pane
+      .addButton({
+        title: "Toggle page",
+      })
+      .on("click", () => {
+        if (openPaneBtn.dataset["show"] === "true") {
+          hidePage();
+        } else {
+          showPage();
+        }
+      });
 
     const draw: FrameRequestCallback = (now) => {
       drawBlade.begin();
