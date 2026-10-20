@@ -60,7 +60,13 @@ const description = "Sorry, this page does not exist. How did this happen?";
     checkForResize,
     initializeGfx,
   } from "@/scripts/gfx";
-  import { SWEATER_1, SWEATER_10, SWEATER_3, SWEATER_9 } from "@/scripts/noise";
+  import {
+    DitherMode,
+    SWEATER_1,
+    SWEATER_10,
+    SWEATER_3,
+    SWEATER_9,
+  } from "@/scripts/noise";
   import { commitStyleAnimation, lerp } from "@/scripts/util";
   import { KEYFRAME_ANIM_OPTS } from "@/scripts/constants";
 
@@ -92,6 +98,7 @@ const description = "Sorry, this page does not exist. How did this happen?";
     const directionUnif = gl.getUniformLocation(program, "u_direction");
     const offsetUnif = gl.getUniformLocation(program, "u_offset");
     const speedUnif = gl.getUniformLocation(program, "u_speed");
+    const modeUnif = gl.getUniformLocation(program, "u_mode");
     const ditherSizeUnif = gl.getUniformLocation(program, "u_dither_size");
     const pixelSizeUnif = gl.getUniformLocation(program, "u_pixel_size");
     const cellSizeUnif = gl.getUniformLocation(program, "u_cell_size");
@@ -145,18 +152,29 @@ const description = "Sorry, this page does not exist. How did this happen?";
       dimensions: `${CANVAS_WIDTH}×${CANVAS_HEIGHT}`,
       backend: "WebGL 2",
       color: {
-        a: prefersDarkQuery ? SWEATER_9 : SWEATER_3,
-        b: prefersDarkQuery ? SWEATER_10 : SWEATER_1,
+        a: prefersDarkQuery.matches ? SWEATER_9 : SWEATER_3,
+        b: prefersDarkQuery.matches ? SWEATER_10 : SWEATER_1,
       },
       bias: 0,
       count: 5,
       direction: { x: 1, y: 1 },
       offset: { x: 0.0, y: 0.0 },
       speed: 0.35,
+      mode: DitherMode.ORDERED,
       ditherSize: 7,
       pixelSize: 119,
       cellSize: 1.6,
     };
+
+    prefersDarkQuery.addEventListener("change", (ev) => {
+      if (ev.matches) {
+        gl.uniform3f(colorAUnif, SWEATER_9.r, SWEATER_9.g, SWEATER_9.b);
+        gl.uniform3f(colorBUnif, SWEATER_10.r, SWEATER_10.g, SWEATER_10.b);
+      } else {
+        gl.uniform3f(colorAUnif, SWEATER_3.r, SWEATER_3.g, SWEATER_3.b);
+        gl.uniform3f(colorBUnif, SWEATER_1.r, SWEATER_1.g, SWEATER_1.b);
+      }
+    });
 
     gl.uniform3f(colorAUnif, data.color.a.r, data.color.a.g, data.color.a.b);
     gl.uniform3f(colorBUnif, data.color.b.r, data.color.b.g, data.color.b.b);
@@ -165,6 +183,7 @@ const description = "Sorry, this page does not exist. How did this happen?";
     gl.uniform2f(directionUnif, -data.direction.x, data.direction.y);
     gl.uniform2f(offsetUnif, data.offset.x, data.offset.y);
     gl.uniform1f(speedUnif, data.speed);
+    gl.uniform1i(modeUnif, data.mode);
     gl.uniform1i(ditherSizeUnif, data.ditherSize);
     gl.uniform1i(pixelSizeUnif, data.pixelSize);
     gl.uniform1f(cellSizeUnif, data.cellSize);
@@ -274,6 +293,17 @@ const description = "Sorry, this page does not exist. How did this happen?";
     properties.addBlade({ view: "separator" });
 
     properties
+      .addBinding(data, "mode", {
+        label: "Mode",
+        options: {
+          "Noise-based": DitherMode.NOISE,
+          Ordered: DitherMode.ORDERED,
+        },
+      })
+      .on("change", (ev) => {
+        gl.uniform1i(modeUnif, ev.value);
+      });
+    properties
       .addBinding(data, "ditherSize", {
         label: "Dither size",
         min: 1,
@@ -308,8 +338,8 @@ const description = "Sorry, this page does not exist. How did this happen?";
       gl.uniform1f(timeUnif, elapsed);
       checkForResize(gl, offCanvas, canvasElt, dimensionsUnif);
       data.dimensions = `${gl.canvas.width}×${gl.canvas.height}`;
-      const t = Math.min(elapsed / 5, 1);
-      const biasValue = lerp(0.0, -1.0, Math.pow(1 - t, 5));
+      const t = Math.min(elapsed / 3.5, 1);
+      const biasValue = lerp(1, 0, t);
       gl.uniform1f(biasUnif, biasValue + data.bias);
 
       gl.clearColor(0.0, 0.0, 0.0, 0.0);

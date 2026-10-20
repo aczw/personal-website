@@ -14,6 +14,7 @@ uniform vec2 u_direction;
 uniform vec2 u_offset;
 uniform float u_speed;
 
+uniform int u_mode;
 uniform int u_dither_size;
 uniform int u_pixel_size;
 uniform float u_cell_size;
@@ -63,20 +64,23 @@ float quantize(float value) {
   return floor(value * (u_count - 1.0f) + 0.5f) / (u_count - 1.0f);
 }
 
-float noise_dither(vec2 uv, float value) {
-  float final = quantize(value + u_bias);
+float dither(float value) {
+  vec2 cell = floor(gl_FragCoord.xy / vec2(u_dither_size));
 
-  if (final < random2To2(uv).x) {
-    return 0.0f;
-  } else {
-    return clamp(final, 0.f, 1.f);
+  float threshold = 0.f;
+  switch (u_mode) {
+    case 0: { // Noise-based
+      threshold = random2To2(cell).x;
+      break;
+    }
+
+    case 1: { // Ordered
+      ivec2 index = ivec2(cell) & 7;
+      threshold = BAYER_MATRIX_8[index.y * 8 + index.x];
+      break;
+    }
+
   }
-}
-
-float ordered_dither(float value) {
-  ivec2 pixel = ivec2(floor(gl_FragCoord.xy / vec2(u_dither_size)));
-  ivec2 index = pixel & 7;
-  float threshold = BAYER_MATRIX_8[index.y * 8 + index.x];
 
   float final = value + (threshold - 0.5f) / (u_count - 1.f);
   final = quantize(final + u_bias);
@@ -92,11 +96,11 @@ vec2 pixelate(vec2 uv) {
 void main() {
   float aspect_ratio = float(u_dimensions.x) / float(u_dimensions.y);
   vec2 worley_sample_pos = pixelate(frag_uv + u_offset) * vec2(aspect_ratio, 1.f) * u_cell_size + (normalize(u_direction) * u_time * u_speed);
+
   float worley_value = compute_worley(worley_sample_pos);
+  worley_value = 1.f - (worley_value * worley_value);
 
-  float worley_dither = ordered_dither(worley_value);
-  worley_dither = 1.f - (worley_dither * worley_dither);
-
+  float worley_dither = dither(worley_value);
   vec3 worley_color = mix(u_color_a, u_color_b, worley_dither);
 
   out_color = vec4(worley_color, 1.f);
