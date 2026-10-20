@@ -103,34 +103,6 @@ const description = "Sorry, this page does not exist. How did this happen?";
     const headerElt = document.getElementById("header")!;
     const contentElt = document.getElementById("content")!;
 
-    const hidePage = () => {
-      headerElt
-        .animate([{ opacity: 0 }], KEYFRAME_ANIM_OPTS)
-        .addEventListener("finish", (ev) => {
-          commitStyleAnimation(ev);
-          headerElt.style.display = "none";
-          openPaneBtn.dataset["show"] = "false";
-        });
-      contentElt
-        .animate([{ opacity: 0 }], KEYFRAME_ANIM_OPTS)
-        .addEventListener("finish", (ev) => {
-          commitStyleAnimation(ev);
-          contentElt.style.display = "none";
-          openPaneBtn.dataset["show"] = "false";
-        });
-    };
-    const showPage = () => {
-      headerElt.style.display = "block";
-      contentElt.style.display = "block";
-      openPaneBtn.dataset["show"] = "true";
-      headerElt
-        .animate([{ opacity: 1 }], KEYFRAME_ANIM_OPTS)
-        .addEventListener("finish", commitStyleAnimation);
-      contentElt
-        .animate([{ opacity: 1 }], KEYFRAME_ANIM_OPTS)
-        .addEventListener("finish", commitStyleAnimation);
-    };
-
     openPaneBtn.addEventListener("click", () => {
       if (openPaneBtn.dataset["init"] === "true") return;
 
@@ -145,7 +117,22 @@ const description = "Sorry, this page does not exist. How did this happen?";
         "light:hover:bg-sweater-3",
       );
 
-      hidePage();
+      headerElt
+        .animate([{ opacity: 0 }], KEYFRAME_ANIM_OPTS)
+        .addEventListener("finish", (ev) => {
+          commitStyleAnimation(ev);
+          headerElt.style.display = "none";
+          headerElt.style.opacity = "1";
+          openPaneBtn.dataset["show"] = "false";
+        });
+      contentElt
+        .animate([{ opacity: 0 }], KEYFRAME_ANIM_OPTS)
+        .addEventListener("finish", (ev) => {
+          commitStyleAnimation(ev);
+          contentElt.style.display = "none";
+          contentElt.style.opacity = "1";
+          openPaneBtn.dataset["show"] = "false";
+        });
 
       paneContainerElt.style.display = "block";
       paneContainerElt
@@ -194,9 +181,13 @@ const description = "Sorry, this page does not exist. How did this happen?";
       })
       .on("click", () => {
         if (openPaneBtn.dataset["show"] === "true") {
-          hidePage();
+          headerElt.style.display = "none";
+          contentElt.style.display = "none";
+          openPaneBtn.dataset["show"] = "false";
         } else {
-          showPage();
+          headerElt.style.display = "block";
+          contentElt.style.display = "block";
+          openPaneBtn.dataset["show"] = "true";
         }
       });
 
