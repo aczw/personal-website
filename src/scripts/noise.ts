@@ -1,15 +1,14 @@
-const DitherModeValue = {
+const DitherMode = {
   NOISE: 0,
   ORDERED: 1,
 } as const;
 
-const BayerMatrixValue = {
+const BayerMatrix = {
   TWO_BY_TWO: 0,
   FOUR_BY_FOUR: 1,
   EIGHT_BY_EIGHT: 2,
 } as const;
 
-type DitherMode = (typeof DitherModeValue)[keyof typeof DitherModeValue];
 type Color = { r: number; g: number; b: number };
 
 const SWEATER_1: Color = { r: 0.88235, g: 0.8745, b: 1.0 };
@@ -21,9 +20,8 @@ const SWEATER_9: Color = { r: 0.11372, g: 0.09803, b: 0.23921 };
 const SWEATER_10: Color = { r: 0.03921, g: 0.03529, b: 0.09803 };
 
 export {
-  DitherModeValue,
-  BayerMatrixValue,
-  type DitherMode,
+  DitherMode,
+  BayerMatrix,
   type Color,
   SWEATER_1,
   SWEATER_2,

@@ -61,13 +61,12 @@ const description = "Sorry, this page does not exist. How did this happen?";
     initializeGfx,
   } from "@/scripts/gfx";
   import {
-    BayerMatrixValue,
-    DitherModeValue,
+    BayerMatrix,
+    DitherMode,
     SWEATER_1,
     SWEATER_10,
     SWEATER_3,
     SWEATER_9,
-    type DitherMode,
   } from "@/scripts/noise";
   import { commitStyleAnimation, lerp } from "@/scripts/util";
   import { KEYFRAME_ANIM_OPTS } from "@/scripts/constants";
@@ -151,6 +150,9 @@ const description = "Sorry, this page does not exist. How did this happen?";
     });
 
     const prefersDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const greaterThanSmQuery = window.matchMedia("(width >= 40rem)");
+
+    const initialPixelSize = greaterThanSmQuery.matches ? 119 : 63;
     const data = {
       dimensions: `${CANVAS_WIDTH}×${CANVAS_HEIGHT}`,
       backend: "WebGL 2",
@@ -163,10 +165,10 @@ const description = "Sorry, this page does not exist. How did this happen?";
       direction: { x: 1, y: 1 },
       offset: { x: 0.0, y: 0.0 },
       speed: 0.35,
-      mode: DitherModeValue.ORDERED as DitherMode,
-      matrix: BayerMatrixValue.EIGHT_BY_EIGHT,
+      mode: DitherMode.ORDERED,
+      matrix: BayerMatrix.EIGHT_BY_EIGHT,
       ditherSize: 7,
-      pixelSize: 119,
+      pixelSize: initialPixelSize,
       cellSize: 1.6,
     };
 
@@ -174,10 +176,15 @@ const description = "Sorry, this page does not exist. How did this happen?";
       if (ev.matches) {
         gl.uniform3f(colorAUnif, SWEATER_9.r, SWEATER_9.g, SWEATER_9.b);
         gl.uniform3f(colorBUnif, SWEATER_10.r, SWEATER_10.g, SWEATER_10.b);
+        data.color.a = SWEATER_9;
+        data.color.b = SWEATER_10;
       } else {
         gl.uniform3f(colorAUnif, SWEATER_3.r, SWEATER_3.g, SWEATER_3.b);
         gl.uniform3f(colorBUnif, SWEATER_1.r, SWEATER_1.g, SWEATER_1.b);
+        data.color.a = SWEATER_3;
+        data.color.b = SWEATER_1;
       }
+      pane.refresh();
     });
 
     gl.uniform3f(colorAUnif, data.color.a.r, data.color.a.g, data.color.a.b);
@@ -301,20 +308,20 @@ const description = "Sorry, this page does not exist. How did this happen?";
       .addBinding(data, "mode", {
         label: "Mode",
         options: {
-          "Noise-based": DitherModeValue.NOISE,
-          Ordered: DitherModeValue.ORDERED,
+          "Noise-based": DitherMode.NOISE,
+          Ordered: DitherMode.ORDERED,
         },
       })
       .on("change", (ev) => {
-        matrixBinding.hidden = ev.value === DitherModeValue.NOISE;
+        matrixBinding.hidden = ev.value === (DitherMode.NOISE as number);
         gl.uniform1i(modeUnif, ev.value);
       });
     const matrixBinding = properties.addBinding(data, "matrix", {
       label: "Bayer matrix",
       options: {
-        "2×2": BayerMatrixValue.TWO_BY_TWO,
-        "4×4": BayerMatrixValue.FOUR_BY_FOUR,
-        "8×8": BayerMatrixValue.EIGHT_BY_EIGHT,
+        "2×2": BayerMatrix.TWO_BY_TWO,
+        "4×4": BayerMatrix.FOUR_BY_FOUR,
+        "8×8": BayerMatrix.EIGHT_BY_EIGHT,
       },
     });
     matrixBinding.on("change", (ev) => {
@@ -359,7 +366,6 @@ const description = "Sorry, this page does not exist. How did this happen?";
       const biasValue = lerp(1, 0, t);
       gl.uniform1f(biasUnif, biasValue + data.bias);
 
-      gl.clearColor(0.0, 0.0, 0.0, 0.0);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
       bitmapCtx.transferFromImageBitmap(offCanvas.transferToImageBitmap());

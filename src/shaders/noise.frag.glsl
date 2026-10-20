@@ -96,7 +96,6 @@ float dither(float value) {
         }
       }
 
-      threshold += u_bias;
       break;
     }
 
