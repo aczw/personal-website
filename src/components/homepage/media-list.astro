@@ -44,7 +44,7 @@ const format = new Intl.RelativeTimeFormat("en-US", {
 ---
 
 <p class="prose px-5">
-  Here's my (probably embarrassing) rotation lately.{" "}
+  Here's my recent (and probably embarrassing) rotation.{" "}
   {capitalize(calculateRelativeTime(format, first.createdAt))}, I {first.status}{" "}
   {first.status.includes("complete") ?
     first.type === "MANGA_LIST" ?
