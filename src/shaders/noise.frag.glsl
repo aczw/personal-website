@@ -15,6 +15,7 @@ uniform vec2 u_offset;
 uniform float u_speed;
 
 uniform int u_mode;
+uniform int u_matrix;
 uniform int u_dither_size;
 uniform int u_pixel_size;
 uniform float u_cell_size;
@@ -75,8 +76,27 @@ float dither(float value) {
     }
 
     case 1: { // Ordered
-      ivec2 index = ivec2(cell) & 7;
-      threshold = BAYER_MATRIX_8[index.y * 8 + index.x];
+      switch (u_matrix) {
+        case 0: {
+          ivec2 index = ivec2(cell) & 1;
+          threshold = BAYER_MATRIX_2[index.y][index.x];
+          break;
+        }
+
+        case 1: {
+          ivec2 index = ivec2(cell) & 3;
+          threshold = BAYER_MATRIX_4[index.y][index.x];
+          break;
+        }
+
+        case 2: {
+          ivec2 index = ivec2(cell) & 7;
+          threshold = BAYER_MATRIX_8[index.y * 8 + index.x];
+          break;
+        }
+      }
+
+      threshold += u_bias;
       break;
     }
 

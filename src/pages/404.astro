@@ -61,11 +61,13 @@ const description = "Sorry, this page does not exist. How did this happen?";
     initializeGfx,
   } from "@/scripts/gfx";
   import {
-    DitherMode,
+    BayerMatrixValue,
+    DitherModeValue,
     SWEATER_1,
     SWEATER_10,
     SWEATER_3,
     SWEATER_9,
+    type DitherMode,
   } from "@/scripts/noise";
   import { commitStyleAnimation, lerp } from "@/scripts/util";
   import { KEYFRAME_ANIM_OPTS } from "@/scripts/constants";
@@ -99,6 +101,7 @@ const description = "Sorry, this page does not exist. How did this happen?";
     const offsetUnif = gl.getUniformLocation(program, "u_offset");
     const speedUnif = gl.getUniformLocation(program, "u_speed");
     const modeUnif = gl.getUniformLocation(program, "u_mode");
+    const matrixUnif = gl.getUniformLocation(program, "u_matrix");
     const ditherSizeUnif = gl.getUniformLocation(program, "u_dither_size");
     const pixelSizeUnif = gl.getUniformLocation(program, "u_pixel_size");
     const cellSizeUnif = gl.getUniformLocation(program, "u_cell_size");
@@ -160,7 +163,8 @@ const description = "Sorry, this page does not exist. How did this happen?";
       direction: { x: 1, y: 1 },
       offset: { x: 0.0, y: 0.0 },
       speed: 0.35,
-      mode: DitherMode.ORDERED,
+      mode: DitherModeValue.ORDERED as DitherMode,
+      matrix: BayerMatrixValue.EIGHT_BY_EIGHT,
       ditherSize: 7,
       pixelSize: 119,
       cellSize: 1.6,
@@ -184,6 +188,7 @@ const description = "Sorry, this page does not exist. How did this happen?";
     gl.uniform2f(offsetUnif, data.offset.x, data.offset.y);
     gl.uniform1f(speedUnif, data.speed);
     gl.uniform1i(modeUnif, data.mode);
+    gl.uniform1i(matrixUnif, data.matrix);
     gl.uniform1i(ditherSizeUnif, data.ditherSize);
     gl.uniform1i(pixelSizeUnif, data.pixelSize);
     gl.uniform1f(cellSizeUnif, data.cellSize);
@@ -296,13 +301,25 @@ const description = "Sorry, this page does not exist. How did this happen?";
       .addBinding(data, "mode", {
         label: "Mode",
         options: {
-          "Noise-based": DitherMode.NOISE,
-          Ordered: DitherMode.ORDERED,
+          "Noise-based": DitherModeValue.NOISE,
+          Ordered: DitherModeValue.ORDERED,
         },
       })
       .on("change", (ev) => {
+        matrixBinding.hidden = ev.value === DitherModeValue.NOISE;
         gl.uniform1i(modeUnif, ev.value);
       });
+    const matrixBinding = properties.addBinding(data, "matrix", {
+      label: "Bayer matrix",
+      options: {
+        "2×2": BayerMatrixValue.TWO_BY_TWO,
+        "4×4": BayerMatrixValue.FOUR_BY_FOUR,
+        "8×8": BayerMatrixValue.EIGHT_BY_EIGHT,
+      },
+    });
+    matrixBinding.on("change", (ev) => {
+      gl.uniform1i(matrixUnif, ev.value);
+    });
     properties
       .addBinding(data, "ditherSize", {
         label: "Dither size",
