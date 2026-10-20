@@ -79,7 +79,7 @@ vec2 pixelate(vec2 uv) {
 
 void main() {
   float aspect_ratio = float(u_dimensions.x) / float(u_dimensions.y);
-  vec2 worley_sample_pos = pixelate(frag_uv + u_offset) * vec2(aspect_ratio, 1.f) * CELL_DENSITY + (u_direction * u_time * PROC_SPEED_MULT);
+  vec2 worley_sample_pos = pixelate(frag_uv + u_offset) * vec2(aspect_ratio, 1.f) * CELL_DENSITY + (normalize(u_direction) * u_time * PROC_SPEED_MULT);
   float worley_value = compute_worley(worley_sample_pos);
 
   float worley_dither = ordered_dither(worley_value);
