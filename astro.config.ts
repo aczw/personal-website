@@ -34,16 +34,6 @@ const config = defineConfig({
     },
     {
       provider: fontProviders.fontsource(),
-      name: "Atkinson Hyperlegible Next",
-      cssVariable: "--font-atkinson-og",
-      weights: [400, 600],
-      styles: ["normal"],
-      subsets: ["latin"],
-      fallbacks: [],
-      formats: ["woff"],
-    },
-    {
-      provider: fontProviders.fontsource(),
       name: "Maple Mono",
       cssVariable: "--font-maple",
       weights: [400, 700],

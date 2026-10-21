@@ -5,7 +5,7 @@ import SpeedInsights from "@vercel/speed-insights/astro";
 
 import "@/main.css";
 
-import type { Meta, MetaKind } from "@/scripts/types";
+import type { Meta } from "@/scripts/types";
 import {
   capitalize,
   getShortDateFormatting,
@@ -20,8 +20,9 @@ interface Props {
 type Head = {
   title: string;
   description: string;
-  og: `?${MetaKind}=${string}`;
 };
+
+const OG_URL = `${SITE_URL}/og.png`;
 
 const head: Head = (() => {
   const { meta } = Astro.props;
@@ -44,21 +45,19 @@ const head: Head = (() => {
       return {
         title,
         description: meta.description,
-        og: `?route=${meta.route}`,
       };
     }
 
     case "projects": {
-      const { data, id } = meta.projectsEntry;
+      const { data } = meta.projectsEntry;
       return {
         title: data.name,
         description: data.description.long,
-        og: `?projects=${id}`,
       };
     }
 
     case "posts": {
-      const { data, id } = meta.postsEntry;
+      const { data } = meta.postsEntry;
       const description =
         data.description !== undefined ?
           data.description
@@ -67,7 +66,6 @@ const head: Head = (() => {
       return {
         title: data.title,
         description,
-        og: `?posts=${id}`,
       };
     }
 
@@ -79,8 +77,7 @@ const head: Head = (() => {
 const url = new URL(Astro.url.pathname, Astro.site).toString();
 const canonicalUrl = stripEndingSlash(url);
 
-const { title: titlePrefix, description, og } = head;
-const ogImageUrl = `${SITE_URL}/api/og.png${og}`;
+const { title: titlePrefix, description } = head;
 
 const title =
   titlePrefix.length === 0 ? "Charles Wang" : `${titlePrefix} / Charles Wang`;
@@ -105,9 +102,9 @@ const title =
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalUrl} />
     <meta property="og:locale" content="en_US" />
-    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image" content={OG_URL} />
 
-    <meta property="twitter:image" content={ogImageUrl} />
+    <meta property="twitter:image" content={OG_URL} />
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:title" content={title} />
     <meta property="twitter:description" content={description} />

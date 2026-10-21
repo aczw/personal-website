@@ -27,7 +27,6 @@ type CollectionKind = {
 
 type Meta =
   { kind: "route"; route: Route; description: string } | CollectionKind;
-type MetaKind = Meta["kind"];
 
 type SimpleDate = z.infer<typeof SimpleDateSchema>;
 type RangedDate = z.infer<typeof RangedDateSchema>;
@@ -47,7 +46,6 @@ type Result<T> =
 export type {
   Route,
   Meta,
-  MetaKind,
   SimpleDate,
   RangedDate,
   ContentDate,
