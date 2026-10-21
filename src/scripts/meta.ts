@@ -1,0 +1,103 @@
+import { capitalize, getShortDateFormatting } from "@/scripts/util";
+import {
+  getEntry,
+  type CollectionEntry,
+  type CollectionKey,
+} from "astro:content";
+
+/**
+ * Essentially maps to every unique page on the site except for
+ * content collection entries.
+ */
+type Route =
+  "about" | "colophon" | "index" | "posts" | "projects" | "404" | "home";
+
+/**
+ * Maps every content collection name to a literal "kind" and creates a
+ * discriminated union out of all collections.
+ */
+type CollectionKind = {
+  [Collection in CollectionKey]: {
+    kind: Collection;
+  } & {
+    [K in Collection as `${K}Entry`]: CollectionEntry<Collection>;
+  };
+}[CollectionKey];
+
+type Meta =
+  { kind: "route"; route: Route; description: string } | CollectionKind;
+type Head = {
+  title: string;
+  description: string;
+};
+
+const extractHeadInformation = async (meta: Meta): Promise<Head> => {
+  switch (meta.kind) {
+    case "route": {
+      const title = (() => {
+        switch (meta.route) {
+          case "about":
+            return "About";
+          case "colophon":
+            return "Colophon";
+          case "index":
+            return "Index";
+          case "posts":
+            return "Writing";
+          case "projects":
+            return "Projects";
+          case "404":
+            return "Page not found";
+          case "home":
+            return "";
+
+          default:
+            return capitalize(meta.route);
+        }
+      })();
+
+      return {
+        title,
+        description: meta.description,
+      };
+    }
+
+    case "projects": {
+      const { data } = meta.projectsEntry;
+      return {
+        title: data.name,
+        description: data.description.long,
+      };
+    }
+
+    case "projectPages": {
+      const { data } = meta.projectPagesEntry;
+      const projectId = meta.projectPagesEntry.id.split("/")[0]!;
+
+      const projectEntry = await getEntry("projects", projectId);
+
+      return {
+        title: `${data.title} / ${projectEntry?.data.name}`,
+        description: data.description,
+      };
+    }
+
+    case "posts": {
+      const { data } = meta.postsEntry;
+      const description =
+        data.description !== undefined ?
+          data.description
+        : `Posted on ${getShortDateFormatting(data.posted)}`;
+
+      return {
+        title: data.title,
+        description,
+      };
+    }
+
+    default:
+      throw new Error("Unhandled meta kind!");
+  }
+};
+
+export { type Meta, extractHeadInformation };

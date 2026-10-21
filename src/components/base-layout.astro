@@ -1,100 +1,24 @@
 ---
-import type { CollectionEntry, CollectionKey } from "astro:content";
 import { Font } from "astro:assets";
 
 import SpeedInsights from "@vercel/speed-insights/astro";
 
 import "@/main.css";
 
-import {
-  capitalize,
-  getShortDateFormatting,
-  stripEndingSlash,
-} from "@/scripts/util";
 import { SITE_URL } from "@/scripts/constants";
-
-/**
- * Essentially maps to every unique page on the site except for
- * content collection entries.
- */
-type Route = "home" | "404" | "projects" | "posts" | "about";
-
-/**
- * Maps every content collection name to a literal "kind" and creates a
- * discriminated union out of all collections.
- */
-type CollectionKind = {
-  [Collection in CollectionKey]: {
-    kind: Collection;
-  } & {
-    [K in Collection as `${K}Entry`]: CollectionEntry<Collection>;
-  };
-}[CollectionKey];
-
-type Meta =
-  { kind: "route"; route: Route; description: string } | CollectionKind;
+import { extractHeadInformation, type Meta } from "@/scripts/meta";
 
 interface Props {
   meta: Meta;
 }
 
-const { meta } = Astro.props;
-
-const head: {
-  title: string;
-  description: string;
-} = (() => {
-  switch (meta.kind) {
-    case "route": {
-      const title = (() => {
-        switch (meta.route) {
-          case "home":
-            return "";
-          case "projects":
-            return "Projects";
-          case "posts":
-            return "Writing";
-          default:
-            return capitalize(meta.route);
-        }
-      })();
-
-      return {
-        title,
-        description: meta.description,
-      };
-    }
-
-    case "projects": {
-      const { data } = meta.projectsEntry;
-      return {
-        title: data.name,
-        description: data.description.long,
-      };
-    }
-
-    case "posts": {
-      const { data } = meta.postsEntry;
-      const description =
-        data.description !== undefined ?
-          data.description
-        : `Posted on ${getShortDateFormatting(data.posted)}`;
-
-      return {
-        title: data.title,
-        description,
-      };
-    }
-
-    default:
-      throw new Error("Unhandled meta kind!");
-  }
-})();
+const { title: titlePrefix, description } = await extractHeadInformation(
+  Astro.props.meta,
+);
 
 const url = new URL(Astro.url.pathname, Astro.site).toString();
-const canonicalUrl = stripEndingSlash(url);
-
-const { title: titlePrefix, description } = head;
+// https://github.com/withastro/astro/issues/5248
+const canonicalUrl = url.replace(/\/+$/, "");
 
 const title =
   titlePrefix.length === 0 ? "Charles Wang" : `${titlePrefix} / Charles Wang`;

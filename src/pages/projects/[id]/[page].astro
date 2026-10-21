@@ -25,9 +25,7 @@ const project = await getEntry("projects", projectId)!;
 const { Content } = await render(entry);
 ---
 
-<BaseLayout
-  meta={{ kind: "route", route: "home", description: entry.data.description }}
->
+<BaseLayout meta={{ kind: "projectPages", projectPagesEntry: entry }}>
   <Header />
 
   <main>

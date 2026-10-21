@@ -18,13 +18,6 @@ function isValidProjectCover(width: number, height: number): boolean {
 }
 
 /**
- * @see https://github.com/withastro/astro/issues/5248
- */
-function stripEndingSlash(path: string) {
-  return path.replace(/\/+$/, "");
-}
-
-/**
  * @returns Full month, day, year.
  */
 function getShortDateFormatting(date: Date) {
@@ -121,7 +114,6 @@ const deriveProjectTimestamp = (date: ContentDate): number => {
 
 export {
   isValidProjectCover,
-  stripEndingSlash,
   getShortDateFormatting,
   getFullDateFormatting,
   getMonthDayDateFormatting,

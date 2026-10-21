@@ -38,6 +38,8 @@ const deriveEntryTimestamp = (
     case "projects":
       return deriveProjectTimestamp(entry.data.metadata.date);
   }
+
+  return 0;
 };
 
 const generatePostExcerpt = (markdown: string): string => {
@@ -60,7 +62,7 @@ const description =
   "Everything that I've ever done that is available on this website.";
 ---
 
-<BaseLayout meta={{ kind: "route", route: "home", description }}>
+<BaseLayout meta={{ kind: "route", route: "index", description }}>
   <Header />
 
   <main>
