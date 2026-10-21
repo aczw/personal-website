@@ -38,7 +38,7 @@ const {
   },
 } = project;
 
-if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
+if (!isValidProjectCover(coverImage.file.width, coverImage.file.height)) {
   throw new Error("Cover images must have an aspect ratio of 16:10!");
 }
 

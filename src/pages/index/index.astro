@@ -88,7 +88,7 @@ const description =
                 >
                   {hasCoverImage ?
                     <Image
-                      src={data.coverImage!.data}
+                      src={data.coverImage!.file}
                       alt={data.coverImage!.alt}
                       class="rounded-xs"
                     />
@@ -139,7 +139,7 @@ const description =
                     class="rounded-sm"
                   />
                 : <Image
-                    src={data.coverImage.data}
+                    src={data.coverImage.file}
                     alt={data.coverImage.alt}
                     class="rounded-sm"
                   />

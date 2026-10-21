@@ -40,7 +40,7 @@ const projects = await getEntries(
         <article class="relative space-y-1">
           <Image
             id={`cover-image-${index}`}
-            src={coverImage.data}
+            src={coverImage.file}
             alt={coverImage.alt}
             class="hidden aspect-16/10 h-auto w-full bg-sweater-9 desktop:rounded-lg light:bg-sweater-2"
             loading="lazy"

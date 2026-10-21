@@ -79,7 +79,7 @@ const description =
           ({ id, data: { name, description, metadata, coverImage } }) => (
             <article class="group relative flex w-fit gap-x-3 not-last:pb-3">
               <Image
-                src={coverImage.data}
+                src={coverImage.file}
                 alt={coverImage.alt}
                 decoding="async"
                 class="h-[2lh] w-auto rounded-xs bg-sweater-9 lg:h-lh light:bg-sweater-2"

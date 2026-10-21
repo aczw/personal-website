@@ -7,7 +7,7 @@ const LongDescriptionSchema = z.string().refine((text) => text.length <= 170);
 
 const ImageSchema = (image: ImageFunction) =>
   z.strictObject({
-    data: image(),
+    file: image(),
     alt: z.string(),
   });
 

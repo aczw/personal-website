@@ -14,7 +14,7 @@ type Props = HTMLAttributes<"div"> & {
 
 const { projectId, coverImage, class: className, ...props } = Astro.props;
 
-if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
+if (!isValidProjectCover(coverImage.file.width, coverImage.file.height)) {
   throw new Error(
     `Project cover image for "${projectId}" does not have 16:10 aspect ratio`,
   );
@@ -29,7 +29,7 @@ if (!isValidProjectCover(coverImage.data.width, coverImage.data.height)) {
   {...props}
 >
   <Image
-    src={coverImage.data}
+    src={coverImage.file}
     alt={coverImage.alt}
     decoding="async"
     class="h-auto w-full bg-sweater-9 light:bg-sweater-2"
