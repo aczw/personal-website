@@ -66,7 +66,7 @@ const description = "Sorry, this page does not exist. How did this happen?";
     SWEATER_3,
     SWEATER_9,
   } from "@/scripts/palette";
-  import { commitStyleAnimation, lerp } from "@/scripts/util";
+  import { commitStyleAnimation } from "@/scripts/util";
   import { KEYFRAME_ANIM_OPTS } from "@/scripts/constants";
 
   const DitherMode = {
@@ -372,8 +372,7 @@ const description = "Sorry, this page does not exist. How did this happen?";
       checkForResize(gl, offCanvas, canvasElt, dimensionsUnif);
       data.dimensions = `${gl.canvas.width}×${gl.canvas.height}`;
       const t = Math.min(elapsed / 3.5, 1);
-      const biasValue = lerp(1, 0, t);
-      gl.uniform1f(biasUnif, biasValue + data.bias);
+      gl.uniform1f(biasUnif, 1 - t + data.bias);
 
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
