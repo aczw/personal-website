@@ -45,7 +45,7 @@ const posts = defineCollection({
   loader: glob({
     pattern: "**/*.mdx",
     base: "./content/posts",
-    retainBody: false,
+    retainBody: true,
   }),
   schema: ({ image }) =>
     z.object({

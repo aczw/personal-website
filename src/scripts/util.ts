@@ -1,4 +1,4 @@
-import { CURRENT_TIMEZONE } from "@/scripts/constants";
+import { CURRENT_TIMEZONE, VALID_MONTHS } from "@/scripts/constants";
 import type { ContentDate, DateKind } from "@/scripts/types";
 
 const DAY_TO_SECONDS = 86400;
@@ -100,8 +100,23 @@ const commitStyleAnimation = (ev: AnimationPlaybackEvent) => {
   animation.cancel();
 };
 
-const lerp = (a: number, b: number, t: number): number => {
-  return a * (1 - t) + b * t;
+const dateStrToUnixTimestamp = (dateString: string): number => {
+  const [month, year] = dateString.split(" ");
+  const monthIdx = VALID_MONTHS.indexOf(month!);
+
+  if (monthIdx === -1) throw new Error(`Invalid month: ${month}`);
+
+  return Date.UTC(Number(year), monthIdx, 1) * 0.001;
+};
+
+const deriveProjectTimestamp = (date: ContentDate): number => {
+  const dateKind = getDateKind(date);
+
+  if (dateKind.kind === "simple") {
+    return dateStrToUnixTimestamp(dateKind.date);
+  } else {
+    return dateStrToUnixTimestamp(dateKind.date.to);
+  }
 };
 
 export {
@@ -114,5 +129,5 @@ export {
   capitalize,
   calculateRelativeTime,
   commitStyleAnimation,
-  lerp,
+  deriveProjectTimestamp,
 };

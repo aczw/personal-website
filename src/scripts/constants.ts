@@ -26,6 +26,8 @@ const HOMEPAGE_PROJECTS = [
   "mini-minecraft",
 ] as const satisfies readonly [string, string, string];
 
+const FEATURED_PROJECTS = [...HOMEPAGE_PROJECTS, "door"];
+
 const ICON_SIZE = 16;
 
 const CURRENT_TIMEZONE = "America/Los_Angeles";
@@ -42,6 +44,7 @@ export {
   CDN_URL,
   VALID_MONTHS,
   HOMEPAGE_PROJECTS,
+  FEATURED_PROJECTS,
   ICON_SIZE,
   CURRENT_TIMEZONE,
   KEYFRAME_ANIM_OPTS,

@@ -1,7 +1,6 @@
 import { CDN_URL } from "@/scripts/constants";
 import type { GlCtx } from "@/scripts/gfx";
 import type { Result } from "@/scripts/types";
-import { lerp } from "@/scripts/util";
 
 type State =
   | { kind: "init-proc"; delayDuration: number }
@@ -51,6 +50,10 @@ const MIX_START = 0;
 const MIX_END = 1;
 const DITHER_SIZE_START = 5;
 const DITHER_SIZE_END = 2;
+
+const lerp = (a: number, b: number, t: number): number => {
+  return a * (1 - t) + b * t;
+};
 
 const createTile = (
   gl: GlCtx,

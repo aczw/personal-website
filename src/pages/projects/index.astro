@@ -4,52 +4,26 @@ import { getCollection, type CollectionEntry } from "astro:content";
 
 import { ArrowRightIcon } from "@lucide/astro";
 
-import {
-  HOMEPAGE_PROJECTS,
-  ICON_SIZE,
-  VALID_MONTHS,
-} from "@/scripts/constants";
+import { FEATURED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import TechList from "@/components/tech-list.astro";
 import BaseLayout from "@/components/base-layout.astro";
 import Header from "@/components/header.astro";
 import Footer from "@/components/footer.astro";
 import ProjectCover from "@/components/project-cover.astro";
-import type { ContentDate } from "@/scripts/types";
-import { getDateKind } from "@/scripts/util";
-
-const featuredProjectIds = [...HOMEPAGE_PROJECTS, "door"];
+import { deriveProjectTimestamp } from "@/scripts/util";
 
 const projects = await getCollection("projects");
 
 const featured: CollectionEntry<"projects">[] = [];
-featuredProjectIds.forEach((id) => {
+FEATURED_PROJECTS.forEach((id) => {
   const index = projects.findIndex((project) => project.id === id);
   if (index !== -1) featured.push(...projects.splice(index, 1));
 });
 
-const toUnixTimestamp = (dateString: string): number => {
-  const [month, year] = dateString.split(" ");
-  const monthIdx = VALID_MONTHS.indexOf(month!);
-
-  if (monthIdx === -1) throw new Error(`Invalid month: ${month}`);
-
-  return Date.UTC(Number(year), monthIdx, 1) * 0.001;
-};
-
-const deriveTimestamp = (date: ContentDate): number => {
-  const dateKind = getDateKind(date);
-
-  if (dateKind.kind === "simple") {
-    return toUnixTimestamp(dateKind.date);
-  } else {
-    return toUnixTimestamp(dateKind.date.to);
-  }
-};
-
 const rest = projects.sort(
   (a, b) =>
-    deriveTimestamp(b.data.metadata.date) -
-    deriveTimestamp(a.data.metadata.date),
+    deriveProjectTimestamp(b.data.metadata.date) -
+    deriveProjectTimestamp(a.data.metadata.date),
 );
 
 const description =

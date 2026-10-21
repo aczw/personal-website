@@ -27,13 +27,19 @@
     "@vercel/speed-insights": "^2.0.0",
     "astro": "^7.3.8",
     "astro-expressive-code": "^0.44.2",
+    "mdast-util-to-string": "^4.0.0",
     "rehype-mathjax": "^7.1.0",
     "rehype-unwrap-images": "^1.0.0",
+    "remark-gfm": "^4.0.1",
     "remark-math": "^6.0.0",
+    "remark-mdx": "^3.1.1",
+    "remark-parse": "^11.0.0",
     "satori": "^0.57.2",
     "satori-html": "^0.3.2",
     "tailwindcss": "^4.3.3",
-    "tweakpane": "^4.0.5"
+    "tweakpane": "^4.0.5",
+    "unified": "^11.0.5",
+    "unist-util-remove": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

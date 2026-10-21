@@ -1,0 +1,160 @@
+---
+import {
+  getCollection,
+  type CollectionEntry,
+  type CollectionKey,
+} from "astro:content";
+import { Image } from "astro:assets";
+
+import { unified } from "unified";
+import remarkParse from "remark-parse";
+import remarkGfm from "remark-gfm";
+import remarkMdx from "remark-mdx";
+import { remove } from "unist-util-remove";
+import { toString } from "mdast-util-to-string";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+import { deriveProjectTimestamp } from "@/scripts/util";
+import { FEATURED_PROJECTS } from "@/scripts/constants";
+import ProjectCover from "@/components/project-cover.astro";
+
+const projectEntries = await getCollection("projects");
+const postEntries = await getCollection("posts");
+
+const entries: CollectionEntry<CollectionKey>[] = [
+  ...projectEntries,
+  ...postEntries,
+];
+
+const deriveEntryTimestamp = (
+  entry: CollectionEntry<CollectionKey>,
+): number => {
+  switch (entry.collection) {
+    case "posts":
+      return entry.data.posted.getTime() * 0.001;
+
+    case "projects":
+      return deriveProjectTimestamp(entry.data.metadata.date);
+  }
+};
+
+const generatePostExcerpt = (markdown: string): string => {
+  const tree = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkMdx)
+    .parse(markdown);
+  remove(tree, ["mdxjsEsm"]);
+
+  let text = toString(tree, { includeHtml: false, includeImageAlt: false });
+  text = text.replace(/\s+/g, " ").trim();
+
+  return text;
+};
+
+entries.sort((a, b) => deriveEntryTimestamp(b) - deriveEntryTimestamp(a));
+
+const description =
+  "Everything that I've ever done that is available on this website.";
+---
+
+<BaseLayout meta={{ kind: "route", route: "home", description }}>
+  <Header />
+
+  <main>
+    <hgroup class="constrain px-5">
+      <h1 class="sr-only">Index</h1>
+      <p class="prose">{description} Most recent entries are at the top.</p>
+    </hgroup>
+
+    <section class="constrain mt-7 grid grid-cols-2 gap-3 px-5 desktop:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+      {entries.map(async (entry) => {
+        const { id } = entry;
+
+        switch (entry.collection) {
+          case "posts": {
+            const { data } = entry;
+            const hasCoverImage = data.coverImage !== undefined;
+
+            return (
+              <article class="relative h-fit">
+                <div
+                  class:list={[
+                    "border-x-2 border-t-2 border-style border-solid",
+                    hasCoverImage ? "p-1" : "px-2 py-1.5",
+                  ]}
+                >
+                  {hasCoverImage ?
+                    <Image
+                      src={data.coverImage!.data}
+                      alt={data.coverImage!.alt}
+                      class="rounded-xs"
+                    />
+                  : <div class="relative">
+                      <p class="max-h-32 overflow-clip leading-snug break-all text-sweater-4 light:text-sweater-6">
+                        {generatePostExcerpt(entry.body ?? "")
+                          .split(" ")
+                          .slice(0, 30)
+                          .join(" ")}
+                      </p>
+                      <div
+                        aria-hidden="true"
+                        class="absolute inset-0 bg-linear-to-t from-sweater-10 to-transparent light:from-sweater-1"
+                      ></div>
+                    </div>
+                  }
+                </div>
+
+                <a
+                  href={`/posts/${id}`}
+                  class="link-primary after:absolute after:inset-0 after:z-1"
+                >
+                  <h2 class="border-2 border-style border-solid px-2 py-1.5 leading-tight font-medium">
+                    {data.title}
+                  </h2>
+                </a>
+              </article>
+            );
+          }
+
+          case "projects": {
+            const { data } = entry;
+            const isFeatured = FEATURED_PROJECTS.includes(id);
+
+            return (
+              <article class="relative h-fit">
+                <a
+                  href={`/projects/${id}`}
+                  class="after:absolute after:inset-0 after:z-1"
+                >
+                  <h2 class="sr-only">{data.name}</h2>
+                </a>
+
+                {isFeatured ?
+                  <ProjectCover
+                    projectId={id}
+                    coverImage={data.coverImage}
+                    class="rounded-sm"
+                  />
+                : <Image
+                    src={data.coverImage.data}
+                    alt={data.coverImage.alt}
+                    class="rounded-sm"
+                  />
+                }
+
+                <p class="pointer-events-none absolute top-1 left-1 z-2 rounded-md bg-sweater-9 px-1.25 py-px maple text-xs heading uppercase light:bg-sweater-3">
+                  Project
+                </p>
+              </article>
+            );
+          }
+        }
+      })}
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
