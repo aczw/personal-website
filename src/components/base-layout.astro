@@ -1,11 +1,11 @@
 ---
+import type { CollectionEntry, CollectionKey } from "astro:content";
 import { Font } from "astro:assets";
 
 import SpeedInsights from "@vercel/speed-insights/astro";
 
 import "@/main.css";
 
-import type { Meta } from "@/scripts/types";
 import {
   capitalize,
   getShortDateFormatting,
@@ -13,20 +13,37 @@ import {
 } from "@/scripts/util";
 import { SITE_URL } from "@/scripts/constants";
 
+/**
+ * Essentially maps to every unique page on the site except for
+ * content collection entries.
+ */
+type Route = "home" | "404" | "projects" | "posts" | "about";
+
+/**
+ * Maps every content collection name to a literal "kind" and creates a
+ * discriminated union out of all collections.
+ */
+type CollectionKind = {
+  [Collection in CollectionKey]: {
+    kind: Collection;
+  } & {
+    [K in Collection as `${K}Entry`]: CollectionEntry<Collection>;
+  };
+}[CollectionKey];
+
+type Meta =
+  { kind: "route"; route: Route; description: string } | CollectionKind;
+
 interface Props {
   meta: Meta;
 }
 
-type Head = {
+const { meta } = Astro.props;
+
+const head: {
   title: string;
   description: string;
-};
-
-const OG_URL = `${SITE_URL}/og.png`;
-
-const head: Head = (() => {
-  const { meta } = Astro.props;
-
+} = (() => {
   switch (meta.kind) {
     case "route": {
       const title = (() => {
@@ -81,6 +98,8 @@ const { title: titlePrefix, description } = head;
 
 const title =
   titlePrefix.length === 0 ? "Charles Wang" : `${titlePrefix} / Charles Wang`;
+
+const OG_URL = `${SITE_URL}/og.png`;
 ---
 
 <!doctype html>
