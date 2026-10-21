@@ -10,7 +10,7 @@ import {
 
 const projects = defineCollection({
   loader: glob({
-    pattern: "**/*.mdx",
+    pattern: "*/*.mdx",
     base: "./content/projects",
     retainBody: false,
   }),
@@ -41,6 +41,23 @@ const projects = defineCollection({
     }),
 });
 
+const projectPages = defineCollection({
+  loader: glob({
+    pattern: "*/pages/*.mdx",
+    base: "./content/projects",
+    generateId: ({ entry }) => {
+      const parts = entry.split("/");
+      const pageName = parts[2]!.split(".")[0]!;
+      return `${parts[0]}/${pageName}`;
+    },
+  }),
+  schema: () =>
+    z.object({
+      title: z.string().nonempty(),
+      description: z.string().nonempty(),
+    }),
+});
+
 const posts = defineCollection({
   loader: glob({
     pattern: "**/*.mdx",
@@ -58,6 +75,7 @@ const posts = defineCollection({
 
 const collections = {
   projects,
+  projectPages,
   posts,
 };
 

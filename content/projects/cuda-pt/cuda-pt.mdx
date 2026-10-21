@@ -21,7 +21,7 @@ This is a path tracer written in C++, and accelerated via CUDA. It was developed
 
 > There's another path tracer I wrote a year back, except it [uses GLSL](/projects/glsl-pt) instead. Check it out if you're interested.
 
-What follows is a (very informal) discussion on the theory, explanations of the features, and implementation details. I'll talk about what worked, what didn't (with botched renders!), and my overall experience working on this project.
+I'll talk about what worked, what didn't (with botched renders!), and my overall experience working on this project.
 
 There will be performance benchmarks scattered throughout this write-up. Here's the test rig used to measure them.
 
@@ -32,69 +32,9 @@ There will be performance benchmarks scattered throughout this write-up. Here's 
 | **CPU**    | Ryzen 5 7600X @ 4.7Ghz                         |
 | **GPU**    | RTX 5060 Ti 16 GB, Studio Driver 581.29        |
 
-## The theory, in theory
+I'll assume you have general knowledge about how path tracing works. If you're curious or want a refresher, I wrote <a href="/projects/cuda-pt/appendix" class="link-primary">an appendix</a> that contains some discussion of the theoretical background.
 
-If you would like to skip my rundown of the theoretical background, you can jump straight to my <a href="#program-structure" class="link-primary">discussion on features</a>.
-
-### A very physically inaccurate discussion on light
-
-At its core, a path tracer simulates many real-life physics interactions, and therefore we must discuss some of them first. First, path tracing is all about light. For our purposes, we can treat light in the world as rays, with an origin and a direction. Rays always come from a light source of some kind—a light bulb, the sun, my phone screen in bed at 4 AM.
-
-Whenever a light ray hits an object, it will then bounce and pick a new direction. Depending on the material at the intersection, the ray picks up an appropriate amount of color, mixing it with colors from all previous bounces.[^1] The properties of the material also determine which direction the next bounce will go.
-
-Eventually, this light ray will bounce directly into our eyes, allowing us to see. We could trace out the full _path_ this ray took from its beginning light source to its ending. This is what we're trying to simulate.
-
-### Deviations from the real world
-
-Since we're just trying to _simulate_ the real world, we can cheat in a number of ways.
-
-#### Begin rays from the eye instead
-
-The eye in this case is our virtual camera, and it is the only ray destination we care about. Therefore, it would be extremely inefficient to shoot rays _starting_ from the light source—it is highly unlikely that any ray would contribute pixel color information to our camera.
-
-Instead, we can guarantee the final ray destination by shooting the _initial_ rays from the camera. All that's left is for the ray path to intersect with a light source.
-
-#### Rendering equation
-
-Described by James Kajiya in his 1986 SIGGRAPH paper, the rendering equation can be written in the form
-
-$$
-L_o(\omega_o)=L_e+\int_\Omega f(\omega_o,\omega_i)L_i(\omega_i)(\omega_i\cdot\vec{n})\space\text{d}\omega_i
-$$
-
-I know, the math symbols spooked me too at first, but the components actually represent pretty simple ideas. This equation tells us how to calculate the light traveling on an outgoing ray direction $\omega_o$ at some particular point.
-
-We have four main components to consider:
-
-- $L_e$ is the inherent light emitted at the intersection point. This value is non-zero if the point is a light source.
-- $f$, which is a [BRDF](https://en.wikipedia.org/wiki/Bidirectional_reflectance_distribution_function) telling us _how much_ of the light is reflected. How $f$ is defined depends on the material.
-- $L_i$, the incoming light from ray direction $\omega_i$. Or, the accumulated value.
-- Lambert's cosine law, which relates $\omega_i$ to the surface normal.
-
-$\Omega$ represents the hemisphere centered at the intersection, and $\text{d}\omega_i$ are all the infinitesimal ray directions that make up $\Omega$. For our implementation, this... poses some problems for us.[^2]
-
-#### Monte Carlo integration
-
-To solve the rendering equation for an outgoing direction $\omega_o$ we have to solve the integral. Since our computer can't actually integrate over an infinite number of $\omega_i$ per intersection, we instead _randomly sample_ a number of $\omega_i$ for each intersection, and weigh them by their probabilities of being chosen.
-
-Furthermore, we repeatedly solve the rendering equation for every pixel in our image, and average the output colors by dividing by the number of samples taken. This allows us to _converge_ to the final image over a period of time.
-
-### Parallelization
-
-While the GPU is generally known for being good at drawing things, we're not using it for rasterization here. Monte Carlo path tracing is considered [embarrassingly parallel](https://en.wikipedia.org/wiki/Embarrassingly_parallel) for a reason: calculate the color for each pixel in parallel. The path that each pixel traces to reach a light is wholly independent of one another.
-
-#### Terminology
-
-I would like to clarify some terminology: an **iteration** (or **sample**) is determining the color of each pixel _once_; we average many iterations to get the final image. However, within each iteration we also perform a number of bounces bounded by some _max depth_.
-
-Each bounce progresses the path traced by one intersection. Multiple bounces result in one sample (or black, of the path went out of bounds).
-
-This distinction is important because there are two ways we could utilize the GPU, the difference being what _kind_ of work is performed per thread:
-
-- Each thread performs one whole iteration.
-- Each thread performs one bounce in a iteration. **(I did this.)**
-
-By taking a incremental approach, we gain some additional optimization opportunities. We'll see later that we can get away with launching less threads if we meet certain requirements. (Hint: not all paths end at the same time.)
+Anyways, onwards to the features!
 
 ## Program structure
 
@@ -108,7 +48,7 @@ In each execution of the loop, until we've reached the max number of samples:
   - For each ray, find intersections with scene geometry, if any.
   - If enabled, discard intersections that traveled out of bounds.
   - If enabled, sort the paths by the material they intersected with.
-  - For each intersection, calculate its color contribution, and determine the next ray direction.[^3] (The ray origin is the intersection point.)
+  - For each intersection, calculate its color contribution, and determine the next ray direction.[^1] (The ray origin is the intersection point.)
   - If enabled, discard intersections that have hit a light source.
   - If we've reached the max depth or we've discarded all paths, break out of the loop. Otherwise, repeat.
 - Gather all the final color contribution for each pixel, and append it to our image data.
@@ -209,7 +149,7 @@ The first scene has a single purely reflective material with everything around i
 
 Transmission was much trickier to implement. Two things in particular stood out.
 
-First, IORs are always defined relative to _something_.[^4] At a given intersection point, we always need to know what medium we're _entering_ and what medium we're _leaving_, because that affects the IOR ratio. How I keep track of this is to store an additional enum in my `Intersection` data struct that informs me whether the intersection was with the outside of a surface, or inside. Depending on the surface, we may have to flip the IOR.
+First, IORs are always defined relative to _something_.[^2] At a given intersection point, we always need to know what medium we're _entering_ and what medium we're _leaving_, because that affects the IOR ratio. How I keep track of this is to store an additional enum in my `Intersection` data struct that informs me whether the intersection was with the outside of a surface, or inside. Depending on the surface, we may have to flip the IOR.
 
 ```cpp
 // Tracks which side of the geometry the intersection is at.
@@ -244,7 +184,7 @@ Well, an IOR of 1.0 means no refraction occurs, causing the first cube to act as
 
 Now that we have both parts, let's combine them to create dielectrics! In real life, at an intersection such a material would split $\omega_i$ into _multiple_ rays, consisting of a reflection component and a refraction component.
 
-To make our path tracing a little easier (and to piggyback off of the wonders of Monte Carlo) we can randomly choose whether to reflect or refract, and let the image converge over time. This is the technique chosen by [PBRT v4](https://pbr-book.org/4ed/Reflection_Models/Dielectric_BSDF) which I used as a reference.[^5]
+To make our path tracing a little easier (and to piggyback off of the wonders of Monte Carlo) we can randomly choose whether to reflect or refract, and let the image converge over time. This is the technique chosen by [PBRT v4](https://pbr-book.org/4ed/Reflection_Models/Dielectric_BSDF) which I used as a reference.[^3]
 
 What should the probability be? A simple solution is to set it to 50/50. However, this wouldn't result in an accurate physical render because we're not considering the Fresnel coefficients that dictate how much light is reflected and refracted at an intersection.
 
@@ -465,7 +405,7 @@ Computing intersections with the scene is one of the most expensive operations i
 
 <div>![](nsight-isect-expensive.png)</div>
 
-Running Nsight Systems on my executable confirms this. In terms of CUDA operations, 99.6% of overall operations were spent on kernels, with 69% of those being spent on `kernel::find_intersections` itself! Meanwhile, memory operations were only 0.4% of operations.[^6]
+Running Nsight Systems on my executable confirms this. In terms of CUDA operations, 99.6% of overall operations were spent on kernels, with 69% of those being spent on `kernel::find_intersections` itself! Meanwhile, memory operations were only 0.4% of operations.[^4]
 
 If we show the kernel operations in the Events View and sort by duration, we can also see that `kernel::find_intersections` takes up all the spots at the top of the list, meaning it makes up the bulk of our compute time.
 
@@ -632,14 +572,10 @@ Some stuff I would do differently next time:
 
 I want to thank CIS 5650 for the base code, third party libraries, and the models I used during development. Please see details [in the README](https://github.com/aczw/cuda-path-tracer?tab=readme-ov-file#credits).
 
-[^1]: In actuality, the color of an object is determined by the light wavelengths _not_ absorbed, so the idea of "picking up" the object's color is purely a construct for understanding the path tracer.
+[^1]: We're technically finding the _previous_ ray, since we're choosing an incoming ray $\omega_i$. Remember that we're working backwards from the camera to a light source.
 
-[^2]: Small problems such as, you know, having a finite amount of memory in my computer.
+[^2]: For my path tracer, one side of the ratio is always a vacuum, which has an IOR of 1.0. This simplifies a lot of calculations.
 
-[^3]: We're technically finding the _previous_ ray, since we're choosing an incoming ray $\omega_i$. Remember that we're working backwards from the camera to a light source.
+[^3]: Their discussion about [specular reflection and transmission](https://pbr-book.org/4ed/Reflection_Models/Specular_Reflection_and_Transmission) is very helpful in general.
 
-[^4]: For my path tracer, one side of the ratio is always a vacuum, which has an IOR of 1.0. This simplifies a lot of calculations.
-
-[^5]: Their discussion about [specular reflection and transmission](https://pbr-book.org/4ed/Reflection_Models/Specular_Reflection_and_Transmission) is very helpful in general.
-
-[^6]: This could just mean my kernels were highly inefficient, which... seems highly likely.
+[^4]: This could just mean my kernels were highly inefficient, which... seems highly likely.

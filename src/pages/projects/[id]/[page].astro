@@ -1,0 +1,55 @@
+---
+import type { GetStaticPaths } from "astro";
+import { render, getEntry, getCollection } from "astro:content";
+
+import { ArrowLeftIcon } from "@lucide/astro";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Header from "@/components/header.astro";
+import Footer from "@/components/footer.astro";
+import MdxContent from "@/components/mdx-content.astro";
+import { ICON_SIZE } from "@/scripts/constants";
+
+export const getStaticPaths = (async () => {
+  const projectPages = await getCollection("projectPages");
+  return projectPages.map((entry) => {
+    const parts = entry.id.split("/");
+    return { params: { id: parts[0]!, page: parts[1]! }, props: { entry } };
+  });
+}) satisfies GetStaticPaths;
+
+const { id: projectId } = Astro.params;
+const { entry } = Astro.props;
+
+const project = await getEntry("projects", projectId)!;
+const { Content } = await render(entry);
+---
+
+<BaseLayout
+  meta={{ kind: "route", route: "home", description: entry.data.description }}
+>
+  <Header />
+
+  <main>
+    <section class="constrain px-5">
+      <div class="flex gap-x-1.5 text-xl/tight font-medium heading">
+        <p>{project.data.name} /</p>
+        <h1>{entry.data.title}</h1>
+      </div>
+
+      <a
+        href={`/projects/${projectId}`}
+        class="flex link-primary prose items-center gap-1.5 text-lg/tight hover:border-sweater-7 light:hover:border-sweater-4"
+      >
+        <ArrowLeftIcon size={ICON_SIZE} />
+        Go back to main project page
+      </a>
+
+      <p class="mt-3 prose">{entry.data.description}</p>
+    </section>
+
+    <MdxContent content={Content} />
+  </main>
+
+  <Footer />
+</BaseLayout>
