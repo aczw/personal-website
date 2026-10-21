@@ -2,7 +2,7 @@
 name: cuda-PT
 description:
   short: Tracing all the paths
-  long: Renders diffuse materials and dielectrics with stochastic sampling and depth of field. Loads glTF meshes and uses a BVH to speed up ray intersections.
+  long: Renders diffuse and dielectric materials with stochastic sampling and depth of field. Loads glTF meshes and uses a BVH to speed up ray intersections.
 metadata:
   tech:
     - CUDA
@@ -17,15 +17,13 @@ coverImage:
 slug: cuda-pt
 ---
 
-This is a path tracer written in C++, OpenGL, and GPU-accelerated via CUDA. Here's a quick rundown of the features.
+This is a path tracer written in C++, and accelerated via CUDA. It was developed over the span of a month and cost me my sanity, but I'm proud of it. No AI was used during development.
 
-- **Materials:** basic BRDFs like the Lambertian shading model and perfectly specular dielectrics
-- **Camera:** anti-aliasing via stochastic sampling and depth of field enabled through a thin lens camera model
-- **Meshes:** the most exciting part for me is the ability to load arbitrary glTF models. This is made possible by constructing BVHs for them at scene load, which I then traverse when performing intersection tests.
+> There's another path tracer I wrote a year back, except it [uses GLSL](/projects/glsl-pt) instead. Check it out if you're interested.
 
-What follows is a (very informal) discussion on the theory, explanations of the features and implementation details, as well as analysis of some performance benchmarks I conducted. I'll talk about what worked, what didn't (with botched renders!), and my overall experience working on this project.
+What follows is a (very informal) discussion on the theory, explanations of the features, and implementation details. I'll talk about what worked, what didn't (with botched renders!), and my overall experience working on this project.
 
-Here are the specs I performed benchmarks with.
+There will be performance benchmarks scattered throughout this write-up. Here's the test rig used to measure them.
 
 | Type       | Specifications                                 |
 | :--------- | :--------------------------------------------- |
@@ -36,9 +34,9 @@ Here are the specs I performed benchmarks with.
 
 ## The theory, in theory
 
-### A very physically inaccurate discussion on light
+If you would like to skip my rundown of the theoretical background, you can jump straight to my <a href="#program-structure" class="link-primary">discussion on features</a>.
 
-> If you're familiar with path tracing, feel free to skip the next few sections and jump straight to my <a href="#materials" class="link-primary">discussion on features</a>.
+### A very physically inaccurate discussion on light
 
 At its core, a path tracer simulates many real-life physics interactions, and therefore we must discuss some of them first. First, path tracing is all about light. For our purposes, we can treat light in the world as rays, with an origin and a direction. Rays always come from a light source of some kind—a light bulb, the sun, my phone screen in bed at 4 AM.
 
