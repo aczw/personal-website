@@ -48,11 +48,12 @@ const palette = [
         <span class="font-medium">Atkinson Hyperlegible Next</span>. Most text
         on this site uses it. A medium font weight is used for emphasis over
         semibold or bold. All monospace text is set in{" "}
-        <span class="maple">Maple Mono</span>. I love the ligatures.
+        <span class="maple">Maple Mono</span>. I love the{" "}
+        <span class="maple italic">italic variant</span>.
       </p>
       <p>
         Pages are served from Vercel. The domain was purchased and is currently
-        maintained on Porkbun. My apps of choice are Helium, VS Code, and
+        maintained on Porkbun. My favorite apps are Helium, VS Code, and
         Ghostty.
       </p>
       <p>
@@ -148,7 +149,7 @@ const palette = [
 
         timeoutId = window.setTimeout(() => {
           animation = statusTextElt.animate([{ opacity: 1 }, { opacity: 0 }], {
-            duration: 1000,
+            duration: 700,
             easing: "ease-out",
             fill: "forwards",
           });
@@ -156,7 +157,7 @@ const palette = [
             commitStyleAnimation(ev);
             statusTextElt.style.display = "none";
           });
-        }, 3000);
+        }, 1000);
       });
     });
 </script>
