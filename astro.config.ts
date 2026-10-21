@@ -135,12 +135,6 @@ const config = defineConfig({
       }),
     },
   },
-  redirects: {
-    "/resume": {
-      status: 307,
-      destination: "/_files/resume.pdf",
-    },
-  },
   vite: {
     plugins: [tailwindcss()],
   },
