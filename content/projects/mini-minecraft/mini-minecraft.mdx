@@ -19,10 +19,7 @@ slug: mini-minecraft
 First, let's take a look at this snazzy ~2.5 minute showcase reel that I made ~~at 6 AM after pulling an all nighter finishing the project~~.
 
 <figure class="outdent-wide">
-  <div
-    class="overflow-hidden rounded-xl"
-    style="padding:56.25% 0 0 0;position:relative;"
-  >
+  <div class="overflow-hidden" style="padding:56.25% 0 0 0;position:relative;">
     <iframe
       src="https://player.vimeo.com/video/893391293?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
       frameborder="0"
@@ -114,7 +111,7 @@ std::unordered_map<Direction, Chunk*> neighbors;
 
 If you were to noclip below the ground, it now looks "hollowed out." What you're seeing below is what our caves look like... on the outside! The player is technically inside solid `STONE` right now, but it's just not being drawn.
 
-<div class="outdent-wide">
+<div class="wide">
   ![Since we're not rendering any blocks inside the terrain, we can see
   snake-like caves underground.](hollowed-caves.png)
 </div>
@@ -140,10 +137,13 @@ int stride = 4 + 4 + 2 + 1;
 
 The [`stride` parameter](https://registry.khronos.org/OpenGL-Refpages/gl4/html/glVertexAttribPointer.xhtml) in `glVertexAttribPointer` was difficult to wrap my head around. All it does is tell the GPU when the data for the next vertex starts. To the GPU, our VBO is just a really, really long sequence of floats. So, we have to specify the size of each attribute.
 
-<div class="outdent">
-  ![In a stream of floats, we specify the first four to be for position, the
-  next four to be for normals, and so on.](interleaved-vbo.png)
-</div>
+<figure class="outdent">
+  ![](interleaved-vbo.png)
+  <figcaption>
+    In a stream of floats, we specify the first four to be for position, the
+    next four to be for normals, and so on.
+  </figcaption>
+</figure>
 
 For example, `position` takes up four floats, while `anim` only uses one.
 
@@ -222,7 +222,7 @@ So, what is `max_distance`? At all times, we only render a specific number of ch
 
 So, the distance fog plays a second role: to stop the player from seeing chunks appear and disappear as they move. But, it's worth it to implement for aesthetics alone, I think:
 
-<div class="outdent-wide">
+<div class="outdent-max">
   ![A beautiful sunrise over the desert.](distance-fog-pretty.png)
 </div>
 
@@ -230,7 +230,7 @@ So, the distance fog plays a second role: to stop the player from seeing chunks 
 
 Our engine features a day cycle. We see the sun during the day, and the moon and stars at night. Clouds are always visible. In between, sunsets and sunrises transition us nicely.
 
-<div class="outdent-wide">
+<div class="outdent-max">
   ![A diagram depicting what percentage of a day we spend in day, in night, and
   how long it takes to transition.](day-night-cycle.png)
 </div>
@@ -250,7 +250,7 @@ The skybox is _not_ a cubemap. We're actually drawing to a screen space quad. To
 
 Depending on the direction of the ray, we can decide different colors to give to every single pixel. The picture below, for example, maps the literal ray direction to RGB values.
 
-<div class="outdent">
+<div class="outdent-wide">
   ![The sky is split into green, red, and black depending on the direction of
   the ray.](skybox-uv.png)
 </div>
@@ -285,7 +285,7 @@ Each individual star is a tiny quad that I rotate and scale by a random amount. 
 
 A giant quad floats above the player at all times. On it, I sample a portion of a large texture that contains all the possible clouds in the world:
 
-![Cloud texture is opened in Photoshop.](clouds-ps.png)
+<div class="wide">![Cloud texture is opened in Photoshop.](clouds-ps.png)</div>
 
 This was created in Photoshop. I used a noise function as the base, reduced the number of colors, and deleted the rest to make somewhat realistic-looking swirlies.
 
@@ -422,11 +422,11 @@ Picture this. It's 4 AM and there are only a few hours left before the due date.
 
 The end result? Very, very basic text rendering.
 
-> Fun fact: the font below comes from a heavily-customized Minecraft texture pack that I made over quarantine! If I didn't have a bitmap font like this ready, all of this probably wouldn't have happened.
+> Fun fact: the font below comes from a heavily-customized Minecraft texture pack that I made over quarantine!
+>
+> If I didn't have a bitmap font like this ready, all of this probably wouldn't have happened.
 
-<div class="outdent">
-  ![The font bitmap file is open in Photoshop.](font-ps.png)
-</div>
+<div>![The font bitmap file is open in Photoshop.](font-ps.png)</div>
 
 The idea is simple: map a basic set of characters to UVs on a sprite that contains the characters as a bitmap. This is not a new idea—[far, far from it](https://en.wikipedia.org/wiki/Computer_font#Bitmap_fonts)—and there are probably thousands of implementations online, but
 
