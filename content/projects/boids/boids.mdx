@@ -13,8 +13,6 @@ metadata:
 coverImage:
   file: boids.png
   alt: 50,000 small blue particles are somewhat grouped together, forming a bird-like flocking pattern. The entire swarm takes on the shape of a cube.
-
-slug: boids
 ---
 
 In this project I implemented the classical boids flocking simulation with CUDA. The implementation is based on pseudocode from [Conrad Parker's notes](https://vergenet.net/~conrad/boids/pseudocode.html) and modified in order to take advantage of the GPU. In particular, I launch a new thread for each boid to update its velocity and position.

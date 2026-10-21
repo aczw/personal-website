@@ -1,0 +1,45 @@
+---
+import { getCollection } from "astro:content";
+import { Image } from "astro:assets";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+
+const gameEntries = await getCollection("games");
+
+const description = "Play some games that I made or have helped make!";
+---
+
+<BaseLayout meta={{ kind: "route", route: "games", description }}>
+  <Header />
+
+  <main>
+    <hgroup class="constrain px-5">
+      <h1 class="sr-only">Games</h1>
+      <p class="prose">{description}</p>
+    </hgroup>
+
+    <section class="constrain mt-7 grid grid-cols-2 sm:gap-3 sm:px-5 md:grid-cols-3">
+      {gameEntries.map(({ id, data }) => (
+        <article class="relative h-fit">
+          <h2>
+            <a
+              href={`/games/${id}`}
+              class="after:absolute after:inset-0 after:z-1"
+            >
+              <span class="sr-only">{data.title}</span>
+            </a>
+          </h2>
+          <Image
+            src={data.coverImage.file}
+            alt={data.coverImage.alt}
+            class="sm:rounded-sm"
+          />
+        </article>
+      ))}
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

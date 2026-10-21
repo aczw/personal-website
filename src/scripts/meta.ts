@@ -10,7 +10,14 @@ import {
  * content collection entries.
  */
 type Route =
-  "about" | "colophon" | "index" | "posts" | "projects" | "404" | "home";
+  | "about"
+  | "colophon"
+  | "games"
+  | "index"
+  | "posts"
+  | "projects"
+  | "404"
+  | "home";
 
 /**
  * Maps every content collection name to a literal "kind" and creates a
@@ -40,6 +47,8 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
             return "About";
           case "colophon":
             return "Colophon";
+          case "games":
+            return "Games";
           case "index":
             return "Index";
           case "posts":
@@ -92,6 +101,14 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
       return {
         title: data.title,
         description,
+      };
+    }
+
+    case "games": {
+      const { data } = meta.gamesEntry;
+      return {
+        title: data.title,
+        description: data.description,
       };
     }
 

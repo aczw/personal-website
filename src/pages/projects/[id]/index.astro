@@ -72,7 +72,7 @@ const { Content } = await render(project);
 
       <dl
         class:list={[
-          "grid max-w-(--prose-w) grid-cols-1 gap-3 border-t-0 border-style pt-1.5 md:max-w-150 md:gap-y-3",
+          "grid max-w-(--prose-w) grid-cols-1 gap-3 md:max-w-150",
           { "md:grid-cols-2": numMetadata % 2 === 0 },
           { "md:grid-cols-3": numMetadata === 3 },
         ]}

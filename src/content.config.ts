@@ -10,11 +10,14 @@ import {
   SourceSchema,
 } from "@/scripts/schema";
 
+const getNameFromEntryFile = (entry: string) => entry.split("/")[0]!;
+
 const projects = defineCollection({
   loader: glob({
     pattern: "*/*.mdx",
     base: "./content/projects",
     retainBody: false,
+    generateId: ({ entry }) => getNameFromEntryFile(entry),
   }),
   schema: ({ image }) =>
     z.object({
@@ -57,9 +60,10 @@ const projectPages = defineCollection({
 
 const posts = defineCollection({
   loader: glob({
-    pattern: "**/*.mdx",
+    pattern: "*/*.mdx",
     base: "./content/posts",
     retainBody: true,
+    generateId: ({ entry }) => getNameFromEntryFile(entry),
   }),
   schema: ({ image }) =>
     z.object({
@@ -75,6 +79,7 @@ const games = defineCollection({
     pattern: "*/*.mdx",
     base: "./content/games",
     retainBody: false,
+    generateId: ({ entry }) => getNameFromEntryFile(entry),
   }),
   schema: ({ image }) =>
     z.object({
@@ -86,15 +91,24 @@ const games = defineCollection({
         released: z.date(),
         sourceHref: SourceSchema.optional(),
       }),
-      itch: z.strictObject({
-        url: z.url(),
-        webEmbedId: z.int().optional(),
-        download: z.strictObject({
-          windows: z.boolean(),
-          mac: z.boolean(),
-          linux: z.boolean(),
-        }),
-      }),
+      itch: z
+        .strictObject({
+          url: z.url(),
+          webEmbed: z
+            .strictObject({
+              id: z.int(),
+              aspectRatio: z.strictObject({
+                x: z.number().nonnegative(),
+                y: z.number().nonnegative(),
+              }),
+            })
+            .optional(),
+          download: z.strictObject({
+            mac: z.boolean(),
+            linux: z.boolean(),
+          }),
+        })
+        .optional(),
     }),
 });
 

@@ -1,0 +1,135 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, getEntry, render } from "astro:content";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+import TechList from "@/components/tech-list.astro";
+import { getShortDateFormatting } from "@/scripts/util";
+import { ExternalLinkIcon } from "@lucide/astro";
+import { ICON_SIZE } from "@/scripts/constants";
+import MdxContent from "@/components/mdx-content.astro";
+
+export const getStaticPaths = (async () => {
+  const games = await getCollection("games");
+  return games.map((game) => {
+    return { params: { id: game.id } };
+  });
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+const game = await getEntry("games", id)!;
+
+const { title, description, metadata, itch } = game.data;
+
+// itch.io adds its own 20px tall bottom bar to the embed, which the
+// aspect ratio must take into account
+let trueAspectRatio = 0;
+if (itch && itch.webEmbed) {
+  const { aspectRatio } = itch.webEmbed;
+  const ratioValue = aspectRatio.y / aspectRatio.x;
+
+  // Should be kept in sync with var(--max-w)
+  const baseHeight = 75 * ratioValue;
+  // 20px converted to rem using base font size of 16px
+  const trueHeight = baseHeight + 1.25;
+
+  trueAspectRatio = Math.round((75 / trueHeight) * 100);
+}
+
+const { Content } = await render(game);
+---
+
+<BaseLayout meta={{ kind: "games", gamesEntry: game }}>
+  <Header />
+
+  <main>
+    <hgroup class="constrain px-5 *:prose">
+      <h1 class="text-xl/tight font-medium heading">{title}</h1>
+      <p class="text-lg/tight heading">{description}</p>
+    </hgroup>
+
+    {itch && itch.webEmbed && (
+      <section class="constrain mt-7 lg:px-5">
+        <iframe
+          frameborder="0"
+          src={`https://itch.io/embed-upload/${itch.webEmbed.id}?color=000000`}
+          allowfullscreen=""
+          class="w-full"
+          style={{
+            aspectRatio: `${trueAspectRatio} / 100`,
+          }}
+        ></iframe>
+      </section>
+    )}
+
+    <section class="constrain mt-7 px-5">
+      <h2 class="sr-only">Overview</h2>
+
+      <dl class="grid max-w-(--prose-w) grid-cols-2 gap-3 md:max-w-150">
+        <div>
+          <dt class="leading-tight font-medium heading">Built with</dt>
+          <dd>
+            <TechList tech={metadata.tech} />
+          </dd>
+        </div>
+
+        <div>
+          <dt class="leading-tight font-medium heading">Released</dt>
+          <dd>{getShortDateFormatting(metadata.released)}</dd>
+        </div>
+      </dl>
+
+      {metadata.sourceHref && (
+        <a
+          href={metadata.sourceHref}
+          target="_blank"
+          rel="noopener"
+          class="mt-5 flex link-primary w-full max-w-(--prose-w) items-center justify-between gap-x-5 rounded-sm border-2 border-style p-2 leading-tight font-medium"
+        >
+          Source code is available on GitHub
+          <ExternalLinkIcon size={ICON_SIZE} class="shrink-0" />
+        </a>
+      )}
+
+      {itch && (
+        <div
+          class:list={[
+            "relative flex w-full max-w-(--prose-w) items-center justify-between gap-x-5 rounded-sm border-2 border-style p-2 leading-tight",
+            metadata.sourceHref ? "mt-1.5" : "mt-5",
+          ]}
+        >
+          <div>
+            <h3 class="font-medium">
+              <a
+                href={itch.url}
+                target="_blank"
+                rel="noopener"
+                class="link-primary after:absolute after:inset-0 after:z-1"
+              >
+                Available on itch.io
+              </a>
+            </h3>
+
+            <p>
+              {itch.download.mac || itch.download.linux ?
+                <>
+                  Online or download for Windows
+                  {itch.download.mac && <span>, macOS</span>}
+                  {itch.download.linux && <span>, Linux</span>}
+                </>
+              : <>Download for Windows or play online!</>}
+            </p>
+          </div>
+
+          <ExternalLinkIcon size={ICON_SIZE} class="shrink-0" />
+        </div>
+      )}
+    </section>
+
+    <MdxContent content={Content} />
+  </main>
+
+  <Footer />
+</BaseLayout>

@@ -1,8 +1,6 @@
 ---
 title: Dithering
 posted: 2025-12-24T21:09:00.000-05
-
-slug: dithering
 ---
 
 outline
@@ -40,6 +38,7 @@ outline
   - The idea of presets additionally got me thinking... what if there was a dark mode and light mode preset? And then I could toggle between them if the user's system appearance changed!
     - So now on page load, we first check what color scheme the user prefers, and loads the corresponding initial dither settings.
     - We also add an event listener to update the dither palette on the fly when the user's system theme changes.
+
       ```ts
       const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -62,6 +61,7 @@ outline
         ),
       );
       ```
+
     - This makes the canvas match the CSS color scheme, which I think looks and feels really good.
 
 [^1]: Theoretically the GLSL compiler generates a jump table for switch statements, meaning only 2 of the 6 modulo operations are performed per execution.
