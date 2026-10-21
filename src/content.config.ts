@@ -3,9 +3,11 @@ import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
 import {
+  ShortDescriptionSchema,
   LongDescriptionSchema,
   DateSchema,
   ImageSchema,
+  SourceSchema,
 } from "@/scripts/schema";
 
 const projects = defineCollection({
@@ -18,7 +20,7 @@ const projects = defineCollection({
     z.object({
       name: z.string(),
       description: z.strictObject({
-        short: z.string().refine((text) => text.length <= 40),
+        short: ShortDescriptionSchema,
         long: LongDescriptionSchema,
       }),
       metadata: z.strictObject({
@@ -29,12 +31,7 @@ const projects = defineCollection({
             label: z.string(),
           })
           .optional(),
-        sourceHref: z
-          .url()
-          .refine((url) => url.startsWith("https://github.com/"), {
-            error: "Source code is assumed to be hosted on GitHub",
-          })
-          .optional(),
+        sourceHref: SourceSchema.optional(),
         date: DateSchema,
       }),
       coverImage: ImageSchema(image),
@@ -73,10 +70,39 @@ const posts = defineCollection({
     }),
 });
 
+const games = defineCollection({
+  loader: glob({
+    pattern: "*/*.mdx",
+    base: "./content/games",
+    retainBody: false,
+  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: ShortDescriptionSchema,
+      coverImage: ImageSchema(image),
+      metadata: z.strictObject({
+        tech: z.string().array(),
+        released: z.date(),
+        sourceHref: SourceSchema.optional(),
+      }),
+      itch: z.strictObject({
+        url: z.url(),
+        webEmbedId: z.int().optional(),
+        download: z.strictObject({
+          windows: z.boolean(),
+          mac: z.boolean(),
+          linux: z.boolean(),
+        }),
+      }),
+    }),
+});
+
 const collections = {
   projects,
   projectPages,
   posts,
+  games,
 };
 
 export { collections };

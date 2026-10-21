@@ -3,6 +3,7 @@ import { z } from "astro/zod";
 
 import { VALID_MONTHS } from "@/scripts/constants";
 
+const ShortDescriptionSchema = z.string().refine((text) => text.length <= 40);
 const LongDescriptionSchema = z.string().refine((text) => text.length <= 170);
 
 const ImageSchema = (image: ImageFunction) =>
@@ -49,10 +50,18 @@ const RangedDateSchema = z.strictObject({
 
 const DateSchema = z.union([SimpleDateSchema, RangedDateSchema]);
 
+const SourceSchema = z
+  .url()
+  .refine((url) => url.startsWith("https://github.com/"), {
+    error: "Source code is assumed to be hosted on GitHub",
+  });
+
 export {
+  ShortDescriptionSchema,
   LongDescriptionSchema,
   ImageSchema,
   SimpleDateSchema,
   RangedDateSchema,
   DateSchema,
+  SourceSchema,
 };
