@@ -21,8 +21,6 @@ This is a path tracer written in C++, and accelerated via CUDA. It was developed
 
 > There's another path tracer I wrote a year back, except it [uses GLSL](/projects/glsl-pt) instead. Check it out if you're interested.
 
-I'll talk about what worked, what didn't (with botched renders!), and my overall experience working on this project.
-
 There will be performance benchmarks scattered throughout this write-up. Here's the test rig used to measure them.
 
 | Type       | Specifications                                 |
@@ -34,31 +32,31 @@ There will be performance benchmarks scattered throughout this write-up. Here's 
 
 I'll assume you have general knowledge about how path tracing works. If you're curious or want a refresher, I wrote <a href="/projects/cuda-pt/appendix" class="link-primary">an appendix</a> that contains some discussion of the theoretical background.
 
-Anyways, onwards to the features!
-
 ## Program structure
 
-To provide a general overview of how my path tracer functions, here I describe a single execution loop of my program. One execution of this loop results in one iteration of the path tracer.
+To provide a general overview of how cuda-PT works, I describe here a single execution loop. This results in one iteration of the path tracer.
 
-In each execution of the loop, until we've reached the max number of samples:
+Until we've reached the max number of samples, we:
 
 - Check if camera or GUI toggles have changed. If so, reset the samples and start over.
-- Generate initial rays from the camera. That is, their origins are at the eye.
-- Perform work in inner loop:
+- Generate initial rays from the camera outwards into the scene.
+- In an inner loop:
   - For each ray, find intersections with scene geometry, if any.
   - If enabled, discard intersections that traveled out of bounds.
   - If enabled, sort the paths by the material they intersected with.
-  - For each intersection, calculate its color contribution, and determine the next ray direction.[^1] (The ray origin is the intersection point.)
+  - For each intersection, calculate its color contribution, and determine the next ray direction.[^1]
   - If enabled, discard intersections that have hit a light source.
   - If we've reached the max depth or we've discarded all paths, break out of the loop. Otherwise, repeat.
-- Gather all the final color contribution for each pixel, and append it to our image data.
-- Divide each raw pixel data by the number of samples, and send the data to OpenGL for rendering.
+- Gather the final color contribution for each pixel, and append it to our overall image data.
+- Divide each raw pixel data by the number of samples, render the buffer to the screen using OpenGL.
+
+Now let's discuss the features I've implemented.
 
 ## Materials
 
 ### Lambertian BRDF
 
-One of my first new additions to the base code is adding a Lambertian diffuse shading model. What makes this model great is how easy it is to conceptualize and implement.
+One of my first additions is adding a Lambertian diffuse shading model. What makes this model great is how easy it is to conceptualize and implement.
 
 <figure class="wide">
   ![An eye is looking at a hemisphere centered at the intersection between the
@@ -68,11 +66,11 @@ One of my first new additions to the base code is adding a Lambertian diffuse sh
   </figcaption>
 </figure>
 
-If we look at the rendering equation again, we'll see what really differentiates one material from another is how $f(\omega_o,\omega_i)$ is implemented; that is, the BRDF.
+If we look at Kajiya's rendering equation, we'll see what really differentiates one material from another is how $f(\omega_o,\omega_i)$ is implemented; that is, the BRDF.
 
 The Lambertian BRDF says that for an outgoing ray $\omega_o$, the scattering of rays is _uniform_ within the hemisphere, as seen in the diagram above. In other words, the BSDF is constant with respect to the incident angle.
 
-After adding it, obviously I had to test this material out on the classics.
+Here are the initial renders from applying the material to various classic graphics test models.
 
 <figure class="outdent-max">
   <div class="gallery">
@@ -111,7 +109,7 @@ segment.ray = {
 
 ### Perfectly specular dielectrics
 
-What's the opposite of the diffuse shading model? I... don't know the answer, but collapsing from an infinite set of $\omega_i$ to a _discrete_ set of possibilities sounds right to me.
+What's the opposite of the diffuse shading model? I... don't know the actual answer, but collapsing from an infinite set of $\omega_i$ to a _discrete_ set of possibilities sounds about right to me.
 
 <figure class="wide">
   ![An eye is looking at a hemisphere centered at the intersection between the
@@ -127,11 +125,11 @@ The figure depicts a _pure reflection_ about the surface normal, but for dielect
 
 We will combine them both later to create dielectrics.
 
-> Note that I did not implement rough dielectrics, only the perfectly specular case. I would like to revisit this in the future to completely flesh out my implementation.
+> Note that I did not implement rough dielectrics, only the perfectly specular case. Definitely something to revisit in the future.
 
 #### Pure reflection
 
-First, complete reflection.
+First, I implemented complete reflection.
 
 <figure class="outdent-max">
   <div class="gallery">
@@ -141,30 +139,32 @@ First, complete reflection.
   <figcaption>800×800 resolution, 5000 samples each.</figcaption>
 </figure>
 
-The first scene has a single purely reflective material with everything around it set to diffuse. It's essentially a perfect mirror. The second scene inverts everything: every wall is purely reflective.
+The first scene has a single purely reflective material with everything around it set to diffuse. It's essentially a perfect mirror. The second scene is inverted: every wall is purely reflective, the ball is diffuse.
 
-> The reason most of the scene is black is because the rays are leaving the scene and traveling out of bounds ~~and I never implemented environment maps :(~~
+> I never implemented environment maps, so most of the second scene is black because the rays are traveling out of bounds.
 
 #### Pure transmission
 
-Transmission was much trickier to implement. Two things in particular stood out.
+Transmission was much trickier to implement.
 
-First, IORs are always defined relative to _something_.[^2] At a given intersection point, we always need to know what medium we're _entering_ and what medium we're _leaving_, because that affects the IOR ratio. How I keep track of this is to store an additional enum in my `Intersection` data struct that informs me whether the intersection was with the outside of a surface, or inside. Depending on the surface, we may have to flip the IOR.
+First, IORs are always defined relative to _something_.[^2] At an intersection, we always need to know what medium we're _entering_ and what medium we're _leaving_, because that affects the IOR ratio.
+
+To keep track of this, I store an additional enum in my `Intersection` struct that informs me whether the intersection was with the outside of a surface, or inside. Depending on the answer, we may have to flip the ratio.
 
 ```cpp
-// Tracks which side of the geometry the intersection is at.
+// Tracks which side of the geometry the intersection occurred at.
 enum class Surface : char { Inside, Outside };
 
-// GLSL/GLM refract expects the IOR ratio to be incident over target, so we treat
-// the default as us starting from inside the material.
+// GLSL/GLM refract always expects the IOR ratio to be incident over target, so
+// we treat the default as us starting from inside the material.
 if (isect.surface == Surface::Outside) {
   eta = 1.f / eta;
 }
 ```
 
-Second, there are cases where the incident angle is so large that a refraction actually _reflects back into_ the original medium. This is called [total internal reflection](https://en.wikipedia.org/wiki/Total_internal_reflection), and we have to check for this possibility. `glm::refract` returns zero when this occurs, which I check for and return `std::nullopt`, indicating that no transmissive ray could be generated for this intersection.
+Second, there are cases where the incident angle is so large that a refraction actually _reflects back into_ the original medium. This is called [total internal reflection](https://en.wikipedia.org/wiki/Total_internal_reflection), and we have to check for this possibility.
 
-> My pure transmission function returns `std::optional<Ray>` for this reason.
+`glm::refract` returns zero when this occurs. I wrote my pure transmission function to return a `std::optional<Ray>` so that I can check for this and return `std::nullopt`. This indicates that no transmissive ray could be generated for this intersection.
 
 Keeping these two things in mind, we can get transmission working.
 
@@ -173,7 +173,9 @@ Keeping these two things in mind, we can get transmission working.
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.0.png)
     ![](renders/perf-spec-dielectric/pure_transmission_cube-800x800-5000-1.55.png)
   </div>
-  <figcaption>800×800 resolution, 5000 samples, IOR of 1.55 each.</figcaption>
+  <figcaption>
+    800×800 resolution, 5000 samples, IOR of 1.0 and 1.55 respectively.
+  </figcaption>
 </figure>
 
 These renders are... interesting. How do I interpret them?

@@ -5,11 +5,13 @@ description: Understanding the theoretical background behind what makes a path t
 
 ## A very physically inaccurate discussion of light
 
-At its core, a path tracer simulates many real-life physics interactions, and therefore we must discuss some of them first. First, path tracing is all about light. For our purposes, we can treat light in the world as rays, with an origin and a direction. Rays always come from a light source of some kind—a light bulb, the sun, my phone screen in bed at 4 AM.
+At its core, a path tracer simulates many real-life physics interactions.
 
-Whenever a light ray hits an object, it will then bounce and pick a new direction. Depending on the material at the intersection, the ray picks up an appropriate amount of color, mixing it with colors from all previous bounces.[^1] The properties of the material also determine which direction the next bounce will go.
+First, path tracing is all about light. For our purposes, we can treat light in the world as rays, with an origin and a direction. Rays always come from a light source of some kind—a light bulb, the sun, my phone screen in bed at 4 AM.
 
-Eventually, this light ray will bounce directly into our eyes, allowing us to see. We could trace out the full _path_ this ray took from its beginning light source to its ending. This is what we're trying to simulate.
+Whenever a light ray hits an object, it will then bounce and pick a new direction. Depending on the material at the intersection, the ray picks up an appropriate amount of color, mixing it with colors from all previous bounces.[^1]
+
+The properties of the material also determine which direction the next bounce will go. Eventually, this light ray will bounce directly into our eyes, allowing us to see. We could trace out the full _path_ this ray took from its beginning light source to its ending. This is what we're trying to simulate.
 
 ## Deviations from the real world
 
@@ -29,12 +31,10 @@ $$
 L_o(\omega_o)=L_e+\int_\Omega f(\omega_o,\omega_i)L_i(\omega_i)(\omega_i\cdot\vec{n})\space\text{d}\omega_i
 $$
 
-I know, the math symbols spooked me too at first, but the components actually represent pretty simple ideas. This equation tells us how to calculate the light traveling on an outgoing ray direction $\omega_o$ at some particular point.
-
-We have four main components to consider:
+The components actually represent pretty simple ideas. This equation tells us how to calculate the light traveling on an outgoing ray direction $\omega_o$ at some particular point. We have four main components to consider:
 
 - $L_e$ is the inherent light emitted at the intersection point. This value is non-zero if the point is a light source.
-- $f$, which is a [BRDF](https://en.wikipedia.org/wiki/Bidirectional_reflectance_distribution_function) telling us _how much_ of the light is reflected. How $f$ is defined depends on the material.
+- $f$ is a [BRDF](https://en.wikipedia.org/wiki/Bidirectional_reflectance_distribution_function) telling us _how much_ of the light is reflected. How $f$ is defined depends on the material.
 - $L_i$, the incoming light from ray direction $\omega_i$. Or, the accumulated value.
 - Lambert's cosine law, which relates $\omega_i$ to the surface normal.
 
@@ -48,18 +48,22 @@ Furthermore, we repeatedly solve the rendering equation for every pixel in our i
 
 ## Parallelization
 
-While the GPU is generally known for being good at drawing things, we're not using it for rasterization here. Monte Carlo path tracing is considered [embarrassingly parallel](https://en.wikipedia.org/wiki/Embarrassingly_parallel) for a reason: calculate the color for each pixel in parallel. The path that each pixel traces to reach a light is wholly independent of one another.
+While the GPU is generally known for drawing things, we're not using it for rasterization here.
+
+Monte Carlo path tracing is considered [embarrassingly parallel](https://en.wikipedia.org/wiki/Embarrassingly_parallel): calculate the color for each pixel in parallel. The path that each pixel traces to reach a light is wholly independent of one another.
+
+This is the part that is implemented in CUDA and utilizes the GPU.
 
 ### Terminology
 
-I would like to clarify some terminology: an **iteration** (or **sample**) is determining the color of each pixel _once_; we average many iterations to get the final image. However, within each iteration we also perform a number of bounces bounded by some _max depth_.
+An **iteration** (or **sample**) is determining the color of each pixel _once_; we average many iterations to get the final image. However, within each iteration we also perform a number of bounces bounded by some _max depth_.
 
 Each bounce progresses the path traced by one intersection. Multiple bounces result in one sample (or black, of the path went out of bounds).
 
 This distinction is important because there are two ways we could utilize the GPU, the difference being what _kind_ of work is performed per thread:
 
 - Each thread performs one whole iteration.
-- Each thread performs one bounce in a iteration. **(I did this.)**
+- Each thread performs one bounce in a iteration. (I did this.)
 
 By taking a incremental approach, we gain some additional optimization opportunities. We'll see later that we can get away with launching less threads if we meet certain requirements. (Hint: not all paths end at the same time.)
 
