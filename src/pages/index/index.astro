@@ -76,7 +76,7 @@ const description =
       <p class="prose">{description} Most recent entries are at the top.</p>
     </hgroup>
 
-    <section class="constrain mt-7 grid grid-cols-2 gap-3 px-5 desktop:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+    <section class="constrain mt-7 grid grid-cols-2 gap-3 px-5 desktop:grid-cols-3 sm:grid-cols-4 md:grid-cols-5">
       {entries.map(async (entry) => {
         const { id } = entry;
 
@@ -182,20 +182,22 @@ const description =
                 />
 
                 {itch && (
-                  <div class="flex gap-x-1.5 rounded-b-sm bg-sweater-9 px-2 py-2.5 group-hover:bg-sweater-8 light:bg-sweater-2 light:group-hover:bg-sweater-3">
+                  <div class="relative flex gap-x-1.5 rounded-b-sm bg-linear-to-r from-sweater-8 to-sweater-9 px-2 py-2.5 light:from-sweater-3 light:to-sweater-2">
                     {itch.webEmbed && (
                       <GlobeIcon size={ICON_SIZE} class="icon" />
                     )}
 
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width={ICON_SIZE}
-                      height={ICON_SIZE}
-                      viewBox="0 0 16 16"
-                      class="fill-sweater-6 light:fill-sweater-5"
-                    >
-                      <path d="M7.462 0H0v7.19h7.462zM16 0H8.538v7.19H16zM7.462 8.211H0V16h7.462zm8.538 0H8.538V16H16z" />
-                    </svg>
+                    {itch.download.windows && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={ICON_SIZE}
+                        height={ICON_SIZE}
+                        viewBox="0 0 16 16"
+                        class="fill-sweater-6 light:fill-sweater-5"
+                      >
+                        <path d="M7.462 0H0v7.19h7.462zM16 0H8.538v7.19H16zM7.462 8.211H0V16h7.462zm8.538 0H8.538V16H16z" />
+                      </svg>
+                    )}
 
                     {itch.download.mac && (
                       <svg

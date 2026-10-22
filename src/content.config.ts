@@ -104,6 +104,7 @@ const games = defineCollection({
             })
             .optional(),
           download: z.strictObject({
+            windows: z.boolean(),
             mac: z.boolean(),
             linux: z.boolean(),
           }),

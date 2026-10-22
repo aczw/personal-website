@@ -1,25 +1,30 @@
 ---
-name: deth
-description:
-  short: TODO
-  long: 2D top-down roguelite shooter made with friends in 24 hours for UPGRADE's Fall 2023 Game Jam.
+title: deth
+description: 2D top-down roguelite shooter
+coverImage:
+  file: deth.png
+  alt: 'Gray background and brown pipes in the foreground spelling out "deth"'
 metadata:
   tech:
     - Unity
-    - C#
-  link:
-    href: https://pennupgrade.itch.io/deth
-    label: Play on itch.io
+  released: 2024-07-01T05:10:00Z
   sourceHref: https://github.com/geant04/deth
-  date: October 2023
-coverImage:
-  file: deth.png
-  alt: Player is midgame on round 4 with 6 enemies left, and has the assault rifle selected.
+itch:
+  url: https://pennupgrade.itch.io/deth
+  webEmbed:
+    id: 10808344
+    aspectRatio:
+      x: 1.6
+      y: 1
+  download:
+    windows: false
+    mac: false
+    linux: false
 ---
 
 import VideoGif from "@/components/video-gif.astro";
 
-deth (with a lowercase "d") was born out of 24 hours of total insanity. I wasn't even planning on attending this game jam, mind you. I got a call the day of from a friend, who begged me to join their team. You see, they also spontaneously signed up and needed a third person in order for the team to become legitimate.
+deth (lowercase "d" is important) was born out of 24 hours of total insanity. I wasn't even planning on attending this game jam, mind you. I got a call the day of from a friend, who begged me to join their team. You see, they also spontaneously signed up and needed a third person in order for the team to become legitimate.
 
 I'm never someone who backs down from crazy requests, plus I didn't have too much homework that weekend. So I decided to help out a friend in need. ~~Oh how I regret it.~~
 
@@ -39,7 +44,7 @@ We tried to "balance" it but the pistol is insanely overpowered (its firing spee
 
 The headaches began when we realized one of our friends has never touched Unity or C# (again, spontaneous). This meant that they originally wrote the generation code in Python, which I had to then translate over to C#.
 
-> ChatGPT did not help. Believe us, we tried. Also, I know, but to be fair we were on a time crunch.
+> ChatGPT did not help. Believe us, we tried.
 
 On the bright side, I learned how the generation works. Essentially we treat the arena as an enormous grid, and then iteratively pick a random side of a grid to remove, thus creating a "doorway" into the next grid cell.
 
@@ -51,7 +56,7 @@ I did most of the assets for the game, including the walls, backgrounds, and two
 
 This was my first exposure to [Unity tilemaps](https://docs.unity3d.com/2022.3/Documentation/Manual/Tilemap.html) and it took me some time to become familiar with using them, creating tile rulesets, and scripting the placement of tiles.
 
-<figure class="bleed-wide">
+<figure class="outdent-wide">
   ![Preview showing every possible tile placement and the tiling rules for
   them.](rule-tileset.png)
   <figcaption>
@@ -60,13 +65,11 @@ This was my first exposure to [Unity tilemaps](https://docs.unity3d.com/2022.3/D
   </figcaption>
 </figure>
 
-> The title screen is actually haphazardly thrown together using the arena tileset.
-
 I also threw together a quick UI that basically displays info and stats that we're tracking from the game manager. Some stuff I managed to sneak in includes a nice gun switching animation as well as the round number appearing in the middle of the screen at the start.
 
-<div class="bleed-wide">
+<div class="outdent-wide">
   <VideoGif
-    content={{ collection: "projects", folder: "deth" }}
+    content={{ collection: "games", folder: "deth" }}
     name="gun-switch-anim"
     hasWebM
   />
@@ -77,5 +80,3 @@ I greatly enjoy watching the text and gun sprite animate in at _slightly_ differ
 ## Sleep deprivation
 
 I don't regret this experience one bit. It's rare to have a "legit" reason to stay awake for 24 hours (procrastinating on homework doesn't count).
-
-Apart from the itch.io link above, you can also play the game from [UPGRADE's website](https://pennupgrade.com/games/deth). GLHF!

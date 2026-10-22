@@ -6,7 +6,11 @@ import BaseLayout from "@/components/base-layout.astro";
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
 
-const gameEntries = await getCollection("games");
+let gameEntries = await getCollection("games");
+gameEntries = gameEntries.sort(
+  (a, b) =>
+    b.data.metadata.released.getTime() - a.data.metadata.released.getTime(),
+);
 
 const description = "Play some games that I made or have helped make!";
 ---
@@ -34,7 +38,7 @@ const description = "Play some games that I made or have helped make!";
           <Image
             src={data.coverImage.file}
             alt={data.coverImage.alt}
-            class="sm:rounded-sm"
+            class="h-auto w-full sm:rounded-sm"
           />
         </article>
       ))}

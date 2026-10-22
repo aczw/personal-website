@@ -7,7 +7,7 @@ import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
 import TechList from "@/components/tech-list.astro";
 import { getShortDateFormatting } from "@/scripts/util";
-import { ExternalLinkIcon } from "@lucide/astro";
+import { ArrowLeftIcon, ExternalLinkIcon } from "@lucide/astro";
 import { ICON_SIZE } from "@/scripts/constants";
 import MdxContent from "@/components/mdx-content.astro";
 
@@ -45,9 +45,17 @@ const { Content } = await render(game);
   <Header />
 
   <main>
-    <hgroup class="constrain px-5 *:prose">
-      <h1 class="text-xl/tight font-medium heading">{title}</h1>
-      <p class="text-lg/tight heading">{description}</p>
+    <hgroup class="constrain px-5">
+      <h1 class="prose text-xl/tight font-medium heading">{title}</h1>
+      <p class="prose text-lg/tight heading">{description}</p>
+      <p>
+        <a
+          href="/games"
+          class="mt-5 flex link-primary w-fit items-center gap-1.5"
+        >
+          <ArrowLeftIcon size={ICON_SIZE} /> Back to all games
+        </a>
+      </p>
     </hgroup>
 
     {itch && itch.webEmbed && (
@@ -113,13 +121,18 @@ const { Content } = await render(game);
             </h3>
 
             <p>
-              {itch.download.mac || itch.download.linux ?
+              {(
+                itch.download.windows ||
+                itch.download.mac ||
+                itch.download.linux
+              ) ?
                 <>
-                  Online or download for Windows
+                  Online or download for{" "}
+                  {itch.download.windows && <span>Windows</span>}
                   {itch.download.mac && <span>, macOS</span>}
                   {itch.download.linux && <span>, Linux</span>}
                 </>
-              : <>Download for Windows or play online!</>}
+              : <>Play in your browser!</>}
             </p>
           </div>
 
