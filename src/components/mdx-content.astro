@@ -372,9 +372,11 @@ const { content: Content, ...props } = Astro.props;
       :global(figcaption) {
         max-width: 100%;
         padding-left: --spacing(5);
+        padding-right: --spacing(5);
 
         @variant sm {
           padding-left: 0;
+          padding-right: 0;
         }
 
         @apply prose;
