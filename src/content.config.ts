@@ -111,6 +111,15 @@ const games = defineCollection({
           }),
         })
         .optional(),
+      steam: z
+        .strictObject({
+          id: z.int(),
+          trailer: z.strictObject({
+            youTubeId: z.string().nonempty(),
+            title: z.string().nonempty(),
+          }),
+        })
+        .optional(),
     }),
 });
 

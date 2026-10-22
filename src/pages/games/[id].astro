@@ -10,6 +10,7 @@ import { getShortDateFormatting } from "@/scripts/util";
 import { ArrowLeftIcon, ExternalLinkIcon } from "@lucide/astro";
 import { ICON_SIZE } from "@/scripts/constants";
 import MdxContent from "@/components/mdx-content.astro";
+import Youtube from "@/components/mdx/youtube.astro";
 
 export const getStaticPaths = (async () => {
   const games = await getCollection("games");
@@ -21,7 +22,7 @@ export const getStaticPaths = (async () => {
 const { id } = Astro.params;
 const game = await getEntry("games", id)!;
 
-const { title, description, instructions, metadata, itch } = game.data;
+const { title, description, instructions, metadata, itch, steam } = game.data;
 
 // itch.io adds its own 20px tall bottom bar to the embed, which the
 // aspect ratio must take into account
@@ -69,6 +70,16 @@ const { Content } = await render(game);
             aspectRatio: `${trueAspectRatio} / 100`,
           }}
         ></iframe>
+      </section>
+    )}
+
+    {steam && (
+      <section class="constrain mt-7 md:px-5">
+        <Youtube
+          id={steam.trailer.youTubeId}
+          title={steam.trailer.title}
+          class="w-full max-w-(--wide-w) overflow-hidden md:rounded-sm"
+        />
       </section>
     )}
 
@@ -140,10 +151,20 @@ const { Content } = await render(game);
         </div>
       )}
 
+      {steam && <iframe
+        src={`https://store.steampowered.com/widget/${steam.id}`}
+        frameborder="0"
+        height="190"
+        class:list={[
+          "w-full max-w-(--prose-w) scheme-light",
+          !metadata.sourceHref && !itch ? "mt-5" : "mt-3",
+        ]}
+      ></iframe>}
+
       <p
         class:list={[
           "prose rounded-sm bg-sweater-9 p-2 leading-tight light:bg-sweater-2",
-          !metadata.sourceHref && !itch ? "mt-5" : "mt-2",
+          !metadata.sourceHref && !itch && !steam ? "mt-5" : "mt-2",
         ]}
       >
         <span class="font-medium">Instructions:</span> {instructions}
