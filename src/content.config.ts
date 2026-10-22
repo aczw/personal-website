@@ -86,6 +86,7 @@ const games = defineCollection({
       title: z.string(),
       description: ShortDescriptionSchema,
       coverImage: ImageSchema(image),
+      instructions: z.string(),
       metadata: z.strictObject({
         tech: z.string().array(),
         released: z.date(),

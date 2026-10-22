@@ -21,7 +21,7 @@ export const getStaticPaths = (async () => {
 const { id } = Astro.params;
 const game = await getEntry("games", id)!;
 
-const { title, description, metadata, itch } = game.data;
+const { title, description, instructions, metadata, itch } = game.data;
 
 // itch.io adds its own 20px tall bottom bar to the embed, which the
 // aspect ratio must take into account
@@ -139,6 +139,15 @@ const { Content } = await render(game);
           <ExternalLinkIcon size={ICON_SIZE} class="shrink-0" />
         </div>
       )}
+
+      <p
+        class:list={[
+          "prose rounded-sm bg-sweater-9 p-2 leading-tight light:bg-sweater-2",
+          !metadata.sourceHref && !itch ? "mt-5" : "mt-2",
+        ]}
+      >
+        <span class="font-medium">Instructions:</span> {instructions}
+      </p>
     </section>
 
     <MdxContent content={Content} />
