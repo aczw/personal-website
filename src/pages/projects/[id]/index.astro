@@ -15,15 +15,17 @@ import ProjectCover from "@/components/project-cover.astro";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
 import { isValidProjectCover } from "@/scripts/util";
-import { ICON_SIZE } from "@/scripts/constants";
+import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
 
 export const getStaticPaths = (async () => {
-  const entries = await getCollection("projects");
-  return entries.map(({ id }) => {
-    return { params: { id } };
-  });
+  const projects = await getCollection("projects");
+  return projects
+    .filter(({ id }) => !DISABLED_PROJECTS.includes(id))
+    .map(({ id }) => {
+      return { params: { id } };
+    });
 }) satisfies GetStaticPaths;
 
 const { id } = Astro.params;

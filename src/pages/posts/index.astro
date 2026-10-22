@@ -8,12 +8,15 @@ import {
 } from "@/scripts/util";
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
+import { DISABLED_POSTS } from "@/scripts/constants";
 
 const posts = await getCollection("posts");
 
 // Group each post with its corresponding year
 const yearPostsMap = new Map<number, typeof posts>();
 for (const post of posts) {
+  if (DISABLED_POSTS.includes(post.id)) continue;
+
   const year = post.data.posted.getFullYear();
 
   if (!yearPostsMap.has(year)) {

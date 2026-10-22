@@ -28,6 +28,9 @@ const HOMEPAGE_PROJECTS = [
 
 const FEATURED_PROJECTS = [...HOMEPAGE_PROJECTS, "door"];
 
+const DISABLED_PROJECTS = ["fireball", "moore-chair"];
+const DISABLED_POSTS = ["dithering"];
+
 const ICON_SIZE = 16;
 
 const CURRENT_TIMEZONE = "America/Los_Angeles";
@@ -45,6 +48,8 @@ export {
   VALID_MONTHS,
   HOMEPAGE_PROJECTS,
   FEATURED_PROJECTS,
+  DISABLED_PROJECTS,
+  DISABLED_POSTS,
   ICON_SIZE,
   CURRENT_TIMEZONE,
   KEYFRAME_ANIM_OPTS,

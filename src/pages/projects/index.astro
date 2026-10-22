@@ -4,7 +4,11 @@ import { getCollection, type CollectionEntry } from "astro:content";
 
 import { ArrowRightIcon } from "@lucide/astro";
 
-import { FEATURED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
+import {
+  DISABLED_PROJECTS,
+  FEATURED_PROJECTS,
+  ICON_SIZE,
+} from "@/scripts/constants";
 import TechList from "@/components/tech-list.astro";
 import BaseLayout from "@/components/base-layout.astro";
 import Header from "@/components/header.astro";
@@ -20,11 +24,13 @@ FEATURED_PROJECTS.forEach((id) => {
   if (index !== -1) featured.push(...projects.splice(index, 1));
 });
 
-const rest = projects.sort(
-  (a, b) =>
-    deriveProjectTimestamp(b.data.metadata.date) -
-    deriveProjectTimestamp(a.data.metadata.date),
-);
+const rest = projects
+  .filter(({ id }) => !DISABLED_PROJECTS.includes(id))
+  .sort(
+    (a, b) =>
+      deriveProjectTimestamp(b.data.metadata.date) -
+      deriveProjectTimestamp(a.data.metadata.date),
+  );
 
 const description =
   "Projects contain write-ups with technical details, explanations, and breakdowns of their development process.";
