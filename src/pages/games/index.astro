@@ -24,9 +24,9 @@ const description = "Play some games that I made or have helped make!";
       <p class="prose">{description}</p>
     </hgroup>
 
-    <section class="constrain mt-7 grid grid-cols-2 gap-3 px-5 md:grid-cols-3">
+    <section class="constrain mt-7 columns-2 gap-3 px-5 md:columns-3">
       {gameEntries.map(({ id, data }) => (
-        <article class="relative h-fit">
+        <article class="relative h-fit break-inside-avoid not-last:mb-3">
           <h2>
             <a
               href={`/games/${id}`}
