@@ -2,316 +2,209 @@
 import type { ImageMetadata } from "astro";
 import { Image } from "astro:assets";
 
-import imageDante from "@/assets/about/dante.jpg";
-import imageSuit from "@/assets/about/suit.jpg";
-import imageSpider from "@/assets/about/spider.jpg";
-import imageAsa from "@/assets/about/asa.jpg";
-import imageBirthday from "@/assets/about/birthday.jpg";
+import mooreJpg from "@/assets/about/moore.jpg";
+import painesParkJpg from "@/assets/about/paines-park.jpg";
+import s12thAndPanamaJpg from "@/assets/about/s-12th-panama.jpg";
+import stitelerJpg from "@/assets/about/stiteler.jpg";
+import schuylkillJpg from "@/assets/about/schuylkill.jpg";
 
-import CommonLayout from "@/layouts/common-layout.astro";
-import Link from "@/components/link.astro";
-import LastFmRecentTrack from "@/components/lastfm-recent-track.astro";
-import LastFmTopStats from "@/components/lastfm-top-stats.astro";
-import AniListRecentActivity from "@/components/anilist-recent-activity.astro";
+import pizzaJpg from "@/assets/about/pizza.jpg";
 
-type AboutPicture = {
-  id: string;
-  imageMetadata: ImageMetadata;
+import busanJpg from "@/assets/about/busan.jpg";
+import tokyoJpg from "@/assets/about/tokyo.jpg";
+import zhangjiajieJpg from "@/assets/about/zhangjiajie.jpg";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+
+type ImageCarouselItem = {
+  file: ImageMetadata;
   alt: string;
+  caption: string;
 };
 
-const ABOUT_PICTURES: AboutPicture[] = [
+const philly: ImageCarouselItem[] = [
   {
-    id: "spider",
-    imageMetadata: imageSpider,
-    alt: "Me at 5 years old wearing a paper hat holding a paper spider.",
+    file: mooreJpg,
+    alt: "The Moore School Building is covered by a tree with white flowers in the foreground",
+    caption: "Moore School Building",
   },
   {
-    id: "asa",
-    imageMetadata: imageAsa,
-    alt: "Me dressed up as Asa from Chainsaw Man for Halloween.",
+    file: painesParkJpg,
+    alt: "A concrete pillar in a skate park with CGGT graffiti in orange",
+    caption: "Paine's Park",
+  },
+  {
+    file: s12thAndPanamaJpg,
+    alt: "An alley with an old-fashioned stone brick road surrounded by brick buildings",
+    caption: "S 12th St & Panama St",
+  },
+  {
+    file: stitelerJpg,
+    alt: "Underground tunnel littered with wooden pallets on the ground",
+    caption: "Underneath Stiteler Hall",
+  },
+  {
+    file: schuylkillJpg,
+    alt: "Platform above the Schuylkill River with buildings in the background",
+    caption: "Schuylkill River trail",
   },
 ];
+
+const asiaTrip: ImageCarouselItem[] = [
+  {
+    file: busanJpg,
+    alt: "Utility wires and rooftops",
+    caption: "Gamcheon-dong, Busan, South Korea",
+  },
+  {
+    file: tokyoJpg,
+    alt: "Koi fish pond",
+    caption: "Asakusa, Tokyo, Japan",
+  },
+  {
+    file: zhangjiajieJpg,
+    alt: "Tons of red ribbons attached to a railing overlooking mountains",
+    caption: "Zhangjiajie, Hunan, China",
+  },
+];
+
+const description = "Writing about myself is very hard but here it is.";
 ---
 
-<CommonLayout
+<BaseLayout
   meta={{
     kind: "route",
     route: "about",
-    description: "Who I am.",
+    description,
   }}
-  headerLinks={[]}
 >
-  <main class="space-y-pad-4 pt-pad pb-pad-4 desktop:pt-0">
-    <div
-      class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
-    >
-      <h1 id="about" class="text-5xl font-bold text-heading">About</h1>
+  <Header />
 
-      <div class="grid grid-cols-1 gap-x-pad-4 gap-y-pad-2 md:grid-cols-2">
-        <p>
-          I'm a fourth year student in the Digital Media Design program at the
-          University of Pennsylvania.
-        </p>
-        <p class="md:row-start-2">
-          I help out with (and used to co-lead) <Link
-            href="https://pennupgrade.com"
-            target="_blank">UPGRADE</Link
-          >, our game dev club, and run communications as part of the <Link
-            href="https://cg.cis.upenn.edu"
-            target="_blank">CG@Penn</Link
-          > student board.
-        </p>
-        <p class="md:row-start-2">
-          Last summer, I interned at Snap Inc. and hacked on their rendering
-          engine. It was fun! Before that, I was at TikTok. <Link
-            href="/resume"
-            target="_blank"
-            data-umami-event="resume">Here's my resume.</Link
-          >
-        </p>
-      </div>
-    </div>
+  <main>
+    <h1 class="sr-only">About</h1>
 
-    <section
-      aria-label="Pictures"
-      class="mx-auto grid max-w-(--real-wide-w) grid-cols-2 items-center *:min-w-0 desktop:gap-pad-2 desktop:px-pad-4 desktop:*:rounded-xl md:grid-cols-4 xl:gap-x-pad-4"
-      style={{
-        "--img-max-h": "25rem",
-      }}
-    >
-      <Image
-        src={imageDante}
-        alt="Me getting attacked by my friend's dog, Dante"
-        style={{
-          width: "auto",
-          maxHeight: "var(--img-max-h)",
-        }}
-        priority
-      />
-
-      <Image
-        src={imageBirthday}
-        alt='Me wearing a silver crown, holding a balloon with a sash that says "Birthday Princess" on it'
-        style={{
-          width: "auto",
-          maxHeight: "var(--img-max-h)",
-        }}
-        priority
-      />
-
-      <button
-        id="pictures"
-        aria-label="Strange button"
-        class="relative overflow-hidden transition-transform data-initial:cursor-help data-initial:active:scale-98 xl:scale-102 xl:data-initial:active:scale-100"
-        style={{
-          rotate: "-2.5deg",
-        }}
-        data-initial=""
-        data-umami-event="about-picture"
-      >
-        <div
-          aria-hidden="true"
-          class="pointer-events-none absolute inset-0 z-1 origin-bottom bg-sweater-8/50 transition-opacity duration-500 select-none light:bg-sweater-3/50"
-          style={{ transform: "scaleY(0.0)" }}
+    <section class="constrain *:px-5">
+      <h2 class="sr-only">General</h2>
+      <p class="prose">{description}</p>
+      <p class="mt-3 prose">
+        I recently graduated from Penn with a major in Digital Media Design. At
+        school I co-led the game dev club{" "}
+        <a
+          href="https://pennupgrade.com"
+          target="_blank"
+          rel="noopener"
+          class="link-primary"
         >
-        </div>
+          UPGRADE
+        </a>{" "}
+        and served on the{" "}
+        <a
+          href="https://cg.cis.upenn.edu"
+          target="_blank"
+          rel="noopener"
+          class="link-primary"
+        >
+          CG@Penn
+        </a>{" "}
+        student board. I am infinitely grateful to that community.
+      </p>
 
-        {
-          ABOUT_PICTURES.map(({ id, imageMetadata, alt }, index) => (
-            <Image
-              id={id}
-              src={imageMetadata}
-              alt={alt}
-              priority={index === 0}
-              class:list={[
-                "desktop:rounded-xl",
-                {
-                  "absolute inset-0 -z-1 scale-50 opacity-0 blur-2xl":
-                    index !== 0,
-                },
-              ]}
-              style={{
-                width: "auto",
-                maxHeight: "var(--img-max-h)",
-              }}
-            />
-          ))
-        }
-      </button>
+      <div class="mt-7 flex gap-x-3 overflow-x-auto">
+        {philly.map(({ file, alt, caption }) => (
+          <figure class="shrink-0">
+            <Image src={file} alt={alt} class="h-[12lh] w-auto rounded-sm" />
+            <figcaption class="mt-1 text-sm heading">{caption}</figcaption>
+          </figure>
+        ))}
+      </div>
 
-      <Image
-        src={imageSuit}
-        alt="Close angle picture of my in a tuxedo with a Labubu sitting in my pocket"
-        style={{
-          width: "auto",
-          maxHeight: "var(--img-max-h)",
-        }}
-        priority
-      />
+      <p class="mt-5 prose">
+        Currently I work at{" "}
+        <a
+          href="https://specs.com"
+          target="_blank"
+          rel="noopener"
+          class="link-primary"
+        >
+          SPECS
+        </a>{" "}
+        where I'm helping to build out our AR development platform. More
+        specifically I'm working on our engine runtime and editor which has been
+        immensely fun.
+      </p>
     </section>
 
-    <div
-      class="mx-auto grid w-full grid-cols-1 gap-x-pad-4 gap-y-pad-2 px-pad-2 desktop:w-4/5 desktop:px-pad md:grid-cols-2 lg:w-(--real-header-w)"
-    >
+    <section class="constrain mt-7 px-5 *:prose">
+      <h2 id="fun-facts" class="font-medium heading">
+        Fun facts you should know
+      </h2>
       <p>
-        I'm interested in computer graphics, specifically real-time rendering,
-        and game engine development. I grew up making art and designing things,
-        which continues to show up in everything I do.
+        Growing up, my family owned a sofa that smelled like the Titanic to me.
+        I lived in Germany for 5 years. No, I can't speak German anymore.
       </p>
-      <p>
-        I strongly believe in self-expression, visual identities, and open
-        spaces. Naturally, I resonate a lot with the web. <span class="italic"
-          >Everyone can and should make a website!</span
-        > It's your digital source of truth.
-      </p>
-    </div>
 
-    <div
-      class="mx-auto w-full space-y-pad-4 px-pad-2 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
-    >
-      <section class="max-w-(--content-w)">
-        <h2 id="contact" class="mb-pad text-xl font-bold text-heading">
-          Contact
-        </h2>
+      <figure class="mt-7">
+        <Image
+          src={pizzaJpg}
+          alt="Younger me biting pizza that someone is giving me"
+          class="rounded-sm"
+        />
+        <figcaption class="mt-1 text-sm heading">
+          Eating whatever is in front of me
+        </figcaption>
+      </figure>
+
+      <p class="mt-5">
+        My lucky number is 13. It follows me around everywhere. I only enjoy
+        coconuts inside Almond Joys. I love onions and onion rings.
+      </p>
+    </section>
+
+    <section class="constrain mt-7">
+      <div class="px-5 *:prose">
+        <hgroup class="flex gap-x-2">
+          <h2 id="now" class="font-medium heading">
+            Now
+          </h2>
+          <p class="text-sweater-5 light:text-sweater-6">October 2026</p>
+        </hgroup>
         <p>
-          I welcome random messages from strangers. Please reach out to say
-          hello! You can find me on <Link
-            href="https://twitter.com/zwcharl"
-            target="_blank">Twitter</Link
-          >, <Link href="https://are.na/charles-zw" target="_blank">Are.na</Link
-          >, <Link href="https://linkedin.com/in/zwcharl" target="_blank"
-            >LinkedIn</Link
-          >, and <Link href="https://github.com/aczw" target="_blank"
-            >GitHub</Link
-          >. My email is <span class="inline-code"
-            >zwcharl &lt;at&gt; gmail &lt;dot&gt; com</span
-          >.
+          Adjusting to the post-grad life, West Coast, and newfound free time.
         </p>
-      </section>
+        <p class="mt-3">
+          I've been thinking about buying a bike for the work commute. Everyone
+          is telling me this is a bad idea.
+        </p>
+        <p class="mt-3">
+          I recently went on a 3-month Asia trip. Here's some pictures...
+        </p>
+      </div>
 
-      <section class="grid grid-cols-1 gap-x-pad-4 sm:grid-cols-2">
-        <h2
-          id="music"
-          class="col-span-full mb-pad text-xl font-bold text-heading"
-        >
-          Music
-        </h2>
+      <div class="mt-7 flex gap-x-3 overflow-x-auto px-5">
+        {asiaTrip.map(({ file, alt, caption }) => (
+          <figure class="shrink-0">
+            <Image src={file} alt={alt} class="h-[16lh] w-auto rounded-sm" />
+            <figcaption class="mt-1 text-sm heading">{caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
 
-        <LastFmRecentTrack server:defer>
-          <div
-            aria-hidden="true"
-            class="mb-pad-2 animate-pulse space-y-pad sm:mb-0"
-            slot="fallback"
-          >
-            <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
-            <div
-              class="flex gap-x-3.5 *:rounded-md *:bg-sweater-9 light:*:bg-sweater-2"
-            >
-              <div class="size-[3lh] shrink-0"></div>
-              <div class="h-[3lh] grow"></div>
-            </div>
-          </div>
-        </LastFmRecentTrack>
-
-        <LastFmTopStats server:defer>
-          <div
-            aria-hidden="true"
-            class="animate-pulse space-y-pad"
-            slot="fallback"
-          >
-            <div class="h-lh rounded-md bg-sweater-9 light:bg-sweater-2"></div>
-            <div
-              class="flex h-[3lh] gap-x-3.5 rounded-md bg-sweater-9 light:bg-sweater-2"
-            >
-            </div>
-          </div>
-        </LastFmTopStats>
-      </section>
-
-      <section>
-        <h2 id="anilist" class="mb-pad text-xl font-bold text-heading">
-          Anilist
-        </h2>
-        <AniListRecentActivity server:defer>
-          <div
-            class="grid animate-pulse grid-cols-1 gap-x-pad-4 gap-y-pad-2 *:h-[4lh] *:rounded-md *:bg-sweater-9 md:grid-cols-2 light:*:bg-sweater-2"
-            slot="fallback"
-          >
-            <div></div>
-            <div></div>
-          </div>
-        </AniListRecentActivity>
-      </section>
-    </div>
+    <section class="constrain mt-7 px-5">
+      <h2 id="this-website" class="font-medium heading">
+        This website
+      </h2>
+      <p class="prose">
+        For more information please visit the{" "}
+        <a href="/colophon" class="link-primary">
+          colophon
+        </a>
+        .
+      </p>
+    </section>
   </main>
-</CommonLayout>
 
-<script>
-  const picturesBtn = document.getElementById("pictures") as HTMLButtonElement;
-  const slider = picturesBtn.firstElementChild as HTMLDivElement;
-
-  const KEYFRAME_OPTS: KeyframeAnimationOptions = {
-    duration: 600,
-    // https://easings.net/#easeInOutExpo
-    easing: "cubic-bezier(0.87, 0, 0.13, 1)",
-    fill: "forwards",
-  };
-
-  function handleAnimationFinish(ev: AnimationPlaybackEvent) {
-    const animation = ev.currentTarget as Animation;
-    animation.commitStyles();
-    animation.cancel();
-  }
-
-  let sliderStage = 0;
-
-  function handleSliderProgress() {
-    slider
-      .animate([{ transform: `scaleY(${++sliderStage * 0.2})` }], {
-        duration: 200,
-        easing: "ease-in-out",
-        fill: "forwards",
-      })
-      .addEventListener("finish", (ev) => {
-        const animation = ev.currentTarget as Animation;
-        animation.commitStyles();
-        animation.cancel();
-
-        if (sliderStage === 5) {
-          picturesBtn.removeEventListener("click", handleSliderProgress);
-          delete picturesBtn.dataset["initial"];
-          slider.style.opacity = "0";
-
-          const spiderElt = picturesBtn.children[1] as HTMLImageElement;
-          const asaElt = picturesBtn.children[2] as HTMLImageElement;
-
-          spiderElt.style.zIndex = "auto";
-          spiderElt
-            .animate(
-              [{ scale: 0.5, opacity: 0.0, filter: "blur(var(--blur-2xl))" }],
-              KEYFRAME_OPTS,
-            )
-            .addEventListener("finish", handleAnimationFinish);
-
-          asaElt.style.zIndex = "auto";
-          asaElt
-            .animate(
-              [{ scale: 1.0, opacity: 1.0, filter: "none" }],
-              KEYFRAME_OPTS,
-            )
-            .addEventListener("finish", handleAnimationFinish);
-
-          picturesBtn
-            .animate([{ rotate: "0deg" }], KEYFRAME_OPTS)
-            .addEventListener("finish", handleAnimationFinish);
-
-          if (window.umami) {
-            window.umami.track("about-picture-finished");
-          }
-        }
-      });
-  }
-
-  picturesBtn.addEventListener("click", handleSliderProgress);
-</script>
+  <Footer />
+</BaseLayout>

@@ -1,0 +1,145 @@
+---
+import { getCollection, getEntry, render } from "astro:content";
+import type { GetStaticPaths } from "astro";
+
+import {
+  CalendarFoldIcon,
+  ExternalLinkIcon,
+  FileCodeIcon,
+  WrenchIcon,
+} from "@lucide/astro";
+
+import BaseLayout from "@/components/base-layout.astro";
+import MdxContent from "@/components/mdx-content.astro";
+import ProjectCover from "@/components/project-cover.astro";
+import TechList from "@/components/tech-list.astro";
+import ContentDate from "@/components/content-date.astro";
+import { isValidProjectCover } from "@/scripts/util";
+import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+
+export const getStaticPaths = (async () => {
+  const projects = await getCollection("projects");
+  return projects
+    .filter(({ id }) => !DISABLED_PROJECTS.includes(id))
+    .map(({ id }) => {
+      return { params: { id } };
+    });
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+const project = await getEntry("projects", id)!;
+
+const {
+  data: {
+    name,
+    description,
+    metadata: { tech, date, link, sourceHref },
+    coverImage,
+  },
+} = project;
+
+if (!isValidProjectCover(coverImage.file.width, coverImage.file.height)) {
+  throw new Error("Cover images must have an aspect ratio of 16:10!");
+}
+
+let numMetadata = 2;
+if (link) numMetadata += 1;
+if (sourceHref) numMetadata += 1;
+
+const { Content } = await render(project);
+---
+
+<BaseLayout meta={{ kind: "projects", projectsEntry: project }}>
+  <Header />
+
+  <main>
+    <div class="constrain lg:px-5">
+      <hgroup class="px-5 lg:px-0">
+        <h1 class="text-xl/tight font-medium heading">{name}</h1>
+        <p class="text-lg/tight heading">{description.short}</p>
+        <p class="mt-3 prose">{description.long}</p>
+      </hgroup>
+
+      <ProjectCover
+        projectId={id}
+        coverImage={coverImage}
+        class="mt-7 lg:rounded-lg"
+      />
+    </div>
+
+    <section class="constrain mt-7 px-5">
+      <h2 class="sr-only">Overview</h2>
+
+      <dl
+        class:list={[
+          "grid max-w-(--prose-w) grid-cols-1 gap-3 md:max-w-150",
+          { "md:grid-cols-2": numMetadata % 2 === 0 },
+          { "md:grid-cols-3": numMetadata === 3 },
+        ]}
+      >
+        <div>
+          <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+            Made with <WrenchIcon size={ICON_SIZE} class="icon" />
+          </dt>
+          <dd>
+            <TechList tech={tech} />
+          </dd>
+        </div>
+
+        <div>
+          <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+            Duration <CalendarFoldIcon size={ICON_SIZE} class="icon" />
+          </dt>
+          <dd>
+            <ContentDate date={date} />
+          </dd>
+        </div>
+
+        {link && (
+          <div>
+            <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+              {link.label} <ExternalLinkIcon size={ICON_SIZE} class="icon" />
+            </dt>
+            <dd>
+              <a
+                href={link.href}
+                target="_blank"
+                rel="noopener"
+                class="link-primary"
+              >
+                {
+                  /* Get rid of https:// and only show domain */
+                  link.href.slice(8).split("/")[0]
+                }
+              </a>
+            </dd>
+          </div>
+        )}
+
+        {sourceHref && (
+          <div>
+            <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+              Source <FileCodeIcon size={ICON_SIZE} class="icon" />
+            </dt>
+            <dd>
+              <a
+                href={sourceHref}
+                target="_blank"
+                rel="noopener"
+                class="link-primary"
+              >
+                View on GitHub
+              </a>
+            </dd>
+          </div>
+        )}
+      </dl>
+    </section>
+
+    <MdxContent content={Content} />
+  </main>
+
+  <Footer />
+</BaseLayout>

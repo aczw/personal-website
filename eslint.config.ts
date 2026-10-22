@@ -13,7 +13,7 @@ export default defineConfig([
   eslint.configs.recommended,
 
   // Extend ESLint for TypeScript
-  tseslint.configs.recommendedTypeChecked,
+  ...tseslint.configs.recommendedTypeChecked,
   {
     languageOptions: {
       parserOptions: {
@@ -23,10 +23,10 @@ export default defineConfig([
     },
   },
 
-  // Extend ESLint for Astro. Has to be placed after typescript-eslint is loaded in
-  eslintPluginAstro.configs.recommended,
+  // Extend ESLint for Astro
+  ...eslintPluginAstro.configs.recommended,
 
-  // Disable typed linting for Astro files for now.
+  // Disable TypeScript linting inside Astro files for now.
   // See https://github.com/ota-meshi/eslint-plugin-astro/issues/447
   {
     files: ["**/*.astro"],
@@ -40,5 +40,10 @@ export default defineConfig([
       lintCodeBlocks: true,
     }),
   },
-  mdx.flatCodeBlocks,
+  {
+    ...mdx.flatCodeBlocks,
+    rules: {
+      ...mdx.flatCodeBlocks.rules,
+    },
+  },
 ]);

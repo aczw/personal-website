@@ -3,91 +3,131 @@ import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
 import {
-  BlurbSchema,
+  ShortDescriptionSchema,
+  LongDescriptionSchema,
   DateSchema,
-  GalleryCommonSchema as common,
   ImageSchema,
-  LinkSchema,
-  SourceHrefSchema,
-  TechSchema,
+  SourceSchema,
 } from "@/scripts/schema";
+
+const getNameFromEntryFile = (entry: string) => entry.split("/")[0]!;
 
 const projects = defineCollection({
   loader: glob({
-    pattern: "**/*.mdx",
-    base: "./src/content/projects",
+    pattern: "*/*.mdx",
+    base: "./content/projects",
     retainBody: false,
+    generateId: ({ entry }) => getNameFromEntryFile(entry),
   }),
   schema: ({ image }) =>
     z.object({
       name: z.string(),
-      subtitle: z
-        .string()
-        .refine((subtitle) => subtitle.length <= 40, {
-          error:
-            "Subtitle should be extremely short. Use a blurb for longer content.",
-        })
-        .optional(),
-      blurb: BlurbSchema,
-      metadata: z.object({
-        tech: TechSchema,
-        link: LinkSchema.optional(),
-        sourceHref: SourceHrefSchema.optional(),
+      description: z.strictObject({
+        short: ShortDescriptionSchema,
+        long: LongDescriptionSchema,
+      }),
+      metadata: z.strictObject({
+        tech: z.string().array(),
+        link: z
+          .object({
+            href: z.url(),
+            label: z.string(),
+          })
+          .optional(),
+        sourceHref: SourceSchema.optional(),
         date: DateSchema,
       }),
-      order: z.number(),
-      cover: ImageSchema(image),
+      coverImage: ImageSchema(image),
+    }),
+});
+
+const projectPages = defineCollection({
+  loader: glob({
+    pattern: "*/pages/*.mdx",
+    base: "./content/projects",
+    generateId: ({ entry }) => {
+      const parts = entry.split("/");
+      const pageName = parts[2]!.split(".")[0]!;
+      return `${parts[0]}/${pageName}`;
+    },
+  }),
+  schema: () =>
+    z.object({
+      title: z.string().nonempty(),
+      description: z.string().nonempty(),
     }),
 });
 
 const posts = defineCollection({
   loader: glob({
-    pattern: "**/*.mdx",
-    base: "./src/content/posts",
-    retainBody: false,
+    pattern: "*/*.mdx",
+    base: "./content/posts",
+    retainBody: true,
+    generateId: ({ entry }) => getNameFromEntryFile(entry),
   }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      blurb: BlurbSchema.optional(),
+      description: LongDescriptionSchema.optional(),
       posted: z.date(),
-      cover: ImageSchema(image).optional(),
+      coverImage: ImageSchema(image).optional(),
     }),
 });
 
-const gallery = defineCollection({
+const games = defineCollection({
   loader: glob({
-    pattern: "**/*.mdx",
-    base: "./src/content/gallery",
-    retainBody: true,
+    pattern: "*/*.mdx",
+    base: "./content/games",
+    retainBody: false,
+    generateId: ({ entry }) => getNameFromEntryFile(entry),
   }),
-  schema: z.discriminatedUnion("type", [
+  schema: ({ image }) =>
     z.object({
-      ...common.shape,
-      type: z.literal("visual"),
-      category: z.enum(["3d", "traditional", "digital", "cover-art"]),
+      title: z.string(),
+      description: ShortDescriptionSchema,
+      coverImage: ImageSchema(image),
+      instructions: z.string(),
+      metadata: z.strictObject({
+        tech: z.string().array(),
+        released: z.date(),
+        sourceHref: SourceSchema.optional(),
+      }),
+      itch: z
+        .strictObject({
+          url: z.url(),
+          webEmbed: z
+            .strictObject({
+              id: z.int(),
+              aspectRatio: z.strictObject({
+                x: z.number().nonnegative(),
+                y: z.number().nonnegative(),
+              }),
+            })
+            .optional(),
+          download: z.strictObject({
+            windows: z.boolean(),
+            mac: z.boolean(),
+            linux: z.boolean(),
+          }),
+        })
+        .optional(),
+      steam: z
+        .strictObject({
+          id: z.int(),
+          trailer: z.strictObject({
+            youTubeId: z.string().nonempty(),
+            title: z.string().nonempty(),
+          }),
+        })
+        .optional(),
     }),
-    z.object({
-      ...common.shape,
-      type: z.literal("code"),
-      languages: z.string().array(), // Make it broad for now
-      libraries: z.string().array(),
-      sourceHref: SourceHrefSchema.optional(),
-    }),
-    z.object({
-      ...common.shape,
-      type: z.literal("game"),
-      stores: z.url().array(),
-      engine: z.enum(["unity", "unreal", "godot", "custom"]),
-      sourceHref: SourceHrefSchema.optional(),
-    }),
-  ]),
 });
 
 const collections = {
   projects,
+  projectPages,
   posts,
-  gallery,
+  games,
 };
 
-export { collections, ImageSchema };
+export { collections };

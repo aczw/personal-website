@@ -1,32 +1,401 @@
 ---
-import { Image } from "astro:assets";
+import BaseLayout from "@/components/base-layout.astro";
+import Header from "@/components/header.astro";
 
-import imageNotFound from "@/assets/not-found.png";
-
-import CommonLayout from "@/layouts/common-layout.astro";
+const description = "Sorry, this page does not exist. How did this happen?";
 ---
 
-<CommonLayout
+<BaseLayout
   meta={{
     kind: "route",
     route: "404",
-    description: "Page not found. How did you get here??",
+    description,
   }}
-  headerLinks={[]}
 >
-  <main
-    class="mx-auto my-25 flex w-full flex-col items-center gap-y-pad-4 px-pad-2 desktop:my-pad-4 desktop:w-4/5 desktop:px-pad lg:w-(--real-header-w)"
-  >
-    <h1 class="sr-only">Page not found</h1>
+  <Header id="header" />
 
-    <a
-      href="https://twitter.com/sawaratsuki1004"
-      target="_blank"
-      class="w-[clamp(325px,90%,500px)]"
-    >
-      <Image src={imageNotFound} alt="Page not found" priority />
-    </a>
+  <main>
+    <hgroup id="content" class="constrain px-5">
+      <h1 class="sr-only">Page not found</h1>
+      <p class="prose">
+        {description} Oh well. Since you're here now, you might as well{" "}
+        <button
+          id="open-pane"
+          class="inline link-primary rounded-sm bg-sweater-9 px-1.25 hover:bg-sweater-8 light:bg-sweater-2 light:hover:bg-sweater-3"
+          data-init="false"
+          data-show="true"
+        >
+          play with the background
+        </button>
+        .
+      </p>
+    </hgroup>
 
-    <p>Sorry, page not found.</p>
+    <canvas
+      id="noise"
+      class="absolute inset-0 -z-1 h-full w-full bg-sweater-10 light:bg-sweater-1"
+    ></canvas>
+
+    <div class="absolute inset-x-0 bottom-0 overflow-hidden">
+      <div
+        id="pane-container"
+        class="mx-auto w-full px-5 pb-5 desktop:max-w-100"
+        style={{ opacity: 0, display: "none", scale: 0.9 }}
+      ></div>
+    </div>
   </main>
-</CommonLayout>
+</BaseLayout>
+
+<script>
+  import vertSrc from "@/shaders/quad.vert.glsl?raw";
+  import fragSrc from "@/shaders/noise.frag.glsl?raw";
+
+  import { Pane } from "tweakpane";
+  import * as TpEssentialsPlugin from "@tweakpane/plugin-essentials";
+  import type { FpsGraphBladeApi } from "@tweakpane/plugin-essentials";
+
+  import {
+    CANVAS_HEIGHT,
+    CANVAS_WIDTH,
+    checkForResize,
+    initializeGfx,
+  } from "@/scripts/gfx";
+  import {
+    SWEATER_1,
+    SWEATER_10,
+    SWEATER_3,
+    SWEATER_9,
+  } from "@/scripts/palette";
+  import { commitStyleAnimation } from "@/scripts/util";
+  import { KEYFRAME_ANIM_OPTS } from "@/scripts/constants";
+
+  const DitherMode = {
+    NOISE: 0,
+    ORDERED: 1,
+  } as const;
+
+  const BayerMatrix = {
+    TWO_BY_TWO: 0,
+    FOUR_BY_FOUR: 1,
+    EIGHT_BY_EIGHT: 2,
+  } as const;
+
+  const run = () => {
+    const gfxRes = initializeGfx(vertSrc, fragSrc);
+
+    if (gfxRes.kind === "err") {
+      console.error(`Error initializing graphics context: ${gfxRes.message}`);
+      return;
+    }
+
+    const { offCanvas, gl, program } = gfxRes.data;
+
+    const canvasElt = document.getElementById("noise") as HTMLCanvasElement;
+    const bitmapCtx = canvasElt.getContext("bitmaprenderer");
+
+    if (!bitmapCtx) {
+      console.error("Failed to create bitmap rendering context");
+      return;
+    }
+
+    const dimensionsUnif = gl.getUniformLocation(program, "u_dimensions");
+    const timeUnif = gl.getUniformLocation(program, "u_time");
+
+    const colorAUnif = gl.getUniformLocation(program, "u_color_a");
+    const colorBUnif = gl.getUniformLocation(program, "u_color_b");
+    const biasUnif = gl.getUniformLocation(program, "u_bias");
+    const countUnif = gl.getUniformLocation(program, "u_count");
+    const directionUnif = gl.getUniformLocation(program, "u_direction");
+    const offsetUnif = gl.getUniformLocation(program, "u_offset");
+    const speedUnif = gl.getUniformLocation(program, "u_speed");
+    const modeUnif = gl.getUniformLocation(program, "u_mode");
+    const matrixUnif = gl.getUniformLocation(program, "u_matrix");
+    const ditherSizeUnif = gl.getUniformLocation(program, "u_dither_size");
+    const pixelSizeUnif = gl.getUniformLocation(program, "u_pixel_size");
+    const cellSizeUnif = gl.getUniformLocation(program, "u_cell_size");
+
+    const paneContainerElt = document.getElementById("pane-container")!;
+    const openPaneBtn = document.getElementById(
+      "open-pane",
+    )! as HTMLButtonElement;
+    const headerElt = document.getElementById("header")!;
+    const contentElt = document.getElementById("content")!;
+
+    openPaneBtn.addEventListener("click", () => {
+      if (openPaneBtn.dataset["init"] === "true") return;
+
+      openPaneBtn.dataset["init"] = "true";
+      openPaneBtn.classList.remove(
+        "link-primary",
+        "rounded-sm",
+        "bg-sweater-9",
+        "px-1.25",
+        "hover:bg-sweater-8",
+        "light:bg-sweater-2",
+        "light:hover:bg-sweater-3",
+      );
+
+      headerElt
+        .animate([{ opacity: 0 }], KEYFRAME_ANIM_OPTS)
+        .addEventListener("finish", (ev) => {
+          commitStyleAnimation(ev);
+          headerElt.style.display = "none";
+          headerElt.style.opacity = "1";
+          openPaneBtn.dataset["show"] = "false";
+        });
+      contentElt
+        .animate([{ opacity: 0 }], KEYFRAME_ANIM_OPTS)
+        .addEventListener("finish", (ev) => {
+          commitStyleAnimation(ev);
+          contentElt.style.display = "none";
+          contentElt.style.opacity = "1";
+          openPaneBtn.dataset["show"] = "false";
+        });
+
+      paneContainerElt.style.display = "block";
+      paneContainerElt
+        .animate([{ opacity: 1, scale: 1 }], KEYFRAME_ANIM_OPTS)
+        .addEventListener("finish", commitStyleAnimation);
+    });
+
+    const prefersDarkQuery = window.matchMedia("(prefers-color-scheme: dark)");
+    const greaterThanSmQuery = window.matchMedia("(width >= 40rem)");
+
+    const initialPixelSize = greaterThanSmQuery.matches ? 119 : 63;
+    const data = {
+      dimensions: `${CANVAS_WIDTH}×${CANVAS_HEIGHT}`,
+      backend: "WebGL 2",
+      color: {
+        a: prefersDarkQuery.matches ? SWEATER_9 : SWEATER_3,
+        b: prefersDarkQuery.matches ? SWEATER_10 : SWEATER_1,
+      },
+      bias: 0,
+      count: 5,
+      direction: { x: 1, y: 1 },
+      offset: { x: 0.0, y: 0.0 },
+      speed: 0.35,
+      mode: DitherMode.ORDERED,
+      matrix: BayerMatrix.EIGHT_BY_EIGHT,
+      ditherSize: 7,
+      pixelSize: initialPixelSize,
+      cellSize: 1.6,
+    };
+
+    prefersDarkQuery.addEventListener("change", (ev) => {
+      if (ev.matches) {
+        gl.uniform3f(colorAUnif, SWEATER_9.r, SWEATER_9.g, SWEATER_9.b);
+        gl.uniform3f(colorBUnif, SWEATER_10.r, SWEATER_10.g, SWEATER_10.b);
+        data.color.a = SWEATER_9;
+        data.color.b = SWEATER_10;
+      } else {
+        gl.uniform3f(colorAUnif, SWEATER_3.r, SWEATER_3.g, SWEATER_3.b);
+        gl.uniform3f(colorBUnif, SWEATER_1.r, SWEATER_1.g, SWEATER_1.b);
+        data.color.a = SWEATER_3;
+        data.color.b = SWEATER_1;
+      }
+      pane.refresh();
+    });
+
+    gl.uniform3f(colorAUnif, data.color.a.r, data.color.a.g, data.color.a.b);
+    gl.uniform3f(colorBUnif, data.color.b.r, data.color.b.g, data.color.b.b);
+    gl.uniform1f(biasUnif, data.bias);
+    gl.uniform1f(countUnif, data.count);
+    gl.uniform2f(directionUnif, -data.direction.x, data.direction.y);
+    gl.uniform2f(offsetUnif, data.offset.x, data.offset.y);
+    gl.uniform1f(speedUnif, data.speed);
+    gl.uniform1i(modeUnif, data.mode);
+    gl.uniform1i(matrixUnif, data.matrix);
+    gl.uniform1i(ditherSizeUnif, data.ditherSize);
+    gl.uniform1i(pixelSizeUnif, data.pixelSize);
+    gl.uniform1f(cellSizeUnif, data.cellSize);
+
+    const pane = new Pane({
+      title: "Settings",
+      container: paneContainerElt,
+    });
+    pane.registerPlugin(TpEssentialsPlugin);
+
+    pane
+      .addButton({
+        title: "Toggle page",
+      })
+      .on("click", () => {
+        if (openPaneBtn.dataset["show"] === "true") {
+          headerElt.style.display = "none";
+          contentElt.style.display = "none";
+          openPaneBtn.dataset["show"] = "false";
+        } else {
+          headerElt.style.display = "block";
+          contentElt.style.display = "block";
+          openPaneBtn.dataset["show"] = "true";
+        }
+      });
+
+    const drawBlade = pane.addBlade({
+      view: "fpsgraph",
+      label: "FPS",
+      min: 0,
+      max: 60,
+      rows: 1,
+    }) as FpsGraphBladeApi;
+    drawBlade.on("tick", (ev) => {
+      // Dynamically adjust FPS max bound
+      if (ev.target.fps && ev.target.fps > ev.target.max) {
+        ev.target.max = ev.target.fps + 15;
+      }
+    });
+
+    pane.addBinding(data, "dimensions", {
+      readonly: true,
+      label: "Dimensions",
+    });
+    pane.addBinding(data, "backend", {
+      readonly: true,
+      label: "Backend",
+    });
+
+    const properties = pane.addFolder({
+      title: "Properties",
+      expanded: false,
+    });
+
+    properties
+      .addBinding(data.color, "a", {
+        label: "Color A",
+        color: { type: "float" },
+        picker: "inline",
+      })
+      .on("change", (ev) => {
+        gl.uniform3f(colorAUnif, ev.value.r, ev.value.g, ev.value.b);
+      });
+    properties
+      .addBinding(data.color, "b", {
+        label: "Color B",
+        color: { type: "float" },
+        picker: "inline",
+      })
+      .on("change", (ev) => {
+        gl.uniform3f(colorBUnif, ev.value.r, ev.value.g, ev.value.b);
+      });
+    properties
+      .addBinding(data, "bias", { label: "Bias", min: -1.0, max: 1.0 })
+      .on("change", (ev) => {
+        gl.uniform1f(biasUnif, ev.value);
+      });
+    properties
+      .addBinding(data, "count", { label: "Count", min: 2, max: 15, step: 1 })
+      .on("change", (ev) => {
+        gl.uniform1f(countUnif, ev.value);
+      });
+
+    properties.addBlade({ view: "separator" });
+
+    properties
+      .addBinding(data, "direction", {
+        label: "Direction",
+        x: { min: -1, max: 1, step: 0.01 },
+        y: { min: -1, max: 1, step: 0.01 },
+        picker: "inline",
+      })
+      .on("change", (ev) => {
+        gl.uniform2f(directionUnif, -ev.value.x, ev.value.y);
+      });
+    properties
+      .addBinding(data, "offset", { label: "Offset", picker: "inline" })
+      .on("change", (ev) => {
+        gl.uniform2f(offsetUnif, ev.value.x, ev.value.y);
+      });
+    properties
+      .addBinding(data, "speed", { label: "Speed", min: 0, max: 5, step: 0.01 })
+      .on("change", (ev) => {
+        gl.uniform1f(speedUnif, ev.value);
+      });
+
+    properties.addBlade({ view: "separator" });
+
+    properties
+      .addBinding(data, "mode", {
+        label: "Mode",
+        options: {
+          "Noise-based": DitherMode.NOISE,
+          Ordered: DitherMode.ORDERED,
+        },
+      })
+      .on("change", (ev) => {
+        matrixBinding.hidden = ev.value === (DitherMode.NOISE as number);
+        gl.uniform1i(modeUnif, ev.value);
+      });
+    const matrixBinding = properties.addBinding(data, "matrix", {
+      label: "Bayer matrix",
+      options: {
+        "2×2": BayerMatrix.TWO_BY_TWO,
+        "4×4": BayerMatrix.FOUR_BY_FOUR,
+        "8×8": BayerMatrix.EIGHT_BY_EIGHT,
+      },
+    });
+    matrixBinding.on("change", (ev) => {
+      gl.uniform1i(matrixUnif, ev.value);
+    });
+    properties
+      .addBinding(data, "ditherSize", {
+        label: "Dither size",
+        min: 1,
+        step: 1,
+      })
+      .on("change", (ev) => {
+        gl.uniform1i(ditherSizeUnif, ev.value);
+      });
+    properties
+      .addBinding(data, "pixelSize", {
+        label: "Pixel size",
+        min: 1,
+        step: 5,
+      })
+      .on("change", (ev) => {
+        gl.uniform1i(pixelSizeUnif, ev.value);
+      });
+    properties
+      .addBinding(data, "cellSize", {
+        label: "Cell size",
+        min: 0.1,
+        step: 0.1,
+      })
+      .on("change", (ev) => {
+        gl.uniform1f(cellSizeUnif, ev.value);
+      });
+
+    const draw: FrameRequestCallback = (now) => {
+      drawBlade.begin();
+      const elapsed = now * 0.001;
+
+      gl.uniform1f(timeUnif, elapsed);
+      checkForResize(gl, offCanvas, canvasElt, dimensionsUnif);
+      data.dimensions = `${gl.canvas.width}×${gl.canvas.height}`;
+      const t = Math.min(elapsed / 3.5, 1);
+      gl.uniform1f(biasUnif, 1 - t + data.bias);
+
+      gl.drawArrays(gl.TRIANGLES, 0, 3);
+
+      bitmapCtx.transferFromImageBitmap(offCanvas.transferToImageBitmap());
+
+      drawBlade.end();
+      requestAnimationFrame(draw);
+    };
+
+    requestAnimationFrame(draw);
+  };
+
+  run();
+</script>
+
+<style>
+  main {
+    /* Force Tweakpane to use my Maple Mono settings */
+    #pane-container {
+      font-feature-settings: var(--font-mono--font-feature-settings);
+
+      /* Make Tweakpane use Maple Mono */
+      --tp-base-font-family: var(--font-mono);
+    }
+  }
+</style>

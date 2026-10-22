@@ -1,61 +1,92 @@
 ---
+import type { HTMLAttributes } from "astro/types";
 import { Image } from "astro:assets";
 import type { z } from "astro/zod";
 
-import type { ImageSchema } from "@/content.config";
+import type { ImageSchema } from "@/scripts/schema";
 import { CDN_URL } from "@/scripts/constants";
 import { isValidProjectCover } from "@/scripts/util";
 
-interface Props {
-  id: string;
-  cover: z.infer<ReturnType<typeof ImageSchema>>;
-  useVideo: { small: boolean } | null;
-  class?: string;
-}
+type Props = HTMLAttributes<"div"> & {
+  projectId: string;
+  coverImage: z.infer<ReturnType<typeof ImageSchema>>;
+};
 
-const { id, cover, class: className, useVideo } = Astro.props;
-const path = `${CDN_URL}/projects/${id}`;
+const { projectId, coverImage, class: className, ...props } = Astro.props;
 
-if (!isValidProjectCover(cover.img.width, cover.img.height)) {
+if (!isValidProjectCover(coverImage.file.width, coverImage.file.height)) {
   throw new Error(
-    `Error rendering ${id}: project cover images must have an aspect ratio of 16:10!`,
+    `Project cover image for "${projectId}" does not have 16:10 aspect ratio`,
   );
 }
 ---
 
-<project-cover
-  class:list={["relative block aspect-16/10 *:absolute *:inset-0", className]}
-  data-use-video={useVideo ? "true" : "false"}
+<div
+  class:list={[
+    "relative aspect-16/10 overflow-hidden *:absolute *:inset-0",
+    className,
+  ]}
+  {...props}
 >
-  <Image src={cover.img} alt={cover.alt} priority class="bg-sweater-9" />
+  <Image
+    src={coverImage.file}
+    alt={coverImage.alt}
+    decoding="async"
+    class="h-auto w-full bg-sweater-9 light:bg-sweater-2"
+  />
 
-  {
-    useVideo ?
-      <div
-        style={{ opacity: 0 }}
-        class="w-full transition-opacity motion-reduce:hidden"
-      >
-        {/* Setting opacity directly on video element doesn't seem to work */}
-        <video
-          autoplay
-          loop
-          muted
-          playsinline
-          preload="auto"
-          class="h-full w-full"
-        >
-          <source
-            src={`${path}/${useVideo.small ? "cover-small" : "cover"}.webm`}
-            type="video/webm"
-          />
-          <source src={`${path}/cover.mp4`} type="video/mp4" />
-        </video>
-      </div>
-    : null
-  }
-</project-cover>
+  <video
+    crossorigin="anonymous"
+    muted
+    playsinline
+    loop
+    autoplay
+    preload="auto"
+    src={`${CDN_URL}/projects/${projectId}/cover.mp4`}
+    class="project-cover-video h-auto w-full bg-sweater-9 opacity-0 light:bg-sweater-2"
+    data-loaded="false"
+  ></video>
+</div>
 
 <script>
-  import { ProjectCover } from "@/scripts/project-cover";
-  customElements.define("project-cover", ProjectCover);
+  import { KEYFRAME_ANIM_OPTS } from "@/scripts/constants";
+  import { commitStyleAnimation } from "@/scripts/util";
+
+  const isVideoReady = (videoElt: HTMLVideoElement) => {
+    return videoElt.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA;
+  };
+
+  const checkAndTransitionVideo = (
+    imageElt: HTMLImageElement,
+    videoElt: HTMLVideoElement,
+  ) => {
+    if (!isVideoReady(videoElt) || videoElt.dataset["loaded"]! === "true") {
+      return;
+    }
+
+    videoElt.dataset["loaded"] = "true";
+    videoElt
+      .animate([{ opacity: 1 }], KEYFRAME_ANIM_OPTS)
+      .addEventListener("finish", (ev) => {
+        commitStyleAnimation(ev);
+        imageElt.remove();
+      });
+  };
+
+  document
+    .querySelectorAll<HTMLVideoElement>("video.project-cover-video")
+    .forEach((videoElt) => {
+      const imageElt = videoElt.previousElementSibling as HTMLImageElement;
+
+      if (isVideoReady(videoElt)) {
+        checkAndTransitionVideo(imageElt, videoElt);
+      } else {
+        videoElt.addEventListener("progress", () =>
+          checkAndTransitionVideo(imageElt, videoElt),
+        );
+        videoElt.addEventListener("canplaythrough", () =>
+          checkAndTransitionVideo(imageElt, videoElt),
+        );
+      }
+    });
 </script>

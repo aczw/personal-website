@@ -12,35 +12,400 @@ type Props = HTMLAttributes<"article"> & {
   content: AstroComponentFactory;
 };
 
-const { content: Content, class: className, ...props } = Astro.props;
+const { content: Content, ...props } = Astro.props;
 ---
 
-<Fragment>
-  <article class:list={["mdx", className]} {...props}>
-    <Content
-      components={{
-        h2: H2,
-        h3: H3,
-        h4: H4,
-        blockquote: Aside,
-        a: Anchor,
-      }}
-    />
-  </article>
+<article class="mdx mt-7" {...props}>
+  <Content
+    components={{
+      h2: H2,
+      h3: H3,
+      h4: H4,
+      blockquote: Aside,
+      a: Anchor,
+    }}
+  />
+</article>
 
-  <dialog
-    class="fixed top-1/2 left-1/2 mb-0 w-full max-w-(--real-wide-w) transform-[translate(-50%,-50%)] bg-transparent outline-0 backdrop:bg-sweater-10/85 light:backdrop:bg-sweater-1/85"
-  >
-    <div class="p-pad-2">
-      <img
-        loading="eager"
-        decoding="sync"
-        fetchpriority="high"
-        class="mx-auto max-h-[80vh] cursor-zoom-out rounded-xl select-none"
-      />
-    </div>
-  </dialog>
-</Fragment>
+<dialog class="fixed top-1/2 left-1/2 mb-0 w-full max-w-(--max-w) transform-[translate(-50%,-50%)] bg-transparent outline-0 backdrop:bg-sweater-10/85 light:backdrop:bg-sweater-1/85">
+  <div class="p-5">
+    <img
+      loading="eager"
+      decoding="sync"
+      fetchpriority="high"
+      class="mx-auto max-h-[80vh] cursor-zoom-out rounded-sm select-none"
+    />
+  </div>
+</dialog>
+
+<style>
+  @reference "@/main.css";
+
+  article {
+    display: grid;
+    grid-template-columns:
+      minmax(--spacing(5), 1fr)
+      minmax(0, var(--max-w))
+      minmax(--spacing(5), 1fr);
+
+    /* Not supported on mobile. */
+    @media (hover: hover) {
+      :global(img:not([data-no-zoom])) {
+        cursor: zoom-in;
+
+        &:active {
+          scale: 97%;
+        }
+
+        @apply transition-transform;
+      }
+    }
+
+    & > :global(*) {
+      grid-column: 2;
+
+      @apply prose;
+    }
+
+    & > :global(:not(:last-child)) {
+      margin-bottom: --spacing(4);
+    }
+
+    /* Captions for media only, not the EC title bar */
+    :global(figcaption:not(.header)) {
+      margin-top: --spacing(1);
+      font-size: var(--text-sm);
+      font-weight: 500;
+
+      & > :global(*) {
+        display: inline;
+      }
+
+      @apply heading;
+
+      &::before {
+        display: inline-block;
+        translate: 0 --spacing(0.5);
+        scale: 90%;
+        padding-right: --spacing(1.5);
+        content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiNkNmQzZmYiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBjbGFzcz0ibHVjaWRlIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodC1pY29uIGx1Y2lkZS1jb3JuZXItZG93bi1yaWdodCI+PHBvbHlsaW5lIHBvaW50cz0iMTUgMTAgMjAgMTUgMTUgMjAiLz48cGF0aCBkPSJNNCA0djdhNCA0IDAgMCAwIDQgNGgxMiIvPjwvc3ZnPg==") /
+          "";
+
+        @variant light {
+          content: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIgdmlld0JveD0iMCAwIDE2IDE2IiBmaWxsPSJub25lIj4KPHBhdGggZD0iTTEwIDYuNjY2NjdMMTMuMzMzMyAxMEwxMCAxMy4zMzMzIiBzdHJva2U9IiM0ODQzOTAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+CjxwYXRoIGQ9Ik0yLjY2NjYzIDIuNjY2NjdWNy4zMzMzNEMyLjY2NjYzIDguMDQwNTggMi45NDc1OCA4LjcxODg2IDMuNDQ3NjcgOS4yMTg5NkMzLjk0Nzc3IDkuNzE5MDUgNC42MjYwNSAxMCA1LjMzMzI5IDEwSDEzLjMzMzMiIHN0cm9rZT0iIzQ4NDM5MCIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+") /
+            "";
+        }
+      }
+    }
+
+    :global(b, strong) {
+      font-weight: 500;
+    }
+
+    /* For plain media, we always make them span the max possible width. */
+    :global(img, video, iframe) {
+      width: 100%;
+      border-radius: var(--radius-sm);
+    }
+
+    /* Inline code only, not code blocks */
+    :global(:not(pre) > code) {
+      border-radius: var(--radius-sm);
+      background-color: var(--color-sweater-9);
+      padding: 1px --spacing(1);
+      overflow-wrap: anywhere;
+
+      @variant light {
+        background-color: var(--color-sweater-2);
+      }
+
+      @apply maple;
+    }
+
+    :global(del) {
+      cursor: not-allowed;
+      color: var(--color-sweater-6);
+      text-decoration-line: line-through;
+
+      @variant light {
+        color: var(--color-sweater-5);
+      }
+    }
+
+    :global(ul) {
+      margin-left: --spacing(5);
+      list-style-position: outside;
+      list-style-type: "➔";
+
+      & > :global(:not(:last-child)) {
+        margin-bottom: --spacing(1.5);
+      }
+
+      @variant sm {
+        padding-right: --spacing(10);
+      }
+
+      /* <ul> as a child of <li> */
+      :global(li) > & {
+        padding-top: --spacing(1.5);
+      }
+    }
+
+    :global(ol) {
+      margin-left: --spacing(5);
+      list-style-position: outside;
+      list-style-type: decimal;
+
+      & > :global(:not(:last-child)) {
+        margin-bottom: --spacing(1.5);
+      }
+    }
+
+    :global(li) {
+      padding-left: --spacing(2);
+
+      &::marker {
+        color: var(--color-sweater-5);
+
+        @variant light {
+          color: var(--color-sweater-7);
+        }
+      }
+    }
+
+    :global(table) {
+      grid-column: 1 / -1;
+      border-block-width: 2px;
+
+      @variant sm {
+        grid-column: 2;
+      }
+
+      @apply border-style;
+
+      :global(thead) {
+        border-bottom-width: 2px;
+
+        @apply border-style heading;
+
+        :global(th) {
+          padding: --spacing(1) --spacing(5);
+          font-weight: 500;
+
+          &:not(:last-child) {
+            border-right-width: 2px;
+
+            @apply border-style;
+          }
+
+          @variant sm {
+            padding-left: 0;
+
+            &:not(:first-child) {
+              padding-left: --spacing(3);
+            }
+          }
+        }
+      }
+
+      :global(tr) {
+        &:not(:last-child) {
+          border-bottom-width: 2px;
+
+          @apply border-style;
+        }
+
+        :global(td) {
+          padding: --spacing(1) --spacing(5);
+
+          &:not(:first-child) {
+            padding-left: --spacing(3);
+          }
+
+          &:not(:last-child) {
+            border-right-width: 2px;
+
+            @apply border-style;
+          }
+
+          @variant sm {
+            padding-left: 0;
+          }
+        }
+      }
+    }
+
+    :global(section[data-footnotes]) {
+      margin-bottom: 0;
+      font-size: var(--text-sm);
+      line-height: var(--text-sm--line-height);
+
+      /* In footnotes, monospaced text should be even smaller. */
+      --text-mono: 0.8rem;
+
+      > :global(h2#footnote-label) {
+        margin-top: --spacing(3);
+        margin-bottom: --spacing(4);
+        border-top-width: 2px;
+        padding-top: --spacing(7);
+
+        @apply border-style;
+      }
+
+      > :global(ol) {
+        > :global(li > p:has(> a[data-footnote-backref])) {
+          display: inline;
+        }
+
+        :global(a[data-footnote-backref]) {
+          display: inline;
+
+          > :global(svg) {
+            translate: 0 --spacing(-0.5);
+            scale: 90%;
+            stroke-width: 2px;
+            display: inline;
+          }
+        }
+      }
+    }
+
+    :global(mjx-container[jax="CHTML"][display="true"]) {
+      margin-block: --spacing(3) --spacing(7);
+    }
+
+    :global(.expressive-code) {
+      grid-column: 1 / -1;
+      width: 100%;
+
+      --ec-tm-markBrdCol: --alpha(var(--color-sweater-2) / 30%);
+      --ec-tm-markBg: --alpha(var(--color-sweater-2) / 10%);
+
+      /* Taken from Rosé Pine palette */
+      --ec-tm-insBg: --alpha(#9ccfd8 / 25%);
+      --ec-tm-insBrdCol: --alpha(#9ccfd8 / 50%);
+      --ec-tm-insDiffIndCol: --alpha(#9ccfd8 / 65%);
+      --ec-tm-delBg: --alpha(#eb6f92 / 25%);
+      --ec-tm-delBrdCol: --alpha(#eb6f92 / 50%);
+      --ec-tm-delDiffIndCol: --alpha(#eb6f92 / 65%);
+
+      --ec-codePadBlk: --spacing(5);
+      --ec-codePadInl: --spacing(5);
+      --ec-uiPadInl: --spacing(5);
+      --ec-uiPadBlk: --spacing(1);
+
+      @variant light {
+        --ec-tm-markBrdCol: --alpha(var(--color-sweater-9) / 30%);
+        --ec-tm-markBg: --alpha(var(--color-sweater-9) / 10%);
+
+        /* Taken from Rosé Pine Dawn palette */
+        --ec-tm-insBg: --alpha(#56949f / 25%);
+        --ec-tm-insBrdCol: --alpha(#56949f / 50%);
+        --ec-tm-insDiffIndCol: --alpha(#56949f / 65%);
+        --ec-tm-delBg: --alpha(#b4637a / 25%);
+        --ec-tm-delBrdCol: --alpha(#b4637a / 50%);
+        --ec-tm-delDiffIndCol: --alpha(#b4637a / 65%);
+      }
+
+      @variant sm {
+        grid-column: 2;
+        width: fit-content;
+        max-width: min(var(--wide-w), 100%);
+        min-width: min(var(--prose-w), 100%);
+
+        --ec-codePadBlk: --spacing(3);
+        --ec-codePadInl: --spacing(3);
+        --ec-uiPadInl: --spacing(3);
+      }
+
+      :global(*) {
+        scrollbar-width: thin;
+      }
+
+      /* Force EC code blocks to use my Maple Mono settings */
+      :global(pre *) {
+        @apply maple;
+      }
+
+      :global(pre) {
+        --ec-brdRad: 0;
+
+        @variant sm {
+          --ec-brdRad: var(--radius-lg);
+        }
+      }
+
+      :global(figure.frame figcaption.header) {
+        --header-border-radius: 0;
+
+        @variant sm {
+          --header-border-radius: var(--radius-lg);
+        }
+
+        :global(.title) {
+          font-weight: 500;
+          border-radius: 0px;
+          border-top-right-radius: var(--tab-border-radius);
+
+          @variant sm {
+            border-radius: var(--radius-lg) var(--radius-lg) 0px 0px;
+          }
+        }
+      }
+    }
+
+    :global(.outdent, .outdent-wide, .outdent-max) {
+      grid-column: 1 / -1;
+
+      @variant sm {
+        grid-column: 2;
+      }
+
+      :global(img, video, iframe) {
+        border-radius: 0;
+
+        @variant sm {
+          border-radius: var(--radius-sm);
+        }
+      }
+
+      :global(figcaption) {
+        max-width: 100%;
+        padding-left: --spacing(5);
+        padding-right: --spacing(5);
+
+        @variant sm {
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        @apply prose;
+      }
+    }
+
+    :global(.wide, .outdent-wide) {
+      width: 100%;
+      height: auto;
+      max-width: var(--wide-w);
+    }
+
+    :global(.max, .outdent-max) {
+      width: 100%;
+      height: auto;
+      max-width: 100%;
+    }
+
+    :global(.gallery) {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: --spacing(3);
+
+      @variant md {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+  }
+</style>
 
 <script>
   const dialogElt = document.querySelector("dialog");
@@ -50,12 +415,12 @@ const { content: Content, class: className, ...props } = Astro.props;
   /**
    * @see https://cassidoo.co/post/html-dialog-on-image-click
    */
-  function makeMediaZoomable() {
+  const makeMediaZoomable = () => {
     // Only activate on desktop
     if (!window.matchMedia("(hover: hover)").matches) return;
 
     if (!dialogElt || !dialogImgElt) {
-      console.error("Dialog and/or dialog image not found!");
+      console.error("Dialog and/or dialog image not found");
       return;
     }
 
@@ -85,7 +450,7 @@ const { content: Content, class: className, ...props } = Astro.props;
       dialogImgElt.srcset = "";
       dialogImgElt.alt = "";
     });
-  }
+  };
 
   makeMediaZoomable();
 </script>

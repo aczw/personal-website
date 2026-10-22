@@ -1,0 +1,74 @@
+@import "tailwindcss";
+
+@theme inline {
+  --font-sans: var(--font-atkinson);
+  --font-mono: var(--font-maple);
+}
+
+@theme {
+  /* See https://font.subf.dev/en/playground to see what each value means */
+  --font-mono--font-feature-settings:
+    "cv01", "cv02", "cv05", "cv61", "ss05", "ss11";
+
+  /* Monospace text should be a little smaller than display text. Otherwise
+   * it just looks too large. */
+  --text-mono: 0.85rem;
+
+  --color-*: initial;
+  --color-sweater-1: #e1dfff;
+  --color-sweater-2: #d6d3ff;
+  --color-sweater-3: #c3bdff;
+  --color-sweater-4: #ada6ff;
+  --color-sweater-5: #9a91fe;
+  --color-sweater-6: #6b62cb;
+  --color-sweater-7: #484390;
+  --color-sweater-8: #312d65;
+  --color-sweater-9: #1d193d;
+  --color-sweater-10: #0a0919;
+
+  /* A good indicator for when we're beyond mobile territory. Equals 480px */
+  --breakpoint-desktop: 30rem;
+}
+
+@view-transition {
+  navigation: auto;
+}
+
+/* Quicker way of writing `not-dark` */
+@custom-variant light {
+  @media not (prefers-color-scheme: dark) {
+    @slot;
+  }
+}
+
+@utility constrain {
+  @apply mx-auto max-w-[calc(var(--max-w)+2.5rem)];
+}
+
+@utility maple {
+  @apply font-mono text-mono;
+}
+
+@utility border-style {
+  @apply border-dashed border-sweater-8 light:border-sweater-3;
+}
+
+@utility link-primary {
+  @apply w-fit font-medium text-sweater-3 hover:text-sweater-1 light:text-sweater-7 light:hover:text-sweater-9;
+}
+
+@utility link-secondary {
+  @apply text-sweater-5 hover:text-sweater-4 light:text-sweater-6 light:hover:text-sweater-7;
+}
+
+@utility icon {
+  @apply stroke-sweater-6 light:stroke-sweater-5;
+}
+
+@utility heading {
+  @apply text-sweater-2 light:text-sweater-8;
+}
+
+@utility prose {
+  @apply sm:w-(--prose-w);
+}

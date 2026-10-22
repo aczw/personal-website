@@ -1,0 +1,164 @@
+---
+import { Font } from "astro:assets";
+
+import SpeedInsights from "@vercel/speed-insights/astro";
+
+import "@/main.css";
+
+import { SITE_URL } from "@/scripts/constants";
+import { extractHeadInformation, type Meta } from "@/scripts/meta";
+
+interface Props {
+  meta: Meta;
+}
+
+const { title: titlePrefix, description } = await extractHeadInformation(
+  Astro.props.meta,
+);
+
+const url = new URL(Astro.url.pathname, Astro.site).toString();
+// https://github.com/withastro/astro/issues/5248
+const canonicalUrl = url.replace(/\/+$/, "");
+
+const title =
+  titlePrefix.length === 0 ? "Charles Wang" : `${titlePrefix} / Charles Wang`;
+
+const OG_URL = `${SITE_URL}/og.png`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta
+      name="viewport"
+      content="width=device-width, interactive-widget=resizes-content"
+    />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta name="color-scheme" content="dark light" />
+
+    <meta property="og:site_name" content="Charles Wang" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:image" content={OG_URL} />
+
+    <meta property="twitter:image" content={OG_URL} />
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <link
+      rel="icon"
+      sizes="any"
+      type="image/svg+xml"
+      href="/favicon-dark-bg.svg"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      sizes="any"
+      type="image/svg+xml"
+      href="/favicon-light-bg.svg"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link
+      rel="icon"
+      sizes="64x64"
+      type="image/png"
+      href="/favicon-dark-bg.png"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      sizes="64x64"
+      type="image/png"
+      href="/favicon-light-bg.png"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <title>{title}</title>
+
+    <script
+      is:inline
+      defer
+      src="https://cloud.umami.is/script.js"
+      data-website-id="9ccfaf2d-6989-4335-ab83-606d54cdee0f"
+    ></script>
+    <SpeedInsights />
+
+    <Font cssVariable="--font-atkinson" preload />
+    <Font cssVariable="--font-maple" preload />
+  </head>
+
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  @reference "@/main.css";
+
+  :root {
+    color-scheme: light dark;
+
+    --max-w: 75rem; /* 1200px */
+    --wide-w: 56.25rem; /* 900px */
+    --prose-w: 34.375rem; /* 550px */
+  }
+
+  html {
+    background-color: var(--color-sweater-10);
+    color: var(--color-sweater-1);
+
+    scrollbar-width: thin;
+    scrollbar-gutter: stable;
+
+    &::selection {
+      background-color: var(--color-sweater-8);
+      color: var(--color-sweater-3);
+    }
+
+    @variant light {
+      background-color: var(--color-sweater-1);
+      color: var(--color-sweater-10);
+
+      &::selection {
+        background-color: var(--color-sweater-3);
+        color: var(--color-sweater-8);
+      }
+    }
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    overflow-wrap: break-word;
+    text-wrap: pretty;
+  }
+
+  img,
+  video {
+    font-style: italic;
+
+    &::selection {
+      background-color: var(--color-sweater-5);
+    }
+
+    @variant light {
+      &::selection {
+        background-color: var(--color-sweater-3);
+      }
+    }
+  }
+</style>

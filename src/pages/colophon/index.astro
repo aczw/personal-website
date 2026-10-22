@@ -1,0 +1,169 @@
+---
+import BaseLayout from "@/components/base-layout.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+
+const palette = [
+  "#e1dfff",
+  "#d6d3ff",
+  "#c3bdff",
+  "#ada6ff",
+  "#9a91fe",
+  "#6b62cb",
+  "#484390",
+  "#312d65",
+  "#1d193d",
+  "#0a0919",
+];
+---
+
+<BaseLayout
+  meta={{
+    kind: "route",
+    route: "colophon",
+    description: "Information on the development of this website.",
+  }}
+>
+  <Header />
+
+  <main>
+    <h1 class="sr-only">Colophon</h1>
+
+    <section class="constrain space-y-3 px-5 *:prose">
+      <h2 class="sr-only">General information</h2>
+      <p>
+        This website was statically generated with {Astro.generator} and for the
+        most part also acts like one. There's some parts of the homepage that
+        uses{" "}
+        <a
+          href="https://docs.astro.build/en/guides/server-islands"
+          target="_blank"
+          rel="noopener"
+          class="link-primary"
+        >
+          server island components
+        </a>{" "}
+        which is rendered on-demand.
+      </p>
+      <p>
+        I write a lot of the content-heavy pages using MDX. Styling is provided
+        by a mix of Tailwind and regular ol' CSS.
+      </p>
+      <p>
+        My go-to sans serif choice of font is{" "}
+        <span class="font-medium">Atkinson Hyperlegible Next</span>. Most text
+        on this site uses it. A medium font weight is used for emphasis over
+        semibold or bold. All monospace text is set in{" "}
+        <span class="maple">Maple Mono</span>. I love the{" "}
+        <span class="maple italic">italic variant</span>.
+      </p>
+      <p>
+        Pages are served from Vercel. The domain was purchased and is currently
+        maintained on Porkbun. My favorite apps are Helium, VS Code, and
+        Ghostty.
+      </p>
+      <p>
+        All the writing you're reading (right now!) was physically typed by
+        hand.
+      </p>
+    </section>
+
+    <section class="constrain mt-7">
+      <h2 id="color-palette" class="px-5 font-medium heading">
+        Color palette
+      </h2>
+      <p class="prose px-5">
+        Do you like the color scheme of this website? So do I. Here's the
+        palette for reference. Select a swatch to copy its hex code.
+      </p>
+
+      <div class="mt-7 sm:px-5 md:w-fit">
+        <div class="bg-sweater-9 px-5 py-3 sm:rounded-md sm:px-3 light:bg-sweater-2">
+          <div class="flex font-medium">
+            <h3 class="leading-none">Sweater</h3>
+            <p
+              id="palette-status-text"
+              aria-hidden="true"
+              class="leading-none"
+              style={{ display: "none", opacity: 0 }}
+            >
+              -0 (#ffffff) copied
+            </p>
+          </div>
+
+          <div class="mt-3 grid grid-cols-5 gap-3">
+            {palette.map((swatch, index) => (
+              <button
+                class:list={[
+                  "swatch block h-20 w-auto cursor-pointer rounded-sm md:w-30",
+                  { "border-2 border-style light:border-0": index === 8 },
+                  { "border-0 border-style light:border-2": index === 1 },
+                ]}
+                style={{ backgroundColor: swatch }}
+                data-hex={swatch}
+              ></button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-7 prose px-5">
+        I named this palette "Sweater" because when I was younger, my mother
+        owned a purple sweater that I would constantly steal and snuggle with
+        when I went to bed.
+      </p>
+      <p class="mt-3 prose px-5">
+        It was comfy, warm, and smelled like her. I remember it being a shade
+        most similar to <span class="font-medium">Sweater-3</span> or{" "}
+        <span class="font-medium">Sweater-4</span>.
+      </p>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<script>
+  import { commitStyleAnimation } from "@/scripts/util";
+
+  const statusTextElt = document.getElementById(
+    "palette-status-text",
+  ) as HTMLParagraphElement;
+
+  let animation: Animation | null = null;
+  let timeoutId: number | null = null;
+
+  document
+    .querySelectorAll<HTMLButtonElement>("button.swatch")
+    .forEach((btnElt, index) => {
+      btnElt.addEventListener("click", async () => {
+        const hexCode = btnElt.dataset["hex"]!;
+
+        await navigator.clipboard.writeText(hexCode);
+
+        statusTextElt.textContent = `-${index + 1} (${hexCode}) copied`;
+        statusTextElt.style.display = "block";
+        statusTextElt.style.opacity = "1";
+
+        if (animation !== null) {
+          animation.commitStyles();
+          animation.cancel();
+          statusTextElt.style.opacity = "1";
+
+          if (timeoutId !== null) window.clearTimeout(timeoutId);
+        }
+
+        timeoutId = window.setTimeout(() => {
+          animation = statusTextElt.animate([{ opacity: 1 }, { opacity: 0 }], {
+            duration: 700,
+            easing: "ease-out",
+            fill: "forwards",
+          });
+          animation.addEventListener("finish", (ev) => {
+            commitStyleAnimation(ev);
+            statusTextElt.style.display = "none";
+          });
+        }, 1000);
+      });
+    });
+</script>

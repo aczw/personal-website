@@ -3,14 +3,14 @@
  * @see https://web.dev/patterns/web-vitals-patterns/video/video-gif
  */
 
-import type { CollectionEntry, ContentCollectionKey } from "astro:content";
+import type { ContentCollectionKey } from "astro:content";
 
 import { CDN_URL } from "@/scripts/constants";
 
 interface Props {
   content: {
     collection: ContentCollectionKey;
-    folder: CollectionEntry<ContentCollectionKey>["id"];
+    folder: string;
   };
   name: string;
   hasWebM?: boolean;
@@ -22,10 +22,10 @@ const {
   hasWebM,
 } = Astro.props;
 
-const path = `${CDN_URL}/${collection}/${folder}`;
+const mediaUrl = `${CDN_URL}/${collection}/${folder}`;
 ---
 
 <video autoplay loop muted playsinline>
-  {hasWebM ? <source src={`${path}/${name}.webm`} type="video/webm" /> : null}
-  <source src={`${path}/${name}.mp4`} type="video/mp4" />
+  {hasWebM && <source src={`${mediaUrl}/${name}.webm`} type="video/webm" />}
+  <source src={`${mediaUrl}/${name}.mp4`} type="video/mp4" />
 </video>

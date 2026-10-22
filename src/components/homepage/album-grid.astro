@@ -1,0 +1,34 @@
+---
+import type { actions, ActionReturnType } from "astro:actions";
+import { Image } from "astro:assets";
+
+import { Disc3Icon } from "@lucide/astro";
+
+import { ICON_SIZE } from "@/scripts/constants";
+
+interface Props {
+  albums: ActionReturnType<typeof actions.lastFm.getTopAlbums.orThrow>;
+}
+
+const { albums } = Astro.props;
+---
+
+{albums.map(({ name, albumUrl, coverUrl }) => (
+  <li title={name}>
+    <a href={albumUrl} target="_blank" rel="noopener">
+      {coverUrl ?
+        <Image
+          src={coverUrl}
+          alt={`Cover art for ${name}`}
+          width={174}
+          height={174}
+          priority
+          class="aspect-square h-auto w-full bg-sweater-9 object-cover desktop:rounded-sm light:bg-sweater-2"
+        />
+      : <div class="flex aspect-square h-auto w-full items-center justify-center bg-sweater-9 desktop:rounded-sm light:bg-sweater-2">
+          <Disc3Icon size={2 * ICON_SIZE} class="icon" />
+        </div>
+      }
+    </a>
+  </li>
+))}

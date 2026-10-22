@@ -21,7 +21,7 @@ const config: Config & PluginOptions = {
       },
     },
   ],
-  tailwindStylesheet: "./src/styles/main.css",
+  tailwindStylesheet: "./src/main.css",
   tailwindAttributes: ["tw"],
 };
 
