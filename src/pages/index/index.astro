@@ -16,7 +16,7 @@ import { toString } from "mdast-util-to-string";
 import BaseLayout from "@/components/base-layout.astro";
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
-import { deriveProjectTimestamp } from "@/scripts/util";
+import { capitalize, deriveProjectTimestamp } from "@/scripts/util";
 import { FEATURED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import ProjectCover from "@/components/project-cover.astro";
 import { GlobeIcon } from "@lucide/astro";
@@ -63,6 +63,8 @@ const generatePostExcerpt = (markdown: string): string => {
 
 entries.sort((a, b) => deriveEntryTimestamp(b) - deriveEntryTimestamp(a));
 
+const filters = ["projects", "writing", "games"];
+
 const description =
   "Everything that I've ever done that is available on this website.";
 ---
@@ -76,6 +78,28 @@ const description =
       <p class="prose">{description} Most recent entries are at the top.</p>
     </hgroup>
 
+    <section class="constrain mt-5 px-5">
+      <h2 id="filter-by" class="font-medium heading">
+        Filter by
+      </h2>
+
+      <div class="grid prose grid-cols-2">
+        {filters.map((filter) => (
+          <div class="flex items-center gap-x-2">
+            <input
+              type="checkbox"
+              checked
+              id={`filter-${filter}`}
+              data-filter="false"
+            />
+            <label for={`filter-${filter}`} class="select-none">
+              {capitalize(filter)}
+            </label>
+          </div>
+        ))}
+      </div>
+    </section>
+
     <section class="constrain mt-7 grid grid-cols-2 gap-3 px-5 desktop:grid-cols-3 sm:grid-cols-4 md:grid-cols-5">
       {entries.map(async (entry) => {
         const { id } = entry;
@@ -86,7 +110,7 @@ const description =
             const isFeatured = FEATURED_PROJECTS.includes(id);
 
             return (
-              <article class="relative h-fit">
+              <article class="type-projects relative h-fit">
                 <h2>
                   <a
                     href={`/projects/${id}`}
@@ -121,7 +145,7 @@ const description =
             const hasCoverImage = data.coverImage !== undefined;
 
             return (
-              <article class="relative h-fit">
+              <article class="type-posts relative h-fit">
                 <div
                   class:list={[
                     "border-x-2 border-t-2 border-style border-solid",
@@ -165,7 +189,7 @@ const description =
             const { title, coverImage, itch } = entry.data;
 
             return (
-              <article class="group relative h-fit">
+              <article class="type-games relative h-fit">
                 <h2>
                   <a
                     href={`/games/${id}`}
@@ -239,3 +263,35 @@ const description =
 
   <Footer />
 </BaseLayout>
+
+<script>
+  const projects = document.querySelectorAll<HTMLElement>(
+    "article.type-projects",
+  );
+  const posts = document.querySelectorAll<HTMLElement>("article.type-posts");
+  const games = document.querySelectorAll<HTMLElement>("article.type-games");
+
+  document.querySelectorAll<HTMLInputElement>("input").forEach((checkbox) => {
+    checkbox.addEventListener("change", () => {
+      if (checkbox.dataset["filter"] === "false") {
+        checkbox.dataset["filter"] = "true";
+      } else {
+        checkbox.dataset["filter"] = "false";
+      }
+
+      if (checkbox.id === "filter-projects") {
+        projects.forEach((project) => {
+          project.classList.toggle("hidden");
+        });
+      } else if (checkbox.id === "filter-writing") {
+        posts.forEach((post) => {
+          post.classList.toggle("hidden");
+        });
+      } else {
+        games.forEach((game) => {
+          game.classList.toggle("hidden");
+        });
+      }
+    });
+  });
+</script>
