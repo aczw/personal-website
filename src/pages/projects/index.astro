@@ -28,8 +28,8 @@ const rest = projects
   .filter(({ id }) => !DISABLED_PROJECTS.includes(id))
   .sort(
     (a, b) =>
-      deriveProjectTimestamp(b.data.metadata.date) -
-      deriveProjectTimestamp(a.data.metadata.date),
+      deriveProjectTimestamp(b.data.meta.date) -
+      deriveProjectTimestamp(a.data.meta.date),
   );
 
 const description =
@@ -81,42 +81,40 @@ const description =
       <p class="prose">Most recent projects are listed at the top.</p>
 
       <div class="mt-7">
-        {rest.map(
-          ({ id, data: { name, description, metadata, coverImage } }) => (
-            <article class="group relative flex w-fit gap-x-3 not-last:pb-3">
-              <Image
-                src={coverImage.file}
-                alt={coverImage.alt}
-                decoding="async"
-                class="h-[2lh] w-auto rounded-xs bg-sweater-9 lg:h-lh light:bg-sweater-2"
-              />
+        {rest.map(({ id, data: { name, description, meta, coverImage } }) => (
+          <article class="group relative flex w-fit gap-x-3 not-last:pb-3">
+            <Image
+              src={coverImage.file}
+              alt={coverImage.alt}
+              decoding="async"
+              class="h-[2lh] w-auto rounded-xs bg-sweater-9 lg:h-lh light:bg-sweater-2"
+            />
 
-              <div class="flex flex-col gap-x-3 lg:flex-row">
-                <h3>
-                  <a
-                    href={`/projects/${id}`}
-                    class:list={[
-                      "link-primary after:absolute after:inset-0 after:z-1",
-                    ]}
-                  >
-                    {name}
-                  </a>
-                </h3>
+            <div class="flex flex-col gap-x-3 lg:flex-row">
+              <h3>
+                <a
+                  href={`/projects/${id}`}
+                  class:list={[
+                    "link-primary after:absolute after:inset-0 after:z-1",
+                  ]}
+                >
+                  {name}
+                </a>
+              </h3>
 
-                <div class="flex gap-x-3">
-                  <p class="hidden link-secondary group-hover:text-sweater-4 sm:block sm:grid-cols-4 light:group-hover:text-sweater-7">
-                    {description.short}
-                  </p>
+              <div class="flex gap-x-3">
+                <p class="hidden link-secondary group-hover:text-sweater-4 sm:block sm:grid-cols-4 light:group-hover:text-sweater-7">
+                  {description.short}
+                </p>
 
-                  <TechList
-                    tech={metadata.tech}
-                    class="text-sweater-6 light:text-sweater-5"
-                  />
-                </div>
+                <TechList
+                  tech={meta.tech}
+                  class="text-sweater-6 light:text-sweater-5"
+                />
               </div>
-            </article>
-          ),
-        )}
+            </div>
+          </article>
+        ))}
       </div>
     </section>
 

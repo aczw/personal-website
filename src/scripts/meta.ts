@@ -12,6 +12,7 @@ import {
 type Route =
   | "about"
   | "colophon"
+  | "covers"
   | "games"
   | "index"
   | "posts"
@@ -47,6 +48,8 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
             return "About";
           case "colophon":
             return "Colophon";
+          case "covers":
+            return "Cover art";
           case "games":
             return "Games";
           case "index":
@@ -109,6 +112,14 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
       return {
         title: data.title,
         description: data.description,
+      };
+    }
+
+    case "covers": {
+      const { data } = meta.coversEntry;
+      return {
+        title: data.title,
+        description: `Custom cover art for ${data.title}`,
       };
     }
 

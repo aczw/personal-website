@@ -1,0 +1,31 @@
+---
+import BaseLayout from "@/components/base-layout.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+
+const description =
+  "I save a lot of music not on streaming services for various reasons. They often don't have official art, so I've created my own for them.";
+---
+
+<BaseLayout meta={{ kind: "route", route: "covers", description }}>
+  <Header />
+
+  <main>
+    <hgroup class="constrain px-5">
+      <h1 class="sr-only">Cover art</h1>
+      <p class="prose">
+        {description} It's better than staring at the default empty music
+        artwork, don't you think?
+      </p>
+      <p class="mt-3 prose">
+        Making artwork for these songs is how I originally started learning
+        design, and now it influences everything I do.
+      </p>
+      <p class="mt-3 prose">
+        Please, feel free to download these and use them for yourself.
+      </p>
+    </hgroup>
+  </main>
+
+  <Footer />
+</BaseLayout>

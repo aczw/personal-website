@@ -26,8 +26,8 @@ const projects = defineCollection({
         short: ShortDescriptionSchema,
         long: LongDescriptionSchema,
       }),
-      metadata: z.strictObject({
-        tech: z.string().array(),
+      meta: z.strictObject({
+        tech: z.array(z.string().nonempty()).nonempty(),
         link: z
           .object({
             href: z.url(),
@@ -87,8 +87,8 @@ const games = defineCollection({
       description: ShortDescriptionSchema,
       coverImage: ImageSchema(image),
       instructions: z.string(),
-      metadata: z.strictObject({
-        tech: z.string().array(),
+      meta: z.strictObject({
+        tech: z.array(z.string().nonempty()).nonempty(),
         released: z.date(),
         sourceHref: SourceSchema.optional(),
       }),
@@ -123,11 +123,31 @@ const games = defineCollection({
     }),
 });
 
+const covers = defineCollection({
+  loader: glob({
+    pattern: "*/*.mdx",
+    base: "./content/covers",
+    retainBody: false,
+    generateId: ({ entry }) => getNameFromEntryFile(entry),
+  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string().nonempty(),
+      artists: z.array(z.string().nonempty()).nonempty(),
+      image: ImageSchema(image),
+      meta: z.strictObject({
+        created: z.date(),
+        tools: z.array(z.string().nonempty()).nonempty(),
+      }),
+    }),
+});
+
 const collections = {
   projects,
   projectPages,
   posts,
   games,
+  covers,
 };
 
 export { collections };

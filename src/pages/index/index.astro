@@ -41,11 +41,11 @@ const deriveEntryTimestamp = (
 ): number => {
   switch (entry.collection) {
     case "projects":
-      return deriveProjectTimestamp(entry.data.metadata.date);
+      return deriveProjectTimestamp(entry.data.meta.date);
     case "posts":
       return entry.data.posted.getTime() * 0.001;
     case "games":
-      return entry.data.metadata.released.getTime() * 0.001;
+      return entry.data.meta.released.getTime() * 0.001;
 
     default:
       throw new Error(`Unhandled content collection: ${entry.collection}`);

@@ -22,7 +22,7 @@ export const getStaticPaths = (async () => {
 const { id } = Astro.params;
 const game = await getEntry("games", id)!;
 
-const { title, description, instructions, metadata, itch, steam } = game.data;
+const { title, description, instructions, meta, itch, steam } = game.data;
 
 // itch.io adds its own 20px tall bottom bar to the embed, which the
 // aspect ratio must take into account
@@ -90,19 +90,19 @@ const { Content } = await render(game);
         <div>
           <dt class="leading-tight font-medium heading">Built with</dt>
           <dd>
-            <TechList tech={metadata.tech} />
+            <TechList tech={meta.tech} />
           </dd>
         </div>
 
         <div>
           <dt class="leading-tight font-medium heading">Released</dt>
-          <dd>{getShortDateFormatting(metadata.released)}</dd>
+          <dd>{getShortDateFormatting(meta.released)}</dd>
         </div>
       </dl>
 
-      {metadata.sourceHref && (
+      {meta.sourceHref && (
         <a
-          href={metadata.sourceHref}
+          href={meta.sourceHref}
           target="_blank"
           rel="noopener"
           class="mt-5 flex link-primary w-full max-w-(--prose-w) items-center justify-between gap-x-5 rounded-sm border-2 border-style p-2 leading-tight font-medium"
@@ -116,7 +116,7 @@ const { Content } = await render(game);
         <div
           class:list={[
             "relative flex w-full max-w-(--prose-w) items-center justify-between gap-x-5 rounded-sm border-2 border-style p-2 leading-tight",
-            metadata.sourceHref ? "mt-1.5" : "mt-5",
+            meta.sourceHref ? "mt-1.5" : "mt-5",
           ]}
         >
           <div>
@@ -157,14 +157,14 @@ const { Content } = await render(game);
         height="190"
         class:list={[
           "w-full max-w-(--prose-w) scheme-light",
-          !metadata.sourceHref && !itch ? "mt-5" : "mt-3",
+          !meta.sourceHref && !itch ? "mt-5" : "mt-3",
         ]}
       ></iframe>}
 
       <p
         class:list={[
           "prose rounded-sm bg-sweater-9 p-2 leading-tight light:bg-sweater-2",
-          !metadata.sourceHref && !itch && !steam ? "mt-5" : "mt-2",
+          !meta.sourceHref && !itch && !steam ? "mt-5" : "mt-2",
         ]}
       >
         <span class="font-medium">Instructions:</span> {instructions}

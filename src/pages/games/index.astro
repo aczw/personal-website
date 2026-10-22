@@ -8,8 +8,7 @@ import Header from "@/components/header.astro";
 
 let gameEntries = await getCollection("games");
 gameEntries = gameEntries.sort(
-  (a, b) =>
-    b.data.metadata.released.getTime() - a.data.metadata.released.getTime(),
+  (a, b) => b.data.meta.released.getTime() - a.data.meta.released.getTime(),
 );
 
 const description = "Play some games that I made or have helped make!";
