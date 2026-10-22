@@ -1,7 +1,15 @@
 ---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
 import BaseLayout from "@/components/base-layout.astro";
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
+
+const coverArt = await getCollection("covers");
+coverArt.sort(
+  (a, b) => b.data.meta.created.getTime() - a.data.meta.created.getTime(),
+);
 
 const description =
   "I save a lot of music not on streaming services for various reasons. They often don't have official art, so I've created my own for them.";
@@ -22,9 +30,33 @@ const description =
         design, and now it influences everything I do.
       </p>
       <p class="mt-3 prose">
-        Please, feel free to download these and use them for yourself.
+        Feel free to download these and use them for yourself.
       </p>
     </hgroup>
+
+    <section class="constrain mt-7 px-5">
+      <h2 class="sr-only">Artwork</h2>
+
+      <div class="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
+        {coverArt.map(({ id, data }) => (
+          <figure class="relative">
+            <Image
+              src={data.image.file}
+              alt={data.image.alt}
+              class="rounded-xs"
+            />
+            <figcaption>
+              <a
+                href={`/covers/${id}`}
+                class="after:absolute after:inset-0 after:z-1"
+              >
+                <span class="sr-only">{data.title}</span>
+              </a>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
   </main>
 
   <Footer />

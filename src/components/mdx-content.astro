@@ -15,7 +15,7 @@ type Props = HTMLAttributes<"article"> & {
 const { content: Content, ...props } = Astro.props;
 ---
 
-<article class="mdx mt-7" {...props}>
+<article class="mdx not-empty:mt-7" {...props}>
   <Content
     components={{
       h2: H2,
