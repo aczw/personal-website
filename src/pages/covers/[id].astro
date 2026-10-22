@@ -41,8 +41,10 @@ const { Content } = await render(cover);
 
   <main>
     <hgroup class="constrain px-5">
-      <h1 class="mt-3 prose text-xl/tight font-medium heading">{title}</h1>
-      <p class="prose text-lg/tight heading">by {artists.join(", ")}</p>
+      <h1 class="mt-3 prose text-xl/tight font-medium heading">
+        {title} by {artists.join(", ")}
+      </h1>
+      <p class="prose text-lg/tight heading">Custom cover artwork by me</p>
 
       <p class="mt-5">
         <a href="/covers" class="flex link-primary w-fit items-center gap-1.5">

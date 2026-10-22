@@ -118,7 +118,7 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
     case "covers": {
       const { data } = meta.coversEntry;
       return {
-        title: data.title,
+        title: `Cover art for ${data.title}`,
         description: `Custom cover art for ${data.title}`,
       };
     }

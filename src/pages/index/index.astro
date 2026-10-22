@@ -29,11 +29,13 @@ import { GlobeIcon } from "@lucide/astro";
 const projectEntries = await getCollection("projects");
 const postEntries = await getCollection("posts");
 const gameEntries = await getCollection("games");
+const coverArtEntries = await getCollection("covers");
 
 const entries: CollectionEntry<CollectionKey>[] = [
   ...projectEntries.filter(({ id }) => !DISABLED_PROJECTS.includes(id)),
   ...postEntries.filter(({ id }) => !DISABLED_POSTS.includes(id)),
   ...gameEntries,
+  ...coverArtEntries,
 ];
 
 const deriveEntryTimestamp = (
@@ -46,6 +48,8 @@ const deriveEntryTimestamp = (
       return entry.data.posted.getTime() * 0.001;
     case "games":
       return entry.data.meta.released.getTime() * 0.001;
+    case "covers":
+      return entry.data.meta.created.getTime() * 0.001;
 
     default:
       throw new Error(`Unhandled content collection: ${entry.collection}`);
@@ -68,7 +72,7 @@ const generatePostExcerpt = (markdown: string): string => {
 
 entries.sort((a, b) => deriveEntryTimestamp(b) - deriveEntryTimestamp(a));
 
-const filters = ["projects", "writing", "games"];
+const filters = ["projects", "writing", "games", "cover-art"];
 
 const description =
   "Everything that I've ever done that is available on this website.";
@@ -98,7 +102,7 @@ const description =
               data-filter="false"
             />
             <label for={`filter-${filter}`} class="select-none">
-              {capitalize(filter)}
+              {capitalize(filter.split("-").join(" "))}
             </label>
           </div>
         ))}
@@ -287,6 +291,25 @@ const description =
               </article>
             );
           }
+
+          case "covers": {
+            const { title, image } = entry.data;
+
+            return (
+              <article class="type-covers relative h-fit">
+                <h2>
+                  <a
+                    href={`/covers/${id}`}
+                    class="after:absolute after:inset-0 after:z-1"
+                  >
+                    <span class="sr-only">{title}</span>
+                  </a>
+                </h2>
+
+                <Image src={image.file} alt={image.alt} class="rounded-sm" />
+              </article>
+            );
+          }
         }
       })}
     </section>
@@ -301,6 +324,7 @@ const description =
   );
   const posts = document.querySelectorAll<HTMLElement>("article.type-posts");
   const games = document.querySelectorAll<HTMLElement>("article.type-games");
+  const covers = document.querySelectorAll<HTMLElement>("article.type-covers");
 
   document.querySelectorAll<HTMLInputElement>("input").forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
@@ -318,9 +342,13 @@ const description =
         posts.forEach((post) => {
           post.classList.toggle("hidden");
         });
-      } else {
+      } else if (checkbox.id === "filter-games") {
         games.forEach((game) => {
           game.classList.toggle("hidden");
+        });
+      } else {
+        covers.forEach((cover) => {
+          cover.classList.toggle("hidden");
         });
       }
     });
