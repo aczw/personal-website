@@ -1,0 +1,44 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, getEntry } from "astro:content";
+
+import { ArrowLeftIcon } from "@lucide/astro";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Header from "@/components/header.astro";
+import Footer from "@/components/footer.astro";
+import { ICON_SIZE } from "@/scripts/constants";
+import DesignEntry from "@/components/design-entry.astro";
+
+export const getStaticPaths = (async () => {
+  const designEntries = await getCollection("design");
+  return designEntries.map((design) => {
+    return { params: { id: design.id } };
+  });
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+const design = await getEntry("design", id)!;
+
+const { title, type } = design.data;
+---
+
+<BaseLayout meta={{ kind: "design", designEntry: design }}>
+  <Header />
+
+  <main>
+    <hgroup class="constrain px-5">
+      <h1 class="prose text-xl/tight font-medium heading">{title}</h1>
+      <p class="prose text-lg/tight heading">{type}</p>
+      <p class="mt-5">
+        <a href="/design" class="flex link-primary w-fit items-center gap-1.5">
+          <ArrowLeftIcon size={ICON_SIZE} /> Back to all design
+        </a>
+      </p>
+    </hgroup>
+
+    <DesignEntry entry={design} />
+  </main>
+
+  <Footer />
+</BaseLayout>

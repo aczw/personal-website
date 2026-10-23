@@ -1,0 +1,115 @@
+---
+import { Image } from "astro:assets";
+import { render, getCollection, type CollectionEntry } from "astro:content";
+
+import {
+  ArrowRightIcon,
+  CalendarClockIcon,
+  ImageIcon,
+  WrenchIcon,
+} from "@lucide/astro";
+
+import MdxContent from "@/components/mdx-content.astro";
+import TechList from "@/components/tech-list.astro";
+import { getFullDateFormatting, getShortDateFormatting } from "@/scripts/util";
+import { ICON_SIZE } from "@/scripts/constants";
+
+interface Props {
+  entry: CollectionEntry<"design"> | CollectionEntry<"designPages">;
+}
+
+const { entry } = Astro.props;
+const { image, meta } = entry.data;
+
+const designPages = await getCollection("designPages");
+const relevantEntries = designPages.filter(
+  ({ id }) => id.split("/")[0]! === entry.id,
+);
+relevantEntries.sort(
+  (a, b) => b.data.meta.created.getTime() - a.data.meta.created.getTime(),
+);
+
+const { Content } = await render(entry);
+---
+
+<section class="constrain mt-7">
+  <h2 class="sr-only">Design</h2>
+
+  <div class="px-5">
+    <Image
+      src={image.file}
+      alt={image.alt}
+      class="h-auto w-full max-w-(--wide-w) md:rounded-sm"
+    />
+  </div>
+</section>
+
+<section class="constrain mt-7 px-5">
+  <h2 class="sr-only">Overview</h2>
+
+  <dl class="grid max-w-(--prose-w) grid-cols-1 gap-3 md:max-w-150 md:grid-cols-3">
+    <div>
+      <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+        Resolution <ImageIcon size={ICON_SIZE} class="icon" />
+      </dt>
+      <dd>
+        {image.file.width}×{image.file.height}
+      </dd>
+    </div>
+
+    <div>
+      <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+        Tools <WrenchIcon size={ICON_SIZE} class="icon" />
+      </dt>
+      <dd>
+        <TechList tech={meta.tools} />
+      </dd>
+    </div>
+
+    <div>
+      <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+        Created <CalendarClockIcon size={ICON_SIZE} class="icon" />
+      </dt>
+      <dd>
+        <time
+          title={getFullDateFormatting(meta.created)}
+          datetime={meta.created.toISOString()}
+        >
+          {getShortDateFormatting(meta.created)}
+        </time>
+      </dd>
+    </div>
+  </dl>
+</section>
+
+{entry.collection === "design" && (
+  <section class="constrain mt-7 px-5">
+    <h2 id="subpages" class="text-lg heading">
+      Subpages
+    </h2>
+
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      {relevantEntries.map(({ id, data }) => (
+        <figure class="relative h-fit">
+          <Image
+            src={data.image.file}
+            alt={data.image.alt}
+            class="rounded-sm"
+          />
+          <figcaption class="pt-1">
+            <h3>
+              <a
+                href={`/design/${id}`}
+                class="flex link-primary w-full items-center justify-between gap-x-1.5 leading-snug after:absolute after:inset-0 after:z-1 sm:justify-start"
+              >
+                {data.title} <ArrowRightIcon size={ICON_SIZE} />
+              </a>
+            </h3>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+)}
+
+<MdxContent content={Content} />

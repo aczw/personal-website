@@ -2,10 +2,13 @@
 import type { GetStaticPaths } from "astro";
 import { render, getEntry, getCollection } from "astro:content";
 
+import { ArrowLeftIcon } from "@lucide/astro";
+
 import BaseLayout from "@/components/base-layout.astro";
 import Header from "@/components/header.astro";
 import Footer from "@/components/footer.astro";
 import MdxContent from "@/components/mdx-content.astro";
+import { ICON_SIZE } from "@/scripts/constants";
 
 export const getStaticPaths = (async () => {
   const projectPages = await getCollection("projectPages");
@@ -32,11 +35,14 @@ const { Content } = await render(entry);
         <h1>{entry.data.title}</h1>
       </hgroup>
 
-      <a href={`/projects/${projectId}`} class="link-primary">
-        Go back to main project page
+      <a
+        href={`/projects/${projectId}`}
+        class="mt-5 flex link-primary w-fit items-center gap-1.5"
+      >
+        <ArrowLeftIcon size={ICON_SIZE} /> Back to {project.data.name}
       </a>
 
-      <p class="mt-3 prose">{entry.data.description}</p>
+      <p class="mt-5 prose">{entry.data.description}</p>
     </section>
 
     <MdxContent content={Content} />

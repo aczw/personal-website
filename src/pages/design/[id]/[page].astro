@@ -1,0 +1,53 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getEntry, getCollection } from "astro:content";
+
+import { ArrowLeftIcon } from "@lucide/astro";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Header from "@/components/header.astro";
+import Footer from "@/components/footer.astro";
+import { ICON_SIZE } from "@/scripts/constants";
+import DesignEntry from "@/components/design-entry.astro";
+
+export const getStaticPaths = (async () => {
+  const designPages = await getCollection("designPages");
+  return designPages.map((entry) => {
+    const parts = entry.id.split("/");
+    return { params: { id: parts[0]!, page: parts[1]! }, props: { entry } };
+  });
+}) satisfies GetStaticPaths;
+
+const { id: designId } = Astro.params;
+const { entry } = Astro.props;
+
+const design = await getEntry("design", designId)!;
+---
+
+<BaseLayout meta={{ kind: "designPages", designPagesEntry: entry }}>
+  <Header />
+
+  <main>
+    <section class="constrain px-5">
+      <hgroup class="">
+        <div class="flex gap-x-1.5 text-xl/tight font-medium heading">
+          <p>{design.data.title} /</p>
+          <h1>{entry.data.title}</h1>
+        </div>
+
+        <p class="prose text-lg/tight heading">{entry.data.type}</p>
+      </hgroup>
+
+      <a
+        href={`/design/${designId}`}
+        class="mt-5 flex link-primary w-fit items-center gap-1.5"
+      >
+        <ArrowLeftIcon size={ICON_SIZE} /> Back to {design.data.title}
+      </a>
+    </section>
+
+    <DesignEntry entry={entry} />
+  </main>
+
+  <Footer />
+</BaseLayout>

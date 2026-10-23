@@ -1,0 +1,67 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+
+const designEntries = await getCollection("design");
+designEntries.sort(
+  (a, b) => b.data.meta.created.getTime() - a.data.meta.created.getTime(),
+);
+---
+
+<BaseLayout
+  meta={{
+    kind: "route",
+    route: "design",
+    description: "Various design projects I've done.",
+  }}
+>
+  <Header />
+
+  <main>
+    <hgroup class="constrain px-5">
+      <h1 class="sr-only">Design</h1>
+      <p class="prose">
+        Growing up I was always into art. Over quarantine I started downloading
+        and listening to music locally, which spawned my{" "}
+        <a href="/covers" class="link-primary">
+          custom cover artworks
+        </a>
+        . From there, I've only become more and more interested in design.
+      </p>
+      <p class="mt-3 prose">
+        I see design all around me. It often works in mysterious and hidden
+        ways. I wish to learn more about it.
+      </p>
+    </hgroup>
+
+    <section class="constrain mt-7 px-5">
+      <h2 class="sr-only">Artwork</h2>
+
+      <div class="columns-2 gap-3 md:columns-3 lg:columns-4">
+        {designEntries.map(({ id, data }) => (
+          <figure class="relative break-after-avoid not-last:mb-3">
+            <Image
+              src={data.image.file}
+              alt={data.image.alt}
+              class="rounded-xs"
+            />
+            <figcaption>
+              <a
+                href={`/design/${id}`}
+                class="after:absolute after:inset-0 after:z-1"
+              >
+                <span class="sr-only">{data.title}</span>
+              </a>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

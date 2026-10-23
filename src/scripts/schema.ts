@@ -56,6 +56,17 @@ const SourceSchema = z
     error: "Source code is assumed to be hosted on GitHub",
   });
 
+const DesignEntrySchema = (image: ImageFunction) =>
+  z.object({
+    title: z.string().nonempty(),
+    type: z.string().nonempty(),
+    image: ImageSchema(image),
+    meta: z.strictObject({
+      created: z.date(),
+      tools: z.array(z.string().nonempty()).nonempty(),
+    }),
+  });
+
 export {
   ShortDescriptionSchema,
   LongDescriptionSchema,
@@ -64,4 +75,5 @@ export {
   RangedDateSchema,
   DateSchema,
   SourceSchema,
+  DesignEntrySchema,
 };

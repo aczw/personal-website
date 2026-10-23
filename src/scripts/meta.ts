@@ -13,6 +13,7 @@ type Route =
   | "about"
   | "colophon"
   | "covers"
+  | "design"
   | "games"
   | "index"
   | "posts"
@@ -44,20 +45,10 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
     case "route": {
       const title = (() => {
         switch (meta.route) {
-          case "about":
-            return "About";
-          case "colophon":
-            return "Colophon";
           case "covers":
             return "Cover art";
-          case "games":
-            return "Games";
-          case "index":
-            return "Index";
           case "posts":
             return "Writing";
-          case "projects":
-            return "Projects";
           case "404":
             return "Page not found";
           case "home":
@@ -86,10 +77,10 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
       const { data } = meta.projectPagesEntry;
       const projectId = meta.projectPagesEntry.id.split("/")[0]!;
 
-      const projectEntry = await getEntry("projects", projectId);
+      const projectEntry = await getEntry("projects", projectId)!;
 
       return {
-        title: `${data.title} / ${projectEntry?.data.name}`,
+        title: `${data.title} / ${projectEntry.data.name}`,
         description: data.description,
       };
     }
@@ -120,6 +111,26 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
       return {
         title: `Cover art for ${data.title}`,
         description: `Custom cover art for ${data.title}`,
+      };
+    }
+
+    case "design": {
+      const { data } = meta.designEntry;
+      return {
+        title: data.title,
+        description: `${data.type} design by me`,
+      };
+    }
+
+    case "designPages": {
+      const { data } = meta.designPagesEntry;
+      const designId = meta.designPagesEntry.id.split("/")[0]!;
+
+      const designEntry = await getEntry("design", designId)!;
+
+      return {
+        title: `${data.title} / ${designEntry.data.title}`,
+        description: `${data.type} by me`,
       };
     }
 

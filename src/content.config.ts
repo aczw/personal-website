@@ -8,16 +8,22 @@ import {
   DateSchema,
   ImageSchema,
   SourceSchema,
+  DesignEntrySchema,
 } from "@/scripts/schema";
 
-const getNameFromEntryFile = (entry: string) => entry.split("/")[0]!;
+const getNameFromTopPage = (entry: string) => entry.split("/")[0]!;
+const getNameFromSubpage = (entry: string) => {
+  const parts = entry.split("/");
+  const pageName = parts[2]!.split(".")[0]!;
+  return `${parts[0]}/${pageName}`;
+};
 
 const projects = defineCollection({
   loader: glob({
     pattern: "*/*.mdx",
     base: "./content/projects",
     retainBody: false,
-    generateId: ({ entry }) => getNameFromEntryFile(entry),
+    generateId: ({ entry }) => getNameFromTopPage(entry),
   }),
   schema: ({ image }) =>
     z.object({
@@ -45,11 +51,7 @@ const projectPages = defineCollection({
   loader: glob({
     pattern: "*/pages/*.mdx",
     base: "./content/projects",
-    generateId: ({ entry }) => {
-      const parts = entry.split("/");
-      const pageName = parts[2]!.split(".")[0]!;
-      return `${parts[0]}/${pageName}`;
-    },
+    generateId: ({ entry }) => getNameFromSubpage(entry),
   }),
   schema: () =>
     z.object({
@@ -63,7 +65,7 @@ const posts = defineCollection({
     pattern: "*/*.mdx",
     base: "./content/posts",
     retainBody: true,
-    generateId: ({ entry }) => getNameFromEntryFile(entry),
+    generateId: ({ entry }) => getNameFromTopPage(entry),
   }),
   schema: ({ image }) =>
     z.object({
@@ -79,7 +81,7 @@ const games = defineCollection({
     pattern: "*/*.mdx",
     base: "./content/games",
     retainBody: false,
-    generateId: ({ entry }) => getNameFromEntryFile(entry),
+    generateId: ({ entry }) => getNameFromTopPage(entry),
   }),
   schema: ({ image }) =>
     z.object({
@@ -128,7 +130,7 @@ const covers = defineCollection({
     pattern: "*/*.mdx",
     base: "./content/covers",
     retainBody: false,
-    generateId: ({ entry }) => getNameFromEntryFile(entry),
+    generateId: ({ entry }) => getNameFromTopPage(entry),
   }),
   schema: ({ image }) =>
     z.object({
@@ -142,12 +144,33 @@ const covers = defineCollection({
     }),
 });
 
+const design = defineCollection({
+  loader: glob({
+    pattern: "*/*.mdx",
+    base: "./content/design",
+    retainBody: false,
+    generateId: ({ entry }) => getNameFromTopPage(entry),
+  }),
+  schema: ({ image }) => DesignEntrySchema(image),
+});
+
+const designPages = defineCollection({
+  loader: glob({
+    pattern: "*/pages/*/*.mdx",
+    base: "./content/design",
+    generateId: ({ entry }) => getNameFromSubpage(entry),
+  }),
+  schema: ({ image }) => DesignEntrySchema(image),
+});
+
 const collections = {
   projects,
   projectPages,
   posts,
   games,
   covers,
+  design,
+  designPages,
 };
 
 export { collections };
