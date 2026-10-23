@@ -94,14 +94,15 @@ const description =
 
       <div class="grid prose grid-cols-2">
         {filters.map((filter) => (
-          <div class="flex items-center gap-x-2">
+          <div class="flex items-center">
             <input
               type="checkbox"
               checked
               id={`filter-${filter}`}
               data-filter="false"
+              class="accent-sweater-4 light:accent-sweater-5"
             />
-            <label for={`filter-${filter}`} class="select-none">
+            <label for={`filter-${filter}`} class="pl-2 select-none">
               {capitalize(filter.split("-").join(" "))}
             </label>
           </div>
@@ -334,22 +335,26 @@ const description =
         checkbox.dataset["filter"] = "false";
       }
 
-      if (checkbox.id === "filter-projects") {
+      const id = checkbox.id;
+
+      if (id === "filter-projects") {
         projects.forEach((project) => {
           project.classList.toggle("hidden");
         });
-      } else if (checkbox.id === "filter-writing") {
+      } else if (id === "filter-writing") {
         posts.forEach((post) => {
           post.classList.toggle("hidden");
         });
-      } else if (checkbox.id === "filter-games") {
+      } else if (id === "filter-games") {
         games.forEach((game) => {
           game.classList.toggle("hidden");
         });
-      } else {
+      } else if (id === "filter-covers") {
         covers.forEach((cover) => {
           cover.classList.toggle("hidden");
         });
+      } else {
+        throw new Error(`Unhandled checkbox ID: ${id}`);
       }
     });
   });
