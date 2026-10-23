@@ -100,12 +100,16 @@ const { Content } = await render(game);
         </div>
       </dl>
 
+      <p class="mt-5 prose rounded-sm bg-sweater-9 p-2 leading-tight light:bg-sweater-2">
+        <span class="font-medium">Instructions:</span> {instructions}
+      </p>
+
       {meta.sourceHref && (
         <a
           href={meta.sourceHref}
           target="_blank"
           rel="noopener"
-          class="mt-5 flex link-primary w-full max-w-(--prose-w) items-center justify-between gap-x-5 rounded-sm border-2 border-style p-2 leading-tight font-medium"
+          class="mt-1.5 flex link-primary w-full max-w-(--prose-w) items-center justify-between gap-x-5 rounded-sm border-2 border-style p-2 leading-tight font-medium"
         >
           Source code is available on GitHub
           <ExternalLinkIcon size={ICON_SIZE} class="shrink-0" />
@@ -157,18 +161,9 @@ const { Content } = await render(game);
         height="190"
         class:list={[
           "w-full max-w-(--prose-w) scheme-light",
-          !meta.sourceHref && !itch ? "mt-5" : "mt-3",
+          !meta.sourceHref && !itch ? "mt-5" : "mt-1.5",
         ]}
       ></iframe>}
-
-      <p
-        class:list={[
-          "prose rounded-sm bg-sweater-9 p-2 leading-tight light:bg-sweater-2",
-          !meta.sourceHref && !itch && !steam ? "mt-5" : "mt-2",
-        ]}
-      >
-        <span class="font-medium">Instructions:</span> {instructions}
-      </p>
     </section>
 
     <MdxContent content={Content} />
