@@ -114,7 +114,11 @@ const description = "Writing about myself is very hard but here it is.";
       <div class="mt-7 flex gap-x-3 overflow-x-auto">
         {philly.map(({ file, alt, caption }) => (
           <figure class="shrink-0">
-            <Image src={file} alt={alt} class="h-[12lh] w-auto rounded-sm" />
+            <Image
+              src={file}
+              alt={alt}
+              class="h-[12lh] w-auto rounded-sm bg-sweater-9 light:bg-sweater-2"
+            />
             <figcaption class="mt-1 text-sm heading">{caption}</figcaption>
           </figure>
         ))}
@@ -149,7 +153,7 @@ const description = "Writing about myself is very hard but here it is.";
         <Image
           src={pizzaJpg}
           alt="Younger me biting pizza that someone is giving me"
-          class="rounded-sm"
+          class="rounded-sm bg-sweater-9 light:bg-sweater-2"
         />
         <figcaption class="mt-1 text-sm heading">
           Eating whatever is in front of me
@@ -185,7 +189,11 @@ const description = "Writing about myself is very hard but here it is.";
       <div class="mt-7 flex gap-x-3 overflow-x-auto px-5">
         {asiaTrip.map(({ file, alt, caption }) => (
           <figure class="shrink-0">
-            <Image src={file} alt={alt} class="h-[16lh] w-auto rounded-sm" />
+            <Image
+              src={file}
+              alt={alt}
+              class="h-[16lh] w-auto rounded-sm bg-sweater-9 light:bg-sweater-2"
+            />
             <figcaption class="mt-1 text-sm heading">{caption}</figcaption>
           </figure>
         ))}
