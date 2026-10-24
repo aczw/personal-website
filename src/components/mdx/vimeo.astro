@@ -1,21 +1,21 @@
 ---
 interface Props {
   id: number;
+  title: string;
+  ratio?: { w: number; h: number };
 }
 
-const { id } = Astro.props;
+const { id, title, ratio = { w: 16, h: 9 } } = Astro.props;
 ---
 
 <div>
-  <div class="overflow-hidden" style="padding:56.25% 0 0 0;position:relative;">
-    <iframe
-      src={`https://player.vimeo.com/video/${id}?badge=0&amp;autopause=0&amp;player_id=0`}
-      frameborder="0"
-      allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      style="position:absolute;top:0;left:0;width:100%;height:100%;"
-      title="Mini Minecraft - Geedle War Crimes"
-    ></iframe>
-    <script src="https://player.vimeo.com/api/player.js"></script>
-  </div>
+  <iframe
+    src={`https://player.vimeo.com/video/${id}?badge=0&amp;autopause=0&amp;player_id=0&amp;loop=1`}
+    frameborder="0"
+    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    style={ratio && { aspectRatio: `${ratio.w} / ${ratio.h}` }}
+    title={title}
+  ></iframe>
+  <script src="https://player.vimeo.com/api/player.js"></script>
 </div>
