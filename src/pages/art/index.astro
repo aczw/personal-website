@@ -1,0 +1,58 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+
+const artEntries = await getCollection("art");
+artEntries.sort(
+  (a, b) => b.data.meta.created.getTime() - a.data.meta.created.getTime(),
+);
+
+const description = "Various art projects I've done.";
+---
+
+<BaseLayout
+  meta={{
+    kind: "route",
+    route: "art",
+    description,
+  }}
+>
+  <Header />
+
+  <main>
+    <hgroup class="constrain px-5">
+      <h1 class="sr-only">Art</h1>
+      <p class="prose">{description}</p>
+    </hgroup>
+
+    <section class="constrain mt-7 px-5">
+      <h2 class="sr-only">Work</h2>
+
+      <div class="columns-2 gap-3 md:columns-3 lg:columns-4">
+        {artEntries.map(({ id, data: { title, presentation } }) => (
+          <figure class="relative h-fit break-after-avoid not-last:mb-3">
+            <Image
+              src={presentation.cover.file}
+              alt={presentation.cover.alt}
+              class="rounded-xs"
+            />
+            <figcaption>
+              <a
+                href={`/design/${id}`}
+                class="after:absolute after:inset-0 after:z-1"
+              >
+                <span class="sr-only">{title}</span>
+              </a>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

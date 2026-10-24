@@ -45,10 +45,18 @@ const { Content } = await render(art);
       </p>
     </hgroup>
 
-    {presentation.type === "images" && (
-      <section class="constrain mt-7 px-5">
-        <h2 class="sr-only">Artwork</h2>
+    <section class="constrain mt-7 px-5">
+      <h2 class="sr-only">Artwork</h2>
 
+      {presentation.type === "cover" && (
+        <Image
+          src={presentation.cover.file}
+          alt={presentation.cover.alt}
+          class="rounded-sm"
+        />
+      )}
+
+      {presentation.type === "images" && (
         <div
           class="grid grid-cols-1 gap-3 desktop:grid-cols-(--col-count)"
           style={{
@@ -64,8 +72,8 @@ const { Content } = await render(art);
             </figure>
           ))}
         </div>
-      </section>
-    )}
+      )}
+    </section>
 
     <section class="constrain mt-7 px-5">
       <h2 class="sr-only">Overview</h2>
