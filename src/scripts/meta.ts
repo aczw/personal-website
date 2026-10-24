@@ -11,6 +11,7 @@ import {
  */
 type Route =
   | "about"
+  | "art"
   | "colophon"
   | "covers"
   | "design"
@@ -131,6 +132,14 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
       return {
         title: `${data.title} / ${designEntry.data.title}`,
         description: `${data.type} by me`,
+      };
+    }
+
+    case "art": {
+      const { data } = meta.artEntry;
+      return {
+        title: data.title,
+        description: "Artwork by me",
       };
     }
 

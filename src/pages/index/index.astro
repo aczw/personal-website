@@ -13,6 +13,8 @@ import remarkMdx from "remark-mdx";
 import { remove } from "unist-util-remove";
 import { toString } from "mdast-util-to-string";
 
+import { GlobeIcon } from "@lucide/astro";
+
 import BaseLayout from "@/components/base-layout.astro";
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
@@ -24,12 +26,12 @@ import {
   ICON_SIZE,
 } from "@/scripts/constants";
 import ProjectCover from "@/components/project-cover.astro";
-import { GlobeIcon } from "@lucide/astro";
 
 const projectEntries = await getCollection("projects");
 const postEntries = await getCollection("posts");
 const gameEntries = await getCollection("games");
 const designEntries = await getCollection("design");
+const artEntries = await getCollection("art");
 const coverArtEntries = await getCollection("covers");
 
 const entries: CollectionEntry<CollectionKey>[] = [
@@ -37,6 +39,7 @@ const entries: CollectionEntry<CollectionKey>[] = [
   ...postEntries.filter(({ id }) => !DISABLED_POSTS.includes(id)),
   ...gameEntries,
   ...designEntries,
+  ...artEntries,
   ...coverArtEntries,
 ];
 
@@ -51,6 +54,7 @@ const deriveEntryTimestamp = (
     case "games":
       return entry.data.meta.released.getTime() * 0.001;
     case "design":
+    case "art":
     case "covers":
       return entry.data.meta.created.getTime() * 0.001;
 
@@ -75,7 +79,7 @@ const generatePostExcerpt = (markdown: string): string => {
 
 entries.sort((a, b) => deriveEntryTimestamp(b) - deriveEntryTimestamp(a));
 
-const filters = ["projects", "writing", "games", "design", "cover-art"];
+const filters = ["projects", "writing", "games", "design", "art", "cover-art"];
 
 const description =
   "Everything that I've ever done that is available on this website.";
@@ -113,7 +117,7 @@ const description =
       </div>
     </section>
 
-    <section class="constrain mt-7 columns-2 gap-3 px-5 sm:columns-3 md:columns-4 lg:columns-5">
+    <section class="constrain mt-7 grid grid-cols-2 gap-3 px-5 desktop:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
       {entries.map(async (entry) => {
         const { id } = entry;
 
@@ -123,7 +127,7 @@ const description =
             const isFeatured = FEATURED_PROJECTS.includes(id);
 
             return (
-              <article class="type-projects relative break-inside-avoid not-last:mb-3">
+              <article class="type-projects relative break-inside-avoid">
                 <h2>
                   <a
                     href={`/projects/${id}`}
@@ -158,7 +162,7 @@ const description =
             const hasCoverImage = data.coverImage !== undefined;
 
             return (
-              <article class="type-posts relative break-inside-avoid not-last:mb-3">
+              <article class="type-posts relative break-inside-avoid">
                 <div
                   class:list={[
                     "border-x-2 border-t-2 border-style border-solid",
@@ -202,7 +206,7 @@ const description =
             const { title, coverImage, itch, steam } = entry.data;
 
             return (
-              <article class="type-games group relative break-inside-avoid not-last:mb-3">
+              <article class="type-games group relative break-inside-avoid">
                 <h2>
                   <a
                     href={`/games/${id}`}
@@ -300,7 +304,7 @@ const description =
             const { title, image } = entry.data;
 
             return (
-              <article class="type-design relative break-inside-avoid not-last:mb-3">
+              <article class="type-design relative break-inside-avoid">
                 <h2>
                   <a
                     href={`/design/${id}`}
@@ -315,11 +319,31 @@ const description =
             );
           }
 
+          case "art": {
+            const { title, presentation } = entry.data;
+            const cover = presentation.cover;
+
+            return (
+              <article class="type-art relative break-inside-avoid">
+                <h2>
+                  <a
+                    href={`/art/${id}`}
+                    class="after:absolute after:inset-0 after:z-1"
+                  >
+                    <span class="sr-only">{title}</span>
+                  </a>
+                </h2>
+
+                <Image src={cover.file} alt={cover.alt} class="rounded-sm" />
+              </article>
+            );
+          }
+
           case "covers": {
             const { title, image } = entry.data;
 
             return (
-              <article class="type-covers relative break-inside-avoid not-last:mb-3">
+              <article class="type-covers relative break-inside-avoid">
                 <h2>
                   <a
                     href={`/covers/${id}`}
@@ -348,6 +372,7 @@ const description =
   const posts = document.querySelectorAll<HTMLElement>("article.type-posts");
   const games = document.querySelectorAll<HTMLElement>("article.type-games");
   const designs = document.querySelectorAll<HTMLElement>("article.type-design");
+  const artEntries = document.querySelectorAll<HTMLElement>("article.type-art");
   const covers = document.querySelectorAll<HTMLElement>("article.type-covers");
 
   document.querySelectorAll<HTMLInputElement>("input").forEach((checkbox) => {
@@ -375,6 +400,10 @@ const description =
       } else if (id === "filter-design") {
         designs.forEach((design) => {
           design.classList.toggle("hidden");
+        });
+      } else if (id === "filter-art") {
+        artEntries.forEach((art) => {
+          art.classList.toggle("hidden");
         });
       } else if (id === "filter-cover-art") {
         covers.forEach((cover) => {

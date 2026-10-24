@@ -163,6 +163,35 @@ const designPages = defineCollection({
   schema: ({ image }) => DesignEntrySchema(image),
 });
 
+const art = defineCollection({
+  loader: glob({
+    pattern: "*/*.mdx",
+    base: "./content/art",
+    generateId: ({ entry }) => getNameFromTopPage(entry),
+  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string().nonempty(),
+      presentation: z.discriminatedUnion("type", [
+        z.strictObject({ type: z.literal("cover"), cover: ImageSchema(image) }),
+        z.strictObject({
+          type: z.literal("images"),
+          cover: ImageSchema(image),
+          work: z.array(
+            z.strictObject({
+              title: z.string().nonempty(),
+              image: image(),
+            }),
+          ),
+        }),
+      ]),
+      meta: z.strictObject({
+        created: z.date(),
+        tools: z.array(z.string().nonempty()).nonempty(),
+      }),
+    }),
+});
+
 const collections = {
   projects,
   projectPages,
@@ -171,6 +200,7 @@ const collections = {
   covers,
   design,
   designPages,
+  art,
 };
 
 export { collections };

@@ -1,0 +1,103 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, getEntry, render } from "astro:content";
+import { Image } from "astro:assets";
+
+import { ArrowLeftIcon, CalendarClockIcon, WrenchIcon } from "@lucide/astro";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Header from "@/components/header.astro";
+import Footer from "@/components/footer.astro";
+import { ICON_SIZE } from "@/scripts/constants";
+import MdxContent from "@/components/mdx-content.astro";
+import TechList from "@/components/tech-list.astro";
+import { getFullDateFormatting, getShortDateFormatting } from "@/scripts/util";
+
+export const getStaticPaths = (async () => {
+  const artEntries = await getCollection("art");
+  return artEntries.map((art) => {
+    return { params: { id: art.id } };
+  });
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+const art = await getEntry("art", id)!;
+
+const { title, presentation, meta } = art.data;
+
+const columnCount =
+  presentation.type === "images" ? Math.min(presentation.work.length, 2) : 0;
+
+const { Content } = await render(art);
+---
+
+<BaseLayout meta={{ kind: "art", artEntry: art }}>
+  <Header />
+
+  <main>
+    <hgroup class="constrain px-5">
+      <h1 class="prose text-xl/tight font-medium heading">{title}</h1>
+      <p class="prose text-lg/tight heading">Artwork</p>
+      <p class="mt-5">
+        <a href="/art" class="flex link-primary w-fit items-center gap-1.5">
+          <ArrowLeftIcon size={ICON_SIZE} /> Back to all art
+        </a>
+      </p>
+    </hgroup>
+
+    {presentation.type === "images" && (
+      <section class="constrain mt-7 px-5">
+        <h2 class="sr-only">Artwork</h2>
+
+        <div
+          class="grid grid-cols-1 gap-3 desktop:grid-cols-(--col-count)"
+          style={{
+            "--col-count": `repeat(${columnCount}, minmax(0, 1fr))`,
+          }}
+        >
+          {presentation.work.map((work) => (
+            <figure>
+              <Image src={work.image} alt="" class="rounded-xs" />
+              <figcaption class="mt-1 text-sm font-medium">
+                {work.title}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    )}
+
+    <section class="constrain mt-7 px-5">
+      <h2 class="sr-only">Overview</h2>
+
+      <dl class="grid max-w-(--prose-w) grid-cols-1 gap-3 md:max-w-150 md:grid-cols-2">
+        <div>
+          <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+            Tools <WrenchIcon size={ICON_SIZE} class="icon" />
+          </dt>
+          <dd>
+            <TechList tech={meta.tools} />
+          </dd>
+        </div>
+
+        <div>
+          <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+            Created <CalendarClockIcon size={ICON_SIZE} class="icon" />
+          </dt>
+          <dd>
+            <time
+              title={getFullDateFormatting(meta.created)}
+              datetime={meta.created.toISOString()}
+            >
+              {getShortDateFormatting(meta.created)}
+            </time>
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <MdxContent content={Content} />
+  </main>
+
+  <Footer />
+</BaseLayout>
