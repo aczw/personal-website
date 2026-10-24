@@ -11,10 +11,9 @@ import {
 
 import BaseLayout from "@/components/base-layout.astro";
 import MdxContent from "@/components/mdx-content.astro";
-import ProjectCover from "@/components/project-cover.astro";
+import VideoCover from "@/components/video-cover.astro";
 import TechList from "@/components/tech-list.astro";
 import ContentDate from "@/components/content-date.astro";
-import { isValidProjectCover } from "@/scripts/util";
 import { DISABLED_PROJECTS, ICON_SIZE } from "@/scripts/constants";
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
@@ -40,10 +39,6 @@ const {
   },
 } = project;
 
-if (!isValidProjectCover(coverImage.file.width, coverImage.file.height)) {
-  throw new Error("Cover images must have an aspect ratio of 16:10!");
-}
-
 let numMetadata = 2;
 if (link) numMetadata += 1;
 if (sourceHref) numMetadata += 1;
@@ -62,8 +57,9 @@ const { Content } = await render(project);
         <p class="mt-3 prose">{description.long}</p>
       </hgroup>
 
-      <ProjectCover
-        projectId={id}
+      <VideoCover
+        collection="projects"
+        id={id}
         coverImage={coverImage}
         class="mt-7 lg:rounded-lg"
       />

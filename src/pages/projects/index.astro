@@ -13,7 +13,7 @@ import TechList from "@/components/tech-list.astro";
 import BaseLayout from "@/components/base-layout.astro";
 import Header from "@/components/header.astro";
 import Footer from "@/components/footer.astro";
-import ProjectCover from "@/components/project-cover.astro";
+import VideoCover from "@/components/video-cover.astro";
 import { deriveProjectTimestamp } from "@/scripts/util";
 
 const projects = await getCollection("projects");
@@ -52,8 +52,9 @@ const description =
       <div class="mt-7 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:px-5 lg:grid-cols-4">
         {featured.map(({ id, data: { name, description, coverImage } }) => (
           <article class="group relative">
-            <ProjectCover
-              projectId={id}
+            <VideoCover
+              collection="projects"
+              id={id}
               coverImage={coverImage}
               class="sm:rounded-sm"
             />

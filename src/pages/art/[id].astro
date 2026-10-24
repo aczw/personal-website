@@ -12,6 +12,7 @@ import { ICON_SIZE } from "@/scripts/constants";
 import MdxContent from "@/components/mdx-content.astro";
 import TechList from "@/components/tech-list.astro";
 import { getFullDateFormatting, getShortDateFormatting } from "@/scripts/util";
+import VideoCover from "@/components/video-cover.astro";
 
 export const getStaticPaths = (async () => {
   const artEntries = await getCollection("art");
@@ -23,7 +24,7 @@ export const getStaticPaths = (async () => {
 const { id } = Astro.params;
 const art = await getEntry("art", id)!;
 
-const { title, presentation, meta } = art.data;
+const { title, cover, presentation, meta } = art.data;
 
 const columnCount =
   presentation.type === "images" ? Math.min(presentation.work.length, 2) : 0;
@@ -48,13 +49,19 @@ const { Content } = await render(art);
     <section class="constrain mt-7 px-5">
       <h2 class="sr-only">Artwork</h2>
 
-      {presentation.type === "cover" && (
-        <Image
-          src={presentation.cover.file}
-          alt={presentation.cover.alt}
-          class="rounded-sm"
-        />
-      )}
+      {presentation.type === "cover" &&
+        (cover.video ?
+          <VideoCover
+            collection="art"
+            id={id}
+            coverImage={cover.image}
+            class="rounded-sm"
+          />
+        : <Image
+            src={cover.image.file}
+            alt={cover.image.alt}
+            class="rounded-sm"
+          />)}
 
       {presentation.type === "images" && (
         <div

@@ -1,31 +1,29 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import type { CollectionKey } from "astro:content";
 import { Image } from "astro:assets";
 import type { z } from "astro/zod";
 
 import type { ImageSchema } from "@/scripts/schema";
 import { CDN_URL } from "@/scripts/constants";
-import { isValidProjectCover } from "@/scripts/util";
 
-type Props = HTMLAttributes<"div"> & {
-  projectId: string;
+type Props = Omit<HTMLAttributes<"div">, "style"> & {
+  collection: CollectionKey;
+  id: string;
   coverImage: z.infer<ReturnType<typeof ImageSchema>>;
 };
 
-const { projectId, coverImage, class: className, ...props } = Astro.props;
+const { id, collection, coverImage, class: className, ...props } = Astro.props;
 
-if (!isValidProjectCover(coverImage.file.width, coverImage.file.height)) {
-  throw new Error(
-    `Project cover image for "${projectId}" does not have 16:10 aspect ratio`,
-  );
-}
+const aspectRatio = `${coverImage.file.width} / ${coverImage.file.height}`;
 ---
 
 <div
   class:list={[
-    "relative aspect-16/10 overflow-hidden *:absolute *:inset-0",
+    "relative h-auto w-full overflow-hidden *:absolute *:inset-0",
     className,
   ]}
+  style={{ aspectRatio }}
   {...props}
 >
   <Image
@@ -42,8 +40,8 @@ if (!isValidProjectCover(coverImage.file.width, coverImage.file.height)) {
     loop
     autoplay
     preload="auto"
-    src={`${CDN_URL}/projects/${projectId}/cover.mp4`}
-    class="project-cover-video h-auto w-full bg-sweater-9 opacity-0 light:bg-sweater-2"
+    src={`${CDN_URL}/${collection}/${id}/cover.mp4`}
+    class="video-cover h-auto w-full bg-sweater-9 opacity-0 light:bg-sweater-2"
     data-loaded="false"
   ></video>
 </div>
@@ -74,7 +72,7 @@ if (!isValidProjectCover(coverImage.file.width, coverImage.file.height)) {
   };
 
   document
-    .querySelectorAll<HTMLVideoElement>("video.project-cover-video")
+    .querySelectorAll<HTMLVideoElement>("video.video-cover")
     .forEach((videoElt) => {
       const imageElt = videoElt.previousElementSibling as HTMLImageElement;
 

@@ -5,11 +5,7 @@ import type { GetStaticPaths } from "astro";
 
 import { CalendarFoldIcon } from "@lucide/astro";
 
-import {
-  getFullDateFormatting,
-  getShortDateFormatting,
-  isValidProjectCover,
-} from "@/scripts/util";
+import { getFullDateFormatting, getShortDateFormatting } from "@/scripts/util";
 import { DISABLED_POSTS, ICON_SIZE } from "@/scripts/constants";
 import BaseLayout from "@/components/base-layout.astro";
 import MdxContent from "@/components/mdx-content.astro";
@@ -31,13 +27,6 @@ const post = await getEntry("posts", id)!;
 const {
   data: { title, description: blurb, posted, coverImage },
 } = post;
-
-if (
-  coverImage &&
-  !isValidProjectCover(coverImage.file.width, coverImage.file.height)
-) {
-  throw new Error("Cover images must have an aspect ratio of 16:10!");
-}
 
 const { Content } = await render(post);
 ---

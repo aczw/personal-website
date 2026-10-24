@@ -5,13 +5,14 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/components/base-layout.astro";
 import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
+import VideoCover from "@/components/video-cover.astro";
 
 const artEntries = await getCollection("art");
 artEntries.sort(
   (a, b) => b.data.meta.created.getTime() - a.data.meta.created.getTime(),
 );
 
-const description = "Various art projects I've done.";
+const description = "Various art, if you can call it that.";
 ---
 
 <BaseLayout
@@ -27,22 +28,36 @@ const description = "Various art projects I've done.";
     <hgroup class="constrain px-5">
       <h1 class="sr-only">Art</h1>
       <p class="prose">{description}</p>
+      <p class="mt-3 prose">
+        Growing up I was physically drawing everywhere, all the time. Nowadays
+        I'm much more digital, but I still consider myself to be a pretty visual
+        person.
+      </p>
     </hgroup>
 
     <section class="constrain mt-7 px-5">
       <h2 class="sr-only">Work</h2>
 
       <div class="columns-2 gap-3 md:columns-3 lg:columns-4">
-        {artEntries.map(({ id, data: { title, presentation } }) => (
+        {artEntries.map(({ id, data: { title, cover } }) => (
           <figure class="relative h-fit break-after-avoid not-last:mb-3">
-            <Image
-              src={presentation.cover.file}
-              alt={presentation.cover.alt}
-              class="rounded-xs"
-            />
+            {cover.video ?
+              <VideoCover
+                collection="art"
+                id={id}
+                coverImage={cover.image}
+                class="rounded-xs"
+              />
+            : <Image
+                src={cover.image.file}
+                alt={cover.image.alt}
+                class="rounded-xs"
+              />
+            }
+
             <figcaption>
               <a
-                href={`/design/${id}`}
+                href={`/art/${id}`}
                 class="after:absolute after:inset-0 after:z-1"
               >
                 <span class="sr-only">{title}</span>

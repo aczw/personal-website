@@ -25,7 +25,7 @@ import {
   FEATURED_PROJECTS,
   ICON_SIZE,
 } from "@/scripts/constants";
-import ProjectCover from "@/components/project-cover.astro";
+import VideoCover from "@/components/video-cover.astro";
 
 const projectEntries = await getCollection("projects");
 const postEntries = await getCollection("posts");
@@ -138,8 +138,9 @@ const description =
                 </h2>
 
                 {isFeatured ?
-                  <ProjectCover
-                    projectId={id}
+                  <VideoCover
+                    collection="projects"
+                    id={id}
                     coverImage={data.coverImage}
                     class="rounded-sm"
                   />
@@ -320,8 +321,7 @@ const description =
           }
 
           case "art": {
-            const { title, presentation } = entry.data;
-            const cover = presentation.cover;
+            const { title, cover } = entry.data;
 
             return (
               <article class="type-art relative break-inside-avoid">
@@ -334,7 +334,19 @@ const description =
                   </a>
                 </h2>
 
-                <Image src={cover.file} alt={cover.alt} class="rounded-sm" />
+                {cover.video ?
+                  <VideoCover
+                    collection="art"
+                    id={id}
+                    coverImage={cover.image}
+                    class="rounded-sm"
+                  />
+                : <Image
+                    src={cover.image.file}
+                    alt={cover.image.alt}
+                    class="rounded-sm"
+                  />
+                }
               </article>
             );
           }

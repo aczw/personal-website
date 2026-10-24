@@ -172,11 +172,14 @@ const art = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string().nonempty(),
+      cover: z.strictObject({
+        image: ImageSchema(image),
+        video: z.boolean(),
+      }),
       presentation: z.discriminatedUnion("type", [
-        z.strictObject({ type: z.literal("cover"), cover: ImageSchema(image) }),
+        z.strictObject({ type: z.literal("cover") }),
         z.strictObject({
           type: z.literal("images"),
-          cover: ImageSchema(image),
           work: z.array(
             z.strictObject({
               title: z.string().nonempty(),
