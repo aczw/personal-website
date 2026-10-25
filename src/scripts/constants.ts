@@ -31,7 +31,7 @@ const FEATURED_PROJECTS = [...HOMEPAGE_PROJECTS, "door"];
 const DISABLED_PROJECTS = ["fireball", "moore-chair"];
 const DISABLED_POSTS = ["dithering"];
 
-const ICON_SIZE = "1rem";
+const ICON_SIZE = 16;
 
 const CURRENT_TIMEZONE = "America/Los_Angeles";
 
