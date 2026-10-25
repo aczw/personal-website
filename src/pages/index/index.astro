@@ -28,6 +28,16 @@ import {
 } from "@/scripts/constants";
 import VideoCover from "@/components/video-cover.astro";
 
+const changelogVersions = [
+  "0.1.0",
+  "1.0.0",
+  "4.0.0",
+  "5.0.0",
+  "6.0.0",
+  "7.0.0",
+  "8.0.0",
+];
+
 const projectEntries = await getCollection(
   "projects",
   ({ id }) => !DISABLED_PROJECTS.includes(id),
@@ -40,12 +50,8 @@ const gameEntries = await getCollection("games");
 const designEntries = await getCollection("design");
 const artEntries = await getCollection("art");
 const coverArtEntries = await getCollection("covers");
-const changelogEntries = await getCollection(
-  "changelog",
-  ({ data: { version } }) =>
-    (version.minor === 0 && version.patch === 0) ||
-    (version.major === 3 && version.minor === 1) ||
-    version.major === 0,
+const changelogEntries = await getCollection("changelog", ({ id }) =>
+  changelogVersions.includes(id),
 );
 
 const entries: CollectionEntry<CollectionKey>[] = [
