@@ -54,18 +54,29 @@ import { ICON_SIZE } from "@/scripts/constants";
 
 <script>
   import { commitStyleAnimation } from "@/scripts/util";
-  import { flatLyrics } from "@/scripts/lyrics";
+  import { formattedLyrics } from "@/scripts/lyrics";
 
   const flavorElt = document.getElementById("flavor")!;
   const lyricsElt = flavorElt.querySelector("blockquote")!;
   const creditElt = flavorElt.querySelector("figcaption")!;
 
+  const generate = () => {
+    return formattedLyrics[Math.floor(Math.random() * formattedLyrics.length)]!;
+  };
+
   const showFlavorText = () => {
-    const flat = flatLyrics[Math.floor(Math.random() * flatLyrics.length)]!;
-    const lyrics = flat.lyrics.map((lyric) => `“${lyric.trim()}”`).join(" / ");
+    let { lyrics, credits } = generate();
+    const previousCredits = creditElt.innerText;
+
+    while (credits === previousCredits) {
+      const result = generate();
+      lyrics = result.lyrics;
+      credits = result.credits;
+    }
 
     lyricsElt.innerText = lyrics;
-    creditElt.innerText = `${flat.song}, ${flat.artist}`;
+    creditElt.innerText = credits;
+
     flavorElt
       .animate([{ opacity: 0 }, { opacity: 1 }], {
         duration: 400,

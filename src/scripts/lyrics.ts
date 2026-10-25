@@ -3,8 +3,6 @@ type SongLyrics = {
   lyrics: string[];
 };
 
-type FlatLyrics = SongLyrics & { artist: string };
-
 type ArtistGroup = {
   artist: string;
   songs: SongLyrics[];
@@ -476,8 +474,15 @@ const lyrics: ArtistGroup[] = [
   },
 ];
 
-const flatLyrics: FlatLyrics[] = lyrics.flatMap(({ artist, songs }) =>
+const flattened = lyrics.flatMap(({ artist, songs }) =>
   songs.map(({ song, lyrics: lines }) => ({ artist, song, lyrics: lines })),
 );
 
-export { flatLyrics };
+const formattedLyrics = flattened.map((value) => {
+  return {
+    lyrics: value.lyrics.map((lyric) => `“${lyric.trim()}”`).join(" / "),
+    credits: `${value.song}, ${value.artist}`,
+  };
+});
+
+export { formattedLyrics };
