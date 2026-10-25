@@ -1,0 +1,103 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Footer from "@/components/footer.astro";
+import Header from "@/components/header.astro";
+import { ArrowRightIcon, GitCommitHorizontalIcon } from "@lucide/astro";
+import { ICON_SIZE } from "@/scripts/constants";
+import Time from "@/components/time.astro";
+
+const changelogEntries = await getCollection("changelog");
+changelogEntries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const description =
+  "I'm a little obsessed with maintaining my website, if you can't tell.";
+---
+
+<BaseLayout
+  meta={{
+    kind: "route",
+    route: "changelog",
+    description,
+  }}
+>
+  <Header />
+
+  <main>
+    <hgroup class="constrain px-5">
+      <h1 class="sr-only">Art</h1>
+      <p class="prose">
+        {description} This is a changelog for this place, documenting all the
+        changes and revisions it has been through.{" "}
+        <span class="italic">It's been through a lot.</span>
+      </p>
+    </hgroup>
+
+    <section class="constrain mt-7">
+      <h2 class="sr-only">Changelog entries</h2>
+
+      <div class="space-y-5">
+        {changelogEntries.map(async (entry) => {
+          const { id, data } = entry;
+          const colCount = Math.max(4, data.covers ? data.covers.length : 0);
+
+          return (
+            <article>
+              <div class="px-5">
+                <div class="flex prose gap-x-3 justify-between border-style border-t-2 pt-1">
+                  <hgroup class="flex gap-x-2 relative">
+                    <h3 class="link-primary">
+                      <a href={`/changelog/${id}`} class="link-expand">
+                        v{id}
+                      </a>
+                    </h3>
+                    <p class="text-sweater-5 light:text-sweater-6 flex gap-x-1.5 items-center">
+                      <Time date={data.date} />
+                      <ArrowRightIcon size={ICON_SIZE} />
+                    </p>
+                  </hgroup>
+
+                  <a
+                    href={`https://github.com/aczw/personal-website/commit/${data.commit}`}
+                    target="_blank"
+                    rel="noopener"
+                    class="link-secondary maple flex items-center gap-x-1.5"
+                  >
+                    <GitCommitHorizontalIcon size={ICON_SIZE} />{" "}
+                    {data.commit.slice(0, 7)}
+                  </a>
+                </div>
+              </div>
+
+              {data.overview && <p class="prose mt-3 px-5">{data.overview}</p>}
+
+              {data.covers && (
+                <figure class="mt-5 px-5 max-w-(--wide-w) w-full">
+                  <figcaption class="sr-only">Screenshots</figcaption>
+                  <div
+                    class="grid grid-cols-(--col-count) gap-x-1 sm:gap-x-3"
+                    style={{
+                      "--col-count": `repeat(${colCount}, minmax(0, 1fr))`,
+                    }}
+                  >
+                    {data.covers.map((cover) => (
+                      <Image
+                        src={cover.file}
+                        alt={cover.alt}
+                        class="rounded-xs border border-style"
+                      />
+                    ))}
+                  </div>
+                </figure>
+              )}
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>

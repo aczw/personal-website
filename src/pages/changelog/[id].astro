@@ -1,0 +1,114 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection, getEntry, render } from "astro:content";
+import { Image } from "astro:assets";
+
+import {
+  ArrowLeftIcon,
+  CalendarClockIcon,
+  GitCommitHorizontalIcon,
+} from "@lucide/astro";
+
+import BaseLayout from "@/components/base-layout.astro";
+import Header from "@/components/header.astro";
+import Footer from "@/components/footer.astro";
+import { ICON_SIZE } from "@/scripts/constants";
+import MdxContent from "@/components/mdx-content.astro";
+import Time from "@/components/time.astro";
+
+export const getStaticPaths = (async () => {
+  const changelogEntries = await getCollection("changelog");
+  return changelogEntries.map((changelog) => {
+    return { params: { id: changelog.id } };
+  });
+}) satisfies GetStaticPaths;
+
+const { id } = Astro.params;
+const changelog = await getEntry("changelog", id)!;
+
+const { date, commit, overview, covers } = changelog.data;
+
+const colCount = Math.max(3, covers ? covers.length : 0);
+
+const { Content } = await render(changelog);
+---
+
+<BaseLayout meta={{ kind: "changelog", changelogEntry: changelog }}>
+  <Header />
+
+  <main>
+    <hgroup class="constrain px-5">
+      <h1 class="prose text-xl/tight font-medium heading">v{id}</h1>
+      <p class="prose text-lg/tight heading">Changelog entry</p>
+
+      <p class="mt-5">
+        <a
+          href="/changelog"
+          class="flex link-primary w-fit items-center gap-1.5"
+        >
+          <ArrowLeftIcon size={ICON_SIZE} /> Back to all changelog entries
+        </a>
+      </p>
+    </hgroup>
+
+    <section class="constrain mt-5 px-5">
+      <h2 class="sr-only">Overview</h2>
+
+      {overview && <p class="prose">{overview}</p>}
+
+      <dl class="grid max-w-(--prose-w) mt-7 grid-cols-1 gap-3 md:max-w-150 md:grid-cols-2">
+        <div>
+          <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+            Created <CalendarClockIcon size={ICON_SIZE} class="icon" />
+          </dt>
+          <dd>
+            <Time date={date} />
+          </dd>
+        </div>
+
+        <div>
+          <dt class="flex items-center justify-between gap-2 leading-tight font-medium heading md:justify-start">
+            Commit <GitCommitHorizontalIcon size={ICON_SIZE} class="icon" />
+          </dt>
+          <dd>
+            <a
+              href={`https://github.com/aczw/personal-website/commit/${commit}`}
+              target="_blank"
+              rel="noopener"
+              class="link-primary maple"
+            >
+              {commit.slice(0, 7)}
+            </a>
+          </dd>
+        </div>
+      </dl>
+
+      {covers && (
+        <div class="mt-7">
+          <h3 class="sr-only">Screenshots</h3>
+          <div
+            class="grid grid-cols-(--col-count) mt-1.5 gap-x-1 sm:gap-x-3"
+            style={{ "--col-count": `repeat(${colCount}, minmax(0, 1fr))` }}
+          >
+            {covers.map((cover) => (
+              <figure>
+                <Image
+                  src={cover.file}
+                  alt={cover.alt}
+                  class="rounded-xs border border-style"
+                />
+                <figcaption class="text-sm font-medium mt-1 heading">
+                  {cover.alt}.
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        </div>
+      )}
+    </section>
+
+    <MdxContent content={Content} />
+  </main>
+
+  <Footer />
+</BaseLayout>

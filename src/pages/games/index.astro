@@ -27,10 +27,7 @@ const description = "Play some games that I made or have helped make!";
       {gameEntries.map(({ id, data }) => (
         <article class="relative h-fit break-inside-avoid not-last:mb-3">
           <h2>
-            <a
-              href={`/games/${id}`}
-              class="after:absolute after:inset-0 after:z-1"
-            >
+            <a href={`/games/${id}`} class="link-expand">
               <span class="sr-only">{data.title}</span>
             </a>
           </h2>

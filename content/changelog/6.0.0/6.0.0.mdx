@@ -1,14 +1,25 @@
 ---
-title: v6
-description: Grids, borders, spacing, zooming, CDNs, color schemes
-posted: 2025-10-13T07:38:00.000-04
+version:
+  major: 6
+  minor: 0
+  patch: 0
+date: 2025-10-13T04:43:00-07:00
+commit: fc274e7be6018b3200fd2be9fef4b0128e9c3a91
+overview: New grid-based design, borders as a stylistic choice, consistent site-wide spacing, image zoom for MDX content, hosting videos on a CDN, and a new light color scheme.
+covers:
+  - file: screenshots/home.png
+    alt: Homepage
+  - file: screenshots/projects.png
+    alt: /projects
+  - file: screenshots/project-example.png
+    alt: Project entry
+  - file: screenshots/posts.png
+    alt: /posts
+  - file: screenshots/post-example.png
+    alt: Post entry
 ---
 
-I wanted to write a little about the sixth redesign of my website, v6. I've tried doing this before—writing about changes to my site—but it became [horribly overscoped](https://github.com/aczw/changelog) and I burned out before I could finish.[^1] I was pretty sad about that, so to make sure this sees the light of day I'll stick to a simple post.
-
-## Influence
-
-It's embarrassing but I'm always thinking about how I want to update my website design. As a result I've been collecting a number of inspirations since v5 which I've put in this Are.na channel.[^2]
+Starting with this major redesign, I've started to first collect a number of inspirations in a dedicated Are.na[^1] channel.
 
 <div class="outdent-wide">
   <iframe
@@ -23,17 +34,7 @@ A lot of these blocks emphasize text, structure, and subtlety—stuff that looks
 
 ### Grids
 
-I've experimented with grid layouts since the beginning of this site. Here's what v1 of the home page looked like at one point:
-
-<figure class="outdent">
-  <div class="rounded-lg border-y-(length:--border-w) border-style desktop:border-x-(length:--border-w)">
-    ![Screenshot of the first version of this website. Multiple squares of
-    different sizes are arranged in a grid in the center.](v1-wip.png)
-  </div>
-  <figcaption>
-    **v1 (WIP).** Fun fact, the Last.fm stats you see are live and still work.
-  </figcaption>
-</figure>
+I've experimented with grid layouts since the beginning of this site.
 
 Something about its conformity, rigidity, and formality makes sense to me and is very pleasing. I like the uniformity it brings. Your eyes are guided by the, well, guide lines, to the main content.
 
@@ -62,11 +63,14 @@ With bigger values everything breaks, but the hope is that everything breaks _co
 
 Up until now, videos on this site have been served out of my `public` folder. As I add more videos, though, I had a feeling my hosting provider wasn't going to be very happy.
 
-I decided to switch to an actual CDN. I had heard good things about [bunny.net](https://bunny.net/cdn), so I gave them a chance. Setup was easy and quick, and there were no problems transferring everything over.[^3]
+I decided to switch to an actual CDN. I had heard good things about [bunny.net](https://bunny.net/cdn), so I gave them a chance. Setup was easy and quick, and there were no problems transferring everything over.[^2]
 
 You may be wondering how much I'm paying. In the past I was piggybacking off of my host's very generous free tier, but that generosity would quickly disappear if I ever went over the bandwidth limits.
 
-![Out of the $50 of trial credit given to me, my total trial usage is $0.30.](bunny-pricing.png)
+<div>
+  ![Out of the $50 of trial credit given to me, my total trial usage is
+  $0.30.](bunny-pricing.png)
+</div>
 
 Out of the $50 of trial credits they gave me, so far I've used 30 cents, so I don't think cost will be a concern. Keep in mind this is after a month of usage.
 
@@ -80,7 +84,7 @@ It uses very little JS—[a little less than 40 lines](https://github.com/aczw/p
 
 Try it now with the image below. (Note: not available on mobile because you can just, like, pinch.)
 
-<figure class="outdent">
+<figure class="outdent-wide">
   ![Steam Deck is lying on a bed. On the screen is the start menu for Catanks, a
   game.](catanks-deck.jpg)
   <figcaption>
@@ -116,16 +120,14 @@ I hope visitors to the site will know it exists! I do change the cursor to a lit
 
 Some other notable additions I wanted to highlight.
 
-The site now has a light color scheme.[^4] This took some reconfiguring of CSS variables/discovering hardcoded color styles, and in general took longer than I'd like to admit.
+The site now has a light color scheme.[^3] This took some reconfiguring of CSS variables/discovering hardcoded color styles, and in general took longer than I'd like to admit.
 
 I learned recently you can style selected text and media via the `::selection` pseudo-element, so I've do<span class="bg-sweater-8 text-sweater-3 light:bg-sweater-2 light:text-sweater-8">ne just that like you can see here. Not e</span>verything [is fully supported on all browsers](https://developer.mozilla.org/en-US/docs/Web/CSS/::selection#browser_compatibility) (notably, WebKit on iOS devices) but this is purely visual and should gracefully fall back to defaults.
 
 My (dynamically generated!) OG images have also been updated to the new design, featuring guide lines and dashed lines and all the goodness.
 
-[^1]: One day I'll revisit it and incorporate it in some other way because I do find merit in having a changelog and seeing all your updates laid out like that.
+[^1]: I'm still experimenting with Are.na. I understand why they charge $70/year for Premium, I just don't know if I'm ready for that yet.
 
-[^2]: I'm still experimenting with Are.na. I understand why they charge $70/year for Premium, I just don't know if I'm ready for that yet.
+[^2]: Now I get to use the very official-looking `cdn.charleszw.com` URL for everything, which makes me feel important.
 
-[^3]: Now I get to use the very official-looking `cdn.charleszw.com` URL for everything, which makes me feel important.
-
-[^4]: Officially. My `<meta name="color-scheme">` always claimed it did, which I'm sure threw off some user agents. My bad.
+[^3]: Officially. My `<meta name="color-scheme">` always claimed it did, which I'm sure threw off some user agents. My bad.

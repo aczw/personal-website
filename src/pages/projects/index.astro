@@ -60,10 +60,7 @@ const description =
             />
 
             <h3 class="mt-2 flex link-primary w-full items-center justify-between gap-1 px-5 desktop:justify-start sm:px-0">
-              <a
-                href={`/projects/${id}`}
-                class="after:absolute after:inset-0 after:z-1"
-              >
+              <a href={`/projects/${id}`} class="link-expand">
                 {name}
               </a>
               <ArrowRightIcon size={ICON_SIZE} />
@@ -95,9 +92,7 @@ const description =
               <h3>
                 <a
                   href={`/projects/${id}`}
-                  class:list={[
-                    "link-primary after:absolute after:inset-0 after:z-1",
-                  ]}
+                  class:list={["link-primary link-expand"]}
                 >
                   {name}
                 </a>

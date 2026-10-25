@@ -11,8 +11,8 @@ import Footer from "@/components/footer.astro";
 import { ICON_SIZE } from "@/scripts/constants";
 import MdxContent from "@/components/mdx-content.astro";
 import TechList from "@/components/tech-list.astro";
-import { getFullDateFormatting, getShortDateFormatting } from "@/scripts/util";
 import VideoCover from "@/components/video-cover.astro";
+import Time from "@/components/time.astro";
 
 export const getStaticPaths = (async () => {
   const artEntries = await getCollection("art");
@@ -100,12 +100,7 @@ const { Content } = await render(art);
             Created <CalendarClockIcon size={ICON_SIZE} class="icon" />
           </dt>
           <dd>
-            <time
-              title={getFullDateFormatting(meta.created)}
-              datetime={meta.created.toISOString()}
-            >
-              {getShortDateFormatting(meta.created)}
-            </time>
+            <Time date={meta.created} />
           </dd>
         </div>
       </dl>

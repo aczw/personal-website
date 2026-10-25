@@ -5,12 +5,12 @@ import type { GetStaticPaths } from "astro";
 
 import { CalendarFoldIcon } from "@lucide/astro";
 
-import { getFullDateFormatting, getShortDateFormatting } from "@/scripts/util";
 import { DISABLED_POSTS, ICON_SIZE } from "@/scripts/constants";
 import BaseLayout from "@/components/base-layout.astro";
 import MdxContent from "@/components/mdx-content.astro";
 import Header from "@/components/header.astro";
 import Footer from "@/components/footer.astro";
+import Time from "@/components/time.astro";
 
 export const getStaticPaths = (async () => {
   const posts = await getCollection("posts");
@@ -54,12 +54,7 @@ const { Content } = await render(post);
       <h2 class="flex items-center gap-2 font-medium heading">
         Posted <CalendarFoldIcon size={ICON_SIZE} class="icon" />
       </h2>
-      <time
-        datetime={posted.toISOString()}
-        title={getFullDateFormatting(posted)}
-      >
-        {getShortDateFormatting(posted)}
-      </time>
+      <Time date={posted} />
     </section>
 
     <MdxContent content={Content} />

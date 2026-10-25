@@ -20,6 +20,7 @@ import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
 import { capitalize, deriveProjectTimestamp } from "@/scripts/util";
 import {
+  CURRENT_TIMEZONE,
   DISABLED_POSTS,
   DISABLED_PROJECTS,
   FEATURED_PROJECTS,
@@ -27,20 +28,33 @@ import {
 } from "@/scripts/constants";
 import VideoCover from "@/components/video-cover.astro";
 
-const projectEntries = await getCollection("projects");
-const postEntries = await getCollection("posts");
+const projectEntries = await getCollection(
+  "projects",
+  ({ id }) => !DISABLED_PROJECTS.includes(id),
+);
+const postEntries = await getCollection(
+  "posts",
+  ({ id }) => !DISABLED_POSTS.includes(id),
+);
 const gameEntries = await getCollection("games");
 const designEntries = await getCollection("design");
 const artEntries = await getCollection("art");
 const coverArtEntries = await getCollection("covers");
+const changelogEntries = await getCollection(
+  "changelog",
+  ({ data: { version } }) =>
+    (version.minor === 0 && version.patch === 0) ||
+    (version.major === 3 && version.minor === 1),
+);
 
 const entries: CollectionEntry<CollectionKey>[] = [
-  ...projectEntries.filter(({ id }) => !DISABLED_PROJECTS.includes(id)),
-  ...postEntries.filter(({ id }) => !DISABLED_POSTS.includes(id)),
+  ...projectEntries,
+  ...postEntries,
   ...gameEntries,
   ...designEntries,
   ...artEntries,
   ...coverArtEntries,
+  ...changelogEntries,
 ];
 
 const deriveEntryTimestamp = (
@@ -57,6 +71,8 @@ const deriveEntryTimestamp = (
     case "art":
     case "covers":
       return entry.data.meta.created.getTime() * 0.001;
+    case "changelog":
+      return entry.data.date.getTime() * 0.001;
 
     default:
       throw new Error(`Unhandled content collection: ${entry.collection}`);
@@ -79,7 +95,22 @@ const generatePostExcerpt = (markdown: string): string => {
 
 entries.sort((a, b) => deriveEntryTimestamp(b) - deriveEntryTimestamp(a));
 
-const filters = ["projects", "writing", "games", "design", "art", "cover-art"];
+const changelogFmt = new Intl.DateTimeFormat("en-US", {
+  month: "numeric",
+  day: "numeric",
+  year: "2-digit",
+  timeZone: CURRENT_TIMEZONE,
+});
+
+const filters = [
+  "projects",
+  "writing",
+  "games",
+  "design",
+  "art",
+  "cover-art",
+  "changelog",
+];
 
 const description =
   "Everything that I've ever done that is available on this website.";
@@ -117,7 +148,7 @@ const description =
       </div>
     </section>
 
-    <section class="constrain mt-7 grid grid-cols-2 gap-3 px-5 desktop:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+    <section class="constrain mt-7 grid grid-cols-2 gap-3 px-5 desktop:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 *:break-inside-avoid *:h-fit *:relative">
       {entries.map(async (entry) => {
         const { id } = entry;
 
@@ -127,12 +158,9 @@ const description =
             const isFeatured = FEATURED_PROJECTS.includes(id);
 
             return (
-              <article class="type-projects relative break-inside-avoid">
+              <article data-type="projects">
                 <h2>
-                  <a
-                    href={`/projects/${id}`}
-                    class="after:absolute after:inset-0 after:z-1"
-                  >
+                  <a href={`/projects/${id}`} class="link-expand">
                     <span class="sr-only">{data.name}</span>
                   </a>
                 </h2>
@@ -163,7 +191,7 @@ const description =
             const hasCoverImage = data.coverImage !== undefined;
 
             return (
-              <article class="type-posts relative break-inside-avoid">
+              <article data-type="posts">
                 <div
                   class:list={[
                     "border-x-2 border-t-2 border-style border-solid",
@@ -192,10 +220,7 @@ const description =
                 </div>
 
                 <h2 class="border-2 border-style border-solid px-2 py-1.5 leading-tight font-medium">
-                  <a
-                    href={`/posts/${id}`}
-                    class="link-primary after:absolute after:inset-0 after:z-1"
-                  >
+                  <a href={`/posts/${id}`} class="link-primary link-expand">
                     {data.title}
                   </a>
                 </h2>
@@ -207,12 +232,9 @@ const description =
             const { title, coverImage, itch, steam } = entry.data;
 
             return (
-              <article class="type-games group relative break-inside-avoid">
+              <article data-type="games" class="group">
                 <h2>
-                  <a
-                    href={`/games/${id}`}
-                    class="after:absolute after:inset-0 after:z-1"
-                  >
+                  <a href={`/games/${id}`} class="link-expand">
                     <span class="sr-only">{title}</span>
                   </a>
                 </h2>
@@ -305,12 +327,9 @@ const description =
             const { title, image } = entry.data;
 
             return (
-              <article class="type-design relative break-inside-avoid">
+              <article data-type="design">
                 <h2>
-                  <a
-                    href={`/design/${id}`}
-                    class="after:absolute after:inset-0 after:z-1"
-                  >
+                  <a href={`/design/${id}`} class="link-expand">
                     <span class="sr-only">{title}</span>
                   </a>
                 </h2>
@@ -324,12 +343,9 @@ const description =
             const { title, cover } = entry.data;
 
             return (
-              <article class="type-art relative break-inside-avoid">
+              <article data-type="art">
                 <h2>
-                  <a
-                    href={`/art/${id}`}
-                    class="after:absolute after:inset-0 after:z-1"
-                  >
+                  <a href={`/art/${id}`} class="link-expand">
                     <span class="sr-only">{title}</span>
                   </a>
                 </h2>
@@ -355,17 +371,69 @@ const description =
             const { title, image } = entry.data;
 
             return (
-              <article class="type-covers relative break-inside-avoid">
+              <article data-type="covers">
                 <h2>
-                  <a
-                    href={`/covers/${id}`}
-                    class="after:absolute after:inset-0 after:z-1"
-                  >
+                  <a href={`/covers/${id}`} class="link-expand">
                     <span class="sr-only">{title}</span>
                   </a>
                 </h2>
 
                 <Image src={image.file} alt={image.alt} class="rounded-sm" />
+              </article>
+            );
+          }
+
+          case "changelog": {
+            const { date, commit, covers } = entry.data;
+            const colCount = Math.min(
+              4,
+              Math.max(3, covers ? covers.length : 0),
+            );
+
+            return (
+              <article
+                data-type="changelog"
+                class="border-t-2 border-style pt-1.5"
+              >
+                <h2 class="flex justify-between gap-x-3 leading-tight">
+                  <span class="font-medium heading">Version</span>
+                  <a href={`/changelog/${id}`} class="link-primary link-expand">
+                    {id}
+                  </a>
+                </h2>
+
+                <dl class="*:flex *:justify-between *:gap-x-3 leading-tight">
+                  <div>
+                    <dd class="font-medium heading">Released</dd>
+                    <dt>
+                      <time datetime={date.toISOString()}>
+                        {changelogFmt.format(date)}
+                      </time>
+                    </dt>
+                  </div>
+
+                  <div>
+                    <dd class="font-medium heading">Commit</dd>
+                    <dt class="maple">{commit.slice(0, 7)}</dt>
+                  </div>
+                </dl>
+
+                {covers && (
+                  <div
+                    class="grid grid-cols-(--col-count) gap-x-1 mt-1.5"
+                    style={{
+                      "--col-count": `repeat(${colCount}, minmax(0, 1fr))`,
+                    }}
+                  >
+                    {covers.slice(0, 4).map((cover) => (
+                      <Image
+                        src={cover.file}
+                        alt={cover.alt}
+                        class="rounded-xs border border-style"
+                      />
+                    ))}
+                  </div>
+                )}
               </article>
             );
           }
@@ -378,14 +446,13 @@ const description =
 </BaseLayout>
 
 <script>
-  const projects = document.querySelectorAll<HTMLElement>(
-    "article.type-projects",
-  );
-  const posts = document.querySelectorAll<HTMLElement>("article.type-posts");
-  const games = document.querySelectorAll<HTMLElement>("article.type-games");
-  const designs = document.querySelectorAll<HTMLElement>("article.type-design");
-  const artEntries = document.querySelectorAll<HTMLElement>("article.type-art");
-  const covers = document.querySelectorAll<HTMLElement>("article.type-covers");
+  const projects = document.querySelectorAll("article[data-type='projects']");
+  const posts = document.querySelectorAll("article[data-type='posts']");
+  const games = document.querySelectorAll("article[data-type='games']");
+  const designs = document.querySelectorAll("article[data-type='design']");
+  const artEntries = document.querySelectorAll("article[data-type='art']");
+  const covers = document.querySelectorAll("article[data-type='covers']");
+  const changelog = document.querySelectorAll("article[data-type='changelog']");
 
   document.querySelectorAll<HTMLInputElement>("input").forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
@@ -420,6 +487,10 @@ const description =
       } else if (id === "filter-cover-art") {
         covers.forEach((cover) => {
           cover.classList.toggle("hidden");
+        });
+      } else if (id === "filter-changelog") {
+        changelog.forEach((entry) => {
+          entry.classList.toggle("hidden");
         });
       } else {
         throw new Error(`Unhandled checkbox ID: ${id}`);

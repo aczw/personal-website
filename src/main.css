@@ -46,19 +46,23 @@
 }
 
 @utility maple {
-  @apply font-mono text-mono;
+  @apply text-mono font-mono;
 }
 
 @utility border-style {
-  @apply border-dashed border-sweater-8 light:border-sweater-3;
+  @apply border-sweater-8 light:border-sweater-3 border-dashed;
 }
 
 @utility link-primary {
-  @apply w-fit font-medium text-sweater-3 hover:text-sweater-1 light:text-sweater-7 light:hover:text-sweater-9;
+  @apply text-sweater-3 hover:text-sweater-1 light:text-sweater-7 light:hover:text-sweater-9 w-fit font-medium;
 }
 
 @utility link-secondary {
   @apply text-sweater-5 hover:text-sweater-4 light:text-sweater-6 light:hover:text-sweater-7;
+}
+
+@utility link-expand {
+  @apply after:z-1 after:absolute after:inset-0;
 }
 
 @utility icon {

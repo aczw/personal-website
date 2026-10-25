@@ -11,8 +11,8 @@ import {
 
 import MdxContent from "@/components/mdx-content.astro";
 import TechList from "@/components/tech-list.astro";
-import { getFullDateFormatting, getShortDateFormatting } from "@/scripts/util";
 import { ICON_SIZE } from "@/scripts/constants";
+import Time from "@/components/time.astro";
 
 interface Props {
   entry: CollectionEntry<"design"> | CollectionEntry<"designPages">;
@@ -71,12 +71,7 @@ const { Content } = await render(entry);
         Created <CalendarClockIcon size={ICON_SIZE} class="icon" />
       </dt>
       <dd>
-        <time
-          title={getFullDateFormatting(meta.created)}
-          datetime={meta.created.toISOString()}
-        >
-          {getShortDateFormatting(meta.created)}
-        </time>
+        <Time date={meta.created} />
       </dd>
     </div>
   </dl>
@@ -100,7 +95,7 @@ const { Content } = await render(entry);
             <h3>
               <a
                 href={`/design/${id}`}
-                class="flex link-primary w-full items-center justify-between gap-x-1.5 leading-snug after:absolute after:inset-0 after:z-1 sm:justify-start"
+                class="flex link-primary w-full items-center justify-between gap-x-1.5 leading-snug link-expand sm:justify-start"
               >
                 {data.title} <ArrowRightIcon size={ICON_SIZE} />
               </a>

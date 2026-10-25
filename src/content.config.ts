@@ -195,6 +195,26 @@ const art = defineCollection({
     }),
 });
 
+const changelog = defineCollection({
+  loader: glob({
+    pattern: "*/*.mdx",
+    base: "./content/changelog",
+    generateId: ({ entry }) => getNameFromTopPage(entry),
+  }),
+  schema: ({ image }) =>
+    z.object({
+      version: z.strictObject({
+        major: z.int().nonnegative(),
+        minor: z.int().nonnegative(),
+        patch: z.int().nonnegative(),
+      }),
+      date: z.date(),
+      commit: z.hash("sha1"),
+      overview: z.string().nonempty().optional(),
+      covers: z.array(ImageSchema(image)).nonempty().max(5).optional(),
+    }),
+});
+
 const collections = {
   projects,
   projectPages,
@@ -204,6 +224,7 @@ const collections = {
   design,
   designPages,
   art,
+  changelog,
 };
 
 export { collections };

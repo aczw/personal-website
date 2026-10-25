@@ -12,6 +12,7 @@ import {
 type Route =
   | "about"
   | "art"
+  | "changelog"
   | "colophon"
   | "covers"
   | "design"
@@ -140,6 +141,14 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
       return {
         title: data.title,
         description: "Artwork by me",
+      };
+    }
+
+    case "changelog": {
+      const { data } = meta.changelogEntry;
+      return {
+        title: `v${meta.changelogEntry.id}`,
+        description: `Changelog for v${meta.changelogEntry.id} of my website, released on ${getShortDateFormatting(data.date)}.`,
       };
     }
 

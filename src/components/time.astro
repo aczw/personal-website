@@ -1,0 +1,13 @@
+---
+import { getFullDateFormatting, getShortDateFormatting } from "@/scripts/util";
+
+interface Props {
+  date: Date;
+}
+
+const { date } = Astro.props;
+---
+
+<time datetime={date.toISOString()} title={getFullDateFormatting(date)}>
+  {getShortDateFormatting(date)}
+</time>
