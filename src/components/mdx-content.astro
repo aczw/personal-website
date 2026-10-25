@@ -12,10 +12,10 @@ type Props = HTMLAttributes<"article"> & {
   content: AstroComponentFactory;
 };
 
-const { content: Content, ...props } = Astro.props;
+const { content: Content, class: className, ...props } = Astro.props;
 ---
 
-<article class="mdx not-empty:mt-7" {...props}>
+<article class:list={["mdx", className]} {...props}>
   <Content
     components={{
       h2: H2,

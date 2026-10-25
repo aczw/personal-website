@@ -38,9 +38,9 @@ const description = "Various art, if you can call it that.";
     <section class="constrain mt-7 px-5">
       <h2 class="sr-only">Work</h2>
 
-      <div class="columns-2 gap-3 md:columns-3 lg:columns-4">
+      <div class="columns-2 gap-3 md:columns-3 lg:columns-4 *:relative *:break-inside-avoid *:not-last:mb-3">
         {artEntries.map(({ id, data: { title, cover } }) => (
-          <figure class="relative h-fit break-after-avoid not-last:mb-3">
+          <figure>
             {cover.video ?
               <VideoCover
                 collection="art"

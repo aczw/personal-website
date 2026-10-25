@@ -384,7 +384,7 @@ const description =
           }
 
           case "changelog": {
-            const { date, commit, covers } = entry.data;
+            const { date, commit, inline, covers } = entry.data;
             const colCount = Math.min(
               4,
               Math.max(3, covers ? covers.length : 0),
@@ -397,9 +397,15 @@ const description =
               >
                 <h2 class="flex justify-between gap-x-3 leading-tight">
                   <span class="font-medium heading">Version</span>
-                  <a href={`/changelog/${id}`} class="link-primary link-expand">
-                    {id}
-                  </a>
+                  {inline ?
+                    <span>{id}</span>
+                  : <a
+                      href={`/changelog/${id}`}
+                      class="link-primary link-expand"
+                    >
+                      {id}
+                    </a>
+                  }
                 </h2>
 
                 <dl class="*:flex *:justify-between *:gap-x-3 leading-tight">

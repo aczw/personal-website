@@ -3,13 +3,13 @@
  * @see https://web.dev/patterns/web-vitals-patterns/video/video-gif
  */
 
-import type { ContentCollectionKey } from "astro:content";
+import type { CollectionKey } from "astro:content";
 
 import { CDN_URL } from "@/scripts/constants";
 
 interface Props {
   content: {
-    collection: ContentCollectionKey;
+    collection: CollectionKey;
     folder: string;
   };
   name: string;

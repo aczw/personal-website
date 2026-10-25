@@ -158,6 +158,7 @@ const designPages = defineCollection({
   loader: glob({
     pattern: "*/pages/*/*.mdx",
     base: "./content/design",
+    retainBody: false,
     generateId: ({ entry }) => getNameFromSubpage(entry),
   }),
   schema: ({ image }) => DesignEntrySchema(image),
@@ -167,6 +168,7 @@ const art = defineCollection({
   loader: glob({
     pattern: "*/*.mdx",
     base: "./content/art",
+    retainBody: false,
     generateId: ({ entry }) => getNameFromTopPage(entry),
   }),
   schema: ({ image }) =>
@@ -199,6 +201,7 @@ const changelog = defineCollection({
   loader: glob({
     pattern: "*/*.mdx",
     base: "./content/changelog",
+    retainBody: true,
     generateId: ({ entry }) => getNameFromTopPage(entry),
   }),
   schema: ({ image }) =>
@@ -210,7 +213,7 @@ const changelog = defineCollection({
       }),
       date: z.date(),
       commit: z.hash("sha1"),
-      overview: z.string().nonempty().optional(),
+      inline: z.boolean(),
       covers: z.array(ImageSchema(image)).nonempty().max(5).optional(),
     }),
 });
