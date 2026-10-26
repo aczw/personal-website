@@ -18,8 +18,7 @@ import MdxContent from "@/components/mdx-content.astro";
 const changelogEntries = await getCollection("changelog");
 changelogEntries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
-const description =
-  "I'm a little obsessed with maintaining my website, if you can't tell.";
+const description = "I obsessively tinker with my website, if you can't tell.";
 ---
 
 <BaseLayout
@@ -34,9 +33,10 @@ const description =
   <main>
     <hgroup class="constrain px-5">
       <h1 class="sr-only">Art</h1>
-      <p class="prose">
-        {description} This is a changelog for this place, documenting all the
-        changes and revisions it has been through.{" "}
+      <p class="prose">{description}</p>
+      <p class="prose mt-3">
+        This is a changelog for this place, documenting all the changes and
+        revisions it has been through.{" "}
         <span class="italic">It's been through a lot.</span>
       </p>
     </hgroup>
