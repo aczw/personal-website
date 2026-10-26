@@ -19,7 +19,7 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { image, meta } = entry.data;
+const { image, backgroundFor, meta } = entry.data;
 
 const designPages = await getCollection("designPages");
 const relevantEntries = designPages.filter(
@@ -36,11 +36,34 @@ const { Content } = await render(entry);
   <h2 class="sr-only">Design</h2>
 
   <div class="px-5">
-    <Image
-      src={image.file}
-      alt={image.alt}
-      class="h-auto w-full max-w-(--wide-w) md:rounded-sm"
-    />
+    <div
+      class:list={[
+        "max-w-(--wide-w)",
+        backgroundFor && "p-3 rounded-lg",
+        backgroundFor &&
+          backgroundFor === "light-media" &&
+          "light:bg-sweater-5",
+        backgroundFor && backgroundFor === "dark-media" && "dark:bg-sweater-6",
+      ]}
+    >
+      <Image
+        src={image.file}
+        alt={image.alt}
+        class="h-auto w-full md:rounded-sm"
+      />
+    </div>
+
+    {backgroundFor && (
+      <p
+        class:list={[
+          "text-sm mt-1 font-medium light:text-sweater-7 text-sweater-5",
+          backgroundFor === "light-media" && "dark:hidden",
+          backgroundFor === "dark-media" && "light:hidden",
+        ]}
+      >
+        Note: background applied for visibility.
+      </p>
+    )}
   </div>
 </section>
 
@@ -77,7 +100,7 @@ const { Content } = await render(entry);
   </dl>
 </section>
 
-{entry.collection === "design" && (
+{relevantEntries.length > 0 && entry.collection === "design" && (
   <section class="constrain mt-7 px-5">
     <h2 id="subpages" class="text-lg font-medium heading">
       Subpages

@@ -41,14 +41,27 @@ designEntries.sort(
     <section class="constrain mt-7 px-5">
       <h2 class="sr-only">Design work</h2>
 
-      <div class="columns-2 gap-3 md:columns-3 lg:columns-4">
+      <div class="columns-2 gap-3 md:columns-3 lg:columns-4 *:relative *:break-inside-avoid *:not-last:mb-3">
         {designEntries.map(({ id, data }) => (
-          <figure class="relative break-after-avoid not-last:mb-3">
-            <Image
-              src={data.image.file}
-              alt={data.image.alt}
-              class="rounded-xs"
-            />
+          <figure>
+            <div
+              class:list={[
+                data.backgroundFor && "p-1.5 rounded-sm",
+                data.backgroundFor &&
+                  data.backgroundFor === "light-media" &&
+                  "light:bg-sweater-5",
+                data.backgroundFor &&
+                  data.backgroundFor === "dark-media" &&
+                  "dark:bg-sweater-6",
+              ]}
+            >
+              <Image
+                src={data.image.file}
+                alt={data.image.alt}
+                class="rounded-xs"
+              />
+            </div>
+
             <figcaption>
               <a href={`/design/${id}`} class="link-expand">
                 <span class="sr-only">{data.title}</span>

@@ -28,16 +28,6 @@ import {
 } from "@/scripts/constants";
 import VideoCover from "@/components/video-cover.astro";
 
-const changelogVersions = [
-  "0.1.0",
-  "1.0.0",
-  "4.0.0",
-  "5.0.0",
-  "6.0.0",
-  "7.0.0",
-  "8.0.0",
-];
-
 const projectEntries = await getCollection(
   "projects",
   ({ id }) => !DISABLED_PROJECTS.includes(id),
@@ -49,9 +39,19 @@ const postEntries = await getCollection(
 const gameEntries = await getCollection("games");
 const designEntries = await getCollection("design");
 const artEntries = await getCollection("art");
-const coverArtEntries = await getCollection("covers");
+const coverArtEntries = await getCollection("covers", ({ id }) =>
+  [
+    "team-a",
+    "ghost-house",
+    "community-favorites",
+    "sinking-feeling",
+    "texas-watchin-me",
+    "back-n-forth",
+    "came-alone",
+  ].includes(id),
+);
 const changelogEntries = await getCollection("changelog", ({ id }) =>
-  changelogVersions.includes(id),
+  ["0.1.0", "1.0.0", "4.0.0", "5.0.0", "6.0.0", "7.0.0", "8.0.0"].includes(id),
 );
 
 const entries: CollectionEntry<CollectionKey>[] = [
@@ -331,7 +331,7 @@ const description =
           }
 
           case "design": {
-            const { title, image } = entry.data;
+            const { title, image, backgroundFor } = entry.data;
 
             return (
               <article data-type="design">
@@ -341,7 +341,19 @@ const description =
                   </a>
                 </h2>
 
-                <Image src={image.file} alt={image.alt} class="rounded-sm" />
+                <div
+                  class:list={[
+                    backgroundFor && "p-1 rounded-sm",
+                    backgroundFor &&
+                      backgroundFor === "light-media" &&
+                      "light:bg-sweater-5",
+                    backgroundFor &&
+                      backgroundFor === "dark-media" &&
+                      "dark:bg-sweater-6",
+                  ]}
+                >
+                  <Image src={image.file} alt={image.alt} class="rounded-sm" />
+                </div>
               </article>
             );
           }
@@ -393,7 +405,7 @@ const description =
           case "changelog": {
             const { date, commit, inline, covers } = entry.data;
             const colCount = Math.min(
-              4,
+              3,
               Math.max(3, covers ? covers.length : 0),
             );
 
@@ -402,20 +414,26 @@ const description =
                 data-type="changelog"
                 class="border-t-2 border-style pt-1.5"
               >
-                <h2 class="flex justify-between gap-x-3 leading-tight">
-                  <span class="font-medium heading">Version</span>
-                  {inline ?
-                    <span>{id}</span>
-                  : <a
-                      href={`/changelog/${id}`}
-                      class="link-primary link-expand"
-                    >
-                      {id}
-                    </a>
-                  }
+                <h2 class="font-medium heading leading-tight">
+                  Website update
                 </h2>
 
                 <dl class="*:flex *:justify-between *:gap-x-3 leading-tight">
+                  <div>
+                    <dd class="font-medium heading">Version</dd>
+                    <dt>
+                      {inline ?
+                        id
+                      : <a
+                          href={`/changelog/${id}`}
+                          class="link-primary link-expand"
+                        >
+                          {id}
+                        </a>
+                      }
+                    </dt>
+                  </div>
+
                   <div>
                     <dd class="font-medium heading">Released</dd>
                     <dt>
@@ -427,7 +445,18 @@ const description =
 
                   <div>
                     <dd class="font-medium heading">Commit</dd>
-                    <dt class="maple">{commit.slice(0, 7)}</dt>
+                    <dt class="maple">
+                      {inline ?
+                        <a
+                          href={`https://github.com/aczw/personal-website/commit/${commit}`}
+                          target="_blank"
+                          rel="noopener"
+                          class="link-primary"
+                        >
+                          {commit.slice(0, 7)}
+                        </a>
+                      : commit.slice(0, 7)}
+                    </dt>
                   </div>
                 </dl>
 
@@ -438,7 +467,7 @@ const description =
                       "--col-count": `repeat(${colCount}, minmax(0, 1fr))`,
                     }}
                   >
-                    {covers.slice(0, 4).map((cover) => (
+                    {covers.slice(0, 3).map((cover) => (
                       <Image
                         src={cover.file}
                         alt={cover.alt}

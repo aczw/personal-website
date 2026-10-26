@@ -61,6 +61,7 @@ const DesignEntrySchema = (image: ImageFunction) =>
     title: z.string().nonempty(),
     type: z.string().nonempty(),
     image: ImageSchema(image),
+    backgroundFor: z.enum(["light-media", "dark-media"]).optional(),
     meta: z.strictObject({
       created: z.date(),
       tools: z.array(z.string().nonempty()).nonempty(),
