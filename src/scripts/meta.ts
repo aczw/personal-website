@@ -120,7 +120,7 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
       const { data } = meta.designEntry;
       return {
         title: data.title,
-        description: `${data.type} design by me`,
+        description: data.type,
       };
     }
 
@@ -132,7 +132,7 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
 
       return {
         title: `${data.title} / ${designEntry.data.title}`,
-        description: `${data.type} by me`,
+        description: data.type,
       };
     }
 
@@ -140,7 +140,7 @@ const extractHeadInformation = async (meta: Meta): Promise<Head> => {
       const { data } = meta.artEntry;
       return {
         title: data.title,
-        description: "Artwork by me",
+        description: "Artwork",
       };
     }
 

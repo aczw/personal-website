@@ -19,7 +19,8 @@ interface Props {
 }
 
 const { entry } = Astro.props;
-const { image, backgroundFor, meta } = entry.data;
+const { data } = entry;
+const { image, meta } = data;
 
 const designPages = await getCollection("designPages");
 const relevantEntries = designPages.filter(
@@ -39,11 +40,13 @@ const { Content } = await render(entry);
     <div
       class:list={[
         "max-w-(--wide-w)",
-        backgroundFor && "p-3 rounded-lg",
-        backgroundFor &&
-          backgroundFor === "light-media" &&
+        data.backgroundFor && "p-3 rounded-lg",
+        data.backgroundFor &&
+          data.backgroundFor === "light-media" &&
           "light:bg-sweater-5",
-        backgroundFor && backgroundFor === "dark-media" && "dark:bg-sweater-6",
+        data.backgroundFor &&
+          data.backgroundFor === "dark-media" &&
+          "dark:bg-sweater-6",
       ]}
     >
       <Image
@@ -53,12 +56,12 @@ const { Content } = await render(entry);
       />
     </div>
 
-    {backgroundFor && (
+    {data.backgroundFor && (
       <p
         class:list={[
           "text-sm mt-1 font-medium light:text-sweater-7 text-sweater-5",
-          backgroundFor === "light-media" && "dark:hidden",
-          backgroundFor === "dark-media" && "light:hidden",
+          data.backgroundFor === "light-media" && "dark:hidden",
+          data.backgroundFor === "dark-media" && "light:hidden",
         ]}
       >
         Note: background applied for visibility.
@@ -106,14 +109,28 @@ const { Content } = await render(entry);
       Subpages
     </h2>
 
-    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+    <div class="grid grid-cols-1 mt-1.5 gap-3 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 *:relative *:h-fit">
       {relevantEntries.map(({ id, data }) => (
-        <figure class="relative h-fit">
-          <Image
-            src={data.image.file}
-            alt={data.image.alt}
-            class="rounded-sm"
-          />
+        <figure>
+          <div
+            class:list={[
+              "max-w-(--wide-w)",
+              data.backgroundFor && "p-3 rounded-lg",
+              data.backgroundFor &&
+                data.backgroundFor === "light-media" &&
+                "light:bg-sweater-5",
+              data.backgroundFor &&
+                data.backgroundFor === "dark-media" &&
+                "dark:bg-sweater-6",
+            ]}
+          >
+            <Image
+              src={data.image.file}
+              alt={data.image.alt}
+              class="rounded-sm"
+            />
+          </div>
+
           <figcaption class="pt-1">
             <h3>
               <a

@@ -69,25 +69,25 @@ const description = "I obsessively tinker with my website, if you can't tell.";
                     </h3>
 
                     {!inline && (
-                      <ArrowRightIcon size={ICON_SIZE} class="icon" />
+                      <p class="flex link-secondary items-center gap-x-1.5 group-hover:text-sweater-4 light:group-hover:text-sweater-7">
+                        Read <ArrowRightIcon size={ICON_SIZE} class="icon" />
+                      </p>
                     )}
                   </hgroup>
 
                   <div class="flex gap-x-3">
-                    <p class="text-sweater-5 light:text-sweater-6 flex gap-x-1.5 items-center">
-                      <CalendarFoldIcon size={ICON_SIZE} />
+                    <p class="text-sweater-6 light:text-sweater-5 flex gap-x-1.5 items-center">
+                      <CalendarFoldIcon size={ICON_SIZE} class="icon" />
                       <Time date={data.date} />
                     </p>
 
-                    <a
-                      href={`https://github.com/aczw/personal-website/commit/${data.commit}`}
-                      target="_blank"
-                      rel="noopener"
-                      class="link-secondary maple flex items-center gap-x-1.5"
+                    <p
+                      title={`Git commit SHA1: ${data.commit}`}
+                      class="text-sweater-6 light:text-sweater-5 flex gap-x-1.5 items-center maple"
                     >
                       <GitCommitHorizontalIcon size={ICON_SIZE} />{" "}
                       {data.commit.slice(0, 7)}
-                    </a>
+                    </p>
                   </div>
                 </div>
               </div>

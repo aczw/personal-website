@@ -7,7 +7,12 @@ import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
 
 const designEntries = await getCollection("design");
-designEntries.sort(
+const designPageEntries = await getCollection("designPages", ({ id }) =>
+  ["efd/obstacle-1-cover", "tedxpenn/2023-team-shirt"].includes(id),
+);
+
+const allEntries = [...designEntries, ...designPageEntries];
+allEntries.sort(
   (a, b) => b.data.meta.created.getTime() - a.data.meta.created.getTime(),
 );
 ---
@@ -42,7 +47,7 @@ designEntries.sort(
       <h2 class="sr-only">Design work</h2>
 
       <div class="columns-2 gap-3 md:columns-3 lg:columns-4 *:relative *:break-inside-avoid *:not-last:mb-3">
-        {designEntries.map(({ id, data }) => (
+        {allEntries.map(({ id, data }) => (
           <figure>
             <div
               class:list={[

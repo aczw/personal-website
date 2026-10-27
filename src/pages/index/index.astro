@@ -38,13 +38,19 @@ const postEntries = await getCollection(
 );
 const gameEntries = await getCollection("games");
 const designEntries = await getCollection("design");
+const designPageEntries = await getCollection("designPages", ({ id }) =>
+  [
+    "efd/obstacle-1-cover",
+    "tedxpenn/2023-team-shirt",
+    "tedxpenn/2024",
+  ].includes(id),
+);
 const artEntries = await getCollection("art");
 const coverArtEntries = await getCollection("covers", ({ id }) =>
   [
     "team-a",
     "ghost-house",
     "community-favorites",
-    "sinking-feeling",
     "texas-watchin-me",
     "back-n-forth",
     "came-alone",
@@ -59,6 +65,7 @@ const entries: CollectionEntry<CollectionKey>[] = [
   ...postEntries,
   ...gameEntries,
   ...designEntries,
+  ...designPageEntries,
   ...artEntries,
   ...coverArtEntries,
   ...changelogEntries,
@@ -75,6 +82,7 @@ const deriveEntryTimestamp = (
     case "games":
       return entry.data.meta.released.getTime() * 0.001;
     case "design":
+    case "designPages":
     case "art":
     case "covers":
       return entry.data.meta.created.getTime() * 0.001;
@@ -330,7 +338,8 @@ const description =
             );
           }
 
-          case "design": {
+          case "design":
+          case "designPages": {
             const { title, image, backgroundFor } = entry.data;
 
             return (
