@@ -14,6 +14,7 @@ import { remove } from "unist-util-remove";
 import { toString } from "mdast-util-to-string";
 
 import { GlobeIcon } from "@lucide/astro";
+import { Masonry } from "astro-masonry";
 
 import BaseLayout from "@/components/base-layout.astro";
 import Footer from "@/components/footer.astro";
@@ -163,7 +164,17 @@ const description =
       </div>
     </section>
 
-    <section class="constrain mt-7 grid grid-cols-2 gap-3 px-5 desktop:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 *:break-inside-avoid *:h-fit *:relative">
+    <Masonry
+      breakpointCols={{
+        default: 5,
+        1024: 4,
+        768: 3,
+        640: 2,
+        480: 1,
+      }}
+      class="constrain gap-3 px-5 mt-7"
+      columnClass="*:break-inside-avoid *:h-fit *:relative *:not-last:mb-3"
+    >
       {entries.map(async (entry) => {
         const { id } = entry;
 
@@ -423,9 +434,7 @@ const description =
                 data-type="changelog"
                 class="border-t-2 border-style pt-1.5"
               >
-                <h2 class="font-medium heading leading-tight">
-                  Website update
-                </h2>
+                <h2 class="sr-only">Website update</h2>
 
                 <dl class="*:flex *:justify-between *:gap-x-3 leading-tight">
                   <div>
@@ -490,7 +499,7 @@ const description =
           }
         }
       })}
-    </section>
+    </Masonry>
   </main>
 
   <Footer />
