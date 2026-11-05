@@ -81,6 +81,17 @@ const lyrics: ArtistGroup[] = [
           "I think I'm right where I need to be",
         ],
       },
+      {
+        song: "The Air Up Here",
+        lyrics: ["The city never lets me down"],
+      },
+      {
+        song: "The Air Up Here",
+        lyrics: [
+          "But I thought that I should say that",
+          "I'm so sorry for the worry I've been causing you",
+        ],
+      },
     ],
   },
   {
@@ -469,6 +480,19 @@ const lyrics: ArtistGroup[] = [
       {
         song: "In Framing",
         lyrics: ["Got drained when the crutch became vampiracy"],
+      },
+    ],
+  },
+  {
+    artist: "My Chemical Romance",
+    songs: [
+      {
+        song: "The End.",
+        lyrics: ["When I grow up, I want to be nothing at all"],
+      },
+      {
+        song: "House of Wolves",
+        lyrics: ["Tell me I'm an angel, take this to my grave"],
       },
     ],
   },
