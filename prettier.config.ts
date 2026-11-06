@@ -22,7 +22,8 @@ const config: Config & PluginOptions = {
     },
   ],
   tailwindStylesheet: "./src/main.css",
-  tailwindAttributes: ["tw"],
+  tailwindAttributes: ["columnClass"],
+  tailwindFunctions: [],
 };
 
 export default config;
