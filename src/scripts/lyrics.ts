@@ -505,7 +505,7 @@ const flattened = lyrics.flatMap(({ artist, songs }) =>
 const formattedLyrics = flattened.map((value) => {
   return {
     lyrics: value.lyrics.map((lyric) => `“${lyric.trim()}”`).join(" / "),
-    credits: `${value.song}, ${value.artist}`,
+    credits: `${value.song} by ${value.artist}`,
   };
 });
 

@@ -21,7 +21,6 @@ import Footer from "@/components/footer.astro";
 import Header from "@/components/header.astro";
 import { capitalize, deriveProjectTimestamp } from "@/scripts/util";
 import {
-  CURRENT_TIMEZONE,
   DISABLED_POSTS,
   DISABLED_PROJECTS,
   FEATURED_PROJECTS,
@@ -57,9 +56,6 @@ const coverArtEntries = await getCollection("covers", ({ id }) =>
     "came-alone",
   ].includes(id),
 );
-const changelogEntries = await getCollection("changelog", ({ id }) =>
-  ["0.1.0", "1.0.0", "4.0.0", "5.0.0", "6.0.0", "7.0.0", "8.0.0"].includes(id),
-);
 
 const entries: CollectionEntry<CollectionKey>[] = [
   ...projectEntries,
@@ -69,7 +65,6 @@ const entries: CollectionEntry<CollectionKey>[] = [
   ...designPageEntries,
   ...artEntries,
   ...coverArtEntries,
-  ...changelogEntries,
 ];
 
 const deriveEntryTimestamp = (
@@ -87,8 +82,6 @@ const deriveEntryTimestamp = (
     case "art":
     case "covers":
       return entry.data.meta.created.getTime() * 0.001;
-    case "changelog":
-      return entry.data.date.getTime() * 0.001;
 
     default:
       throw new Error(`Unhandled content collection: ${entry.collection}`);
@@ -111,22 +104,7 @@ const generatePostExcerpt = (markdown: string): string => {
 
 entries.sort((a, b) => deriveEntryTimestamp(b) - deriveEntryTimestamp(a));
 
-const changelogFmt = new Intl.DateTimeFormat("en-US", {
-  month: "numeric",
-  day: "numeric",
-  year: "2-digit",
-  timeZone: CURRENT_TIMEZONE,
-});
-
-const filters = [
-  "projects",
-  "writing",
-  "games",
-  "design",
-  "art",
-  "cover-art",
-  "changelog",
-];
+const filters = ["projects", "writing", "games", "design", "art", "cover-art"];
 
 const description =
   "Everything that is available on this website is collected under the index.";
@@ -421,82 +399,6 @@ const description =
               </article>
             );
           }
-
-          case "changelog": {
-            const { date, commit, inline, covers } = entry.data;
-            const colCount = Math.min(
-              3,
-              Math.max(3, covers ? covers.length : 0),
-            );
-
-            return (
-              <article
-                data-type="changelog"
-                class="border-t-2 border-style pt-1.5"
-              >
-                <h2 class="sr-only">Website update</h2>
-
-                <dl class="*:flex *:justify-between *:gap-x-3 leading-tight">
-                  <div>
-                    <dd class="font-medium heading">Version</dd>
-                    <dt>
-                      {inline ?
-                        id
-                      : <a
-                          href={`/changelog/${id}`}
-                          class="link-primary link-expand"
-                        >
-                          {id}
-                        </a>
-                      }
-                    </dt>
-                  </div>
-
-                  <div>
-                    <dd class="font-medium heading">Released</dd>
-                    <dt>
-                      <time datetime={date.toISOString()}>
-                        {changelogFmt.format(date)}
-                      </time>
-                    </dt>
-                  </div>
-
-                  <div>
-                    <dd class="font-medium heading">Commit</dd>
-                    <dt class="maple">
-                      {inline ?
-                        <a
-                          href={`https://github.com/aczw/personal-website/commit/${commit}`}
-                          target="_blank"
-                          rel="noopener"
-                          class="link-primary"
-                        >
-                          {commit.slice(0, 7)}
-                        </a>
-                      : commit.slice(0, 7)}
-                    </dt>
-                  </div>
-                </dl>
-
-                {covers && (
-                  <div
-                    class="grid grid-cols-(--col-count) gap-x-1 mt-1.5"
-                    style={{
-                      "--col-count": `repeat(${colCount}, minmax(0, 1fr))`,
-                    }}
-                  >
-                    {covers.slice(0, 3).map((cover) => (
-                      <Image
-                        src={cover.file}
-                        alt={cover.alt}
-                        class="rounded-xs border border-style"
-                      />
-                    ))}
-                  </div>
-                )}
-              </article>
-            );
-          }
         }
       })}
     </Masonry>
@@ -512,7 +414,6 @@ const description =
   const designs = document.querySelectorAll("article[data-type='design']");
   const artEntries = document.querySelectorAll("article[data-type='art']");
   const covers = document.querySelectorAll("article[data-type='covers']");
-  const changelog = document.querySelectorAll("article[data-type='changelog']");
 
   document.querySelectorAll<HTMLInputElement>("input").forEach((checkbox) => {
     checkbox.addEventListener("change", () => {
@@ -547,10 +448,6 @@ const description =
       } else if (id === "filter-cover-art") {
         covers.forEach((cover) => {
           cover.classList.toggle("hidden");
-        });
-      } else if (id === "filter-changelog") {
-        changelog.forEach((entry) => {
-          entry.classList.toggle("hidden");
         });
       } else {
         throw new Error(`Unhandled checkbox ID: ${id}`);
